@@ -10,9 +10,9 @@ import io.iochord.dev.chdsr.model.sbpnet.v1.impl.ElementImpl;
 public interface Element {
 	String getId();
 
-	String getName();
+	String getLabel();
 
-	String getType();
+	String getElementType();
 
 	Map<String, String> getAttributes();
 }

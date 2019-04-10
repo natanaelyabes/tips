@@ -15,11 +15,11 @@ public class ElementImpl implements Element {
 
 	@Getter
 	@Setter
-	private String name;
+	private String label;
 
 	@Getter
 	@Setter
-	private String type;
+	private String elementType;
 
 	@Getter
 	@Setter
