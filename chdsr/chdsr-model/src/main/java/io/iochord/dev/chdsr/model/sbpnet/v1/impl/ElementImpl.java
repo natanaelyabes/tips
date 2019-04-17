@@ -18,7 +18,6 @@ public class ElementImpl implements Element {
 	private String label;
 
 	@Getter
-	@Setter
 	private String elementType;
 
 	@Getter

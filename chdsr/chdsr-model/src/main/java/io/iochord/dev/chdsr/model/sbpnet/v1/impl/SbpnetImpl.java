@@ -14,7 +14,10 @@ public class SbpnetImpl extends ElementImpl implements Sbpnet {
 
 	@Getter
 	private final String version = "1.0";
-
+	
+	@Getter
+	private final String elementType = "sbpnet";
+	
 	@Getter
 	@Setter
 	private Map<String, Page> pages = new LinkedHashMap<>();

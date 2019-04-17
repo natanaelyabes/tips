@@ -1,7 +1,11 @@
 package io.iochord.dev.chdsr.model.sbpnet.v1.components;
 
-import io.iochord.dev.chdsr.model.sbpnet.v1.Data;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
+import io.iochord.dev.chdsr.model.sbpnet.v1.Data;
+import io.iochord.dev.chdsr.model.sbpnet.v1.components.impl.QueueImpl;
+
+@JsonDeserialize(as = QueueImpl.class)
 public interface Queue extends Data {
 	public enum QUEUE_TYPE {
 		LIFO,
