@@ -1,3 +1,19 @@
+apply plugin: 'scala'
+
 dependencies {
-	implementation project(':chdsr-model-analysis')
+	compile 'org.scala-lang:scala-library:2.12.2'
+	compile files("$sourceSets.main.scala.outputDir")
+	implementation project(':chdsr-model')
 }
+sourceSets {
+    main {
+        scala {
+            outputDir = file("$buildDir/classes/scala/main")
+        }
+        java {
+            outputDir = file("$buildDir/classes/java/main")
+        }
+    }
+}
+tasks.compileJava.dependsOn compileScala
+tasks.compileScala.dependsOn.remove("compileJava")
