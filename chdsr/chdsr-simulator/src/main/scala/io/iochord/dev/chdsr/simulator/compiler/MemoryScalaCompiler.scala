@@ -14,9 +14,7 @@ abstract class Simulation {
   
   val vars = HashMap[String,Any]() // some value generated from simulation will be saved here
   
-  def stepSimulation(cpnGraph: CPNGraph, nStep:Int): Unit
-  def fastSimulation[T](cpnGraph: CPNGraph, stCriteria:(T) => Boolean): Unit
-  
+  def runSimulation(cpnGraph: CPNGraph): Unit
   def expState(): Unit
   
   def calcKPI[T](kpiFunc:T): Double
@@ -24,9 +22,11 @@ abstract class Simulation {
   def printDebugging(txtDebugging: String): Unit = {
     println(txtDebugging)
   }
+  
   def getVar(nvar1:String): Any = {
     return vars.get(nvar1).getOrElse(null)
   }
+  
   def putVar[T](key:String, var1:T): Unit = {
     vars.put(key,var1)
   }
@@ -40,7 +40,10 @@ case class MemoryScalaCompiler(scalaSource: String) {
   
   import toolbox.u._
   
-  val tree = toolbox.parse("import io.iochord.dev.chdsr.simulator.compiler._; " + scalaSource)
+  val tree = toolbox.parse("import io.iochord.dev.chdsr.simulator.compiler._; \n"+
+      "import io.iochord.dev.chdsr.simulator.model.CPNGraph; \n"+   
+      scalaSource)
+      
   val compiledCode = toolbox.compile(tree)
   
   println("Class Name : "+compiledCode.getClass.toString())

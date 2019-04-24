@@ -3,17 +3,13 @@ package io.iochord.dev.chdsr.simulator.compiler
 object MemoryScalaCompilerTest {
   def main(args: Array[String]) {
     val myclassSyntax = "new Simulation {\n"+
-    "val test1 = \"apa aja\"\n"+
-    "override def syntaxChecking(syntax:String):Unit ="+
-        "{ printDebugging(\"Syntax Chcking\") }\n"+  
-    "override def doStepSimulation(numbOfStep:Int,syntax:String):Unit ="+
-        "{ printDebugging(\"Step Simulation\") }\n"+
-      "override def doFastSimulation(classId: String):Unit ="+
-        "{ printDebugging(classId) }\n"+
-      "override def exploreState(classId: String):Unit ="+
+      "val test1 = \"apa aja\"\n"+
+      "override def runSimulation(cpnGraph: CPNGraph):Unit ="+
+        "{ println(\"Run Simulation\") }\n"+ 
+      "override def expState():Unit ="+
         "{ println(\"Explore State\") }\n"+ 
-      "override def calculateKPI(classId: String):Unit ="+
-        "{ println(\"Calculate KPI\"); putVar(\"test1\",test1); putVar(\"test2\",new Coba1()) }\n "+  
+      "override def calcKPI[T](kpiFunc:T):Double ="+
+        "{ println(\"Calculate KPI\"); putVar(\"test1\",test1); putVar(\"test2\",new Coba1()); return 5.0 }\n "+  
       "def test(var1:String):Unit = "+
         "{ println(var1) }\n"+
       "class Coba1 { val varc1 = \"lain lagi\" }\n"+
@@ -27,7 +23,6 @@ object MemoryScalaCompilerTest {
     val attrs = memoryScala.getVar("test2").getClass().getDeclaredField("varc1")
     attrs.setAccessible(true)
     println(attrs.get(memoryScala.getVar("test2")).asInstanceOf[String])
-    //memoryScala.doStepSimulation(5,"Yu")
     //val mtd = memoryScala.getClass.getMethods.map(_.getName)
     //println(mtd.length)
     //mtd.foreach{println}
