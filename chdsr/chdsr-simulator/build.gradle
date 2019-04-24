@@ -2,6 +2,7 @@ apply plugin: 'scala'
 
 dependencies {
 	compile 'org.scala-lang:scala-library:2.12.2'
+	compile 'org.scala-lang:scala-compiler:2.12.2'
 	compile files("$sourceSets.main.scala.outputDir")
 	implementation project(':chdsr-model')
 }
