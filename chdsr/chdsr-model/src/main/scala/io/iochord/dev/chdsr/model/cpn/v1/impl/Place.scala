@@ -1,6 +1,7 @@
-package io.iochord.dev.chdsr.simulator.model
+package io.iochord.dev.chdsr.model.cpn.v1.impl
 
-import io.iochord.dev.chdsr.simulator.collection.Multiset
+import io.iochord.dev.chdsr.model.cpn.v1.Element
+import io.iochord.dev.chdsr.model.cpn.v1.Node
 
 case class Place[T] (
   id: String,
