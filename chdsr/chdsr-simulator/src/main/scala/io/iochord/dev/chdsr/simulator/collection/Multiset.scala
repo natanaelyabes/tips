@@ -2,7 +2,7 @@ package io.iochord.dev.chdsr.simulator.collection
 
 import scala.collection.mutable.Map
 
-class Multiset[T] (val multiset: Map[T, Int]) extends Iterable[(T, Int)] {
+class Multiset[T] (val multiset: Map[(T,Long), Int]) extends Iterable[(Long,T)] {
   
   private def comparing(that: Any, cons: (Int, Int) => Boolean): Boolean = {
     that match {
@@ -18,7 +18,7 @@ class Multiset[T] (val multiset: Map[T, Int]) extends Iterable[(T, Int)] {
     }
   }
   
-  def iterator: Iterator[(T, Int)] = for ((el, no) <- multiset.iterator) yield (el, no)
+  def iterator: Iterator[(Long, T)] = for (((el,tm), no) <- multiset.iterator) yield (tm, el)
   
   def equal(other: Any) = other match {
     case that: Multiset[T] =>
