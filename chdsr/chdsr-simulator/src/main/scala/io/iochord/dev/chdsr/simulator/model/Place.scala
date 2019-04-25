@@ -1,7 +1,5 @@
 package io.iochord.dev.chdsr.simulator.model
 
-import io.iochord.dev.chdsr.simulator.collection.Multiset
-
 case class Place[T] (
   id: String,
   name: String,
