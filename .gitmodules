@@ -1,3 +1,3 @@
 [submodule "ts"]
 	path = chdsr/chdsr-simulator-web/src/main/ts
-	url = https://gitserver.dev.iochord.co.kr:4443/natanael_yabes/tips-simulation2019_development
+	url = https://gitserver.dev.iochord.co.kr:4443/natanael_yabes/tips-simulation2019_experiment
