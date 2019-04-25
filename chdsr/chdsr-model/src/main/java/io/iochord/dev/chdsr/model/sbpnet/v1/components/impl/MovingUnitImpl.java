@@ -29,5 +29,4 @@ public class MovingUnitImpl extends DataImpl implements MovingUnit {
 	
 	@Getter @Setter
 	long firstCreation;
-
 }

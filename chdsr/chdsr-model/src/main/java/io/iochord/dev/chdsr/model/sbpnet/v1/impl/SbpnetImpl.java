@@ -29,5 +29,4 @@ public class SbpnetImpl extends ElementImpl implements Sbpnet {
 	@Getter
 	@Setter
 	private Map<String, Data> data = new LinkedHashMap<>();
-
 }

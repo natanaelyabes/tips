@@ -15,5 +15,4 @@ public class ResourceImpl extends DataImpl implements Resource {
 
 	@Getter @Setter
 	private DataTable data;
-	
 }

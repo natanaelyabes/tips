@@ -23,5 +23,4 @@ public class ElementImpl implements Element {
 	@Getter
 	@Setter
 	private Map<String, String> attributes = new LinkedHashMap<>();
-
 }
