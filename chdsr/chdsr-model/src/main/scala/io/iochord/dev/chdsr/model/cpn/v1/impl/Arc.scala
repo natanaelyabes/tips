@@ -13,4 +13,13 @@ case class Arc[T] (
   direction: Direction.Value)
   extends Element {
   
+  def getPlace(): Place[T] = { 
+    place
+  }
+  
+  def getTransition(): Transition = transition
+  
+  def getDirection():Direction.Value = direction
+  
+  def getId():String = id
 }

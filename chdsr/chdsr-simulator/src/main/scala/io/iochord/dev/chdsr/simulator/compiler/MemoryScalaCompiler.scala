@@ -14,7 +14,7 @@ case class MemoryScalaCompiler(scalaSource: String) {
   val tree = toolbox.parse("import io.iochord.dev.chdsr.simulator.compiler._; \n"+
       "import io.iochord.dev.chdsr.model.cpn.v1.impl.CPNGraph; \n"+   
       scalaSource)
-      
+     
   val compiledCode = toolbox.compile(tree)
   
   println("Class Name : "+compiledCode.getClass.toString())

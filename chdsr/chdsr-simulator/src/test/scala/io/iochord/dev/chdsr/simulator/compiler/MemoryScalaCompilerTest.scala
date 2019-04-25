@@ -3,7 +3,7 @@ package io.iochord.dev.chdsr.simulator.compiler
 object MemoryScalaCompilerTest {
   def main(args: Array[String]) {
     val myclassSyntax = "new Simulation {\n"+
-      "val test1 = \"apa aja\"\n"+
+      "val test1 = \"test1\"\n"+
       "override def runSimulation(cpnGraph: CPNGraph):Unit ="+
         "{ println(\"Run Simulation\") }\n"+ 
       "override def expState():Unit ="+
@@ -12,13 +12,13 @@ object MemoryScalaCompilerTest {
         "{ println(\"Calculate KPI\"); putVar(\"test1\",test1); putVar(\"test2\",new Coba1()); return 5.0 }\n "+  
       "def test(var1:String):Unit = "+
         "{ println(var1) }\n"+
-      "class Coba1 { val varc1 = \"lain lagi\" }\n"+
+      "class Coba1 { val varc1 = \"other test\" }\n"+
     "}";
     
     val memoryScalaFactory = MemoryScalaCompiler(myclassSyntax)
     val memoryScala = memoryScalaFactory.getInstance
-    memoryScala.calcKPI("Test aja")
-    memoryScala.putVar("test3","halo_ok_deh")
+    memoryScala.calcKPI("just test kpi")
+    memoryScala.putVar("test3","test put var 3")
     memoryScala.getVar("test1")
     val attrs = memoryScala.getVar("test2").getClass().getDeclaredField("varc1")
     attrs.setAccessible(true)
