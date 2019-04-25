@@ -1,7 +1,7 @@
 package io.iochord.dev.chdsr.simulator.engine
 
-import io.iochord.dev.chdsr.simulator.model.CPNGraph
-import io.iochord.dev.chdsr.simulator.model.Transition
+import io.iochord.dev.chdsr.model.cpn.v1.impl.CPNGraph
+import io.iochord.dev.chdsr.model.cpn.v1.impl.Transition
 import io.iochord.dev.chdsr.simulator.util.ChdsrRandom
 
 object Simulator {
