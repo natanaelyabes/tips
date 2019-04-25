@@ -12,5 +12,4 @@ public class StartImpl extends NodeImpl implements Start {
 
 	@Getter @Setter
 	private MovingUnit movingUnit;
-	
 }

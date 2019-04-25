@@ -17,27 +17,31 @@ public class NodeImpl extends ElementImpl implements Node {
 
 	@Override
 	public boolean accept(Collection<Element> elements) {
+		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
 	public Collection<Element> getInputTypes() {
+		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public Collection<Element> getOutputTypes() {
+		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public Collection<Node> getInputNodes() {
+		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public Collection<Node> getOutputNodes() {
+		// TODO Auto-generated method stub
 		return null;
 	}
-	
 }

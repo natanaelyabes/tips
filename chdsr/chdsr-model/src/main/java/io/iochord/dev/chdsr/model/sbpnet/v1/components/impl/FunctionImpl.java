@@ -20,5 +20,4 @@ public class FunctionImpl extends DataImpl implements Function {
 
 	@Getter @Setter
 	Map<String, Declaration> outputVariables;
-
 }

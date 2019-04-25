@@ -17,5 +17,4 @@ public class QueueImpl extends DataImpl implements Queue {
 
 	@Getter @Setter
 	private boolean shared;
-	
 }
