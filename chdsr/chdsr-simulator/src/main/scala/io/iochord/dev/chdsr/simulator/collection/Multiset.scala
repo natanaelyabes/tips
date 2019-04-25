@@ -58,12 +58,12 @@ class Multiset[T] (val multiset: Map[(T,Long), Int]) extends Iterable[(Long,T)] 
   def +(n: Int, elem: T): Multiset[T] = {
     val ms = multiset
     var count = n
-    if (ms.contains(elem))
-      count += ms(elem)
+    if (ms.contains((elem,0L))) //curently use 0 but we have to use arbitrary time in here
+      count += ms((elem,0L)) //curently use 0 but we have to use arbitrary time in here
     if (count > 0)
-      ms += (elem -> count)
+      ms += ((elem,0L) -> count)
     else if (count == 0)
-      ms -= (elem)
+      ms -= ((elem,0L))
     else
       throw new IllegalArgumentException("Cannot remove less than exist token")
     new Multiset(ms)
