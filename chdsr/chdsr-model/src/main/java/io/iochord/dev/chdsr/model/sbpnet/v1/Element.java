@@ -8,6 +8,8 @@ import io.iochord.dev.chdsr.model.sbpnet.v1.impl.ElementImpl;
 
 @JsonDeserialize(as = ElementImpl.class)
 public interface Element {
+	public static final String TYPE = "element";
+
 	String getId();
 
 	String getLabel();

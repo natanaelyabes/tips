@@ -8,11 +8,13 @@ import lombok.Setter;
 
 public class ResourceImpl extends DataImpl implements Resource {
 	@Getter
-	private final String elementType = "resource";
+	private final String elementType = Resource.TYPE;
 
-	@Getter @Setter
+	@Getter
+	@Setter
 	private String groupId;
 
-	@Getter @Setter
+	@Getter
+	@Setter
 	private DataTable data;
 }

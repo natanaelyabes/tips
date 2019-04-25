@@ -12,27 +12,34 @@ import lombok.Setter;
 
 public class ActivityImpl extends NodeImpl implements Activity {
 	@Getter
-	private final String elementType = "activity";
-	
-	@Getter @Setter
+	private final String elementType = Activity.TYPE;
+
+	@Getter
+	@Setter
 	private ACTIVITY_TYPE type;
-	
-	@Getter @Setter
+
+	@Getter
+	@Setter
 	private Resource resource;
-	
-	@Getter @Setter
+
+	@Getter
+	@Setter
 	private Queue queue;
-	
-	@Getter @Setter
+
+	@Getter
+	@Setter
 	private Function function;
-	
-	@Getter @Setter
+
+	@Getter
+	@Setter
 	private String setupTimeExpression;
-	
-	@Getter @Setter
+
+	@Getter
+	@Setter
 	private String processingTimeExpression;
 
-	@Getter @Setter
+	@Getter
+	@Setter
 	private TimeUnit unit;
-	
+
 }

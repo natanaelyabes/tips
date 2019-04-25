@@ -7,6 +7,8 @@ import io.iochord.dev.chdsr.model.sbpnet.v1.components.impl.ResourceImpl;
 
 @JsonDeserialize(as = ResourceImpl.class)
 public interface Resource extends Data {
+	public static final String TYPE = "resource";
+
 	public enum RESOURCE_SELECTION {
 		RANDOM
 	}

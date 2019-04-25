@@ -3,7 +3,7 @@ package io.iochord.dev.chdsr.model.sbpnet.v1.impl;
 import java.util.Map;
 import java.util.TreeMap;
 
-import io.iochord.dev.chdsr.model.sbpnet.v1.Arc;
+import io.iochord.dev.chdsr.model.sbpnet.v1.Connector;
 import io.iochord.dev.chdsr.model.sbpnet.v1.Configuration;
 import io.iochord.dev.chdsr.model.sbpnet.v1.Data;
 import io.iochord.dev.chdsr.model.sbpnet.v1.Element;
@@ -11,46 +11,57 @@ import io.iochord.dev.chdsr.model.sbpnet.v1.Node;
 import io.iochord.dev.chdsr.model.sbpnet.v1.Page;
 import io.iochord.dev.chdsr.model.sbpnet.v1.Sbpnet;
 import io.iochord.dev.chdsr.model.sbpnet.v1.SbpnetFactory;
+import io.iochord.dev.chdsr.model.sbpnet.v1.components.Activity;
+import io.iochord.dev.chdsr.model.sbpnet.v1.components.Branch;
+import io.iochord.dev.chdsr.model.sbpnet.v1.components.DataTable;
+import io.iochord.dev.chdsr.model.sbpnet.v1.components.Function;
+import io.iochord.dev.chdsr.model.sbpnet.v1.components.Generator;
+import io.iochord.dev.chdsr.model.sbpnet.v1.components.Monitor;
+import io.iochord.dev.chdsr.model.sbpnet.v1.components.ObjectType;
+import io.iochord.dev.chdsr.model.sbpnet.v1.components.Queue;
+import io.iochord.dev.chdsr.model.sbpnet.v1.components.Resource;
+import io.iochord.dev.chdsr.model.sbpnet.v1.components.Start;
+import io.iochord.dev.chdsr.model.sbpnet.v1.components.Stop;
 import io.iochord.dev.chdsr.model.sbpnet.v1.components.impl.ActivityImpl;
 import io.iochord.dev.chdsr.model.sbpnet.v1.components.impl.BranchImpl;
+import io.iochord.dev.chdsr.model.sbpnet.v1.components.impl.ControlImpl;
 import io.iochord.dev.chdsr.model.sbpnet.v1.components.impl.DataTableImpl;
-import io.iochord.dev.chdsr.model.sbpnet.v1.components.impl.DeclarationImpl;
-import io.iochord.dev.chdsr.model.sbpnet.v1.components.impl.EndImpl;
+import io.iochord.dev.chdsr.model.sbpnet.v1.components.impl.ObjectTypeImpl;
+import io.iochord.dev.chdsr.model.sbpnet.v1.components.impl.StopImpl;
 import io.iochord.dev.chdsr.model.sbpnet.v1.components.impl.FunctionImpl;
 import io.iochord.dev.chdsr.model.sbpnet.v1.components.impl.MonitorImpl;
-import io.iochord.dev.chdsr.model.sbpnet.v1.components.impl.MovingUnitImpl;
+import io.iochord.dev.chdsr.model.sbpnet.v1.components.impl.GeneratorImpl;
 import io.iochord.dev.chdsr.model.sbpnet.v1.components.impl.QueueImpl;
 import io.iochord.dev.chdsr.model.sbpnet.v1.components.impl.ResourceImpl;
 import io.iochord.dev.chdsr.model.sbpnet.v1.components.impl.StartImpl;
 import lombok.Getter;
 
 public class SbpnetFactoryImpl implements SbpnetFactory {
-	
+
 	@Getter
 	private static final SbpnetFactory instance = new SbpnetFactoryImpl();
 
 	@Getter
 	private final Map<String, Class<? extends ElementImpl>> dataImplementations = new TreeMap<>();
-	
+
 	@Getter
 	private final Map<String, Class<? extends NodeImpl>> nodeImplementations = new TreeMap<>();
-	
-	protected SbpnetFactoryImpl() {
-		getDataImplementations().put("datatable", DataTableImpl.class);
-		getDataImplementations().put("declaration", DeclarationImpl.class);
-		getDataImplementations().put("movingunit", MovingUnitImpl.class);
-		getDataImplementations().put("function", FunctionImpl.class);
-		getDataImplementations().put("queue", QueueImpl.class);
-		getDataImplementations().put("resource", ResourceImpl.class);
 
-		getNodeImplementations().put("start", StartImpl.class);
-		getNodeImplementations().put("end", EndImpl.class);
-		getNodeImplementations().put("activity", ActivityImpl.class);
-		getNodeImplementations().put("branch", BranchImpl.class);
-		getNodeImplementations().put("monitor", MonitorImpl.class);
+	protected SbpnetFactoryImpl() {
+		getDataImplementations().put(DataTable.TYPE, DataTableImpl.class);
+		getDataImplementations().put(ObjectType.TYPE, ObjectTypeImpl.class);
+		getDataImplementations().put(Generator.TYPE, GeneratorImpl.class);
+		getDataImplementations().put(Function.TYPE, FunctionImpl.class);
+		getDataImplementations().put(Queue.TYPE, QueueImpl.class);
+		getDataImplementations().put(Resource.TYPE, ResourceImpl.class);
+
+		getNodeImplementations().put(Start.TYPE, StartImpl.class);
+		getNodeImplementations().put(Stop.TYPE, StopImpl.class);
+		getNodeImplementations().put(Activity.TYPE, ActivityImpl.class);
+		getNodeImplementations().put(Branch.TYPE, BranchImpl.class);
+		getNodeImplementations().put(Monitor.TYPE, MonitorImpl.class);
 	}
-	
-	
+
 	@Override
 	public Sbpnet create() {
 		return create(null);
@@ -60,6 +71,8 @@ public class SbpnetFactoryImpl implements SbpnetFactory {
 	public Sbpnet create(Sbpnet ref) {
 		SbpnetImpl net = new SbpnetImpl();
 		addPage(net);
+		addConfiguration(net);
+		net.setControl(new ControlImpl());
 		return net;
 	}
 
@@ -111,9 +124,9 @@ public class SbpnetFactoryImpl implements SbpnetFactory {
 	}
 
 	@Override
-	public Arc addArc(Page page, Element source, Element target) {
+	public Connector addConnector(Page page, Element source, Element target) {
 		if (page != null) {
-			ArcImpl arc = new ArcImpl();
+			ConnectorImpl arc = new ConnectorImpl();
 			arc.setId(page.getId() + "-" + String.valueOf(page.getArcs().size()));
 			arc.setSource(source);
 			arc.setTarget(target);
@@ -134,5 +147,59 @@ public class SbpnetFactoryImpl implements SbpnetFactory {
 		return null;
 	}
 
+	@Override
+	public DataTable addDataTable(Page page) {
+		return (DataTable) addData(page, DataTable.TYPE);
+	}
 
+	@Override
+	public ObjectType addObjectType(Page page) {
+		return (ObjectType) addData(page, ObjectType.TYPE);
+	}
+
+	@Override
+	public Generator addGenerator(Page page) {
+		return (Generator) addData(page, Generator.TYPE);
+	}
+
+	@Override
+	public Function addFunction(Page page) {
+		return (Function) addData(page, Function.TYPE);
+	}
+
+	@Override
+	public Queue addQueue(Page page) {
+		return (Queue) addData(page, Queue.TYPE);
+	}
+
+	@Override
+	public Resource addResource(Page page) {
+		return (Resource) addData(page, Resource.TYPE);
+	}
+
+	@Override
+	public Start addStart(Page page) {
+		return (Start) addNode(page, Start.TYPE);
+	}
+
+	@Override
+	public Stop addStop(Page page) {
+		return (Stop) addNode(page, Stop.TYPE);
+	}
+
+	@Override
+	public Activity addActivity(Page page) {
+		return (Activity) addNode(page, Activity.TYPE);
+	}
+
+	@Override
+	public Branch addBranch(Page page) {
+		return (Branch) addNode(page, Branch.TYPE);
+	}
+
+	@Override
+	public Monitor addMonitor(Page page) {
+		return (Monitor) addNode(page, Monitor.TYPE);
+	}
+	
 }

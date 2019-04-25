@@ -18,7 +18,7 @@ public class ElementImpl implements Element {
 	private String label;
 
 	@Getter
-	private String elementType;
+	private final String elementType = Element.TYPE;
 
 	@Getter
 	@Setter

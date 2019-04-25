@@ -1,6 +1,6 @@
 package io.iochord.dev.chdsr.model.sbpnet.v1.components.impl;
 
-import io.iochord.dev.chdsr.model.sbpnet.v1.components.MovingUnit;
+import io.iochord.dev.chdsr.model.sbpnet.v1.components.Generator;
 import io.iochord.dev.chdsr.model.sbpnet.v1.components.Start;
 import io.iochord.dev.chdsr.model.sbpnet.v1.impl.NodeImpl;
 import lombok.Getter;
@@ -8,8 +8,9 @@ import lombok.Setter;
 
 public class StartImpl extends NodeImpl implements Start {
 	@Getter
-	private final String elementType = "start";
+	private final String elementType = Start.TYPE;
 
-	@Getter @Setter
-	private MovingUnit movingUnit;
+	@Getter
+	@Setter
+	private Generator generator;
 }

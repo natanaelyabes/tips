@@ -2,8 +2,12 @@ plugins {
 	id 'org.springframework.boot' version '2.1.2.RELEASE'
 }
 
+springBoot {
+	mainClassName = 'io.iochord.dev.chdsr.simulator.web.ChdsrWebApplication'
+}
+
 dependencies {
-	compile group: 'org.springframework.boot', name: 'spring-boot-starter-web', version: '2.1.2.RELEASE'
+	compile 'org.springframework.boot:spring-boot-starter-web:2.1.2.RELEASE'
 	implementation project(':chdsr-model')
 	implementation project(':chdsr-model-analysis')
 	implementation project(':chdsr-simulator')

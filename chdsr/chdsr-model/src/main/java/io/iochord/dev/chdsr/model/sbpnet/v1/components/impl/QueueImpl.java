@@ -7,14 +7,17 @@ import lombok.Setter;
 
 public class QueueImpl extends DataImpl implements Queue {
 	@Getter
-	private final String elementType = "queue";
+	private final String elementType = Queue.TYPE;
 
-	@Getter @Setter
+	@Getter
+	@Setter
 	private QUEUE_TYPE type;
 
-	@Getter @Setter
+	@Getter
+	@Setter
 	private int size;
 
-	@Getter @Setter
+	@Getter
+	@Setter
 	private boolean shared;
 }

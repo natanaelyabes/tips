@@ -7,6 +7,8 @@ import io.iochord.dev.chdsr.model.sbpnet.v1.components.impl.QueueImpl;
 
 @JsonDeserialize(as = QueueImpl.class)
 public interface Queue extends Data {
+	public static final String TYPE = "queue";
+
 	public enum QUEUE_TYPE {
 		LIFO,
 		FIFO,

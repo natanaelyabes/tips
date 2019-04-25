@@ -7,11 +7,13 @@ import lombok.Setter;
 
 public class BranchImpl extends NodeImpl implements Branch {
 	@Getter
-	private final String elementType = "branch";
+	private final String elementType = Branch.TYPE;
 
-	@Getter @Setter
+	@Getter
+	@Setter
 	BRANCH_TYPE type;
 
-	@Getter @Setter
+	@Getter
+	@Setter
 	BRANCH_RULE rule;
 }
