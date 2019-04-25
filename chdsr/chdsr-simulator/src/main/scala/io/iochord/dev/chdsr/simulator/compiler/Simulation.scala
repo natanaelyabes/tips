@@ -2,10 +2,10 @@ package io.iochord.dev.chdsr.simulator.compiler
 
 import scala.collection.mutable.HashMap
 
-import io.iochord.dev.chdsr.simulator.model.CPNGraph
-import io.iochord.dev.chdsr.simulator.model.Transition
-import io.iochord.dev.chdsr.simulator.model.Place
-import io.iochord.dev.chdsr.simulator.model.Arc
+import io.iochord.dev.chdsr.model.cpn.v1.impl.CPNGraph
+import io.iochord.dev.chdsr.model.cpn.v1.impl.Transition
+import io.iochord.dev.chdsr.model.cpn.v1.impl.Place
+import io.iochord.dev.chdsr.model.cpn.v1.impl.Arc
 
 abstract class Simulation {
   val cpnGraph = CPNGraph()
