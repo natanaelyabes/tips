@@ -17,6 +17,9 @@ argfile*
 pom.xml
 activemq-data/
 
+.cache-main
+.cache-tests
+
 classes
 build
 buildSrc/build
