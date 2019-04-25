@@ -3,7 +3,7 @@ package io.iochord.dev.chdsr.simulator.util
 import scala.util.Random
 import scala.collection.mutable.ListBuffer
 
-object Random {
+object ChdsrRandom {
 	def selectRandom[T](it: Iterable[T]): T = {
 	  val list = it.toList
 	  val r = new Random();

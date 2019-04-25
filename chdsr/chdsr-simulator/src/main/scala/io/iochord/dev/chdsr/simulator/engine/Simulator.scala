@@ -2,9 +2,11 @@ package io.iochord.dev.chdsr.simulator.engine
 
 import io.iochord.dev.chdsr.simulator.model.CPNGraph
 import io.iochord.dev.chdsr.simulator.model.Transition
-import io.iochord.dev.chdsr.simulator.util.Random
+import io.iochord.dev.chdsr.simulator.util.ChdsrRandom
 
 object Simulator {
+  val globTime:Long = 0
+  
   private def enabledTransitions(transitions: List[Transition]) = {
     transitions
   }
@@ -20,7 +22,7 @@ object Simulator {
       
       val transitions = enabledTransitions(allTransitions)
 
-      val transition = Random.selectRandom(transitions)
+      val transition = ChdsrRandom.selectRandom(transitions)
       
       c += 1
     }
@@ -33,4 +35,9 @@ object Simulator {
   def fastRun[T](net: CPNGraph, stCriteria:(T) => Boolean) = {
     
   }
+  
+  def getGlobTime(): Long = { globTime }
+  
+  def addGlobTime(addTime:Long): Unit = { globTime+addTime }
+  
 }
