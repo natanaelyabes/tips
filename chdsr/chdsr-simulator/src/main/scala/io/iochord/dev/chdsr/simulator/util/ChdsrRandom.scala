@@ -1,12 +1,12 @@
 package io.iochord.dev.chdsr.simulator.util
 
-import scala.util.Random
 import scala.collection.mutable.ListBuffer
+import java.util.Random
 
 object ChdsrRandom {
 	def selectRandom[T](it: Iterable[T]): T = {
 	  val list = it.toList
-	  val r = new Random();
+	  val r = new java.util.Random();
     list(r.nextInt(list.length))
 	}
 	
