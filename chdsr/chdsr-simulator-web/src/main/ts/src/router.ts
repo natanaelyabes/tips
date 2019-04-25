@@ -3,10 +3,10 @@ import Vue from 'vue';
 import Router, { RouteConfig } from 'vue-router';
 
 // Enums
-import { ApplicationEnum, BaseUrlEnum } from '@/iochord/chdsr/enums/index';
+import { ApplicationEnum, BaseUrlEnum } from '@/iochord/chdsr/common/enums/index';
 
 // Router
-import ChdsrRouter from '@/iochord/chdsr/routes/ChdsrRouter';
+import ChdsrRouter from '@/iochord/chdsr/ChdsrRouter';
 import AuthenticationRouter from '@/iochord/chdsr/authentication/routes/AuthenticationRouter';
 
 Vue.use(Router);

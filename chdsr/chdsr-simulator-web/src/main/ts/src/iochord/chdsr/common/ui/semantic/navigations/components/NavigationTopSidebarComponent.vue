@@ -83,7 +83,7 @@
 import { Component, Vue } from 'vue-property-decorator';
 
 // Interfaces
-import { BrowserCanHandleBreakpointsInterface } from '@/iochord/chdsr/common/browser/interfaces/BrowserCanHandleBreakpointsInterface';
+import { BrowserCanHandleBreakpoints } from '@/iochord/chdsr/common/browser/interfaces/BrowserCanHandleBreakpoints';
 
 // JQuery Symbol Handler
 declare const $: any;
@@ -118,7 +118,7 @@ export default class NavigationTopSidebarComponent extends Vue {
   }
 
   private evaluateBrowserWidth(): void {
-    const browser: BrowserCanHandleBreakpointsInterface = {
+    const browser: BrowserCanHandleBreakpoints = {
       width: window.innerWidth,
       fn_browser_handle_breakpoints: (width) => {
         if (width > 933) {
@@ -167,7 +167,7 @@ export default class NavigationTopSidebarComponent extends Vue {
 
   private openMenu(): void {
 
-    const browser: BrowserCanHandleBreakpointsInterface = {
+    const browser: BrowserCanHandleBreakpoints = {
       width: window.innerWidth,
       fn_browser_handle_breakpoints: (width) => {
         if (width > 933) {
