@@ -2,6 +2,8 @@ package io.iochord.dev.chdsr.model.cpn.v1.impl
 
 import io.iochord.dev.chdsr.model.cpn.v1.Element
 import io.iochord.dev.chdsr.model.cpn.v1.Node
+import lombok.Getter
+import lombok.Setter
 
 import scala.collection.generic._
 

@@ -8,11 +8,15 @@ import lombok.Getter;
 import lombok.Setter;
 
 public class NodeImpl extends ElementImpl implements Node {
+	@Getter
+	private final String elementType = Node.TYPE;
 
-	@Getter @Setter
+	@Getter
+	@Setter
 	private String groupName;
-	
-	@Getter @Setter
+
+	@Getter
+	@Setter
 	private boolean reportStatistics = false;
 
 	@Override

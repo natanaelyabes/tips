@@ -9,7 +9,9 @@ import io.iochord.dev.chdsr.model.sbpnet.v1.components.impl.FunctionImpl;
 
 @JsonDeserialize(as = FunctionImpl.class)
 public interface Function extends Data {
-	Map<String, Declaration> getInputParameters();
+	public static final String TYPE = "function";
+
+	Map<String, ObjectType> getInputParameters();
 	String getCode();
-	Map<String, Declaration> getOutputVariables();
+	Map<String, ObjectType> getOutputVariables();
 }

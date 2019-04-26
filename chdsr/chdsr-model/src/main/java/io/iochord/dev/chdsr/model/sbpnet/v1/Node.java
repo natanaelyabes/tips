@@ -8,6 +8,8 @@ import io.iochord.dev.chdsr.model.sbpnet.v1.impl.NodeImpl;
 
 @JsonDeserialize(as = NodeImpl.class)
 public interface Node extends Element {
+	public static final String TYPE = "node";
+
 	String getGroupName();
 	boolean isReportStatistics();
 	

@@ -2,18 +2,18 @@ package io.iochord.dev.chdsr.model.sbpnet.v1.components.impl;
 
 import java.util.concurrent.TimeUnit;
 
-import io.iochord.dev.chdsr.model.sbpnet.v1.components.Declaration;
-import io.iochord.dev.chdsr.model.sbpnet.v1.components.MovingUnit;
+import io.iochord.dev.chdsr.model.sbpnet.v1.components.ObjectType;
+import io.iochord.dev.chdsr.model.sbpnet.v1.components.Generator;
 import io.iochord.dev.chdsr.model.sbpnet.v1.impl.DataImpl;
 import lombok.Getter;
 import lombok.Setter;
 
-public class MovingUnitImpl extends DataImpl implements MovingUnit {
+public class GeneratorImpl extends DataImpl implements Generator {
 	@Getter
-	private final String elementType = "movingunit";
+	private final String elementType = Generator.TYPE;
 
 	@Getter @Setter
-	Declaration declaration;
+	ObjectType declaration;
 	
 	@Getter @Setter
 	String expression;
