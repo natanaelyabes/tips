@@ -6,7 +6,6 @@ import lombok.Getter;
 
 public class MonitorImpl extends NodeImpl implements Monitor {
 	@Getter
-	private final String elementType = "monitor";
-
+	private final String elementType = Monitor.TYPE;
 
 }

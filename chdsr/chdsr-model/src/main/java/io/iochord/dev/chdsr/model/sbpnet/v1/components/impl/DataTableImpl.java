@@ -10,11 +10,13 @@ import lombok.Setter;
 
 public class DataTableImpl extends DataImpl implements DataTable {
 	@Getter
-	private final String elementType = "datatable";
+	private final String elementType = DataTable.TYPE;
 
-	@Getter @Setter
+	@Getter
+	@Setter
 	Collection<String> fields;
-	
-	@Getter @Setter
+
+	@Getter
+	@Setter
 	Map<String, Map<String, Object>> data;
 }

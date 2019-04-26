@@ -7,5 +7,6 @@ import io.iochord.dev.chdsr.model.sbpnet.v1.components.impl.MonitorImpl;
 
 @JsonDeserialize(as = MonitorImpl.class)
 public interface Monitor extends Node {
-	// TODO:
+	public static final String TYPE = "monitor";
+
 }

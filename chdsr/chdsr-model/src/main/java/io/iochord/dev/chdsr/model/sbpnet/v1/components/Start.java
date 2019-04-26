@@ -7,5 +7,7 @@ import io.iochord.dev.chdsr.model.sbpnet.v1.components.impl.StartImpl;
 
 @JsonDeserialize(as = StartImpl.class)
 public interface Start extends Node {
-	MovingUnit getMovingUnit();
+	public static final String TYPE = "start";
+
+	Generator getGenerator();
 }

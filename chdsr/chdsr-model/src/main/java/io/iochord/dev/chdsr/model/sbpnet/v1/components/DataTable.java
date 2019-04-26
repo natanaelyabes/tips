@@ -10,6 +10,8 @@ import io.iochord.dev.chdsr.model.sbpnet.v1.components.impl.DataTableImpl;
 
 @JsonDeserialize(as = DataTableImpl.class)
 public interface DataTable extends Data {
+	public static final String TYPE = "datatable";
+
 	Collection<String> getFields();
 	Map<String, Map<String, Object>> getData();
 }

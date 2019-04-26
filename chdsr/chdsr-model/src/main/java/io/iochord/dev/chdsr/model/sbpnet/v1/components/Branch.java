@@ -7,6 +7,8 @@ import io.iochord.dev.chdsr.model.sbpnet.v1.components.impl.BranchImpl;
 
 @JsonDeserialize(as = BranchImpl.class)
 public interface Branch extends Node {
+	public static final String TYPE = "branch";
+
 	public enum BRANCH_TYPE {
 		AND_SPLIT,
 		AND_JOIN,
