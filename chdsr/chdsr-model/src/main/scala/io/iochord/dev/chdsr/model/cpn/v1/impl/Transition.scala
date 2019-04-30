@@ -23,4 +23,8 @@ class Transition(
   def removeOut(arc: Arc[_]) {
     out = out.filterNot(_ == arc)
   }
+  
+  def getId():String = id
+  
+  def getName():String = name
 }
