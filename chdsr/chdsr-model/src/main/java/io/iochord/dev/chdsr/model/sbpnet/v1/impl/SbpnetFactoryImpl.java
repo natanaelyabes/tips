@@ -35,6 +35,7 @@ import io.iochord.dev.chdsr.model.sbpnet.v1.components.impl.QueueImpl;
 import io.iochord.dev.chdsr.model.sbpnet.v1.components.impl.ResourceImpl;
 import io.iochord.dev.chdsr.model.sbpnet.v1.components.impl.StartImpl;
 import lombok.Getter;
+import lombok.Setter;
 
 public class SbpnetFactoryImpl implements SbpnetFactory {
 
@@ -47,6 +48,10 @@ public class SbpnetFactoryImpl implements SbpnetFactory {
 	@Getter
 	private final Map<String, Class<? extends NodeImpl>> nodeImplementations = new TreeMap<>();
 
+	@Getter
+	@Setter
+	private int netCounter = 0;
+	
 	protected SbpnetFactoryImpl() {
 		getDataImplementations().put(DataTable.TYPE, DataTableImpl.class);
 		getDataImplementations().put(ObjectType.TYPE, ObjectTypeImpl.class);
@@ -70,6 +75,7 @@ public class SbpnetFactoryImpl implements SbpnetFactory {
 	@Override
 	public Sbpnet create(Sbpnet ref) {
 		SbpnetImpl net = new SbpnetImpl();
+		net.setId("MODEL-" + netCounter);
 		addPage(net);
 		addConfiguration(net);
 		net.setControl(new ControlImpl());

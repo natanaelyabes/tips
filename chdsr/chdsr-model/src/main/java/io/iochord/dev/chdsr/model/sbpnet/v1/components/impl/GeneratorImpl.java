@@ -13,7 +13,7 @@ public class GeneratorImpl extends DataImpl implements Generator {
 	private final String elementType = Generator.TYPE;
 
 	@Getter @Setter
-	ObjectType declaration;
+	ObjectType objectType;
 	
 	@Getter @Setter
 	String expression;

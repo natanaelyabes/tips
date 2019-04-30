@@ -24,7 +24,6 @@ public class SbpnetExample {
 	public static Sbpnet create() {
 		SbpnetFactory factory = SbpnetFactoryImpl.getInstance();
 		SbpnetImpl net = (SbpnetImpl) factory.create();
-		net.setId("Example Net");
 		
 		PageImpl page = (PageImpl) net.getPages().values().iterator().next();
 		ObjectTypeImpl cust = (ObjectTypeImpl) factory.addObjectType(page);
@@ -32,7 +31,7 @@ public class SbpnetExample {
 		
 		GeneratorImpl custMu = (GeneratorImpl) factory.addGenerator(page);
 		custMu.setLabel(cust.getLabel() + " MU");
-		custMu.setDeclaration(cust);
+		custMu.setObjectType(cust);
 		custMu.setExpression("Exp(20");
 		custMu.setUnit(TimeUnit.MINUTES);
 		custMu.setMaxArrival(100);
