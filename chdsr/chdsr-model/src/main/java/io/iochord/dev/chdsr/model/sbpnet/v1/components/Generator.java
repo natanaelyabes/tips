@@ -11,7 +11,7 @@ import io.iochord.dev.chdsr.model.sbpnet.v1.components.impl.GeneratorImpl;
 public interface Generator extends Data {
 	public static final String TYPE = "generator";
 
-	ObjectType getDeclaration();
+	ObjectType getObjectType();
 	String getExpression();
 	TimeUnit getUnit();
 	int getEntitiesPerArrival();
