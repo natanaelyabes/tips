@@ -16,10 +16,10 @@
 import { Component, Vue } from 'vue-property-decorator';
 
 // Interfaces
-import { VueHasLifeCycleInterface } from '@/iochord/chdsr/common/vue/interfaces/VueHasLifeCycleInterface';
+import { VueHasLifeCycle } from '@/iochord/chdsr/common/lib/vue/interfaces/VueHasLifeCycle';
 
 @Component
-export default class ChdsrApp extends Vue implements VueHasLifeCycleInterface {
+export default class ChdsrApp extends Vue implements VueHasLifeCycle {
   public beforeCreate(): void {
     // throw new Error("Method not implemented.");
   }

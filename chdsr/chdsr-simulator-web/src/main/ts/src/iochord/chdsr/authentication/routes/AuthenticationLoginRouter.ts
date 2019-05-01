@@ -2,7 +2,7 @@
 import { RouteConfig } from 'vue-router';
 
 // Enums
-import { ApplicationEnum, BaseUrlEnum } from '@/iochord/chdsr/enums/index';
+import { ApplicationEnum, BaseUrlEnum } from '@/iochord/chdsr/common/enums/index';
 
 // Guards
 import { AuthenticationLoginGuard } from '@/iochord/chdsr/authentication/guards/AuthenticationLoginGuard';

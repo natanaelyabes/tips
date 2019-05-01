@@ -10,17 +10,19 @@ import scala.collection.generic._
 case class Place[T] (
   id: String,
   name: String,
-  initialMarking: T) extends Element with Node {
+  initialMarking: Multiset[T]) extends Element with Node {
   
   var currentMarking = initialMarking
   
   def initState() = currentMarking = initialMarking
   
-  def hasTokens(tokens: Any) = { }
+  def hasToken(token: Any) = { currentMarking hasToken token.asInstanceOf[T]}
+  
+  def hasTokenWithTime(tokenWithTime: Any) = { currentMarking hasTokenWithTime tokenWithTime.asInstanceOf[(T,Long)]}
+  
+  def removeTokenWithTime(token: Any) = {currentMarking - token.asInstanceOf[(T,Long)] }
 
-  def removeTokens(tokens: Any) = { }
-
-  def addTokens(tokens: Any) = { }
+  def addTokenWithTime(token: Any) = {currentMarking + token.asInstanceOf[(T,Long)] }
   
   var in = List[Arc[_]]()
   
@@ -34,9 +36,17 @@ case class Place[T] (
     out = arc :: out
   }
   
-  def getcurrentMarking():T = currentMarking
+  def removeIn(arc: Arc[_]) {
+    in = in.filterNot(_ == arc)
+  }
+
+  def removeOut(arc: Arc[_]) {
+    out = out.filterNot(_ == arc)
+  }
   
-  def setCurrentMarking(cm:T) {
+  def getcurrentMarking():Multiset[T] = currentMarking
+  
+  def setCurrentMarking(cm:Multiset[T]) {
     currentMarking = cm
   }
   

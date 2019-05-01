@@ -33,7 +33,16 @@ class CPNGraph {
   }
   
   def removeTransition(transition: Transition) {
-    
+    import Direction._
+	  transitions.remove(transition.id)
+	  arcs = arcs.filterNot(a => {
+	   if (a.transition.id == transition.id) {
+	     if (a.direction == In)
+	       a.place.removeOut(a)
+	     else a.place.removeIn(a)
+	     true
+	   } else false
+	  })
   }
 	
 	def addArc (arc: Arc[_]) {	

@@ -2,7 +2,7 @@
 import VueRouter, { RouteConfig } from 'vue-router';
 
 // Enums
-import { ApplicationEnum, BaseUrlEnum } from '@/iochord/chdsr/enums/index';
+import { ApplicationEnum, BaseUrlEnum } from '@/iochord/chdsr/common/enums/index';
 
 // Router
 import AuthenticationLoginRouter from './AuthenticationLoginRouter';
