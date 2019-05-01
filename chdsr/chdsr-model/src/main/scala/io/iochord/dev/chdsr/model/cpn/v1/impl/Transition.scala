@@ -1,6 +1,6 @@
 package io.iochord.dev.chdsr.model.cpn.v1.impl
 
-class Transition(
+case class Transition(
   id: String,
   name: String,
   guard: Guard) {
