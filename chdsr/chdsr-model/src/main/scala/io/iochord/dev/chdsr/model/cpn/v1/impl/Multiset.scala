@@ -2,7 +2,7 @@ package io.iochord.dev.chdsr.model.cpn.v1.impl
 
 import scala.collection.mutable.Map
 
-class Multiset[T] (val multiset: Map[(T,Long), Int]) extends Iterable[(Long,T)] {
+class Multiset[T] (val multiset: Map[(T,Long), Int]) extends Iterable[(T,Long)] {
   
   private def comparing(that: Any, cons: (Int, Int) => Boolean): Boolean = {
     that match {
@@ -18,7 +18,13 @@ class Multiset[T] (val multiset: Map[(T,Long), Int]) extends Iterable[(Long,T)] 
     }
   }
   
-  def iterator: Iterator[(Long, T)] = for (((el,tm), no) <- multiset.iterator) yield (tm, el)
+  def iterator: Iterator[(T, Long)] = for (((el,tm), no) <- multiset.iterator) yield (el, tm)
+  
+  def tokensLimitByTime(timeLT: Long): Iterator[(T, Long)] = for (((el,tm), no) <- multiset.iterator.filter(x => (x._1._2) <= timeLT)) yield (el,tm)
+  
+  def hasToken(elem: T): Boolean = multiset.filter(x => x._1._1 equals(elem)).size > 0
+  
+  def hasTokenWithTime(elem: (T,Long)): Boolean = multiset.filter(x => x._1 equals(elem)).size > 0
   
   def equal(other: Any) = other match {
     case that: Multiset[T] =>
