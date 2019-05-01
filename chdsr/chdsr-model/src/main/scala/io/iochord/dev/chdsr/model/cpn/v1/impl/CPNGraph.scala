@@ -29,7 +29,7 @@ class CPNGraph {
 	}
 	
   def addTransition(transition: Transition) = {
-    
+    transitions += ("1" -> transition)
   }
   
   def removeTransition(transition: Transition) {
