@@ -2,7 +2,7 @@
 import * as joint from 'jointjs';
 import { GraphPage } from '@/iochord/chdsr/common/graph/interfaces/pages/GraphPage';
 import { GraphNode } from '@/iochord/chdsr/common/graph/interfaces/base/nodes/GraphNode';
-import { GraphArc } from '@/iochord/chdsr/common/graph/interfaces/base/arcs/GraphArc';
+import { GraphConnector } from '@/iochord/chdsr/common/graph/interfaces/base/arcs/GraphConnector';
 
 
 /**
@@ -25,7 +25,7 @@ declare module 'jointjs' {
         public fn_graph_element_get_type(): string;
         public fn_graph_element_get_attributes(): Map<string, string>;
         public fn_graph_page_get_nodes(): Map<string, GraphNode>;
-        public fn_graph_page_get_arcs(): Map<string, GraphArc>;
+        public fn_graph_page_get_arcs(): Map<string, GraphConnector>;
       }
     }
   }
@@ -53,7 +53,7 @@ joint.shapes.chdsr.JointGraphPageModel = joint.dia.Graph.extend({
   fn_graph_page_get_nodes(): Map<string, GraphNode> {
     return new Map<string, GraphNode>().set('node-key', {} as GraphNode);
   },
-  fn_graph_page_get_arcs(): Map<string, GraphArc> {
-    return new Map<string, GraphArc>().set('arc-key', {} as GraphArc);
+  fn_graph_page_get_arcs(): Map<string, GraphConnector> {
+    return new Map<string, GraphConnector>().set('arc-key', {} as GraphConnector);
   },
 });
