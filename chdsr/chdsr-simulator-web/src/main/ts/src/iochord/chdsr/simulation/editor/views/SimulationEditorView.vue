@@ -98,23 +98,36 @@
 
       <!-- Application Ribbon Menu Item -->
       <template slot="application-ribbon-menu-item">
-        <div class="item"><div class="header"><strong>Simulation Player</strong></div></div>
         <div class="item">
-          <div class="ui basic icon buttons">
-            <a class="ui button"><i class="fast backward icon"></i></a>
-            <a class="ui button"><i class="backward icon"></i></a>
-            <a class="ui button"><i class="play icon"></i></a>
-            <a class="ui button"><i class="stop icon"></i></a>
-            <a class="ui button"><i class="forward icon"></i></a>
-            <a class="ui button"><i class="fast forward icon"></i></a>
-          </div>
+          <button v-if="editing" @click="editing = false" class="ui button"><i class="pencil icon"></i> Editing Mode</button>
+          <button v-if="!editing" @click="editing = true" class="ui green button"><i class="running icon"></i> Run Simulation Mode</button>
         </div>
-        <div class="item"><div class="header"><strong>Simulation Data Management</strong></div></div>
-        <div class="item">
-          <div class="ui basic icon buttons">
-            <a class="ui button"><i class="save icon"></i></a>
-            <a class="ui button"><i class="upload icon"></i></a>
-            <a class="ui button"><i class="file outline alternate icon"></i></a>
+        <div class="right menu">
+          <div class="item" :class="{ disabled: editing }">
+            <div class="ui toggle checkbox" :class="{ disabled: editing }">
+              <input v-model="animation" type="checkbox" name="public">
+              <label v-if="animation"><strong>Turn off animation</strong></label>
+              <label v-else><strong>Turn on animation</strong></label>
+            </div>
+          </div>
+          <div class="item" :class="{ disabled: editing }"><div class="header"><strong>Simulation Player</strong></div></div>
+          <div class="item" :class="{ disabled: editing }">
+            <div class="ui basic icon buttons" :class="{ disabled: editing }">
+              <a class="ui button"><i class="fast backward icon"></i></a>
+              <a class="ui button"><i class="backward icon"></i></a>
+              <a class="ui button"><i class="play icon"></i></a>
+              <a class="ui button"><i class="stop icon"></i></a>
+              <a class="ui button"><i class="forward icon"></i></a>
+              <a class="ui button"><i class="fast forward icon"></i></a>
+            </div>
+          </div>
+          <div class="item"><div class="header"><strong>Simulation Data Management</strong></div></div>
+          <div class="item">
+            <div class="ui basic icon buttons" :class="{ disabled: editing }">
+              <a class="ui button"><i class="save icon"></i></a>
+              <a class="ui button" @click="showUploadFileModal"><i class="upload icon"></i></a>
+              <a class="ui button"><i class="file outline alternate icon"></i></a>
+            </div>
           </div>
         </div>
       </template>
@@ -153,9 +166,35 @@
           </div>
         </div>
       </template>
-
     </ApplicationWrapperComponent>
 
+    <!-- Modals -->
+    <div class="ui upload file modal">
+      <i class="close icon"></i>
+      <div class="header">
+        Upload Model
+      </div>
+      <div class="content">
+        <div class="description">
+          <div class="ui header">Upload a json file by paste it in the form below.</div>
+          <p>This is an experimental feature.</p>
+          <div class="ui form">
+            <div style="width:100%" class="ui labeled input">
+              <textarea v-model="model"></textarea>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="actions">
+        <div @click="uploadModel" class="ui positive right labeled icon button">
+          Upload
+          <i class="upload icon"></i>
+        </div>
+        <div class="ui black deny button">
+          Cancel
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -232,15 +271,15 @@ import { setTimeout } from 'timers';
 // JointJS
 import * as joint from 'jointjs';
 import '#root/node_modules/jointjs/dist/joint.css';
-import '@/iochord/chdsr/simulation/editor/graph/jointjs/classes/index';
+import '@/iochord/chdsr/common/lib/joint/shapes/chdsr/index';
 
 // Interfaces
-import { ApplicationHasWrapperInterface } from '@/iochord/chdsr/common/ui/application/interfaces/ApplicationHasWrapperInterface';
-import { BreadcrumbHasInterface } from '@/iochord/chdsr/common/ui/semantic/breadcrumbs/interfaces/BreadcrumbHasInterface';
+import { ApplicationHasWrapper } from '@/iochord/chdsr/common/ui/application/interfaces/ApplicationHasWrapper';
+import { HasBreadcrumb } from '@/iochord/chdsr/common/ui/semantic/breadcrumbs/interfaces/HasBreadcrumb';
 
 // Components
 import ApplicationWrapperComponent from '@/iochord/chdsr/common/ui/application/components/ApplicationWrapperComponent.vue';
-import { ApplicationEnum, BaseUrlEnum } from '../../../enums';
+import { ApplicationEnum, BaseUrlEnum } from '@/iochord/chdsr/common/enums/index';
 
 declare const $: any;
 
@@ -249,16 +288,20 @@ declare const $: any;
     ApplicationWrapperComponent,
   },
 })
-export default class EditorView extends Vue implements ApplicationHasWrapperInterface {
+export default class EditorView extends Vue implements ApplicationHasWrapper {
   // ApplicationWrapper global variable
   public title: string = '';
-  public breadcrumbs!: BreadcrumbHasInterface[];
+  public breadcrumbs!: HasBreadcrumb[];
   public titleMenuBarItems: any;
   public leftMenuBarItems: any;
   public rightMenuBarItems: any;
   public ribbonMenuItems: any;
   public content: any;
   public processModel: any;
+  public animation: boolean = false;
+  public editing: boolean = true;
+
+  public model: string = '{"id":"Example Net","elementType":"sbpnet","attributes":{},"version":"1.0","pages":{"0":{"id":"0","elementType":"page","attributes":{},"data":{"0-0":{"id":"0-0","label":"Customer","elementType":"declaration","attributes":{}},"0-1":{"id":"0-1","label":"Customer MU","elementType":"movingunit","attributes":{},"declaration":{"id":"0-0","label":"Customer","elementType":"declaration","attributes":{}},"expression":"Exp(20","unit":"MINUTES","entitiesPerArrival":0,"maxArrival":100,"firstCreation":0},"0-2":{"id":"0-2","label":"Teller Queue","elementType":"queue","attributes":{},"type":"FIFO","size":35,"shared":false},"0-3":{"id":"0-3","label":"Teller Resource","elementType":"resource","attributes":{}},"0-4":{"id":"0-4","label":"ATM Queue","elementType":"queue","attributes":{},"type":"FIFO","size":-1,"shared":false},"0-5":{"id":"0-5","label":"ATM Resource","elementType":"resource","attributes":{}}},"nodes":{"0-0":{"id":"0-0","elementType":"start","attributes":{},"reportStatistics":false,"movingUnit":{"id":"0-1","label":"Customer MU","elementType":"movingunit","attributes":{},"declaration":{"id":"0-0","label":"Customer","elementType":"declaration","attributes":{}},"expression":"Exp(20","unit":"MINUTES","entitiesPerArrival":0,"maxArrival":100,"firstCreation":0}},"0-1":{"id":"0-1","label":"Teller Service","elementType":"activity","attributes":{},"reportStatistics":false,"resource":{"id":"0-3","label":"Teller Resource","elementType":"resource","attributes":{}},"queue":{"id":"0-2","label":"Teller Queue","elementType":"queue","attributes":{},"type":"FIFO","size":35,"shared":false},"processingTimeExpression":"constant(5,35)","unit":"MINUTES"},"0-2":{"id":"0-2","label":"ATM Service","elementType":"activity","attributes":{},"reportStatistics":false,"resource":{"id":"0-5","label":"ATM Resource","elementType":"resource","attributes":{}},"queue":{"id":"0-4","label":"ATM Queue","elementType":"queue","attributes":{},"type":"FIFO","size":-1,"shared":false},"processingTimeExpression":"constant(5,15)","unit":"MINUTES"},"0-3":{"id":"0-3","elementType":"end","attributes":{},"reportStatistics":false},"0-4":{"id":"0-4","elementType":"branch","attributes":{},"reportStatistics":false,"type":"XOR_SPLIT"},"0-5":{"id":"0-5","elementType":"branch","attributes":{},"reportStatistics":false,"type":"XOR_SPLIT"},"0-6":{"id":"0-6","elementType":"branch","attributes":{},"reportStatistics":false,"type":"XOR_JOIN"},"0-7":{"id":"0-7","elementType":"branch","attributes":{},"reportStatistics":false}},"arcs":{"0-0":{"id":"0-0","attributes":{},"source":{"id":"0-0","elementType":"start","attributes":{},"reportStatistics":false,"movingUnit":{"id":"0-1","label":"Customer MU","elementType":"movingunit","attributes":{},"declaration":{"id":"0-0","label":"Customer","elementType":"declaration","attributes":{}},"expression":"Exp(20","unit":"MINUTES","entitiesPerArrival":0,"maxArrival":100,"firstCreation":0}},"target":{"id":"0-4","elementType":"branch","attributes":{},"reportStatistics":false,"type":"XOR_SPLIT"}},"0-1":{"id":"0-1","attributes":{"condition":"<0.4"},"source":{"id":"0-4","elementType":"branch","attributes":{},"reportStatistics":false,"type":"XOR_SPLIT"},"target":{"id":"0-6","elementType":"branch","attributes":{},"reportStatistics":false,"type":"XOR_JOIN"}},"0-2":{"id":"0-2","attributes":{"condition":">=0.4"},"source":{"id":"0-4","elementType":"branch","attributes":{},"reportStatistics":false,"type":"XOR_SPLIT"},"target":{"id":"0-2","label":"ATM Service","elementType":"activity","attributes":{},"reportStatistics":false,"resource":{"id":"0-5","label":"ATM Resource","elementType":"resource","attributes":{}},"queue":{"id":"0-4","label":"ATM Queue","elementType":"queue","attributes":{},"type":"FIFO","size":-1,"shared":false},"processingTimeExpression":"constant(5,15)","unit":"MINUTES"}},"0-3":{"id":"0-3","attributes":{},"source":{"id":"0-2","label":"ATM Service","elementType":"activity","attributes":{},"reportStatistics":false,"resource":{"id":"0-5","label":"ATM Resource","elementType":"resource","attributes":{}},"queue":{"id":"0-4","label":"ATM Queue","elementType":"queue","attributes":{},"type":"FIFO","size":-1,"shared":false},"processingTimeExpression":"constant(5,15)","unit":"MINUTES"},"target":{"id":"0-5","elementType":"branch","attributes":{},"reportStatistics":false,"type":"XOR_SPLIT"}},"0-4":{"id":"0-4","attributes":{"condition":"<0.3"},"source":{"id":"0-5","elementType":"branch","attributes":{},"reportStatistics":false,"type":"XOR_SPLIT"},"target":{"id":"0-6","elementType":"branch","attributes":{},"reportStatistics":false,"type":"XOR_JOIN"}},"0-5":{"id":"0-5","attributes":{"condition":">=0.3"},"source":{"id":"0-5","elementType":"branch","attributes":{},"reportStatistics":false,"type":"XOR_SPLIT"},"target":{"id":"0-7","elementType":"branch","attributes":{},"reportStatistics":false}},"0-6":{"id":"0-6","attributes":{},"source":{"id":"0-6","elementType":"branch","attributes":{},"reportStatistics":false,"type":"XOR_JOIN"},"target":{"id":"0-1","label":"Teller Service","elementType":"activity","attributes":{},"reportStatistics":false,"resource":{"id":"0-3","label":"Teller Resource","elementType":"resource","attributes":{}},"queue":{"id":"0-2","label":"Teller Queue","elementType":"queue","attributes":{},"type":"FIFO","size":35,"shared":false},"processingTimeExpression":"constant(5,35)","unit":"MINUTES"}},"0-7":{"id":"0-7","attributes":{},"source":{"id":"0-1","label":"Teller Service","elementType":"activity","attributes":{},"reportStatistics":false,"resource":{"id":"0-3","label":"Teller Resource","elementType":"resource","attributes":{}},"queue":{"id":"0-2","label":"Teller Queue","elementType":"queue","attributes":{},"type":"FIFO","size":35,"shared":false},"processingTimeExpression":"constant(5,35)","unit":"MINUTES"},"target":{"id":"0-7","elementType":"branch","attributes":{},"reportStatistics":false}},"0-8":{"id":"0-8","attributes":{},"source":{"id":"0-7","elementType":"branch","attributes":{},"reportStatistics":false},"target":{"id":"0-3","elementType":"end","attributes":{},"reportStatistics":false}}}}},"configurations":{},"data":{}}';
 
   // Joint.js global variable
   public page!: joint.shapes.chdsr.JointGraphPageModel;
@@ -294,6 +337,15 @@ export default class EditorView extends Vue implements ApplicationHasWrapperInte
 
   public updated(): void {
     // window.location.reload();
+  }
+
+  public showUploadFileModal(): void {
+    $('.ui.modal').modal('show');
+  }
+
+  public uploadModel(): void {
+    const parsedModel: any = JSON.parse(this.model);
+    console.log(parsedModel);
   }
 
   public initDropdown(): void {
