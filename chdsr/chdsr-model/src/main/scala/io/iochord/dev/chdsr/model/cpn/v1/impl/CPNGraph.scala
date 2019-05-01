@@ -3,8 +3,8 @@ package io.iochord.dev.chdsr.model.cpn.v1.impl
 import scala.collection.mutable.HashMap
 
 class CPNGraph {
-  val places = HashMap[String, Place[_]]()
-  val transitions = HashMap[String, Transition]()
+  var places = HashMap[String, Place[_]]()
+  var transitions = HashMap[String, Transition]()
 	var arcs = List[Arc[_]]()
 	
 	def allTransitions: List[Transition] =  transitions.values.toList
@@ -20,7 +20,7 @@ class CPNGraph {
 	  places.remove(place.id)
 	  arcs = arcs.filterNot(a => {
 	   if (a.place.id == place.id) {
-	     if (a.direction == In)
+	     if (a.direction == PtT)
 	       a.transition.removeIn(a)
 	     else a.transition.removeOut(a)
 	     true
@@ -29,7 +29,7 @@ class CPNGraph {
 	}
 	
   def addTransition(transition: Transition) = {
-    transitions += ("1" -> transition)
+    transitions += (transition.id -> transition)
   }
   
   def removeTransition(transition: Transition) {
@@ -37,7 +37,7 @@ class CPNGraph {
 	  transitions.remove(transition.id)
 	  arcs = arcs.filterNot(a => {
 	   if (a.transition.id == transition.id) {
-	     if (a.direction == In)
+	     if (a.direction == PtT)
 	       a.place.removeOut(a)
 	     else a.place.removeIn(a)
 	     true
@@ -48,7 +48,7 @@ class CPNGraph {
 	def addArc (arc: Arc[_]) {	
 	  
 	  import Direction._
-	  if(arc.direction == In){
+	  if(arc.direction == PtT){
 	  	arc.transition.addIn(arc)
 	  	arc.place.addOut(arc)
 	  }
@@ -69,11 +69,20 @@ class CPNGraph {
 	    throw new RuntimeException("Arc " + arc + " is not present in the graph")
 	  
 	  import Direction._
-	  if(arc.direction == In)
+	  if(arc.direction == PtT)
 	    arc.transition.removeIn(arc)
 	  else
 	    arc.transition.removeOut(arc)
 	}
+	
+	def getPlaces():HashMap[String, Place[_]] = places
+	def setPlaces(locplaces: HashMap[String, Place[_]]) { places = locplaces }
+	
+	def getTransitions():HashMap[String, Transition] = transitions
+	def setTransitions(loctransitions: HashMap[String, Transition]) { transitions = loctransitions }
+	
+	def getArcs():List[Arc[_]] = arcs
+	def setArcs(locarcs: List[Arc[_]]) { arcs = locarcs }
 }
 
 object CPNGraph {

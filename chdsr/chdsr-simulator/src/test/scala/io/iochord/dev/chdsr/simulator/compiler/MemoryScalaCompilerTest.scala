@@ -22,6 +22,8 @@ object MemoryScalaCompilerTest {
     
     val map = Map[(Int,Long),Int]()
     val ms = new Multiset[Int](map)
+    ms.+((1,2L))
+    ms.+((2,2L))
     
     val pplace1 = Place("id1","woo",ms)
     
@@ -31,9 +33,13 @@ object MemoryScalaCompilerTest {
     
     case class BB(i1:Int,i2:Int) extends Bind
     
+    def myfunc(x:Int,y:Int): Boolean = {
+      x > y
+    }
+    
     def testh2(bb:BB):Boolean = {
       val bone = bb
-      bone.i1 > bone.i2
+      bone.i1 > bone.i2 && myfunc(bone.i1,bone.i2)
     }
     
     val bb1 = new BB(1,1)
