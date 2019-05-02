@@ -32,8 +32,13 @@ object Simulator {
       println("stop - no more enabled transitions")
   }
 
-  def fastRun[T](net: CPNGraph, stCriteria:(T) => Boolean) = {
+  def fastRun[T](net: CPNGraph, stopCrit:T => Boolean, inpStopCrit:T) = {
+    val allTransitions = net.allTransitions
     
+    var c = 0
+    while (enabledBindings(allTransitions) && stopCrit(inpStopCrit)) {
+      
+    }
   }
   
   def getGlobTime(): Long = { globTime }

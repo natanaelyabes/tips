@@ -6,7 +6,9 @@ import io.iochord.dev.chdsr.model.cpn.v1._
 import scala.collection.mutable.Map
 
 object MemoryScalaCompilerTest {
+  
   def main(args: Array[String]) {
+    
     val myclassSyntax = "new Simulation {\n"+
       "val test1 = \"test1\"\n"+
       "override def runSimulation(cpnGraph: CPNGraph):Unit ="+
@@ -20,20 +22,11 @@ object MemoryScalaCompilerTest {
       "class Coba1 { val varc1 = \"other test\" }\n"+
     "}";
     
-    val map = Map[(Int,Long),Int]()
-    val ms = new Multiset[Int](map)
-    ms.+((1,2L))
-    ms.+((2,2L))
-    
-    val pplace1 = Place("id1","woo",ms)
-    
-    def testh(x:Int,y:Int): Boolean = {
+    def myfunc(x:Int,y:Int): Boolean = {
       x > y
     }
     
-    case class BB(i1:Int,i2:Int) extends Bind
-    
-    def myfunc(x:Int,y:Int): Boolean = {
+    def testh(x:Int,y:Int): Boolean = {
       x > y
     }
     
@@ -42,9 +35,56 @@ object MemoryScalaCompilerTest {
       bone.i1 > bone.i2 && myfunc(bone.i1,bone.i2)
     }
     
+    //how to set this arc expression inside this function
+    def testh3(bb:BB):Boolean = {
+      val bone = bb
+      bone.i1 == 2*bone.i2 && myfunc(bone.i1,bone.i2)
+    }
+    
+    val c1 = (1,2)
+    
+    val map = Map[(Int,Long),Int]()
+    
+    val ms1 = new Multiset[Int](map)
+    ms1.+((1,2L))
+    ms1.+((2,2L))
+    
+    val pplace1 = new Place("id1","woo1",ms1)
+    
+    val ms2 = new Multiset[Int](map)
+    ms2.+((1,2L))
+    ms2.+((2,2L))
+    
+    val pplace2 = new Place("id2","woo2",ms2)
+    
+    case class BB(i1:Int,i2:Int) extends Bind
+    
     val bb1 = new BB(1,1)
     val bb2 = new BB(2,2)
     val bb3 = new BB(3,4)
+    
+    val ttrans1 = new Transition("tr1","ya", new Guard())
+    ttrans1.getGuard().cond1[BB](testh2,bb1)
+    
+    val cc1 = (inp:Int) => 2*inp
+    
+    val arc1 = new Arc("arc1",pplace1,ttrans1,Direction.PtT)
+    arc1.setArcExp(cc1,1)
+    
+    val cc2 = (inp:Int) => inp
+    
+    val arc2 = new Arc("arc2",pplace2,ttrans1,Direction.PtT)
+    arc1.setArcExp(cc2,2)
+    
+    ttrans1.addIn(arc1)
+    ttrans1.addIn(arc2)
+    
+    val filt_pre = pplace1.getcurrentMarking().filter(d => pplace2.getcurrentMarking().filter(c => d._1 == c._1).size > 0) //binding
+    filt_pre.foreach(print)
+    val filt = pplace1.getcurrentMarking().exists(e => pplace2.getcurrentMarking().exists(d => e._1 == d._1)) //guard
+    println(filt)
+    
+    case class BC(p1:(Int,String),p2:(Int,Int)) extends Bind
     
     val bblist = List[BB]()
     val bblist1 = List[BB](bb1) ++ bblist
@@ -66,29 +106,24 @@ object MemoryScalaCompilerTest {
     val sslist1 = List[BB](ss1) ++ sslist
     val sslist2 = List[BB](ss2) ++ sslist1
     
-    def testh3(bb1:BB, bb2: BB):Boolean = {
-      bb1.i1 == bb2.i2
-    }
-    
     bblist2.foreach(print)
     println()
     pplist2.foreach(print)
     println()
     
-    //val filt = pplist2.filter(x => x.i1 == bblist2)
-    //val filt = pplist2.filter(bblist2.contains(_))
-    
-    val filt_pre = pplist2.filter(d => bblist2.filter(d.i1 == _.i1).size > 0) //binding
-    filt_pre.foreach(print)
-    val filt = sslist2.exists(e => pplist2.exists(d => bblist2.exists(e.i1 == d.i1 && d.i1 > _.i1))) // guard
-    println(filt)
     /*
+    val filt = pplist2.filter(x => x.i1 == bblist2)
+    val filt = pplist2.filter(bblist2.contains(_))
     filt.foreach(print)
     println()
     println("Kosong")
     */
-    val ttrans1 = Transition("tr1","ya", new Guard())
-    ttrans1.guard.cond1[BB](testh2,bb1)
+    
+    //val filt_pre = pplist2.filter(d => bblist2.filter(d.i1 == _.i1).size > 0) //binding
+    //filt_pre.foreach(print)
+    //val filt = sslist2.exists(e => pplist2.exists(d => bblist2.exists(e.i1 == d.i1 && d.i1 > _.i1))) //guard
+    //println(filt)
+    
     /*
     val memoryScalaFactory = MemoryScalaCompiler(myclassSyntax)
     val memoryScala = memoryScalaFactory.getInstance
