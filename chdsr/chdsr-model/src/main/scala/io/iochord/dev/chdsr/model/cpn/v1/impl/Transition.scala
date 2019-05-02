@@ -1,9 +1,12 @@
 package io.iochord.dev.chdsr.model.cpn.v1.impl
 
+import io.iochord.dev.chdsr.model.cpn.v1.Element
+import io.iochord.dev.chdsr.model.cpn.v1.Node
+
 case class Transition(
   id: String,
   name: String,
-  guard: Guard) {
+  guard: Guard) extends Element with Node {
   
   var in = List[Arc[_]]()
   var out = List[Arc[_]]()

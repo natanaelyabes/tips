@@ -3,7 +3,7 @@ package io.iochord.dev.chdsr.model.cpn.v1.impl
 import io.iochord.dev.chdsr.model.cpn.v1.Element
 
 object Direction extends Enumeration {
-	  val In, Out = Value
+	  val PtT, TtP = Value
 }
 
 case class Arc[T] (
