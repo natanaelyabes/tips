@@ -3,43 +3,43 @@ package io.iochord.dev.chdsr.model.cpn.v1.impl
 import scala.collection.mutable.HashMap
 
 class CPNGraph {
-  var places = HashMap[String, Place[_]]()
-  var transitions = HashMap[String, Transition]()
-	var arcs = List[Arc[_]]()
+  private var places = HashMap[String, Place[_]]()
+  private var transitions = HashMap[String, Transition]()
+	private var arcs = List[Arc[_]]()
 	
 	def allTransitions: List[Transition] =  transitions.values.toList
 	def allPlaces: List[Place[_]] =  places.values.toList
 	def allArcs: List[Arc[_]] =  arcs
 	
 	def addPlace(place: Place[_]) = {
-	  places += (place.id -> place)
+	  places += (place.getId() -> place)
 	}
 	
 	def removePlace(place: Place[_]) {
 	  import Direction._
-	  places.remove(place.id)
+	  places.remove(place.getId())
 	  arcs = arcs.filterNot(a => {
-	   if (a.place.id == place.id) {
-	     if (a.direction == PtT)
-	       a.transition.removeIn(a)
-	     else a.transition.removeOut(a)
+	   if (a.getPlace().getId() == place.getId()) {
+	     if (a.getDirection() == PtT)
+	       a.getTransition().removeIn(a)
+	     else a.getTransition().removeOut(a)
 	     true
 	   } else false
 	  })
 	}
 	
   def addTransition(transition: Transition) = {
-    transitions += (transition.id -> transition)
+    transitions += (transition.getId() -> transition)
   }
   
   def removeTransition(transition: Transition) {
     import Direction._
-	  transitions.remove(transition.id)
+	  transitions.remove(transition.getId())
 	  arcs = arcs.filterNot(a => {
-	   if (a.transition.id == transition.id) {
-	     if (a.direction == PtT)
-	       a.place.removeOut(a)
-	     else a.place.removeIn(a)
+	   if (a.getTransition().getId() == transition.getId()) {
+	     if (a.getDirection() == PtT)
+	       a.getPlace().removeOut(a)
+	     else a.getPlace().removeIn(a)
 	     true
 	   } else false
 	  })
@@ -48,13 +48,13 @@ class CPNGraph {
 	def addArc (arc: Arc[_]) {	
 	  
 	  import Direction._
-	  if(arc.direction == PtT){
-	  	arc.transition.addIn(arc)
-	  	arc.place.addOut(arc)
+	  if(arc.getDirection() == PtT){
+	  	arc.getTransition().addIn(arc)
+	  	arc.getPlace().addOut(arc)
 	  }
 	  else{
-	  	arc.transition.addOut(arc)
-	  	arc.place.addIn(arc)
+	  	arc.getTransition().addOut(arc)
+	  	arc.getPlace().addIn(arc)
 	  }
 	  
 	  arcs = arc :: arcs
@@ -62,17 +62,17 @@ class CPNGraph {
 	
 	def removeArc(arc: Arc[_]) {
 	  val oldCount = arcs.size
-	  arcs = arcs filterNot(a => a.id == arc.id)
+	  arcs = arcs filterNot(a => a.getId() == arc.getId())
 	  val newCount = arcs.size
 	  
 	  if(oldCount == newCount)
 	    throw new RuntimeException("Arc " + arc + " is not present in the graph")
 	  
 	  import Direction._
-	  if(arc.direction == PtT)
-	    arc.transition.removeIn(arc)
+	  if(arc.getDirection() == PtT)
+	    arc.getTransition().removeIn(arc)
 	  else
-	    arc.transition.removeOut(arc)
+	    arc.getTransition().removeOut(arc)
 	}
 	
 	def getPlaces():HashMap[String, Place[_]] = places
@@ -82,7 +82,7 @@ class CPNGraph {
 	def setTransitions(loctransitions: HashMap[String, Transition]) { transitions = loctransitions }
 	
 	def getArcs():List[Arc[_]] = arcs
-	def setArcs(locarcs: List[Arc[_]]) { arcs = locarcs }
+	def setArcs(arcs: List[Arc[_]]) { this.arcs = arcs }
 }
 
 object CPNGraph {

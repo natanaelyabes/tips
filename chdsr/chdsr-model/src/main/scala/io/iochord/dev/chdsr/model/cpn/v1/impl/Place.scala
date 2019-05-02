@@ -7,12 +7,15 @@ import lombok.Setter
 
 import scala.collection.generic._
 
-case class Place[T] (
-  id: String,
-  name: String,
-  initialMarking: Multiset[T]) extends Element with Node {
+class Place[T] (
+  private var id: String,
+  private var name: String,
+  private var initialMarking: Multiset[T]) extends Element with Node {
   
-  var currentMarking = initialMarking
+  private var currentMarking = initialMarking
+  
+  private var in = List[Arc[_]]()
+  private var out = List[Arc[_]]()
   
   def initState() = currentMarking = initialMarking
   
@@ -23,10 +26,6 @@ case class Place[T] (
   def removeTokenWithTime(token: Any) = {currentMarking - token.asInstanceOf[(T,Long)] }
 
   def addTokenWithTime(token: Any) = {currentMarking + token.asInstanceOf[(T,Long)] }
-  
-  var in = List[Arc[_]]()
-  
-  var out = List[Arc[_]]()
   
   def addIn(arc: Arc[_]) {
     in = arc :: in
@@ -46,15 +45,19 @@ case class Place[T] (
   
   def getcurrentMarking():Multiset[T] = currentMarking
   
-  def setCurrentMarking(cm:Multiset[T]) {
-    currentMarking = cm
-  }
+  def setCurrentMarking(cm:Multiset[T]) { currentMarking = cm }
   
   def getIn(): List[Arc[_]] = in
   
-  def getOut():List[Arc[_]] = out
+  def getOut(): List[Arc[_]] = out
   
-  def getId():String = id
+  def getId(): String = id
+  
+  def setId(id: String) { this.id = id }
   
   def getName():String = name
+  
+  def setName(name: String) { this.name = name }
+  
+  override def toString = name
 }
