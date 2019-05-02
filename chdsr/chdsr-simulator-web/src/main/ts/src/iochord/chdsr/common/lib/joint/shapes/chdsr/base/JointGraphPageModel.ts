@@ -1,8 +1,8 @@
 // Imports
 import * as joint from 'jointjs';
-import { GraphPage } from '@/iochord/chdsr/common/graph/interfaces/pages/GraphPage';
+import { GraphPage } from '@/iochord/chdsr/common/graph/interfaces/GraphPage';
 import { GraphNode } from '@/iochord/chdsr/common/graph/interfaces/base/nodes/GraphNode';
-import { GraphConnector } from '@/iochord/chdsr/common/graph/interfaces/base/arcs/GraphConnector';
+import { GraphConnector } from '@/iochord/chdsr/common/graph/interfaces/GraphConnector';
 
 
 /**

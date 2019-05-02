@@ -1,0 +1,12 @@
+export enum BRANCH_TYPE {
+  AND_SPLIT,
+  AND_JOIN,
+  XOR_SPLIT,
+  XOR_JOIN,
+}
+
+export enum BRANCH_RULE {
+  PROBABILITY,
+  CONDITION,
+  DATA,
+}

@@ -1,9 +1,9 @@
 // Imports
 import * as joint from 'jointjs';
 import { Graph } from '@/iochord/chdsr/common/graph/interfaces/Graph';
-import { GraphPage } from '@/iochord/chdsr/common/graph/interfaces/pages/GraphPage';
+import { GraphPage } from '@/iochord/chdsr/common/graph/interfaces/GraphPage';
 import { GraphConfiguration } from '@/iochord/chdsr/common/graph/interfaces/GraphConfiguration';
-import { GraphDataNode } from '@/iochord/chdsr/common/graph/interfaces/base/nodes/GraphDataNode';
+import { GraphData } from '@/iochord/chdsr/common/graph/interfaces/GraphData';
 
 /**
  * Steps:
@@ -27,7 +27,7 @@ declare module 'jointjs' {
         public fn_graph_get_version(): string;
         public fn_graph_get_pages(): Map<string, GraphPage>;
         public fn_graph_get_configurations(): Map<string, GraphConfiguration>;
-        public fn_graph_get_data(): Map<string, GraphDataNode>;
+        public fn_graph_get_data(): Map<string, GraphData>;
       }
     }
   }

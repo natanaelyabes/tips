@@ -66,7 +66,7 @@
               <div class="image-icon">
                 <img src="@/assets/images/icons/declaration.png" alt="" class="ui avatar centered image" />
               </div>
-              Declaration
+              Object Type
             </a>
             <a class="ui basic button item">
               <div class="image-icon">
@@ -104,11 +104,11 @@
         </div>
         <div class="right menu">
           <div class="item" :class="{ disabled: editing }">
-            <div class="ui toggle checkbox" :class="{ disabled: editing }">
+            <!-- <div class="ui toggle checkbox" :class="{ disabled: editing }">
               <input v-model="animation" type="checkbox" name="public">
               <label v-if="animation"><strong>Turn off animation</strong></label>
               <label v-else><strong>Turn on animation</strong></label>
-            </div>
+            </div> -->
           </div>
           <div class="item" :class="{ disabled: editing }"><div class="header"><strong>Simulation Player</strong></div></div>
           <div class="item" :class="{ disabled: editing }">
@@ -332,6 +332,7 @@ export default class EditorView extends Vue implements ApplicationHasWrapper {
       this.initJoint();
       this.initDropdown();
       this.initSlider();
+      // this.uploadModel();
     });
   }
 
@@ -344,8 +345,51 @@ export default class EditorView extends Vue implements ApplicationHasWrapper {
   }
 
   public uploadModel(): void {
+    // this.page = new joint.shapes.chdsr.JointGraphPageModel();
     const parsedModel: any = JSON.parse(this.model);
-    console.log(parsedModel);
+    // console.log(parsedModel.pages);
+    for (const page in parsedModel.pages) {
+      console.log(parsedModel.pages[page]);
+      for (const node in parsedModel.pages[page].nodes) {
+        console.log(parsedModel.pages[page].nodes[node])
+        if (parsedModel.pages[page].nodes[node].elementType === 'start') {
+          const start = new joint.shapes.chdsr.JointStartEventModel();
+          start.attr({
+            '.root' : {
+              stroke: '#21ba45',
+              fill: 'white',
+            },
+            '.label': {
+              text: 'Start',
+            },
+          });
+          start.addTo(this.page);
+        } else if(parsedModel.pages[page].nodes[node].elementType === 'activity') {
+          const rect: joint.shapes.chdsr.JointActivityModel = new joint.shapes.chdsr.JointActivityModel();
+          rect.position(300, 50);
+          rect.attr({
+            '.root': {
+              fill: 'white',
+            },
+            '.label': {
+              text: 'Say "Hello"',
+            },
+          });
+          rect.addTo(this.page);
+
+        } else if(parsedModel.pages[page].nodes[node].elementType === 'branch') {
+
+        } else if(parsedModel.pages[page].nodes[node].elementType === 'end') {
+
+        }
+      }
+      for (const datum in parsedModel.pages[page].data) {
+        console.log(parsedModel.pages[page].data[datum]);
+      }
+      for (const arc in parsedModel.pages[page].arcs) {
+        console.log(parsedModel.pages[page].arcs[arc]);
+      }
+    }
   }
 
   public initDropdown(): void {
@@ -393,6 +437,9 @@ export default class EditorView extends Vue implements ApplicationHasWrapper {
   }
 
   public initJointElements(): void {
+
+    // const circle: joint.shapes.basic.Generic = new joint.shapes.basic.Generic();
+
     const start: joint.shapes.chdsr.JointStartEventModel = new joint.shapes.chdsr.JointStartEventModel();
     start.position(100, 50);
     start.attr({
@@ -458,6 +505,12 @@ export default class EditorView extends Vue implements ApplicationHasWrapper {
     this.page = new joint.shapes.chdsr.JointGraphPageModel();
     const canvasWidth: number = $('.editor.canvas').innerWidth();
     const canvasHeight: number = $('.editor.canvas').innerHeight();
+
+    const graphBBox = joint.layout.DirectedGraph.layout(this.page, {
+      nodeSep: 50,
+      edgeSep: 80,
+      rankDir: 'TB',
+    });
 
     this.graph = new joint.shapes.chdsr.JointGraphModel({
       el: document.getElementById('canvas'),
