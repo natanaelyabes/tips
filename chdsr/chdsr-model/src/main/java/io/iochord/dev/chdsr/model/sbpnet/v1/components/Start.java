@@ -5,6 +5,10 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.iochord.dev.chdsr.model.sbpnet.v1.Node;
 import io.iochord.dev.chdsr.model.sbpnet.v1.components.impl.StartImpl;
 
+/**
+ * @author Iq Reviessay Pulshashi <pulshashi@ideas.web.id>
+ *
+ */
 @JsonDeserialize(as = StartImpl.class)
 public interface Start extends Node {
 	public static final String TYPE = "start";

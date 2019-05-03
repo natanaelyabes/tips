@@ -5,6 +5,10 @@ import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Configuration;
 
+/**
+ * @author Iq Reviessay Pulshashi <pulshashi@ideas.web.id>
+ *
+ */
 @SpringBootApplication
 @EnableAutoConfiguration
 @Configuration

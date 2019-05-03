@@ -7,8 +7,11 @@ import io.iochord.dev.chdsr.model.sbpnet.v1.Element;
 import lombok.Getter;
 import lombok.Setter;
 
+/**
+ * @author Iq Reviessay Pulshashi <pulshashi@ideas.web.id>
+ *
+ */
 public class ElementImpl implements Element {
-
 	@Getter
 	@Setter
 	private String id;

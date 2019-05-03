@@ -6,6 +6,10 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 import io.iochord.dev.chdsr.model.sbpnet.v1.impl.ElementImpl;
 
+/**
+ * @author Iq Reviessay Pulshashi <pulshashi@ideas.web.id>
+ *
+ */
 @JsonDeserialize(as = ElementImpl.class)
 public interface Element {
 	public static final String TYPE = "element";

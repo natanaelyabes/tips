@@ -7,9 +7,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import io.iochord.dev.chdsr.model.cpn.v1.impl.CPNGraph;
-import io.iochord.dev.chdsr.model.cpn.v1.impl.Place;
-import io.iochord.dev.chdsr.model.cpn.v1.impl.Transition;
 import io.iochord.dev.chdsr.model.example.SbpnetExample;
 import io.iochord.dev.chdsr.model.sbpnet.v1.Page;
 import io.iochord.dev.chdsr.model.sbpnet.v1.Sbpnet;
@@ -21,10 +18,13 @@ import io.iochord.dev.chdsr.model.sbpnet.v1.components.impl.StartImpl;
 import io.iochord.dev.chdsr.model.sbpnet.v1.components.impl.StopImpl;
 import io.iochord.dev.chdsr.model.sbpnet.v1.impl.SbpnetFactoryImpl;
 
+/**
+ * @author Iq Reviessay Pulshashi <pulshashi@ideas.web.id>
+ *
+ */
 //TODO: Modelling Controller
 @RestController
 public class ModellingController extends AServiceController {
-	
 	public static final String BASE_URI = AServiceController.BASE_URI + "/model";
 	
 	@RequestMapping(BASE_URI + "")
@@ -73,19 +73,6 @@ public class ModellingController extends AServiceController {
 		return null;
 	}
 	
-	@RequestMapping(BASE_URI + "/convert/{modelId}")
-	public CPNGraph getConvert(@PathVariable String modelId) {
-		if (nets.containsKey(modelId)) {
-			Sbpnet net = nets.get(modelId);
-			CPNGraph cpn = new CPNGraph();
-			Transition t = new Transition("id", "t1", null);
-			Place<String> p = new Place<>("", "p1", "1`1");
-			cpn.addTransition(t);
-			return cpn;
-		}
-		return null;
-	}
-	
 	@RequestMapping(BASE_URI + "/edit/{modelId}")
 	public Sbpnet getEdit(@PathVariable String modelId) {
 		if (nets.containsKey(modelId)) {
@@ -101,6 +88,5 @@ public class ModellingController extends AServiceController {
 	@RequestMapping(BASE_URI + "/example")
 	public Sbpnet getCreateExampleSimulationModel() {
 		return SbpnetExample.create();
-	}
-	
+	}	
 }

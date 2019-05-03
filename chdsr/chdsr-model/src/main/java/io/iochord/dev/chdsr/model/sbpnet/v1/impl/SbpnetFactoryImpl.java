@@ -37,8 +37,11 @@ import io.iochord.dev.chdsr.model.sbpnet.v1.components.impl.StartImpl;
 import lombok.Getter;
 import lombok.Setter;
 
+/**
+ * @author Iq Reviessay Pulshashi <pulshashi@ideas.web.id>
+ *
+ */
 public class SbpnetFactoryImpl implements SbpnetFactory {
-
 	@Getter
 	private static final SbpnetFactory instance = new SbpnetFactoryImpl();
 
@@ -206,6 +209,5 @@ public class SbpnetFactoryImpl implements SbpnetFactory {
 	@Override
 	public Monitor addMonitor(Page page) {
 		return (Monitor) addNode(page, Monitor.TYPE);
-	}
-	
+	}	
 }

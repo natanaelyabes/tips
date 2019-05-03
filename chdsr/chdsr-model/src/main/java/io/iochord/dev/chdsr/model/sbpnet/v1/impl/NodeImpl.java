@@ -7,6 +7,10 @@ import io.iochord.dev.chdsr.model.sbpnet.v1.Node;
 import lombok.Getter;
 import lombok.Setter;
 
+/**
+ * @author Iq Reviessay Pulshashi <pulshashi@ideas.web.id>
+ *
+ */
 public class NodeImpl extends ElementImpl implements Node {
 	@Getter
 	private final String elementType = Node.TYPE;

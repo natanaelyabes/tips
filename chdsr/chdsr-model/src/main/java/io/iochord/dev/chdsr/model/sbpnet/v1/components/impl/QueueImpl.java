@@ -5,6 +5,10 @@ import io.iochord.dev.chdsr.model.sbpnet.v1.impl.DataImpl;
 import lombok.Getter;
 import lombok.Setter;
 
+/**
+ * @author Iq Reviessay Pulshashi <pulshashi@ideas.web.id>
+ *
+ */
 public class QueueImpl extends DataImpl implements Queue {
 	@Getter
 	private final String elementType = Queue.TYPE;
