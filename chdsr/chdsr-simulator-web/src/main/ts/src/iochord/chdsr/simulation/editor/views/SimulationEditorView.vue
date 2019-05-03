@@ -280,6 +280,7 @@ import { HasBreadcrumb } from '@/iochord/chdsr/common/ui/semantic/breadcrumbs/in
 // Components
 import ApplicationWrapperComponent from '@/iochord/chdsr/common/ui/application/components/ApplicationWrapperComponent.vue';
 import { ApplicationEnum, BaseUrlEnum } from '@/iochord/chdsr/common/enums/index';
+import { GraphControlImpl } from '../../../common/graph/classes/components/GraphControlImpl';
 
 declare const $: any;
 
@@ -332,7 +333,6 @@ export default class EditorView extends Vue implements ApplicationHasWrapper {
       this.initJoint();
       this.initDropdown();
       this.initSlider();
-      // this.uploadModel();
     });
   }
 
@@ -342,54 +342,6 @@ export default class EditorView extends Vue implements ApplicationHasWrapper {
 
   public showUploadFileModal(): void {
     $('.ui.modal').modal('show');
-  }
-
-  public uploadModel(): void {
-    // this.page = new joint.shapes.chdsr.JointGraphPageModel();
-    const parsedModel: any = JSON.parse(this.model);
-    // console.log(parsedModel.pages);
-    for (const page in parsedModel.pages) {
-      console.log(parsedModel.pages[page]);
-      for (const node in parsedModel.pages[page].nodes) {
-        console.log(parsedModel.pages[page].nodes[node])
-        if (parsedModel.pages[page].nodes[node].elementType === 'start') {
-          const start = new joint.shapes.chdsr.JointStartEventModel();
-          start.attr({
-            '.root' : {
-              stroke: '#21ba45',
-              fill: 'white',
-            },
-            '.label': {
-              text: 'Start',
-            },
-          });
-          start.addTo(this.page);
-        } else if(parsedModel.pages[page].nodes[node].elementType === 'activity') {
-          const rect: joint.shapes.chdsr.JointActivityModel = new joint.shapes.chdsr.JointActivityModel();
-          rect.position(300, 50);
-          rect.attr({
-            '.root': {
-              fill: 'white',
-            },
-            '.label': {
-              text: 'Say "Hello"',
-            },
-          });
-          rect.addTo(this.page);
-
-        } else if(parsedModel.pages[page].nodes[node].elementType === 'branch') {
-
-        } else if(parsedModel.pages[page].nodes[node].elementType === 'end') {
-
-        }
-      }
-      for (const datum in parsedModel.pages[page].data) {
-        console.log(parsedModel.pages[page].data[datum]);
-      }
-      for (const arc in parsedModel.pages[page].arcs) {
-        console.log(parsedModel.pages[page].arcs[arc]);
-      }
-    }
   }
 
   public initDropdown(): void {
@@ -437,9 +389,6 @@ export default class EditorView extends Vue implements ApplicationHasWrapper {
   }
 
   public initJointElements(): void {
-
-    // const circle: joint.shapes.basic.Generic = new joint.shapes.basic.Generic();
-
     const start: joint.shapes.chdsr.JointStartEventModel = new joint.shapes.chdsr.JointStartEventModel();
     start.position(100, 50);
     start.attr({

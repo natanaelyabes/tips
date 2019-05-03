@@ -4,8 +4,8 @@ import { GraphElement } from '../interfaces/GraphElement';
 
 export class GraphConnectorImpl extends GraphElementImpl implements GraphConnector {
   public readonly TYPE: string | 'connector' = 'connector';
-  private source?: GraphElement | undefined;
-  private target?: GraphElement | undefined;
+  private source?: GraphElement;
+  private target?: GraphElement;
 
   constructor();
   constructor(source: GraphElement, target: GraphElement);
@@ -24,7 +24,15 @@ export class GraphConnectorImpl extends GraphElementImpl implements GraphConnect
     return this.source;
   }
 
+  public fn_graph_connector_set_source(source: GraphElement): void {
+    this.source = source;
+  }
+
   public fn_graph_connector_get_target(): GraphElement | undefined {
     return this.target;
+  }
+
+  public fn_graph_connector_set_target(target: GraphElement): void {
+    this.target = target;
   }
 }

@@ -25,15 +25,31 @@ export class GraphNodeImpl extends GraphElementImpl implements GraphNode {
     return this.groupName;
   }
 
+  public fn_graph_node_set_group_node(groupNode: string): void {
+    throw new Error('Method not implemented.');
+  }
+
   public fn_graph_node_is_report_statistics(): boolean {
     return this.reportStatistics;
+  }
+
+  public fn_graph_node_set_report_statistics(reportStatistics: boolean): void {
+    throw new Error('Method not implemented.');
   }
 
   public fn_graph_node_accept(elements: GraphElement[]): boolean {
     return false;
   }
 
+  public fn_graph_node_set_input_types(inputTypes: GraphElement[]): void {
+    throw new Error('Method not implemented.');
+  }
+
   public fn_graph_node_get_input_types(): GraphElement[] {
+    throw new Error('Method not implemented.');
+  }
+
+  public fn_graph_node_set_output_types(outputTypes: GraphElement[]): void {
     throw new Error('Method not implemented.');
   }
 
@@ -41,7 +57,15 @@ export class GraphNodeImpl extends GraphElementImpl implements GraphNode {
     throw new Error('Method not implemented.');
   }
 
+  public fn_graph_node_set_input_nodes(inputNodes: GraphNode[]): void {
+    throw new Error('Method not implemented.');
+  }
+
   public fn_graph_node_get_input_nodes(): GraphNode[] {
+    throw new Error('Method not implemented.');
+  }
+
+  public fn_graph_node_set_output_nodes(outputNodes: GraphNode[]): void {
     throw new Error('Method not implemented.');
   }
 
