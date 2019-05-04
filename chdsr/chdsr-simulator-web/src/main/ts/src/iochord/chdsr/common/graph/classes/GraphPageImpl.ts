@@ -51,4 +51,9 @@ export class GraphPageImpl extends GraphElementImpl implements GraphPage {
   public fn_graph_page_set_arcs(arcs: Map<string, GraphConnector>): void {
     this.arcs = arcs;
   }
+
+  /** @Override */
+  public fn_object_serialize(): string {
+    return JSON.stringify(this);
+  }
 }

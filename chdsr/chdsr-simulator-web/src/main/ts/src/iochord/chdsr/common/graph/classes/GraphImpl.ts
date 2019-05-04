@@ -81,4 +81,9 @@ export class GraphImpl extends GraphElementImpl implements Graph {
   public fn_graph_set_data(data: Map<string, GraphData>): void {
     this.data = data;
   }
+
+  /** @Override */
+  public fn_object_serialize(): string {
+    return JSON.stringify(this);
+  }
 }

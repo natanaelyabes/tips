@@ -17,4 +17,9 @@ export class GraphDataImpl extends GraphElementImpl implements GraphData {
   public fn_graph_element_get_type(): string {
     return this.TYPE;
   }
+
+  /** @Override */
+  public fn_object_serialize(): string {
+    return JSON.stringify(this);
+  }
 }

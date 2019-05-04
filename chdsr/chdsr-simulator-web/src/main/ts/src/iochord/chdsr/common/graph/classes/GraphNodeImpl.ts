@@ -72,4 +72,9 @@ export class GraphNodeImpl extends GraphElementImpl implements GraphNode {
   public fn_graph_node_get_output_nodes(): GraphNode[] {
     throw new Error('Method not implemented.');
   }
+
+  /** @Override */
+  public fn_object_serialize(): string {
+    return JSON.stringify(this);
+  }
 }

@@ -17,4 +17,9 @@ export class GraphConfigurationImpl extends GraphElementImpl implements GraphCon
   public fn_graph_element_get_type(): string {
     return this.TYPE;
   }
+
+  /** @Override */
+  public fn_object_serialize(): string {
+    return JSON.stringify(this);
+  }
 }

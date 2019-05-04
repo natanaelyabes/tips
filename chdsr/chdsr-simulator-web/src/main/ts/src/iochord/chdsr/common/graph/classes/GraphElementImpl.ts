@@ -46,4 +46,8 @@ export class GraphElementImpl implements GraphElement {
   public fn_graph_element_set_attributes(attributes: Map<string, string>) {
     this.attributes = attributes;
   }
+
+  public fn_object_serialize(): string {
+    return JSON.stringify(this);
+  }
 }

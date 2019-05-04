@@ -1,4 +1,6 @@
-export interface GraphElement {
+import { ObjectSerializable } from '../../object/ObjectSerializable';
+
+export interface GraphElement extends ObjectSerializable {
   readonly TYPE: string | 'element';
   fn_graph_element_get_id(): string | undefined;
   fn_graph_element_set_id(id: string): void;

@@ -35,4 +35,9 @@ export class GraphConnectorImpl extends GraphElementImpl implements GraphConnect
   public fn_graph_connector_set_target(target: GraphElement): void {
     this.target = target;
   }
+
+  /** @Override */
+  public fn_object_serialize(): string {
+    return JSON.stringify(this);
+  }
 }

@@ -186,7 +186,7 @@
         </div>
       </div>
       <div class="actions">
-        <div @click="uploadModel" class="ui positive right labeled icon button">
+        <div class="ui positive right labeled icon button">
           Upload
           <i class="upload icon"></i>
         </div>
@@ -267,6 +267,7 @@ i.big.icon {
 // Vue & Libraries
 import { Component, Vue } from 'vue-property-decorator';
 import { setTimeout } from 'timers';
+import axios, { AxiosResponse } from 'axios';
 
 // JointJS
 import * as joint from 'jointjs';
@@ -281,6 +282,8 @@ import { HasBreadcrumb } from '@/iochord/chdsr/common/ui/semantic/breadcrumbs/in
 import ApplicationWrapperComponent from '@/iochord/chdsr/common/ui/application/components/ApplicationWrapperComponent.vue';
 import { ApplicationEnum, BaseUrlEnum } from '@/iochord/chdsr/common/enums/index';
 import { GraphControlImpl } from '../../../common/graph/classes/components/GraphControlImpl';
+import { Graph } from '@/iochord/chdsr/common/graph/interfaces/Graph';
+import { GraphImpl } from '@/iochord/chdsr/common/graph/classes/GraphImpl';
 
 declare const $: any;
 
@@ -333,11 +336,19 @@ export default class EditorView extends Vue implements ApplicationHasWrapper {
       this.initJoint();
       this.initDropdown();
       this.initSlider();
+      this.testGraphDataStruct();
     });
   }
 
   public updated(): void {
     // window.location.reload();
+  }
+
+  public testGraphDataStruct(): void {
+    axios.post('http://localhost:3000/model/example').then((response: AxiosResponse<any>) => {
+      const graph: Graph = GraphImpl.fn_object_deserialize(response.data);
+      console.log(graph);
+    });
   }
 
   public showUploadFileModal(): void {
