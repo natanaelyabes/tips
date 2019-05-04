@@ -5,6 +5,12 @@ import { GraphNode } from '../interfaces/GraphNode';
 import { GraphConnector } from '../interfaces/GraphConnector';
 
 export class GraphPageImpl extends GraphElementImpl implements GraphPage {
+  public static fn_object_deserialize(object: any): Map<string, GraphPage> {
+    const graphPage: GraphPage = new GraphPageImpl();
+    console.log(object);
+    return new Map<string, GraphPage>();
+  }
+
   public TYPE: string | 'page' = 'page';
 
   private data: Map<string, GraphData> = new Map<string, GraphData>();

@@ -1,4 +1,4 @@
-import { GraphMonitor } from './components/GraphMonitorNode';
+import { GraphMonitorNode } from './components/GraphMonitorNode';
 import { GraphBranchNode } from './components/GraphBranchNode';
 import { GraphActivityNode } from './components/GraphActivityNode';
 import { GraphEventNode } from './components/GraphEventNode';
@@ -36,5 +36,5 @@ export interface GraphFactory {
   fn_graph_factory_add_stop(page: GraphPage): GraphEventNode;
   fn_graph_factory_add_activity(page: GraphPage): GraphActivityNode;
   fn_graph_factory_add_branch(page: GraphPage): GraphBranchNode;
-  fn_graph_factory_add_monitor(page: GraphPage): GraphMonitor;
+  fn_graph_factory_add_monitor(page: GraphPage): GraphMonitorNode;
 }

@@ -4,8 +4,25 @@ import { GraphPage } from '../interfaces/GraphPage';
 import { GraphElementImpl } from './GraphElementImpl';
 import { Graph } from '../interfaces/Graph';
 import { GraphData } from '../interfaces/GraphData';
+import { GraphPageImpl } from './GraphPageImpl';
+import { GraphConfigurationImpl } from './GraphConfigurationImpl';
+import { GraphControlImpl } from './components/GraphControlImpl';
+import { GraphDataImpl } from './GraphDataImpl';
 
 export class GraphImpl extends GraphElementImpl implements Graph {
+  public static fn_object_deserialize(object: any): Graph {
+    const graph: Graph = new GraphImpl();
+    graph.fn_graph_element_set_id(object.id);
+    graph.fn_graph_element_set_label(object.label || '');
+    graph.fn_graph_element_set_type(object.elementType);
+    graph.fn_graph_element_set_attributes(object.attributes || {});
+    graph.fn_graph_set_pages(GraphPageImpl.fn_object_deserialize(object.pages));
+    graph.fn_graph_set_configurations(GraphConfigurationImpl.fn_object_deserialize(object.configurations));
+    graph.fn_graph_set_control(GraphControlImpl.fn_object_deserialize(object.control) as GraphControl);
+    graph.fn_graph_set_data(GraphDataImpl.fn_object_deserialize(object.data));
+    return graph;
+  }
+
   public readonly TYPE: string | 'net' = 'net';
 
   private readonly version: string = '1.0';
