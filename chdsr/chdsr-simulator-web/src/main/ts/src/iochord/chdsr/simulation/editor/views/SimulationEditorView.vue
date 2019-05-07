@@ -66,7 +66,7 @@
               <div class="image-icon">
                 <img src="@/assets/images/icons/declaration.png" alt="" class="ui avatar centered image" />
               </div>
-              Declaration
+              Object Type
             </a>
             <a class="ui basic button item">
               <div class="image-icon">
@@ -104,11 +104,11 @@
         </div>
         <div class="right menu">
           <div class="item" :class="{ disabled: editing }">
-            <div class="ui toggle checkbox" :class="{ disabled: editing }">
+            <!-- <div class="ui toggle checkbox" :class="{ disabled: editing }">
               <input v-model="animation" type="checkbox" name="public">
               <label v-if="animation"><strong>Turn off animation</strong></label>
               <label v-else><strong>Turn on animation</strong></label>
-            </div>
+            </div> -->
           </div>
           <div class="item" :class="{ disabled: editing }"><div class="header"><strong>Simulation Player</strong></div></div>
           <div class="item" :class="{ disabled: editing }">
@@ -124,10 +124,14 @@
           <div class="item"><div class="header"><strong>Simulation Data Management</strong></div></div>
           <div class="item">
             <div class="ui basic icon buttons" :class="{ disabled: editing }">
-              <a class="ui button"><i class="save icon"></i></a>
-              <a class="ui button" @click="showUploadFileModal"><i class="upload icon"></i></a>
-              <a class="ui button"><i class="file outline alternate icon"></i></a>
+              <a class="ui button" title="Save model"><i class="save icon"></i></a>
+              <a class="ui button" title="Upload model" @click="showUploadFileModal"><i class="upload icon"></i></a>
+              <a class="ui button" title="Download model"><i class="download icon"></i></a>
+              <a class="ui button" title="Show report"><i class="file outline alternate icon"></i></a>
             </div>
+          </div>
+          <div class="item">
+            <div @click="toggleModelPane()" class="ui basic icon button" title="Open model pane"><i class="sidebar icon"></i></div>
           </div>
         </div>
       </template>
@@ -136,7 +140,7 @@
       <template slot="application-content">
         <div class="editor canvas">
           <div id="canvas"></div>
-          <div class="corner area">
+          <!-- <div class="corner area">
             <div class="zoom tool">
               <div class="slider-wrapper">
                 <div style="float: right; margin-bottom: 1em;">
@@ -163,7 +167,15 @@
               </div>
             </div>
             <div id="canvas-minimap"></div>
-          </div>
+          </div> -->
+        </div>
+      </template>
+
+      <template v-if="modelPaneIsOpen" slot="application-right-sidebar-menu-item">
+        <div class="ui basic segment" style="width: 260px">
+          <h2>Model Pane</h2>
+          <!-- <div id="canvas-minimap"></div> -->
+
         </div>
       </template>
     </ApplicationWrapperComponent>
@@ -186,7 +198,7 @@
         </div>
       </div>
       <div class="actions">
-        <div @click="uploadModel" class="ui positive right labeled icon button">
+        <div class="ui positive right labeled icon button">
           Upload
           <i class="upload icon"></i>
         </div>
@@ -267,6 +279,7 @@ i.big.icon {
 // Vue & Libraries
 import { Component, Vue } from 'vue-property-decorator';
 import { setTimeout } from 'timers';
+import axios, { AxiosResponse } from 'axios';
 
 // JointJS
 import * as joint from 'jointjs';
@@ -280,6 +293,11 @@ import { HasBreadcrumb } from '@/iochord/chdsr/common/ui/semantic/breadcrumbs/in
 // Components
 import ApplicationWrapperComponent from '@/iochord/chdsr/common/ui/application/components/ApplicationWrapperComponent.vue';
 import { ApplicationEnum, BaseUrlEnum } from '@/iochord/chdsr/common/enums/index';
+import { GraphControlImpl } from '../../../common/graph/classes/components/GraphControlImpl';
+import { Graph } from '@/iochord/chdsr/common/graph/interfaces/Graph';
+import { GraphImpl } from '@/iochord/chdsr/common/graph/classes/GraphImpl';
+import { GraphPageImpl } from '../../../common/graph/classes/GraphPageImpl';
+import { GraphPage } from '../../../common/graph/interfaces/GraphPage';
 
 declare const $: any;
 
@@ -300,6 +318,7 @@ export default class EditorView extends Vue implements ApplicationHasWrapper {
   public processModel: any;
   public animation: boolean = false;
   public editing: boolean = true;
+  public modelPaneIsOpen: boolean = true;
 
   public model: string = '{"id":"Example Net","elementType":"sbpnet","attributes":{},"version":"1.0","pages":{"0":{"id":"0","elementType":"page","attributes":{},"data":{"0-0":{"id":"0-0","label":"Customer","elementType":"declaration","attributes":{}},"0-1":{"id":"0-1","label":"Customer MU","elementType":"movingunit","attributes":{},"declaration":{"id":"0-0","label":"Customer","elementType":"declaration","attributes":{}},"expression":"Exp(20","unit":"MINUTES","entitiesPerArrival":0,"maxArrival":100,"firstCreation":0},"0-2":{"id":"0-2","label":"Teller Queue","elementType":"queue","attributes":{},"type":"FIFO","size":35,"shared":false},"0-3":{"id":"0-3","label":"Teller Resource","elementType":"resource","attributes":{}},"0-4":{"id":"0-4","label":"ATM Queue","elementType":"queue","attributes":{},"type":"FIFO","size":-1,"shared":false},"0-5":{"id":"0-5","label":"ATM Resource","elementType":"resource","attributes":{}}},"nodes":{"0-0":{"id":"0-0","elementType":"start","attributes":{},"reportStatistics":false,"movingUnit":{"id":"0-1","label":"Customer MU","elementType":"movingunit","attributes":{},"declaration":{"id":"0-0","label":"Customer","elementType":"declaration","attributes":{}},"expression":"Exp(20","unit":"MINUTES","entitiesPerArrival":0,"maxArrival":100,"firstCreation":0}},"0-1":{"id":"0-1","label":"Teller Service","elementType":"activity","attributes":{},"reportStatistics":false,"resource":{"id":"0-3","label":"Teller Resource","elementType":"resource","attributes":{}},"queue":{"id":"0-2","label":"Teller Queue","elementType":"queue","attributes":{},"type":"FIFO","size":35,"shared":false},"processingTimeExpression":"constant(5,35)","unit":"MINUTES"},"0-2":{"id":"0-2","label":"ATM Service","elementType":"activity","attributes":{},"reportStatistics":false,"resource":{"id":"0-5","label":"ATM Resource","elementType":"resource","attributes":{}},"queue":{"id":"0-4","label":"ATM Queue","elementType":"queue","attributes":{},"type":"FIFO","size":-1,"shared":false},"processingTimeExpression":"constant(5,15)","unit":"MINUTES"},"0-3":{"id":"0-3","elementType":"end","attributes":{},"reportStatistics":false},"0-4":{"id":"0-4","elementType":"branch","attributes":{},"reportStatistics":false,"type":"XOR_SPLIT"},"0-5":{"id":"0-5","elementType":"branch","attributes":{},"reportStatistics":false,"type":"XOR_SPLIT"},"0-6":{"id":"0-6","elementType":"branch","attributes":{},"reportStatistics":false,"type":"XOR_JOIN"},"0-7":{"id":"0-7","elementType":"branch","attributes":{},"reportStatistics":false}},"arcs":{"0-0":{"id":"0-0","attributes":{},"source":{"id":"0-0","elementType":"start","attributes":{},"reportStatistics":false,"movingUnit":{"id":"0-1","label":"Customer MU","elementType":"movingunit","attributes":{},"declaration":{"id":"0-0","label":"Customer","elementType":"declaration","attributes":{}},"expression":"Exp(20","unit":"MINUTES","entitiesPerArrival":0,"maxArrival":100,"firstCreation":0}},"target":{"id":"0-4","elementType":"branch","attributes":{},"reportStatistics":false,"type":"XOR_SPLIT"}},"0-1":{"id":"0-1","attributes":{"condition":"<0.4"},"source":{"id":"0-4","elementType":"branch","attributes":{},"reportStatistics":false,"type":"XOR_SPLIT"},"target":{"id":"0-6","elementType":"branch","attributes":{},"reportStatistics":false,"type":"XOR_JOIN"}},"0-2":{"id":"0-2","attributes":{"condition":">=0.4"},"source":{"id":"0-4","elementType":"branch","attributes":{},"reportStatistics":false,"type":"XOR_SPLIT"},"target":{"id":"0-2","label":"ATM Service","elementType":"activity","attributes":{},"reportStatistics":false,"resource":{"id":"0-5","label":"ATM Resource","elementType":"resource","attributes":{}},"queue":{"id":"0-4","label":"ATM Queue","elementType":"queue","attributes":{},"type":"FIFO","size":-1,"shared":false},"processingTimeExpression":"constant(5,15)","unit":"MINUTES"}},"0-3":{"id":"0-3","attributes":{},"source":{"id":"0-2","label":"ATM Service","elementType":"activity","attributes":{},"reportStatistics":false,"resource":{"id":"0-5","label":"ATM Resource","elementType":"resource","attributes":{}},"queue":{"id":"0-4","label":"ATM Queue","elementType":"queue","attributes":{},"type":"FIFO","size":-1,"shared":false},"processingTimeExpression":"constant(5,15)","unit":"MINUTES"},"target":{"id":"0-5","elementType":"branch","attributes":{},"reportStatistics":false,"type":"XOR_SPLIT"}},"0-4":{"id":"0-4","attributes":{"condition":"<0.3"},"source":{"id":"0-5","elementType":"branch","attributes":{},"reportStatistics":false,"type":"XOR_SPLIT"},"target":{"id":"0-6","elementType":"branch","attributes":{},"reportStatistics":false,"type":"XOR_JOIN"}},"0-5":{"id":"0-5","attributes":{"condition":">=0.3"},"source":{"id":"0-5","elementType":"branch","attributes":{},"reportStatistics":false,"type":"XOR_SPLIT"},"target":{"id":"0-7","elementType":"branch","attributes":{},"reportStatistics":false}},"0-6":{"id":"0-6","attributes":{},"source":{"id":"0-6","elementType":"branch","attributes":{},"reportStatistics":false,"type":"XOR_JOIN"},"target":{"id":"0-1","label":"Teller Service","elementType":"activity","attributes":{},"reportStatistics":false,"resource":{"id":"0-3","label":"Teller Resource","elementType":"resource","attributes":{}},"queue":{"id":"0-2","label":"Teller Queue","elementType":"queue","attributes":{},"type":"FIFO","size":35,"shared":false},"processingTimeExpression":"constant(5,35)","unit":"MINUTES"}},"0-7":{"id":"0-7","attributes":{},"source":{"id":"0-1","label":"Teller Service","elementType":"activity","attributes":{},"reportStatistics":false,"resource":{"id":"0-3","label":"Teller Resource","elementType":"resource","attributes":{}},"queue":{"id":"0-2","label":"Teller Queue","elementType":"queue","attributes":{},"type":"FIFO","size":35,"shared":false},"processingTimeExpression":"constant(5,35)","unit":"MINUTES"},"target":{"id":"0-7","elementType":"branch","attributes":{},"reportStatistics":false}},"0-8":{"id":"0-8","attributes":{},"source":{"id":"0-7","elementType":"branch","attributes":{},"reportStatistics":false},"target":{"id":"0-3","elementType":"end","attributes":{},"reportStatistics":false}}}}},"configurations":{},"data":{}}';
 
@@ -332,6 +351,7 @@ export default class EditorView extends Vue implements ApplicationHasWrapper {
       this.initJoint();
       this.initDropdown();
       this.initSlider();
+      this.testGraphDataStruct();
     });
   }
 
@@ -339,13 +359,27 @@ export default class EditorView extends Vue implements ApplicationHasWrapper {
     // window.location.reload();
   }
 
-  public showUploadFileModal(): void {
-    $('.ui.modal').modal('show');
+  public toggleModelPane(): void {
+    if (this.modelPaneIsOpen) {
+      this.modelPaneIsOpen = false;
+      $('#canvas').width($('.editor.canvas').innerWidth() + 260);
+
+    } else {
+      this.modelPaneIsOpen = true;
+      $('#canvas').width($('.editor.canvas').innerWidth() - 260);
+    }
   }
 
-  public uploadModel(): void {
-    const parsedModel: any = JSON.parse(this.model);
-    console.log(parsedModel);
+  public testGraphDataStruct(): void {
+    axios.post('http://localhost:3000/model/example').then((response: AxiosResponse<any>) => {
+      const graph: Graph = GraphImpl.fn_object_deserialize(response.data);
+      console.log(`Successfully load CHDSR sample model! CHDSR graph version: ${graph.fn_graph_get_version()}`);
+      // graph!.fn_graph_get_pages()!;
+    });
+  }
+
+  public showUploadFileModal(): void {
+    $('.ui.modal').modal('show');
   }
 
   public initDropdown(): void {
@@ -459,6 +493,12 @@ export default class EditorView extends Vue implements ApplicationHasWrapper {
     const canvasWidth: number = $('.editor.canvas').innerWidth();
     const canvasHeight: number = $('.editor.canvas').innerHeight();
 
+    const graphBBox = joint.layout.DirectedGraph.layout(this.page, {
+      nodeSep: 50,
+      edgeSep: 80,
+      rankDir: 'TB',
+    });
+
     this.graph = new joint.shapes.chdsr.JointGraphModel({
       el: document.getElementById('canvas'),
       model: this.page,
@@ -476,6 +516,7 @@ export default class EditorView extends Vue implements ApplicationHasWrapper {
     } as joint.dia.Paper.Options);
 
     this.minimap = new joint.shapes.chdsr.JointGraphModel({
+      // el: document.getElementById('canvas-minimap'),
       el: document.getElementById('canvas-minimap'),
       model: this.page,
       width: canvasWidth * 20 / 100,

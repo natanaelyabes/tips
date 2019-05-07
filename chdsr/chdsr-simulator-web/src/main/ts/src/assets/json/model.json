@@ -1,0 +1,669 @@
+{
+    "id": "MODEL-0",
+    "label": null,
+    "elementType": "net",
+    "attributes": {},
+    "version": "1.0",
+    "pages": {
+      "0": {
+        "id": "0",
+        "label": null,
+        "elementType": "page",
+        "attributes": {},
+        "data": {
+          "0-0": {
+            "id": "0-0",
+            "label": "Customer",
+            "elementType": "objecttype",
+            "attributes": {},
+            "fields": null
+          },
+          "0-1": {
+            "id": "0-1",
+            "label": "Customer MU",
+            "elementType": "generator",
+            "attributes": {},
+            "objectType": {
+              "id": "0-0",
+              "label": "Customer",
+              "elementType": "objecttype",
+              "attributes": {},
+              "fields": null
+            },
+            "expression": "Exp(20",
+            "unit": "MINUTES",
+            "entitiesPerArrival": 0,
+            "maxArrival": 100,
+            "firstCreation": 0
+          },
+          "0-2": {
+            "id": "0-2",
+            "label": "Teller Queue",
+            "elementType": "queue",
+            "attributes": {},
+            "type": "FIFO",
+            "size": 35,
+            "shared": false
+          },
+          "0-3": {
+            "id": "0-3",
+            "label": "Teller Resource",
+            "elementType": "resource",
+            "attributes": {},
+            "groupId": null,
+            "data": null
+          },
+          "0-4": {
+            "id": "0-4",
+            "label": "ATM Queue",
+            "elementType": "queue",
+            "attributes": {},
+            "type": "FIFO",
+            "size": -1,
+            "shared": false
+          },
+          "0-5": {
+            "id": "0-5",
+            "label": "ATM Resource",
+            "elementType": "resource",
+            "attributes": {},
+            "groupId": null,
+            "data": null
+          }
+        },
+        "nodes": {
+          "0-0": {
+            "id": "0-0",
+            "label": null,
+            "elementType": "start",
+            "attributes": {},
+            "groupName": null,
+            "reportStatistics": false,
+            "generator": {
+              "id": "0-1",
+              "label": "Customer MU",
+              "elementType": "generator",
+              "attributes": {},
+              "objectType": {
+                "id": "0-0",
+                "label": "Customer",
+                "elementType": "objecttype",
+                "attributes": {},
+                "fields": null
+              },
+              "expression": "Exp(20",
+              "unit": "MINUTES",
+              "entitiesPerArrival": 0,
+              "maxArrival": 100,
+              "firstCreation": 0
+            },
+            "outputTypes": null,
+            "outputNodes": null,
+            "inputNodes": null,
+            "inputTypes": null
+          },
+          "0-1": {
+            "id": "0-1",
+            "label": "Teller Service",
+            "elementType": "activity",
+            "attributes": {},
+            "groupName": null,
+            "reportStatistics": false,
+            "type": null,
+            "resource": {
+              "id": "0-3",
+              "label": "Teller Resource",
+              "elementType": "resource",
+              "attributes": {},
+              "groupId": null,
+              "data": null
+            },
+            "queue": {
+              "id": "0-2",
+              "label": "Teller Queue",
+              "elementType": "queue",
+              "attributes": {},
+              "type": "FIFO",
+              "size": 35,
+              "shared": false
+            },
+            "function": null,
+            "setupTimeExpression": null,
+            "processingTimeExpression": "constant(5,35)",
+            "unit": "MINUTES",
+            "outputTypes": null,
+            "outputNodes": null,
+            "inputNodes": null,
+            "inputTypes": null
+          },
+          "0-2": {
+            "id": "0-2",
+            "label": "ATM Service",
+            "elementType": "activity",
+            "attributes": {},
+            "groupName": null,
+            "reportStatistics": false,
+            "type": null,
+            "resource": {
+              "id": "0-5",
+              "label": "ATM Resource",
+              "elementType": "resource",
+              "attributes": {},
+              "groupId": null,
+              "data": null
+            },
+            "queue": {
+              "id": "0-4",
+              "label": "ATM Queue",
+              "elementType": "queue",
+              "attributes": {},
+              "type": "FIFO",
+              "size": -1,
+              "shared": false
+            },
+            "function": null,
+            "setupTimeExpression": null,
+            "processingTimeExpression": "constant(5,15)",
+            "unit": "MINUTES",
+            "outputTypes": null,
+            "outputNodes": null,
+            "inputNodes": null,
+            "inputTypes": null
+          },
+          "0-3": {
+            "id": "0-3",
+            "label": null,
+            "elementType": "stop",
+            "attributes": {},
+            "groupName": null,
+            "reportStatistics": false,
+            "outputTypes": null,
+            "outputNodes": null,
+            "inputNodes": null,
+            "inputTypes": null
+          },
+          "0-4": {
+            "id": "0-4",
+            "label": null,
+            "elementType": "branch",
+            "attributes": {},
+            "groupName": null,
+            "reportStatistics": false,
+            "type": "XOR_SPLIT",
+            "rule": null,
+            "outputTypes": null,
+            "outputNodes": null,
+            "inputNodes": null,
+            "inputTypes": null
+          },
+          "0-5": {
+            "id": "0-5",
+            "label": null,
+            "elementType": "branch",
+            "attributes": {},
+            "groupName": null,
+            "reportStatistics": false,
+            "type": "XOR_SPLIT",
+            "rule": null,
+            "outputTypes": null,
+            "outputNodes": null,
+            "inputNodes": null,
+            "inputTypes": null
+          },
+          "0-6": {
+            "id": "0-6",
+            "label": null,
+            "elementType": "branch",
+            "attributes": {},
+            "groupName": null,
+            "reportStatistics": false,
+            "type": "XOR_JOIN",
+            "rule": null,
+            "outputTypes": null,
+            "outputNodes": null,
+            "inputNodes": null,
+            "inputTypes": null
+          },
+          "0-7": {
+            "id": "0-7",
+            "label": null,
+            "elementType": "branch",
+            "attributes": {},
+            "groupName": null,
+            "reportStatistics": false,
+            "type": null,
+            "rule": null,
+            "outputTypes": null,
+            "outputNodes": null,
+            "inputNodes": null,
+            "inputTypes": null
+          }
+        },
+        "arcs": {
+          "0-0": {
+            "id": "0-0",
+            "label": null,
+            "elementType": "connector",
+            "attributes": {},
+            "source": {
+              "id": "0-0",
+              "label": null,
+              "elementType": "start",
+              "attributes": {},
+              "groupName": null,
+              "reportStatistics": false,
+              "generator": {
+                "id": "0-1",
+                "label": "Customer MU",
+                "elementType": "generator",
+                "attributes": {},
+                "objectType": {
+                  "id": "0-0",
+                  "label": "Customer",
+                  "elementType": "objecttype",
+                  "attributes": {},
+                  "fields": null
+                },
+                "expression": "Exp(20",
+                "unit": "MINUTES",
+                "entitiesPerArrival": 0,
+                "maxArrival": 100,
+                "firstCreation": 0
+              },
+              "outputTypes": null,
+              "outputNodes": null,
+              "inputNodes": null,
+              "inputTypes": null
+            },
+            "target": {
+              "id": "0-4",
+              "label": null,
+              "elementType": "branch",
+              "attributes": {},
+              "groupName": null,
+              "reportStatistics": false,
+              "type": "XOR_SPLIT",
+              "rule": null,
+              "outputTypes": null,
+              "outputNodes": null,
+              "inputNodes": null,
+              "inputTypes": null
+            }
+          },
+          "0-1": {
+            "id": "0-1",
+            "label": null,
+            "elementType": "connector",
+            "attributes": {
+              "condition": "<0.4"
+            },
+            "source": {
+              "id": "0-4",
+              "label": null,
+              "elementType": "branch",
+              "attributes": {},
+              "groupName": null,
+              "reportStatistics": false,
+              "type": "XOR_SPLIT",
+              "rule": null,
+              "outputTypes": null,
+              "outputNodes": null,
+              "inputNodes": null,
+              "inputTypes": null
+            },
+            "target": {
+              "id": "0-6",
+              "label": null,
+              "elementType": "branch",
+              "attributes": {},
+              "groupName": null,
+              "reportStatistics": false,
+              "type": "XOR_JOIN",
+              "rule": null,
+              "outputTypes": null,
+              "outputNodes": null,
+              "inputNodes": null,
+              "inputTypes": null
+            }
+          },
+          "0-2": {
+            "id": "0-2",
+            "label": null,
+            "elementType": "connector",
+            "attributes": {
+              "condition": ">=0.4"
+            },
+            "source": {
+              "id": "0-4",
+              "label": null,
+              "elementType": "branch",
+              "attributes": {},
+              "groupName": null,
+              "reportStatistics": false,
+              "type": "XOR_SPLIT",
+              "rule": null,
+              "outputTypes": null,
+              "outputNodes": null,
+              "inputNodes": null,
+              "inputTypes": null
+            },
+            "target": {
+              "id": "0-2",
+              "label": "ATM Service",
+              "elementType": "activity",
+              "attributes": {},
+              "groupName": null,
+              "reportStatistics": false,
+              "type": null,
+              "resource": {
+                "id": "0-5",
+                "label": "ATM Resource",
+                "elementType": "resource",
+                "attributes": {},
+                "groupId": null,
+                "data": null
+              },
+              "queue": {
+                "id": "0-4",
+                "label": "ATM Queue",
+                "elementType": "queue",
+                "attributes": {},
+                "type": "FIFO",
+                "size": -1,
+                "shared": false
+              },
+              "function": null,
+              "setupTimeExpression": null,
+              "processingTimeExpression": "constant(5,15)",
+              "unit": "MINUTES",
+              "outputTypes": null,
+              "outputNodes": null,
+              "inputNodes": null,
+              "inputTypes": null
+            }
+          },
+          "0-3": {
+            "id": "0-3",
+            "label": null,
+            "elementType": "connector",
+            "attributes": {},
+            "source": {
+              "id": "0-2",
+              "label": "ATM Service",
+              "elementType": "activity",
+              "attributes": {},
+              "groupName": null,
+              "reportStatistics": false,
+              "type": null,
+              "resource": {
+                "id": "0-5",
+                "label": "ATM Resource",
+                "elementType": "resource",
+                "attributes": {},
+                "groupId": null,
+                "data": null
+              },
+              "queue": {
+                "id": "0-4",
+                "label": "ATM Queue",
+                "elementType": "queue",
+                "attributes": {},
+                "type": "FIFO",
+                "size": -1,
+                "shared": false
+              },
+              "function": null,
+              "setupTimeExpression": null,
+              "processingTimeExpression": "constant(5,15)",
+              "unit": "MINUTES",
+              "outputTypes": null,
+              "outputNodes": null,
+              "inputNodes": null,
+              "inputTypes": null
+            },
+            "target": {
+              "id": "0-5",
+              "label": null,
+              "elementType": "branch",
+              "attributes": {},
+              "groupName": null,
+              "reportStatistics": false,
+              "type": "XOR_SPLIT",
+              "rule": null,
+              "outputTypes": null,
+              "outputNodes": null,
+              "inputNodes": null,
+              "inputTypes": null
+            }
+          },
+          "0-4": {
+            "id": "0-4",
+            "label": null,
+            "elementType": "connector",
+            "attributes": {
+              "condition": "<0.3"
+            },
+            "source": {
+              "id": "0-5",
+              "label": null,
+              "elementType": "branch",
+              "attributes": {},
+              "groupName": null,
+              "reportStatistics": false,
+              "type": "XOR_SPLIT",
+              "rule": null,
+              "outputTypes": null,
+              "outputNodes": null,
+              "inputNodes": null,
+              "inputTypes": null
+            },
+            "target": {
+              "id": "0-6",
+              "label": null,
+              "elementType": "branch",
+              "attributes": {},
+              "groupName": null,
+              "reportStatistics": false,
+              "type": "XOR_JOIN",
+              "rule": null,
+              "outputTypes": null,
+              "outputNodes": null,
+              "inputNodes": null,
+              "inputTypes": null
+            }
+          },
+          "0-5": {
+            "id": "0-5",
+            "label": null,
+            "elementType": "connector",
+            "attributes": {
+              "condition": ">=0.3"
+            },
+            "source": {
+              "id": "0-5",
+              "label": null,
+              "elementType": "branch",
+              "attributes": {},
+              "groupName": null,
+              "reportStatistics": false,
+              "type": "XOR_SPLIT",
+              "rule": null,
+              "outputTypes": null,
+              "outputNodes": null,
+              "inputNodes": null,
+              "inputTypes": null
+            },
+            "target": {
+              "id": "0-7",
+              "label": null,
+              "elementType": "branch",
+              "attributes": {},
+              "groupName": null,
+              "reportStatistics": false,
+              "type": null,
+              "rule": null,
+              "outputTypes": null,
+              "outputNodes": null,
+              "inputNodes": null,
+              "inputTypes": null
+            }
+          },
+          "0-6": {
+            "id": "0-6",
+            "label": null,
+            "elementType": "connector",
+            "attributes": {},
+            "source": {
+              "id": "0-6",
+              "label": null,
+              "elementType": "branch",
+              "attributes": {},
+              "groupName": null,
+              "reportStatistics": false,
+              "type": "XOR_JOIN",
+              "rule": null,
+              "outputTypes": null,
+              "outputNodes": null,
+              "inputNodes": null,
+              "inputTypes": null
+            },
+            "target": {
+              "id": "0-1",
+              "label": "Teller Service",
+              "elementType": "activity",
+              "attributes": {},
+              "groupName": null,
+              "reportStatistics": false,
+              "type": null,
+              "resource": {
+                "id": "0-3",
+                "label": "Teller Resource",
+                "elementType": "resource",
+                "attributes": {},
+                "groupId": null,
+                "data": null
+              },
+              "queue": {
+                "id": "0-2",
+                "label": "Teller Queue",
+                "elementType": "queue",
+                "attributes": {},
+                "type": "FIFO",
+                "size": 35,
+                "shared": false
+              },
+              "function": null,
+              "setupTimeExpression": null,
+              "processingTimeExpression": "constant(5,35)",
+              "unit": "MINUTES",
+              "outputTypes": null,
+              "outputNodes": null,
+              "inputNodes": null,
+              "inputTypes": null
+            }
+          },
+          "0-7": {
+            "id": "0-7",
+            "label": null,
+            "elementType": "connector",
+            "attributes": {},
+            "source": {
+              "id": "0-1",
+              "label": "Teller Service",
+              "elementType": "activity",
+              "attributes": {},
+              "groupName": null,
+              "reportStatistics": false,
+              "type": null,
+              "resource": {
+                "id": "0-3",
+                "label": "Teller Resource",
+                "elementType": "resource",
+                "attributes": {},
+                "groupId": null,
+                "data": null
+              },
+              "queue": {
+                "id": "0-2",
+                "label": "Teller Queue",
+                "elementType": "queue",
+                "attributes": {},
+                "type": "FIFO",
+                "size": 35,
+                "shared": false
+              },
+              "function": null,
+              "setupTimeExpression": null,
+              "processingTimeExpression": "constant(5,35)",
+              "unit": "MINUTES",
+              "outputTypes": null,
+              "outputNodes": null,
+              "inputNodes": null,
+              "inputTypes": null
+            },
+            "target": {
+              "id": "0-7",
+              "label": null,
+              "elementType": "branch",
+              "attributes": {},
+              "groupName": null,
+              "reportStatistics": false,
+              "type": null,
+              "rule": null,
+              "outputTypes": null,
+              "outputNodes": null,
+              "inputNodes": null,
+              "inputTypes": null
+            }
+          },
+          "0-8": {
+            "id": "0-8",
+            "label": null,
+            "elementType": "connector",
+            "attributes": {},
+            "source": {
+              "id": "0-7",
+              "label": null,
+              "elementType": "branch",
+              "attributes": {},
+              "groupName": null,
+              "reportStatistics": false,
+              "type": null,
+              "rule": null,
+              "outputTypes": null,
+              "outputNodes": null,
+              "inputNodes": null,
+              "inputTypes": null
+            },
+            "target": {
+              "id": "0-3",
+              "label": null,
+              "elementType": "stop",
+              "attributes": {},
+              "groupName": null,
+              "reportStatistics": false,
+              "outputTypes": null,
+              "outputNodes": null,
+              "inputNodes": null,
+              "inputTypes": null
+            }
+          }
+        }
+      }
+    },
+    "configurations": {
+      "0": {
+        "id": "0",
+        "label": null,
+        "elementType": "configuration",
+        "attributes": {}
+      }
+    },
+    "control": {
+      "id": null,
+      "label": null,
+      "elementType": "control",
+      "attributes": {}
+    },
+    "data": {}
+  }
