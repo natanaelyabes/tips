@@ -2,7 +2,7 @@ import { GraphDataObjectType } from './GraphDataObjectType';
 import { GraphData } from '../GraphData';
 
 export interface GraphDataGenerator extends GraphData {
-  readonly TYPE: string | 'generator';
+  // readonly TYPE: string | 'generator';
   fn_graph_data_generator_get_object_type(): GraphDataObjectType | undefined;
   fn_graph_data_generator_set_object_type(objectType: GraphDataObjectType): void;
   fn_graph_data_generator_get_expression(): string | undefined;

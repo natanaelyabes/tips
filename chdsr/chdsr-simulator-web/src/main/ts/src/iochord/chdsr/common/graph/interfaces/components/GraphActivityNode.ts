@@ -5,7 +5,7 @@ import { GraphDataResource } from './GraphDataResource';
 import { GraphNode } from '../GraphNode';
 
 export interface GraphActivityNode extends GraphNode {
-  readonly TYPE: string | 'activity';
+  // readonly TYPE: string | 'activity';
   fn_graph_activity_node_get_type(): ACTIVITY_TYPE | undefined;
   fn_graph_activity_node_set_type(type: ACTIVITY_TYPE): void;
   fn_graph_activity_node_get_resource(): GraphDataResource | undefined;

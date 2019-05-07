@@ -4,6 +4,8 @@ import { GraphData } from '../interfaces/GraphData';
 import { GraphNode } from '../interfaces/GraphNode';
 import { GraphConnector } from '../interfaces/GraphConnector';
 import { GraphConnectorImpl } from './GraphConnectorImpl';
+import { NODE_TYPE } from '../enums/NODE';
+import { DATA_TYPE } from '../enums/DATA';
 
 export class GraphPageImpl extends GraphElementImpl implements GraphPage {
   public static fn_object_deserialize(object: any): Map<string, GraphPage> {
@@ -12,11 +14,28 @@ export class GraphPageImpl extends GraphElementImpl implements GraphPage {
       if (object.hasOwnProperty(key)) {
         const element = object[key];
         const graphPage: GraphPageImpl = new GraphPageImpl();
+        const graphNodeMap: Map<string, GraphNode> = new Map<string, GraphNode>();
+        const graphDataMap: Map<string, GraphData> = new Map<string, GraphData>();
+
         graphPage.fn_graph_element_set_id(element.id);
         graphPage.fn_graph_element_set_label(element.label);
         graphPage.fn_graph_element_set_type(element.elementType);
         graphPage.fn_graph_element_set_attributes(element.attributes);
         graphPage.fn_graph_page_set_arcs(GraphConnectorImpl.fn_object_deserialize(element.arcs));
+        for (const nodeKey in element.nodes) {
+          if (element.nodes.hasOwnProperty(nodeKey)) {
+            const node = element.nodes[nodeKey];
+            graphNodeMap.set(nodeKey, (NODE_TYPE as any)[node.elementType].fn_object_deserialize(node));
+          }
+        }
+        for (const dataKey in element.data) {
+          if (element.data.hasOwnProperty(dataKey)) {
+            const data = element.data[dataKey];
+            graphDataMap.set(dataKey, (DATA_TYPE as any)[data.elementType].fn_object_deserialize(data));
+          }
+        }
+        graphPage.fn_graph_page_set_nodes(graphNodeMap);
+        graphPage.fn_graph_page_set_data(graphDataMap);
         graphMap.set(key, graphPage);
       }
     }

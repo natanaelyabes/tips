@@ -5,7 +5,7 @@ import { GraphData } from './GraphData';
 import { GraphControl } from './components/GraphControl';
 
 export interface Graph extends GraphElement {
-  readonly TYPE: string | 'net';
+  // readonly TYPE: string | 'net';
   fn_graph_get_version(): string;
   fn_graph_get_pages(): Map<string, GraphPage> | undefined;
   fn_graph_set_pages(pages: Map<string, GraphPage>): void;
