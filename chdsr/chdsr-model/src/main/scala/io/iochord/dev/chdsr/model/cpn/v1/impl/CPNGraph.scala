@@ -1,6 +1,7 @@
 package io.iochord.dev.chdsr.model.cpn.v1.impl
 
 import scala.collection.mutable.HashMap
+import io.iochord.dev.chdsr.model.cpn.v1._
 
 class CPNGraph {
   private var places = HashMap[String, Place[_]]()

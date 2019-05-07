@@ -1,7 +1,6 @@
 package io.iochord.dev.chdsr.model.cpn.v1.impl
 
-import io.iochord.dev.chdsr.model.cpn.v1.Element
-import io.iochord.dev.chdsr.model.cpn.v1.Node
+import io.iochord.dev.chdsr.model.cpn.v1._
 import lombok.Getter
 import lombok.Setter
 
@@ -27,6 +26,10 @@ class Place[T] (
 
   def addTokenWithTime(token: Any) = {currentMarking + token.asInstanceOf[(T,Long)] }
   
+  def hasTokens(tokens: Any) = currentMarking >>= tokens.asInstanceOf[Multiset[T]]
+
+  def removeTokens(tokens: Any) = currentMarking = currentMarking -- tokens.asInstanceOf[Multiset[T]]
+
   def addIn(arc: Arc[_]) {
     in = arc :: in
   }

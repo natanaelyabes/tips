@@ -1,6 +1,6 @@
 package io.iochord.dev.chdsr.model.cpn.v1.impl
 
-import io.iochord.dev.chdsr.model.cpn.v1.Element
+import io.iochord.dev.chdsr.model.cpn.v1._
 
 //PtT -> Place to Transition and TtP -> Transition to Place
 object Direction extends Enumeration {
