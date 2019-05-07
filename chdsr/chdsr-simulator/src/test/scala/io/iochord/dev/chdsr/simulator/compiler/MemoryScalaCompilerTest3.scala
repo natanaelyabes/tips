@@ -5,7 +5,7 @@ import io.iochord.dev.chdsr.model.cpn.v1._
 
 import scala.collection.mutable.Map
 
-object MemoryScalaCompilerTest {
+object MemoryScalaCompilerTest3 {
   
   def main(args: Array[String]) {
     
@@ -22,49 +22,61 @@ object MemoryScalaCompilerTest {
       "class Coba1 { val varc1 = \"other test\" }\n"+
     "}";
     
-    def myfunc(x:Int,y:Int): Boolean = {
-      x > y
-    }
-    
-    def testh(x:Int,y:Int): Boolean = {
-      x > y
-    }
-    
-    def testh2(bb:BB):Boolean = {
-      val bone = bb
-      bone.i1 > bone.i2 && myfunc(bone.i1,bone.i2)
-    }
-    
-    //how to set this arc expression inside this function
-    def testh3(bb:BB):Boolean = {
-      val bone = bb
-      bone.i1 == 2*bone.i2 && myfunc(bone.i1,bone.i2)
-    }
-    
     type colset1 = (Int,String)
     
     val ms1 = new Multiset[colset1](Map[(colset1,Long),Int]())
     ms1 + (((1,""),2L))
     ms1 + (((2,""),2L))
+    ms1 + (((3,""),2L))
     
     val pplace1 = new Place("id1","woo1",ms1)
     
     val ms2 = new Multiset[colset1](Map[(colset1,Long),Int]())
     ms2 + (((1,""),2L))
-    ms2 + (((2,""),2L))
+    ms2 + (((3,""),2L))
+    ms2 + (((5,""),2L))
+    ms2 + (((6,""),2L))
     
     val pplace2 = new Place("id2","woo2",ms2)
     
-    case class BC(x:Int) extends Bind
+    case class Bind1(x:Option[Int]) extends Bind
     
-    case class BB(i1:Int,i2:Int) extends Bind
+    //for 1st arc from place1
+    def bindarc(arcins:Any => Bind1, token:Any):Bind1 = {
+      arcins(token)
+    }
     
-    val bb1 = new BB(1,1)
-    val bb2 = new BB(2,2)
-    val bb3 = new BB(3,4)
+    val lbe1 = pplace1.getcurrentMarking().multiset.keys.map(token => token match {      
+        case colset1 => Bind1(Some(token._1._1))
+      }
+    ).toList
     
+    val lbe2 = pplace2.getcurrentMarking().multiset.keys.map(token => token match {      
+        case colset1 => Bind1(Some(token._1._1))
+      }
+    ).toList
+    
+    lbe2.collect { case b1 => {print(b1.x); b1}}
+    println("YYY")
+    
+    val compatible_bind = (b1: Bind1, b2: Bind1) => { b1.x == b2.x }
+    val merge_bind = (b1: Bind1, b2: Bind1) => {
+      val x = if (b1.x == None) b2.x else b1.x
+      new Bind1(x)
+    }
+    
+    def mergeBindingElements[B <: Bind](compatible: (B, B) => Boolean, merge: (B, B) => B,bes1: List[B], bes2: List[B]) =
+    if (bes1.isEmpty || bes2.isEmpty)
+      bes1 ::: bes2
+    else
+      bes2.flatMap(b2 => bes1.collect { case b1 if compatible(b1, b2) => merge(b1, b2) })
+      
+    val merge = mergeBindingElements(compatible_bind,merge_bind,lbe1,lbe2)
+    
+    for (be <- merge) println(be.x)
+    /*
     val ttrans1 = new Transition("tr1","ya", new Guard())
-    ttrans1.getGuard().cond1[BB](testh2,bb1)
+    //ttrans1.getGuard().cond1[BB](testh2,bb1)
     
     val cc1x = (inp1:Int,inp2:String) => (inp1,inp2)
     val cc1 = (inp:colset1) => inp
@@ -77,49 +89,8 @@ object MemoryScalaCompilerTest {
     
     ttrans1.addIn(arc1)
     ttrans1.addIn(arc2)
-    
-    val filt_pre = pplace1.getcurrentMarking().multiset.filter(d => pplace2.getcurrentMarking().multiset.iterator.filter(c => d._1 == c._1).size > 0) //binding
-    filt_pre.foreach(print)
-    val filt = pplace1.getcurrentMarking().multiset.exists(e => pplace2.getcurrentMarking().multiset.iterator.exists(d => e._1 == d._1)) //guard
-    println(filt)
-    
-    val bblist = List[BB]()
-    val bblist1 = List[BB](bb1) ++ bblist
-    val bblist2 = List[BB](bb2) ++ bblist1
-    
-    val pp1 = new BB(1,2)
-    val pp2 = new BB(6,3)
-    val pp3 = new BB(7,4)
-    
-    val pplist = List[BB]()
-    val pplist1 = List[BB](pp1) ++ pplist
-    val pplist2 = List[BB](pp2) ++ pplist1
-    
-    val ss1 = new BB(5,2)
-    val ss2 = new BB(6,3)
-    val ss3 = new BB(7,4)
-    
-    val sslist = List[BB]()
-    val sslist1 = List[BB](ss1) ++ sslist
-    val sslist2 = List[BB](ss2) ++ sslist1
-    
-    bblist2.foreach(print)
-    println()
-    pplist2.foreach(print)
-    println()
-    
-    /*
-    val filt = pplist2.filter(x => x.i1 == bblist2)
-    val filt = pplist2.filter(bblist2.contains(_))
-    filt.foreach(print)
-    println()
-    println("Kosong")
+  
     */
-    
-    //val filt_pre = pplist2.filter(d => bblist2.filter(d.i1 == _.i1).size > 0) //binding
-    //filt_pre.foreach(print)
-    //val filt = sslist2.exists(e => pplist2.exists(d => bblist2.exists(e.i1 == d.i1 && d.i1 > _.i1))) //guard
-    //println(filt)
     
     /*
     val memoryScalaFactory = MemoryScalaCompiler(myclassSyntax)
