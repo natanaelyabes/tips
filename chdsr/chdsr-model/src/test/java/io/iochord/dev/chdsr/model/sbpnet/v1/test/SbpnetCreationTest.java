@@ -12,12 +12,16 @@ import io.iochord.dev.chdsr.model.sbpnet.v1.SbpnetFactory;
 import io.iochord.dev.chdsr.model.sbpnet.v1.impl.SbpnetFactoryImpl;
 import io.iochord.dev.chdsr.model.sbpnet.v1.impl.SbpnetImpl;
 
+/**
+ * @author Iq Reviessay Pulshashi <pulshashi@ideas.web.id>
+ *
+ */
 public class SbpnetCreationTest {
-
 	@Test
 	public void test01CreateEmptyNet() {
 		SbpnetFactory factory = SbpnetFactoryImpl.getInstance();
 		SbpnetImpl net = (SbpnetImpl) factory.create();
+		net.toString();
 	}
 	
 	@Test

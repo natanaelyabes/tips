@@ -6,10 +6,13 @@ import org.springframework.web.bind.annotation.RestController;
 import io.iochord.dev.chdsr.simulator.compiler.MemoryScalaCompiler;
 import io.iochord.dev.chdsr.simulator.compiler.Simulation;
 
+/**
+ * @author Iq Reviessay Pulshashi <pulshashi@ideas.web.id>
+ *
+ */
 // TODO: Simulator Controller
 @RestController
 public class SimulatorController extends AServiceController {
-
 	public static final String BASE_URI = AServiceController.BASE_URI + "/simulator";
 
 	@RequestMapping(BASE_URI + "")
@@ -59,5 +62,4 @@ public class SimulatorController extends AServiceController {
 	    String result = (String) memoryScala.getVar("test1");
 		return result;
 	}
-
 }
