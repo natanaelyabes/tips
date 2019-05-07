@@ -13,12 +13,12 @@ export class GraphImpl extends GraphElementImpl implements Graph {
   public static fn_object_deserialize(object: any): Graph {
     const graph: Graph = new GraphImpl();
     graph.fn_graph_element_set_id(object.id);
-    graph.fn_graph_element_set_label(object.label || '');
+    graph.fn_graph_element_set_label(object.label);
     graph.fn_graph_element_set_type(object.elementType);
-    graph.fn_graph_element_set_attributes(object.attributes || {});
+    graph.fn_graph_element_set_attributes(object.attributes as Map<string, string>);
     graph.fn_graph_set_pages(GraphPageImpl.fn_object_deserialize(object.pages));
     graph.fn_graph_set_configurations(GraphConfigurationImpl.fn_object_deserialize(object.configurations));
-    graph.fn_graph_set_control(GraphControlImpl.fn_object_deserialize(object.control) as GraphControl);
+    graph.fn_graph_set_control(GraphControlImpl.fn_object_deserialize(object.control));
     graph.fn_graph_set_data(GraphDataImpl.fn_object_deserialize(object.data));
     return graph;
   }

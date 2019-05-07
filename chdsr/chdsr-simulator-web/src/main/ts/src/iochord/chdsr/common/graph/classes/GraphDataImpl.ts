@@ -2,10 +2,10 @@ import { GraphData } from './../interfaces/GraphData';
 import { GraphElementImpl } from './GraphElementImpl';
 
 export class GraphDataImpl extends GraphElementImpl implements GraphData {
-  public static fn_object_deserialize(object: any): Map<string, GraphData> {
-    const graphData: GraphData = new GraphDataImpl();
-    console.log(object);
-    return new Map<string, GraphData>();
+  public static fn_object_deserialize(object: any): any {
+    const graphData: Map<string, GraphData> = new Map<string, GraphData>();
+    // console.log(object);
+    return graphData;
   }
   public readonly TYPE: string | 'data' = 'data';
 

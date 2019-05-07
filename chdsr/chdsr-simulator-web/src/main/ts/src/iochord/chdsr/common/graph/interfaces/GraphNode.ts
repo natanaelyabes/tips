@@ -2,8 +2,8 @@ import { GraphElement } from './GraphElement';
 
 export interface GraphNode extends GraphElement {
   readonly TYPE: string | 'node';
-  fn_graph_node_get_group_node(): string | undefined;
-  fn_graph_node_set_group_node(groupNode: string): void;
+  fn_graph_node_get_group_name(): string | undefined;
+  fn_graph_node_set_group_name(groupName: string): void;
   fn_graph_node_is_report_statistics(): boolean;
   fn_graph_node_set_report_statistics(reportStatistics: boolean): void;
   fn_graph_node_accept(elements: GraphElement[]): boolean;

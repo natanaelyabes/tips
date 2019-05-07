@@ -124,10 +124,14 @@
           <div class="item"><div class="header"><strong>Simulation Data Management</strong></div></div>
           <div class="item">
             <div class="ui basic icon buttons" :class="{ disabled: editing }">
-              <a class="ui button"><i class="save icon"></i></a>
-              <a class="ui button" @click="showUploadFileModal"><i class="upload icon"></i></a>
-              <a class="ui button"><i class="file outline alternate icon"></i></a>
+              <a class="ui button" title="Save model"><i class="save icon"></i></a>
+              <a class="ui button" title="Upload model" @click="showUploadFileModal"><i class="upload icon"></i></a>
+              <a class="ui button" title="Download model"><i class="download icon"></i></a>
+              <a class="ui button" title="Show report"><i class="file outline alternate icon"></i></a>
             </div>
+          </div>
+          <div class="item">
+            <div @click="toggleModelPane()" class="ui basic icon button" title="Open model pane"><i class="sidebar icon"></i></div>
           </div>
         </div>
       </template>
@@ -136,7 +140,7 @@
       <template slot="application-content">
         <div class="editor canvas">
           <div id="canvas"></div>
-          <div class="corner area">
+          <!-- <div class="corner area">
             <div class="zoom tool">
               <div class="slider-wrapper">
                 <div style="float: right; margin-bottom: 1em;">
@@ -163,7 +167,15 @@
               </div>
             </div>
             <div id="canvas-minimap"></div>
-          </div>
+          </div> -->
+        </div>
+      </template>
+
+      <template v-if="modelPaneIsOpen" slot="application-right-sidebar-menu-item">
+        <div class="ui basic segment" style="width: 260px">
+          <h2>Model Pane</h2>
+          <!-- <div id="canvas-minimap"></div> -->
+
         </div>
       </template>
     </ApplicationWrapperComponent>
@@ -304,6 +316,7 @@ export default class EditorView extends Vue implements ApplicationHasWrapper {
   public processModel: any;
   public animation: boolean = false;
   public editing: boolean = true;
+  public modelPaneIsOpen: boolean = true;
 
   public model: string = '{"id":"Example Net","elementType":"sbpnet","attributes":{},"version":"1.0","pages":{"0":{"id":"0","elementType":"page","attributes":{},"data":{"0-0":{"id":"0-0","label":"Customer","elementType":"declaration","attributes":{}},"0-1":{"id":"0-1","label":"Customer MU","elementType":"movingunit","attributes":{},"declaration":{"id":"0-0","label":"Customer","elementType":"declaration","attributes":{}},"expression":"Exp(20","unit":"MINUTES","entitiesPerArrival":0,"maxArrival":100,"firstCreation":0},"0-2":{"id":"0-2","label":"Teller Queue","elementType":"queue","attributes":{},"type":"FIFO","size":35,"shared":false},"0-3":{"id":"0-3","label":"Teller Resource","elementType":"resource","attributes":{}},"0-4":{"id":"0-4","label":"ATM Queue","elementType":"queue","attributes":{},"type":"FIFO","size":-1,"shared":false},"0-5":{"id":"0-5","label":"ATM Resource","elementType":"resource","attributes":{}}},"nodes":{"0-0":{"id":"0-0","elementType":"start","attributes":{},"reportStatistics":false,"movingUnit":{"id":"0-1","label":"Customer MU","elementType":"movingunit","attributes":{},"declaration":{"id":"0-0","label":"Customer","elementType":"declaration","attributes":{}},"expression":"Exp(20","unit":"MINUTES","entitiesPerArrival":0,"maxArrival":100,"firstCreation":0}},"0-1":{"id":"0-1","label":"Teller Service","elementType":"activity","attributes":{},"reportStatistics":false,"resource":{"id":"0-3","label":"Teller Resource","elementType":"resource","attributes":{}},"queue":{"id":"0-2","label":"Teller Queue","elementType":"queue","attributes":{},"type":"FIFO","size":35,"shared":false},"processingTimeExpression":"constant(5,35)","unit":"MINUTES"},"0-2":{"id":"0-2","label":"ATM Service","elementType":"activity","attributes":{},"reportStatistics":false,"resource":{"id":"0-5","label":"ATM Resource","elementType":"resource","attributes":{}},"queue":{"id":"0-4","label":"ATM Queue","elementType":"queue","attributes":{},"type":"FIFO","size":-1,"shared":false},"processingTimeExpression":"constant(5,15)","unit":"MINUTES"},"0-3":{"id":"0-3","elementType":"end","attributes":{},"reportStatistics":false},"0-4":{"id":"0-4","elementType":"branch","attributes":{},"reportStatistics":false,"type":"XOR_SPLIT"},"0-5":{"id":"0-5","elementType":"branch","attributes":{},"reportStatistics":false,"type":"XOR_SPLIT"},"0-6":{"id":"0-6","elementType":"branch","attributes":{},"reportStatistics":false,"type":"XOR_JOIN"},"0-7":{"id":"0-7","elementType":"branch","attributes":{},"reportStatistics":false}},"arcs":{"0-0":{"id":"0-0","attributes":{},"source":{"id":"0-0","elementType":"start","attributes":{},"reportStatistics":false,"movingUnit":{"id":"0-1","label":"Customer MU","elementType":"movingunit","attributes":{},"declaration":{"id":"0-0","label":"Customer","elementType":"declaration","attributes":{}},"expression":"Exp(20","unit":"MINUTES","entitiesPerArrival":0,"maxArrival":100,"firstCreation":0}},"target":{"id":"0-4","elementType":"branch","attributes":{},"reportStatistics":false,"type":"XOR_SPLIT"}},"0-1":{"id":"0-1","attributes":{"condition":"<0.4"},"source":{"id":"0-4","elementType":"branch","attributes":{},"reportStatistics":false,"type":"XOR_SPLIT"},"target":{"id":"0-6","elementType":"branch","attributes":{},"reportStatistics":false,"type":"XOR_JOIN"}},"0-2":{"id":"0-2","attributes":{"condition":">=0.4"},"source":{"id":"0-4","elementType":"branch","attributes":{},"reportStatistics":false,"type":"XOR_SPLIT"},"target":{"id":"0-2","label":"ATM Service","elementType":"activity","attributes":{},"reportStatistics":false,"resource":{"id":"0-5","label":"ATM Resource","elementType":"resource","attributes":{}},"queue":{"id":"0-4","label":"ATM Queue","elementType":"queue","attributes":{},"type":"FIFO","size":-1,"shared":false},"processingTimeExpression":"constant(5,15)","unit":"MINUTES"}},"0-3":{"id":"0-3","attributes":{},"source":{"id":"0-2","label":"ATM Service","elementType":"activity","attributes":{},"reportStatistics":false,"resource":{"id":"0-5","label":"ATM Resource","elementType":"resource","attributes":{}},"queue":{"id":"0-4","label":"ATM Queue","elementType":"queue","attributes":{},"type":"FIFO","size":-1,"shared":false},"processingTimeExpression":"constant(5,15)","unit":"MINUTES"},"target":{"id":"0-5","elementType":"branch","attributes":{},"reportStatistics":false,"type":"XOR_SPLIT"}},"0-4":{"id":"0-4","attributes":{"condition":"<0.3"},"source":{"id":"0-5","elementType":"branch","attributes":{},"reportStatistics":false,"type":"XOR_SPLIT"},"target":{"id":"0-6","elementType":"branch","attributes":{},"reportStatistics":false,"type":"XOR_JOIN"}},"0-5":{"id":"0-5","attributes":{"condition":">=0.3"},"source":{"id":"0-5","elementType":"branch","attributes":{},"reportStatistics":false,"type":"XOR_SPLIT"},"target":{"id":"0-7","elementType":"branch","attributes":{},"reportStatistics":false}},"0-6":{"id":"0-6","attributes":{},"source":{"id":"0-6","elementType":"branch","attributes":{},"reportStatistics":false,"type":"XOR_JOIN"},"target":{"id":"0-1","label":"Teller Service","elementType":"activity","attributes":{},"reportStatistics":false,"resource":{"id":"0-3","label":"Teller Resource","elementType":"resource","attributes":{}},"queue":{"id":"0-2","label":"Teller Queue","elementType":"queue","attributes":{},"type":"FIFO","size":35,"shared":false},"processingTimeExpression":"constant(5,35)","unit":"MINUTES"}},"0-7":{"id":"0-7","attributes":{},"source":{"id":"0-1","label":"Teller Service","elementType":"activity","attributes":{},"reportStatistics":false,"resource":{"id":"0-3","label":"Teller Resource","elementType":"resource","attributes":{}},"queue":{"id":"0-2","label":"Teller Queue","elementType":"queue","attributes":{},"type":"FIFO","size":35,"shared":false},"processingTimeExpression":"constant(5,35)","unit":"MINUTES"},"target":{"id":"0-7","elementType":"branch","attributes":{},"reportStatistics":false}},"0-8":{"id":"0-8","attributes":{},"source":{"id":"0-7","elementType":"branch","attributes":{},"reportStatistics":false},"target":{"id":"0-3","elementType":"end","attributes":{},"reportStatistics":false}}}}},"configurations":{},"data":{}}';
 
@@ -342,6 +355,17 @@ export default class EditorView extends Vue implements ApplicationHasWrapper {
 
   public updated(): void {
     // window.location.reload();
+  }
+
+  public toggleModelPane(): void {
+    if (this.modelPaneIsOpen) {
+      this.modelPaneIsOpen = false;
+      $('#canvas').width($('.editor.canvas').innerWidth() + 260);
+
+    } else {
+      this.modelPaneIsOpen = true;
+      $('#canvas').width($('.editor.canvas').innerWidth() - 260);
+    }
   }
 
   public testGraphDataStruct(): void {
@@ -489,6 +513,7 @@ export default class EditorView extends Vue implements ApplicationHasWrapper {
     } as joint.dia.Paper.Options);
 
     this.minimap = new joint.shapes.chdsr.JointGraphModel({
+      // el: document.getElementById('canvas-minimap'),
       el: document.getElementById('canvas-minimap'),
       model: this.page,
       width: canvasWidth * 20 / 100,

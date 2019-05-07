@@ -21,12 +21,12 @@ export class GraphNodeImpl extends GraphElementImpl implements GraphNode {
     return this.TYPE;
   }
 
-  public fn_graph_node_get_group_node(): string | undefined {
+  public fn_graph_node_get_group_name(): string | undefined {
     return this.groupName;
   }
 
-  public fn_graph_node_set_group_node(groupNode: string): void {
-    throw new Error('Method not implemented.');
+  public fn_graph_node_set_group_name(groupName: string): void {
+    this.groupName = groupName;
   }
 
   public fn_graph_node_is_report_statistics(): boolean {
@@ -34,7 +34,7 @@ export class GraphNodeImpl extends GraphElementImpl implements GraphNode {
   }
 
   public fn_graph_node_set_report_statistics(reportStatistics: boolean): void {
-    throw new Error('Method not implemented.');
+    this.reportStatistics = reportStatistics;
   }
 
   public fn_graph_node_accept(elements: GraphElement[]): boolean {
