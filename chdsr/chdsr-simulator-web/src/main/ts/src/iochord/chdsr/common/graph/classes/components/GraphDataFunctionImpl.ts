@@ -12,17 +12,17 @@ export class GraphDataFunctionImpl extends GraphDataImpl implements GraphDataFun
     return graphData;
   }
 
-  private inputParameters?: Map<string, GraphDataObjectType>;
-  private code?: string;
-  private outputVariables?: Map<string, GraphDataObjectType>;
+  private inputParameters: Map<string, GraphDataObjectType>;
+  private code: string | null;
+  private outputVariables: Map<string, GraphDataObjectType>;
 
   constructor();
   constructor(inputParameters: Map<string, GraphDataObjectType>, code: string, outputVariables: Map<string, GraphDataObjectType>);
   constructor(inputParameters?: Map<string, GraphDataObjectType>, code?: string, outputVariables?: Map<string, GraphDataObjectType>) {
     super();
-    this.inputParameters = inputParameters;
-    this.code = code;
-    this.outputVariables = outputVariables;
+    this.inputParameters = inputParameters || new Map<string, GraphDataObjectType>();
+    this.code = code || null;
+    this.outputVariables = outputVariables || new Map<string, GraphDataObjectType>();
   }
 
   /** @Override */
@@ -30,7 +30,7 @@ export class GraphDataFunctionImpl extends GraphDataImpl implements GraphDataFun
     return this.TYPE;
   }
 
-  public fn_graph_data_function_get_input_parameters(): Map<string, GraphDataObjectType> | undefined {
+  public fn_graph_data_function_get_input_parameters(): Map<string, GraphDataObjectType> {
     return this.inputParameters;
   }
 
@@ -38,7 +38,7 @@ export class GraphDataFunctionImpl extends GraphDataImpl implements GraphDataFun
     this.inputParameters = inputParameters;
   }
 
-  public fn_graph_data_function_get_code(): string | undefined {
+  public fn_graph_data_function_get_code(): string | null {
     return this.code;
   }
 
@@ -46,7 +46,7 @@ export class GraphDataFunctionImpl extends GraphDataImpl implements GraphDataFun
     this.code = code;
   }
 
-  public fn_graph_data_function_get_output_variables(): Map<string, GraphDataObjectType> | undefined {
+  public fn_graph_data_function_get_output_variables(): Map<string, GraphDataObjectType> {
     return this.outputVariables;
   }
 

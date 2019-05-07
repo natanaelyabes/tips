@@ -18,15 +18,15 @@ export class GraphBranchNodeImpl extends GraphNodeImpl implements GraphBranchNod
     return graphBranchNode;
   }
 
-  private type?: BRANCH_TYPE;
-  private rule?: BRANCH_RULE;
+  private type: BRANCH_TYPE | null;
+  private rule: BRANCH_RULE | null;
 
   constructor();
   constructor(type: BRANCH_TYPE, rule: BRANCH_RULE);
   constructor(type?: BRANCH_TYPE, rule?: BRANCH_RULE) {
     super();
-    this.type = type;
-    this.rule = rule;
+    this.type = type || null;
+    this.rule = rule || null;
   }
 
   /** @Override */
@@ -34,7 +34,7 @@ export class GraphBranchNodeImpl extends GraphNodeImpl implements GraphBranchNod
     return this.TYPE;
   }
 
-  public fn_graph_branch_node_get_type(): BRANCH_TYPE | undefined {
+  public fn_graph_branch_node_get_type(): BRANCH_TYPE | null {
     return this.type;
   }
 
@@ -42,7 +42,7 @@ export class GraphBranchNodeImpl extends GraphNodeImpl implements GraphBranchNod
     this.type = type;
   }
 
-  public fn_graph_branch_node_get_rule(): BRANCH_RULE | undefined {
+  public fn_graph_branch_node_get_rule(): BRANCH_RULE | null {
     return this.rule;
   }
 

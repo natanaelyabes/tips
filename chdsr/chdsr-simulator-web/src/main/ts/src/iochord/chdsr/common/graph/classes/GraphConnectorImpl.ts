@@ -25,15 +25,15 @@ export class GraphConnectorImpl extends GraphElementImpl implements GraphConnect
 
   public readonly TYPE: string | 'connector' = 'connector';
 
-  private source?: GraphElement;
-  private target?: GraphElement;
+  private source: GraphElement | null;
+  private target: GraphElement | null;
 
   constructor();
   constructor(source: GraphElement, target: GraphElement);
   constructor(source?: GraphElement, target?: GraphElement) {
     super();
-    this.source = source;
-    this.target = target;
+    this.source = source || null;
+    this.target = target || null;
   }
 
   /** @Override */
@@ -41,7 +41,7 @@ export class GraphConnectorImpl extends GraphElementImpl implements GraphConnect
     return this.TYPE;
   }
 
-  public fn_graph_connector_get_source(): GraphElement | undefined {
+  public fn_graph_connector_get_source(): GraphElement | null {
     return this.source;
   }
 
@@ -49,7 +49,7 @@ export class GraphConnectorImpl extends GraphElementImpl implements GraphConnect
     this.source = source;
   }
 
-  public fn_graph_connector_get_target(): GraphElement | undefined {
+  public fn_graph_connector_get_target(): GraphElement | null {
     return this.target;
   }
 

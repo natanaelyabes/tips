@@ -26,19 +26,19 @@ export class GraphImpl extends GraphElementImpl implements Graph {
   public readonly TYPE: string | 'net' = 'net';
 
   private readonly version: string = '1.0';
-  private pages?: Map<string, GraphPage> = new Map<string, GraphPage>();
-  private configurations?: Map<string, GraphConfiguration> = new Map<string, GraphConfiguration>();
-  private control?: GraphControl;
-  private data?: Map<string, GraphData> = new Map<string, GraphData>();
+  private pages: Map<string, GraphPage> = new Map<string, GraphPage>();
+  private configurations: Map<string, GraphConfiguration> = new Map<string, GraphConfiguration>();
+  private control: GraphControl | null;
+  private data: Map<string, GraphData> = new Map<string, GraphData>();
 
   constructor();
   constructor(pages: Map<string, GraphPage>, configurations: Map<string, GraphConfiguration>, control: GraphControl, data: Map<string, GraphData>);
   constructor(pages?: Map<string, GraphPage>, configurations?: Map<string, GraphConfiguration>, control?: GraphControl, data?: Map<string, GraphData>) {
     super();
-    this.pages = pages;
-    this.configurations = configurations;
-    this.control = control;
-    this.data = data;
+    this.pages = pages || new Map<string, GraphPage>();
+    this.configurations = configurations || new Map<string, GraphConfiguration>();
+    this.control = control || null;
+    this.data = data || new Map<string, GraphData>();
   }
 
   /** @Override */
@@ -50,7 +50,7 @@ export class GraphImpl extends GraphElementImpl implements Graph {
     return this.version;
   }
 
-  public fn_graph_get_pages(): Map<string, GraphPage> | undefined {
+  public fn_graph_get_pages(): Map<string, GraphPage> {
     return this.pages;
   }
 
@@ -58,7 +58,7 @@ export class GraphImpl extends GraphElementImpl implements Graph {
     this.pages = pages;
   }
 
-  public fn_graph_get_configurations(): Map<string, GraphConfiguration> | undefined {
+  public fn_graph_get_configurations(): Map<string, GraphConfiguration> {
     return this.configurations;
   }
 
@@ -66,7 +66,7 @@ export class GraphImpl extends GraphElementImpl implements Graph {
     this.configurations = configurations;
   }
 
-  public fn_graph_get_control(): GraphControl | undefined {
+  public fn_graph_get_control(): GraphControl | null {
     return this.control;
   }
 
@@ -74,7 +74,7 @@ export class GraphImpl extends GraphElementImpl implements Graph {
     this.control = control;
   }
 
-  public fn_graph_get_data(): Map<string, GraphData> | undefined {
+  public fn_graph_get_data(): Map<string, GraphData> {
     return this.data;
   }
 

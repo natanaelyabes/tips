@@ -17,11 +17,11 @@ export class GraphDataObjectTypeImpl extends GraphDataImpl implements GraphDataO
     return graphDataObjectType;
   }
 
-  private fields?: Map<string, GraphDataTable>;
+  private fields: Map<string, GraphDataTable>;
 
   constructor(fields?: Map<string, GraphDataTable>) {
     super();
-    this.fields = fields;
+    this.fields = fields || new Map<string, GraphDataTable>();
   }
 
   /** @Override */
@@ -29,7 +29,7 @@ export class GraphDataObjectTypeImpl extends GraphDataImpl implements GraphDataO
     return this.TYPE;
   }
 
-  public fn_graph_data_object_type_get_fields(): Map<string, GraphDataTable> | undefined {
+  public fn_graph_data_object_type_get_fields(): Map<string, GraphDataTable> {
     return this.fields;
   }
 
