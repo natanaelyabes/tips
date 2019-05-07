@@ -1,6 +1,6 @@
 package io.iochord.dev.chdsr.model.cpn.v1.impl
 
-import io.iochord.dev.chdsr.model.cpn.v1.Bind
+import io.iochord.dev.chdsr.model.cpn.v1._
 
 class Guard { 
   

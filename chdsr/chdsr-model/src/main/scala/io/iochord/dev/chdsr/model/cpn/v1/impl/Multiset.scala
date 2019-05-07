@@ -1,8 +1,11 @@
 package io.iochord.dev.chdsr.model.cpn.v1.impl
 
 import scala.collection.mutable.Map
+import scala.collection.IterableLike
+import scala.collection.mutable.Builder
+import io.iochord.dev.chdsr.model.cpn.v1._
 
-class Multiset[T] (val multiset: Map[(T,Long), Int]) extends Iterable[(T,Long)] {
+class Multiset[T] (val multiset: Map[(T,Long), Int]) {
   
   private def comparing(that: Any, cons: (Int, Int) => Boolean): Boolean = {
     that match {
@@ -18,9 +21,7 @@ class Multiset[T] (val multiset: Map[(T,Long), Int]) extends Iterable[(T,Long)] 
     }
   }
   
-  def iterator: Iterator[(T, Long)] = for (((el,tm), no) <- multiset.iterator) yield (el, tm)
-  
-  def tokensLimitByTime(timeLT: Long): Iterator[(T, Long)] = for (((el,tm), no) <- multiset.iterator.filter(x => (x._1._2) <= timeLT)) yield (el,tm)
+  def tokensLimitByTime(timeLT: Long): Map[(T, Long),Int] = for (((el,tm), no) <- multiset.filter(x => (x._1._2) <= timeLT)) yield ((el,tm), no)
   
   def hasToken(elem: T): Boolean = multiset.filter(x => x._1._1 equals(elem)).size > 0
   
@@ -28,7 +29,7 @@ class Multiset[T] (val multiset: Map[(T,Long), Int]) extends Iterable[(T,Long)] 
   
   def equal(other: Any) = other match {
     case that: Multiset[T] =>
-      if (this.size == that.size)
+      if (this.multiset.size == that.multiset.size)
         comparing(that, (x, y) => (x == y))
       else
         false
@@ -49,14 +50,32 @@ class Multiset[T] (val multiset: Map[(T,Long), Int]) extends Iterable[(T,Long)] 
   
   def >>=(that: Multiset[T]): Boolean =
     comparing(that, (x, y) => (x >= y))
-    
-  def +++(other: Multiset[T]) = this ++ other
   
+  def --(other: Multiset[T]): Multiset[T] = {
+    if (this >>= other) {
+
+      var ms = multiset
+      other.multiset.foreach {
+        case (el, c1) => ms.get(el) match {
+          case Some(c2) =>
+            val nc = c2 - c1
+            if (nc > 0)
+              ms = ms + (el -> nc)
+            else
+              ms = ms - el
+        }
+      }
+      new Multiset(ms)
+    } else {
+      throw new IllegalArgumentException("Cannot subtract larger multiset from multiset")
+    }
+  }
+    
   def removeToken(token: (T,Long)) = this - token
 
   def addTokens(that: Any) = {
     that match {
-      case other: Multiset[T] => this ++ other
+      case other: Multiset[T] => this.multiset ++ other.multiset
       case _ => throw new IllegalArgumentException("Problem adding token")
     }
   }
