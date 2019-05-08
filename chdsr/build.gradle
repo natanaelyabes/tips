@@ -2,7 +2,7 @@ allprojects {
 	ext {
 		// Development mode using Scala IDE
 		// Set this to false for production build using gradle
-		devMode = true
+		devMode = false
 	}
 
 	apply plugin: 'java'
