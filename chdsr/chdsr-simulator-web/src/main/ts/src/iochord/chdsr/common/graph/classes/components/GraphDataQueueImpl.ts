@@ -18,17 +18,17 @@ export class GraphDataQueueImpl extends GraphDataImpl implements GraphDataQueue 
     return graphDataQueue;
   }
 
-  private type?: QUEUE_TYPE;
-  private size?: number;
-  private isShared?: boolean;
+  private type: QUEUE_TYPE | null;
+  private size: number | null;
+  private isShared: boolean | null;
 
   constructor();
   constructor(type: QUEUE_TYPE, size: number, isShared: boolean);
   constructor(type?: QUEUE_TYPE, size?: number, isShared?: boolean) {
     super();
-    this.type = type;
-    this.size = size;
-    this.isShared = isShared;
+    this.type = type || null;
+    this.size = size || null;
+    this.isShared = isShared || null;
   }
 
   /** @Override */
@@ -36,7 +36,7 @@ export class GraphDataQueueImpl extends GraphDataImpl implements GraphDataQueue 
     return this.TYPE;
   }
 
-  public fn_graph_data_queue_get_type(): QUEUE_TYPE | undefined {
+  public fn_graph_data_queue_get_type(): QUEUE_TYPE | null {
     return this.type;
   }
 
@@ -44,7 +44,7 @@ export class GraphDataQueueImpl extends GraphDataImpl implements GraphDataQueue 
     this.type = type;
   }
 
-  public fn_graph_data_queue_get_size(): number | undefined {
+  public fn_graph_data_queue_get_size(): number | null {
     return this.size;
   }
 
@@ -52,7 +52,7 @@ export class GraphDataQueueImpl extends GraphDataImpl implements GraphDataQueue 
     this.size = size;
   }
 
-  public fn_graph_data_queue_is_shared(): boolean | undefined {
+  public fn_graph_data_queue_is_shared(): boolean | null {
     return this.isShared;
   }
 

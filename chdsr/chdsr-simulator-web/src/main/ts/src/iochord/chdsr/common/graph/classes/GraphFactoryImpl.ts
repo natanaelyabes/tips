@@ -35,8 +35,13 @@ import { GraphStopEventNodeImpl } from './components/GraphEndEventNodeImpl';
 import { GraphActivityNodeImpl } from './components/GraphActivityNodeImpl';
 import { GraphBranchNodeImpl } from './components/GraphBranchNodeImpl';
 import { GraphMonitorNodeImpl } from './components/GraphMonitorNodeImpl';
+import { GraphStopEventNode } from '../interfaces/components/GraphStopEventNode';
 
 export class GraphFactoryImpl implements GraphFactory {
+  public static fn_graph_factory_get_instance(): GraphFactory {
+    return this.instance;
+  }
+
   private static readonly instance: GraphFactory = new GraphFactoryImpl();
 
   private netCounter: number = 0;
@@ -53,7 +58,7 @@ export class GraphFactoryImpl implements GraphFactory {
     this.netCounter = counter;
   }
 
-  public fn_graph_factory_create(ref?: Graph | undefined): Graph {
+  public fn_graph_factory_create(ref?: Graph | null): Graph {
     const net: Graph = new GraphImpl();
     net.fn_graph_element_set_id('MODEL-' + this.netCounter);
     this.fn_graph_factory_add_page(net);
@@ -62,20 +67,20 @@ export class GraphFactoryImpl implements GraphFactory {
     return net;
   }
 
-  public fn_graph_factory_add_page(net: Graph): GraphPage | undefined {
-    if (net !== undefined) {
+  public fn_graph_factory_add_page(net: Graph): GraphPage | null {
+    if (net !== null) {
       const page: GraphPage = new GraphPageImpl();
-      const netPage: Map<string, GraphPage> | undefined = net.fn_graph_get_pages();
+      const netPage: Map<string, GraphPage> | null = net.fn_graph_get_pages();
       const size: number = netPage!.size;
       page.fn_graph_element_set_id(size.toString());
       netPage!.set(net.fn_graph_element_get_id() as string, page);
       return page;
     }
-    return undefined;
+    return null;
   }
 
-  public fn_graph_factory_add_data(page: GraphPage, dataType: string): GraphData | undefined {
-    if (page !== undefined) {
+  public fn_graph_factory_add_data(page: GraphPage, dataType: string): GraphData | null {
+    if (page !== null) {
       const dt: string = dataType.toLowerCase();
       try {
         const data: GraphData = new (DATA_TYPE as any)[dt]();
@@ -86,11 +91,11 @@ export class GraphFactoryImpl implements GraphFactory {
         throw new Error(e);
       }
     }
-    return undefined;
+    return null;
   }
 
-  public fn_graph_factory_add_node(page: GraphPage, nodeType: string): GraphNode | undefined {
-    if (page !== undefined) {
+  public fn_graph_factory_add_node(page: GraphPage, nodeType: string): GraphNode | null {
+    if (page !== null) {
       const nt: string = nodeType.toLowerCase();
       try {
         const node: GraphNode = new (NODE_TYPE as any)[nt]();
@@ -101,11 +106,11 @@ export class GraphFactoryImpl implements GraphFactory {
         throw new Error(e);
       }
     }
-    return undefined;
+    return null;
   }
 
-  public fn_graph_factory_add_connector(page: GraphPage, source: GraphElement, target: GraphElement): GraphConnector | undefined {
-    if (page !== undefined) {
+  public fn_graph_factory_add_connector(page: GraphPage, source: GraphElement, target: GraphElement): GraphConnector | null {
+    if (page !== null) {
       const arc: GraphConnector = new GraphConnectorImpl();
       arc.fn_graph_element_set_id(`${page.fn_graph_element_get_id()}-${page.fn_graph_page_get_arcs().size.toString()}`);
       arc.fn_graph_connector_set_source(source);
@@ -113,62 +118,62 @@ export class GraphFactoryImpl implements GraphFactory {
       page.fn_graph_page_get_arcs().set(arc.fn_graph_element_get_id() as string, arc);
       return arc;
     }
-    return undefined;
+    return null;
   }
 
-  public fn_graph_factory_add_configuration(net: Graph): GraphConfiguration | undefined {
-    if (net !== undefined) {
+  public fn_graph_factory_add_configuration(net: Graph): GraphConfiguration | null {
+    if (net !== null) {
       const config: GraphConfiguration = new GraphConfigurationImpl();
-      const netConfig: Map<string, GraphConfiguration> | undefined = net.fn_graph_get_configurations();
+      const netConfig: Map<string, GraphConfiguration> | null = net.fn_graph_get_configurations();
       const size: number = netConfig!.size;
       config.fn_graph_element_set_id(size.toString());
       netConfig!.set(config.fn_graph_element_get_id() as string, config);
       return config;
     }
-    return undefined;
+    return null;
   }
 
-  public fn_graph_factory_add_data_table(page: GraphPage): GraphDataTable | undefined {
-    return this.fn_graph_factory_add_data(page, GraphDataTableImpl.TYPE) as GraphDataTable | undefined;
+  public fn_graph_factory_add_data_table(page: GraphPage): GraphDataTable | null {
+    return this.fn_graph_factory_add_data(page, GraphDataTableImpl.TYPE) as GraphDataTable | null;
   }
 
-  public fn_graph_factory_add_object_type(page: GraphPage): GraphDataObjectType | undefined {
-    return this.fn_graph_factory_add_data(page, GraphDataObjectTypeImpl.TYPE) as GraphDataObjectType | undefined;
+  public fn_graph_factory_add_object_type(page: GraphPage): GraphDataObjectType | null {
+    return this.fn_graph_factory_add_data(page, GraphDataObjectTypeImpl.TYPE) as GraphDataObjectType | null;
   }
 
-  public fn_graph_factory_add_generator(page: GraphPage): GraphDataGenerator | undefined {
-    return this.fn_graph_factory_add_data(page, GraphDataGeneratorImpl.TYPE) as GraphDataGenerator | undefined;
+  public fn_graph_factory_add_generator(page: GraphPage): GraphDataGenerator | null {
+    return this.fn_graph_factory_add_data(page, GraphDataGeneratorImpl.TYPE) as GraphDataGenerator | null;
   }
 
-  public fn_graph_factory_add_function(page: GraphPage): GraphDataFunction | undefined {
-    return this.fn_graph_factory_add_data(page, GraphDataFunctionImpl.TYPE) as GraphDataFunction | undefined;
+  public fn_graph_factory_add_function(page: GraphPage): GraphDataFunction | null {
+    return this.fn_graph_factory_add_data(page, GraphDataFunctionImpl.TYPE) as GraphDataFunction | null;
   }
 
-  public fn_graph_factory_add_queue(page: GraphPage): GraphDataQueue | undefined {
-    return this.fn_graph_factory_add_data(page, GraphDataQueueImpl.TYPE) as GraphDataQueue | undefined;
+  public fn_graph_factory_add_queue(page: GraphPage): GraphDataQueue | null {
+    return this.fn_graph_factory_add_data(page, GraphDataQueueImpl.TYPE) as GraphDataQueue | null;
   }
 
-  public fn_graph_factory_add_resource(page: GraphPage): GraphDataResource | undefined {
-    return this.fn_graph_factory_add_data(page, GraphDataResourceImpl.TYPE) as GraphDataResource | undefined;
+  public fn_graph_factory_add_resource(page: GraphPage): GraphDataResource | null {
+    return this.fn_graph_factory_add_data(page, GraphDataResourceImpl.TYPE) as GraphDataResource | null;
   }
 
-  public fn_graph_factory_add_start(page: GraphPage): GraphStartEventNode | undefined {
-    return this.fn_graph_factory_add_node(page, GraphStartEventNodeImpl.TYPE) as GraphStartEventNode | undefined;
+  public fn_graph_factory_add_start(page: GraphPage): GraphStartEventNode | null {
+    return this.fn_graph_factory_add_node(page, GraphStartEventNodeImpl.TYPE) as GraphStartEventNode | null;
   }
 
-  public fn_graph_factory_add_stop(page: GraphPage): GraphEventNode | undefined {
-    return this.fn_graph_factory_add_node(page, GraphStopEventNodeImpl.TYPE) as GraphStopEventNodeImpl | undefined;
+  public fn_graph_factory_add_stop(page: GraphPage): GraphStopEventNode | null {
+    return this.fn_graph_factory_add_node(page, GraphStopEventNodeImpl.TYPE) as GraphStopEventNode | null;
   }
 
-  public fn_graph_factory_add_activity(page: GraphPage): GraphActivityNode | undefined {
-    return this.fn_graph_factory_add_node(page, GraphActivityNodeImpl.TYPE) as GraphActivityNode | undefined;
+  public fn_graph_factory_add_activity(page: GraphPage): GraphActivityNode | null {
+    return this.fn_graph_factory_add_node(page, GraphActivityNodeImpl.TYPE) as GraphActivityNode | null;
   }
 
-  public fn_graph_factory_add_branch(page: GraphPage): GraphBranchNode | undefined {
-    return this.fn_graph_factory_add_node(page, GraphBranchNodeImpl.TYPE) as GraphBranchNode | undefined;
+  public fn_graph_factory_add_branch(page: GraphPage): GraphBranchNode | null {
+    return this.fn_graph_factory_add_node(page, GraphBranchNodeImpl.TYPE) as GraphBranchNode | null;
   }
 
-  public fn_graph_factory_add_monitor(page: GraphPage): GraphMonitorNode | undefined {
-    return this.fn_graph_factory_add_node(page, GraphMonitorNodeImpl.TYPE) as GraphMonitorNode | undefined;
+  public fn_graph_factory_add_monitor(page: GraphPage): GraphMonitorNode | null {
+    return this.fn_graph_factory_add_node(page, GraphMonitorNodeImpl.TYPE) as GraphMonitorNode | null;
   }
 }

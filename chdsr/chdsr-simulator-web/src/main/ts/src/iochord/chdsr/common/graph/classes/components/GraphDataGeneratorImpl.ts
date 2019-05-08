@@ -15,21 +15,21 @@ export class GraphDataGeneratorImpl extends GraphDataImpl implements GraphDataGe
     return graphDataGenerator;
   }
 
-  private objectType?: GraphDataObjectType;
-  private expression?: string;
-  private entitiesPerArrival?: number;
-  private maxArrival?: number;
-  private firstCreation?: number;
+  private objectType: GraphDataObjectType | null;
+  private expression: string | null;
+  private entitiesPerArrival: number | null;
+  private maxArrival: number | null;
+  private firstCreation: number | null;
 
   constructor();
   constructor(objectType: GraphDataObjectType, expression: string, entitiesPerArrival: number, maxArrival: number, firstCreation: number);
   constructor(objectType?: GraphDataObjectType, expression?: string, entitiesPerArrival?: number, maxArrival?: number, firstCreation?: number) {
     super();
-    this.objectType = objectType;
-    this.expression = expression;
-    this.entitiesPerArrival = entitiesPerArrival;
-    this.maxArrival = maxArrival;
-    this.firstCreation = firstCreation;
+    this.objectType = objectType || null;
+    this.expression = expression || null;
+    this.entitiesPerArrival = entitiesPerArrival || null;
+    this.maxArrival = maxArrival || null;
+    this.firstCreation = firstCreation || null;
   }
 
   /** @Override */
@@ -37,7 +37,7 @@ export class GraphDataGeneratorImpl extends GraphDataImpl implements GraphDataGe
     return this.TYPE;
   }
 
-  public fn_graph_data_generator_get_object_type(): GraphDataObjectType | undefined {
+  public fn_graph_data_generator_get_object_type(): GraphDataObjectType | null {
     return this.objectType;
   }
 
@@ -45,7 +45,7 @@ export class GraphDataGeneratorImpl extends GraphDataImpl implements GraphDataGe
     this.objectType = objectType;
   }
 
-  public fn_graph_data_generator_get_expression(): string | undefined {
+  public fn_graph_data_generator_get_expression(): string | null {
     return this.expression;
   }
 
@@ -53,7 +53,7 @@ export class GraphDataGeneratorImpl extends GraphDataImpl implements GraphDataGe
     this.expression = expression;
   }
 
-  public fn_graph_data_generator_get_entities_per_arrival(): number | undefined {
+  public fn_graph_data_generator_get_entities_per_arrival(): number | null {
     return this.entitiesPerArrival;
   }
 
@@ -61,7 +61,7 @@ export class GraphDataGeneratorImpl extends GraphDataImpl implements GraphDataGe
     this.entitiesPerArrival = entitiesPerArrival;
   }
 
-  public fn_graph_data_generator_get_max_arrival(): number | undefined {
+  public fn_graph_data_generator_get_max_arrival(): number | null {
     return this.maxArrival;
   }
 
@@ -69,7 +69,7 @@ export class GraphDataGeneratorImpl extends GraphDataImpl implements GraphDataGe
     this.maxArrival = maxArrival;
   }
 
-  public fn_graph_data_generator_get_first_creation(): number | undefined {
+  public fn_graph_data_generator_get_first_creation(): number | null {
     return this.firstCreation;
   }
 

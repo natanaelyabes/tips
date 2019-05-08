@@ -3,19 +3,19 @@ import { GraphElement } from '../interfaces/GraphElement';
 export class GraphElementImpl implements GraphElement {
   public readonly TYPE: string | 'element' = 'element';
 
-  private id?: string;
-  private label?: string;
+  private id: string | null;
+  private label: string | null;
   private elementType: string = this.TYPE;
   private attributes: Map<string, string> = new Map<string, string>();
 
   constructor();
   constructor(id: string, label: string);
   constructor(id?: string, label?: string) {
-    this.id = id;
-    this.label = label;
+    this.id = id || null;
+    this.label = label || null;
   }
 
-  public fn_graph_element_get_id(): string | undefined {
+  public fn_graph_element_get_id(): string | null {
     return this.id;
   }
 
@@ -23,7 +23,7 @@ export class GraphElementImpl implements GraphElement {
     this.id = id;
   }
 
-  public fn_graph_element_get_label(): string | undefined {
+  public fn_graph_element_get_label(): string | null {
     return this.label;
   }
 
@@ -31,7 +31,7 @@ export class GraphElementImpl implements GraphElement {
     this.label = label;
   }
 
-  public fn_graph_element_get_type(): string | undefined {
+  public fn_graph_element_get_type(): string | null {
     return this.elementType;
   }
 
@@ -39,7 +39,7 @@ export class GraphElementImpl implements GraphElement {
     this.elementType = type;
   }
 
-  public fn_graph_element_get_attributes(): Map<string, string> | undefined {
+  public fn_graph_element_get_attributes(): Map<string, string> {
     return this.attributes;
   }
 

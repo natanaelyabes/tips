@@ -5,15 +5,15 @@ import { GraphElement } from '../interfaces/GraphElement';
 export class GraphNodeImpl extends GraphElementImpl implements GraphNode {
   public readonly TYPE: string | 'node' = 'node';
 
-  private groupName?: string | undefined;
+  private groupName: string | null;
   private reportStatistics: boolean = false;
 
   constructor();
   constructor(groupName: string, reportStatistics: boolean);
   constructor(groupName?: string, reportStatistics: boolean = false) {
     super();
-    this.groupName = groupName;
-    this.reportStatistics = reportStatistics;
+    this.groupName = groupName || null;
+    this.reportStatistics = reportStatistics || false;
   }
 
   /** @Override */
@@ -21,7 +21,7 @@ export class GraphNodeImpl extends GraphElementImpl implements GraphNode {
     return this.TYPE;
   }
 
-  public fn_graph_node_get_group_name(): string | undefined {
+  public fn_graph_node_get_group_name(): string | null {
     return this.groupName;
   }
 

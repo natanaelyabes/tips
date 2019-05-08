@@ -10,15 +10,15 @@ export class GraphDataTableImpl extends GraphDataImpl implements GraphDataTable 
     return graphDataTableMap;
   }
 
-  private fields?: string[];
-  private data?: Map<string, Map<string, object>>;
+  private fields: string[] | null;
+  private data: Map<string, Map<string, object>>;
 
   constructor();
   constructor(fields: string[], data: Map<string, Map<string, object>>);
   constructor(fields?: string[], data?: Map<string, Map<string, object>>) {
     super();
-    this.fields = fields;
-    this.data = data;
+    this.fields = fields || null;
+    this.data = data || new Map<string, Map<string, object>>();
   }
 
   /** @Override */
@@ -26,7 +26,7 @@ export class GraphDataTableImpl extends GraphDataImpl implements GraphDataTable 
     return this.TYPE;
   }
 
-  public fn_graph_data_table_get_fields(): string[] | undefined {
+  public fn_graph_data_table_get_fields(): string[] | null {
     return this.fields;
   }
 
@@ -34,7 +34,7 @@ export class GraphDataTableImpl extends GraphDataImpl implements GraphDataTable 
     this.fields = fields;
   }
 
-  public fn_graph_data_table_get_data(): Map<string, Map<string, object>> | undefined {
+  public fn_graph_data_table_get_data(): Map<string, Map<string, object>> {
     return this.data;
   }
 
