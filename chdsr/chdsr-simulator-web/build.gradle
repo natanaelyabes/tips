@@ -8,7 +8,12 @@ springBoot {
 
 dependencies {
 	compile 'org.springframework.boot:spring-boot-starter-web:2.1.2.RELEASE'
+	implementation project(':chdsr-common')
 	implementation project(':chdsr-model')
 	implementation project(':chdsr-model-analysis')
 	implementation project(':chdsr-simulator')
+	testCompile project(':chdsr-common')
+	testCompile project(':chdsr-model')
+	testCompile project(':chdsr-model-analysis')
+	testCompile project(':chdsr-simulator')
 }

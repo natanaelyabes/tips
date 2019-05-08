@@ -1,3 +1,6 @@
 dependencies {
+	implementation project(':chdsr-common')
 	implementation project(':chdsr-model')
+	testCompile project(':chdsr-common')
+	testCompile project(':chdsr-model')
 }

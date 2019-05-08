@@ -1,3 +1,4 @@
 dependencies {
 	implementation project(':chdsr-common')
+	testCompile project(':chdsr-common')
 }
