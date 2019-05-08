@@ -21,6 +21,7 @@ activemq-data/
 .cache-tests
 
 classes
+!/chdsr/chdsr-simulator-web/src/main/ts/**/classes
 build
 buildSrc/build
 /spring-*/build

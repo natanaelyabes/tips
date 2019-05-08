@@ -298,6 +298,11 @@ import { Graph } from '@/iochord/chdsr/common/graph/interfaces/Graph';
 import { GraphImpl } from '@/iochord/chdsr/common/graph/classes/GraphImpl';
 import { GraphPageImpl } from '../../../common/graph/classes/GraphPageImpl';
 import { GraphPage } from '../../../common/graph/interfaces/GraphPage';
+import { JointGraphPageImpl } from '../../../common/lib/joint/shapes/chdsr/classes/JointGraphPageImpl';
+import { JointGraphNodeImpl } from '../../../common/lib/joint/shapes/chdsr/classes/JointGraphNodeImpl';
+import { NODE_TYPE } from '../../../common/lib/joint/shapes/chdsr/enums/NODE';
+import { JointGraphConnectorImpl } from '../../../common/lib/joint/shapes/chdsr/classes/JointGraphConnectorImpl';
+import { GraphElement } from '../../../common/graph/interfaces/GraphElement';
 
 declare const $: any;
 
@@ -348,7 +353,7 @@ export default class EditorView extends Vue implements ApplicationHasWrapper {
       this.fn_application_set_right_side_menu_bar();
       this.fn_application_set_ribbon_menu_item();
       this.fn_application_set_content();
-      this.initJoint();
+      // this.initJoint();
       this.initDropdown();
       this.initSlider();
       this.testGraphDataStruct();
@@ -370,12 +375,67 @@ export default class EditorView extends Vue implements ApplicationHasWrapper {
     }
   }
 
-  public testGraphDataStruct(): void {
-    axios.post('http://localhost:3000/model/example').then((response: AxiosResponse<any>) => {
-      const graph: Graph = GraphImpl.fn_object_deserialize(response.data);
-      // console.log(`Successfully load CHDSR sample model! CHDSR graph version: ${graph.fn_graph_get_version()}`);
-      console.log(graph);
-    });
+  public async testGraphDataStruct(): Promise<void> {
+    const response = await axios.post('http://164.125.62.132:3000/model/example');
+    const graph: Graph = GraphImpl.fn_object_deserialize(response.data);
+
+    for (const [key, value] of graph.fn_graph_get_pages()) {
+      const jointPage: JointGraphPageImpl = new JointGraphPageImpl();
+      const canvasWidth: number = $('.editor.canvas').innerWidth();
+      const canvasHeight: number = $('.editor.canvas').innerHeight();
+
+      jointPage.fn_graph_element_set_id(value.fn_graph_element_get_id() as string);
+      jointPage.fn_graph_element_set_label(value.fn_graph_element_get_label() as string);
+      jointPage.fn_graph_element_set_type(value.fn_graph_element_get_type() as string);
+      jointPage.fn_graph_element_set_attributes(value.fn_graph_element_get_attributes());
+      jointPage.fn_joint_graph_page_set_graph(new joint.dia.Graph());
+      jointPage.fn_graph_page_set_nodes(value.fn_graph_page_get_nodes());
+      jointPage.fn_graph_page_set_arcs(value.fn_graph_page_get_arcs());
+      jointPage.fn_graph_page_set_data(value.fn_graph_page_get_data());
+      jointPage.fn_joint_graph_page_set_paper(new joint.dia.Paper({
+        el: document.getElementById('canvas'),
+        model: jointPage.fn_joint_graph_page_get_graph(),
+        width: canvasWidth,
+        height: canvasHeight,
+        gridSize: 10,
+        drawGrid: true,
+        defaultAnchor: (endView: joint.dia.ElementView, endMagnet: SVGElement, anchorReference: joint.g.Point, args: { [key: string]: any; }) => {
+          return this.customPerpendicularAnchor(endView, endMagnet, anchorReference, args);
+        },
+        defaultConnectionPoint: { name: 'boundary' },
+        defaultConnector: {
+          name: 'normal',
+        },
+      } as joint.dia.Paper.Options ));
+
+      // for all nodes
+      for (const [nodeKey, nodeValue] of jointPage.fn_graph_page_get_nodes()) {
+        const node = new JointGraphNodeImpl();
+        node.fn_graph_element_set_id(nodeValue.fn_graph_element_get_id() as string);
+        node.fn_graph_element_set_label(nodeValue.fn_graph_element_get_label() as string);
+        node.fn_graph_element_set_type((nodeValue as any)['elementType'] as string);
+        node.fn_graph_element_set_attributes(nodeValue.fn_graph_element_get_attributes());
+        node.fn_joint_graph_element_set_position({ x: 300, y: 250 });
+        node.fn_joint_graph_element_set_size((NODE_TYPE as any)[(nodeValue as any)['elementType']].size);
+        node.fn_joint_graph_element_set_markup((NODE_TYPE as any)[(nodeValue as any)['elementType']].markup);
+        node.fn_joint_graph_element_set_attr((NODE_TYPE as any)[(nodeValue as any)['elementType']].attr);
+
+        // render node
+        node.fn_joint_graph_element_render(jointPage.fn_joint_graph_page_get_graph());
+      }
+
+      // for all connectors
+      for (const [arcKey, arcValue] of jointPage.fn_graph_page_get_arcs()) {
+        const arc = new JointGraphConnectorImpl();
+        arc.fn_graph_element_set_id(arcValue.fn_graph_element_get_id() as string);
+        arc.fn_graph_element_set_label(arcValue.fn_graph_element_get_label() as string);
+        arc.fn_graph_element_set_type((arcValue as any)['elementType'] as string);
+        arc.fn_graph_element_set_attributes(arcValue.fn_graph_element_get_attributes());
+        arc.fn_graph_connector_set_source(arcValue.fn_graph_connector_get_source() as JointGraphNodeImpl);
+        arc.fn_graph_connector_set_target(arcValue.fn_graph_connector_get_target() as JointGraphNodeImpl);
+        arc.fn_joint_graph_element_render(jointPage.fn_joint_graph_page_get_graph());
+      }
+    }
   }
 
   public showUploadFileModal(): void {
@@ -516,7 +576,6 @@ export default class EditorView extends Vue implements ApplicationHasWrapper {
     } as joint.dia.Paper.Options);
 
     this.minimap = new joint.shapes.chdsr.JointGraphModel({
-      // el: document.getElementById('canvas-minimap'),
       el: document.getElementById('canvas-minimap'),
       model: this.page,
       width: canvasWidth * 20 / 100,
