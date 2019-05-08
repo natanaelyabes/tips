@@ -18,6 +18,7 @@ cache:
 build:
   stage: build
   script:
+    - chmod +x ./chdsr/gradlew
     - ./chdsr/gradlew assemble
   artifacts:
     paths:
@@ -29,11 +30,13 @@ build:
 test:
   stage: test
   script:
+    - chmod +x ./chdsr/gradlew
     - ./chdsr/gradlew check
 
 deploy:
   stage: deploy
   script:
+    - chmod +x ./chdsr/gradlew
     - ./chdsr/deploy
 
 after_script:
