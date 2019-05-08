@@ -373,8 +373,8 @@ export default class EditorView extends Vue implements ApplicationHasWrapper {
   public testGraphDataStruct(): void {
     axios.post('http://localhost:3000/model/example').then((response: AxiosResponse<any>) => {
       const graph: Graph = GraphImpl.fn_object_deserialize(response.data);
-      console.log(`Successfully load CHDSR sample model! CHDSR graph version: ${graph.fn_graph_get_version()}`);
-      // graph!.fn_graph_get_pages()!;
+      // console.log(`Successfully load CHDSR sample model! CHDSR graph version: ${graph.fn_graph_get_version()}`);
+      console.log(graph);
     });
   }
 
