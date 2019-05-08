@@ -18,11 +18,11 @@ export class GraphStartEventNodeImpl extends GraphEventNodeImpl implements Graph
     return graphStartEventNode;
   }
 
-  private generator?: GraphDataGenerator;
+  private generator: GraphDataGenerator | null;
 
   constructor(generator?: GraphDataGenerator) {
     super();
-    this.generator = generator;
+    this.generator = generator || null;
   }
 
   /** @Override */
@@ -30,7 +30,7 @@ export class GraphStartEventNodeImpl extends GraphEventNodeImpl implements Graph
     return this.TYPE;
   }
 
-  public fn_graph_start_event_node_get_generator(): GraphDataGenerator | undefined {
+  public fn_graph_start_event_node_get_generator(): GraphDataGenerator | null {
     return this.generator;
   }
 

@@ -17,15 +17,15 @@ export class GraphDataResourceImpl extends GraphDataImpl implements GraphDataRes
     return graphDataResource;
   }
 
-  private groupId?: string;
-  private data?: GraphDataTable;
+  private groupId: string | null;
+  private data: GraphDataTable | null;
 
   constructor();
   constructor(groupId: string, data: GraphDataTable);
   constructor(groupId?: string, data?: GraphDataTable) {
     super();
-    this.groupId = groupId;
-    this.data = data;
+    this.groupId = groupId || null;
+    this.data = data || null;
   }
 
   /** @Override */
@@ -33,7 +33,7 @@ export class GraphDataResourceImpl extends GraphDataImpl implements GraphDataRes
     return this.TYPE;
   }
 
-  public fn_graph_data_resource_get_group_id(): string | undefined {
+  public fn_graph_data_resource_get_group_id(): string | null {
     return this.groupId;
   }
 
@@ -41,7 +41,7 @@ export class GraphDataResourceImpl extends GraphDataImpl implements GraphDataRes
     this.groupId = groupId;
   }
 
-  public fn_graph_data_resource_get_data(): GraphDataTable | undefined {
+  public fn_graph_data_resource_get_data(): GraphDataTable | null {
     return this.data;
   }
 

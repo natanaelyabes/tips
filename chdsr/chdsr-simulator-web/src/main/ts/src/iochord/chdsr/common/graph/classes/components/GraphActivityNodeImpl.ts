@@ -29,25 +29,25 @@ export class GraphActivityNodeImpl extends GraphNodeImpl implements GraphActivit
     return graphActivityNode;
   }
 
-  private type?: ACTIVITY_TYPE;
-  private resource?: GraphDataResource;
-  private queue?: GraphDataQueue;
-  private function?: GraphDataFunction;
-  private setupTimeExpression?: string;
-  private processingTimeExpression?: string;
-  private unit?: number;
+  private type: ACTIVITY_TYPE | null;
+  private resource: GraphDataResource | null;
+  private queue: GraphDataQueue | null;
+  private function: GraphDataFunction | null;
+  private setupTimeExpression: string | null;
+  private processingTimeExpression: string | null;
+  private unit: number | null;
 
   constructor();
   constructor(type: ACTIVITY_TYPE, resource: GraphDataResource, queue: GraphDataQueue, func: GraphDataFunction, setupTimeExpression: string, processingTimeExpression: string, unit: number);
   constructor(type?: ACTIVITY_TYPE, resource?: GraphDataResource, queue?: GraphDataQueue, func?: GraphDataFunction, setupTimeExpression?: string, processingTimeExpression?: string, unit?: number) {
     super();
-    this.type = type;
-    this.resource = resource;
-    this.queue = queue;
-    this.function = func;
-    this.setupTimeExpression = setupTimeExpression;
-    this.processingTimeExpression = processingTimeExpression;
-    this.unit = unit;
+    this.type = type || null;
+    this.resource = resource || null;
+    this.queue = queue || null;
+    this.function = func || null;
+    this.setupTimeExpression = setupTimeExpression || null;
+    this.processingTimeExpression = processingTimeExpression || null;
+    this.unit = unit || null;
   }
 
   /** @Override */
@@ -55,7 +55,7 @@ export class GraphActivityNodeImpl extends GraphNodeImpl implements GraphActivit
     return this.TYPE;
   }
 
-  public fn_graph_activity_node_get_type(): ACTIVITY_TYPE | undefined {
+  public fn_graph_activity_node_get_type(): ACTIVITY_TYPE | null {
     return this.type;
   }
 
@@ -63,7 +63,7 @@ export class GraphActivityNodeImpl extends GraphNodeImpl implements GraphActivit
     this.type = type;
   }
 
-  public fn_graph_activity_node_get_resource(): GraphDataResource | undefined {
+  public fn_graph_activity_node_get_resource(): GraphDataResource | null {
     return this.resource;
   }
 
@@ -71,7 +71,7 @@ export class GraphActivityNodeImpl extends GraphNodeImpl implements GraphActivit
     this.resource = resource;
   }
 
-  public fn_graph_activity_node_get_queue(): GraphDataQueue | undefined {
+  public fn_graph_activity_node_get_queue(): GraphDataQueue | null {
     return this.queue;
   }
 
@@ -79,7 +79,7 @@ export class GraphActivityNodeImpl extends GraphNodeImpl implements GraphActivit
     this.queue = queue;
   }
 
-  public fn_graph_activity_node_get_function(): GraphDataFunction | undefined {
+  public fn_graph_activity_node_get_function(): GraphDataFunction | null {
     return this.function;
   }
 
@@ -87,7 +87,7 @@ export class GraphActivityNodeImpl extends GraphNodeImpl implements GraphActivit
     this.function = func;
   }
 
-  public fn_graph_activity_node_get_setup_time_expression(): string | undefined {
+  public fn_graph_activity_node_get_setup_time_expression(): string | null {
     return this.setupTimeExpression;
   }
 
@@ -95,7 +95,7 @@ export class GraphActivityNodeImpl extends GraphNodeImpl implements GraphActivit
     this.setupTimeExpression = setupTimeExpression;
   }
 
-  public fn_graph_activity_node_get_processing_time_expression(): string | undefined {
+  public fn_graph_activity_node_get_processing_time_expression(): string | null {
     return this.processingTimeExpression;
   }
 
@@ -103,7 +103,7 @@ export class GraphActivityNodeImpl extends GraphNodeImpl implements GraphActivit
     this.processingTimeExpression = processingTimeExpression;
   }
 
-  public fn_graph_activity_node_get_unit(): number | undefined {
+  public fn_graph_activity_node_get_unit(): number | null {
     return this.unit;
   }
 
