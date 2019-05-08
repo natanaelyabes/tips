@@ -11,7 +11,7 @@ allprojects {
 	repositories {
 		mavenCentral()
 		flatDir {
-			dir 'X:/opt/scalaide/plugins'
+			dir '/opt/scalaide/plugins'
 		}
 	}   
 	
