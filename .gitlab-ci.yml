@@ -1,44 +1,32 @@
-image: java:8-jdk
+image: gradle:alpine
+
+variables:
+  GRADLE_OPTS: "-Dorg.gradle.daemon=false"
+
+before_script:
+  - cd ./chdsr
+  - export GRADLE_USER_HOME=`pwd`/.gradle
 
 stages:
   - build
   - test
-  - deploy
-
-before_script:
-#  - echo `pwd` # debug
-#  - echo "$CI_BUILD_NAME, $CI_BUILD_REF_NAME $CI_BUILD_STAGE" # debug
-  - export GRADLE_USER_HOME=`pwd`/.gradle
-  - cd ./chdsr
-
-cache:
-  paths:
-    - .chdsr/gradle/wrapper
-    - .chdsr/gradle/caches
 
 build:
   stage: build
-  script:
-    - chmod +x gradlew
-    - ./gradlew assemble
-  artifacts:
+  script: ./gradlew --build-cache assemble
+  cache:
+    key: "$CI_COMMIT_REF_NAME"
+    policy: push
     paths:
-      - build/libs/*.jar
-    expire_in: 1 week
-#  only:
-#    - master
+      - build
+      - .gradle
 
 test:
   stage: test
-  script:
-    - chmod +x ./gradlew
-    - ./chdsr/gradlew check
-
-deploy:
-  stage: deploy
-  script:
-    - chmod +x ./chdsr/gradlew
-    - ./chdsr/deploy
-
-after_script:
-  - echo "End CI"
+  script: ./gradlew check
+  cache:
+    key: "$CI_COMMIT_REF_NAME"
+    policy: pull
+    paths:
+      - build
+      - .gradle
