@@ -12,14 +12,15 @@ before_script:
 
 cache:
   paths:
-    - .chdsr/gradle/wrapper
-    - .chdsr/gradle/caches
+    - ./chdsr/gradle/wrapper
+    - ./chdsr/gradle/caches
 
 build:
   stage: build
   script:
-    - chmod +x ./chdsr/gradlew
-    - ./chdsr/gradlew assemble
+    - cd ./chdsr
+    - chmod +x gradlew
+    - gradlew assemble
   artifacts:
     paths:
       - build/libs/*.jar
@@ -30,14 +31,16 @@ build:
 test:
   stage: test
   script:
-    - chmod +x ./chdsr/gradlew
-    - ./chdsr/gradlew check
+    - cd ./chdsr
+    - chmod +x gradlew
+    - gradlew check
 
 deploy:
   stage: deploy
   script:
-    - chmod +x ./chdsr/gradlew
-    - ./chdsr/deploy
+    - cd ./chdsr
+    - chmod +x gradlew
+    - deploy
 
 after_script:
   - echo "End CI"
