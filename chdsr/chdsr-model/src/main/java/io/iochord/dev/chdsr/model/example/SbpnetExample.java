@@ -19,26 +19,31 @@ import io.iochord.dev.chdsr.model.sbpnet.v1.impl.PageImpl;
 import io.iochord.dev.chdsr.model.sbpnet.v1.impl.SbpnetFactoryImpl;
 import io.iochord.dev.chdsr.model.sbpnet.v1.impl.SbpnetImpl;
 
+/**
+ * Example SBPNet Model
+ * 
+ * @author Iq Reviessay Pulshashi <pulshashi@ideas.web.id>
+ *
+ */
 public class SbpnetExample {
-
 	public static Sbpnet create() {
 		SbpnetFactory factory = SbpnetFactoryImpl.getInstance();
 		SbpnetImpl net = (SbpnetImpl) factory.create();
-		
+
 		PageImpl page = (PageImpl) net.getPages().values().iterator().next();
 		ObjectTypeImpl cust = (ObjectTypeImpl) factory.addObjectType(page);
 		cust.setLabel("Customer");
-		
+
 		GeneratorImpl custMu = (GeneratorImpl) factory.addGenerator(page);
 		custMu.setLabel(cust.getLabel() + " MU");
 		custMu.setObjectType(cust);
 		custMu.setExpression("Exp(20");
 		custMu.setUnit(TimeUnit.MINUTES);
 		custMu.setMaxArrival(100);
-		
+
 		StartImpl start = (StartImpl) factory.addStart(page);
 		start.setGenerator(custMu);
-		
+
 		QueueImpl qTeller = (QueueImpl) factory.addQueue(page);
 		qTeller.setLabel("Teller Queue");
 		qTeller.setSize(35);
@@ -51,7 +56,7 @@ public class SbpnetExample {
 		actTeller.setResource(resTeller);
 		actTeller.setProcessingTimeExpression("constant(5,35)");
 		actTeller.setUnit(TimeUnit.MINUTES);
-		
+
 		QueueImpl qATM = (QueueImpl) factory.addQueue(page);
 		qATM.setLabel("ATM Queue");
 		qATM.setSize(-1);
@@ -64,21 +69,21 @@ public class SbpnetExample {
 		actATM.setResource(resATM);
 		actATM.setProcessingTimeExpression("constant(5,15)");
 		actATM.setUnit(TimeUnit.MINUTES);
-		
+
 		StopImpl end = (StopImpl) factory.addStop(page);
-		
+
 		BranchImpl xorSplit1 = (BranchImpl) factory.addBranch(page);
 		xorSplit1.setType(BRANCH_TYPE.XOR_SPLIT);
-		
+
 		BranchImpl xorSplit2 = (BranchImpl) factory.addBranch(page);
 		xorSplit2.setType(BRANCH_TYPE.XOR_SPLIT);
-		
+
 		BranchImpl xorJoin1 = (BranchImpl) factory.addBranch(page);
 		xorJoin1.setType(BRANCH_TYPE.XOR_JOIN);
 
 		BranchImpl xorJoin2 = (BranchImpl) factory.addBranch(page);
 		xorJoin1.setType(BRANCH_TYPE.XOR_JOIN);
-		
+
 		factory.addConnector(page, start, xorSplit1);
 		ConnectorImpl arc1 = (ConnectorImpl) factory.addConnector(page, xorSplit1, xorJoin1);
 		arc1.getAttributes().put("condition", "<0.4");
@@ -95,8 +100,7 @@ public class SbpnetExample {
 
 		factory.addConnector(page, actTeller, xorJoin2);
 		factory.addConnector(page, xorJoin2, end);
-		
+
 		return net;
 	}
-	
 }

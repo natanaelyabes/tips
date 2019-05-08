@@ -11,8 +11,11 @@ import io.iochord.dev.chdsr.model.sbpnet.v1.components.Control;
 import lombok.Getter;
 import lombok.Setter;
 
+/**
+ * @author Iq Reviessay Pulshashi <pulshashi@ideas.web.id>
+ *
+ */
 public class SbpnetImpl extends ElementImpl implements Sbpnet {
-
 	@Getter
 	private final String version = "1.0";
 
@@ -30,7 +33,7 @@ public class SbpnetImpl extends ElementImpl implements Sbpnet {
 	@Getter
 	@Setter
 	private Control control;
-	
+
 	@Getter
 	@Setter
 	private Map<String, Data> data = new LinkedHashMap<>();

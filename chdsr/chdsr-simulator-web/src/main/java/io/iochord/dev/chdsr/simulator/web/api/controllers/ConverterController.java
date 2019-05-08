@@ -3,6 +3,10 @@ package io.iochord.dev.chdsr.simulator.web.api.controllers;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+/**
+ * @author Iq Reviessay Pulshashi <pulshashi@ideas.web.id>
+ *
+ */
 // TODO: Converter Controller
 @RestController
 public class ConverterController extends AServiceController {

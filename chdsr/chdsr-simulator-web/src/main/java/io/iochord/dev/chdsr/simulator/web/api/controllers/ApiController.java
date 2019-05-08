@@ -9,9 +9,12 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.mvc.method.RequestMappingInfo;
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
 
+/**
+ * @author Iq Reviessay Pulshashi <pulshashi@ideas.web.id>
+ *
+ */
 @RestController
 public class ApiController extends AServiceController {
-
 	public static final String BASE_URI = AServiceController.BASE_URI + "";
 	private final RequestMappingHandlerMapping handlerMapping;
 
@@ -28,5 +31,4 @@ public class ApiController extends AServiceController {
 		}
 		return result;
 	}
-
 }
