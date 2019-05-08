@@ -82,7 +82,7 @@ class Multiset[T] (val multiset: Map[(T,Long), Int], colset: Class[_]) {
     }
   }
     
-  def +(n: Int, elem: (T,Long)): Multiset[T] = {
+  def +(elem: (T,Long), n: Int): Multiset[T] = {
     val ms = multiset
     var count = n
     if (ms.contains(elem)) 
@@ -96,9 +96,9 @@ class Multiset[T] (val multiset: Map[(T,Long), Int], colset: Class[_]) {
     new Multiset(ms, colset)
   }
   
-  def +(elem: (T,Long)): Multiset[T] = this + (1, elem)
+  def +(elem: (T,Long)): Multiset[T] = this + (elem, 1)
 
-  def -(elem: (T,Long)) = this + (-1, elem)
+  def -(elem: (T,Long)) = this + (elem, -1)
 
-  def -(n: Int, elem: (T,Long)) = this + (-n, elem)
+  def -(elem: (T,Long), n: Int) = this + (elem, -n)
 }
