@@ -65,6 +65,7 @@ class Multiset[T] (val multiset: Map[(T,Long), Int], colset: Class[_]) {
               ms = ms + (el -> nc)
             else
               ms = ms - el
+          case None => ms
         }
       }
       new Multiset(ms, colset)
