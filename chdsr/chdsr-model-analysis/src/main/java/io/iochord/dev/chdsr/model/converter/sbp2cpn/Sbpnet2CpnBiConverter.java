@@ -1,12 +1,7 @@
 package io.iochord.dev.chdsr.model.converter.sbp2cpn;
 
-import java.util.List;
-
 import io.iochord.dev.chdsr.model.converter.Converter;
-import io.iochord.dev.chdsr.model.cpn.v1.impl.Arc;
 import io.iochord.dev.chdsr.model.cpn.v1.impl.CPNGraph;
-import io.iochord.dev.chdsr.model.cpn.v1.impl.Direction;
-import io.iochord.dev.chdsr.model.cpn.v1.impl.Multiset;
 import io.iochord.dev.chdsr.model.cpn.v1.impl.Place;
 import io.iochord.dev.chdsr.model.cpn.v1.impl.Transition;
 import io.iochord.dev.chdsr.model.sbpnet.v1.Data;
@@ -41,7 +36,7 @@ public class Sbpnet2CpnBiConverter implements Converter<Sbpnet, CPNGraph> {
 			for (String di : p.getData().keySet()) {
 				Data d = p.getData().get(di);
 				if (d instanceof ObjectType) {
-
+					
 				}
 				if (d instanceof Generator) {
 					Generator dg = (Generator) d;
