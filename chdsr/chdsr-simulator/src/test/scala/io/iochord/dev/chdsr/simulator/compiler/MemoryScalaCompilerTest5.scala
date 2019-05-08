@@ -5,7 +5,8 @@ import io.iochord.dev.chdsr.model.cpn.v1._
 
 import scala.collection.mutable.Map
 
-object MemoryScalaCompilerTest3 {
+object MemoryScalaCompilerTest5 {
+  //example if var only determined by 1 arc only
   
   def main(args: Array[String]) {
     
@@ -34,25 +35,28 @@ object MemoryScalaCompilerTest3 {
     val ms2 = new Multiset[colset1](Map[(colset1,Long),Int](), "Person")
     ms2 + (((1,"Amg"),2L))
     ms2 + (((3,"Test"),2L))
+    ms2 + (((4,"Test"),2L))
     ms2 + (((5,"Ferari"),2L))
     ms2 + (((6,"Lambo"),2L))
     
     val pplace2 = new Place("id2","woo2",ms2)
     
-    case class Bind1(x:Option[Int],y:Option[String]) extends Bind
+    case class Bind1(x:Option[Int],y:Option[String],z:Option[Int]) extends Bind
     
     //for 1st arc from place1
     def bindarc(arcins:Any => Bind1, token:Any):Bind1 = {
       arcins(token)
     }
     
-    val lbe1 = pplace1.getcurrentMarking().multiset.keys.map(token => token match {      
-        case colset1 => Bind1(Some(token._1._1), Some(token._1._2))
+    var globtime = 100
+    
+    val lbe1 = pplace1.getcurrentMarking().multiset.keys.filter(_._2 < globtime).map(token => token match {      
+        case colset1 => Bind1(Some(token._1._1), Some(token._1._2), None)
       }
     ).toList
     
-    val lbe2 = pplace2.getcurrentMarking().multiset.keys.map(token => token match {      
-        case colset1 => Bind1(Some(token._1._1), Some(token._1._2))
+    val lbe2 = pplace2.getcurrentMarking().multiset.keys.filter(_._2 < globtime).map(token => token match {      
+        case colset1 => Bind1(None, Some(token._1._2), Some(token._1._1))
       }
     ).toList
     
@@ -63,14 +67,15 @@ object MemoryScalaCompilerTest3 {
     val x_arc1 = (inp: Int) => inp
     val y_arc1 = (inp: String) => inp
     //arc2
-    val x_arc2 = (inp: Int) => (2*inp)
+    val z_arc2 = (inp: Int) => inp
     val y_arc2 = (inp: String) => inp
     
-    val eval_bind = (b1: Bind1, b2: Bind1) => { b1.x.map(inp => x_arc2(inp)) == b2.x.map(inp => x_arc2(inp)) && b1.y.map(inp => y_arc2(inp)) == b2.y.map(inp => y_arc2(inp)) }
+    val eval_bind = (b1: Bind1, b2: Bind1) => { b1.y.map(inp => y_arc2(inp)) == b2.y.map(inp => y_arc1(inp)) }
     val merge_bind = (b1: Bind1, b2: Bind1) => {
       val x = if (b1.x == None) b2.x else b1.x
       val y = if (b1.y == None) b2.y else b1.y
-      new Bind1(x,y)
+      val z = if (b1.z == None) b2.z else b1.z
+      new Bind1(x,y,z)
     }
     
     def combineBind[B <: Bind](eval: (B, B) => Boolean, merge: (B, B) => B,bes1: List[B], bes2: List[B]) =
@@ -82,6 +87,13 @@ object MemoryScalaCompilerTest3 {
     val merge = combineBind(eval_bind,merge_bind,lbe1,lbe2)
     
     for (be <- merge) println(be.x +" - "+be.y)
+    
+    def guard_bind[B <: Bind](eval: List[B] => Boolean, inp: List[B]): Boolean = {
+      eval(inp)
+    }
+    
+    println(guard_bind[Bind1](listb => listb.exists(be => be.x.map(_ >= 3).get),merge))
+    
     /*
     val ttrans1 = new Transition("tr1","ya", new Guard())
     //ttrans1.getGuard().cond1[BB](testh2,bb1)
