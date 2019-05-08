@@ -22,20 +22,20 @@ object MemoryScalaCompilerTest4 {
       "class Coba1 { val varc1 = \"other test\" }\n"+
     "}";
     
-    type colset1 = (Int,String)
+    type colset1 = (Int,String) //for example this colset type is person
     
-    val ms1 = new Multiset[colset1](Map[(colset1,Long),Int]())
+    val ms1 = new Multiset[colset1](Map[(colset1,Long),Int](), "Person")
     ms1 + (((1,"Bert"),2L))
     ms1 + (((2,"Bum"),2L))
     ms1 + (((3,"Test"),2L))
     
     val pplace1 = new Place("id1","woo1",ms1)
     
-    val ms2 = new Multiset[colset1](Map[(colset1,Long),Int]())
+    val ms2 = new Multiset[colset1](Map[(colset1,Long),Int](), "Person")
     ms2 + (((1,"Amg"),2L))
     ms2 + (((3,"Test"),2L))
     ms2 + (((5,"Ferari"),2L))
-    ms2 + (((6,"Lambo"),2L))
+    ms2 + (((6,"Test"),2L))
     
     val pplace2 = new Place("id2","woo2",ms2)
     
@@ -66,7 +66,8 @@ object MemoryScalaCompilerTest4 {
     val x_arc2 = (inp: Int) => (2*inp)
     val y_arc2 = (inp: String) => inp
     
-    val eval_bind = (b1: Bind1, b2: Bind1) => { b1.x.map(inp => x_arc2(inp)) == b2.x.map(inp => x_arc2(inp)) && b1.y.map(inp => y_arc2(inp)) == b2.y.map(inp => y_arc2(inp)) }
+    //eval for function should be always start with base place using other function arc place in the same binding (var)
+    val eval_bind = (b1: Bind1, b2: Bind1) => { b1.x.map(inp => x_arc2(inp)) == b2.x.map(inp => x_arc1(inp)) && b1.y.map(inp => y_arc2(inp)) == b2.y.map(inp => y_arc1(inp)) }
     val merge_bind = (b1: Bind1, b2: Bind1) => {
       val x = if (b1.x == None) b2.x else b1.x
       val y = if (b1.y == None) b2.y else b1.y

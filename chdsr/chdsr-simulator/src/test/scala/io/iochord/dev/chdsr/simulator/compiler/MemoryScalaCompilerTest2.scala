@@ -24,14 +24,14 @@ object MemoryScalaCompilerTest2 {
     
     type colset1 = (Int,String)
     
-    val ms1 = new Multiset[colset1](Map[(colset1,Long),Int]())
+    val ms1 = new Multiset[colset1](Map[(colset1,Long),Int](), "Person")
     ms1 + (((1,""),2L))
     ms1 + (((2,""),2L))
     ms1 + (((3,""),2L))
     
     val pplace1 = new Place("id1","woo1",ms1)
     
-    val ms2 = new Multiset[colset1](Map[(colset1,Long),Int]())
+    val ms2 = new Multiset[colset1](Map[(colset1,Long),Int](), "Person")
     ms2 + (((1,""),2L))
     ms2 + (((3,""),2L))
     ms2 + (((5,""),2L))
