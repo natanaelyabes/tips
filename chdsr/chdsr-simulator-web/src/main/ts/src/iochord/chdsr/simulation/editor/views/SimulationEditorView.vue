@@ -296,6 +296,8 @@ import { ApplicationEnum, BaseUrlEnum } from '@/iochord/chdsr/common/enums/index
 import { GraphControlImpl } from '../../../common/graph/classes/components/GraphControlImpl';
 import { Graph } from '@/iochord/chdsr/common/graph/interfaces/Graph';
 import { GraphImpl } from '@/iochord/chdsr/common/graph/classes/GraphImpl';
+import { GraphPageImpl } from '../../../common/graph/classes/GraphPageImpl';
+import { GraphPage } from '../../../common/graph/interfaces/GraphPage';
 
 declare const $: any;
 
@@ -371,7 +373,8 @@ export default class EditorView extends Vue implements ApplicationHasWrapper {
   public testGraphDataStruct(): void {
     axios.post('http://localhost:3000/model/example').then((response: AxiosResponse<any>) => {
       const graph: Graph = GraphImpl.fn_object_deserialize(response.data);
-      console.log(graph);
+      console.log(`Successfully load CHDSR sample model! CHDSR graph version: ${graph.fn_graph_get_version()}`);
+      // graph!.fn_graph_get_pages()!;
     });
   }
 
