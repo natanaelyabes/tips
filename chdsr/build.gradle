@@ -74,7 +74,7 @@ allprojects {
 	
 	artifactory {
     	publish {
-        	contextUrl = 'http://artifactory.apps.babcloud.com:31080/artifactory'
+        	contextUrl = 'http://artifactory.apps.babcloud.com/artifactory'
 	        repository {
 	            repoKey = "libs-snapshot-local"
 	            username = "admin"
