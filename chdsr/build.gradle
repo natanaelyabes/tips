@@ -1,3 +1,7 @@
+plugins {
+	id 'com.jfrog.artifactory' version '4.9.6'
+}
+
 allprojects {
 	ext {
 		// Development mode using Scala IDE
@@ -7,6 +11,8 @@ allprojects {
 
 	apply plugin: 'java'
 	apply plugin: 'scala'
+	apply plugin: 'com.jfrog.artifactory'
+	apply plugin: 'maven-publish'
 	
 	repositories {
 		mavenCentral()
@@ -15,9 +21,8 @@ allprojects {
 		}
 	}   
 	
-	version {
-		
-	}
+	version = '0.0.1-SNAPSHOT'
+	group = 'io.iochord.dev.chdsr'
 	
 	dependencies {
 		compile 'com.fasterxml.jackson.core:jackson-databind:2.9.8'
@@ -63,4 +68,24 @@ allprojects {
 	test {
 		ignoreFailures = true
 	}
+	
+	artifactory {
+    	publish {
+        	contextUrl = 'http://artifactory.apps.babcloud.com/artifactory'
+	        repository {
+	            repoKey = "libs-snapshot-local"
+	            username = "admin"
+	            password = "password"
+	        }
+		    defaults {
+	            publications('mavenJava')
+	            publishArtifacts = true
+	            properties = ['qa.level': 'basic', 'dev.team' : 'core']
+	            publishPom = true // Publish generated POM files to Artifactory (true by default)
+	            publishIvy = true // Publish generated Ivy descriptor files to Artifactory (true by default)
+	        }
+		}
+    }
+
 }
+

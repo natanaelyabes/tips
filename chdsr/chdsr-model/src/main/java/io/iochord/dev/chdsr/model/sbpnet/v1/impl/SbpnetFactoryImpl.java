@@ -103,7 +103,7 @@ public class SbpnetFactoryImpl implements SbpnetFactory {
 			if (getDataImplementations().containsKey(dt)) {
 				try {
 					DataImpl data = (DataImpl) getDataImplementations().get(dt).getConstructors()[0].newInstance();
-					data.setId(page.getId() + "-" + String.valueOf(page.getData().size()));
+					data.setId(page.getId() + "-" + dataType + "-" + String.valueOf(page.getData().size()));
 					page.getData().put(data.getId(), data);
 					return data;
 				} catch (Exception e) {
@@ -121,7 +121,7 @@ public class SbpnetFactoryImpl implements SbpnetFactory {
 			if (getNodeImplementations().containsKey(nt)) {
 				try {
 					NodeImpl node = (NodeImpl) getNodeImplementations().get(nt).getConstructors()[0].newInstance();
-					node.setId(page.getId() + "-" + String.valueOf(page.getNodes().size()));
+					node.setId(page.getId() + "-" + nodeType + "-" + String.valueOf(page.getNodes().size()));
 					page.getNodes().put(node.getId(), node);
 					return node;
 				} catch (Exception e) {

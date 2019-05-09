@@ -4,6 +4,7 @@ import java.util.Set;
 import java.util.TreeSet;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.mvc.method.RequestMappingInfo;
@@ -14,6 +15,7 @@ import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandl
  *
  */
 @RestController
+@CrossOrigin
 public class ApiController extends AServiceController {
 	public static final String BASE_URI = AServiceController.BASE_URI + "";
 	private final RequestMappingHandlerMapping handlerMapping;

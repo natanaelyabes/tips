@@ -22,14 +22,20 @@ public interface Activity extends Node {
 	ACTIVITY_TYPE getType();
 
 	Resource getResource();
+	
+	ResourceSelectionMethod getResourceSelectionMethod();
 
 	Queue getQueue();
 
 	Function getFunction();
 
-	String getSetupTimeExpression();
+	DistributionType getSetupTime();
+	
+	String getSetupTimeParameter();
 
-	String getProcessingTimeExpression();
+	DistributionType getProcessingTime();
+
+	String getProcessingTimeParameter();
 
 	TimeUnit getUnit();
 }

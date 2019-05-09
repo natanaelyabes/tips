@@ -1,0 +1,10 @@
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            from components.java
+            artifact(file("$rootDir/${artifactId}/build/libs/${artifactId}-${version}.jar"))
+        }
+    }
+}
+

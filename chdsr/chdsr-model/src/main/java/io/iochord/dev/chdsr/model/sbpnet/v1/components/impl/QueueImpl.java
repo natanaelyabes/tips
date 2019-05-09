@@ -15,13 +15,13 @@ public class QueueImpl extends DataImpl implements Queue {
 
 	@Getter
 	@Setter
-	private QUEUE_TYPE type;
+	private QUEUE_TYPE type = QUEUE_TYPE.FIFO;
 
 	@Getter
 	@Setter
-	private int size;
+	private int size = 1;
 
 	@Getter
 	@Setter
-	private boolean shared;
+	private boolean shared = false;
 }
