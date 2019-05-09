@@ -10,7 +10,7 @@ import scala.util.control.Breaks._
 //Example class to check binding using exhaustive search not recommended for var type with large combination
 //In cpntools small colset s colset wth type with combination less than 10
 
-object MemoryScalaCompilerTest6 {
+object SimulationTestRunWithBinding {
 
   var x:Int = _
   var y:String = _

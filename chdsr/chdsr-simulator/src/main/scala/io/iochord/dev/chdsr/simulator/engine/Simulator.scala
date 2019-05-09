@@ -8,7 +8,7 @@ object Simulator {
   val globTime:Long = 0
   
   private def enabledTransitions(transitions: List[Transition]) = {
-    transitions
+    transitions.filter(_.isEnabled())
   }
 
   def enabledBindings(transitions: List[Transition]) = enabledTransitions(transitions).size > 0

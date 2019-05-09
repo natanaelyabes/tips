@@ -15,6 +15,8 @@ class Arc[T] (
   
   extends Element {
   
+  var evalArcExp:T => T = null
+  
   def getPlace(): Place[T] = { place }
   
   def setPlace(place:Place[T]) = { this.place = place }
@@ -27,5 +29,7 @@ class Arc[T] (
   
   def setId(id: String) { this.id = id }
   
-  def setArcExp[M](evalArcExp:M => T, inp:M):T = { evalArcExp(inp) }
+  def setArcExp(evalArcExp:T => T) = { this.evalArcExp = evalArcExp }
+  
+  def transArcExp(inp:T):T = { evalArcExp(inp) }
 }
