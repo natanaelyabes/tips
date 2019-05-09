@@ -61,12 +61,12 @@
               </div>
               Branch
             </a>
-            <div class="ui basic button item">
+            <a class="ui basic button item">
               <div class="image-icon">
                 <img src="@/assets/images/icons/simulation_editor_icon/toolbox/toolbox_connector.png" alt="" class="ui centered image" />
               </div>
               Connector
-            </div>
+            </a>
           </div>
         </div>
         <div class="item">
@@ -189,7 +189,7 @@
       <template v-if="modelPaneIsOpen" slot="application-right-sidebar-menu-item">
         <div class="ui basic segment" style="width: 260px">
           <h2>Model Pane</h2>
-          <!-- <div id="canvas-minimap"></div> -->
+          <div id="minimap"></div>
 
         </div>
       </template>
@@ -260,14 +260,16 @@ i.big.icon {
   right: 11px;
 }
 
-#canvas-minimap {
+#minimap {
   cursor: pointer;
   box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
   border: 1px solid black;
   transition: all 0.3s cubic-bezier(.25,.8,.25,1);
+  width: 100%;
+  height: 100%;
 }
 
-#canvas-minimap:hover {
+#minimap:hover {
   box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
 }
 </style>
@@ -392,9 +394,14 @@ export default class EditorView extends Vue implements ApplicationHasWrapper {
   }
 
   public async testGraphDataStruct(): Promise<void> {
+
+    // Load the model
     const response = await axios.post('http://164.125.62.132:3000/model/example');
+
+    // Deserialize the model
     const graph: Graph = GraphImpl.fn_object_deserialize(response.data);
 
+    // Loop the model page
     for (const [key, value] of graph.fn_graph_get_pages()) {
       const jointPage: JointGraphPageImpl = new JointGraphPageImpl();
       const canvasWidth: number = $('.editor.canvas').innerWidth();
@@ -408,6 +415,7 @@ export default class EditorView extends Vue implements ApplicationHasWrapper {
       jointPage.fn_graph_page_set_nodes(value.fn_graph_page_get_nodes());
       jointPage.fn_graph_page_set_arcs(value.fn_graph_page_get_arcs());
       jointPage.fn_graph_page_set_data(value.fn_graph_page_get_data());
+
       jointPage.fn_joint_graph_page_set_paper(new joint.dia.Paper({
         el: document.getElementById('canvas'),
         model: jointPage.fn_joint_graph_page_get_graph(),
@@ -427,6 +435,18 @@ export default class EditorView extends Vue implements ApplicationHasWrapper {
         },
       } as joint.dia.Paper.Options ));
 
+      jointPage.fn_joint_graph_page_set_minimap(new joint.dia.Paper({
+        el: document.getElementById('minimap'),
+        model: jointPage.fn_joint_graph_page_get_graph(),
+        width: $('#minimap').parent().width(),
+        height: 150,
+        // interactive: true,
+        gridSize: 5,
+      } as joint.dia.Paper.Options ));
+      jointPage.fn_joint_graph_page_get_minimap().scale(0.2);
+      jointPage.fn_joint_graph_page_get_minimap().translate($('#minimap').width() / 25, jointPage.fn_joint_graph_page_get_minimap().options.height as number / 6);
+
+
       // for all nodes
       for (const [nodeKey, nodeValue] of jointPage.fn_graph_page_get_nodes()) {
         const node = new JointGraphNodeImpl();
@@ -440,9 +460,12 @@ export default class EditorView extends Vue implements ApplicationHasWrapper {
         node.fn_joint_graph_element_set_attr((NODE_TYPE as any)[(nodeValue as any)['elementType']].attr);
         node.fn_joint_graph_element_set_image_icon((NODE_TYPE as any)[(nodeValue as any)['elementType']].image);
 
+        // Demonstrate the use of custom icon
         if (nodeValue.fn_graph_element_get_label() === 'ATM Service') {
           node.fn_joint_graph_element_set_image_icon(require('@/assets/images/icons/atm-png.png'));
-        } else if (nodeValue.fn_graph_element_get_label() === 'Teller Service') {
+        }
+
+        else if (nodeValue.fn_graph_element_get_label() === 'Teller Service') {
           node.fn_joint_graph_element_set_image_icon(require('@/assets/images/icons/business-customer-icon.png'));
         }
 
@@ -474,6 +497,8 @@ export default class EditorView extends Vue implements ApplicationHasWrapper {
         rankSep: 80,
         // align: 'UL',
       } as joint.layout.DirectedGraph.LayoutOptions);
+
+      // Center the view
       jointPage.fn_joint_graph_page_get_paper().translate(canvasWidth / 10, canvasHeight / 5);
     }
   }
