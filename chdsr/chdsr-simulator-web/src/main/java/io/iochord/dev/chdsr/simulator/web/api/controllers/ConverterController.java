@@ -1,5 +1,6 @@
 package io.iochord.dev.chdsr.simulator.web.api.controllers;
 
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -9,6 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 // TODO: Converter Controller
 @RestController
+@CrossOrigin
 public class ConverterController extends AServiceController {
 	
 	public static final String BASE_URI = AServiceController.BASE_URI + "/converter";

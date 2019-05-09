@@ -9,22 +9,13 @@ before_script:
   
 build:
   stage: build
-  script: gradle --build-cache build
-  cache:
-    key: "$CI_COMMIT_REF_NAME"
-    policy: push
-    paths:
-      - build
-      - .gradle
-
-deploy:
-  stage: deploy
-  script:
+  script: 
+    - gradle --build-cache build
     - gradle jar  
     - gradle artifactoryPublish
   cache:
     key: "$CI_COMMIT_REF_NAME"
-    policy: pull
+    policy: push
     paths:
       - build
       - .gradle
