@@ -22,7 +22,7 @@ build:
       - .gradle
 
 deploy:
-  stage: test
+  stage: deploy
   script:
     - gradle jar  
     - gradle artifactoryPublish
