@@ -433,8 +433,14 @@ export default class EditorView extends Vue implements ApplicationHasWrapper {
         arc.fn_graph_element_set_attributes(arcValue.fn_graph_element_get_attributes());
         arc.fn_graph_connector_set_source(arcValue.fn_graph_connector_get_source() as JointGraphNodeImpl);
         arc.fn_graph_connector_set_target(arcValue.fn_graph_connector_get_target() as JointGraphNodeImpl);
+
+        // render connector
         arc.fn_joint_graph_element_render(jointPage.fn_joint_graph_page_get_graph());
       }
+      joint.layout.DirectedGraph.layout(jointPage.fn_joint_graph_page_get_graph(), {
+        rankDir: 'LR',
+      });
+      jointPage.fn_joint_graph_page_get_paper().translate(canvasWidth / 4, canvasHeight / 4);
     }
   }
 

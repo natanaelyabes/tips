@@ -55,6 +55,19 @@ export class JointGraphNodeImpl extends GraphNodeImpl implements JointGraphEleme
   }
 
   public fn_joint_graph_element_render(graph: joint.dia.Graph): void {
+    // const shapes = joint.dia.Element.define('chdsr.' + this['elementType'], {
+    //   attrs: this.attr,
+    // }, {
+    //   markup: this.fn_joint_graph_element_get_markup(),
+    // });
+
+    // this.node = new shapes();
+    // this.node.attr(this.attr as joint.dia.Cell.Selectors);
+    // this.node.attr({
+    //   '.label': {
+    //     text: this.fn_graph_element_get_label() as string,
+    //   },
+    // });
     const shapes = joint.dia.Element.define('chdsr.' + this['elementType'], {
       attrs: this.attr,
     }, {
@@ -68,6 +81,7 @@ export class JointGraphNodeImpl extends GraphNodeImpl implements JointGraphEleme
         text: this.fn_graph_element_get_label() as string,
       },
     });
+    this.node.attributes.nodeId = this.fn_graph_element_get_id();
     this.node.resize(this.size!.width, this.size!.height);
     this.node.position(this.position!.x, this.position!.y);
     this.node.addTo(graph);

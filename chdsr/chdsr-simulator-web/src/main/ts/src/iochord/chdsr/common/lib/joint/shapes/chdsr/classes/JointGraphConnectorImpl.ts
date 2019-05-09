@@ -39,13 +39,15 @@ export class JointGraphConnectorImpl extends GraphConnectorImpl implements Joint
     });
 
     this.connector = new link();
-    const source: JointGraphNodeImpl = this.fn_graph_connector_get_source() as JointGraphNodeImpl;
-    const target: JointGraphNodeImpl = this.fn_graph_connector_get_target() as JointGraphNodeImpl;
+    const source = graph.getElements().find((value) => {
+      return value.attributes.nodeId === (this.fn_graph_connector_get_source() as JointGraphNodeImpl).fn_graph_element_get_id();
+    }) as joint.dia.Element;
+    const target = graph.getElements().find((value) => {
+      return value.attributes.nodeId === (this.fn_graph_connector_get_target() as JointGraphNodeImpl).fn_graph_element_get_id();
+    }) as joint.dia.Element;
 
-    console.log(source.fn_joint_graph_element_get_joint_node());
-
-    this.connector.source(source.fn_joint_graph_element_get_joint_node());
-    this.connector.target(target.fn_joint_graph_element_get_joint_node());
+    this.connector.source(source);
+    this.connector.target(target);
     this.connector.addTo(graph);
   }
 }
