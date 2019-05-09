@@ -6,10 +6,6 @@ variables:
 before_script:
   - cd $CI_PROJECT_DIR/chdsr
   - export GRADLE_USER_HOME=`pwd`/.gradle
-
-stages:
-  - build
-  - deploy
   
 build:
   stage: build
@@ -22,7 +18,7 @@ build:
       - .gradle
 
 deploy:
-  stage: deploy
+  stage: build
   script:
     - gradle jar  
     - gradle artifactoryPublish
