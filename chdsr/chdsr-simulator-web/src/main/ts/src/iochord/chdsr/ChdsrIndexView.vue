@@ -39,10 +39,10 @@
         <div class="item">
           <div class="header" style="text-decoration:underline">Analysis / Algorithm</div>
           <div class="menu">
-            <router-link tag="a" class="item" to="#">Process Model></router-link>
-            <router-link tag="a" class="item" to="#">Branches Mining></router-link>
+            <router-link tag="a" class="item" to="#">Process Model</router-link>
+            <router-link tag="a" class="item" to="#">Branches Mining</router-link>
             <router-link tag="a" class="item" to="#">Resource Mining</router-link>
-            <router-link tag="a" class="item" to="#">Distribution Fitting></router-link>
+            <router-link tag="a" class="item" to="#">Distribution Fitting</router-link>
           </div>
         </div>
         <div class="item">
@@ -56,8 +56,8 @@
           <div class="header" style="text-decoration:underline">Simulation Editor</div>
           <div class="menu">
             <router-link tag="a" class="item" to="/iochord/chdsr/simulation-editor">Editor</router-link>
-            <router-link tag="a" class="item" to="#">Report></i></router-link>
-            <router-link tag="a" class="item" to="#">Export></router-link>
+            <router-link tag="a" class="item" to="#">Report</router-link>
+            <router-link tag="a" class="item" to="#">Export</router-link>
           </div>
         </div>
       </div>

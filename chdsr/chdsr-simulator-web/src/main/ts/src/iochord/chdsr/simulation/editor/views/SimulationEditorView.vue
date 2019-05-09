@@ -61,12 +61,12 @@
               </div>
               Branch
             </a>
-            <div class="ui basic button item">
+            <a class="ui basic button item">
               <div class="image-icon">
                 <img src="@/assets/images/icons/simulation_editor_icon/toolbox/toolbox_connector.png" alt="" class="ui centered image" />
               </div>
               Connector
-            </div>
+            </a>
           </div>
         </div>
         <div class="item">
@@ -392,9 +392,14 @@ export default class EditorView extends Vue implements ApplicationHasWrapper {
   }
 
   public async testGraphDataStruct(): Promise<void> {
+
+    // Load the model
     const response = await axios.post('http://164.125.62.132:3000/model/example');
+
+    // Deserialize the model
     const graph: Graph = GraphImpl.fn_object_deserialize(response.data);
 
+    // Loop the model page
     for (const [key, value] of graph.fn_graph_get_pages()) {
       const jointPage: JointGraphPageImpl = new JointGraphPageImpl();
       const canvasWidth: number = $('.editor.canvas').innerWidth();
@@ -440,11 +445,12 @@ export default class EditorView extends Vue implements ApplicationHasWrapper {
         node.fn_joint_graph_element_set_attr((NODE_TYPE as any)[(nodeValue as any)['elementType']].attr);
         node.fn_joint_graph_element_set_image_icon((NODE_TYPE as any)[(nodeValue as any)['elementType']].image);
 
-        if (nodeValue.fn_graph_element_get_label() === 'ATM Service') {
-          node.fn_joint_graph_element_set_image_icon(require('@/assets/images/icons/atm-png.png'));
-        } else if (nodeValue.fn_graph_element_get_label() === 'Teller Service') {
-          node.fn_joint_graph_element_set_image_icon(require('@/assets/images/icons/business-customer-icon.png'));
-        }
+        // Demonstrate the use of custom icon
+        // if (nodeValue.fn_graph_element_get_label() === 'ATM Service') {
+        //   node.fn_joint_graph_element_set_image_icon(require('@/assets/images/icons/atm-png.png'));
+        // } else if (nodeValue.fn_graph_element_get_label() === 'Teller Service') {
+        //   node.fn_joint_graph_element_set_image_icon(require('@/assets/images/icons/business-customer-icon.png'));
+        // }
 
         // render node
         node.fn_joint_graph_element_render(jointPage.fn_joint_graph_page_get_graph());
@@ -474,6 +480,8 @@ export default class EditorView extends Vue implements ApplicationHasWrapper {
         rankSep: 80,
         // align: 'UL',
       } as joint.layout.DirectedGraph.LayoutOptions);
+
+      // Center the view
       jointPage.fn_joint_graph_page_get_paper().translate(canvasWidth / 10, canvasHeight / 5);
     }
   }
