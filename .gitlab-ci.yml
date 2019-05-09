@@ -6,6 +6,10 @@ variables:
 before_script:
   - cd $CI_PROJECT_DIR/chdsr
   - export GRADLE_USER_HOME=`pwd`/.gradle
+
+stages:
+  - build
+  - deploy
   
 build:
   stage: build
@@ -13,6 +17,18 @@ build:
   cache:
     key: "$CI_COMMIT_REF_NAME"
     policy: push
+    paths:
+      - build
+      - .gradle
+
+deploy:
+  stage: test
+  script:
+    - gradle jar  
+    - gradle artifactoryPublish
+  cache:
+    key: "$CI_COMMIT_REF_NAME"
+    policy: pull
     paths:
       - build
       - .gradle
