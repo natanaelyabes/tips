@@ -37,4 +37,12 @@ public class SbpnetImpl extends ElementImpl implements Sbpnet {
 	@Getter
 	@Setter
 	private Map<String, Data> data = new LinkedHashMap<>();
+
+	@Override
+	public Page getDefaultPage() {
+		if (getPages() != null) {
+			return getPages().values().iterator().next();
+		}
+		return null;
+	}
 }

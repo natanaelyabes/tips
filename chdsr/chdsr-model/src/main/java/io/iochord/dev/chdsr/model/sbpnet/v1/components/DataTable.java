@@ -19,4 +19,5 @@ public interface DataTable extends Data {
 	Collection<String> getFields();
 
 	Map<String, Map<String, Object>> getData();
+	
 }

@@ -5,6 +5,7 @@ import java.util.concurrent.TimeUnit;
 import io.iochord.dev.chdsr.model.sbpnet.v1.Sbpnet;
 import io.iochord.dev.chdsr.model.sbpnet.v1.SbpnetFactory;
 import io.iochord.dev.chdsr.model.sbpnet.v1.components.Branch.BRANCH_TYPE;
+import io.iochord.dev.chdsr.model.sbpnet.v1.components.DistributionType;
 import io.iochord.dev.chdsr.model.sbpnet.v1.components.Queue.QUEUE_TYPE;
 import io.iochord.dev.chdsr.model.sbpnet.v1.components.impl.ActivityImpl;
 import io.iochord.dev.chdsr.model.sbpnet.v1.components.impl.BranchImpl;
@@ -54,7 +55,8 @@ public class SbpnetExample {
 		actTeller.setLabel("Teller Service");
 		actTeller.setQueue(qTeller);
 		actTeller.setResource(resTeller);
-		actTeller.setProcessingTimeExpression("constant(5,35)");
+		actTeller.setProcessingTime(DistributionType.CONSTANT);
+		actTeller.setProcessingTimeParameter("constant(5,35)");
 		actTeller.setUnit(TimeUnit.MINUTES);
 
 		QueueImpl qATM = (QueueImpl) factory.addQueue(page);
@@ -67,7 +69,8 @@ public class SbpnetExample {
 		actATM.setLabel("ATM Service");
 		actATM.setQueue(qATM);
 		actATM.setResource(resATM);
-		actATM.setProcessingTimeExpression("constant(5,15)");
+		actATM.setProcessingTime(DistributionType.CONSTANT);
+		actATM.setProcessingTimeParameter("constant(5,15)");
 		actATM.setUnit(TimeUnit.MINUTES);
 
 		StopImpl end = (StopImpl) factory.addStop(page);
