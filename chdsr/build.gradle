@@ -11,13 +11,11 @@ allprojects {
 	repositories {
 		mavenCentral()
 		flatDir {
-			dir '/opt/scalaide/plugins'
+			dir 'X:/opt/scalaide/plugins'
 		}
 	}   
 	
-	version {
-		
-	}
+	version = '0.0.1-SNAPSHOT'
 	
 	dependencies {
 		compile 'com.fasterxml.jackson.core:jackson-databind:2.9.8'
