@@ -222,6 +222,7 @@
         </div>
       </div>
     </div>
+
   </div>
 </template>
 
@@ -400,6 +401,7 @@ export default class EditorView extends Vue implements ApplicationHasWrapper {
 
     // Deserialize the model
     const graph: Graph = GraphImpl.fn_object_deserialize(response.data);
+    console.log(graph);
 
     // Loop the model page
     for (const [key, value] of graph.fn_graph_get_pages()) {
@@ -416,6 +418,7 @@ export default class EditorView extends Vue implements ApplicationHasWrapper {
       jointPage.fn_graph_page_set_arcs(value.fn_graph_page_get_arcs());
       jointPage.fn_graph_page_set_data(value.fn_graph_page_get_data());
 
+      // Set the paper as the graph container
       jointPage.fn_joint_graph_page_set_paper(new joint.dia.Paper({
         el: document.getElementById('canvas'),
         model: jointPage.fn_joint_graph_page_get_graph(),
@@ -435,17 +438,17 @@ export default class EditorView extends Vue implements ApplicationHasWrapper {
         },
       } as joint.dia.Paper.Options ));
 
+      // Set the minimap for each page
       jointPage.fn_joint_graph_page_set_minimap(new joint.dia.Paper({
         el: document.getElementById('minimap'),
         model: jointPage.fn_joint_graph_page_get_graph(),
         width: $('#minimap').parent().width(),
         height: 150,
         // interactive: true,
-        gridSize: 5,
+        gridSize: 1,
       } as joint.dia.Paper.Options ));
       jointPage.fn_joint_graph_page_get_minimap().scale(0.2);
-      jointPage.fn_joint_graph_page_get_minimap().translate($('#minimap').width() / 25, jointPage.fn_joint_graph_page_get_minimap().options.height as number / 6);
-
+      jointPage.fn_joint_graph_page_get_minimap().translate($('#minimap').width() / 20, jointPage.fn_joint_graph_page_get_minimap().options.height as number / 6);
 
       // for all nodes
       for (const [nodeKey, nodeValue] of jointPage.fn_graph_page_get_nodes()) {
