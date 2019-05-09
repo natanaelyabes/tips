@@ -1,8 +1,11 @@
 package io.iochord.dev.chdsr.model.sbpnet.v1.components.impl;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import io.iochord.dev.chdsr.model.sbpnet.v1.components.DataTable;
 import io.iochord.dev.chdsr.model.sbpnet.v1.components.Resource;
 import io.iochord.dev.chdsr.model.sbpnet.v1.impl.DataImpl;
+import io.iochord.dev.chdsr.model.sbpnet.v1.impl.SbpnetUtil;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -20,5 +23,10 @@ public class ResourceImpl extends DataImpl implements Resource {
 
 	@Getter
 	@Setter
+	@JsonIgnore
 	private DataTable data;
+	
+	public String getDataRef() {
+		return SbpnetUtil.generateRef(getData());
+	}
 }

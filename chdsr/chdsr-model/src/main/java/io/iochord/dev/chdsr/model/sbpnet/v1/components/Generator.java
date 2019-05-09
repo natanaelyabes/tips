@@ -14,9 +14,11 @@ import io.iochord.dev.chdsr.model.sbpnet.v1.components.impl.GeneratorImpl;
 @JsonDeserialize(as = GeneratorImpl.class)
 public interface Generator extends Data {
 	public static final String TYPE = "generator";
-
+	
 	ObjectType getObjectType();
 
+	DistributionType getDistributionType();
+	
 	String getExpression();
 
 	TimeUnit getUnit();

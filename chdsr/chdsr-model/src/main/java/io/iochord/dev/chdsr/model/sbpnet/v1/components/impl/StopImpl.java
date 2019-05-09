@@ -11,4 +11,5 @@ import lombok.Getter;
 public class StopImpl extends NodeImpl implements Stop {
 	@Getter
 	private final String elementType = Stop.TYPE;
+	
 }
