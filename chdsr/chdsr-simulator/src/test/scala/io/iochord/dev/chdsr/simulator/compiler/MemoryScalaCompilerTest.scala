@@ -70,10 +70,8 @@ object MemoryScalaCompilerTest {
     val cc1 = (inp:colset1) => inp
     
     val arc1 = new Arc("arc1",pplace1,ttrans1,Direction.PtT)
-    arc1.setArcExp(cc1,(1,"tes"))
     
     val arc2 = new Arc("arc2",pplace2,ttrans1,Direction.PtT)
-    arc1.setArcExp(cc1,(1,"tes"))
     
     ttrans1.addIn(arc1)
     ttrans1.addIn(arc2)

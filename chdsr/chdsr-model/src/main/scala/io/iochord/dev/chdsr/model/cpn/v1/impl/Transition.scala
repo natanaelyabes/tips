@@ -1,7 +1,6 @@
 package io.iochord.dev.chdsr.model.cpn.v1.impl
 
-import io.iochord.dev.chdsr.model.cpn.v1.Element
-import io.iochord.dev.chdsr.model.cpn.v1.Node
+import io.iochord.dev.chdsr.model.cpn.v1._
 
 class Transition(
   private var id: String,
@@ -38,6 +37,19 @@ class Transition(
   def getGuard(): Guard = guard
   
   def setGuard(guard: Guard) { this.guard = guard }
+  
+  def isArcEnabled():(Boolean,List[Any]) = { (false, List()) }
+  
+  def isEnabled():Boolean = {
+    val (isArcEn, lbe) = isArcEnabled()
+    
+    if(getGuard() != null) {
+      println("Transition "+getId()+" is enabled "+getGuard().evalGuard(lbe))
+      getGuard().evalGuard(lbe)
+    }
+    else
+      isArcEn
+  }
   
   override def toString = name
 }
