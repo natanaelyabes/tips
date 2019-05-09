@@ -15,10 +15,7 @@ allprojects {
 	apply plugin: 'maven-publish'
 	
 	repositories {
-//		mavenCentral()
-		maven {
-        	url "http://artifactory.apps.babcloud.com/artifactory/libs-release"
-		}
+		mavenCentral()
 		flatDir {
 			dir '/opt/scalaide/plugins'
 		}
