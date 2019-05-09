@@ -2,7 +2,7 @@ import * as joint from 'jointjs';
 
 export const NODE_TYPE = {
   activity: {
-    image: require('@/assets/images/icons/chdsr/toolbox_activity.png'),
+    image: require('@/assets/images/icons/simulation_editor_icon/toolbox/toolbox_activity.png'),
     markup: '<g class="rotatable"><g class="scalable"><rect class="root"/></g></g><text class="label"/>',
     size: { width: 64, height: 64 },
     attr: {
@@ -25,9 +25,9 @@ export const NODE_TYPE = {
     } as joint.dia.Cell.Selectors,
   },
   branch: {
-    image: require('@/assets/images/icons/chdsr/toolbox_branch.png'),
+    image: require('@/assets/images/icons/simulation_editor_icon/toolbox/toolbox_branch.png'),
     markup: '<g class="rotatable"><g class="scalable"><rect class="root"/></g></g><text class="label"/>',
-    size: { width: 50, height: 50 },
+    size: { width: 64, height: 64 },
     attr: {
       '.root' : {
         refWidth: '100%',
@@ -48,9 +48,9 @@ export const NODE_TYPE = {
     } as joint.dia.Cell.Selectors,
   },
   start: {
-    image: require('@/assets/images/icons/chdsr/toolbox_start.png'),
+    image: require('@/assets/images/icons/simulation_editor_icon/toolbox/toolbox_start.png'),
     markup: '<g class="rotatable"><g class="scalable"><circle class="root"/></g></g><text class="label"/>',
-    size: { width: 50, height: 50 },
+    size: { width: 64, height: 64 },
     attr: {
       '.root': {
         r: 10,
@@ -70,9 +70,9 @@ export const NODE_TYPE = {
     } as joint.dia.Cell.Selectors,
   },
   stop: {
-    image: require('@/assets/images/icons/chdsr/toolbox_stop.png'),
+    image: require('@/assets/images/icons/simulation_editor_icon/toolbox/toolbox_stop.png'),
     markup: '<g class="rotatable"><g class="scalable"><circle class="root"/></g></g><text class="label"/>',
-    size: { width: 50, height: 50 },
+    size: { width: 64, height: 64 },
     attr: {
       '.root': {
         r: 10,
@@ -92,9 +92,9 @@ export const NODE_TYPE = {
     } as joint.dia.Cell.Selectors,
   },
   monitor: {
-    image: require('@/assets/images/icons/chdsr/data_kpi.png'),
+    image: require('@/assets/images/icons/simulation_editor_icon/data_toolbox/kpi.png'),
     markup: '<g class="rotatable"><g class="scalable"><rect class="root"/></g></g><text class="label"/>',
-    size: { width: 50, height: 50 },
+    size: { width: 64, height: 64 },
     attr: {
       '.root' : {
         refWidth: '100%',

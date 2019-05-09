@@ -21,14 +21,14 @@
             <a class="ui basic button item">
               <!-- <i class="big clock outline icon"></i> -->
               <div class="image-icon">
-                <img src="@/assets/images/icons/chdsr/control_control.png" alt="" class="ui centered image" />
+                <img src="@/assets/images/icons/simulation_editor_icon/control/control.png" alt="" class="ui centered image" />
               </div>
               Control
             </a>
             <a class="ui basic button item">
               <!-- <i class="big cog icon"></i> -->
               <div class="image-icon">
-                <img src="@/assets/images/icons/chdsr/control_configuration.png" alt="" class="ui centered image" />
+                <img src="@/assets/images/icons/simulation_editor_icon/control/configuration.png" alt="" class="ui centered image" />
               </div>
               Configuration
             </a>
@@ -39,31 +39,31 @@
           <div class="menu">
             <a class="ui basic button item">
               <div class="image-icon">
-                <img src="@/assets/images/icons/chdsr/toolbox_start.png" alt="" class="ui centered image" />
+                <img src="@/assets/images/icons/simulation_editor_icon/toolbox/toolbox_start.png" alt="" class="ui centered image" />
               </div>
               Start
             </a>
             <a class="ui basic button item">
               <div class="image-icon">
-                <img src="@/assets/images/icons/chdsr/toolbox_stop.png" alt="" class="ui centered image" />
+                <img src="@/assets/images/icons/simulation_editor_icon/toolbox/toolbox_stop.png" alt="" class="ui centered image" />
               </div>
               Stop
             </a>
             <a @click.prevent="fn_create_node($event);" class="ui basic button item">
               <div class="image-icon">
-                <img src="@/assets/images/icons/chdsr/toolbox_activity.png" alt="" class="ui centered image" />
+                <img src="@/assets/images/icons/simulation_editor_icon/toolbox/toolbox_activity.png" alt="" class="ui centered image" />
               </div>
               Activity
             </a>
             <a class="ui basic button item">
               <div class="image-icon">
-                <img src="@/assets/images/icons/chdsr/toolbox_branch.png" alt="" class="ui centered image" />
+                <img src="@/assets/images/icons/simulation_editor_icon/toolbox/toolbox_branch.png" alt="" class="ui centered image" />
               </div>
               Branch
             </a>
             <div class="ui basic button item">
               <div class="image-icon">
-                <img src="@/assets/images/icons/chdsr/toolbox_connector.png" alt="" class="ui centered image" />
+                <img src="@/assets/images/icons/simulation_editor_icon/toolbox/toolbox_connector.png" alt="" class="ui centered image" />
               </div>
               Connector
             </div>
@@ -74,43 +74,43 @@
           <div class="menu">
             <a class="ui basic button item">
               <div class="image-icon">
-                <img src="@/assets/images/icons/chdsr/data_table.png" alt="" class="ui centered image" />
+                <img src="@/assets/images/icons/simulation_editor_icon/data_toolbox/datatable.png" alt="" class="ui centered image" />
               </div>
               Data Table
             </a>
             <a class="ui basic button item">
               <div class="image-icon">
-                <img src="@/assets/images/icons/chdsr/data_generator.png" alt="" class="ui centered image" />
+                <img src="@/assets/images/icons/simulation_editor_icon/data_toolbox/generator.png" alt="" class="ui centered image" />
               </div>
               Generator
             </a>
             <a class="ui basic button item">
               <div class="image-icon">
-                <img src="@/assets/images/icons/chdsr/data_object-type.png" alt="" class="ui centered image" />
+                <img src="@/assets/images/icons/simulation_editor_icon/data_toolbox/object_type.png" alt="" class="ui centered image" />
               </div>
               Object Type
             </a>
             <a class="ui basic button item">
               <div class="image-icon">
-                <img src="@/assets/images/icons/chdsr/data_function.png" alt="" class="ui centered image" />
+                <img src="@/assets/images/icons/simulation_editor_icon/data_toolbox/function.png" alt="" class="ui centered image" />
               </div>
               Function / Method
             </a>
             <a class="ui basic button item">
               <div class="image-icon">
-                <img src="@/assets/images/icons/chdsr/data_resource.png" alt="" class="ui centered image" />
+                <img src="@/assets/images/icons/simulation_editor_icon/data_toolbox/resources.png" alt="" class="ui centered image" />
               </div>
               Resources
             </a>
             <a class="ui basic button item">
               <div class="image-icon">
-                <img src="@/assets/images/icons/chdsr/data_kpi.png" alt="" class="ui centered image" />
+                <img src="@/assets/images/icons/simulation_editor_icon/data_toolbox/kpi.png" alt="" class="ui centered image" />
               </div>
               Monitor KPI
             </a>
             <a class="ui basic button item">
               <div class="image-icon">
-                <img src="@/assets/images/icons/chdsr/data_queue.png" alt="" class="ui centered image" />
+                <img src="@/assets/images/icons/simulation_editor_icon/data_toolbox/queue.png" alt="" class="ui centered image" />
               </div>
               Queue
             </a>
@@ -439,6 +439,12 @@ export default class EditorView extends Vue implements ApplicationHasWrapper {
         node.fn_joint_graph_element_set_markup((NODE_TYPE as any)[(nodeValue as any)['elementType']].markup);
         node.fn_joint_graph_element_set_attr((NODE_TYPE as any)[(nodeValue as any)['elementType']].attr);
         node.fn_joint_graph_element_set_image_icon((NODE_TYPE as any)[(nodeValue as any)['elementType']].image);
+
+        if (nodeValue.fn_graph_element_get_label() === 'ATM Service') {
+          node.fn_joint_graph_element_set_image_icon(require('@/assets/images/icons/atm-png.png'));
+        } else if (nodeValue.fn_graph_element_get_label() === 'Teller Service') {
+          node.fn_joint_graph_element_set_image_icon(require('@/assets/images/icons/business-customer-icon.png'));
+        }
 
         // render node
         node.fn_joint_graph_element_render(jointPage.fn_joint_graph_page_get_graph());
