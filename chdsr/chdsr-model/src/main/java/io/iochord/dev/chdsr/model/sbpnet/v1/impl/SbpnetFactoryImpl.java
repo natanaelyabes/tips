@@ -136,10 +136,10 @@ public class SbpnetFactoryImpl implements SbpnetFactory {
 	public Connector addConnector(Page page, Element source, Element target) {
 		if (page != null) {
 			ConnectorImpl arc = new ConnectorImpl();
-			arc.setId(page.getId() + "-" + String.valueOf(page.getArcs().size()));
+			arc.setId(page.getId() + "-" + String.valueOf(page.getConnectors().size()));
 			arc.setSource(source);
 			arc.setTarget(target);
-			page.getArcs().put(arc.getId(), arc);
+			page.getConnectors().put(arc.getId(), arc);
 			return arc;
 		}
 		return null;

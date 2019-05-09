@@ -3,11 +3,14 @@ package io.iochord.dev.chdsr.simulator.web.api.controllers;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import io.iochord.dev.chdsr.model.converter.sbp2cpn.Sbpnet2CpnBiConverter;
+import io.iochord.dev.chdsr.model.cpn.v1.impl.CPNGraph;
 import io.iochord.dev.chdsr.model.example.SbpnetExample;
 import io.iochord.dev.chdsr.model.sbpnet.v1.Page;
 import io.iochord.dev.chdsr.model.sbpnet.v1.Sbpnet;
@@ -18,6 +21,7 @@ import io.iochord.dev.chdsr.model.sbpnet.v1.components.impl.ObjectTypeImpl;
 import io.iochord.dev.chdsr.model.sbpnet.v1.components.impl.StartImpl;
 import io.iochord.dev.chdsr.model.sbpnet.v1.components.impl.StopImpl;
 import io.iochord.dev.chdsr.model.sbpnet.v1.impl.SbpnetFactoryImpl;
+import io.iochord.dev.chdsr.util.SerializationUtil;
 
 /**
  * @author Iq Reviessay Pulshashi <pulshashi@ideas.web.id>
@@ -87,8 +91,17 @@ public class ModellingController extends AServiceController {
 		return null;
 	}
 	
-	@RequestMapping(BASE_URI + "/example")
-	public Sbpnet getCreateExampleSimulationModel() {
-		return SbpnetExample.create();
+	@RequestMapping(value=BASE_URI + "/example",produces= {MediaType.APPLICATION_JSON_VALUE})
+	public String getCreateExampleSimulationModel() {
+		Sbpnet snet = SbpnetExample.create();
+		return SerializationUtil.encode(snet);
+	}	
+	
+	@RequestMapping(value=BASE_URI + "/examplecpn",produces= {MediaType.APPLICATION_JSON_VALUE})
+	public String getConvertExampleSimulationModel() {
+		Sbpnet snet = SbpnetExample.create();
+		Sbpnet2CpnBiConverter converter = new Sbpnet2CpnBiConverter();
+		CPNGraph cnet = converter.convert(snet);
+		return SerializationUtil.encode(cnet);
 	}	
 }

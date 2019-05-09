@@ -6,7 +6,7 @@ allprojects {
 	ext {
 		// Development mode using Scala IDE
 		// Set this to false for production build using gradle
-		devMode = false
+		devMode = true
 	}
 
 	apply plugin: 'java'
@@ -17,7 +17,7 @@ allprojects {
 	repositories {
 		mavenCentral()
 		flatDir {
-			dir '/opt/scalaide/plugins'
+			dir 'X:/opt/scalaide/plugins'
 		}
 	}   
 	
@@ -71,7 +71,7 @@ allprojects {
 	
 	artifactory {
     	publish {
-        	contextUrl = 'http://artifactory.apps.babcloud.com/artifactory'
+        	contextUrl = 'http://artifactory.apps.babcloud.com:31080/artifactory'
 	        repository {
 	            repoKey = "libs-snapshot-local"
 	            username = "admin"

@@ -28,5 +28,5 @@ public class PageImpl extends ElementImpl implements Page {
 
 	@Getter
 	@Setter
-	private Map<String, Connector> arcs = new LinkedHashMap<>();
+	private Map<String, Connector> connectors = new LinkedHashMap<>();
 }
