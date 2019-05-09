@@ -11,6 +11,7 @@ export class JointGraphNodeImpl extends GraphNodeImpl implements JointGraphEleme
   private position: { x: number, y: number } | null;
   private size: { width: number, height: number } | null;
   private node: joint.shapes.basic.Generic = new joint.shapes.basic.Generic();
+  private imageIcon: string = '';
 
   constructor();
   constructor(markup: string, attr: joint.dia.Cell.Selectors, position: { x: number, y: number }, size: { width: number, height: number });
@@ -54,6 +55,14 @@ export class JointGraphNodeImpl extends GraphNodeImpl implements JointGraphEleme
     this.size = size;
   }
 
+  public fn_joint_graph_element_get_image_icon(): string {
+    return this.imageIcon;
+  }
+
+  public fn_joint_graph_element_set_image_icon(imageIcon: string): void {
+    this.imageIcon = imageIcon;
+  }
+
   public fn_joint_graph_element_render(graph: joint.dia.Graph): void {
     // const shapes = joint.dia.Element.define('chdsr.' + this['elementType'], {
     //   attrs: this.attr,
@@ -61,24 +70,14 @@ export class JointGraphNodeImpl extends GraphNodeImpl implements JointGraphEleme
     //   markup: this.fn_joint_graph_element_get_markup(),
     // });
 
-    // this.node = new shapes();
+    this.node = new joint.shapes.standard.Image();
     // this.node.attr(this.attr as joint.dia.Cell.Selectors);
-    // this.node.attr({
-    //   '.label': {
-    //     text: this.fn_graph_element_get_label() as string,
-    //   },
-    // });
-    const shapes = joint.dia.Element.define('chdsr.' + this['elementType'], {
-      attrs: this.attr,
-    }, {
-      markup: this.fn_joint_graph_element_get_markup(),
-    });
-
-    this.node = new shapes();
-    this.node.attr(this.attr as joint.dia.Cell.Selectors);
     this.node.attr({
-      '.label': {
+      label: {
         text: this.fn_graph_element_get_label() as string,
+      },
+      image: {
+        xlinkHref: this.imageIcon,
       },
     });
     this.node.attributes.nodeId = this.fn_graph_element_get_id();

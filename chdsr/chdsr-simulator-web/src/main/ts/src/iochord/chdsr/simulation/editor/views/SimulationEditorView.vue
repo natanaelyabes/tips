@@ -19,11 +19,17 @@
           <div class="header">Control</div>
           <div class="menu">
             <a class="ui basic button item">
-              <i class="big clock outline icon"></i>
+              <!-- <i class="big clock outline icon"></i> -->
+              <div class="image-icon">
+                <img src="@/assets/images/icons/simulation_editor_icon/control/control.png" alt="" class="ui centered image" />
+              </div>
               Control
             </a>
             <a class="ui basic button item">
-              <i class="big cog icon"></i>
+              <!-- <i class="big cog icon"></i> -->
+              <div class="image-icon">
+                <img src="@/assets/images/icons/simulation_editor_icon/control/configuration.png" alt="" class="ui centered image" />
+              </div>
               Configuration
             </a>
           </div>
@@ -32,25 +38,33 @@
           <div class="header">Toolbox</div>
           <div class="menu">
             <a class="ui basic button item">
-              <i class="big circle green outline icon"></i>
+              <div class="image-icon">
+                <img src="@/assets/images/icons/simulation_editor_icon/toolbox/toolbox_start.png" alt="" class="ui centered image" />
+              </div>
               Start
             </a>
             <a class="ui basic button item">
-              <i class="big circle red icon"></i>
+              <div class="image-icon">
+                <img src="@/assets/images/icons/simulation_editor_icon/toolbox/toolbox_stop.png" alt="" class="ui centered image" />
+              </div>
               Stop
             </a>
             <a @click.prevent="fn_create_node($event);" class="ui basic button item">
               <div class="image-icon">
-                <img src="@/assets/images/icons/activity.png" alt="" class="ui avatar centered image" />
+                <img src="@/assets/images/icons/simulation_editor_icon/toolbox/toolbox_activity.png" alt="" class="ui centered image" />
               </div>
               Activity
             </a>
             <a class="ui basic button item">
-              <i style="transform:rotate(45deg);" class="big square outline icon"></i>
-              Branches
+              <div class="image-icon">
+                <img src="@/assets/images/icons/simulation_editor_icon/toolbox/toolbox_branch.png" alt="" class="ui centered image" />
+              </div>
+              Branch
             </a>
             <div class="ui basic button item">
-              <i class="big arrow right icon"></i>
+              <div class="image-icon">
+                <img src="@/assets/images/icons/simulation_editor_icon/toolbox/toolbox_connector.png" alt="" class="ui centered image" />
+              </div>
               Connector
             </div>
           </div>
@@ -59,36 +73,44 @@
           <div class="header">Data Toolbox</div>
           <div class="menu">
             <a class="ui basic button item">
-              <i class="big table icon"></i>
+              <div class="image-icon">
+                <img src="@/assets/images/icons/simulation_editor_icon/data_toolbox/datatable.png" alt="" class="ui centered image" />
+              </div>
               Data Table
             </a>
             <a class="ui basic button item">
               <div class="image-icon">
-                <img src="@/assets/images/icons/declaration.png" alt="" class="ui avatar centered image" />
+                <img src="@/assets/images/icons/simulation_editor_icon/data_toolbox/generator.png" alt="" class="ui centered image" />
+              </div>
+              Generator
+            </a>
+            <a class="ui basic button item">
+              <div class="image-icon">
+                <img src="@/assets/images/icons/simulation_editor_icon/data_toolbox/object_type.png" alt="" class="ui centered image" />
               </div>
               Object Type
             </a>
             <a class="ui basic button item">
               <div class="image-icon">
-                <img src="@/assets/images/icons/function.png" alt="" class="ui avatar centered image" />
+                <img src="@/assets/images/icons/simulation_editor_icon/data_toolbox/function.png" alt="" class="ui centered image" />
               </div>
               Function / Method
             </a>
             <a class="ui basic button item">
               <div class="image-icon">
-                <img src="@/assets/images/icons/resource.png" alt="" class="ui avatar centered image" />
+                <img src="@/assets/images/icons/simulation_editor_icon/data_toolbox/resources.png" alt="" class="ui centered image" />
               </div>
               Resources
             </a>
             <a class="ui basic button item">
               <div class="image-icon">
-                <img src="@/assets/images/icons/monitor_kpi.png" alt="" class="ui avatar centered image" />
+                <img src="@/assets/images/icons/simulation_editor_icon/data_toolbox/kpi.png" alt="" class="ui centered image" />
               </div>
               Monitor KPI
             </a>
             <a class="ui basic button item">
               <div class="image-icon">
-                <img src="@/assets/images/icons/queue.png" alt="" class="ui avatar centered image" />
+                <img src="@/assets/images/icons/simulation_editor_icon/data_toolbox/queue.png" alt="" class="ui centered image" />
               </div>
               Queue
             </a>
@@ -103,22 +125,15 @@
           <button v-if="!editing" @click="editing = true" class="ui green button"><i class="running icon"></i> Run Simulation Mode</button>
         </div>
         <div class="right menu">
-          <div class="item" :class="{ disabled: editing }">
-            <!-- <div class="ui toggle checkbox" :class="{ disabled: editing }">
-              <input v-model="animation" type="checkbox" name="public">
-              <label v-if="animation"><strong>Turn off animation</strong></label>
-              <label v-else><strong>Turn on animation</strong></label>
-            </div> -->
-          </div>
           <div class="item" :class="{ disabled: editing }"><div class="header"><strong>Simulation Player</strong></div></div>
           <div class="item" :class="{ disabled: editing }">
             <div class="ui basic icon buttons" :class="{ disabled: editing }">
-              <a class="ui button"><i class="fast backward icon"></i></a>
+              <a class="ui button"><i class="step backward icon"></i></a>
               <a class="ui button"><i class="backward icon"></i></a>
               <a class="ui button"><i class="play icon"></i></a>
               <a class="ui button"><i class="stop icon"></i></a>
               <a class="ui button"><i class="forward icon"></i></a>
-              <a class="ui button"><i class="fast forward icon"></i></a>
+              <a class="ui button"><i class="step forward icon"></i></a>
             </div>
           </div>
           <div class="item"><div class="header"><strong>Simulation Data Management</strong></div></div>
@@ -211,7 +226,7 @@
 </template>
 
 <style scoped>
-.image-icon .ui.avatar.image {
+.image-icon .ui.image {
   border-radius: 0;
   margin-bottom: .5em;
 }
@@ -303,6 +318,7 @@ import { JointGraphNodeImpl } from '../../../common/lib/joint/shapes/chdsr/class
 import { NODE_TYPE } from '../../../common/lib/joint/shapes/chdsr/enums/NODE';
 import { JointGraphConnectorImpl } from '../../../common/lib/joint/shapes/chdsr/classes/JointGraphConnectorImpl';
 import { GraphElement } from '../../../common/graph/interfaces/GraphElement';
+import { ARC_TYPE } from '../../../common/lib/joint/shapes/chdsr/enums/ARC';
 
 declare const $: any;
 
@@ -399,12 +415,15 @@ export default class EditorView extends Vue implements ApplicationHasWrapper {
         height: canvasHeight,
         gridSize: 10,
         drawGrid: true,
+        defaultRouter: {
+          name: 'normal',
+        },
         defaultAnchor: (endView: joint.dia.ElementView, endMagnet: SVGElement, anchorReference: joint.g.Point, args: { [key: string]: any; }) => {
           return this.customPerpendicularAnchor(endView, endMagnet, anchorReference, args);
         },
         defaultConnectionPoint: { name: 'boundary' },
         defaultConnector: {
-          name: 'normal',
+          name: 'rounded',
         },
       } as joint.dia.Paper.Options ));
 
@@ -419,6 +438,13 @@ export default class EditorView extends Vue implements ApplicationHasWrapper {
         node.fn_joint_graph_element_set_size((NODE_TYPE as any)[(nodeValue as any)['elementType']].size);
         node.fn_joint_graph_element_set_markup((NODE_TYPE as any)[(nodeValue as any)['elementType']].markup);
         node.fn_joint_graph_element_set_attr((NODE_TYPE as any)[(nodeValue as any)['elementType']].attr);
+        node.fn_joint_graph_element_set_image_icon((NODE_TYPE as any)[(nodeValue as any)['elementType']].image);
+
+        if (nodeValue.fn_graph_element_get_label() === 'ATM Service') {
+          node.fn_joint_graph_element_set_image_icon(require('@/assets/images/icons/atm-png.png'));
+        } else if (nodeValue.fn_graph_element_get_label() === 'Teller Service') {
+          node.fn_joint_graph_element_set_image_icon(require('@/assets/images/icons/business-customer-icon.png'));
+        }
 
         // render node
         node.fn_joint_graph_element_render(jointPage.fn_joint_graph_page_get_graph());
@@ -433,14 +459,22 @@ export default class EditorView extends Vue implements ApplicationHasWrapper {
         arc.fn_graph_element_set_attributes(arcValue.fn_graph_element_get_attributes());
         arc.fn_graph_connector_set_source(arcValue.fn_graph_connector_get_source() as JointGraphNodeImpl);
         arc.fn_graph_connector_set_target(arcValue.fn_graph_connector_get_target() as JointGraphNodeImpl);
+        arc.fn_joint_graph_element_set_attr(ARC_TYPE.connector.attr);
 
         // render connector
         arc.fn_joint_graph_element_render(jointPage.fn_joint_graph_page_get_graph());
       }
+
+      // Automatic layout
       joint.layout.DirectedGraph.layout(jointPage.fn_joint_graph_page_get_graph(), {
+        ranker: 'network-simplex',
         rankDir: 'LR',
-      });
-      jointPage.fn_joint_graph_page_get_paper().translate(canvasWidth / 4, canvasHeight / 4);
+        edgeSep: 300,
+        nodeSep: 200,
+        rankSep: 80,
+        // align: 'UL',
+      } as joint.layout.DirectedGraph.LayoutOptions);
+      jointPage.fn_joint_graph_page_get_paper().translate(canvasWidth / 10, canvasHeight / 5);
     }
   }
 
