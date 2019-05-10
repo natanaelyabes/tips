@@ -6,24 +6,12 @@ variables:
 before_script:
   - cd $CI_PROJECT_DIR/chdsr
   - export GRADLE_USER_HOME=`pwd`/.gradle
-  
-build:
-  stage: build
-  script: 
-    - gradle --build-cache build
-    - gradle artifactoryPublish
-  cache:
-    key: "$CI_COMMIT_REF_NAME"
-    policy: push
-    paths:
-      - build
-      - .gradle
       
 run:
   image: iochord/chdsr:0.0.1-SNAPSHOT
   stage: deploy
   script:
-    - ./chdsr.sh
+    - sh chdsr.sh
   cache:
     key: "$CI_COMMIT_REF_NAME"
     policy: pull
