@@ -6,15 +6,15 @@ variables:
 before_script:
   - cd $CI_PROJECT_DIR/chdsr
   - export GRADLE_USER_HOME=`pwd`/.gradle
-      
-run:
-  stage: deploy
-  script:
-    - kubectl scale --replicas=0 statefulset/apps-chdsr
-    - kubectl scale --replicas=1 statefulset/apps-chdsr
+    
+build:
+  stage: build
+  script: 
+    - gradle --build-cache build
+    - gradle artifactoryPublish
   cache:
     key: "$CI_COMMIT_REF_NAME"
-    policy: pull
+    policy: push
     paths:
       - build
       - .gradle
