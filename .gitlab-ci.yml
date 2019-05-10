@@ -8,10 +8,9 @@ before_script:
   - export GRADLE_USER_HOME=`pwd`/.gradle
       
 run:
-  image: iochord/chdsr:0.0.1-SNAPSHOT
   stage: deploy
   script:
-    - sh chdsr.sh
+    - kubectl 
   cache:
     key: "$CI_COMMIT_REF_NAME"
     policy: pull
