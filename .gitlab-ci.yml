@@ -7,14 +7,15 @@ before_script:
   - cd $CI_PROJECT_DIR/chdsr
   - export GRADLE_USER_HOME=`pwd`/.gradle
     
-build:
-  stage: build
-  script: 
-    - gradle --build-cache build
-    - gradle artifactoryPublish
+run:
+  image: lwolf/helm-kubectl-docker:v152_213
+  stage: deploy
+  script:
+    - kubectl scale --replicas=0 statefulset/apps-chdsr
+    - kubectl scale --replicas=1 statefulset/apps-chdsr
   cache:
     key: "$CI_COMMIT_REF_NAME"
-    policy: push
+    policy: pull
     paths:
       - build
       - .gradle
