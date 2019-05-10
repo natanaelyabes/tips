@@ -10,29 +10,19 @@ before_script:
 build:
   stage: build
   script: 
-    - gradle --build-cache assemble
+    - gradle --build-cache build
+    - gradle artifactoryPublish
   cache:
     key: "$CI_COMMIT_REF_NAME"
     policy: push
     paths:
       - build
       - .gradle
-  
-test:
-  stage: test
-  script: 
-    - gradle test
-  cache:
-    key: "$CI_COMMIT_REF_NAME"
-    policy: pull
-    paths:
-      - build
-      - .gradle
       
-deploy:
+run:
+  image: iochord/chdsr:0.0.1-SNAPSHOT
   stage: deploy
   script: 
-    - gradle artifactoryPublish
   cache:
     key: "$CI_COMMIT_REF_NAME"
     policy: pull
