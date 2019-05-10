@@ -61,7 +61,7 @@ public class Sbpnet2CpnBiConverter implements Converter<Sbpnet, CPNGraph> {
 					cnet.addTransition(dgT1);
 					Transition dgT2 = new Transition(dg.getId() + "_dgt2", dg.getLabel() + "_dgt2", null);
 					cnet.addTransition(dgT2);
-//					Arc<String> dga = new Arc<String>(dg.getId() + "_p1_t1", dgP1, dgT1, Direction.PtT());
+					Arc<String> dga = new Arc<String>(dg.getId() + "_p1_t1", dgP1, dgT1, Direction.PtT());
 				}
 				if (d instanceof Function) {
 					Function f = (Function) d;
