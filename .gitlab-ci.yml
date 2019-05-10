@@ -22,6 +22,8 @@ build:
 run:
   image: iochord/chdsr:0.0.1-SNAPSHOT
   stage: deploy
+  script:
+    - ./chdsr.sh
   cache:
     key: "$CI_COMMIT_REF_NAME"
     policy: pull
