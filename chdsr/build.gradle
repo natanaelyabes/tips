@@ -15,6 +15,10 @@ subprojects {
 	apply plugin: 'maven-publish'
 	
 	repositories {
+		mavenLocal() {
+			url 'http://artifactory.apps.babcloud.com:31080/artifactory/libs-release'
+			url 'http://artifactory.apps.babcloud.com:31080/artifactory/libs-snapshot'
+		}
 		mavenCentral()
 		flatDir {
 			dir '/opt/scalaide/plugins'
