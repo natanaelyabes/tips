@@ -19,14 +19,23 @@ build:
       - build
       - .gradle
       
-run:
+stop:
   image: lwolf/helm-kubectl-docker:v152_213
-  stage: deploy
+  stage: build
   script:
     - echo Stopping current service ...
     - kubectl scale --replicas=0 statefulset/apps-chdsr
-    - echo Pending start in 30 seconds ... 
-    - sleep 30
+  cache:
+    key: "$CI_COMMIT_REF_NAME"
+    policy: pull
+    paths:
+      - build
+      - .gradle
+
+start:
+  image: lwolf/helm-kubectl-docker:v152_213
+  stage: deploy
+  script:
     - echo Starting service ...
     - kubectl scale --replicas=2 statefulset/apps-chdsr
   cache:
