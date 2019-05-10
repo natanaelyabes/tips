@@ -6,13 +6,28 @@ variables:
 before_script:
   - cd $CI_PROJECT_DIR/chdsr
   - export GRADLE_USER_HOME=`pwd`/.gradle
-    
+
+build:
+  stage: build
+  script: 
+    - gradle --build-cache build
+    - gradle artifactoryPublish
+  cache:
+    key: "$CI_COMMIT_REF_NAME"
+    policy: push
+    paths:
+      - build
+      - .gradle
+      
 run:
   image: lwolf/helm-kubectl-docker:v152_213
   stage: deploy
   script:
+    - echo Stopping current service ...
     - kubectl scale --replicas=0 statefulset/apps-chdsr
-    - sleep 10
+    - echo Pending start in 30 seconds ... 
+    - sleep 30
+    - echo Starting service ...
     - kubectl scale --replicas=2 statefulset/apps-chdsr
   cache:
     key: "$CI_COMMIT_REF_NAME"
