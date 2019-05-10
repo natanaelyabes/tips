@@ -12,7 +12,8 @@ run:
   stage: deploy
   script:
     - kubectl scale --replicas=0 statefulset/apps-chdsr
-    - kubectl scale --replicas=1 statefulset/apps-chdsr
+    - sleep 10
+    - kubectl scale --replicas=2 statefulset/apps-chdsr
   cache:
     key: "$CI_COMMIT_REF_NAME"
     policy: pull
