@@ -23,10 +23,10 @@ public class ObjectTypeImpl extends DataImpl implements ObjectType {
 	@Getter
 	@Setter
 	@JsonIgnore
-	private Map<String, DataTable> fields = new LinkedHashMap<>();
+	private Map<String, DataTable> types = new LinkedHashMap<>();
 
 	// TODO: Deserialize this one back from ref
-	public Map<String, String> getFieldRefs() {
-		return SbpnetUtil.generateRefs(getFields());
+	public Map<String, String> getTypeRefs() {
+		return SbpnetUtil.generateRefs(getTypes());
 	}
 }

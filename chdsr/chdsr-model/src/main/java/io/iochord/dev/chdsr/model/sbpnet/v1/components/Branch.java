@@ -1,5 +1,7 @@
 package io.iochord.dev.chdsr.model.sbpnet.v1.components;
 
+import java.util.Map;
+
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 import io.iochord.dev.chdsr.model.sbpnet.v1.Node;
@@ -13,15 +15,11 @@ import io.iochord.dev.chdsr.model.sbpnet.v1.components.impl.BranchImpl;
 public interface Branch extends Node {
 	public static final String TYPE = "branch";
 
-	public enum BRANCH_TYPE {
-		AND_SPLIT, AND_JOIN, XOR_SPLIT, XOR_JOIN,
-	}
+	BranchGate getGate();
 
-	public enum BRANCH_RULE {
-		PROBABILITY, CONDITION, DATA,
-	}
+	BranchType getType();
 
-	BRANCH_TYPE getType();
-
-	BRANCH_RULE getRule();
+	BranchRule getRule();
+	
+	Map<String, String> getConditions();
 }

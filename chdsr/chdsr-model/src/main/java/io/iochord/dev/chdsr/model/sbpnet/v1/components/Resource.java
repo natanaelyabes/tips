@@ -1,5 +1,7 @@
 package io.iochord.dev.chdsr.model.sbpnet.v1.components;
 
+import java.util.concurrent.TimeUnit;
+
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 import io.iochord.dev.chdsr.model.sbpnet.v1.Data;
@@ -20,4 +22,20 @@ public interface Resource extends Data {
 	String getGroupId();
 
 	DataTable getData();
+	
+	DistributionType getSetupTime();
+	
+	String getExpression();
+	
+	TimeUnit getTimeUnit();
+	
+	ResourceCriteria getCriteria();
+	
+	double getHourlyIdleCost();
+	
+	double getHourlyBusyCost();
+	
+	boolean isImported();
+	
+	DataTable getDataTable();
 }

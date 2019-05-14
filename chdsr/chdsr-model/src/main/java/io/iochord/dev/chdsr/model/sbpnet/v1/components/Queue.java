@@ -1,5 +1,7 @@
 package io.iochord.dev.chdsr.model.sbpnet.v1.components;
 
+import java.util.Map;
+
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 import io.iochord.dev.chdsr.model.sbpnet.v1.Data;
@@ -19,7 +21,11 @@ public interface Queue extends Data {
 
 	QUEUE_TYPE getType();
 
-	int getSize();
-
 	boolean isShared();
+
+	boolean isSingle();
+
+	int getSize();
+	
+	Map<String, Integer> getSizes();
 }

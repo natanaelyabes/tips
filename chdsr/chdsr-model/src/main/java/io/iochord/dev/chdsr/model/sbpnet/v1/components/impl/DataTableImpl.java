@@ -1,6 +1,6 @@
 package io.iochord.dev.chdsr.model.sbpnet.v1.components.impl;
 
-import java.util.Collection;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 import io.iochord.dev.chdsr.model.sbpnet.v1.components.DataTable;
@@ -14,9 +14,9 @@ public class DataTableImpl extends DataImpl implements DataTable {
 
 	@Getter
 	@Setter
-	Collection<String> fields;
+	private Map<String, String> fields = new LinkedHashMap<>();
 
 	@Getter
 	@Setter
-	Map<String, Map<String, Object>> data;
+	private Map<String, Map<String, Object>> data = new LinkedHashMap<>();
 }

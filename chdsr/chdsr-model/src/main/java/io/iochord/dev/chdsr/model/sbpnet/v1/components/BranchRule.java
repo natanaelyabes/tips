@@ -1,6 +1,7 @@
 package io.iochord.dev.chdsr.model.sbpnet.v1.components;
 
-public enum ResourceSelectionMethod {
-	RANDOM,
-	ROUND_ROBIN
+public enum BranchRule {
+	PROBABILITY, 
+	CONDITION, 
+	DATA
 }

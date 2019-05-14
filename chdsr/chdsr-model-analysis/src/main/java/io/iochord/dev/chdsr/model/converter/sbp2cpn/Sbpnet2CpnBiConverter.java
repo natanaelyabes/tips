@@ -45,7 +45,7 @@ public class Sbpnet2CpnBiConverter implements Converter<Sbpnet, CPNGraph> {
 				Data d = p.getData().get(di);
 				if (d instanceof ObjectType) {
 					ObjectType ot = (ObjectType) d;
-					cnet.getColsets().put(ot.getLabel(), ot.getFields().keySet().toString());
+					cnet.getColsets().put(ot.getLabel(), ot.getTypes().keySet().toString());
 				}
 				if (d instanceof Generator) {
 					Generator dg = (Generator) d;
