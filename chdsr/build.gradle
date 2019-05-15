@@ -16,8 +16,9 @@ subprojects {
 	
 	repositories {
 		mavenLocal() {
-			url 'http://artifactory.apps.babcloud.com:31080/artifactory/libs-release'
-			url 'http://artifactory.apps.babcloud.com:31080/artifactory/libs-snapshot'
+			//artifactory.apps.babcloud.com:31080
+			url 'http://artifactory.tips.iochord.co.kr/artifactory/libs-release'
+			url 'http://artifactory.tips.iochord.co.kr/artifactory/libs-snapshot'
 		}
 		mavenCentral()
 		flatDir {
@@ -75,7 +76,8 @@ subprojects {
 	
 	artifactory {
     	publish {
-        	contextUrl = 'http://artifactory.apps.babcloud.com:31080/artifactory'
+			//artifactory.apps.babcloud.com:31080
+        	contextUrl = 'http://artifactory.tips.iochord.co.kr/artifactory'
 	        repository {
 	            repoKey = "libs-snapshot-local"
 	            username = "admin"
