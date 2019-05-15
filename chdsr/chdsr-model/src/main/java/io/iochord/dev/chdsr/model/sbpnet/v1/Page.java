@@ -18,5 +18,5 @@ public interface Page extends Element {
 
 	Map<String, Node> getNodes();
 
-	Map<String, Connector> getArcs();
+	Map<String, Connector> getConnectors();
 }

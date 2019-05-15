@@ -1,5 +1,8 @@
 package io.iochord.dev.chdsr.model.sbpnet.v1.components.impl;
 
+import java.util.LinkedHashMap;
+import java.util.Map;
+
 import io.iochord.dev.chdsr.model.sbpnet.v1.components.Queue;
 import io.iochord.dev.chdsr.model.sbpnet.v1.impl.DataImpl;
 import lombok.Getter;
@@ -19,9 +22,18 @@ public class QueueImpl extends DataImpl implements Queue {
 
 	@Getter
 	@Setter
-	private int size = 1;
+	private boolean shared = false;
+
 
 	@Getter
 	@Setter
-	private boolean shared = false;
+	private boolean single = true;
+	
+	@Getter
+	@Setter
+	private int size = -1;
+	
+	@Getter
+	@Setter
+	private Map<String, Integer> sizes = new LinkedHashMap<>();
 }

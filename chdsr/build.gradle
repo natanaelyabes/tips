@@ -2,7 +2,7 @@ plugins {
 	id 'com.jfrog.artifactory' version '4.9.6'
 }
 
-allprojects {
+subprojects {
 	ext {
 		// Development mode using Scala IDE
 		// Set this to false for production build using gradle
@@ -15,6 +15,10 @@ allprojects {
 	apply plugin: 'maven-publish'
 	
 	repositories {
+		mavenLocal() {
+			url 'http://artifactory.apps.babcloud.com:31080/artifactory/libs-release'
+			url 'http://artifactory.apps.babcloud.com:31080/artifactory/libs-snapshot'
+		}
 		mavenCentral()
 		flatDir {
 			dir '/opt/scalaide/plugins'
@@ -71,7 +75,7 @@ allprojects {
 	
 	artifactory {
     	publish {
-        	contextUrl = 'http://artifactory.apps.babcloud.com/artifactory'
+        	contextUrl = 'http://artifactory.apps.babcloud.com:31080/artifactory'
 	        repository {
 	            repoKey = "libs-snapshot-local"
 	            username = "admin"
@@ -79,13 +83,16 @@ allprojects {
 	        }
 		    defaults {
 	            publications('mavenJava')
-	            publishArtifacts = true
-	            properties = ['qa.level': 'basic', 'dev.team' : 'core']
-	            publishPom = true // Publish generated POM files to Artifactory (true by default)
-	            publishIvy = true // Publish generated Ivy descriptor files to Artifactory (true by default)
 	        }
 		}
     }
 
-}
+	publishing {
+	    publications {
+	        mavenJava(MavenPublication) {
+	            from components.java
+	        }
+	    }
+	}
 
+}

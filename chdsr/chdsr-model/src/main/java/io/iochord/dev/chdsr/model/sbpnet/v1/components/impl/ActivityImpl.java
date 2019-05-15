@@ -5,11 +5,13 @@ import java.util.concurrent.TimeUnit;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import io.iochord.dev.chdsr.model.sbpnet.v1.components.Activity;
+import io.iochord.dev.chdsr.model.sbpnet.v1.components.ActivityType;
 import io.iochord.dev.chdsr.model.sbpnet.v1.components.DistributionType;
 import io.iochord.dev.chdsr.model.sbpnet.v1.components.Function;
 import io.iochord.dev.chdsr.model.sbpnet.v1.components.Queue;
 import io.iochord.dev.chdsr.model.sbpnet.v1.components.Resource;
 import io.iochord.dev.chdsr.model.sbpnet.v1.components.ResourceSelectionMethod;
+import io.iochord.dev.chdsr.model.sbpnet.v1.components.VariableType;
 import io.iochord.dev.chdsr.model.sbpnet.v1.impl.NodeImpl;
 import io.iochord.dev.chdsr.model.sbpnet.v1.impl.SbpnetUtil;
 import lombok.Getter;
@@ -21,7 +23,7 @@ public class ActivityImpl extends NodeImpl implements Activity {
 
 	@Getter
 	@Setter
-	private ACTIVITY_TYPE type;
+	private ActivityType type = ActivityType.STANDARD;
 
 	@Getter
 	@Setter
@@ -69,9 +71,21 @@ public class ActivityImpl extends NodeImpl implements Activity {
 	@Getter
 	@Setter
 	private String processingTimeParameter = "0";
+	
+	@Getter
+	@Setter
+	private VariableType variable; 
 
 	@Getter
 	@Setter
 	private TimeUnit unit = TimeUnit.HOURS;
+
+	@Getter
+	@Setter
+	private double cost = 0;
+
+	@Getter
+	@Setter
+	private boolean reportScrap = false;
 
 }

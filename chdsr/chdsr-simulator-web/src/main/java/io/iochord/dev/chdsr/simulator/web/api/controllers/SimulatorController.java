@@ -42,6 +42,11 @@ public class SimulatorController extends AServiceController {
 		return "Ok";
 	}
 
+	@RequestMapping(BASE_URI + "/start")
+	public String start() {
+		return "Ok";
+	}
+
 	@RequestMapping(BASE_URI + "/test")
 	public String test() {
 		String myclassSyntax = "new Simulation {\n"+

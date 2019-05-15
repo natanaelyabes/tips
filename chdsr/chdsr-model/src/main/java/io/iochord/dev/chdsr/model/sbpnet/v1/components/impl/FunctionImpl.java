@@ -27,12 +27,12 @@ public class FunctionImpl extends DataImpl implements Function {
 
 	@Getter
 	@Setter
-	String code;
+	private String code;
 
 	@Getter
 	@Setter
 	@JsonIgnore
-	Map<String, ObjectType> outputVariables = new LinkedHashMap<>();
+	private Map<String, ObjectType> outputVariables = new LinkedHashMap<>();
 	
 	public Map<String, String> getOutputVariableRefs() {
 		return SbpnetUtil.generateRefs(getOutputVariables());
