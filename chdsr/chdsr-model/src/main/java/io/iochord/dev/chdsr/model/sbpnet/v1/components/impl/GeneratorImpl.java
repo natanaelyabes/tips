@@ -32,25 +32,25 @@ public class GeneratorImpl extends DataImpl implements Generator {
 
 	@Getter
 	@Setter
-	DistributionType distributionType = DistributionType.RANDOM;
+	private DistributionType distributionType = DistributionType.RANDOM;
 
 	@Getter
 	@Setter
-	String expression = "";
+	private String expression = "";
 
 	@Getter
 	@Setter
-	TimeUnit unit = TimeUnit.HOURS;
+	private TimeUnit unit = TimeUnit.HOURS;
 
 	@Getter
 	@Setter
-	int entitiesPerArrival = 1;
+	private int entitiesPerArrival = 1;
 
 	@Getter
 	@Setter
-	int maxArrival = 0;
+	private int maxArrival = 0;
 
 	@Getter
 	@Setter
-	long firstCreation = 0;
+	private long firstCreation = 0;
 }

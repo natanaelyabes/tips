@@ -15,5 +15,5 @@ import io.iochord.dev.chdsr.model.sbpnet.v1.components.impl.ObjectTypeImpl;
 public interface ObjectType extends Data {
 	public static final String TYPE = "objecttype";
 
-	Map<String, DataTable> getFields();
+	Map<String, DataTable> getTypes();
 }

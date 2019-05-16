@@ -17,12 +17,3 @@ dependencies {
 	testCompile project(':chdsr-model-analysis')
 	testCompile project(':chdsr-simulator')
 }
-
-publishing {
-    publications {
-        mavenJava(MavenPublication) {
-            from components.java
-            artifact(file("$rootDir/${artifactId}/build/libs/${artifactId}-${version}.jar"))
-        }
-    }
-}

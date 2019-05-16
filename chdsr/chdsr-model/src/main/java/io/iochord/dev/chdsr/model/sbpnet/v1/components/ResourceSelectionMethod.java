@@ -1,5 +1,6 @@
 package io.iochord.dev.chdsr.model.sbpnet.v1.components;
 
 public enum ResourceSelectionMethod {
-	RANDOM
+	RANDOM,
+	ROUND_ROBIN
 }

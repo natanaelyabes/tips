@@ -4,7 +4,8 @@ import java.util.concurrent.TimeUnit;
 
 import io.iochord.dev.chdsr.model.sbpnet.v1.Sbpnet;
 import io.iochord.dev.chdsr.model.sbpnet.v1.SbpnetFactory;
-import io.iochord.dev.chdsr.model.sbpnet.v1.components.Branch.BRANCH_TYPE;
+import io.iochord.dev.chdsr.model.sbpnet.v1.components.BranchGate;
+import io.iochord.dev.chdsr.model.sbpnet.v1.components.BranchType;
 import io.iochord.dev.chdsr.model.sbpnet.v1.components.DistributionType;
 import io.iochord.dev.chdsr.model.sbpnet.v1.components.Queue.QUEUE_TYPE;
 import io.iochord.dev.chdsr.model.sbpnet.v1.components.impl.ActivityImpl;
@@ -76,16 +77,20 @@ public class SbpnetExample {
 		StopImpl end = (StopImpl) factory.addStop(page);
 
 		BranchImpl xorSplit1 = (BranchImpl) factory.addBranch(page);
-		xorSplit1.setType(BRANCH_TYPE.XOR_SPLIT);
+		xorSplit1.setGate(BranchGate.XOR);
+		xorSplit1.setType(BranchType.SPLIT);
 
 		BranchImpl xorSplit2 = (BranchImpl) factory.addBranch(page);
-		xorSplit2.setType(BRANCH_TYPE.XOR_SPLIT);
+		xorSplit1.setGate(BranchGate.XOR);
+		xorSplit1.setType(BranchType.SPLIT);
 
 		BranchImpl xorJoin1 = (BranchImpl) factory.addBranch(page);
-		xorJoin1.setType(BRANCH_TYPE.XOR_JOIN);
+		xorSplit1.setGate(BranchGate.XOR);
+		xorSplit1.setType(BranchType.JOIN);
 
 		BranchImpl xorJoin2 = (BranchImpl) factory.addBranch(page);
-		xorJoin1.setType(BRANCH_TYPE.XOR_JOIN);
+		xorSplit1.setGate(BranchGate.XOR);
+		xorSplit1.setType(BranchType.JOIN);
 
 		factory.addConnector(page, start, xorSplit1);
 		ConnectorImpl arc1 = (ConnectorImpl) factory.addConnector(page, xorSplit1, xorJoin1);
