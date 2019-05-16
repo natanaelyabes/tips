@@ -1,4 +1,4 @@
-image: gradle:alpine
+image: iochord/chdsr:gradle
 
 variables:
   GRADLE_OPTS: "-Dorg.gradle.daemon=false"
