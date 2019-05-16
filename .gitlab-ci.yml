@@ -1,4 +1,4 @@
-image: jhoglin/gradle-node:latest
+image: iochord/chdsr:gradle-t1
 
 variables:
   GRADLE_OPTS: "-Dorg.gradle.daemon=false"
