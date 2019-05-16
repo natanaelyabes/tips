@@ -14,10 +14,10 @@ import org.springframework.web.bind.annotation.RestController;
 public class HomeController extends AController {
 	
 	public static final String BASE_URI = AController.BASE_URI + "";
-
-	@RequestMapping("")
-	public String getIndex() {
-		return "Ok";
-	}
-	
+//	Changed by static index.html
+//	@RequestMapping("")
+//	public String getIndex() {
+//		return "Ok";
+//	}
+//	
 }
