@@ -22,6 +22,7 @@ class GraphExample {
     customerGenerator.fn_graph_data_generator_set_max_arrival(100);
 
     console.log(net);
+    console.log(customerGenerator);
     // return net;
   }
 }

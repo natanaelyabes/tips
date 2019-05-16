@@ -13,7 +13,7 @@ export default [
   {
     path: `/${BaseUrlEnum.IOCHORD}/${ApplicationEnum.NAME}/auth`,
     redirect: `/${BaseUrlEnum.IOCHORD}/${ApplicationEnum.NAME}/auth/login`,
-    component: () => import(/* webpackChunkName: "chdsr-view-[request]" */ '@/iochord/chdsr/authentication/views/AuthenticationIndexView.vue'),
+    component: () => import(/* webpackChunkName: "chdsr-view" */ '@/iochord/chdsr/authentication/views/AuthenticationIndexView.vue'),
     children: [
       ...AuthenticationLoginRouter as RouteConfig[],
       ...AuthenticationRegisterRouter as RouteConfig[],

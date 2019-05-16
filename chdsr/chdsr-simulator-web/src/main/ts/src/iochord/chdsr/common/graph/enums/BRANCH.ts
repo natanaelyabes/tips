@@ -1,8 +1,11 @@
+export enum BRANCH_GATE {
+  AND,
+  XOR,
+}
+
 export enum BRANCH_TYPE {
-  AND_SPLIT,
-  AND_JOIN,
-  XOR_SPLIT,
-  XOR_JOIN,
+  SPLIT,
+  JOIN,
 }
 
 export enum BRANCH_RULE {

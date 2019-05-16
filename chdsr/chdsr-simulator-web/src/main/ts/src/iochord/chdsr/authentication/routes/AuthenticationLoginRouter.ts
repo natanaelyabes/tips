@@ -13,6 +13,6 @@ export default [
     path: 'login',
     beforeEnter: AuthenticationLoginGuard.outputToConsole,
     name: `${BaseUrlEnum.IOCHORD}-${ApplicationEnum.NAME}-login`,
-    component: () => import(/* webpackChunkName: "chdsr-view-[request]" */ '@/iochord/chdsr/authentication/views/AuthenticationLoginView.vue'),
+    component: () => import(/* webpackChunkName: "chdsr-view" */ '@/iochord/chdsr/authentication/views/AuthenticationLoginView.vue'),
   },
 ] as RouteConfig[] | undefined;

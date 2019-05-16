@@ -34,7 +34,8 @@ export class JointGraphConnectorImpl extends GraphConnectorImpl implements Joint
   }
 
   public fn_joint_graph_element_render(graph: joint.dia.Graph): void {
-    const link = joint.dia.Link.define('chdsr.' + this['elementType'], {
+    const elementTypeKey = 'elementType';
+    const link = joint.dia.Link.define('chdsr.' + this[elementTypeKey], {
       attrs: this.attr,
     });
 

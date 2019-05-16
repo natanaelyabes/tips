@@ -13,6 +13,6 @@ export default [
     path: 'register',
     beforeEnter: AuthenticationRegisterGuard.outputToConsole,
     name: `${BaseUrlEnum.IOCHORD}-${ApplicationEnum.NAME}-register`,
-    component: () => import(/* webpackChunkName: "chdsr-view-[request]" */ '@/iochord/chdsr/authentication/views/AuthenticationRegisterView.vue'),
+    component: () => import(/* webpackChunkName: "chdsr-view" */ '@/iochord/chdsr/authentication/views/AuthenticationRegisterView.vue'),
   },
 ] as RouteConfig[];
