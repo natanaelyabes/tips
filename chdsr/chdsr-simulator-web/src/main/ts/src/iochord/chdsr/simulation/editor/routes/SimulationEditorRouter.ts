@@ -12,12 +12,12 @@ export default [
   {
     path: `simulation-editor`,
     redirect: `/${BaseUrlEnum.IOCHORD}/${ApplicationEnum.NAME}/simulation-editor`,
-    component: () => import(/* webpackChunkName: "chdsr-view-[request]" */ '@/iochord/chdsr/simulation/editor/views/SimulationEditorIndexView.vue'),
+    component: () => import(/* webpackChunkName: "chdsr-view" */ '@/iochord/chdsr/simulation/editor/views/SimulationEditorIndexView.vue'),
     children: [
       {
         path: '',
         name: `${BaseUrlEnum.IOCHORD}-${ApplicationEnum.NAME}-simulation-editor`,
-        component: () => import(/* webpackChunkName: "chdsr-view-[request]" */ '@/iochord/chdsr/simulation/editor/views/SimulationEditorView.vue'),
+        component: () => import(/* webpackChunkName: "chdsr-view" */ '@/iochord/chdsr/simulation/editor/views/SimulationEditorView.vue'),
       },
     ],
   },

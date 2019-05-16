@@ -397,7 +397,7 @@ export default class EditorView extends Vue implements ApplicationHasWrapper {
   public async testGraphDataStruct(): Promise<void> {
 
     // Load the model
-    const response = await axios.post('http://164.125.62.132:3000/model/example');
+    const response = await axios.get('http://localhost:3000/chdsr/api/v0/model/example');
 
     // Deserialize the model
     const graph: Graph = GraphImpl.fn_object_deserialize(response.data);
@@ -408,6 +408,9 @@ export default class EditorView extends Vue implements ApplicationHasWrapper {
       const jointPage: JointGraphPageImpl = new JointGraphPageImpl();
       const canvasWidth: number = $('.editor.canvas').innerWidth();
       const canvasHeight: number = $('.editor.canvas').innerHeight();
+      const keys: any = {
+        elementType: 'elementType',
+      };
 
       jointPage.fn_graph_element_set_id(value.fn_graph_element_get_id() as string);
       jointPage.fn_graph_element_set_label(value.fn_graph_element_get_label() as string);
@@ -453,22 +456,21 @@ export default class EditorView extends Vue implements ApplicationHasWrapper {
       // for all nodes
       for (const [nodeKey, nodeValue] of jointPage.fn_graph_page_get_nodes()) {
         const node = new JointGraphNodeImpl();
+
         node.fn_graph_element_set_id(nodeValue.fn_graph_element_get_id() as string);
         node.fn_graph_element_set_label(nodeValue.fn_graph_element_get_label() as string);
-        node.fn_graph_element_set_type((nodeValue as any)['elementType'] as string);
+        node.fn_graph_element_set_type((nodeValue as any)[keys.elementType] as string);
         node.fn_graph_element_set_attributes(nodeValue.fn_graph_element_get_attributes());
         node.fn_joint_graph_element_set_position({ x: 300, y: 250 });
-        node.fn_joint_graph_element_set_size((NODE_TYPE as any)[(nodeValue as any)['elementType']].size);
-        node.fn_joint_graph_element_set_markup((NODE_TYPE as any)[(nodeValue as any)['elementType']].markup);
-        node.fn_joint_graph_element_set_attr((NODE_TYPE as any)[(nodeValue as any)['elementType']].attr);
-        node.fn_joint_graph_element_set_image_icon((NODE_TYPE as any)[(nodeValue as any)['elementType']].image);
+        node.fn_joint_graph_element_set_size((NODE_TYPE as any)[(nodeValue as any)[keys.elementType]].size);
+        node.fn_joint_graph_element_set_markup((NODE_TYPE as any)[(nodeValue as any)[keys.elementType]].markup);
+        node.fn_joint_graph_element_set_attr((NODE_TYPE as any)[(nodeValue as any)[keys.elementType]].attr);
+        node.fn_joint_graph_element_set_image_icon((NODE_TYPE as any)[(nodeValue as any)[keys.elementType]].image);
 
         // Demonstrate the use of custom icon
         if (nodeValue.fn_graph_element_get_label() === 'ATM Service') {
           node.fn_joint_graph_element_set_image_icon(require('@/assets/images/icons/atm-png.png'));
-        }
-
-        else if (nodeValue.fn_graph_element_get_label() === 'Teller Service') {
+        } else if (nodeValue.fn_graph_element_get_label() === 'Teller Service') {
           node.fn_joint_graph_element_set_image_icon(require('@/assets/images/icons/business-customer-icon.png'));
         }
 
@@ -481,7 +483,7 @@ export default class EditorView extends Vue implements ApplicationHasWrapper {
         const arc = new JointGraphConnectorImpl();
         arc.fn_graph_element_set_id(arcValue.fn_graph_element_get_id() as string);
         arc.fn_graph_element_set_label(arcValue.fn_graph_element_get_label() as string);
-        arc.fn_graph_element_set_type((arcValue as any)['elementType'] as string);
+        arc.fn_graph_element_set_type((arcValue as any)[keys.elementType] as string);
         arc.fn_graph_element_set_attributes(arcValue.fn_graph_element_get_attributes());
         arc.fn_graph_connector_set_source(arcValue.fn_graph_connector_get_source() as JointGraphNodeImpl);
         arc.fn_graph_connector_set_target(arcValue.fn_graph_connector_get_target() as JointGraphNodeImpl);

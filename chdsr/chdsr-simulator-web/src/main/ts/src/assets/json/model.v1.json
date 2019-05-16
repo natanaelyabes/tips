@@ -1,0 +1,224 @@
+{
+  "id": "MODEL-0",
+  "elementType": "net",
+  "version": "1.0",
+  "pages": {
+    "0": {
+      "id": "0",
+      "elementType": "page",
+      "data": {
+        "0-objecttype-0": {
+          "id": "0-objecttype-0",
+          "label": "Customer",
+          "elementType": "objecttype"
+        },
+        "0-generator-1": {
+          "id": "0-generator-1",
+          "label": "Customer MU",
+          "elementType": "generator",
+          "distributionType": "RANDOM",
+          "expression": "Exp(20",
+          "unit": "MINUTES",
+          "entitiesPerArrival": 1,
+          "maxArrival": 100,
+          "firstCreation": 0,
+          "objectTypeRef": "0-objecttype-0"
+        },
+        "0-queue-2": {
+          "id": "0-queue-2",
+          "label": "Teller Queue",
+          "elementType": "queue",
+          "type": "FIFO",
+          "shared": false,
+          "single": true,
+          "size": 35
+        },
+        "0-resource-3": {
+          "id": "0-resource-3",
+          "label": "Teller Resource",
+          "elementType": "resource",
+          "setupTime": "RANDOM",
+          "timeUnit": "HOURS",
+          "hourlyIdleCost": 0.0,
+          "hourlyBusyCost": 0.0,
+          "imported": false
+        },
+        "0-queue-4": {
+          "id": "0-queue-4",
+          "label": "ATM Queue",
+          "elementType": "queue",
+          "type": "FIFO",
+          "shared": false,
+          "single": true,
+          "size": -1
+        },
+        "0-resource-5": {
+          "id": "0-resource-5",
+          "label": "ATM Resource",
+          "elementType": "resource",
+          "setupTime": "RANDOM",
+          "timeUnit": "HOURS",
+          "hourlyIdleCost": 0.0,
+          "hourlyBusyCost": 0.0,
+          "imported": false
+        }
+      },
+      "nodes": {
+        "0-start-0": {
+          "id": "0-start-0",
+          "elementType": "start",
+          "reportStatistics": false,
+          "generatorRef": "0-generator-1"
+        },
+        "0-activity-1": {
+          "id": "0-activity-1",
+          "label": "Teller Service",
+          "elementType": "activity",
+          "reportStatistics": false,
+          "type": "STANDARD",
+          "resourceSelectionMethod": "RANDOM",
+          "processingTime": "CONSTANT",
+          "setupTimeParameter": "0",
+          "setupTime": "CONSTANT",
+          "processingTimeParameter": "constant(5,35)",
+          "unit": "MINUTES",
+          "cost": 0.0,
+          "reportScrap": false,
+          "resourceRef": "0-resource-3",
+          "queueRef": "0-queue-2"
+        },
+        "0-activity-2": {
+          "id": "0-activity-2",
+          "label": "ATM Service",
+          "elementType": "activity",
+          "reportStatistics": false,
+          "type": "STANDARD",
+          "resourceSelectionMethod": "RANDOM",
+          "processingTime": "CONSTANT",
+          "setupTimeParameter": "0",
+          "setupTime": "CONSTANT",
+          "processingTimeParameter": "constant(5,15)",
+          "unit": "MINUTES",
+          "cost": 0.0,
+          "reportScrap": false,
+          "resourceRef": "0-resource-5",
+          "queueRef": "0-queue-4"
+        },
+        "0-stop-3": {
+          "id": "0-stop-3",
+          "elementType": "stop",
+          "reportStatistics": false
+        },
+        "0-branch-4": {
+          "id": "0-branch-4",
+          "elementType": "branch",
+          "reportStatistics": false,
+          "gate": "XOR",
+          "type": "JOIN",
+          "rule": "PROBABILITY"
+        },
+        "0-branch-5": {
+          "id": "0-branch-5",
+          "elementType": "branch",
+          "reportStatistics": false,
+          "gate": "XOR",
+          "type": "SPLIT",
+          "rule": "PROBABILITY"
+        },
+        "0-branch-6": {
+          "id": "0-branch-6",
+          "elementType": "branch",
+          "reportStatistics": false,
+          "gate": "XOR",
+          "type": "SPLIT",
+          "rule": "PROBABILITY"
+        },
+        "0-branch-7": {
+          "id": "0-branch-7",
+          "elementType": "branch",
+          "reportStatistics": false,
+          "gate": "XOR",
+          "type": "SPLIT",
+          "rule": "PROBABILITY"
+        }
+      },
+      "connectors": {
+        "0-0": {
+          "id": "0-0",
+          "elementType": "connector",
+          "sourceRef": "0-start-0",
+          "targetRef": "0-branch-4"
+        },
+        "0-1": {
+          "id": "0-1",
+          "elementType": "connector",
+          "attributes": {
+            "condition": "<0.4"
+          },
+          "sourceRef": "0-branch-4",
+          "targetRef": "0-branch-6"
+        },
+        "0-2": {
+          "id": "0-2",
+          "elementType": "connector",
+          "attributes": {
+            "condition": ">=0.4"
+          },
+          "sourceRef": "0-branch-4",
+          "targetRef": "0-activity-2"
+        },
+        "0-3": {
+          "id": "0-3",
+          "elementType": "connector",
+          "sourceRef": "0-activity-2",
+          "targetRef": "0-branch-5"
+        },
+        "0-4": {
+          "id": "0-4",
+          "elementType": "connector",
+          "attributes": {
+            "condition": "<0.3"
+          },
+          "sourceRef": "0-branch-5",
+          "targetRef": "0-branch-6"
+        },
+        "0-5": {
+          "id": "0-5",
+          "elementType": "connector",
+          "attributes": {
+            "condition": ">=0.3"
+          },
+          "sourceRef": "0-branch-5",
+          "targetRef": "0-branch-7"
+        },
+        "0-6": {
+          "id": "0-6",
+          "elementType": "connector",
+          "sourceRef": "0-branch-6",
+          "targetRef": "0-activity-1"
+        },
+        "0-7": {
+          "id": "0-7",
+          "elementType": "connector",
+          "sourceRef": "0-activity-1",
+          "targetRef": "0-branch-7"
+        },
+        "0-8": {
+          "id": "0-8",
+          "elementType": "connector",
+          "sourceRef": "0-branch-7",
+          "targetRef": "0-stop-3"
+        }
+      }
+    }
+  },
+  "configurations": {
+    "0": {
+      "id": "0",
+      "elementType": "configuration"
+    }
+  },
+  "control": {
+    "elementType": "control"
+  }
+}

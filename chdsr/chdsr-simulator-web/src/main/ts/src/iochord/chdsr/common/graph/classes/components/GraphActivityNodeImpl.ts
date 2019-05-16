@@ -7,6 +7,9 @@ import { GraphDataFunction } from '../../interfaces/components/GraphDataFunction
 import { GraphDataFunctionImpl } from './GraphDataFunctionImpl';
 import { GraphDataQueueImpl } from './GraphDataQueueImpl';
 import { GraphDataResourceImpl } from './GraphDataResourceImpl';
+import { RESOURCE_SELECTION } from '../../enums/RESOURCE';
+import { DistributionType } from '../../enums/DISTRIBUTION';
+import { VARIABLE_TYPE } from '../../enums/VARIABLE';
 
 export class GraphActivityNodeImpl extends GraphNodeImpl implements GraphActivityNode {
   public static readonly TYPE: 'activity' = 'activity';
@@ -20,33 +23,36 @@ export class GraphActivityNodeImpl extends GraphNodeImpl implements GraphActivit
     graphActivityNode.fn_graph_node_set_group_name(object.groupName);
     graphActivityNode.fn_graph_node_set_report_statistics(object.reportStatistics);
     graphActivityNode.fn_graph_activity_node_set_function(GraphDataFunctionImpl.fn_object_deserialize(object.function));
-    graphActivityNode.fn_graph_activity_node_set_processing_time_expression(object.processingTimeExpression);
+    // graphActivityNode.fn_graph_activity_node_set_processing_time_expression(object.processingTimeExpression);
     graphActivityNode.fn_graph_activity_node_set_queue(GraphDataQueueImpl.fn_object_deserialize(object.queue));
     graphActivityNode.fn_graph_activity_node_set_resource(GraphDataResourceImpl.fn_object_deserialize(object.resource));
-    graphActivityNode.fn_graph_activity_node_set_setup_time_expression(object.setupTimeExpression);
+    // graphActivityNode.fn_graph_activity_node_set_setup_time_expression(object.setupTimeExpression);
     graphActivityNode.fn_graph_activity_node_set_type(object.type);
     graphActivityNode.fn_graph_activity_node_set_unit(object.unit);
     return graphActivityNode;
   }
 
-  private type: ACTIVITY_TYPE | null;
+  private type: ACTIVITY_TYPE | null = ACTIVITY_TYPE.STANDARD;
   private resource: GraphDataResource | null;
+  private resourceSelectionMethod: RESOURCE_SELECTION | null;
+  private setupTime: DistributionType | null;
+  // TODO: Continue from here
   private queue: GraphDataQueue | null;
   private function: GraphDataFunction | null;
-  private setupTimeExpression: string | null;
-  private processingTimeExpression: string | null;
+  // private setupTimeExpression: string | null;
+  // private processingTimeExpression: string | null;
   private unit: number | null;
 
   constructor();
-  constructor(type: ACTIVITY_TYPE, resource: GraphDataResource, queue: GraphDataQueue, func: GraphDataFunction, setupTimeExpression: string, processingTimeExpression: string, unit: number);
-  constructor(type?: ACTIVITY_TYPE, resource?: GraphDataResource, queue?: GraphDataQueue, func?: GraphDataFunction, setupTimeExpression?: string, processingTimeExpression?: string, unit?: number) {
+  constructor(type: ACTIVITY_TYPE, resource: GraphDataResource, queue: GraphDataQueue, func: GraphDataFunction, unit: number);
+  constructor(type?: ACTIVITY_TYPE, resource?: GraphDataResource, queue?: GraphDataQueue, func?: GraphDataFunction, unit?: number) {
     super();
-    this.type = type || null;
+    this.type = type || ACTIVITY_TYPE.STANDARD || null;
     this.resource = resource || null;
     this.queue = queue || null;
     this.function = func || null;
-    this.setupTimeExpression = setupTimeExpression || null;
-    this.processingTimeExpression = processingTimeExpression || null;
+    // this.setupTimeExpression = setupTimeExpression || null;
+    // this.processingTimeExpression = processingTimeExpression || null;
     this.unit = unit || null;
   }
 
@@ -71,6 +77,70 @@ export class GraphActivityNodeImpl extends GraphNodeImpl implements GraphActivit
     this.resource = resource;
   }
 
+  public fn_graph_activity_node_get_resource_selection_method(): RESOURCE_SELECTION | null {
+    throw new Error("Method not implemented.");
+  }
+
+  public fn_graph_activity_node_set_resource_selection_method(method: RESOURCE_SELECTION): void {
+    throw new Error("Method not implemented.");
+  }
+
+  public fn_graph_activity_node_get_setup_time(): DistributionType | null {
+    throw new Error("Method not implemented.");
+  }
+
+  public fn_graph_activity_node_set_setup_time(setupTime: DistributionType): void {
+    throw new Error("Method not implemented.");
+  }
+
+  public fn_graph_activity_node_get_setup_time_parameter(): string | null {
+    throw new Error("Method not implemented.");
+  }
+
+  public fn_graph_activity_node_set_setup_time_parameter(setupTimeParameter: string): void {
+    throw new Error("Method not implemented.");
+  }
+
+  public fn_graph_activity_node_get_processing_time(): DistributionType | null {
+    throw new Error("Method not implemented.");
+  }
+
+  public fn_graph_activity_node_set_processing_time(processingTime: DistributionType): void {
+    throw new Error("Method not implemented.");
+  }
+
+  public fn_graph_activity_node_get_processing_time_parameter(): string | null {
+    throw new Error("Method not implemented.");
+  }
+
+  public fn_graph_activity_node_set_processing_time_parameter(processingTimeParameter: string): void {
+    throw new Error("Method not implemented.");
+  }
+
+  public fn_graph_activity_node_get_variable(): VARIABLE_TYPE | null {
+    throw new Error("Method not implemented.");
+  }
+
+  public fn_graph_activity_node_set_variable(variable: VARIABLE_TYPE): void {
+    throw new Error("Method not implemented.");
+  }
+
+  public fn_graph_activity_node_is_report_scrap(): boolean | null {
+    throw new Error("Method not implemented.");
+  }
+
+  public fn_graph_activity_node_set_report_scrap(reportScrap: boolean): void {
+    throw new Error("Method not implemented.");
+  }
+
+  public fn_graph_activity_node_get_cost(): number | null {
+    throw new Error("Method not implemented.");
+  }
+
+  public fn_graph_activity_node_set_cost(cost: number): void {
+    throw new Error("Method not implemented.");
+  }
+
   public fn_graph_activity_node_get_queue(): GraphDataQueue | null {
     return this.queue;
   }
@@ -85,22 +155,6 @@ export class GraphActivityNodeImpl extends GraphNodeImpl implements GraphActivit
 
   public fn_graph_activity_node_set_function(func: GraphDataFunction): void {
     this.function = func;
-  }
-
-  public fn_graph_activity_node_get_setup_time_expression(): string | null {
-    return this.setupTimeExpression;
-  }
-
-  public fn_graph_activity_node_set_setup_time_expression(setupTimeExpression: string): void {
-    this.setupTimeExpression = setupTimeExpression;
-  }
-
-  public fn_graph_activity_node_get_processing_time_expression(): string | null {
-    return this.processingTimeExpression;
-  }
-
-  public fn_graph_activity_node_set_processing_time_expression(processingTimeExpression: string): void {
-    this.processingTimeExpression = processingTimeExpression;
   }
 
   public fn_graph_activity_node_get_unit(): number | null {
