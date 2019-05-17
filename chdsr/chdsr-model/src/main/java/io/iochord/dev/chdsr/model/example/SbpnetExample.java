@@ -39,7 +39,7 @@ public class SbpnetExample {
 		GeneratorImpl custMu = (GeneratorImpl) factory.addGenerator(page);
 		custMu.setLabel(cust.getLabel() + " MU");
 		custMu.setObjectType(cust);
-		custMu.setExpression("Exp(20");
+		custMu.setExpression("Exp(20)");
 		custMu.setUnit(TimeUnit.MINUTES);
 		custMu.setMaxArrival(100);
 

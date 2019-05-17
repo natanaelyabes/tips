@@ -230,16 +230,23 @@ public class Sbpnet2CpnmlBiConverter implements Converter<Sbpnet, PetriNet> {
 				if (n instanceof Activity) {
 					Activity na = (Activity) n;
 					Page napage =  converter.addPage(net, "ACTIVITY " + na.getLabel()); 
-					converter.addPlace(napage, na.getLabel() + "_nap1", "INT", "");
-					converter.addPlace(napage, na.getLabel() + "_nap2", "INT", "");
-					converter.addPlace(napage, na.getLabel() + "_nap3", "INT", "");
-					converter.addPlace(napage, na.getLabel() + "_nap4", "INT", "");
-					converter.addPlace(napage, na.getLabel() + "_nap5", "INT", "");
-					converter.addTransition(napage, na.getLabel() + "_natstart");
-					converter.addTransition(napage, na.getLabel() + "_natend");
-					converter.addPlace(napage, na.getLabel() + "_naqp1", "INT", "");
-					converter.addPlace(napage, na.getLabel() + "_naqp2", "INT", "");
-					converter.addTransition(napage, na.getLabel() + "_naqtpool");
+					Place nap1 = converter.addPlace(napage, na.getLabel() + "_nap1", "INT", "");
+					Place nap2 = converter.addPlace(napage, na.getLabel() + "_nap2", "INT", "");
+					Place nap3 = converter.addPlace(napage, na.getLabel() + "_nap3", "INT", "");
+					Place nap4 = converter.addPlace(napage, na.getLabel() + "_nap4", "INT", "");
+					Place nap5 = converter.addPlace(napage, na.getLabel() + "_nap5", "INT", "");
+					Transition natstart = converter.addTransition(napage, na.getLabel() + "_natstart");
+					Transition natend = converter.addTransition(napage, na.getLabel() + "_natend");
+					Place naqp1 = converter.addPlace(napage, na.getLabel() + "_naqp1", "INT", "");
+					Place naqp2 = converter.addPlace(napage, na.getLabel() + "_naqp2", "INT", "");
+					Transition naqtpool = converter.addTransition(napage, na.getLabel() + "_naqtpool");
+					converter.addArc(napage, naqp1, naqtpool, "i");
+					converter.addArc(napage, naqtpool, naqp1, "i");
+					converter.addArc(napage, naqtpool, naqp2, "i");
+					converter.addArc(napage, naqp2, natstart, "i");
+					converter.addArc(napage, natstart, nap1, "i");
+					converter.addArc(napage, nap1, natend, "i");
+					converter.addArc(napage, natend, nap2, "i");
 				}
 				if (n instanceof Branch) {
 					Branch b = (Branch) n;

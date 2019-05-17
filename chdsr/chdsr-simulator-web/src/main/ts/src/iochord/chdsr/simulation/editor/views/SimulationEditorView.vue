@@ -296,6 +296,7 @@ i.big.icon {
 <script lang="ts">
 // Vue & Libraries
 import { Component, Vue } from 'vue-property-decorator';
+/*
 import { setTimeout } from 'timers';
 import axios, { AxiosResponse } from 'axios';
 
@@ -322,15 +323,17 @@ import { NODE_TYPE } from '../../../common/lib/joint/shapes/chdsr/enums/NODE';
 import { JointGraphConnectorImpl } from '../../../common/lib/joint/shapes/chdsr/classes/JointGraphConnectorImpl';
 import { GraphElement } from '../../../common/graph/interfaces/GraphElement';
 import { ARC_TYPE } from '../../../common/lib/joint/shapes/chdsr/enums/ARC';
+*/
 
 declare const $: any;
 
 @Component({
   components: {
-    ApplicationWrapperComponent,
+    // ApplicationWrapperComponent,
   },
 })
-export default class EditorView extends Vue implements ApplicationHasWrapper {
+export default class EditorView extends Vue { //implements ApplicationHasWrapper {
+/*
   // ApplicationWrapper global variable
   public title: string = '';
   public breadcrumbs!: HasBreadcrumb[];
@@ -375,7 +378,7 @@ export default class EditorView extends Vue implements ApplicationHasWrapper {
       // this.initJoint();
       this.initDropdown();
       this.initSlider();
-      this.testGraphDataStruct();
+      // this.testGraphDataStruct();
     });
   }
 
@@ -705,11 +708,7 @@ export default class EditorView extends Vue implements ApplicationHasWrapper {
       }
     }
   }
-
-  /*
-   * @author: clientIO
-   * @url: https://github.com/clientIO/joint/blob/master/plugins/anchors/joint.anchors.js
-   */
+  
   public customPerpendicularAnchor(endView: joint.dia.ElementView, endMagnet: SVGElement, anchorReference: joint.g.Point, args: { [key: string]: any; }) {
     const angle: number = endView.model.angle();
     // const bbox: joint.g.Rect = endView.getNodeBBox(endMagnet);                           // instead of targeting endMagnet
@@ -732,5 +731,7 @@ export default class EditorView extends Vue implements ApplicationHasWrapper {
     }
     return anchor;
   }
+  */
+
 }
 </script>
