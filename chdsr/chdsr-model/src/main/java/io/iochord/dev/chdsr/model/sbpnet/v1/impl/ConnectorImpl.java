@@ -26,10 +26,18 @@ public class ConnectorImpl extends ElementImpl implements Connector {
 
 	@Getter
 	@Setter
+	private int sourceIndex = 0;
+
+	@Getter
+	@Setter
 	@JsonIgnore
 	private Element target;
 
 	public String getTargetRef() {
 		return SbpnetUtil.generateRef(getTarget());
 	}
+
+	@Getter
+	@Setter
+	private int targetIndex = 0;
 }

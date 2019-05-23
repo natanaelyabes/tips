@@ -24,7 +24,7 @@ public class Sbpnet2CpnmlBiConverterTest {
 //		converter.addArc(page, p1, t, "i");
 //		converter.addArc(page, t, p2, "i");
 		
-		Sbpnet snet = SbpnetExample.create();
+		Sbpnet snet = SbpnetExample.createComplete();
 		Sbpnet2CpnmlBiConverter converter = new Sbpnet2CpnmlBiConverter();
 		PetriNet net = converter.convert(snet);
 		
