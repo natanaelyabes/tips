@@ -10,80 +10,90 @@ import { GraphControlImpl } from './components/GraphControlImpl';
 import { GraphDataImpl } from './GraphDataImpl';
 
 export class GraphImpl extends GraphElementImpl implements Graph {
-  public static fn_object_deserialize(object: any): Graph {
+  public static readonly TYPE: string | null = 'net';
+
+  public static deserialize(object: any): Graph | null {
     const graph: Graph = new GraphImpl();
-    graph.fn_graph_element_set_id(object.id);
-    graph.fn_graph_element_set_label(object.label);
-    graph.fn_graph_element_set_type(object.elementType);
-    graph.fn_graph_element_set_attributes(object.attributes as Map<string, string>);
-    graph.fn_graph_set_pages(GraphPageImpl.fn_object_deserialize(object.pages));
-    graph.fn_graph_set_configurations(GraphConfigurationImpl.fn_object_deserialize(object.configurations));
-    graph.fn_graph_set_control(GraphControlImpl.fn_object_deserialize(object.control));
-    graph.fn_graph_set_data(GraphDataImpl.fn_object_deserialize(object.data));
+    graph.setId(object.id);
+    // graph.setLabel(object.label);
+    graph.setType(object.elementType);
+    graph.setAttributes(object.attributes as Map<string, string>);
+    graph.setControl(GraphControlImpl.deserialize(object.control) as GraphControl);
+    graph.setConfigurations(GraphConfigurationImpl.deserialize(object.configurations) as Map<string, GraphConfiguration>);
+    // graph.setData(GraphDataImpl.deserialize(object.data) as Map<string, GraphData>);
+    graph.setPages(GraphPageImpl.deserialize(object.pages) as Map<string, GraphPage>);
     return graph;
   }
 
-  public readonly TYPE: string | 'net' = 'net';
-
   private readonly version: string = '1.0';
-  private pages: Map<string, GraphPage> = new Map<string, GraphPage>();
+  private pages: Map<string, GraphPage> | null = new Map<string, GraphPage>();
   private configurations: Map<string, GraphConfiguration> = new Map<string, GraphConfiguration>();
   private control: GraphControl | null;
-  private data: Map<string, GraphData> = new Map<string, GraphData>();
+  private data: Map<string, GraphData> | null = new Map<string, GraphData>();
+  private defaultPage: GraphPage | null;
 
   constructor();
-  constructor(pages: Map<string, GraphPage>, configurations: Map<string, GraphConfiguration>, control: GraphControl, data: Map<string, GraphData>);
-  constructor(pages?: Map<string, GraphPage>, configurations?: Map<string, GraphConfiguration>, control?: GraphControl, data?: Map<string, GraphData>) {
+  constructor(pages: Map<string, GraphPage>, configurations: Map<string, GraphConfiguration>, control: GraphControl, data: Map<string, GraphData>, defaultPage: GraphPage);
+  constructor(pages?: Map<string, GraphPage>, configurations?: Map<string, GraphConfiguration>, control?: GraphControl, data?: Map<string, GraphData>, defaultPage?: GraphPage) {
     super();
     this.pages = pages || new Map<string, GraphPage>();
     this.configurations = configurations || new Map<string, GraphConfiguration>();
     this.control = control || null;
     this.data = data || new Map<string, GraphData>();
+    this.defaultPage = defaultPage || null;
   }
 
   /** @Override */
-  public fn_graph_element_get_type(): string {
+  public getType(): string | null {
     return this.TYPE;
   }
 
-  public fn_graph_get_version(): string {
+  public getVersion(): string | null {
     return this.version;
   }
 
-  public fn_graph_get_pages(): Map<string, GraphPage> {
+  public getPages(): Map<string, GraphPage> | null {
     return this.pages;
   }
 
-  public fn_graph_set_pages(pages: Map<string, GraphPage>): void {
+  public setPages(pages: Map<string, GraphPage>): void {
     this.pages = pages;
   }
 
-  public fn_graph_get_configurations(): Map<string, GraphConfiguration> {
+  public getDefaultPage(): GraphPage | null {
+    return this.defaultPage;
+  }
+
+  public setDefaultPage(page: GraphPage): void {
+    this.defaultPage = page;
+  }
+
+  public getConfigurations(): Map<string, GraphConfiguration> | null {
     return this.configurations;
   }
 
-  public fn_graph_set_configurations(configurations: Map<string, GraphConfiguration>): void {
+  public setConfigurations(configurations: Map<string, GraphConfiguration>): void {
     this.configurations = configurations;
   }
 
-  public fn_graph_get_control(): GraphControl | null {
+  public getControl(): GraphControl | null {
     return this.control;
   }
 
-  public fn_graph_set_control(control: GraphControl): void {
+  public setControl(control: GraphControl): void {
     this.control = control;
   }
 
-  public fn_graph_get_data(): Map<string, GraphData> {
+  public getData(): Map<string, GraphData> | null {
     return this.data;
   }
 
-  public fn_graph_set_data(data: Map<string, GraphData>): void {
+  public setData(data: Map<string, GraphData>): void {
     this.data = data;
   }
 
   /** @Override */
-  public fn_object_serialize(): string {
+  public serialize(): string | null {
     return JSON.stringify(this);
   }
 }

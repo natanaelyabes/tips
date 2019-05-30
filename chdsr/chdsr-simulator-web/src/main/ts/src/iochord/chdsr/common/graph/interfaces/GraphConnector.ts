@@ -1,9 +1,14 @@
 import { GraphElement } from './GraphElement';
 
 export interface GraphConnector extends GraphElement {
-  // readonly TYPE: string | 'connector';
-  fn_graph_connector_get_source(): GraphElement | null;
-  fn_graph_connector_set_source(source: GraphElement): void;
-  fn_graph_connector_get_target(): GraphElement | null;
-  fn_graph_connector_set_target(target: GraphElement): void;
+  getSource(): GraphElement | null;
+  setSource(source: GraphElement): void;
+  getSourceIndex(): number | null;
+  setSourceIndex(index: number): void;
+  getSourceRef(): string | null;
+  getTarget(): GraphElement | null;
+  setTarget(target: GraphElement): void;
+  getTargetIndex(): number | null;
+  setTargetIndex(index: number): void;
+  getTargetRef(): string | null;
 }

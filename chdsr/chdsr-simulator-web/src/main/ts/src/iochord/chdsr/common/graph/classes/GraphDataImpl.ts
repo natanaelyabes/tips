@@ -2,24 +2,24 @@ import { GraphData } from './../interfaces/GraphData';
 import { GraphElementImpl } from './GraphElementImpl';
 
 export class GraphDataImpl extends GraphElementImpl implements GraphData {
-  public static fn_object_deserialize(object: any): any {
+  public static readonly TYPE: string | null = 'data';
+
+  public static deserialize(object: any): any | null {
     const graphData: Map<string, GraphData> = new Map<string, GraphData>();
-    // console.log(object);
     return graphData;
   }
-  public readonly TYPE: string | 'data' = 'data';
 
   constructor() {
     super();
   }
 
   /** @Override */
-  public fn_graph_element_get_type(): string {
+  public getType(): string | null {
     return this.TYPE;
   }
 
   /** @Override */
-  public fn_object_serialize(): string {
+  public serialize(): string | null {
     return JSON.stringify(this);
   }
 }

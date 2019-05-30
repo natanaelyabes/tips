@@ -15,27 +15,27 @@ export class JointGraphPageImpl extends GraphPageImpl {
     this.minimap = minimap || new joint.dia.Paper({} as joint.dia.Paper.Options);
   }
 
-  public fn_joint_graph_page_get_graph(): joint.dia.Graph {
+  public getGraph(): joint.dia.Graph {
     return this.graph;
   }
 
-  public fn_joint_graph_page_set_graph(graph: joint.dia.Graph): void {
+  public setGraph(graph: joint.dia.Graph): void {
     this.graph = graph;
   }
 
-  public fn_joint_graph_page_get_paper(): joint.dia.Paper {
+  public getPaper(): joint.dia.Paper {
     return this.paper;
   }
 
-  public fn_joint_graph_page_set_paper(paper: joint.dia.Paper): void {
+  public setPaper(paper: joint.dia.Paper): void {
     this.paper = paper;
   }
 
-  public fn_joint_graph_page_get_minimap(): joint.dia.Paper {
+  public getMinimap(): joint.dia.Paper {
     return this.minimap;
   }
 
-  public fn_joint_graph_page_set_minimap(minimap: joint.dia.Paper): void {
+  public setMinimap(minimap: joint.dia.Paper): void {
     this.minimap = minimap;
   }
 }

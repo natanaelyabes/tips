@@ -4,11 +4,10 @@ import { GraphConnector } from './GraphConnector';
 import { GraphData } from './GraphData';
 
 export interface GraphPage extends GraphElement {
-  // readonly TYPE: string | 'page';
-  fn_graph_page_get_data(): Map<string, GraphData>;
-  fn_graph_page_set_data(data: Map<string, GraphData>): void;
-  fn_graph_page_get_nodes(): Map<string, GraphNode>;
-  fn_graph_page_set_nodes(nodes: Map<string, GraphNode>): void;
-  fn_graph_page_get_arcs(): Map<string, GraphConnector>;
-  fn_graph_page_set_arcs(arcs: Map<string, GraphConnector>): void;
+  getData(): Map<string, GraphData> | null;
+  setData(data: Map<string, GraphData>): void;
+  getNodes(): Map<string, GraphNode> | null;
+  setNodes(nodes: Map<string, GraphNode>): void;
+  getArcs(): Map<string, GraphConnector> | null;
+  setArcs(arcs: Map<string, GraphConnector>): void;
 }

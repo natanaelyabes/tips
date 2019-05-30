@@ -5,14 +5,15 @@ import { GraphData } from './GraphData';
 import { GraphControl } from './components/GraphControl';
 
 export interface Graph extends GraphElement {
-  // readonly TYPE: string | 'net';
-  fn_graph_get_version(): string;
-  fn_graph_get_pages(): Map<string, GraphPage>;
-  fn_graph_set_pages(pages: Map<string, GraphPage>): void;
-  fn_graph_get_configurations(): Map<string, GraphConfiguration>;
-  fn_graph_set_configurations(configurations: Map<string, GraphConfiguration>): void;
-  fn_graph_get_control(): GraphControl | null;
-  fn_graph_set_control(control: GraphControl): void;
-  fn_graph_get_data(): Map<string, GraphData>;
-  fn_graph_set_data(data: Map<string, GraphData>): void;
+  getVersion(): string | null;
+  getPages(): Map<string, GraphPage> | null;
+  setPages(pages: Map<string, GraphPage>): void;
+  getDefaultPage(): GraphPage | null;
+  setDefaultPage(page: GraphPage): void;
+  getConfigurations(): Map<string, GraphConfiguration> | null;
+  setConfigurations(configurations: Map<string, GraphConfiguration>): void;
+  getControl(): GraphControl | null;
+  setControl(control: GraphControl): void;
+  getData(): Map<string, GraphData> | null;
+  setData(data: Map<string, GraphData>): void;
 }

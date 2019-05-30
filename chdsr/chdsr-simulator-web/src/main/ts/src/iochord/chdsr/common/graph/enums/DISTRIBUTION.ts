@@ -1,4 +1,4 @@
-export enum DistributionType {
+export enum DISTRIBUTION_TYPE {
   RANDOM,
   CONSTANT,
 }

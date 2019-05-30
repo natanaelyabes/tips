@@ -17,23 +17,23 @@ export class JointGraphConnectorImpl extends GraphConnectorImpl implements Joint
     this.attr = attr || null;
   }
 
-  public fn_joint_graph_element_get_markup(): string | null {
+  public getMarkup(): string | null {
     return this.markup;
   }
 
-  public fn_joint_graph_element_set_markup(markup: string): void {
+  public setMarkup(markup: string): void {
     this.markup = markup;
   }
 
-  public fn_joint_graph_element_get_attr(): joint.dia.Cell.Selectors | null {
+  public getAttr(): joint.dia.Cell.Selectors | null {
     return this.attr;
   }
 
-  public fn_joint_graph_element_set_attr(attr: joint.dia.Cell.Selectors): void {
+  public setAttr(attr: joint.dia.Cell.Selectors): void {
     this.attr = attr;
   }
 
-  public fn_joint_graph_element_render(graph: joint.dia.Graph): void {
+  public render(graph: joint.dia.Graph): void {
     const elementTypeKey = 'elementType';
     const link = joint.dia.Link.define('chdsr.' + this[elementTypeKey], {
       attrs: this.attr,
@@ -41,10 +41,10 @@ export class JointGraphConnectorImpl extends GraphConnectorImpl implements Joint
 
     this.connector = new link();
     const source = graph.getElements().find((value) => {
-      return value.attributes.nodeId === (this.fn_graph_connector_get_source() as JointGraphNodeImpl).fn_graph_element_get_id();
+      return value.attributes.nodeId === (this.getSource() as JointGraphNodeImpl).getId();
     }) as joint.dia.Element;
     const target = graph.getElements().find((value) => {
-      return value.attributes.nodeId === (this.fn_graph_connector_get_target() as JointGraphNodeImpl).fn_graph_element_get_id();
+      return value.attributes.nodeId === (this.getTarget() as JointGraphNodeImpl).getId();
     }) as joint.dia.Element;
 
     this.connector.source(source);

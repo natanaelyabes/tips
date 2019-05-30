@@ -22,50 +22,42 @@ export class JointGraphDataImpl extends GraphDataImpl implements JointGraphEleme
     this.size = size || null;
   }
 
-  public fn_joint_graph_element_get_markup(): string | null {
+  public getMarkup(): string | null {
     return this.markup;
   }
 
-  public fn_joint_graph_element_set_markup(markup: string): void {
+  public setMarkup(markup: string): void {
     this.markup = markup;
   }
 
-  public fn_joint_graph_element_get_attr(): joint.dia.Cell.Selectors | null {
+  public getAttr(): joint.dia.Cell.Selectors | null {
     return this.attr;
   }
 
-  public fn_joint_graph_element_set_attr(attr: joint.dia.Cell.Selectors): void {
+  public setAttr(attr: joint.dia.Cell.Selectors): void {
     this.attr = attr;
   }
 
-  public fn_joint_graph_element_get_position(): { x: number; y: number; } | null {
+  public getPosition(): { x: number; y: number; } | null {
     return this.position;
   }
 
-  public fn_joint_graph_element_set_position(position: { x: number; y: number; }): void {
+  public setPosition(position: { x: number; y: number; }): void {
     this.position = position;
   }
 
-  public fn_joint_graph_element_get_size(): { width: number; height: number; } | null {
+  public getSize(): { width: number; height: number; } | null {
     return this.size;
   }
 
-  public fn_joint_graph_element_set_size(size: { width: number; height: number; }): void {
+  public setSize(size: { width: number; height: number; }): void {
     this.size = size;
   }
 
-  public fn_joint_graph_element_render(graph: joint.dia.Graph): void {
+  public render(graph: joint.dia.Graph): void {
     this.data.attr(this.attr as joint.dia.Cell.Selectors);
     this.data.resize(this.size!.width, this.size!.height);
     this.data.position(this.position!.x, this.position!.y);
     this.data.addTo(graph);
-  }
-
-  public fn_joint_graph_element_get_joint_data(): joint.shapes.basic.Generic {
-    return this.data;
-  }
-
-  public fn_joint_graph_element_set_joint_data(data: joint.shapes.basic.Generic): void {
-    this.data = data;
   }
 }
