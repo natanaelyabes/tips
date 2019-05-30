@@ -13,6 +13,10 @@ public interface Connector extends Element {
 	public static final String TYPE = "connector";
 
 	Element getSource();
+	
+	int getSourceIndex();
 
 	Element getTarget();
+	
+	int getTargetIndex();
 }

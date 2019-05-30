@@ -1,5 +1,7 @@
 package io.iochord.dev.chdsr.model.converter.sbp2cpn;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -8,30 +10,32 @@ import org.cpntools.accesscpn.model.Arc;
 import org.cpntools.accesscpn.model.HLAnnotation;
 import org.cpntools.accesscpn.model.HLDeclaration;
 import org.cpntools.accesscpn.model.HLMarking;
+import org.cpntools.accesscpn.model.Instance;
 import org.cpntools.accesscpn.model.ModelFactory;
 import org.cpntools.accesscpn.model.Name;
 import org.cpntools.accesscpn.model.Node;
 import org.cpntools.accesscpn.model.Page;
+import org.cpntools.accesscpn.model.ParameterAssignment;
 import org.cpntools.accesscpn.model.PetriNet;
 import org.cpntools.accesscpn.model.Place;
+import org.cpntools.accesscpn.model.RefPlace;
 import org.cpntools.accesscpn.model.Sort;
 import org.cpntools.accesscpn.model.Transition;
-import org.cpntools.accesscpn.model.cpntypes.CPNInt;
+import org.cpntools.accesscpn.model.cpntypes.CPNProduct;
 import org.cpntools.accesscpn.model.cpntypes.CPNType;
 import org.cpntools.accesscpn.model.cpntypes.CpntypesFactory;
 import org.cpntools.accesscpn.model.declaration.DeclarationFactory;
 import org.cpntools.accesscpn.model.declaration.TypeDeclaration;
 import org.cpntools.accesscpn.model.declaration.VariableDeclaration;
-import org.cpntools.accesscpn.model.impl.PetriNetImpl;
 
 import io.iochord.dev.chdsr.model.converter.Converter;
-import io.iochord.dev.chdsr.model.cpn.v1.impl.Direction;
 import io.iochord.dev.chdsr.model.sbpnet.v1.Connector;
 import io.iochord.dev.chdsr.model.sbpnet.v1.Data;
 import io.iochord.dev.chdsr.model.sbpnet.v1.Element;
 import io.iochord.dev.chdsr.model.sbpnet.v1.Sbpnet;
 import io.iochord.dev.chdsr.model.sbpnet.v1.components.Activity;
 import io.iochord.dev.chdsr.model.sbpnet.v1.components.Branch;
+import io.iochord.dev.chdsr.model.sbpnet.v1.components.BranchGate;
 import io.iochord.dev.chdsr.model.sbpnet.v1.components.DataTable;
 import io.iochord.dev.chdsr.model.sbpnet.v1.components.Function;
 import io.iochord.dev.chdsr.model.sbpnet.v1.components.Generator;
@@ -60,12 +64,12 @@ public class Sbpnet2CpnmlBiConverter implements Converter<Sbpnet, PetriNet> {
 	
 	private Map<Class<?>, Integer> counters = new LinkedHashMap<>();
 	
-	private int getCounter(Class<?> clazz) {
+	private String getCounter(Class<?> clazz) {
 		if (!counters.containsKey(clazz)) {
 			counters.put(clazz, 0);
 		}
 		counters.put(clazz, counters.get(clazz) + 1);
-		return counters.get(clazz);
+		return String.format("%8s", counters.get(clazz)).replace(' ', '0');
 	}
 	
 	public PetriNet createPetriNet(String name) {
@@ -114,7 +118,7 @@ public class Sbpnet2CpnmlBiConverter implements Converter<Sbpnet, PetriNet> {
 	
 	public Place addPlace(Page page, String name, String type, String initialMarking) {
 		Place place = factory.createPlace();
-		place.setId("PLACE" + getCounter(Place.class));
+		place.setId("ID" + getCounter(Place.class));
 		Name n = factory.createName();
 		n.setText(name);
 		place.setName(n);
@@ -128,6 +132,45 @@ public class Sbpnet2CpnmlBiConverter implements Converter<Sbpnet, PetriNet> {
 		place.setSort(sort);
 		page.getObject().add(place);
 		return place;
+	}
+	
+	public RefPlace addRefPlace(Page page, String name, String type, String initialMarking) {
+		RefPlace rplace = factory.createRefPlace();
+		rplace.setId("ID" + getCounter(Place.class));
+		Name n = factory.createName();
+		n.setText(name);
+		rplace.setName(n);
+		if (initialMarking != null) {
+			HLMarking ml = factory.createHLMarking();
+			ml.setText(initialMarking);
+			rplace.setInitialMarking(ml);
+		}
+		Sort sort = factory.createSort();
+		sort.setText(type);
+		rplace.setSort(sort);
+		page.getObject().add(rplace);
+		return rplace;
+	}
+
+	public Instance addInstance(Page page, String name, String subpageId) {
+		Instance subst = factory.createInstance();
+		subst.setId("SUBST" + getCounter(Transition.class));
+		subst.setSubPageID(subpageId);
+		Name n = factory.createName();
+		n.setText(name);
+		subst.setName(n);
+		page.getObject().add(subst);
+		return subst;
+	}
+	
+	public ParameterAssignment addPortSocketAssignment(Instance instance, RefPlace source, Place target) {
+		ParameterAssignment pa = factory.createParameterAssignment();
+		pa.setInstance(instance);
+		pa.setValue(source.getId());
+		pa.setParameter(target.getId());
+		source.setRef(target);
+		instance.getParameterAssignment().add(pa);
+		return pa;
 	}
 	
 	public Transition addTransition(Page page, String name) {
@@ -154,11 +197,18 @@ public class Sbpnet2CpnmlBiConverter implements Converter<Sbpnet, PetriNet> {
 	
 	@Override
 	public PetriNet convert(Sbpnet snet) {
-		Sbpnet2CpnmlBiConverter converter = new Sbpnet2CpnmlBiConverter();
+		Sbpnet2CpnmlBiConverter converter = this;
 		PetriNet net = converter.createPetriNet(snet.getId());
 		Page page =  converter.addPage(net, "SBPNET"); 
 		converter.addTypeDeclaration(net, "INT", converter.getCfactory().createCPNInt(), true);
+		CPNProduct cpnType = converter.getCfactory().createCPNProduct();
+		cpnType.addSort("INT");
+		cpnType.addSort("INT");
+		converter.addTypeDeclaration(net, "ENTITY", cpnType, true);
 		converter.addVariableDeclaration(net, "i", "INT");
+		Map<Element, List<Node>> eInputSets = new LinkedHashMap<>();
+		Map<Element, List<Node>> eOutputSets = new LinkedHashMap<>();
+		
 		// Convert Pages
 		for (String pi : snet.getPages().keySet()) {
 			io.iochord.dev.chdsr.model.sbpnet.v1.Page p = snet.getPages().get(pi);
@@ -172,10 +222,16 @@ public class Sbpnet2CpnmlBiConverter implements Converter<Sbpnet, PetriNet> {
 				if (d instanceof Generator) {
 					Generator dg = (Generator) d;
 					Page dgpage =  converter.addPage(net, "GENERATOR " + dg.getLabel()); 
+					Instance dgi = converter.addInstance(page, "GENERATOR " + dg.getLabel(), dgpage.getId());
+					Place dgp4s = converter.addPlace(page, dg.getLabel() + "_dgp1", "INT", "");
+					converter.addArc(page, dgi, dgp4s, "i");
+					
 					Place dgp1 = converter.addPlace(dgpage, dg.getLabel() + "_dgp1", "INT", "1`1");
 					Place dgp2 = converter.addPlace(dgpage, dg.getLabel() + "_dgp2", "INT", "1`1");
 					Place dgp3 = converter.addPlace(dgpage, dg.getLabel() + "_dgp3", "INT", "");
-					Place dgp4 = converter.addPlace(dgpage, dg.getLabel() + "_dgp4", "INT", "");
+					RefPlace dgp4 = converter.addRefPlace(dgpage, dg.getLabel() + "_dgp4", "INT", "");
+					converter.addPortSocketAssignment(dgi, dgp4, dgp4s);
+					
 					Transition dgt1 = converter.addTransition(dgpage, dg.getLabel() + "_dgt1");
 					Transition dgt2 = converter.addTransition(dgpage, dg.getLabel() + "_dgt2");
 					converter.addArc(dgpage, dgp1, dgt1, "i");
@@ -185,6 +241,8 @@ public class Sbpnet2CpnmlBiConverter implements Converter<Sbpnet, PetriNet> {
 					converter.addArc(dgpage, dgt2, dgp2, "i");
 					converter.addArc(dgpage, dgt2, dgp4, "i");
 					converter.addArc(dgpage, dgt2, dgp3, "i");
+					
+					eOutputSets.put(d, Arrays.asList(new Node[] { dgp4s }));
 				}
 				if (d instanceof Function) {
 					Function f = (Function) d;
@@ -207,44 +265,106 @@ public class Sbpnet2CpnmlBiConverter implements Converter<Sbpnet, PetriNet> {
 					// TODO:
 				}
 			}
-			// Collect Connector Info
-			Map<Element, List<Element>> inputSets = new LinkedHashMap<>();
-			Map<Element, List<Element>> outputSets = new LinkedHashMap<>();
-			for (String s : p.getConnectors().keySet()) {
-				Connector c = p.getConnectors().get(s);
-				
-			}
 			// Convert Nodes
 			for (String ni : p.getNodes().keySet()) {
 				io.iochord.dev.chdsr.model.sbpnet.v1.Node n = p.getNodes().get(ni);
 				if (n instanceof Start) {
 					Start na = (Start) n;
-					Page napage =  converter.addPage(net, "START " + na.getLabel()); 
-					converter.addPlace(napage, na.getLabel() + "_nap1", "INT", "");
+//					Page napage =  converter.addPage(net, "START " + na.getLabel()); 
+//					Place nap = converter.addPlace(napage, na.getLabel() + "_nap1", "INT", "");
+					if (na.getGenerator() == null) {
+						Place nap = converter.addPlace(page, na.getLabel() + "_nap1", "INT", "");
+						eOutputSets.put(n, Arrays.asList(new Node[] { nap }));
+					} else {
+						List<Node> nap = eOutputSets.get(na.getGenerator());
+						if (nap != null && nap.size() > 0) {
+							eOutputSets.put(n, Arrays.asList(new Node[] { nap.get(0) }));
+						}
+					}
 				}
 				if (n instanceof Stop) {
 					Stop no = (Stop) n;
-					Page nopage =  converter.addPage(net, "STOP " + no.getLabel()); 
-					converter.addPlace(nopage, no.getLabel() + "_nop1", "INT", "");
+//					Page nopage =  converter.addPage(net, "STOP " + no.getLabel()); 
+//					Place nop = converter.addPlace(nopage, no.getLabel() + "_nop1", "INT", "");
+					Place nop = converter.addPlace(page, no.getLabel() + "_nop1", "INT", "");
+					eInputSets.put(n, Arrays.asList(new Node[] { nop }));
 				}
 				if (n instanceof Activity) {
 					Activity na = (Activity) n;
 					Page napage =  converter.addPage(net, "ACTIVITY " + na.getLabel()); 
-					converter.addPlace(napage, na.getLabel() + "_nap1", "INT", "");
-					converter.addPlace(napage, na.getLabel() + "_nap2", "INT", "");
-					converter.addPlace(napage, na.getLabel() + "_nap3", "INT", "");
-					converter.addPlace(napage, na.getLabel() + "_nap4", "INT", "");
-					converter.addPlace(napage, na.getLabel() + "_nap5", "INT", "");
-					converter.addTransition(napage, na.getLabel() + "_natstart");
-					converter.addTransition(napage, na.getLabel() + "_natend");
-					converter.addPlace(napage, na.getLabel() + "_naqp1", "INT", "");
-					converter.addPlace(napage, na.getLabel() + "_naqp2", "INT", "");
-					converter.addTransition(napage, na.getLabel() + "_naqtpool");
+					Instance nai = converter.addInstance(page, "ACTIVITY " + na.getLabel(), napage.getId());
+					Place nap1s = converter.addPlace(page, na.getLabel() + "_nap1", "INT", "");
+					Place nap3s = converter.addPlace(page, na.getLabel() + "_nap3", "INT", "");
+					converter.addArc(page, nap1s, nai, "i");
+					converter.addArc(page, nai, nap3s, "i");
+					
+					RefPlace nap1 = converter.addRefPlace(napage, na.getLabel() + "_nap1", "INT", "");
+					Place nap2 = converter.addPlace(napage, na.getLabel() + "_nap2", "INT", "");
+					RefPlace nap3 = converter.addRefPlace(napage, na.getLabel() + "_nap3", "INT", "");
+					Transition natstart = converter.addTransition(napage, na.getLabel() + "_natstart");
+					Transition natend = converter.addTransition(napage, na.getLabel() + "_natend");
+					converter.addPortSocketAssignment(nai, nap1, nap1s);
+					converter.addPortSocketAssignment(nai, nap3, nap3s);
+					converter.addArc(napage, nap1, natstart, "i");
+					converter.addArc(napage, natstart, nap2, "i");
+					converter.addArc(napage, nap2, natend, "i");
+					converter.addArc(napage, natend, nap3, "i");
+					
+					eInputSets.put(n, Arrays.asList(new Node[] { nap1s }));
+					eOutputSets.put(n, Arrays.asList(new Node[] { nap3s }));
+					
 				}
 				if (n instanceof Branch) {
 					Branch b = (Branch) n;
-					//Page bpage =  converter.addPage(net, "BRANCH " + b.getLabel()); 
+					List<Node> binputs = new ArrayList<>();
+					List<Node> boutputs = new ArrayList<>();
+					Page bpage =  converter.addPage(net,"BRANCH " + b.getGate() + " " + b.getType() + " " + b.getLabel()); 
+					Instance bi = converter.addInstance(page, "BRANCH " + b.getGate() + " " + b.getType() + " " + b.getLabel(), bpage.getId());
+					Transition bt = null;
+					Place bp = null;
+//					if (b.getGate() == BranchGate.AND) { 
+						bt = converter.addTransition(bpage, b.getLabel() + "_bt");
+//					} else if (b.getGate() == BranchGate.XOR) {
+						bp = converter.addPlace(page, b.getLabel() + "_bp", "INT", "");
+//					}
+					int i = 0;
+					for (Connector c : p.getConnectors().values()) {
+						if (c.getTarget() != b) continue;
+						Place bpis = converter.addPlace(page, b.getLabel() + "_bpi" + i + "s", "INT", "");
+						converter.addArc(page, bpis, bi, "i");
+						RefPlace bpi = converter.addRefPlace(bpage, b.getLabel() + "_bpi" + i, "INT", "");
+						converter.addPortSocketAssignment(bi, bpi, bpis);
+//						if (b.getGate() == BranchGate.AND) { 
+							converter.addArc(bpage, bpi, bt, "i");
+//						} else if (b.getGate() == BranchGate.XOR) {
+//							Transition bti = converter.addTransition(bpage, b.getLabel() + "_bti" + i);
+//							converter.addArc(bpage, bpi, bti, "i");
+//							converter.addArc(bpage, bti, bp, "i");
+//						}
+						binputs.add(bpis);
+						i++;
+					}
+					i = 0;
+					for (Connector c : p.getConnectors().values()) {
+						if (c.getSource() != b) continue;
+						Place bpos = converter.addPlace(page, b.getLabel() + "_bpo" + i + "s", "INT", "");
+						converter.addArc(page, bi, bpos, "i");
+						RefPlace bpo = converter.addRefPlace(bpage, b.getLabel() + "_bpo" + i, "INT", "");
+						converter.addPortSocketAssignment(bi, bpo, bpos);
+//						if (b.getGate() == BranchGate.AND) { 
+							converter.addArc(bpage, bt, bpo, "i");
+//						} else if (b.getGate() == BranchGate.XOR) {
+//							Transition bto = converter.addTransition(bpage, b.getLabel() + "_bto" + i);
+//							converter.addArc(bpage, bp, bto, "i");
+//							converter.addArc(bpage, bto, bpo, "i");
+//						}
+						boutputs.add(bpos);
+						i++;
+					}
+					eInputSets.put(n, binputs);
+					eOutputSets.put(n, boutputs);
 					// TODO:
+					// Temporary use activity definition
 				}
 				if (n instanceof Monitor) {
 					Monitor m = (Monitor) n;
@@ -255,6 +375,13 @@ public class Sbpnet2CpnmlBiConverter implements Converter<Sbpnet, PetriNet> {
 			// Convert Arcs
 			for (String s : p.getConnectors().keySet()) {
 				Connector c = p.getConnectors().get(s);
+				List<Node> sourcePlaces = eOutputSets.get(c.getSource());
+				List<Node> targetPlaces = eInputSets.get(c.getTarget());
+				if (sourcePlaces != null && targetPlaces != null) {
+					Transition silent = converter.addTransition(page, "");
+					converter.addArc(page, sourcePlaces.get(c.getSourceIndex()), silent, "i");
+					converter.addArc(page, silent, targetPlaces.get(c.getTargetIndex()), "i");
+				}
 			}
 		}
 		return net;

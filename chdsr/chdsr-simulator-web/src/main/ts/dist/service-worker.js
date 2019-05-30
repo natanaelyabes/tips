@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/3.4.1/workbox-sw.js");
 
 importScripts(
-  "/precache-manifest.e0ac4ca77b1a5fbc9be5669c331324d0.js"
+  "/precache-manifest.7fd8f6065d92cdc14e54c4fee035e337.js"
 );
 
 workbox.core.setCacheNameDetails({prefix: "iochord-chdsr-ui"});
