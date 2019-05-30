@@ -37,8 +37,8 @@ export class GraphConnectorImpl extends GraphElementImpl implements GraphConnect
           }
         });
         graphNodeInstance.forEach((value: Map<string, GraphNode>) => {
-          if (value.get(element.sourceRef)) {
-            graphArc.setSource(value.get(element.sourceRef) as GraphNode);
+          if (value.get(element.targetRef)) {
+            graphArc.setTarget(value.get(element.targetRef) as GraphNode);
           }
         });
         graphArcMap.set(key, graphArc);

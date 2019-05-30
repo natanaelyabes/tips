@@ -1,4 +1,3 @@
-import { GraphConnector } from './../interfaces/GraphConnector';
 import { GraphPage } from '@/iochord/chdsr/common/graph/interfaces/GraphPage';
 import { GraphElementImpl } from './GraphElementImpl';
 import { GraphData } from '../interfaces/GraphData';

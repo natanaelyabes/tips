@@ -40,6 +40,7 @@ export class JointGraphConnectorImpl extends GraphConnectorImpl implements Joint
     });
 
     this.connector = new link();
+
     const source = graph.getElements().find((value) => {
       return value.attributes.nodeId === (this.getSource() as JointGraphNodeImpl).getId();
     }) as joint.dia.Element;
