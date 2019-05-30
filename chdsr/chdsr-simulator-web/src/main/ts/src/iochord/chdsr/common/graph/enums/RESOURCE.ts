@@ -1,0 +1,8 @@
+export enum RESOURCE_SELECTION {
+  RANDOM,
+  ROUND_ROBIN,
+}
+
+export enum RESOURCE_CRITERIA {
+  CASE_TYPE,
+}

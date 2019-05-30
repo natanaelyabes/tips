@@ -1,0 +1,4 @@
+export enum DISTRIBUTION_TYPE {
+  RANDOM,
+  CONSTANT,
+}

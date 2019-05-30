@@ -6,7 +6,7 @@
  */
 export interface NavigationHasMenu {
   menuIsOpen: boolean;
-  fn_navigation_toggle_menu(): void;
-  fn_navigation_close_menu(): void;
-  fn_navigation_open_menu(): void;
+  toggleMenu(): void;
+  closeMenu(): void;
+  openMenu(): void;
 }

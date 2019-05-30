@@ -15,11 +15,11 @@ export interface ApplicationHasWrapper {
   rightMenuBarItems: any;
   ribbonMenuItems: any;
   content: any;
-  fn_application_set_title(): void;
-  fn_application_set_breadcrumb(): void;
-  fn_application_set_title_menu_bar(): void;
-  fn_application_set_left_side_menu_bar(): void;
-  fn_application_set_right_side_menu_bar(): void;
-  fn_application_set_ribbon_menu_item(): void;
-  fn_application_set_content(): void;
+  setTitle(): void;
+  setBreadcrumb(): void;
+  setTitleMenubar(): void;
+  setLeftMenuSidebar(): void;
+  setRightMenuSidebar(): void;
+  setRibbonMenuItem(): void;
+  setContent(): void;
 }

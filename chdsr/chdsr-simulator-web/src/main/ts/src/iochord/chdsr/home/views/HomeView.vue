@@ -76,7 +76,7 @@
 
 <style>
 .home.view {
-  background: url('https://images.pond5.com/blue-white-gradient-polygonal-surface-footage-073466103_prevstill.jpeg') fixed center center;
+  background: gainsboro;
   background-size: cover;
   height: 100%;
   filter: hue-rotate(20deg);
@@ -117,8 +117,8 @@ export default class Home extends Vue implements VueHasLifeCycle, SemanticModule
   }
 
   public mounted(): void {
-    this.fn_browser_override_properties();
-    this.fn_semantic_declare_modules();
+    this.overrideProperties();
+    this.declareModules();
   }
 
   public beforeUpdate(): void {
@@ -137,11 +137,11 @@ export default class Home extends Vue implements VueHasLifeCycle, SemanticModule
     // throw new Error("Method not implemented.");
   }
 
-  public fn_browser_override_properties(): void {
+  public overrideProperties(): void {
     document.title = `${ApplicationEnum.NAME} | Home`;
   }
 
-  public fn_semantic_declare_modules(): void {
+  public declareModules(): void {
     // throw new Error("Method not implemented.");
   }
 

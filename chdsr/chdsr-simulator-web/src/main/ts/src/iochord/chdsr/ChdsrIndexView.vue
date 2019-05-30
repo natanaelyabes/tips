@@ -11,8 +11,6 @@
               Administrator
             <i class="dropdown icon"></i>
             <div class="menu">
-              <!-- <a class="item"><i class="user icon"></i> Profile</a> -->
-              <!-- <a class="item"><i class="cogs icon"></i> Settings</a> -->
               <a class="item" v-on:click="logout()"><i class="power icon"></i> Logout</a>
             </div>
           </div>
@@ -109,7 +107,7 @@ export default class Index extends Vue implements VueHasLifeCycle, SemanticModul
 
   public mounted(): void {
     this.$nextTick(() => {
-      this.fn_semantic_declare_modules();
+      this.declareModules();
     });
   }
 
@@ -129,11 +127,11 @@ export default class Index extends Vue implements VueHasLifeCycle, SemanticModul
     // throw new Error("Method not implemented.");
   }
 
-  public fn_semantic_declare_modules(): void {
-    this.fn_semantic_declare_dropdown();
+  public declareModules(): void {
+    this.declareDropdown();
   }
 
-  private fn_semantic_declare_dropdown(): void {
+  private declareDropdown(): void {
     $('.ui.dropdown').dropdown();
   }
 
