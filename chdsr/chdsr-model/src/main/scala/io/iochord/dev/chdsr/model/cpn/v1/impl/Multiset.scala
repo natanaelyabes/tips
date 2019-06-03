@@ -5,9 +5,11 @@ import scala.collection.IterableLike
 import scala.collection.mutable.Builder
 import io.iochord.dev.chdsr.model.cpn.v1._
 
-class Multiset[T] (val multiset: Map[(T,Long), Int], colset: Class[_]) {
+class Multiset[T] (val multiset: Map[(T,Long), Int], colset: Class[T]) {
   
-  def coltype: Class[_] = colset
+  type coltype = T
+  
+  def colclass: Class[T]= colset
   
   private def comparing(that: Any, cons: (Int, Int) => Boolean): Boolean = {
     that match {
