@@ -15,7 +15,17 @@ class Arc[T] (
   
   extends Element {
   
-  var evalArcExp:T => T = null
+  type coltype = T
+  
+  private var isBase: Boolean = false
+  
+  private var evalArcExpV:Any => T = null
+  private var TtoBV:Any => Any = null
+  private var BtoTV:Any => T = null
+  
+  def getIsBase(): Boolean = isBase
+  
+  def setIsBase(isBase:Boolean) { this.isBase = isBase }
   
   def getPlace(): Place[T] = { place }
   
@@ -29,7 +39,15 @@ class Arc[T] (
   
   def setId(id: String) { this.id = id }
   
-  def setArcExp(evalArcExp:T => T) = { this.evalArcExp = evalArcExp }
+  def transTokenToBind(TtoB:Any => Any) = { TtoBV = TtoB }
   
-  def transArcExp(inp:T):T = { evalArcExp(inp) }
+  def evalTokenToBind(inp:Any):Any = { TtoBV(inp) }
+  
+  def transBindToToken(BtoT:Any => T) = { BtoTV = BtoT }
+  
+  def evalBindToToken(inp:Any):T = { BtoTV(inp) }
+  
+  def setArcExp(evalArcExp:Any => T) = { evalArcExpV = evalArcExp }
+  
+  def evalArcExp(inp:Any):T = { evalArcExpV(inp) }
 }
