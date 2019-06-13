@@ -7,17 +7,17 @@
 
         <div class="ui mini modal">
             <div id="min_mdl_el" class="header">
-                Setting 
+                Setting
             </div>
             <div class="content">
                 <div class="ui form">
                     <div class="inline field">
                         <label>Label:</label>
-                        <input type="text" id="el_label" placeholder="Label">                        
+                        <input type="text" id="el_label" placeholder="Label">
                     </div>
                     <div class="inline field">
                         <label>Height:</label>
-                        <input type="text" id="el_height" placeholder="height">                        
+                        <input type="text" id="el_height" placeholder="height">
                     </div>
                     <div class="inline field">
                         <label>Width:</label>
@@ -70,11 +70,11 @@ export default class SimulationEditorKpiView extends Vue {
                         var width = $('#el_width').val();
                         var height = $('#el_height').val();
                         var label = $('#el_label').val();
-                        
+
                         currentElement.attr("label/text",label);
                         currentElement.resize(width, height);
-                        
-                        return true;                        
+
+                        return true;
                     }
                 }).modal('show');
             },
@@ -95,7 +95,7 @@ export default class SimulationEditorKpiView extends Vue {
 
                 kotak.addTo(graph);
             },
-            
+
             'element:pointerdblclick' : function(elementView){
                 const currentElement = elementView.model;
                 currentElement.attr('label/text', 'Di click bro');
