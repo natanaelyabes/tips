@@ -6,41 +6,7 @@
     </div>
 
     <!-- Modal for start node -->
-    <div class="ui tiny start modal">
-      <i class="close icon"></i>
-      <div id="start_modal_title" class="header">
-        <h3 class="ui green header">Start</h3>
-      </div>
-      <div class="content">
-        <div class="ui form">
-          <div class="ui grid">
-            <div class="row">
-              <div class="three wide column">
-                Label
-              </div>
-              <div class="thirteen wide column">
-                <input type="text" id="start_txt_label" />
-              </div>
-            </div>
-            <div class="row">
-              <div class="three wide column">
-                Generator
-              </div>
-              <div class="ten wide column">
-                <input type="text" id="start_txt_generator" />
-              </div>
-              <div class="three wide column">
-                <button class="ui button">...</button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="actions">
-        <div class="ui save button">Save</div>
-        <div class="ui cancel button">Cancel</div>
-      </div>
-    </div>
+    <StartNodeModal/>
 
     <!-- Modal for stop node -->
     <div class="ui tiny stop modal">
@@ -892,15 +858,12 @@
 </style>
 
 <script lang="ts">
-  import {
-    Component,
-    Vue
-  } from 'vue-property-decorator';
-  import * as joint from 'jointjs';
-  import '#root/node_modules/jointjs/dist/joint.css';
-  import {
-    connect
-  } from 'net';
+import { Component, Vue } from 'vue-property-decorator';
+import * as joint from 'jointjs';
+import '#root/node_modules/jointjs/dist/joint.css';
+
+// Components
+import StartNodeModal from '../../../common/kpi/components/modals/StartNodeModal.vue';
 
   declare const $: any;
 
@@ -1245,6 +1208,41 @@
         }
       }
 
+      },
+      'link:contextmenu': function (linkView) {
+        const currentLink = linkView.model;
+
+        $('.ui.tiny.function.modal').modal('show');
+        //alert(rClickCounter);
+        //alert(currentLink.attr('root/title'));
+
+        rClickCounter++;
+      }
+    });
+
+    function resetAll(paper: any) {
+
+      /* Reset all elements in the paper */
+      var elements = paper.model.getElements();
+      for (var i = 0, ii = elements.length; i < ii; i++) {
+        var currentElement = elements[i];
+        currentElement.attr('body/stroke', 'black');
+      }
+
+      var links = paper.model.getLinks();
+      for (var j = 0, jj = links.length; j < jj; j++) {
+        var currentLink = links[j];
+        currentLink.attr('line/stroke', 'black');
+        currentLink.label(0, {
+          attrs: {
+            body: {
+              stroke: 'black'
+            }
+          }
+        })
+      }
     }
+
   }
+}
 </script>
