@@ -19,6 +19,16 @@ export default [
         name: `${BaseUrlEnum.IOCHORD}-${ApplicationEnum.NAME}-simulation-editor`,
         component: () => import(/* webpackChunkName: "chdsr-view" */ '@/iochord/chdsr/simulation/editor/views/SimulationEditorView.vue'),
       },
+      {
+        path: 'kpi',
+        name: `${BaseUrlEnum.IOCHORD}-${ApplicationEnum.NAME}-kpi`,
+        component: () => import(/* webpackChunkName: "chdsr-view-[request]" */ '@/iochord/chdsr/simulation/editor/views/SimulationEditorKpiView.vue'),
+      },
+      {
+        path: 'ui',
+        name: `${BaseUrlEnum.IOCHORD}-${ApplicationEnum.NAME}-ui`,
+        component: () => import(/* webpackChunkName: "chdsr-view-[request]" */ '@/iochord/chdsr/simulation/editor/views/SimulationEditorUIView.vue'),
+      },
     ],
   },
 ] as RouteConfig[];
