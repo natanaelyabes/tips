@@ -63,7 +63,21 @@ import ActivityNodeModal from "../../../common/kpi/components/modals/ActivityNod
 
 declare const $: any;
 
-@Component
+@Component({
+  components:{
+    StartNodeModal,
+    StopNodeModal,
+    ResourceDataModal,
+    QueueDataModal,
+    ObjectTypeDataModal,
+    GeneratorDataModal,
+    FunctionDataModal,
+    ControlModal,
+    ConfigurationModal,
+    BranchNodeModal,
+    ActivityNodeModal
+  }
+})
 export default class SimulationEditorUIView extends Vue {
   private selectedGate = "";
   private selectedSJ = "";
@@ -73,6 +87,7 @@ export default class SimulationEditorUIView extends Vue {
   private updated(): void {
     
   }
+
   private mounted(): void {
     $(".ui.dropdown").dropdown();
     $(".tabular.menu .item").tab();    

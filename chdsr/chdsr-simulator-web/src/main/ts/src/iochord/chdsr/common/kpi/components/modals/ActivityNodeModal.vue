@@ -209,6 +209,8 @@
 import { Component, Prop, Vue } from "vue-property-decorator";
 @Component
 export default class ActivityNodeModal extends Vue {
+  private selectedActivityType = "";
+
   private updated(): void{
     if (this.selectedActivityType == "standard") {
       $("#basic-standard-sm-1").attr("style", "visibility:visible");
