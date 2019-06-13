@@ -13,6 +13,6 @@ export default [
     path: '',
     beforeEnter: ChdsrHomeGuard.outputToConsole,
     name: `${BaseUrlEnum.IOCHORD}-${ApplicationEnum.NAME}-home`,
-    component: () => import(/* webpackChunkName: "chdsr-view-[request]" */ '@/iochord/chdsr/home/views/HomeView.vue'),
+    component: () => import(/* webpackChunkName: "chdsr-view" */ '@/iochord/chdsr/home/views/HomeView.vue'),
   },
 ] as RouteConfig[] | undefined;

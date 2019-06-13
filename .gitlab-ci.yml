@@ -1,0 +1,46 @@
+image: iochord/chdsr:gradle-t2
+
+variables:
+  GRADLE_OPTS: "-Dorg.gradle.daemon=false"
+
+before_script:
+  - cd $CI_PROJECT_DIR/chdsr
+  - export GRADLE_USER_HOME=`pwd`/.gradle
+
+build:
+  stage: build
+  script: 
+    - gradle --build-cache build
+    - gradle artifactoryPublish
+  cache:
+    key: "$CI_COMMIT_REF_NAME"
+    policy: push
+    paths:
+      - build
+      - .gradle
+      
+stop:
+  image: lwolf/helm-kubectl-docker:v152_213
+  stage: build
+  script:
+    - echo Stopping current service ...
+    - kubectl scale --replicas=0 statefulset/apps-chdsr
+  cache:
+    key: "$CI_COMMIT_REF_NAME"
+    policy: pull
+    paths:
+      - build
+      - .gradle
+
+start:
+  image: lwolf/helm-kubectl-docker:v152_213
+  stage: deploy
+  script:
+    - echo Starting service ...
+    - kubectl scale --replicas=1 statefulset/apps-chdsr
+  cache:
+    key: "$CI_COMMIT_REF_NAME"
+    policy: pull
+    paths:
+      - build
+      - .gradle

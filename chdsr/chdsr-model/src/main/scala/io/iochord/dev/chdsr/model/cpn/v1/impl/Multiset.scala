@@ -5,7 +5,11 @@ import scala.collection.IterableLike
 import scala.collection.mutable.Builder
 import io.iochord.dev.chdsr.model.cpn.v1._
 
-class Multiset[T] (val multiset: Map[(T,Long), Int], val typename: String) {
+class Multiset[T] (val multiset: Map[(T,Long), Int], colset: Class[T]) {
+  
+  type coltype = T
+  
+  def colclass: Class[T]= colset
   
   private def comparing(that: Any, cons: (Int, Int) => Boolean): Boolean = {
     that match {
@@ -63,9 +67,10 @@ class Multiset[T] (val multiset: Map[(T,Long), Int], val typename: String) {
               ms = ms + (el -> nc)
             else
               ms = ms - el
+          case None => ms
         }
       }
-      new Multiset(ms,typename)
+      new Multiset(ms, colset)
     } else {
       throw new IllegalArgumentException("Cannot subtract larger multiset from multiset")
     }
@@ -80,7 +85,7 @@ class Multiset[T] (val multiset: Map[(T,Long), Int], val typename: String) {
     }
   }
     
-  def +(n: Int, elem: (T,Long)): Multiset[T] = {
+  def +(elem: (T,Long), n: Int): Multiset[T] = {
     val ms = multiset
     var count = n
     if (ms.contains(elem)) 
@@ -91,12 +96,12 @@ class Multiset[T] (val multiset: Map[(T,Long), Int], val typename: String) {
       ms -= (elem)
     else
       throw new IllegalArgumentException("Cannot remove less than exist token")
-    new Multiset(ms, typename)
+    new Multiset(ms, colset)
   }
   
-  def +(elem: (T,Long)): Multiset[T] = this + (1, elem)
+  def +(elem: (T,Long)): Multiset[T] = this + (elem, 1)
 
-  def -(elem: (T,Long)) = this + (-1, elem)
+  def -(elem: (T,Long)) = this + (elem, -1)
 
-  def -(n: Int, elem: (T,Long)) = this + (-n, elem)
+  def -(elem: (T,Long), n: Int) = this + (elem, -n)
 }

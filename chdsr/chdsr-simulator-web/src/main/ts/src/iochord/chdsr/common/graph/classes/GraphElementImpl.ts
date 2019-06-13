@@ -1,12 +1,12 @@
 import { GraphElement } from '../interfaces/GraphElement';
 
 export class GraphElementImpl implements GraphElement {
-  public readonly TYPE: string | 'element' = 'element';
+  public readonly TYPE: string | null = 'element';
 
   private id: string | null;
   private label: string | null;
-  private elementType: string = this.TYPE;
-  private attributes: Map<string, string> = new Map<string, string>();
+  private elementType: string | null = this.TYPE;
+  private attributes: Map<string, string> | null = new Map<string, string>();
 
   constructor();
   constructor(id: string, label: string);
@@ -15,39 +15,39 @@ export class GraphElementImpl implements GraphElement {
     this.label = label || null;
   }
 
-  public fn_graph_element_get_id(): string | null {
+  public getId(): string | null {
     return this.id;
   }
 
-  public fn_graph_element_set_id(id: string) {
+  public setId(id: string) {
     this.id = id;
   }
 
-  public fn_graph_element_get_label(): string | null {
+  public getLabel(): string | null {
     return this.label;
   }
 
-  public fn_graph_element_set_label(label: string) {
+  public setLabel(label: string) {
     this.label = label;
   }
 
-  public fn_graph_element_get_type(): string | null {
+  public getType(): string | null {
     return this.elementType;
   }
 
-  public fn_graph_element_set_type(type: string) {
+  public setType(type: string) {
     this.elementType = type;
   }
 
-  public fn_graph_element_get_attributes(): Map<string, string> {
+  public getAttributes(): Map<string, string> | null {
     return this.attributes;
   }
 
-  public fn_graph_element_set_attributes(attributes: Map<string, string>) {
+  public setAttributes(attributes: Map<string, string>) {
     this.attributes = attributes;
   }
 
-  public fn_object_serialize(): string {
+  public serialize(): string | null {
     return JSON.stringify(this);
   }
 }

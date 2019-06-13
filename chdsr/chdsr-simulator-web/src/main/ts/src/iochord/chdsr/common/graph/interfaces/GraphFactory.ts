@@ -18,23 +18,23 @@ import { GraphPage } from './GraphPage';
 import { GraphDataObjectType } from './components/GraphDataObjectType';
 
 export interface GraphFactory {
-  fn_graph_factory_create(ref?: Graph): Graph;
-  fn_graph_factory_add_page(net: Graph): GraphPage | null;
-  fn_graph_factory_add_data(page: GraphPage, dataType: string): GraphData | null;
-  fn_graph_factory_add_node(page: GraphPage, nodeType: string): GraphNode | null;
-  fn_graph_factory_add_connector(page: GraphPage, source: GraphElement, target: GraphElement): GraphConnector | null;
-  fn_graph_factory_add_configuration(net: Graph): GraphConfiguration | null;
+  create(ref?: Graph): Graph | null;
+  addPage(net: Graph): GraphPage | null;
+  addData(page: GraphPage, dataType: string): GraphData | null;
+  addNode(page: GraphPage, nodeType: string): GraphNode | null;
+  addConnector(page: GraphPage, source: GraphElement, target: GraphElement): GraphConnector | null;
+  addConfiguration(net: Graph): GraphConfiguration | null;
 
-  fn_graph_factory_add_data_table(page: GraphPage): GraphDataTable | null;
-  fn_graph_factory_add_object_type(page: GraphPage): GraphDataObjectType | null;
-  fn_graph_factory_add_generator(page: GraphPage): GraphDataGenerator | null;
-  fn_graph_factory_add_function(page: GraphPage): GraphDataFunction | null;
-  fn_graph_factory_add_queue(page: GraphPage): GraphDataQueue | null;
-  fn_graph_factory_add_resource(page: GraphPage): GraphDataResource | null;
+  addDataTable(page: GraphPage): GraphDataTable | null;
+  addObjectType(page: GraphPage): GraphDataObjectType | null;
+  addGenerator(page: GraphPage): GraphDataGenerator | null;
+  addFunction(page: GraphPage): GraphDataFunction | null;
+  addQueue(page: GraphPage): GraphDataQueue | null;
+  addResource(page: GraphPage): GraphDataResource | null;
 
-  fn_graph_factory_add_start(page: GraphPage): GraphStartEventNode | null;
-  fn_graph_factory_add_stop(page: GraphPage): GraphEventNode | null;
-  fn_graph_factory_add_activity(page: GraphPage): GraphActivityNode | null;
-  fn_graph_factory_add_branch(page: GraphPage): GraphBranchNode | null;
-  fn_graph_factory_add_monitor(page: GraphPage): GraphMonitorNode | null;
+  addStart(page: GraphPage): GraphStartEventNode | null;
+  addStop(page: GraphPage): GraphEventNode | null;
+  addActivity(page: GraphPage): GraphActivityNode | null;
+  addBranch(page: GraphPage): GraphBranchNode | null;
+  addMonitor(page: GraphPage): GraphMonitorNode | null;
 }

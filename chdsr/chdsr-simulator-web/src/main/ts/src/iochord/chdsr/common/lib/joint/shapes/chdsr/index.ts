@@ -1,8 +1,8 @@
-import './base/arcs/JointLinkModel';
-import './base/nodes/JointActivityModel';
-import './base/nodes/JointEventModel';
-import './base/nodes/JointDataModel';
-import './nodes/events/JointEndEventModel';
-import './nodes/events/JointStartEventModel';
-import './base/JointGraphPageModel';
-import './base/JointGraphModel';
+// import './deprecated/base/connectors/JointLinkModel';
+// import './deprecated/base/nodes/JointActivityModel';
+// import './deprecated/base/nodes/JointEventModel';
+// import './deprecated/base/nodes/JointDataModel';
+// import './deprecated/nodes/events/JointEndEventModel';
+// import './deprecated/nodes/events/JointStartEventModel';
+// import './deprecated/base/JointGraphPageModel';
+// import './deprecated/base/JointGraphModel';

@@ -120,7 +120,7 @@ export default class NavigationTopSidebarComponent extends Vue {
   private evaluateBrowserWidth(): void {
     const browser: BrowserCanHandleBreakpoints = {
       width: window.innerWidth,
-      fn_browser_handle_breakpoints: (width) => {
+      handleBreakpoints: (width) => {
         if (width > 933) {
           this.openMenu();
         }
@@ -130,8 +130,8 @@ export default class NavigationTopSidebarComponent extends Vue {
       },
     };
 
-    // Execute custom implementation of fn_browser_handle_breakpoints
-    browser.fn_browser_handle_breakpoints(browser.width);
+    // Execute custom implementation of handleBreakpoints
+    browser.handleBreakpoints(browser.width);
   }
 
   private adjustTopFixedMenu(): void {
@@ -169,7 +169,7 @@ export default class NavigationTopSidebarComponent extends Vue {
 
     const browser: BrowserCanHandleBreakpoints = {
       width: window.innerWidth,
-      fn_browser_handle_breakpoints: (width) => {
+      handleBreakpoints: (width) => {
         if (width > 933) {
           $('.ui.left.sidebar').css('width', 260);
 
@@ -192,7 +192,7 @@ export default class NavigationTopSidebarComponent extends Vue {
       },
     };
 
-    browser.fn_browser_handle_breakpoints(browser.width);
+    browser.handleBreakpoints(browser.width);
 
     // The menu is not closed
     this.menuIsOpen = !this.menuIsOpen;

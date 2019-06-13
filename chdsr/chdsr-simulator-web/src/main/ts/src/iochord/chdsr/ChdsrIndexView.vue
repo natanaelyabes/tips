@@ -11,8 +11,6 @@
               Administrator
             <i class="dropdown icon"></i>
             <div class="menu">
-              <!-- <a class="item"><i class="user icon"></i> Profile</a> -->
-              <!-- <a class="item"><i class="cogs icon"></i> Settings</a> -->
               <a class="item" v-on:click="logout()"><i class="power icon"></i> Logout</a>
             </div>
           </div>
@@ -29,35 +27,35 @@
         <div class="item">
           <div class="header" style="text-decoration:underline">Data Management</div>
           <div class="menu">
-            <router-link tag="a" class="item" to="#">Upload / Open <i class="save icon"></i></router-link>
-            <router-link tag="a" class="item" to="#">Connection <i class="bolt icon"></i></router-link>
-            <router-link tag="a" class="item" to="#">History / Browser <i class="list icon"></i></router-link>
-            <router-link tag="a" class="item" to="#">Filter <i class="filter icon"></i></router-link>
-            <router-link tag="a" class="item" to="#">Mapping <i class="map signs icon"></i></router-link>
+            <router-link tag="a" class="item" to="#">Upload / Open</router-link>
+            <router-link tag="a" class="item" to="#">Connection</router-link>
+            <router-link tag="a" class="item" to="#">History / Browser</router-link>
+            <router-link tag="a" class="item" to="#">Filter</router-link>
+            <router-link tag="a" class="item" to="#">Mapping></router-link>
           </div>
         </div>
         <div class="item">
           <div class="header" style="text-decoration:underline">Analysis / Algorithm</div>
           <div class="menu">
-            <router-link tag="a" class="item" to="#">Process Model <i class="project diagram icon"></i></router-link>
-            <router-link tag="a" class="item" to="#">Branches Mining <i class="code branch icon"></i></router-link>
-            <router-link tag="a" class="item" to="#">Resource Mining <i class="users icon"></i></router-link>
-            <router-link tag="a" class="item" to="#">Distribution Fitting <i class="chart area icon"></i></router-link>
+            <router-link tag="a" class="item" to="#">Process Model</router-link>
+            <router-link tag="a" class="item" to="#">Branches Mining</router-link>
+            <router-link tag="a" class="item" to="#">Resource Mining</router-link>
+            <router-link tag="a" class="item" to="#">Distribution Fitting</router-link>
           </div>
         </div>
         <div class="item">
           <div class="header" style="text-decoration:underline">Simulation Generation</div>
           <div class="menu">
-            <router-link tag="a" class="item" to="#">Simulation Discovery <i class="globe icon"></i></router-link>
-            <router-link tag="a" class="item" to="#">Hybrid Simulation <i class="sitemap icon"></i></router-link>
+            <router-link tag="a" class="item" to="#">Simulation Discovery</router-link>
+            <router-link tag="a" class="item" to="#">Hybrid Simulation</router-link>
           </div>
         </div>
         <div class="item">
           <div class="header" style="text-decoration:underline">Simulation Editor</div>
           <div class="menu">
-            <router-link tag="a" class="item" to="/iochord/chdsr/simulation-editor">Editor <i class="pencil icon"></i></router-link>
-            <router-link tag="a" class="item" to="#">Report <i class="file outline alternate icon"></i></router-link>
-            <router-link tag="a" class="item" to="#">Export <i class="file export icon"></i></router-link>
+            <router-link tag="a" class="item" to="/iochord/chdsr/simulation-editor">Editor</router-link>
+            <router-link tag="a" class="item" to="#">Report</router-link>
+            <router-link tag="a" class="item" to="#">Export</router-link>
           </div>
         </div>
       </div>
@@ -109,7 +107,7 @@ export default class Index extends Vue implements VueHasLifeCycle, SemanticModul
 
   public mounted(): void {
     this.$nextTick(() => {
-      this.fn_semantic_declare_modules();
+      this.declareModules();
     });
   }
 
@@ -129,11 +127,11 @@ export default class Index extends Vue implements VueHasLifeCycle, SemanticModul
     // throw new Error("Method not implemented.");
   }
 
-  public fn_semantic_declare_modules(): void {
-    this.fn_semantic_declare_dropdown();
+  public declareModules(): void {
+    this.declareDropdown();
   }
 
-  private fn_semantic_declare_dropdown(): void {
+  private declareDropdown(): void {
     $('.ui.dropdown').dropdown();
   }
 

@@ -1,5 +1,6 @@
 package io.iochord.dev.chdsr.simulator.web.api.controllers;
 
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -12,6 +13,7 @@ import io.iochord.dev.chdsr.simulator.compiler.Simulation;
  */
 // TODO: Simulator Controller
 @RestController
+@CrossOrigin
 public class SimulatorController extends AServiceController {
 	public static final String BASE_URI = AServiceController.BASE_URI + "/simulator";
 
@@ -37,6 +39,11 @@ public class SimulatorController extends AServiceController {
 
 	@RequestMapping(BASE_URI + "/fastforward/{cpnId}")
 	public String getFastForward() {
+		return "Ok";
+	}
+
+	@RequestMapping(BASE_URI + "/start")
+	public String start() {
 		return "Ok";
 	}
 

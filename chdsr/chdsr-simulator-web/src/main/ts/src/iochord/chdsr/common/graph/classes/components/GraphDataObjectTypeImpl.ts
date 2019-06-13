@@ -1,44 +1,51 @@
+import { GraphDataObjectType } from './../../interfaces/components/GraphDataObjectType';
 import { GraphDataImpl } from '../GraphDataImpl';
-import { GraphDataObjectType } from '../../interfaces/components/GraphDataObjectType';
 import { GraphDataTable } from '../../interfaces/components/GraphDataTable';
-import { GraphDataTableImpl } from './GraphDataTableImpl';
+import { GraphUtil } from '../GraphUtil';
 
 export class GraphDataObjectTypeImpl extends GraphDataImpl implements GraphDataObjectType {
-  public static readonly TYPE: 'objecttype' = 'objecttype';
+  public static readonly TYPE: string | null = 'objecttype';
+  public static instance: Map<string, GraphDataObjectType> = new Map<string, GraphDataObjectType>();
 
   /** @Override */
-  public static fn_object_deserialize(object: any): GraphDataObjectType {
+  public static deserialize(object: any): GraphDataObjectType | null {
     const graphDataObjectType: GraphDataObjectType = new GraphDataObjectTypeImpl();
-    graphDataObjectType.fn_graph_element_set_id(object.id);
-    graphDataObjectType.fn_graph_element_set_label(object.label);
-    graphDataObjectType.fn_graph_element_set_type(object.type);
-    graphDataObjectType.fn_graph_element_set_attributes(object.attributes);
-    graphDataObjectType.fn_graph_data_object_type_set_fields(GraphDataTableImpl.fn_object_deserialize(object.fields));
+    graphDataObjectType.setId(object.id);
+    graphDataObjectType.setLabel(object.label);
+    graphDataObjectType.setType(object.type);
+    graphDataObjectType.setAttributes(object.attributes);
+    graphDataObjectType.setTypes(object.types);
+    GraphDataObjectTypeImpl.instance.set(graphDataObjectType.getId() as string, graphDataObjectType);
     return graphDataObjectType;
   }
 
-  private fields: Map<string, GraphDataTable>;
+  private types: Map<string, GraphDataTable> | null = new Map<string, GraphDataTable>() || null;
 
-  constructor(fields?: Map<string, GraphDataTable>) {
+  constructor();
+  constructor(types?: Map<string, GraphDataTable>) {
     super();
-    this.fields = fields || new Map<string, GraphDataTable>();
+    this.types = types || new Map<string, GraphDataTable>() || null;
   }
 
   /** @Override */
-  public fn_graph_element_get_type(): string {
+  public getType(): string | null {
     return this.TYPE;
   }
 
-  public fn_graph_data_object_type_get_fields(): Map<string, GraphDataTable> {
-    return this.fields;
+  public getTypes(): Map<string, GraphDataTable> | null {
+    return this.types;
   }
 
-  public fn_graph_data_object_type_set_fields(fields: Map<string, GraphDataTable>): void {
-    this.fields = fields;
+  public setTypes(types: Map<string, GraphDataTable>): void {
+    this.types = types;
+  }
+
+  public getTypeRefs(): Map<string, string | null> | null {
+    return GraphUtil.generateRefs(this.getTypes());
   }
 
   /** @Override */
-  public fn_object_serialize(): string {
+  public serialize(): string | null {
     return JSON.stringify(this);
   }
 }

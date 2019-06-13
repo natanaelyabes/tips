@@ -2,6 +2,7 @@ package io.iochord.dev.chdsr.model.sbpnet.v1;
 
 import java.util.Map;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 import io.iochord.dev.chdsr.model.sbpnet.v1.components.Control;
@@ -18,6 +19,9 @@ public interface Sbpnet extends Element {
 	String getVersion();
 
 	Map<String, Page> getPages();
+	
+	@JsonIgnore
+	Page getDefaultPage();
 
 	Map<String, Configuration> getConfigurations();
 

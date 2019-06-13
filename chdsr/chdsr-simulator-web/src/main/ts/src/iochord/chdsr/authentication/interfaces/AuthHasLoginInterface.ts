@@ -9,5 +9,5 @@ export interface AuthHasLoginInterface {
   password: string;
   isError: boolean;
   errorMessage: string;
-  fn_auth_login(): void;
+  login(): void;
 }

@@ -12,7 +12,7 @@ import SimulationEditorRouter from '@/iochord/chdsr/simulation/editor/routes/Sim
 export default [
   {
     path: `/${BaseUrlEnum.IOCHORD}/${ApplicationEnum.NAME}`,
-    component: () => import(/* webpackChunkName: "chdsr-view-[request]" */ '@/iochord/chdsr/ChdsrIndexView.vue'),
+    component: () => import(/* webpackChunkName: "chdsr-view" */ '@/iochord/chdsr/ChdsrIndexView.vue'),
     children: [
       ...ChdsrHomeRouter as RouteConfig[],
       ...SimulationEditorRouter as RouteConfig[],

@@ -1,67 +1,93 @@
+import { GraphDataQueue } from './../../interfaces/components/GraphDataQueue';
 import { GraphDataImpl } from '../GraphDataImpl';
-import { GraphDataQueue } from '../../interfaces/components/GraphDataQueue';
 import { QUEUE_TYPE } from '../../enums/QUEUE';
 
 export class GraphDataQueueImpl extends GraphDataImpl implements GraphDataQueue {
-  public static readonly TYPE: 'queue' = 'queue';
+  public static readonly TYPE: string | null = 'queue';
+  public static instance: Map<string, GraphDataQueue> = new Map<string, GraphDataQueue>();
 
   /** @Override */
-  public static fn_object_deserialize(object: any): GraphDataQueue {
+  public static deserialize(object: any): GraphDataQueue | null {
     const graphDataQueue: GraphDataQueue = new GraphDataQueueImpl();
-    graphDataQueue.fn_graph_element_set_id(object.id);
-    graphDataQueue.fn_graph_element_set_label(object.label);
-    graphDataQueue.fn_graph_element_set_type(object.elementType);
-    graphDataQueue.fn_graph_element_set_attributes(object.attributes as Map<string, string>);
-    graphDataQueue.fn_graph_data_queue_set_shared(object.shared);
-    graphDataQueue.fn_graph_data_queue_set_size(object.size);
-    graphDataQueue.fn_graph_data_queue_set_type(object.type);
+    graphDataQueue.setId(object.id);
+    graphDataQueue.setLabel(object.label);
+    graphDataQueue.setType(object.elementType);
+    graphDataQueue.setAttributes(object.attributes as Map<string, string>);
+    graphDataQueue.setQueueType(object.type);
+    graphDataQueue.setShared(object.shared);
+    graphDataQueue.setSingle(object.single);
+    graphDataQueue.setSize(object.size);
+    if (object.size > -1) {
+      graphDataQueue.setSizes(object.sizes);
+    }
+    GraphDataQueueImpl.instance.set(graphDataQueue.getId() as string, graphDataQueue);
     return graphDataQueue;
   }
 
-  private type: QUEUE_TYPE | null;
-  private size: number | null;
-  private isShared: boolean | null;
+  private type: QUEUE_TYPE | null = QUEUE_TYPE.FIFO;
+  private shared: boolean | null = false;
+  private single: boolean | null = true;
+  private size: number | null = -1;
+  private sizes: Map<string, number> | null = new Map<string, number>() || null;
 
   constructor();
-  constructor(type: QUEUE_TYPE, size: number, isShared: boolean);
-  constructor(type?: QUEUE_TYPE, size?: number, isShared?: boolean) {
+  constructor(type: QUEUE_TYPE, shared: boolean, single: boolean, size: number, sizes: Map<string, number>);
+  constructor(type?: QUEUE_TYPE, shared?: boolean, single?: boolean, size?: number, sizes?: Map<string, number>) {
     super();
-    this.type = type || null;
-    this.size = size || null;
-    this.isShared = isShared || null;
+    this.type = type || QUEUE_TYPE.FIFO || null;
+    this.shared = shared || false || null;
+    this.single = single || true || null;
+    this.size = size || -1 || null;
+    this.sizes = sizes || new Map<string, number>() || null;
   }
 
   /** @Override */
-  public fn_graph_element_get_type(): string {
+  public getType(): string | null {
     return this.TYPE;
   }
 
-  public fn_graph_data_queue_get_type(): QUEUE_TYPE | null {
+  public getQueueType(): QUEUE_TYPE | null {
     return this.type;
   }
 
-  public fn_graph_data_queue_set_type(type: QUEUE_TYPE): void {
+  public setQueueType(type: QUEUE_TYPE): void {
     this.type = type;
   }
 
-  public fn_graph_data_queue_get_size(): number | null {
+  public isShared(): boolean | null {
+    return this.shared;
+  }
+
+  public setShared(shared: boolean): void {
+    this.shared = shared;
+  }
+
+  public isSingle(): boolean | null {
+    return this.single;
+  }
+
+  public setSingle(single: boolean): void {
+    this.single = single;
+  }
+
+  public getSize(): number | null {
     return this.size;
   }
 
-  public fn_graph_data_queue_set_size(size: number): void {
+  public setSize(size: number): void {
     this.size = size;
   }
 
-  public fn_graph_data_queue_is_shared(): boolean | null {
-    return this.isShared;
+  public getSizes(): Map<string, number> | null {
+    return this.sizes;
   }
 
-  public fn_graph_data_queue_set_shared(isShared: boolean): void {
-    this.isShared = isShared;
+  public setSizes(sizes: Map<string, number>): void {
+    this.sizes = sizes;
   }
 
   /** @Override */
-  public fn_object_serialize(): string {
+  public serialize(): string | null {
     return JSON.stringify(this);
   }
 }

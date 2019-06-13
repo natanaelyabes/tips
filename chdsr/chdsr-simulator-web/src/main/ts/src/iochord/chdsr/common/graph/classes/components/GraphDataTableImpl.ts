@@ -2,48 +2,50 @@ import { GraphDataImpl } from '../GraphDataImpl';
 import { GraphDataTable } from '../../interfaces/components/GraphDataTable';
 
 export class GraphDataTableImpl extends GraphDataImpl implements GraphDataTable {
-  public static readonly TYPE: 'datatable' = 'datatable';
+  public static readonly TYPE: string | null = 'datatable';
+  public static instance: Map<number, Map<string, GraphDataTable>> = new Map<number, Map<string, GraphDataTable>>();
 
   /** @Override */
-  public static fn_object_deserialize(object: any): Map<string, GraphDataTable> {
+  public static deserialize(object: any): Map<string, GraphDataTable> | null {
     const graphDataTableMap: Map<string, GraphDataTable> = new Map<string, GraphDataTable>();
+    GraphDataTableImpl.instance.set(GraphDataTableImpl.instance.size, graphDataTableMap);
     return graphDataTableMap;
   }
 
-  private fields: string[] | null;
-  private data: Map<string, Map<string, object>>;
+  private fields: Map<string, string> | null;
+  private data: Map<string, Map<string, object>> | null;
 
   constructor();
-  constructor(fields: string[], data: Map<string, Map<string, object>>);
-  constructor(fields?: string[], data?: Map<string, Map<string, object>>) {
+  constructor(fields: Map<string, string>, data: Map<string, Map<string, object>>);
+  constructor(fields?: Map<string, string>, data?: Map<string, Map<string, object>>) {
     super();
-    this.fields = fields || null;
-    this.data = data || new Map<string, Map<string, object>>();
+    this.fields = fields || null || new Map<string, string>();
+    this.data = data || null || new Map<string, Map<string, object>>();
   }
 
   /** @Override */
-  public fn_graph_element_get_type(): string {
+  public getType(): string | null {
     return this.TYPE;
   }
 
-  public fn_graph_data_table_get_fields(): string[] | null {
+  public getFields(): Map<string, string> | null {
     return this.fields;
   }
 
-  public fn_graph_data_table_set_fields(fields: string[]): void {
+  public setFields(fields: Map<string, string>): void {
     this.fields = fields;
   }
 
-  public fn_graph_data_table_get_data(): Map<string, Map<string, object>> {
+  public getData(): Map<string, Map<string, object>> | null {
     return this.data;
   }
 
-  public fn_graph_data_table_set_data(data: Map<string, Map<string, object>>): void {
+  public setData(data: Map<string, Map<string, object>>): void {
     this.data = data;
   }
 
   /** @Override */
-  public fn_object_serialize(): string {
+  public serialize(): string | null {
     return JSON.stringify(this);
   }
 }

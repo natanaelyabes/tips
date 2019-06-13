@@ -12,5 +12,5 @@ export interface AuthHasRegisterInterface {
   confirmPassword: string;
   isError: boolean;
   errorMessage: string;
-  fn_auth_sign_up(): void;
+  signUp(): void;
 }

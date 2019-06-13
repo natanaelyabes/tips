@@ -10,6 +10,7 @@
           <slot name="application-header-breadcrumb" />
         </template>
       </BreadcrumbComponent>
+
     </div>
   </div>
 </template>

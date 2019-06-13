@@ -49,7 +49,7 @@
 
 <style scoped>
 .login.view {
-  background: url('../../../../assets/images/wallpapers/eddie-kopp-264813-unsplash.jpg') no-repeat center center;
+  background: gainsboro;
   background-size: cover;
   height: 100%;
   top: 1em;

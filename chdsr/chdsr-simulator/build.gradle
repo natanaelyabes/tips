@@ -1,3 +1,7 @@
 dependencies {
+	implementation project(':chdsr-common')
 	implementation project(':chdsr-model')
+	implementation 'org.scalanlp:breeze_2.12:0.13.2'
+	testCompile project(':chdsr-common')
+	testCompile project(':chdsr-model')
 }

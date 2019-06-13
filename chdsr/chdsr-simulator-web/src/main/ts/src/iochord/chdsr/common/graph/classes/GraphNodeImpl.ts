@@ -3,78 +3,86 @@ import { GraphElementImpl } from './GraphElementImpl';
 import { GraphElement } from '../interfaces/GraphElement';
 
 export class GraphNodeImpl extends GraphElementImpl implements GraphNode {
-  public readonly TYPE: string | 'node' = 'node';
+  public static readonly TYPE: string | null = 'node';
 
   private groupName: string | null;
-  private reportStatistics: boolean = false;
+  private reportStatistics: boolean | null = false;
+  private inputTypes: GraphElement[] | null = new Array<GraphElement>();
+  private outputTypes: GraphElement[] | null = new Array<GraphElement>();
+  private inputNodes: GraphNode[] | null = new Array<GraphNode>();
+  private outputNodes: GraphNode[] | null = new Array<GraphNode>();
 
   constructor();
-  constructor(groupName: string, reportStatistics: boolean);
-  constructor(groupName?: string, reportStatistics: boolean = false) {
+  constructor(groupName: string, reportStatistics: boolean, inputTypes: GraphElement[], outputTypes: GraphElement[], inputNodes: GraphNode[], outputNodes: GraphNode[]);
+  constructor(groupName?: string, reportStatistics: boolean = false, inputTypes?: GraphElement[], outputTypes?: GraphElement[], inputNodes?: GraphNode[], outputNodes?: GraphNode[]) {
     super();
     this.groupName = groupName || null;
     this.reportStatistics = reportStatistics || false;
+    this.inputTypes = inputTypes || new Array<GraphElement>() || null;
+    this.outputTypes = outputTypes || new Array<GraphElement>() || null;
+    this.inputNodes = inputNodes || new Array<GraphNode>() || null;
+    this.outputNodes = outputNodes || new Array<GraphNode>() || null;
   }
 
   /** @Override */
-  public fn_graph_element_get_type(): string {
+  public getType(): string | null {
     return this.TYPE;
   }
 
-  public fn_graph_node_get_group_name(): string | null {
+  public getGroupName(): string | null {
     return this.groupName;
   }
 
-  public fn_graph_node_set_group_name(groupName: string): void {
+  public setGroupName(groupName: string): void {
     this.groupName = groupName;
   }
 
-  public fn_graph_node_is_report_statistics(): boolean {
+  public isReportStatistics(): boolean | null {
     return this.reportStatistics;
   }
 
-  public fn_graph_node_set_report_statistics(reportStatistics: boolean): void {
+  public setReportStatistics(reportStatistics: boolean): void {
     this.reportStatistics = reportStatistics;
   }
 
-  public fn_graph_node_accept(elements: GraphElement[]): boolean {
+  public accept(elements: GraphElement[]): boolean | null {
     return false;
   }
 
-  public fn_graph_node_set_input_types(inputTypes: GraphElement[]): void {
-    throw new Error('Method not implemented.');
+  public getInputTypes(): GraphElement[] | null {
+    return null;
   }
 
-  public fn_graph_node_get_input_types(): GraphElement[] {
-    throw new Error('Method not implemented.');
+  public setInputTypes(inputTypes: GraphElement[]): void {
+    this.inputTypes = inputTypes;
   }
 
-  public fn_graph_node_set_output_types(outputTypes: GraphElement[]): void {
-    throw new Error('Method not implemented.');
+  public getOutputTypes(): GraphElement[] | null {
+    return null;
   }
 
-  public fn_graph_node_get_output_types(): GraphElement[] {
-    throw new Error('Method not implemented.');
+  public setOutputTypes(outputTypes: GraphElement[]): void {
+    this.outputTypes = outputTypes;
   }
 
-  public fn_graph_node_set_input_nodes(inputNodes: GraphNode[]): void {
-    throw new Error('Method not implemented.');
+  public getInputNodes(): GraphNode[] | null {
+    return null;
   }
 
-  public fn_graph_node_get_input_nodes(): GraphNode[] {
-    throw new Error('Method not implemented.');
+  public setInputNodes(inputNodes: GraphNode[]): void {
+    this.inputNodes = inputNodes;
   }
 
-  public fn_graph_node_set_output_nodes(outputNodes: GraphNode[]): void {
-    throw new Error('Method not implemented.');
+  public getOutputNodes(): GraphNode[] | null {
+    return null;
   }
 
-  public fn_graph_node_get_output_nodes(): GraphNode[] {
-    throw new Error('Method not implemented.');
+  public setOutputNodes(outputNodes: GraphNode[]): void {
+    this.outputNodes = outputNodes;
   }
 
   /** @Override */
-  public fn_object_serialize(): string {
+  public serialize(): string | null {
     return JSON.stringify(this);
   }
 }

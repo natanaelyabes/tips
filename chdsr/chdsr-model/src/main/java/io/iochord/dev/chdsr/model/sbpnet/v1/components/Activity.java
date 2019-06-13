@@ -15,21 +15,29 @@ import io.iochord.dev.chdsr.model.sbpnet.v1.components.impl.ActivityImpl;
 public interface Activity extends Node {
 	public static final String TYPE = "activity";
 
-	public enum ACTIVITY_TYPE {
-
-	}
-
-	ACTIVITY_TYPE getType();
+	ActivityType getType();
 
 	Resource getResource();
+	
+	ResourceSelectionMethod getResourceSelectionMethod();
 
+	DistributionType getSetupTime();
+	
+	String getSetupTimeParameter();
+
+	DistributionType getProcessingTime();
+
+	String getProcessingTimeParameter();
+	
+	VariableType getVariable();
+	
+	boolean isReportScrap();
+
+	TimeUnit getUnit();
+	
+	double getCost();
+	
 	Queue getQueue();
 
 	Function getFunction();
-
-	String getSetupTimeExpression();
-
-	String getProcessingTimeExpression();
-
-	TimeUnit getUnit();
 }

@@ -19,11 +19,17 @@
           <div class="header">Control</div>
           <div class="menu">
             <a class="ui basic button item">
-              <i class="big clock outline icon"></i>
+              <!-- <i class="big clock outline icon"></i> -->
+              <div class="image-icon">
+                <img src="@/assets/images/icons/simulation_editor_icon/control/control.png" alt="" class="ui centered image" />
+              </div>
               Control
             </a>
             <a class="ui basic button item">
-              <i class="big cog icon"></i>
+              <!-- <i class="big cog icon"></i> -->
+              <div class="image-icon">
+                <img src="@/assets/images/icons/simulation_editor_icon/control/configuration.png" alt="" class="ui centered image" />
+              </div>
               Configuration
             </a>
           </div>
@@ -32,63 +38,79 @@
           <div class="header">Toolbox</div>
           <div class="menu">
             <a class="ui basic button item">
-              <i class="big circle green outline icon"></i>
+              <div class="image-icon">
+                <img src="@/assets/images/icons/simulation_editor_icon/toolbox/toolbox_start.png" alt="" class="ui centered image" />
+              </div>
               Start
             </a>
             <a class="ui basic button item">
-              <i class="big circle red icon"></i>
+              <div class="image-icon">
+                <img src="@/assets/images/icons/simulation_editor_icon/toolbox/toolbox_stop.png" alt="" class="ui centered image" />
+              </div>
               Stop
             </a>
             <a @click.prevent="fn_create_node($event);" class="ui basic button item">
               <div class="image-icon">
-                <img src="@/assets/images/icons/activity.png" alt="" class="ui avatar centered image" />
+                <img src="@/assets/images/icons/simulation_editor_icon/toolbox/toolbox_activity.png" alt="" class="ui centered image" />
               </div>
               Activity
             </a>
             <a class="ui basic button item">
-              <i style="transform:rotate(45deg);" class="big square outline icon"></i>
-              Branches
+              <div class="image-icon">
+                <img src="@/assets/images/icons/simulation_editor_icon/toolbox/toolbox_branch.png" alt="" class="ui centered image" />
+              </div>
+              Branch
             </a>
-            <div class="ui basic button item">
-              <i class="big arrow right icon"></i>
+            <a class="ui basic button item">
+              <div class="image-icon">
+                <img src="@/assets/images/icons/simulation_editor_icon/toolbox/toolbox_connector.png" alt="" class="ui centered image" />
+              </div>
               Connector
-            </div>
+            </a>
           </div>
         </div>
         <div class="item">
           <div class="header">Data Toolbox</div>
           <div class="menu">
             <a class="ui basic button item">
-              <i class="big table icon"></i>
+              <div class="image-icon">
+                <img src="@/assets/images/icons/simulation_editor_icon/data_toolbox/datatable.png" alt="" class="ui centered image" />
+              </div>
               Data Table
             </a>
             <a class="ui basic button item">
               <div class="image-icon">
-                <img src="@/assets/images/icons/declaration.png" alt="" class="ui avatar centered image" />
+                <img src="@/assets/images/icons/simulation_editor_icon/data_toolbox/generator.png" alt="" class="ui centered image" />
+              </div>
+              Generator
+            </a>
+            <a class="ui basic button item">
+              <div class="image-icon">
+                <img src="@/assets/images/icons/simulation_editor_icon/data_toolbox/object_type.png" alt="" class="ui centered image" />
               </div>
               Object Type
             </a>
             <a class="ui basic button item">
               <div class="image-icon">
-                <img src="@/assets/images/icons/function.png" alt="" class="ui avatar centered image" />
+                <img src="@/assets/images/icons/simulation_editor_icon/data_toolbox/function.png" alt="" class="ui centered image" />
               </div>
               Function / Method
             </a>
             <a class="ui basic button item">
               <div class="image-icon">
-                <img src="@/assets/images/icons/resource.png" alt="" class="ui avatar centered image" />
+                <img src="@/assets/images/icons/simulation_editor_icon/data_toolbox/resources.png" alt="" class="ui centered image" />
               </div>
               Resources
             </a>
             <a class="ui basic button item">
               <div class="image-icon">
-                <img src="@/assets/images/icons/monitor_kpi.png" alt="" class="ui avatar centered image" />
+                <img src="@/assets/images/icons/simulation_editor_icon/data_toolbox/kpi.png" alt="" class="ui centered image" />
               </div>
               Monitor KPI
             </a>
             <a class="ui basic button item">
               <div class="image-icon">
-                <img src="@/assets/images/icons/queue.png" alt="" class="ui avatar centered image" />
+                <img src="@/assets/images/icons/simulation_editor_icon/data_toolbox/queue.png" alt="" class="ui centered image" />
               </div>
               Queue
             </a>
@@ -103,22 +125,15 @@
           <button v-if="!editing" @click="editing = true" class="ui green button"><i class="running icon"></i> Run Simulation Mode</button>
         </div>
         <div class="right menu">
-          <div class="item" :class="{ disabled: editing }">
-            <!-- <div class="ui toggle checkbox" :class="{ disabled: editing }">
-              <input v-model="animation" type="checkbox" name="public">
-              <label v-if="animation"><strong>Turn off animation</strong></label>
-              <label v-else><strong>Turn on animation</strong></label>
-            </div> -->
-          </div>
           <div class="item" :class="{ disabled: editing }"><div class="header"><strong>Simulation Player</strong></div></div>
           <div class="item" :class="{ disabled: editing }">
             <div class="ui basic icon buttons" :class="{ disabled: editing }">
-              <a class="ui button"><i class="fast backward icon"></i></a>
+              <a class="ui button"><i class="step backward icon"></i></a>
               <a class="ui button"><i class="backward icon"></i></a>
               <a class="ui button"><i class="play icon"></i></a>
               <a class="ui button"><i class="stop icon"></i></a>
               <a class="ui button"><i class="forward icon"></i></a>
-              <a class="ui button"><i class="fast forward icon"></i></a>
+              <a class="ui button"><i class="step forward icon"></i></a>
             </div>
           </div>
           <div class="item"><div class="header"><strong>Simulation Data Management</strong></div></div>
@@ -174,7 +189,7 @@
       <template v-if="modelPaneIsOpen" slot="application-right-sidebar-menu-item">
         <div class="ui basic segment" style="width: 260px">
           <h2>Model Pane</h2>
-          <!-- <div id="canvas-minimap"></div> -->
+          <div id="minimap"></div>
 
         </div>
       </template>
@@ -192,7 +207,7 @@
           <p>This is an experimental feature.</p>
           <div class="ui form">
             <div style="width:100%" class="ui labeled input">
-              <textarea v-model="model"></textarea>
+              <textarea></textarea>
             </div>
           </div>
         </div>
@@ -207,11 +222,12 @@
         </div>
       </div>
     </div>
+
   </div>
 </template>
 
 <style scoped>
-.image-icon .ui.avatar.image {
+.image-icon .ui.image {
   border-radius: 0;
   margin-bottom: .5em;
 }
@@ -245,14 +261,16 @@ i.big.icon {
   right: 11px;
 }
 
-#canvas-minimap {
+#minimap {
   cursor: pointer;
   box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
   border: 1px solid black;
   transition: all 0.3s cubic-bezier(.25,.8,.25,1);
+  width: 100%;
+  height: 100%;
 }
 
-#canvas-minimap:hover {
+#minimap:hover {
   box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
 }
 </style>
@@ -298,6 +316,15 @@ import { Graph } from '@/iochord/chdsr/common/graph/interfaces/Graph';
 import { GraphImpl } from '@/iochord/chdsr/common/graph/classes/GraphImpl';
 import { GraphPageImpl } from '../../../common/graph/classes/GraphPageImpl';
 import { GraphPage } from '../../../common/graph/interfaces/GraphPage';
+import { JointGraphPageImpl } from '../../../common/lib/joint/shapes/chdsr/classes/JointGraphPageImpl';
+import { JointGraphNodeImpl } from '../../../common/lib/joint/shapes/chdsr/classes/JointGraphNodeImpl';
+import { NODE_TYPE } from '../../../common/lib/joint/shapes/chdsr/enums/NODE';
+import { JointGraphConnectorImpl } from '../../../common/lib/joint/shapes/chdsr/classes/JointGraphConnectorImpl';
+import { GraphElement } from '../../../common/graph/interfaces/GraphElement';
+import { ARC_TYPE } from '../../../common/lib/joint/shapes/chdsr/enums/ARC';
+import { GraphNode } from '../../../common/graph/interfaces/GraphNode';
+import { GraphConnector } from '../../../common/graph/interfaces/GraphConnector';
+import { GraphData } from '../../../common/graph/interfaces/GraphData';
 
 declare const $: any;
 
@@ -306,7 +333,7 @@ declare const $: any;
     ApplicationWrapperComponent,
   },
 })
-export default class EditorView extends Vue implements ApplicationHasWrapper {
+export default class SimulationEditorView extends Vue implements ApplicationHasWrapper {
   // ApplicationWrapper global variable
   public title: string = '';
   public breadcrumbs!: HasBreadcrumb[];
@@ -320,35 +347,20 @@ export default class EditorView extends Vue implements ApplicationHasWrapper {
   public editing: boolean = true;
   public modelPaneIsOpen: boolean = true;
 
-  public model: string = '{"id":"Example Net","elementType":"sbpnet","attributes":{},"version":"1.0","pages":{"0":{"id":"0","elementType":"page","attributes":{},"data":{"0-0":{"id":"0-0","label":"Customer","elementType":"declaration","attributes":{}},"0-1":{"id":"0-1","label":"Customer MU","elementType":"movingunit","attributes":{},"declaration":{"id":"0-0","label":"Customer","elementType":"declaration","attributes":{}},"expression":"Exp(20","unit":"MINUTES","entitiesPerArrival":0,"maxArrival":100,"firstCreation":0},"0-2":{"id":"0-2","label":"Teller Queue","elementType":"queue","attributes":{},"type":"FIFO","size":35,"shared":false},"0-3":{"id":"0-3","label":"Teller Resource","elementType":"resource","attributes":{}},"0-4":{"id":"0-4","label":"ATM Queue","elementType":"queue","attributes":{},"type":"FIFO","size":-1,"shared":false},"0-5":{"id":"0-5","label":"ATM Resource","elementType":"resource","attributes":{}}},"nodes":{"0-0":{"id":"0-0","elementType":"start","attributes":{},"reportStatistics":false,"movingUnit":{"id":"0-1","label":"Customer MU","elementType":"movingunit","attributes":{},"declaration":{"id":"0-0","label":"Customer","elementType":"declaration","attributes":{}},"expression":"Exp(20","unit":"MINUTES","entitiesPerArrival":0,"maxArrival":100,"firstCreation":0}},"0-1":{"id":"0-1","label":"Teller Service","elementType":"activity","attributes":{},"reportStatistics":false,"resource":{"id":"0-3","label":"Teller Resource","elementType":"resource","attributes":{}},"queue":{"id":"0-2","label":"Teller Queue","elementType":"queue","attributes":{},"type":"FIFO","size":35,"shared":false},"processingTimeExpression":"constant(5,35)","unit":"MINUTES"},"0-2":{"id":"0-2","label":"ATM Service","elementType":"activity","attributes":{},"reportStatistics":false,"resource":{"id":"0-5","label":"ATM Resource","elementType":"resource","attributes":{}},"queue":{"id":"0-4","label":"ATM Queue","elementType":"queue","attributes":{},"type":"FIFO","size":-1,"shared":false},"processingTimeExpression":"constant(5,15)","unit":"MINUTES"},"0-3":{"id":"0-3","elementType":"end","attributes":{},"reportStatistics":false},"0-4":{"id":"0-4","elementType":"branch","attributes":{},"reportStatistics":false,"type":"XOR_SPLIT"},"0-5":{"id":"0-5","elementType":"branch","attributes":{},"reportStatistics":false,"type":"XOR_SPLIT"},"0-6":{"id":"0-6","elementType":"branch","attributes":{},"reportStatistics":false,"type":"XOR_JOIN"},"0-7":{"id":"0-7","elementType":"branch","attributes":{},"reportStatistics":false}},"arcs":{"0-0":{"id":"0-0","attributes":{},"source":{"id":"0-0","elementType":"start","attributes":{},"reportStatistics":false,"movingUnit":{"id":"0-1","label":"Customer MU","elementType":"movingunit","attributes":{},"declaration":{"id":"0-0","label":"Customer","elementType":"declaration","attributes":{}},"expression":"Exp(20","unit":"MINUTES","entitiesPerArrival":0,"maxArrival":100,"firstCreation":0}},"target":{"id":"0-4","elementType":"branch","attributes":{},"reportStatistics":false,"type":"XOR_SPLIT"}},"0-1":{"id":"0-1","attributes":{"condition":"<0.4"},"source":{"id":"0-4","elementType":"branch","attributes":{},"reportStatistics":false,"type":"XOR_SPLIT"},"target":{"id":"0-6","elementType":"branch","attributes":{},"reportStatistics":false,"type":"XOR_JOIN"}},"0-2":{"id":"0-2","attributes":{"condition":">=0.4"},"source":{"id":"0-4","elementType":"branch","attributes":{},"reportStatistics":false,"type":"XOR_SPLIT"},"target":{"id":"0-2","label":"ATM Service","elementType":"activity","attributes":{},"reportStatistics":false,"resource":{"id":"0-5","label":"ATM Resource","elementType":"resource","attributes":{}},"queue":{"id":"0-4","label":"ATM Queue","elementType":"queue","attributes":{},"type":"FIFO","size":-1,"shared":false},"processingTimeExpression":"constant(5,15)","unit":"MINUTES"}},"0-3":{"id":"0-3","attributes":{},"source":{"id":"0-2","label":"ATM Service","elementType":"activity","attributes":{},"reportStatistics":false,"resource":{"id":"0-5","label":"ATM Resource","elementType":"resource","attributes":{}},"queue":{"id":"0-4","label":"ATM Queue","elementType":"queue","attributes":{},"type":"FIFO","size":-1,"shared":false},"processingTimeExpression":"constant(5,15)","unit":"MINUTES"},"target":{"id":"0-5","elementType":"branch","attributes":{},"reportStatistics":false,"type":"XOR_SPLIT"}},"0-4":{"id":"0-4","attributes":{"condition":"<0.3"},"source":{"id":"0-5","elementType":"branch","attributes":{},"reportStatistics":false,"type":"XOR_SPLIT"},"target":{"id":"0-6","elementType":"branch","attributes":{},"reportStatistics":false,"type":"XOR_JOIN"}},"0-5":{"id":"0-5","attributes":{"condition":">=0.3"},"source":{"id":"0-5","elementType":"branch","attributes":{},"reportStatistics":false,"type":"XOR_SPLIT"},"target":{"id":"0-7","elementType":"branch","attributes":{},"reportStatistics":false}},"0-6":{"id":"0-6","attributes":{},"source":{"id":"0-6","elementType":"branch","attributes":{},"reportStatistics":false,"type":"XOR_JOIN"},"target":{"id":"0-1","label":"Teller Service","elementType":"activity","attributes":{},"reportStatistics":false,"resource":{"id":"0-3","label":"Teller Resource","elementType":"resource","attributes":{}},"queue":{"id":"0-2","label":"Teller Queue","elementType":"queue","attributes":{},"type":"FIFO","size":35,"shared":false},"processingTimeExpression":"constant(5,35)","unit":"MINUTES"}},"0-7":{"id":"0-7","attributes":{},"source":{"id":"0-1","label":"Teller Service","elementType":"activity","attributes":{},"reportStatistics":false,"resource":{"id":"0-3","label":"Teller Resource","elementType":"resource","attributes":{}},"queue":{"id":"0-2","label":"Teller Queue","elementType":"queue","attributes":{},"type":"FIFO","size":35,"shared":false},"processingTimeExpression":"constant(5,35)","unit":"MINUTES"},"target":{"id":"0-7","elementType":"branch","attributes":{},"reportStatistics":false}},"0-8":{"id":"0-8","attributes":{},"source":{"id":"0-7","elementType":"branch","attributes":{},"reportStatistics":false},"target":{"id":"0-3","elementType":"end","attributes":{},"reportStatistics":false}}}}},"configurations":{},"data":{}}';
-
   // Joint.js global variable
-  public page!: joint.shapes.chdsr.JointGraphPageModel;
-  public graph!: joint.shapes.chdsr.JointGraphModel;
-  public minimap!: joint.shapes.chdsr.JointGraphModel;
-  public activityPlaceholder: joint.shapes.chdsr.JointActivityModel = new joint.shapes.chdsr.JointActivityModel({
-    position: new joint.g.Point(500, 300),
-    attrs: {
-      '.root': {
-        fill: 'white',
-      },
-      '.label': {
-        text: 'Do something',
-      },
-    },
-  } as joint.dia.Element.Attributes);
+  public graphPage: JointGraphPageImpl = new JointGraphPageImpl();
 
   public mounted(): void {
     this.$nextTick(() => {
       document.title = `${BaseUrlEnum.IOCHORD}/${ApplicationEnum.NAME.toUpperCase()} · Simulation Editor: Editor`;
-      this.fn_application_set_title();
-      this.fn_application_set_breadcrumb();
-      this.fn_application_set_title_menu_bar();
-      this.fn_application_set_left_side_menu_bar();
-      this.fn_application_set_right_side_menu_bar();
-      this.fn_application_set_ribbon_menu_item();
-      this.fn_application_set_content();
-      this.initJoint();
+      this.setTitle();
+      this.setBreadcrumb();
+      this.setTitleMenubar();
+      this.setLeftMenuSidebar();
+      this.setRightMenuSidebar();
+      this.setRibbonMenuItem();
+      this.setContent();
+      // this.initJoint();
       this.initDropdown();
       this.initSlider();
       this.testGraphDataStruct();
@@ -370,12 +382,121 @@ export default class EditorView extends Vue implements ApplicationHasWrapper {
     }
   }
 
-  public testGraphDataStruct(): void {
-    axios.post('http://localhost:3000/model/example').then((response: AxiosResponse<any>) => {
-      const graph: Graph = GraphImpl.fn_object_deserialize(response.data);
-      // console.log(`Successfully load CHDSR sample model! CHDSR graph version: ${graph.fn_graph_get_version()}`);
-      console.log(graph);
-    });
+  public async testGraphDataStruct(): Promise<void> {
+
+    // Load the model
+    const response = await axios.get('http://localhost:3000/chdsr/api/v1/model/example');
+
+    console.log(response);
+
+    // Deserialize the model
+    const graph: Graph = GraphImpl.deserialize(response.data) as Graph;
+
+    console.log(graph);
+
+    // Loop the model page
+    for (const [key, value] of graph.getPages() as Map<string, GraphPage>) {
+      const jointPage: JointGraphPageImpl = new JointGraphPageImpl();
+      const canvasWidth: number = $('.editor.canvas').innerWidth();
+      const canvasHeight: number = $('.editor.canvas').innerHeight();
+      const keys: any = {
+        elementType: 'elementType',
+      };
+
+      jointPage.setId(value.getId() as string);
+      jointPage.setLabel(value.getLabel() as string);
+      jointPage.setType(value.getType() as string);
+      jointPage.setAttributes(value.getAttributes() as Map<string, string>);
+      jointPage.setGraph(new joint.dia.Graph());
+      jointPage.setNodes(value.getNodes() as Map<string, GraphNode>);
+      jointPage.setArcs(value.getArcs() as Map<string, GraphConnector>);
+      jointPage.setData(value.getData() as Map<string, GraphData>);
+
+      // Set the paper as the graph container
+      jointPage.setPaper(new joint.dia.Paper({
+        el: document.getElementById('canvas'),
+        model: jointPage.getGraph(),
+        width: canvasWidth,
+        height: canvasHeight,
+        gridSize: 10,
+        drawGrid: true,
+        defaultRouter: {
+          name: 'normal',
+        },
+        defaultAnchor: (endView: joint.dia.ElementView, endMagnet: SVGElement, anchorReference: joint.g.Point, args: { [key: string]: any; }) => {
+          return this.customPerpendicularAnchor(endView, endMagnet, anchorReference, args);
+        },
+        defaultConnectionPoint: { name: 'boundary' },
+        defaultConnector: {
+          name: 'rounded',
+        },
+      } as joint.dia.Paper.Options ));
+
+      // Set the minimap for each page
+      jointPage.setMinimap(new joint.dia.Paper({
+        el: document.getElementById('minimap'),
+        model: jointPage.getGraph(),
+        width: $('#minimap').parent().width(),
+        height: 150,
+        // interactive: true,
+        gridSize: 1,
+      } as joint.dia.Paper.Options ));
+      jointPage.getMinimap().scale(0.2);
+      jointPage.getMinimap().translate($('#minimap').width() / 20, jointPage.getMinimap().options.height as number / 6);
+
+      // for all nodes
+      for (const [nodeKey, nodeValue] of jointPage.getNodes() as Map<string, GraphNode>) {
+        const node = new JointGraphNodeImpl();
+
+        node.setId(nodeValue.getId() as string);
+        node.setLabel(nodeValue.getLabel() || '' as string);
+        node.setType((nodeValue as any)[keys.elementType] as string);
+        node.setAttributes(nodeValue.getAttributes() as Map<string, string>);
+        node.setPosition({ x: 300, y: 250 });
+        node.setSize((NODE_TYPE as any)[(nodeValue as any)[keys.elementType]].size);
+        node.setMarkup((NODE_TYPE as any)[(nodeValue as any)[keys.elementType]].markup);
+        node.setAttr((NODE_TYPE as any)[(nodeValue as any)[keys.elementType]].attr);
+        node.setImageIcon((NODE_TYPE as any)[(nodeValue as any)[keys.elementType]].image);
+
+        // Demonstrate the use of custom icon
+        if (nodeValue.getLabel() === 'ATM Service') {
+          node.setImageIcon(require('@/assets/images/icons/atm-png.png'));
+        } else if (nodeValue.getLabel() === 'Teller Service') {
+          node.setImageIcon(require('@/assets/images/icons/business-customer-icon.png'));
+        }
+
+        // render node
+        node.render(jointPage.getGraph());
+      }
+
+      // for all connectors
+      for (const [arcKey, arcValue] of jointPage.getArcs() as Map<string, GraphConnector>) {
+        const arc = new JointGraphConnectorImpl();
+        arc.setId(arcValue.getId() as string);
+        arc.setLabel(arcValue.getLabel() as string);
+        arc.setType((arcValue as any)[keys.elementType] as string);
+        arc.setAttributes(arcValue.getAttributes() as Map<string, string>);
+        arc.setSource(arcValue.getSource() as JointGraphNodeImpl);
+        arc.setTarget(arcValue.getTarget() as JointGraphNodeImpl);
+        arc.setAttr(ARC_TYPE.connector.attr);
+
+        // render connector
+        arc.render(jointPage.getGraph());
+      }
+
+      // Automatic layout
+      joint.layout.DirectedGraph.layout(jointPage.getGraph(), {
+        ranker: 'network-simplex',
+        rankDir: 'LR',
+        edgeSep: 300,
+        nodeSep: 200,
+        rankSep: 80,
+        // align: 'UL',
+      } as joint.layout.DirectedGraph.LayoutOptions);
+
+      // Center the view
+      jointPage.getPaper().translate(canvasWidth / 10, canvasHeight / 5);
+    }
   }
 
   public showUploadFileModal(): void {
@@ -398,184 +519,182 @@ export default class EditorView extends Vue implements ApplicationHasWrapper {
     });
   }
 
-  public fn_create_node(e: MouseEvent): void {
-    const newActivity = this.activityPlaceholder.clone() as joint.shapes.chdsr.JointActivityModel;
-    newActivity.addTo(this.page);
+  public createNode(e: MouseEvent): void {
+    alert('Not implemented yet!');
   }
 
-  public fn_application_set_title(): void {
-    // this.title = 'Wrong Title';
+  public setTitle(): void {
     this.title = `Editor`;
   }
-  public fn_application_set_breadcrumb(): void {
+
+  public setBreadcrumb(): void {
     //
   }
-  public fn_application_set_title_menu_bar(): void {
+  public setTitleMenubar(): void {
     //
   }
-  public fn_application_set_left_side_menu_bar(): void {
+  public setLeftMenuSidebar(): void {
     // TODO: define the data structure for toolbox here
   }
-  public fn_application_set_right_side_menu_bar(): void {
+  public setRightMenuSidebar(): void {
     //
   }
-  public fn_application_set_ribbon_menu_item(): void {
+  public setRibbonMenuItem(): void {
     //
   }
-  public fn_application_set_content(): void {
+  public setContent(): void {
     //
   }
 
-  public initJointElements(): void {
-    const start: joint.shapes.chdsr.JointStartEventModel = new joint.shapes.chdsr.JointStartEventModel();
-    start.position(100, 50);
-    start.attr({
-      '.root': {
-        stroke: '#21ba45',
-        fill: 'white',
-      },
-      '.label': {
-        text: 'Start',
-      },
-    });
-    start.addTo(this.page);
+  // public initJointElements(): void {
+  //   const start: joint.shapes.chdsr.JointStartEventModel = new joint.shapes.chdsr.JointStartEventModel();
+  //   start.position(100, 50);
+  //   start.attr({
+  //     '.root': {
+  //       stroke: '#21ba45',
+  //       fill: 'white',
+  //     },
+  //     '.label': {
+  //       text: 'Start',
+  //     },
+  //   });
+  //   start.addTo(this.page);
 
-    const rect: joint.shapes.chdsr.JointActivityModel = new joint.shapes.chdsr.JointActivityModel();
-    rect.position(300, 50);
-    rect.attr({
-      '.root': {
-        fill: 'white',
-      },
-      '.label': {
-        text: 'Say "Hello"',
-      },
-    });
-    rect.addTo(this.page);
+  //   const rect: joint.shapes.chdsr.JointActivityModel = new joint.shapes.chdsr.JointActivityModel();
+  //   rect.position(300, 50);
+  //   rect.attr({
+  //     '.root': {
+  //       fill: 'white',
+  //     },
+  //     '.label': {
+  //       text: 'Say "Hello"',
+  //     },
+  //   });
+  //   rect.addTo(this.page);
 
-    const rect2: joint.shapes.chdsr.JointActivityModel = rect.clone() as joint.shapes.chdsr.JointActivityModel;
-    rect2.position(500, 50);
-    rect2.attr('.label/text', 'Say "World!"');
-    rect2.addTo(this.page);
+  //   const rect2: joint.shapes.chdsr.JointActivityModel = rect.clone() as joint.shapes.chdsr.JointActivityModel;
+  //   rect2.position(500, 50);
+  //   rect2.attr('.label/text', 'Say "World!"');
+  //   rect2.addTo(this.page);
 
-    const end: joint.shapes.chdsr.JointEndEventModel = new joint.shapes.chdsr.JointEndEventModel();
-    end.position(700, 50);
-    end.attr({
-      '.root': {
-        stroke: '#db2828',
-        fill: '#db2828',
-      },
-      '.label': {
-        text: 'End',
-      },
-    });
-    end.addTo(this.page);
+  //   const end: joint.shapes.chdsr.JointEndEventModel = new joint.shapes.chdsr.JointEndEventModel();
+  //   end.position(700, 50);
+  //   end.attr({
+  //     '.root': {
+  //       stroke: '#db2828',
+  //       fill: '#db2828',
+  //     },
+  //     '.label': {
+  //       text: 'End',
+  //     },
+  //   });
+  //   end.addTo(this.page);
 
-    const link0: joint.dia.Link = new joint.shapes.chdsr.JointLinkModel();
-    const link1: joint.dia.Link = new joint.shapes.chdsr.JointLinkModel();
-    const link2: joint.dia.Link = new joint.shapes.chdsr.JointLinkModel();
+  //   const link0: joint.dia.Link = new joint.shapes.chdsr.JointLinkModel();
+  //   const link1: joint.dia.Link = new joint.shapes.chdsr.JointLinkModel();
+  //   const link2: joint.dia.Link = new joint.shapes.chdsr.JointLinkModel();
 
-    link0.source(start);
-    link0.target(rect);
+  //   link0.source(start);
+  //   link0.target(rect);
 
-    link1.source(rect);
-    link1.target(rect2);
+  //   link1.source(rect);
+  //   link1.target(rect2);
 
-    link2.source(rect2);
-    link2.target(end);
+  //   link2.source(rect2);
+  //   link2.target(end);
 
-    link0.addTo(this.page);
-    link1.addTo(this.page);
-    link2.addTo(this.page);
-  }
+  //   link0.addTo(this.page);
+  //   link1.addTo(this.page);
+  //   link2.addTo(this.page);
+  // }
 
-  public initJoint(): void {
-    this.page = new joint.shapes.chdsr.JointGraphPageModel();
-    const canvasWidth: number = $('.editor.canvas').innerWidth();
-    const canvasHeight: number = $('.editor.canvas').innerHeight();
+  // public initJoint(): void {
+  //   this.page = new joint.shapes.chdsr.JointGraphPageModel();
+  //   const canvasWidth: number = $('.editor.canvas').innerWidth();
+  //   const canvasHeight: number = $('.editor.canvas').innerHeight();
 
-    const graphBBox = joint.layout.DirectedGraph.layout(this.page, {
-      nodeSep: 50,
-      edgeSep: 80,
-      rankDir: 'TB',
-    });
+  //   const graphBBox = joint.layout.DirectedGraph.layout(this.page, {
+  //     nodeSep: 50,
+  //     edgeSep: 80,
+  //     rankDir: 'TB',
+  //   });
 
-    this.graph = new joint.shapes.chdsr.JointGraphModel({
-      el: document.getElementById('canvas'),
-      model: this.page,
-      width: canvasWidth,
-      height: canvasHeight,
-      gridSize: 10,
-      drawGrid: true,
-      defaultAnchor: (endView: joint.dia.ElementView, endMagnet: SVGElement, anchorReference: joint.g.Point, args: { [key: string]: any; }) => {
-        return this.customPerpendicularAnchor(endView, endMagnet, anchorReference, args);
-      },
-      defaultConnectionPoint: { name: 'boundary' },
-      defaultConnector: {
-        name: 'normal',
-      },
-    } as joint.dia.Paper.Options);
+  //   this.graph = new joint.shapes.chdsr.JointGraphModel({
+  //     el: document.getElementById('canvas'),
+  //     model: this.page,
+  //     width: canvasWidth,
+  //     height: canvasHeight,
+  //     gridSize: 10,
+  //     drawGrid: true,
+  //     defaultAnchor: (endView: joint.dia.ElementView, endMagnet: SVGElement, anchorReference: joint.g.Point, args: { [key: string]: any; }) => {
+  //       return this.customPerpendicularAnchor(endView, endMagnet, anchorReference, args);
+  //     },
+  //     defaultConnectionPoint: { name: 'boundary' },
+  //     defaultConnector: {
+  //       name: 'normal',
+  //     },
+  //   } as joint.dia.Paper.Options);
 
-    this.minimap = new joint.shapes.chdsr.JointGraphModel({
-      // el: document.getElementById('canvas-minimap'),
-      el: document.getElementById('canvas-minimap'),
-      model: this.page,
-      width: canvasWidth * 20 / 100,
-      height: canvasHeight * 20 / 100,
-      drawGrid: false,
-      interactive: false,
-      defaultAnchor: (endView: joint.dia.ElementView, endMagnet: SVGElement, anchorReference: joint.g.Point, args: { [key: string]: any; }) => {
-        return this.customPerpendicularAnchor(endView, endMagnet, anchorReference, args);
-      },
-      defaultConnectionPoint: { name: 'boundary' },
-      defaultConnector: {
-        name: 'normal',
-      },
-    });
-    this.minimap.scale(0.33334);
+  //   this.minimap = new joint.shapes.chdsr.JointGraphModel({
+  //     el: document.getElementById('canvas-minimap'),
+  //     model: this.page,
+  //     width: canvasWidth * 20 / 100,
+  //     height: canvasHeight * 20 / 100,
+  //     drawGrid: false,
+  //     interactive: false,
+  //     defaultAnchor: (endView: joint.dia.ElementView, endMagnet: SVGElement, anchorReference: joint.g.Point, args: { [key: string]: any; }) => {
+  //       return this.customPerpendicularAnchor(endView, endMagnet, anchorReference, args);
+  //     },
+  //     defaultConnectionPoint: { name: 'boundary' },
+  //     defaultConnector: {
+  //       name: 'normal',
+  //     },
+  //   });
+  //   this.minimap.scale(0.33334);
 
-    this.graph.on('blank:pointerdown', () => {
-      this.fn_graph_reset(this.graph);
-    });
+  //   this.graph.on('blank:pointerdown', () => {
+  //     this.fn_graph_reset(this.graph);
+  //   });
 
-    this.graph.on('element:pointerdown', (elementView) => {
-      this.fn_graph_reset(this.graph);
-      const el = elementView as joint.dia.ElementView;
-      const currentElement = el.model;
-      currentElement.attr('.root/stroke', 'blue');
-    });
+  //   this.graph.on('element:pointerdown', (elementView) => {
+  //     this.fn_graph_reset(this.graph);
+  //     const el = elementView as joint.dia.ElementView;
+  //     const currentElement = el.model;
+  //     currentElement.attr('.root/stroke', 'blue');
+  //   });
 
-    this.graph.on('element:pointerdblclick', (elementView) => {
-      const el = elementView as joint.dia.ElementView;
-      const currentELement = el.model;
+  //   this.graph.on('element:pointerdblclick', (elementView) => {
+  //     const el = elementView as joint.dia.ElementView;
+  //     const currentELement = el.model;
 
-      const link: joint.shapes.chdsr.JointLinkModel = new joint.shapes.chdsr.JointLinkModel();
-      link.source(currentELement);
-      link.target(new joint.g.Point(currentELement.position().x + 100, currentELement.position().y));
-      link.addTo(this.page);
-    });
+  //     const link: joint.shapes.chdsr.JointLinkModel = new joint.shapes.chdsr.JointLinkModel();
+  //     link.source(currentELement);
+  //     link.target(new joint.g.Point(currentELement.position().x + 100, currentELement.position().y));
+  //     link.addTo(this.page);
+  //   });
 
-    window.addEventListener('resize', () => {
-      this.graph.options.width = innerWidth;
-      this.graph.options.height = innerHeight;
-    });
+  //   window.addEventListener('resize', () => {
+  //     this.graph.options.width = innerWidth;
+  //     this.graph.options.height = innerHeight;
+  //   });
 
-    this.initJointElements();
-  }
+  //   this.initJointElements();
+  // }
 
-  public fn_graph_reset(paper: joint.shapes.chdsr.JointGraphModel) {
-    const elements = paper.model.getElements();
-    for (let i = 0; i < elements.length; i++) {
-      const curr = elements[i];
-      if (curr.attributes.type === 'chdsr.JointStartEventModel') {
-        curr.attr('.root/stroke', '#21ba45');
-      } else if (curr.attributes.type === 'chdsr.JointEndEventModel') {
-        curr.attr('.root/stroke', '#db2828');
-        curr.attr('.root/fill', '#db2828');
-      } else {
-        curr.attr('.root/stroke', 'black');
-      }
-    }
-  }
+  // public graphReset(paper: joint.shapes.chdsr.JointGraphModel) {
+  //   const elements = paper.model.getElements();
+  //   for (let i = 0; i < elements.length; i++) {
+  //     const curr = elements[i];
+  //     if (curr.attributes.type === 'chdsr.JointStartEventModel') {
+  //       curr.attr('.root/stroke', '#21ba45');
+  //     } else if (curr.attributes.type === 'chdsr.JointEndEventModel') {
+  //       curr.attr('.root/stroke', '#db2828');
+  //       curr.attr('.root/fill', '#db2828');
+  //     } else {
+  //       curr.attr('.root/stroke', 'black');
+  //     }
+  //   }
+  // }
 
   /*
    * @author: clientIO

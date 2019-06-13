@@ -1,57 +1,80 @@
+import { BRANCH_GATE } from './../../enums/BRANCH';
 import { GraphNodeImpl } from '../GraphNodeImpl';
 import { GraphBranchNode } from '../../interfaces/components/GraphBranchNode';
 import { BRANCH_TYPE, BRANCH_RULE } from '../../enums/BRANCH';
 
 export class GraphBranchNodeImpl extends GraphNodeImpl implements GraphBranchNode {
-  public static readonly TYPE: 'branch' = 'branch';
+  public static readonly TYPE: string | null = 'branch';
+  public static instance: Map<string, GraphBranchNode> = new Map<string, GraphBranchNode>();
 
-  public static fn_object_deserialize(object: any): GraphBranchNode {
+  public static deserialize(object: any): GraphBranchNode | null {
     const graphBranchNode: GraphBranchNode = new GraphBranchNodeImpl();
-    graphBranchNode.fn_graph_element_set_id(object.id);
-    graphBranchNode.fn_graph_element_set_label(object.label);
-    graphBranchNode.fn_graph_element_set_type(object.elementType);
-    graphBranchNode.fn_graph_element_set_attributes(object.attributes as Map<string, string>);
-    graphBranchNode.fn_graph_node_set_group_name(object.groupName);
-    graphBranchNode.fn_graph_node_set_report_statistics(object.reportStatistics);
-    graphBranchNode.fn_graph_branch_node_set_rule(BRANCH_RULE[object.rule] as unknown as BRANCH_RULE);
-    graphBranchNode.fn_graph_branch_node_set_type(BRANCH_TYPE[object.type] as unknown as BRANCH_TYPE);
+    graphBranchNode.setId(object.id);
+    graphBranchNode.setLabel(object.label);
+    graphBranchNode.setType(object.elementType);
+    graphBranchNode.setAttributes(object.attributes as Map<string, string>);
+    graphBranchNode.setGroupName(object.groupName);
+    graphBranchNode.setReportStatistics(object.reportStatistics);
+    graphBranchNode.setRule(BRANCH_RULE[object.rule] as unknown as BRANCH_RULE);
+    graphBranchNode.setBranchType(BRANCH_TYPE[object.type] as unknown as BRANCH_TYPE);
+    GraphBranchNodeImpl.instance.set(graphBranchNode.getId() as string, graphBranchNode);
     return graphBranchNode;
   }
 
-  private type: BRANCH_TYPE | null;
-  private rule: BRANCH_RULE | null;
+  private gate: BRANCH_GATE | null = BRANCH_GATE.XOR;
+  private type: BRANCH_TYPE | null = BRANCH_TYPE.SPLIT;
+  private rule: BRANCH_RULE | null = BRANCH_RULE.PROBABILITY;
+  private conditions: Map<string, string> | null = new Map<string, string>();
 
   constructor();
-  constructor(type: BRANCH_TYPE, rule: BRANCH_RULE);
-  constructor(type?: BRANCH_TYPE, rule?: BRANCH_RULE) {
+  constructor(gate: BRANCH_GATE, type: BRANCH_TYPE, rule: BRANCH_RULE, conditions: Map<string, string>);
+  constructor(gate?: BRANCH_GATE, type?: BRANCH_TYPE, rule?: BRANCH_RULE, conditions?: Map<string, string>) {
     super();
-    this.type = type || null;
-    this.rule = rule || null;
+    this.gate = gate || BRANCH_GATE.XOR || null;
+    this.type = type || BRANCH_TYPE.SPLIT || null;
+    this.rule = rule || BRANCH_RULE.PROBABILITY || null;
+    this.conditions = conditions || new Map<string, string>() || null;
   }
 
   /** @Override */
-  public fn_graph_element_get_type(): string {
+  public getType(): string | null {
     return this.TYPE;
   }
 
-  public fn_graph_branch_node_get_type(): BRANCH_TYPE | null {
+  public getBranchType(): BRANCH_TYPE | null {
     return this.type;
   }
 
-  public fn_graph_branch_node_set_type(type: BRANCH_TYPE): void {
+  public setBranchType(type: BRANCH_TYPE): void {
     this.type = type;
   }
 
-  public fn_graph_branch_node_get_rule(): BRANCH_RULE | null {
+  public getGate(): BRANCH_GATE | null {
+    return this.gate;
+  }
+
+  public setGate(gate: BRANCH_GATE): void {
+    this.gate = gate;
+  }
+
+  public getRule(): BRANCH_RULE | null {
     return this.rule;
   }
 
-  public fn_graph_branch_node_set_rule(rule: BRANCH_RULE): void {
+  public setRule(rule: BRANCH_RULE): void {
     this.rule = rule;
   }
 
+  public getConditions(): Map<string, string> | null {
+    return this.conditions;
+  }
+
+  public setConditions(conditions: Map<string, string>): void {
+    this.conditions = conditions;
+  }
+
   /** @Override */
-  public fn_object_serialize(): string {
+  public serialize(): string | null {
     return JSON.stringify(this);
   }
 }

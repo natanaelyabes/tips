@@ -2,11 +2,14 @@ import { QUEUE_TYPE } from '../../enums/QUEUE';
 import { GraphData } from '../GraphData';
 
 export interface GraphDataQueue extends GraphData {
-  // readonly TYPE: string | 'queue';
-  fn_graph_data_queue_get_type(): QUEUE_TYPE | null;
-  fn_graph_data_queue_set_type(type: QUEUE_TYPE): void;
-  fn_graph_data_queue_get_size(): number | null;
-  fn_graph_data_queue_set_size(size: number): void;
-  fn_graph_data_queue_is_shared(): boolean | null;
-  fn_graph_data_queue_set_shared(shared: boolean): void;
+  getQueueType(): QUEUE_TYPE | null;
+  setQueueType(type: QUEUE_TYPE): void;
+  isShared(): boolean | null;
+  setShared(shared: boolean): void;
+  isSingle(): boolean | null;
+  setSingle(single: boolean): void;
+  getSize(): number | null;
+  setSize(size: number): void;
+  getSizes(): Map<string, number> | null;
+  setSizes(sizes: Map<string, number>): void;
 }

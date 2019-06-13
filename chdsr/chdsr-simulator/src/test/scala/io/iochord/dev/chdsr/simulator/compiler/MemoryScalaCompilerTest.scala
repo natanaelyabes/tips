@@ -16,9 +16,45 @@ object MemoryScalaCompilerTest {
       "override def expState():Unit ="+
         "{ println(\"Explore State\") }\n"+ 
       "override def calcKPI[T](kpiFunc:T):Double ="+
-        "{ println(\"Calculate KPI\"); putVar(\"test1\",test1); putVar(\"test2\",new Coba1()); return 5.0 }\n "+  
+        "{ println(\"Calculate KPI\"); testdist(); putVar(\"test1\",test1); putVar(\"test2\",new Coba1()); return 5.0 }\n "+  
       "def test(var1:String):Unit = "+
-        "{ println(var1) }\n"+
+        "{ println(var1) } \n"+
+      "def testdist() { \n"+
+        "val normal_val = Gaussian(100, 10).draw()+500 // mean (Double), sigma (Double) \n"+
+        "println(\"Normal \"+normal_val) \n"+
+        "val bern_val = Bernoulli(1).draw() // p (Double) \n"+
+        "println(\"Bernoulli \"+bern_val) \n"+
+        "val beta_val = Beta(10, 10).draw() // a (Double), b (Double) \n"+
+        "println(\"Beta \"+beta_val) \n"+
+        "val bin_val = Binomial(100, 10).draw() // n (Int), p(Double) \n"+
+        "println(\"Binomial \"+bin_val) \n"+
+        "val cauchy_val = Cauchy(100, 10).draw() // median (Double), scale (Double) \n"+
+        "println(\"Cauchy \"+cauchy_val) \n"+
+        "val chisqr_val = ChiSquared(100).draw() // x (Double) \n"+
+        "println(\"Chisquared \"+chisqr_val) \n"+
+        "val exp_val = Exponential(100).draw() // rate (Double) \n"+
+        "println(\"Exponential \"+exp_val) \n"+
+        "val gamma_val = Gamma(100,10).draw() // shape (Double), scale (Double) \n"+
+        "println(\"Gamma \"+gamma_val) \n"+
+        "val geo_val = Geometric(1).draw() // p (Double) \n"+
+        "println(\"Geometric \"+geo_val) \n"+
+        "val hgeo_val = HyperGeometric(10,2,5).draw() // populationSize (Int), numberOfSuccess (Int), sampleSize (Int) \n"+
+        "println(\"HyperGeometric \"+hgeo_val) \n"+
+        "val lap_val = Laplace(1,1).draw() // location (Double), scale (Double) \n"+
+        "println(\"Laplace \"+lap_val) \n"+
+        "val lognormal_val = LogNormal(100, 10).draw() // mean (Double), sigma (Double) \n"+
+        "println(\"LogNormal \"+lognormal_val) \n"+
+        "val negbin_val = NegativeBinomial(5, 0.5).draw() // r (Double), p (Double) \n"+
+        "println(\"NegativeBinomial \"+negbin_val) \n"+
+        "val studt_val = StudentsT(100).draw() // degreeOfFreedom (Double) \n"+
+        "println(\"StudentsT \"+studt_val) \n"+
+        "val unif_val = Uniform(10,100).draw() // low (Double), high (Double) \n"+
+        "println(\"Uniform \"+unif_val) \n"+
+        "val rayleigh_val = Rayleigh(100).draw() // scale (Double) \n"+
+        "println(\"Rayleight \"+rayleigh_val) \n"+
+        "val weibull_val = Weibull(100,200).draw() // alpha (Double), beta(Double) \n"+
+        "println(\"Weibull \"+weibull_val) \n"+
+      "} \n"+
       "class Coba1 { val varc1 = \"other test\" }\n"+
     "}";
     
@@ -43,13 +79,13 @@ object MemoryScalaCompilerTest {
     
     type colset1 = (Int,String)
     
-    val ms1 = new Multiset[colset1](Map[(colset1,Long),Int](), "Person")
+    val ms1 = new Multiset[colset1](Map[(colset1,Long),Int](), classOf[colset1])
     ms1 + (((1,""),2L))
     ms1 + (((2,""),2L))
     
     val pplace1 = new Place("id1","woo1",ms1)
     
-    val ms2 = new Multiset[colset1](Map[(colset1,Long),Int](), "Person")
+    val ms2 = new Multiset[colset1](Map[(colset1,Long),Int](), classOf[colset1])
     ms2 + (((1,""),2L))
     ms2 + (((2,""),2L))
     
@@ -70,10 +106,8 @@ object MemoryScalaCompilerTest {
     val cc1 = (inp:colset1) => inp
     
     val arc1 = new Arc("arc1",pplace1,ttrans1,Direction.PtT)
-    arc1.setArcExp(cc1,(1,"tes"))
     
     val arc2 = new Arc("arc2",pplace2,ttrans1,Direction.PtT)
-    arc1.setArcExp(cc1,(1,"tes"))
     
     ttrans1.addIn(arc1)
     ttrans1.addIn(arc2)
@@ -103,10 +137,12 @@ object MemoryScalaCompilerTest {
     val sslist1 = List[BB](ss1) ++ sslist
     val sslist2 = List[BB](ss2) ++ sslist1
     
+    /*
     bblist2.foreach(print)
     println()
     pplist2.foreach(print)
     println()
+    */
     
     /*
     val filt = pplist2.filter(x => x.i1 == bblist2)
@@ -121,7 +157,6 @@ object MemoryScalaCompilerTest {
     //val filt = sslist2.exists(e => pplist2.exists(d => bblist2.exists(e.i1 == d.i1 && d.i1 > _.i1))) //guard
     //println(filt)
     
-    /*
     val memoryScalaFactory = MemoryScalaCompiler(myclassSyntax)
     val memoryScala = memoryScalaFactory.getInstance
     memoryScala.calcKPI("just test kpi")
@@ -130,7 +165,7 @@ object MemoryScalaCompilerTest {
     val attrs = memoryScala.getVar("test2").getClass().getDeclaredField("varc1")
     attrs.setAccessible(true)
     println(attrs.get(memoryScala.getVar("test2")).asInstanceOf[String])
-    */
+    
     //val mtd = memoryScala.getClass.getMethods.map(_.getName)
     //println(mtd.length)
     //mtd.foreach{println}

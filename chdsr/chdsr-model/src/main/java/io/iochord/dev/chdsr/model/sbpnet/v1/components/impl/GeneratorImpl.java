@@ -2,9 +2,13 @@ package io.iochord.dev.chdsr.model.sbpnet.v1.components.impl;
 
 import java.util.concurrent.TimeUnit;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import io.iochord.dev.chdsr.model.sbpnet.v1.components.ObjectType;
+import io.iochord.dev.chdsr.model.sbpnet.v1.components.DistributionType;
 import io.iochord.dev.chdsr.model.sbpnet.v1.components.Generator;
 import io.iochord.dev.chdsr.model.sbpnet.v1.impl.DataImpl;
+import io.iochord.dev.chdsr.model.sbpnet.v1.impl.SbpnetUtil;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -16,21 +20,37 @@ public class GeneratorImpl extends DataImpl implements Generator {
 	@Getter
 	private final String elementType = Generator.TYPE;
 
-	@Getter @Setter
+	@Getter
+	@Setter
+	@JsonIgnore
 	ObjectType objectType;
-	
-	@Getter @Setter
-	String expression;
-	
-	@Getter @Setter
-	TimeUnit unit;
-	
-	@Getter @Setter
-	int entitiesPerArrival;
-	
-	@Getter @Setter
-	int maxArrival;
-	
-	@Getter @Setter
-	long firstCreation;
+
+	// TODO: Deserialize this one back from ref
+	public String getObjectTypeRef() {
+		return SbpnetUtil.generateRef(getObjectType());
+	}
+
+	@Getter
+	@Setter
+	private DistributionType distributionType = DistributionType.RANDOM;
+
+	@Getter
+	@Setter
+	private String expression = "";
+
+	@Getter
+	@Setter
+	private TimeUnit unit = TimeUnit.HOURS;
+
+	@Getter
+	@Setter
+	private int entitiesPerArrival = 1;
+
+	@Getter
+	@Setter
+	private int maxArrival = 0;
+
+	@Getter
+	@Setter
+	private long firstCreation = 0;
 }

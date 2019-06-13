@@ -1,3 +1,16 @@
 dependencies {
+	implementation project(':chdsr-common')
 	implementation project(':chdsr-model')
+	implementation files('lib/accesscpn/org.cpntools.accesscpn.model.jar')
+	implementation files('lib/accesscpn/org.cpntools.accesscpn.model.exporter.jar')
+	implementation files('lib/accesscpn/org.cpntools.accesscpn.model.importer.jar')
+	implementation files('lib/accesscpn/org.cpntools.accesscpn.engine.protocol.jar')
+	implementation files('lib/accesscpn/org.cpntools.accesscpn.engine.proxy.jar')
+	implementation files('lib/accesscpn/org.cpntools.accesscpn.engine.jar')
+	implementation files('lib/accesscpn/org.cpntools.accesscpn.engine.highlevel.jar')
+	implementation files('lib/accesscpn/org.cpntools.accesscpn.cosimulation.jar')
+	implementation group: 'org.eclipse.emf', name: 'org.eclipse.emf.ecore', version: '2.12.0'
+	implementation group: 'org.eclipse.emf', name: 'org.eclipse.emf.common', version: '2.12.0'
+	testCompile project(':chdsr-common')
+	testCompile project(':chdsr-model')
 }
