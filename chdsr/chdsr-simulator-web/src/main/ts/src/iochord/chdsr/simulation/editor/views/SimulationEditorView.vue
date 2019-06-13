@@ -385,7 +385,7 @@ export default class SimulationEditorView extends Vue implements ApplicationHasW
   public async testGraphDataStruct(): Promise<void> {
 
     // Load the model
-    const response = await axios.get('http://localhost:3000/chdsr/api/v1/model/example');
+    const response = await axios.get('http://192.168.11.154:3000/chdsr/api/v1/model/example');
 
     console.log(response);
 
