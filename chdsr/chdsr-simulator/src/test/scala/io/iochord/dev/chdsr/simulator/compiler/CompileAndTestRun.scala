@@ -118,7 +118,8 @@ object CompileAndTestRun {
     def exp_arc1(token: Any) = token match { case colset:colset1 => (2*colset._1, colset._2) }
     def exp_arc2(token: Any) = token match { case colset:colset1 => (3*colset._1, colset._2) }
     
-    val ttrans1 = new Transition("tr1","transition1", new Guard()) {
+    val ttrans1 = new Transition("tr1","transition1", new Guard())
+    /*{
       override def isArcEnabled[B<:Bind]():(Boolean,List[B]) = {
         var is_binding_arc1 = false
         var is_binding_arc2 = false
@@ -161,6 +162,7 @@ object CompileAndTestRun {
         (is_binding_arc1 && is_binding_arc2, lbe)
       }
     }
+    */
     
     //guard is x >= 1
     def guard_exp_ttrans1(x:Int) = x >= 1
@@ -170,15 +172,15 @@ object CompileAndTestRun {
     val gen_guard_exp_ttrans1 = (listb: List[Any]) => listb match { case list: List[Bind1] => { list.exists(be =>  be.x.map(x => guard_exp_ttrans1(anyfunc(x))).get) } case _ => false }
     ttrans1.getGuard().setGuardBind(gen_guard_exp_ttrans1)
     
-    val arc1 = new Arc[colset1]("arc1", pplace1, ttrans1, Direction.PtT)
+    val arc1 = new Arc[colset1,Bind1]("arc1", pplace1, ttrans1, Direction.PtT)
     arc1.setArcExp(exp_arc1)
     
-    val arc2 = new Arc[colset1]("arc2", pplace2, ttrans1, Direction.PtT)
+    val arc2 = new Arc[colset1,Bind1]("arc2", pplace2, ttrans1, Direction.PtT)
     arc2.setArcExp(exp_arc2)
     
     val TtoB = (token: Any) => token match { case colset: colset1 => { Bind1(Some(colset._1),Some(colset._2)) } }
-    arc1.transTokenToBind(TtoB)
-    arc2.transTokenToBind(TtoB)
+    arc1.setTokenToBind(TtoB)
+    arc2.setTokenToBind(TtoB)
     
     ttrans1.addIn(arc1)
     ttrans1.addIn(arc2)
