@@ -6,7 +6,7 @@
     </div>
 
     <!-- Modal for start node -->
-    <StartNodeModal/>
+    <StartNodeModal />
 
     <!-- Modal for stop node -->
     <div class="ui tiny stop modal">
@@ -858,12 +858,12 @@
 </style>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
-import * as joint from 'jointjs';
-import '#root/node_modules/jointjs/dist/joint.css';
+  import { Component, Vue } from 'vue-property-decorator';
+  import * as joint from 'jointjs';
+  import '#root/node_modules/jointjs/dist/joint.css';
 
-// Components
-import StartNodeModal from '../../../common/kpi/components/modals/StartNodeModal.vue';
+  // Components
+  import StartNodeModal from '../../../common/kpi/components/modals/StartNodeModal.vue';
 
   declare const $: any;
 
@@ -877,7 +877,7 @@ import StartNodeModal from '../../../common/kpi/components/modals/StartNodeModal
     private updated(): void {
       /*
         Branches
-        
+
         if Gate == XOR and Type = split
         Then show specific form at the bottom part
       */
@@ -1207,42 +1207,6 @@ import StartNodeModal from '../../../common/kpi/components/modals/StartNodeModal
           })
         }
       }
-
-      },
-      'link:contextmenu': function (linkView) {
-        const currentLink = linkView.model;
-
-        $('.ui.tiny.function.modal').modal('show');
-        //alert(rClickCounter);
-        //alert(currentLink.attr('root/title'));
-
-        rClickCounter++;
-      }
-    });
-
-    function resetAll(paper: any) {
-
-      /* Reset all elements in the paper */
-      var elements = paper.model.getElements();
-      for (var i = 0, ii = elements.length; i < ii; i++) {
-        var currentElement = elements[i];
-        currentElement.attr('body/stroke', 'black');
-      }
-
-      var links = paper.model.getLinks();
-      for (var j = 0, jj = links.length; j < jj; j++) {
-        var currentLink = links[j];
-        currentLink.attr('line/stroke', 'black');
-        currentLink.label(0, {
-          attrs: {
-            body: {
-              stroke: 'black'
-            }
-          }
-        })
-      }
     }
-
   }
-}
 </script>
