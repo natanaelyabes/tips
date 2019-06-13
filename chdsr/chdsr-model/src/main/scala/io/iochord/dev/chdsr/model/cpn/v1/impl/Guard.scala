@@ -2,19 +2,16 @@ package io.iochord.dev.chdsr.model.cpn.v1.impl
 
 import io.iochord.dev.chdsr.model.cpn.v1._
 
-class Guard { 
+class Guard[B <:Bind] { 
   
-  var guardBind:List[Any] => Boolean = null
+  var guardBind:B => Boolean = null
   
-  def cond1[T <: Bind](cond:T => Boolean, inp:T):Boolean = {
-    cond(inp)
-  }
-  
-  def setGuardBind(eval: List[Any] => Boolean) {
+  def setGuardBind(eval:B => Boolean) {
     guardBind = eval
   }
   
-  def evalGuard(inp:List[Any]):Boolean = {
-    guardBind(inp)
+  def evalGuard(inp:List[B]):(Boolean,List[B]) = {
+    val lbe = inp.filter(b => guardBind(b))
+    (lbe.length > 0, lbe)
   }
 }

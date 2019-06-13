@@ -7,10 +7,10 @@ object Direction extends Enumeration {
 	  val PtT, TtP = Value
 }
 
-class Arc[T] (
+class Arc[T,B <:Bind] (
   private var id: String,
-  private var place: Place[T],
-  private var transition: Transition,
+  private var place: Place[_],
+  private var transition: Transition[_],
   private var direction: Direction.Value)
   
   extends Element {
@@ -19,19 +19,20 @@ class Arc[T] (
   
   private var isBase: Boolean = false
   
-  private var evalArcExpV:Any => T = null
-  private var TtoBV:Any => Any = null
-  private var BtoTV:Any => T = null
+  private var arcExpV:Any => Any = null
+  private var TtoBV:Any => B = null
+  private var BtoTV:Any => Any = null
+  private var addTime:Any => Long = null
   
   def getIsBase(): Boolean = isBase
   
   def setIsBase(isBase:Boolean) { this.isBase = isBase }
   
-  def getPlace(): Place[T] = { place }
+  def getPlace(): Place[_] = { place }
   
-  def setPlace(place:Place[T]) = { this.place = place }
+  def setPlace(place:Place[_]) = { this.place = place }
   
-  def getTransition(): Transition = transition
+  def getTransition(): Transition[_] = transition
   
   def getDirection():Direction.Value = direction
   
@@ -39,15 +40,27 @@ class Arc[T] (
   
   def setId(id: String) { this.id = id }
   
-  def transTokenToBind(TtoB:Any => Any) = { TtoBV = TtoB }
+  def setTokenToBind(TtoB:Any => B) = { TtoBV = TtoB }
   
-  def evalTokenToBind(inp:Any):Any = { TtoBV(inp) }
+  def getTokenToBind():(Any => B) = { this.TtoBV }
   
-  def transBindToToken(BtoT:Any => T) = { BtoTV = BtoT }
+  def computeTokenToBind(token:Any) = { this.TtoBV(token) }
   
-  def evalBindToToken(inp:Any):T = { BtoTV(inp) }
+  def setBindToToken(BtoT:Any => Any) = { BtoTV = BtoT }
   
-  def setArcExp(evalArcExp:Any => T) = { evalArcExpV = evalArcExp }
+  def getBindToToken():(Any => Any) = { this.BtoTV }
   
-  def evalArcExp(inp:Any):T = { evalArcExpV(inp) }
+  def computeBindToToken(bind:Any) = { this.BtoTV(bind) }
+  
+  def setArcExp(arcExp:Any => Any) = { this.arcExpV = arcExp }
+  
+  def getArcExp():(Any => Any) = { this.arcExpV }
+  
+  def computeArcExp(token:Any) = { this.arcExpV(token) }
+  
+  def setAddTime(addTime:Any => Long) = { this.addTime = addTime }
+  
+  def getAddTime():(Any => Long) = { this.addTime }
+  
+  def computeAddTime(time:Any) = { this.addTime(time) }
 }

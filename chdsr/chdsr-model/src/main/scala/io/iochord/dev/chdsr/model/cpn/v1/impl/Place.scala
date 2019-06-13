@@ -13,8 +13,8 @@ class Place[T] (
   
   private var currentMarking = initialMarking
   
-  private var in = List[Arc[_]]()
-  private var out = List[Arc[_]]()
+  private var in = List[Arc[_,_]]()
+  private var out = List[Arc[_,_]]()
   
   def initState() = currentMarking = initialMarking
   
@@ -30,19 +30,19 @@ class Place[T] (
 
   def removeTokens(tokens: Any) = currentMarking = currentMarking -- tokens.asInstanceOf[Multiset[T]]
 
-  def addIn(arc: Arc[_]) {
+  def addIn(arc: Arc[_,_]) {
     in = arc :: in
   }
   
-  def addOut(arc: Arc[_]) {
+  def addOut(arc: Arc[_,_]) {
     out = arc :: out
   }
   
-  def removeIn(arc: Arc[_]) {
+  def removeIn(arc: Arc[_,_]) {
     in = in.filterNot(_ == arc)
   }
 
-  def removeOut(arc: Arc[_]) {
+  def removeOut(arc: Arc[_,_]) {
     out = out.filterNot(_ == arc)
   }
   
@@ -50,9 +50,9 @@ class Place[T] (
   
   def setCurrentMarking(cm:Multiset[T]) { currentMarking = cm }
   
-  def getIn(): List[Arc[_]] = in
+  def getIn(): List[Arc[_,_]] = in
   
-  def getOut(): List[Arc[_]] = out
+  def getOut(): List[Arc[_,_]] = out
   
   def getId(): String = id
   
