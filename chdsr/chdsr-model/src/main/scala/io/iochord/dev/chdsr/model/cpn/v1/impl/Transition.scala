@@ -6,7 +6,8 @@ import io.iochord.dev.chdsr.model.cpn.v1._
 class Transition[B <:Bind] (
   private var id: String,
   private var name: String,
-  private var guard: Guard[B]) extends Element with Node {
+  private var guard: Guard[B] = null,
+  private var action: Action[B] = null) extends Element with Node {
   
   private var in = List[Arc[_,_]]()
   private var out = List[Arc[_,_]]()
@@ -56,6 +57,10 @@ class Transition[B <:Bind] (
   
   def setGuard(guard: Guard[B]) { this.guard = guard }
   
+  def getAction(): Action[B] = action
+  
+  def setAction(action: Action[B]) { this.action = action }
+  
   def transArcExp(bind:Any, arc: Arc[_,B]) = (bind,arc) match { case (bind:B, arc:Arc[_,B]) => transform(bind,arc.getBindToToken(),arc.getArcExp(),arc.getTokenToBind()) }
   
   def isArcEnabled(globtime:Long):(Boolean,List[B]) = { 
@@ -66,6 +71,10 @@ class Transition[B <:Bind] (
     {
       val arc = iterator.next() match { case arc:Arc[_,B] => arc }
       val tokensBefGlobTime = arc.getPlace().getcurrentMarking().multiset.keys.filter(tokenWT => tokenWT._2 <= globtime)
+      
+      if(tokensBefGlobTime.isEmpty)
+        break
+        
       val listbinding = tokensBefGlobTime.map(token => token match { 
         // we want to change from token to bind (need to change to bind to have common form of data type over all arcs for this transition
         case (colset:arc.coltype, _:Long) => { arc.computeTokenToBind(colset).asInstanceOf[B] }
@@ -82,7 +91,7 @@ class Transition[B <:Bind] (
   def isEnabled(globtime:Long):Boolean = {
     val (isArcEn, lbe) = isArcEnabled(globtime)
     
-    if(getGuard() != null) {
+    if(isArcEn && getGuard() != null) {
       val resEvalG = getGuard().evalGuard(lbe)
       setLbeBase(resEvalG._2)
       resEvalG._1
@@ -103,10 +112,16 @@ class Transition[B <:Bind] (
       arc.getPlace().removeTokenWithTime(tokenWTChosen)
     } )
     out.foreach(arc => {
-      val tokenChosen = arc.computeArcExp(arc.computeBindToToken(bindingChosen))
+      var bindingCombine:B = bindingChosen
+      if(action != null)
+      {
+        val bindingAction = action.computeTokenToBind(action.computeActionFun(action.computeBindToToken(bindingChosen))) 
+        bindingCombine = getMerge()(bindingChosen,bindingAction)
+      }
+      val tokenChosen = arc.computeArcExp(arc.computeBindToToken(bindingCombine))
       val timetoken = globtime+arc.computeAddTime()
       println("Time "+timetoken)
-      arc.getPlace().addTokenWithTime((tokenChosen, 0L))//timetoken))
+      arc.getPlace().addTokenWithTime((tokenChosen, timetoken))
     } )
   }
   

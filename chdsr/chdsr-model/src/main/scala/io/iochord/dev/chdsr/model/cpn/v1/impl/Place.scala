@@ -22,9 +22,9 @@ class Place[T] (
   
   def hasTokenWithTime(tokenWithTime: Any) = { currentMarking hasTokenWithTime tokenWithTime.asInstanceOf[(T,Long)]}
   
-  def removeTokenWithTime(token: Any) = {currentMarking - token.asInstanceOf[(T,Long)] }
+  def removeTokenWithTime(tokenWithTime: Any) {currentMarking - tokenWithTime.asInstanceOf[(T,Long)] }
 
-  def addTokenWithTime(token: Any) = {currentMarking + token.asInstanceOf[(T,Long)] }
+  def addTokenWithTime(tokenWithTime: Any)  { currentMarking + tokenWithTime.asInstanceOf[(T,Long)] }
   
   def hasTokens(tokens: Any) = currentMarking >>= tokens.asInstanceOf[Multiset[T]]
 
