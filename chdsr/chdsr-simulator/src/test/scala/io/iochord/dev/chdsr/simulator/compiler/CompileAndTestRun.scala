@@ -119,51 +119,6 @@ object CompileAndTestRun {
     def exp_arc2(token: Any) = token match { case colset:colset1 => (3*colset._1, colset._2) }
     
     val ttrans1 = new Transition("tr1","transition1", new Guard())
-    /*{
-      override def isArcEnabled[B<:Bind]():(Boolean,List[B]) = {
-        var is_binding_arc1 = false
-        var is_binding_arc2 = false
-        
-        var lbe = List[B]()
-        
-        //start from arc1 with input pplace1
-        for(token1 <- listtoken1) { // first place (place1) is as bases variable initialization.. but here arc inscription use function
-          //arc from place1 to transition have 
-          //here exhaustive search
-          val start = 0//Int.MinValue
-          val stop = 1000//Int.MaxValue
-          
-          breakable {
-            y = token1.y.get
-            
-            for(i <- start to stop) {
-              if(exp_arc1(i, y) == (token1.x.get, token1.y.get)) {
-                  x = i
-                  is_binding_arc1 = true
-                  break
-              }
-            }
-          }
-          
-          //continue with arc2 with input pplace2
-          if(is_binding_arc1)
-            for(token2 <- listtoken2) {
-              if(exp_arc2(x, y) == (token2.x.get, token2.y.get)) {
-                is_binding_arc2 = true
-                //if all arc inscription is binding then add Binding class into list binding combination
-                val b = Bind1(Some(x),Some(y)).asInstanceOf[B]
-                lbe = lbe.::( b )
-                //print(x)
-              }
-            }
-        }
-        
-        //if all 
-        (is_binding_arc1 && is_binding_arc2, lbe)
-      }
-    }
-    */
-    
     //guard is x >= 1
     def guard_exp_ttrans1(x:Int) = x >= 1
     

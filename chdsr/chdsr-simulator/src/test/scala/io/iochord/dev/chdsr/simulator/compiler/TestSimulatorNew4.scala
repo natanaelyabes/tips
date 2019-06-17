@@ -22,7 +22,7 @@ import breeze.stats.distributions.Rayleigh
 
 import io.iochord.dev.chdsr.simulator.dist._
 
-object TestSimulatorNew3 {
+object TestSimulatorNew4 {
   
   def main(args: Array[String]) {
     case class Material(name:String, size:Int, diameter:Double)
@@ -170,7 +170,7 @@ object TestSimulatorNew3 {
     
     // (Material,3x) (Material,Int)
     val arcExpArc6 = (inp:Any) => inp match { 
-      case (z:Material,x:Int) => { (z,3*x) }
+      case (z:Material,x:Int) => { (Material(z.name,2*z.size,z.diameter),3*x) }
       case (None,x:Int) => { (None,3*x) }
       case (z:Material,None) => { (z,None) }
       case (None,None) => { (None,None) }

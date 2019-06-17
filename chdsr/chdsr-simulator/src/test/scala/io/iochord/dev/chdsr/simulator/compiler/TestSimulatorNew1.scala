@@ -59,7 +59,7 @@ object TestSimulatorNew1 {
     //---------------------- place 4 ------------------
     val ms4 = new Multiset[colset1](Map[(colset1,Long),Int](), classOf[colset1])
     ms4 + ((1,0L)) //colset1 int with available time 0
-    ms4 + ((4,0L)) //colset1 int with available time 0
+    ms4 + ((8,0L)) //colset1 int with available time 0
     
     val pplace4 = new Place("p4","place4",ms4)
     
@@ -77,11 +77,11 @@ object TestSimulatorNew1 {
       BindTransition1(x,y)
     }
     
-    val ggtrans1 = new Guard[BindTransition1]()
+    val gtrans1 = new Guard[BindTransition1]()
     val guard_exp_ttrans1 = (x:Int) => x >= 1
     val gen_guard_exp_ttrans1 = (bind: BindTransition1) => guard_exp_ttrans1(anyfunc(bind.x.get))
-    ggtrans1.setGuardBind(gen_guard_exp_ttrans1)
-    val ttrans1 = new Transition[BindTransition1]("tr1","transition1", ggtrans1)
+    gtrans1.setGuardBind(gen_guard_exp_ttrans1)
+    val ttrans1 = new Transition[BindTransition1]("tr1","transition1", gtrans1)
     ttrans1.setEval(eval_trans1)
     ttrans1.setMerge(merge_trans1)
     
@@ -107,7 +107,7 @@ object TestSimulatorNew1 {
     
     // (x,y) (int,string)
     val arcExpArc3 = (inp:Any) => inp match { 
-      case (x:Int,y:String) => { (2*x,y) }
+      case (x:Int,y:String) => { (x,y) }
       case (None,y:String) => { (None,y) }
       case (x:Int,None) => { (x,None) }
       case (None,None) => { (None,None) }
@@ -134,9 +134,9 @@ object TestSimulatorNew1 {
     val BtoTArc5 = (inp:Any) => inp match { case inp:BindTransition1 => { inp.x match { case None => None; case x:Option[Int] => x.get } } } //bind to token in place5
     val addTimeArc5 = (inp:Any) => Math.round(Gaussian(100, 10).draw())+(inp match { case inp:Long => inp; case _ => 0 })
     val arc5 = new Arc[colset2,BindTransition1]("arc5", pplace5, ttrans1, Direction.TtP)
-    arc5.setArcExp(arcExpArc4)
-    arc5.setTokenToBind(TtoBArc4)
-    arc5.setBindToToken(BtoTArc4)
+    arc5.setArcExp(arcExpArc5)
+    arc5.setTokenToBind(TtoBArc5)
+    arc5.setBindToToken(BtoTArc5)
     arc5.setAddTime(addTimeArc5)
     
     //add transitions

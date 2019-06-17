@@ -22,13 +22,13 @@ import breeze.stats.distributions.Rayleigh
 
 import io.iochord.dev.chdsr.simulator.dist._
 
-object TestSimulatorNew3 {
+object TestSimulatorNew5_Action {
   
   def main(args: Array[String]) {
     case class Material(name:String, size:Int, diameter:Double)
     
     case class BindTransition1(x:Option[Int], y:Option[String], z:Option[Material]) extends Bind
-    case class BindTransition2(x:Option[Int], z:Option[Material]) extends Bind
+    case class BindTransition2(x:Option[Int], z:Option[Material], c:Option[Int]) extends Bind
     
     def anyfunc(x:Int):Int = 2*x
     
@@ -39,6 +39,7 @@ object TestSimulatorNew3 {
     type colset3 = (Int, String)
     type colset4 = Material
     type colset5 = (Material, Int)
+    type colset6 = List[Int]
     
     //---------------------- place 1 ------------------
     val ms1 = new Multiset[colset1](Map[(colset1,Long),Int](), classOf[colset1])
@@ -101,17 +102,25 @@ object TestSimulatorNew3 {
     ttrans1.setEval(eval_trans1)
     ttrans1.setMerge(merge_trans1)
     
-    val eval_trans2 = (b1: BindTransition2, b2: BindTransition2) => {
+    val eval_trans2 = (b1: BindTransition2, b2: BindTransition2) => { //eval only consider input
       (b1.x == b2.x || b1.x == None || b2.x == None) && (b1.z == b2.z || b1.z == None || b2.z == None)
     }
     
-    val merge_trans2 = (b1: BindTransition2, b2: BindTransition2) => { 
+    val merge_trans2 = (b1: BindTransition2, b2: BindTransition2) => { //merge should be consider input and output (because of action)
       val x = if (b1.x == None) b2.x else b1.x
       val z = if (b1.z == None) b2.z else b1.z
-      BindTransition2(x,z)
+      val c = if (b1.c == None) b2.c else b1.c
+      BindTransition2(x,z,c)
     }
     
-    val ttrans2 = new Transition[BindTransition2]("tr2","transition2")
+    val actFunTrans2 = (inp:Any) => inp match { case (x:Int) => { 3*x }; case _ => { None } }
+    val TtoBTrans2 = (inp:Any) => BindTransition2(None, None , inp match { case None => None; case c:Int => Some(c) }) //get input from x but assign to c
+    val BtoTTrans2 = (inp:Any) => inp match { case inp:BindTransition2 => { inp.x match { case None => None; case x:Option[Int] => x.get } } }
+    val actTrans2 = new Action[BindTransition2]()
+    actTrans2.setActionFun(actFunTrans2)
+    actTrans2.setBindToToken(BtoTTrans2)
+    actTrans2.setTokenToBind(TtoBTrans2)
+    val ttrans2 = new Transition[BindTransition2]("tr2","transition2",null,actTrans2)
     ttrans2.setEval(eval_trans2)
     ttrans2.setMerge(merge_trans2)
     
@@ -170,7 +179,7 @@ object TestSimulatorNew3 {
     
     // (Material,3x) (Material,Int)
     val arcExpArc6 = (inp:Any) => inp match { 
-      case (z:Material,x:Int) => { (z,3*x) }
+      case (z:Material,x:Int) => { (Material(z.name,2*z.size,z.diameter),3*x) }
       case (None,x:Int) => { (None,3*x) }
       case (z:Material,None) => { (z,None) }
       case (None,None) => { (None,None) }
@@ -191,7 +200,7 @@ object TestSimulatorNew3 {
       case (z:Material,None) => { (z,None) }
       case (None,None) => { (None,None) }
     } //arc7 exp
-    val TtoBArc7 = (inp:Any) => inp match { case inp:(Any,Any) => { BindTransition2(inp._2 match { case None => None; case x:Int => Some(x) }, inp._1 match { case None => None; case z:Material => Some(z) }) } }//inp match { case (token:colset5) => Bind(Some(token._1), Some(token._2)) } //token to bind in place5
+    val TtoBArc7 = (inp:Any) => inp match { case inp:(Any,Any) => { BindTransition2(inp._2 match { case None => None; case x:Int => Some(x) }, inp._1 match { case None => None; case z:Material => Some(z) }, None) } }//inp match { case (token:colset5) => Bind(Some(token._1), Some(token._2)) } //token to bind in place5
     val BtoTArc7 = (inp:Any) => inp match { case inp:BindTransition2 => { (inp.z match { case None => None; case z:Option[Material] => z.get }, inp.x match { case None => None; case x:Option[Int] => x.get } ) } } //bind to token in place5
     val arc7 = new Arc[colset2,BindTransition2]("arc7", pplace6, ttrans2, Direction.PtT)
     arc7.setIsBase(true)
@@ -200,9 +209,9 @@ object TestSimulatorNew3 {
     arc7.setBindToToken(BtoTArc7)
     
     // 2x (int)
-    val arcExpArc8 = (inp:Any) => inp match { case x:Int => { 2*x }; case _ => { None } } //arc8 exp
-    val TtoBArc8 = (inp:Any) => BindTransition2(inp match { case None => None; case x:Int => Some(x) }, None)//inp match { case (token:colset1) => Bind(Some(token), None) } //token to bind in place4
-    val BtoTArc8 = (inp:Any) => inp match { case inp:BindTransition2 => { inp.x match { case None => None; case x:Option[Int] => x.get } } } //bind to token in place4
+    val arcExpArc8 = (inp:Any) => inp match { case _ => { None } } //arc8 exp
+    val TtoBArc8 = (inp:Any) => BindTransition2(None, None, inp match { case None => None; case c:Int => Some(c) })//inp match { case (token:colset1) => Bind(Some(token), None) } //token to bind in place4
+    val BtoTArc8 = (inp:Any) => inp match { case inp:BindTransition2 => { inp.c match { case None => None; case c:Option[Int] => c.get } } } //bind to token in place4
     val addTimeArc8 = (inp:Any) => (inp match { case inp:Long => inp; case _ => 0 })
     val arc8 = new Arc[colset2,BindTransition2]("arc8", pplace7, ttrans2, Direction.TtP)
     arc8.setArcExp(arcExpArc8)
