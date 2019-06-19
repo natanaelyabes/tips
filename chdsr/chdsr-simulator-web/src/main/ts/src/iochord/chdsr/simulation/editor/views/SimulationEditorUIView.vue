@@ -5,6 +5,7 @@
       <div id="mypaper"></div>
     </div>
 
+    <!-- Change for Recommit -->
     <!-- Modal for start node -->
     <StartNodeModal/>
 
