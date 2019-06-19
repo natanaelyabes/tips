@@ -196,11 +196,17 @@
 
     <!-- Model Modals -->
     <template v-for="type in Array.from(nodeTypes)">
-      <p v-bind:key="type">{{ type }}</p>
       <template v-if="type === 'start'">
-        <StartNodeModal id="start" v-bind:key="type"/>
+        <StartNodeModal label="test" generator="test" v-bind:id="type" v-bind:key="type"/>
       </template>
+
+      <template v-if="type === 'activity'">
+        <ActivityNodeModal v-bind:id="type" v-bind:key="type"/>
+      </template>
+
     </template>
+
+    {{ Array.from(nodeTypes) }}
 
   </div>
 </template>
@@ -307,6 +313,7 @@ import { GraphData } from '../../../common/graph/interfaces/GraphData';
 
 // Modals
 import StartNodeModal from '../../../common/kpi/components/modals/StartNodeModal.vue';
+import ActivityNodeModal from '../../../common/kpi/components/modals/ActivityNodeModal.vue';
 
 declare const $: any;
 
@@ -314,10 +321,10 @@ declare const $: any;
   components: {
     ApplicationWrapperComponent,
     StartNodeModal,
+    ActivityNodeModal,
   },
 })
 export default class SimulationEditorView extends Vue implements ApplicationHasWrapper {
-  // ApplicationWrapper global variable
   public title: string = '';
   public breadcrumbs!: HasBreadcrumb[];
   public titleMenuBarItems: any;
@@ -333,6 +340,7 @@ export default class SimulationEditorView extends Vue implements ApplicationHasW
   // Joint.js global variable
   public graphPage: JointGraphPageImpl = new JointGraphPageImpl();
 
+  // Find all node types in the graph
   public nodeTypes: Set<string> = new Set<string>();
 
   public async mounted(): Promise<void> {
@@ -482,6 +490,10 @@ export default class SimulationEditorView extends Vue implements ApplicationHasW
 
             if (currentElementType === 'start') {
               $('#start').modal('show');
+            }
+
+            if (currentElementType === 'activity') {
+              $('#activity').modal('show');
             }
           },
         });
