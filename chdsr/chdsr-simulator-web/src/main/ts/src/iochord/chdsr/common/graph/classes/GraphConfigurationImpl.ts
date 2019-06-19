@@ -2,7 +2,6 @@ import { GraphConfiguration } from '../interfaces/GraphConfiguration';
 import { GraphElementImpl } from './GraphElementImpl';
 
 export class GraphConfigurationImpl extends GraphElementImpl implements GraphConfiguration {
-  public static readonly TYPE: string | null = 'configuration';
   public static instance: Map<string, GraphConfiguration> = new Map<string, GraphConfiguration>();
 
   public static deserialize(object: any): Map<string, GraphConfiguration> | null {
@@ -17,11 +16,6 @@ export class GraphConfigurationImpl extends GraphElementImpl implements GraphCon
 
   constructor() {
     super();
-  }
-
-  /** @Override */
-  public getType(): string | null {
-    return this.TYPE;
   }
 
   /** @Override */

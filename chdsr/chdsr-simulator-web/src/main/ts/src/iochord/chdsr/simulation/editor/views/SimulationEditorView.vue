@@ -204,6 +204,14 @@
         <ActivityNodeModal v-bind:id="type" v-bind:key="type"/>
       </template>
 
+      <template v-if="type === 'branch'">
+        <BranchNodeModal v-bind:id="type" v-bind:key="type"/>
+      </template>
+
+      <template v-if="type === 'stop'">
+        <StopNodeModal v-bind:id="type" v-bind:key="type"/>
+      </template>
+
     </template>
 
     {{ Array.from(nodeTypes) }}
@@ -314,6 +322,8 @@ import { GraphData } from '../../../common/graph/interfaces/GraphData';
 // Modals
 import StartNodeModal from '../../../common/kpi/components/modals/StartNodeModal.vue';
 import ActivityNodeModal from '../../../common/kpi/components/modals/ActivityNodeModal.vue';
+import BranchNodeModal from '../../../common/kpi/components/modals/BranchNodeModal.vue';
+import StopNodeModal from '../../../common/kpi/components/modals/StopNodeModal.vue';
 
 declare const $: any;
 
@@ -322,6 +332,8 @@ declare const $: any;
     ApplicationWrapperComponent,
     StartNodeModal,
     ActivityNodeModal,
+    BranchNodeModal,
+    StopNodeModal,
   },
 })
 export default class SimulationEditorView extends Vue implements ApplicationHasWrapper {
@@ -372,8 +384,11 @@ export default class SimulationEditorView extends Vue implements ApplicationHasW
 
   public async testGraphDataStruct(): Promise<void> {
     try {
+
       // Load the model
       const response = await axios.get('http://192.168.11.154:3000/chdsr/api/v1/model/example');
+
+      console.log(response);
 
       // Deserialize the model
       const graph: Graph = GraphImpl.deserialize(response.data) as Graph;
@@ -495,6 +510,14 @@ export default class SimulationEditorView extends Vue implements ApplicationHasW
             if (currentElementType === 'activity') {
               $('#activity').modal('show');
             }
+
+            if (currentElementType === 'branch') {
+              $('#branch').modal('show');
+            }
+
+            if (currentElementType === 'stop') {
+              $('#stop').modal('show');
+            }
           },
         });
 
@@ -523,6 +546,8 @@ export default class SimulationEditorView extends Vue implements ApplicationHasW
         }
 
       }
+
+      console.log(graph);
     } catch (e) {
       console.log(e);
     }

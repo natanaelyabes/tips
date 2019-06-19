@@ -3,7 +3,6 @@ import { GraphDataImpl } from '../GraphDataImpl';
 import { QUEUE_TYPE } from '../../enums/QUEUE';
 
 export class GraphDataQueueImpl extends GraphDataImpl implements GraphDataQueue {
-  public static readonly TYPE: string | null = 'queue';
   public static instance: Map<string, GraphDataQueue> = new Map<string, GraphDataQueue>();
 
   /** @Override */
@@ -24,66 +23,54 @@ export class GraphDataQueueImpl extends GraphDataImpl implements GraphDataQueue 
     return graphDataQueue;
   }
 
-  private type: QUEUE_TYPE | null = QUEUE_TYPE.FIFO;
-  private shared: boolean | null = false;
-  private single: boolean | null = true;
-  private size: number | null = -1;
-  private sizes: Map<string, number> | null = new Map<string, number>() || null;
+  private type?: QUEUE_TYPE | null = QUEUE_TYPE.FIFO;
+  private shared?: boolean | null = false;
+  private single?: boolean | null = true;
+  private size?: number | null = -1;
+  private sizes?: Map<string, number> | null = new Map<string, number>() || null;
 
-  constructor();
-  constructor(type: QUEUE_TYPE, shared: boolean, single: boolean, size: number, sizes: Map<string, number>);
-  constructor(type?: QUEUE_TYPE, shared?: boolean, single?: boolean, size?: number, sizes?: Map<string, number>) {
+  constructor() {
     super();
-    this.type = type || QUEUE_TYPE.FIFO || null;
-    this.shared = shared || false || null;
-    this.single = single || true || null;
-    this.size = size || -1 || null;
-    this.sizes = sizes || new Map<string, number>() || null;
-  }
-
-  /** @Override */
-  public getType(): string | null {
-    return this.TYPE;
   }
 
   public getQueueType(): QUEUE_TYPE | null {
-    return this.type;
+    return this.type as QUEUE_TYPE | null;
   }
 
   public setQueueType(type: QUEUE_TYPE): void {
-    this.type = type;
+    this.type = type || this.type;
   }
 
   public isShared(): boolean | null {
-    return this.shared;
+    return this.shared as boolean | null;
   }
 
   public setShared(shared: boolean): void {
-    this.shared = shared;
+    this.shared = shared || this.shared;
   }
 
   public isSingle(): boolean | null {
-    return this.single;
+    return this.single as boolean | null;
   }
 
   public setSingle(single: boolean): void {
-    this.single = single;
+    this.single = single || this.single;
   }
 
   public getSize(): number | null {
-    return this.size;
+    return this.size as number | null;
   }
 
   public setSize(size: number): void {
-    this.size = size;
+    this.size = size || this.size;
   }
 
   public getSizes(): Map<string, number> | null {
-    return this.sizes;
+    return this.sizes as Map<string, number> | null;
   }
 
   public setSizes(sizes: Map<string, number>): void {
-    this.sizes = sizes;
+    this.sizes = sizes || this.sizes;
   }
 
   /** @Override */
