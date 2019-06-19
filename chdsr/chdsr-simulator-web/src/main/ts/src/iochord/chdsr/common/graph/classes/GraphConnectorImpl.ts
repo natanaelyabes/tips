@@ -44,7 +44,6 @@ export class GraphConnectorImpl extends GraphElementImpl implements GraphConnect
         graphArcMap.set(key, graphArc);
       }
     }
-    console.log(graphArcMap);
     return graphArcMap;
   }
 

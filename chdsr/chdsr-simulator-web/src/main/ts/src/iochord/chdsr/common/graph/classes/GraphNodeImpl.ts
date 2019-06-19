@@ -25,9 +25,9 @@ export class GraphNodeImpl extends GraphElementImpl implements GraphNode {
   }
 
   /** @Override */
-  public getType(): string | null {
-    return this.TYPE;
-  }
+  // public getType(): string | null {
+  //   return this.TYPE;
+  // }
 
   public getGroupName(): string | null {
     return this.groupName;

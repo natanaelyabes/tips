@@ -87,44 +87,46 @@
 </style>
 
 <script lang="ts">
-import { Component, Prop, Vue } from "vue-property-decorator";
+import { Component, Prop, Vue } from 'vue-property-decorator';
+
+declare const $: any;
 @Component
 export default class BranchNodeModal extends Vue {
-  private selectedGate = "";
-  private selectedSJ = "";
-  private selectedRule = "";
+  private selectedGate = '';
+  private selectedSJ = '';
+  private selectedRule = '';
 
   private update(): void {
-    if (this.selectedGate == "xor" && this.selectedSJ == "split") {
-      $("#row_branches_rule").attr("style", "visibility:visible");
-      $("#row_branches_if").attr("style", "visibility:visible");
-      $("#row_branches_tbl").attr("style", "visibility:visible");
+    if (this.selectedGate === 'xor' && this.selectedSJ === 'split') {
+      $('#row_branches_rule').attr('style', 'visibility:visible');
+      $('#row_branches_if').attr('style', 'visibility:visible');
+      $('#row_branches_tbl').attr('style', 'visibility:visible');
     } else {
-      $("#row_branches_rule").attr("style", "visibility:hidden");
-      $("#row_branches_if").attr("style", "visibility:hidden");
-      $("#row_branches_tbl").attr("style", "visibility:hidden");
+      $('#row_branches_rule').attr('style', 'visibility:hidden');
+      $('#row_branches_if').attr('style', 'visibility:hidden');
+      $('#row_branches_tbl').attr('style', 'visibility:hidden');
     }
   }
 
-  private mounted(): void{
-    $(".ui.dropdown").dropdown();
-    $(".tabular.menu .item").tab();
+  private mounted(): void {
+    $('.ui.dropdown').dropdown();
+    $('.tabular.menu .item').tab();
 
-    $("#btn_add_rule").click(function() {
-      var new_row = "<tr>";
-      new_row += "<td>Case.loan > 5000 and case.bank = 'A'</td>";
-      new_row += "<td>";
+    $('#btn_add_rule').click(() => {
+      let new_row = '<tr>';
+      new_row += '<td>Case.loan > 5000 and case.bank = "A"</td>';
+      new_row += '<td>';
       new_row += '<button id="btn_del_rule" class="ui negative basic button">';
       new_row += '<i class="close icon"></i>';
-      new_row += "</button>";
-      new_row += "</td>";
-      new_row += "</tr>";
-      $("#tb_add_row").append(new_row);
+      new_row += '</button>';
+      new_row += '</td>';
+      new_row += '</tr>';
+      $('#tb_add_row').append(new_row);
     });
 
-    $("#row_branches_tbl").on("click", "#btn_del_rule", function() {
-      $("#btn_del_rule")
-        .closest("tr")
+    $('#row_branches_tbl').on('click', '#btn_del_rule', () => {
+      $('#btn_del_rule')
+        .closest('tr')
         .remove();
     });
   }

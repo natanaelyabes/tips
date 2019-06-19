@@ -52,7 +52,9 @@
 </style>
 
 <script lang="ts">
-import { Component, Prop, Vue } from "vue-property-decorator";
+import { Component, Prop, Vue } from 'vue-property-decorator';
+declare const $: any;
+
 @Component
 export default class ControlModal extends Vue {}
 </script>

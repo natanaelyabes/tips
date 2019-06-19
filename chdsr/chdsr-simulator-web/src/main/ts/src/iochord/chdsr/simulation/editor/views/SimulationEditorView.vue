@@ -155,34 +155,6 @@
       <template slot="application-content">
         <div class="editor canvas">
           <div id="canvas"></div>
-          <!-- <div class="corner area">
-            <div class="zoom tool">
-              <div class="slider-wrapper">
-                <div style="float: right; margin-bottom: 1em;">
-                  <button class="ui circular icon button">
-                    <i class="crosshairs icon"></i>
-                  </button>
-                </div>
-                <div style="float: right; clear: both; margin-bottom: 1em;">
-                  <button class="ui circular icon button">
-                    <i class="expand icon"></i>
-                  </button>
-                </div>
-                <div style="float: right; clear: both;">
-                  <button class="ui circular icon button">
-                    <i class="plus icon"></i>
-                  </button>
-                </div>
-                <div class="ui vertical reversed blue slider"></div>
-                <div style="float: right;">
-                  <button class="ui circular icon button">
-                    <i class="minus icon"></i>
-                  </button>
-                </div>
-              </div>
-            </div>
-            <div id="canvas-minimap"></div>
-          </div> -->
         </div>
       </template>
 
@@ -190,12 +162,11 @@
         <div class="ui basic segment" style="width: 260px">
           <h2>Model Pane</h2>
           <div id="minimap"></div>
-
         </div>
       </template>
     </ApplicationWrapperComponent>
 
-    <!-- Modals -->
+    <!-- Upload Modals -->
     <div class="ui upload file modal">
       <i class="close icon"></i>
       <div class="header">
@@ -222,6 +193,14 @@
         </div>
       </div>
     </div>
+
+    <!-- Model Modals -->
+    <template v-for="type in Array.from(nodeTypes)">
+      <p v-bind:key="type">{{ type }}</p>
+      <template v-if="type === 'start'">
+        <StartNodeModal id="start" v-bind:key="type"/>
+      </template>
+    </template>
 
   </div>
 </template>
@@ -295,7 +274,7 @@ i.big.icon {
 
 <script lang="ts">
 // Vue & Libraries
-import { Component, Vue } from 'vue-property-decorator';
+import { Component, Vue, Watch } from 'vue-property-decorator';
 import { setTimeout } from 'timers';
 import axios, { AxiosResponse } from 'axios';
 
@@ -326,11 +305,15 @@ import { GraphNode } from '../../../common/graph/interfaces/GraphNode';
 import { GraphConnector } from '../../../common/graph/interfaces/GraphConnector';
 import { GraphData } from '../../../common/graph/interfaces/GraphData';
 
+// Modals
+import StartNodeModal from '../../../common/kpi/components/modals/StartNodeModal.vue';
+
 declare const $: any;
 
 @Component({
   components: {
     ApplicationWrapperComponent,
+    StartNodeModal,
   },
 })
 export default class SimulationEditorView extends Vue implements ApplicationHasWrapper {
@@ -350,25 +333,22 @@ export default class SimulationEditorView extends Vue implements ApplicationHasW
   // Joint.js global variable
   public graphPage: JointGraphPageImpl = new JointGraphPageImpl();
 
-  public mounted(): void {
-    this.$nextTick(() => {
-      document.title = `${BaseUrlEnum.IOCHORD}/${ApplicationEnum.NAME.toUpperCase()} · Simulation Editor: Editor`;
-      this.setTitle();
-      this.setBreadcrumb();
-      this.setTitleMenubar();
-      this.setLeftMenuSidebar();
-      this.setRightMenuSidebar();
-      this.setRibbonMenuItem();
-      this.setContent();
-      // this.initJoint();
-      this.initDropdown();
-      this.initSlider();
-      this.testGraphDataStruct();
-    });
-  }
+  public nodeTypes: Set<string> = new Set<string>();
 
-  public updated(): void {
-    // window.location.reload();
+  public async mounted(): Promise<void> {
+    document.title = `${BaseUrlEnum.IOCHORD}/${ApplicationEnum.NAME.toUpperCase()} · Simulation Editor: Editor`;
+    await this.testGraphDataStruct();
+
+    // Application options
+    this.setTitle();
+    this.setBreadcrumb();
+    this.setTitleMenubar();
+    this.setLeftMenuSidebar();
+    this.setRightMenuSidebar();
+    this.setRibbonMenuItem();
+    this.setContent();
+    this.initDropdown();
+    this.initSlider();
   }
 
   public toggleModelPane(): void {
@@ -383,119 +363,156 @@ export default class SimulationEditorView extends Vue implements ApplicationHasW
   }
 
   public async testGraphDataStruct(): Promise<void> {
+    try {
+      // Load the model
+      const response = await axios.get('http://192.168.11.154:3000/chdsr/api/v1/model/example');
 
-    // Load the model
-    const response = await axios.get('http://192.168.11.154:3000/chdsr/api/v1/model/example');
+      // Deserialize the model
+      const graph: Graph = GraphImpl.deserialize(response.data) as Graph;
 
-    console.log(response);
+      // Loop the model page
+      for (const [key, value] of graph.getPages() as Map<string, GraphPage>) {
+        const jointPage: JointGraphPageImpl = new JointGraphPageImpl();
+        const canvasWidth: number = $('.editor.canvas').innerWidth();
+        const canvasHeight: number = $('.editor.canvas').innerHeight();
+        const keys: any = {
+          elementType: 'elementType',
+        };
 
-    // Deserialize the model
-    const graph: Graph = GraphImpl.deserialize(response.data) as Graph;
+        jointPage.setId(value.getId() as string);
+        jointPage.setLabel(value.getLabel() as string);
+        jointPage.setType(value.getType() as string);
+        jointPage.setAttributes(value.getAttributes() as Map<string, string>);
+        jointPage.setGraph(new joint.dia.Graph());
+        jointPage.setNodes(value.getNodes() as Map<string, GraphNode>);
+        jointPage.setArcs(value.getArcs() as Map<string, GraphConnector>);
+        jointPage.setData(value.getData() as Map<string, GraphData>);
 
-    console.log(graph);
+        // Set the paper as the graph container
+        jointPage.setPaper(new joint.dia.Paper({
+          el: document.getElementById('canvas'),
+          model: jointPage.getGraph(),
+          width: canvasWidth,
+          height: canvasHeight,
+          gridSize: 10,
+          drawGrid: true,
+          defaultRouter: {
+            name: 'normal',
+          },
+          defaultAnchor: (endView: joint.dia.ElementView, endMagnet: SVGElement, anchorReference: joint.g.Point, args: { [key: string]: any; }) => {
+            return this.customPerpendicularAnchor(endView, endMagnet, anchorReference, args);
+          },
+          defaultConnectionPoint: { name: 'boundary' },
+          defaultConnector: {
+            name: 'rounded',
+          },
+        } as joint.dia.Paper.Options ));
 
-    // Loop the model page
-    for (const [key, value] of graph.getPages() as Map<string, GraphPage>) {
-      const jointPage: JointGraphPageImpl = new JointGraphPageImpl();
-      const canvasWidth: number = $('.editor.canvas').innerWidth();
-      const canvasHeight: number = $('.editor.canvas').innerHeight();
-      const keys: any = {
-        elementType: 'elementType',
-      };
+        // Set the minimap for each page
+        jointPage.setMinimap(new joint.dia.Paper({
+          el: document.getElementById('minimap'),
+          model: jointPage.getGraph(),
+          width: $('#minimap').parent().width(),
+          height: 150,
+          gridSize: 1,
+        } as joint.dia.Paper.Options ));
+        jointPage.getMinimap().scale(0.2);
+        jointPage.getMinimap().translate($('#minimap').width() / 20, jointPage.getMinimap().options.height as number / 6);
 
-      jointPage.setId(value.getId() as string);
-      jointPage.setLabel(value.getLabel() as string);
-      jointPage.setType(value.getType() as string);
-      jointPage.setAttributes(value.getAttributes() as Map<string, string>);
-      jointPage.setGraph(new joint.dia.Graph());
-      jointPage.setNodes(value.getNodes() as Map<string, GraphNode>);
-      jointPage.setArcs(value.getArcs() as Map<string, GraphConnector>);
-      jointPage.setData(value.getData() as Map<string, GraphData>);
+        // for all nodes
+        for (const [nodeKey, nodeValue] of jointPage.getNodes() as Map<string, GraphNode>) {
+          const node = new JointGraphNodeImpl();
 
-      // Set the paper as the graph container
-      jointPage.setPaper(new joint.dia.Paper({
-        el: document.getElementById('canvas'),
-        model: jointPage.getGraph(),
-        width: canvasWidth,
-        height: canvasHeight,
-        gridSize: 10,
-        drawGrid: true,
-        defaultRouter: {
-          name: 'normal',
-        },
-        defaultAnchor: (endView: joint.dia.ElementView, endMagnet: SVGElement, anchorReference: joint.g.Point, args: { [key: string]: any; }) => {
-          return this.customPerpendicularAnchor(endView, endMagnet, anchorReference, args);
-        },
-        defaultConnectionPoint: { name: 'boundary' },
-        defaultConnector: {
-          name: 'rounded',
-        },
-      } as joint.dia.Paper.Options ));
+          node.setId(nodeValue.getId() as string);
+          node.setLabel(nodeValue.getLabel() || '' as string);
+          node.setType((nodeValue as any)[keys.elementType] as string);
+          node.setAttributes(nodeValue.getAttributes() as Map<string, string>);
+          node.setPosition({ x: 300, y: 250 });
+          node.setSize((NODE_TYPE as any)[(nodeValue as any)[keys.elementType]].size);
+          node.setMarkup((NODE_TYPE as any)[(nodeValue as any)[keys.elementType]].markup);
+          node.setAttr((NODE_TYPE as any)[(nodeValue as any)[keys.elementType]].attr);
+          node.setImageIcon((NODE_TYPE as any)[(nodeValue as any)[keys.elementType]].image);
 
-      // Set the minimap for each page
-      jointPage.setMinimap(new joint.dia.Paper({
-        el: document.getElementById('minimap'),
-        model: jointPage.getGraph(),
-        width: $('#minimap').parent().width(),
-        height: 150,
-        // interactive: true,
-        gridSize: 1,
-      } as joint.dia.Paper.Options ));
-      jointPage.getMinimap().scale(0.2);
-      jointPage.getMinimap().translate($('#minimap').width() / 20, jointPage.getMinimap().options.height as number / 6);
+          // Demonstrate the use of custom icon
+          if (nodeValue.getLabel() === 'ATM Service') {
+            node.setImageIcon(require('@/assets/images/icons/atm-png.png'));
+          } else if (nodeValue.getLabel() === 'Teller Service') {
+            node.setImageIcon(require('@/assets/images/icons/business-customer-icon.png'));
+          }
 
-      // for all nodes
-      for (const [nodeKey, nodeValue] of jointPage.getNodes() as Map<string, GraphNode>) {
-        const node = new JointGraphNodeImpl();
+          // render node
+          node.render(jointPage.getGraph());
 
-        node.setId(nodeValue.getId() as string);
-        node.setLabel(nodeValue.getLabel() || '' as string);
-        node.setType((nodeValue as any)[keys.elementType] as string);
-        node.setAttributes(nodeValue.getAttributes() as Map<string, string>);
-        node.setPosition({ x: 300, y: 250 });
-        node.setSize((NODE_TYPE as any)[(nodeValue as any)[keys.elementType]].size);
-        node.setMarkup((NODE_TYPE as any)[(nodeValue as any)[keys.elementType]].markup);
-        node.setAttr((NODE_TYPE as any)[(nodeValue as any)[keys.elementType]].attr);
-        node.setImageIcon((NODE_TYPE as any)[(nodeValue as any)[keys.elementType]].image);
-
-        // Demonstrate the use of custom icon
-        if (nodeValue.getLabel() === 'ATM Service') {
-          node.setImageIcon(require('@/assets/images/icons/atm-png.png'));
-        } else if (nodeValue.getLabel() === 'Teller Service') {
-          node.setImageIcon(require('@/assets/images/icons/business-customer-icon.png'));
+          this.nodeTypes.add(node.getType() as string);
         }
 
-        // render node
-        node.render(jointPage.getGraph());
+        // for all connectors
+        for (const [arcKey, arcValue] of jointPage.getArcs() as Map<string, GraphConnector>) {
+          const arc = new JointGraphConnectorImpl();
+          arc.setId(arcValue.getId() as string);
+          arc.setLabel(arcValue.getLabel() as string);
+          arc.setType((arcValue as any)[keys.elementType] as string);
+          arc.setAttributes(arcValue.getAttributes() as Map<string, string>);
+          arc.setSource(arcValue.getSource() as JointGraphNodeImpl);
+          arc.setTarget(arcValue.getTarget() as JointGraphNodeImpl);
+          arc.setAttr(ARC_TYPE.connector.attr);
+
+          // render connector
+          arc.render(jointPage.getGraph());
+        }
+
+        // Automatic layout
+        joint.layout.DirectedGraph.layout(jointPage.getGraph(), {
+          ranker: 'network-simplex',
+          rankDir: 'LR',
+          edgeSep: 300,
+          nodeSep: 200,
+          rankSep: 80,
+          // align: 'UL',
+        } as joint.layout.DirectedGraph.LayoutOptions);
+
+        // Center the view
+        jointPage.getPaper().translate(canvasWidth / 10, canvasHeight / 5);
+
+        jointPage.getPaper().on({
+          'element:contextmenu': (elementView) => {
+            const currentElement = elementView.model;
+            currentElement.attr('body/stroke', 'red');
+            const currentElementType = currentElement.attributes.type;
+
+            if (currentElementType === 'start') {
+              $('#start').modal('show');
+            }
+          },
+        });
+
+        function resetAll(_paper: any) {
+
+          /* Reset all elements in the paper */
+          const elements = _paper.model.getElements();
+          for (let i = 0, ii = elements.length; i < ii; i++) {
+            const currentElement = elements[i];
+            currentElement.attr('body/stroke', 'black');
+          }
+
+          const links = _paper.model.getLinks();
+          for (let j = 0, jj = links.length; j < jj; j++) {
+            const currentLink = links[j];
+            currentLink.attr('line/stroke', 'black');
+            currentLink.label(0, {
+              attrs: {
+                body: {
+                  stroke: 'black',
+                },
+              },
+            });
+          }
+
+        }
+
       }
-
-      // for all connectors
-      for (const [arcKey, arcValue] of jointPage.getArcs() as Map<string, GraphConnector>) {
-        const arc = new JointGraphConnectorImpl();
-        arc.setId(arcValue.getId() as string);
-        arc.setLabel(arcValue.getLabel() as string);
-        arc.setType((arcValue as any)[keys.elementType] as string);
-        arc.setAttributes(arcValue.getAttributes() as Map<string, string>);
-        arc.setSource(arcValue.getSource() as JointGraphNodeImpl);
-        arc.setTarget(arcValue.getTarget() as JointGraphNodeImpl);
-        arc.setAttr(ARC_TYPE.connector.attr);
-
-        // render connector
-        arc.render(jointPage.getGraph());
-      }
-
-      // Automatic layout
-      joint.layout.DirectedGraph.layout(jointPage.getGraph(), {
-        ranker: 'network-simplex',
-        rankDir: 'LR',
-        edgeSep: 300,
-        nodeSep: 200,
-        rankSep: 80,
-        // align: 'UL',
-      } as joint.layout.DirectedGraph.LayoutOptions);
-
-      // Center the view
-      jointPage.getPaper().translate(canvasWidth / 10, canvasHeight / 5);
+    } catch (e) {
+      console.log(e);
     }
   }
 
@@ -545,156 +562,6 @@ export default class SimulationEditorView extends Vue implements ApplicationHasW
   public setContent(): void {
     //
   }
-
-  // public initJointElements(): void {
-  //   const start: joint.shapes.chdsr.JointStartEventModel = new joint.shapes.chdsr.JointStartEventModel();
-  //   start.position(100, 50);
-  //   start.attr({
-  //     '.root': {
-  //       stroke: '#21ba45',
-  //       fill: 'white',
-  //     },
-  //     '.label': {
-  //       text: 'Start',
-  //     },
-  //   });
-  //   start.addTo(this.page);
-
-  //   const rect: joint.shapes.chdsr.JointActivityModel = new joint.shapes.chdsr.JointActivityModel();
-  //   rect.position(300, 50);
-  //   rect.attr({
-  //     '.root': {
-  //       fill: 'white',
-  //     },
-  //     '.label': {
-  //       text: 'Say "Hello"',
-  //     },
-  //   });
-  //   rect.addTo(this.page);
-
-  //   const rect2: joint.shapes.chdsr.JointActivityModel = rect.clone() as joint.shapes.chdsr.JointActivityModel;
-  //   rect2.position(500, 50);
-  //   rect2.attr('.label/text', 'Say "World!"');
-  //   rect2.addTo(this.page);
-
-  //   const end: joint.shapes.chdsr.JointEndEventModel = new joint.shapes.chdsr.JointEndEventModel();
-  //   end.position(700, 50);
-  //   end.attr({
-  //     '.root': {
-  //       stroke: '#db2828',
-  //       fill: '#db2828',
-  //     },
-  //     '.label': {
-  //       text: 'End',
-  //     },
-  //   });
-  //   end.addTo(this.page);
-
-  //   const link0: joint.dia.Link = new joint.shapes.chdsr.JointLinkModel();
-  //   const link1: joint.dia.Link = new joint.shapes.chdsr.JointLinkModel();
-  //   const link2: joint.dia.Link = new joint.shapes.chdsr.JointLinkModel();
-
-  //   link0.source(start);
-  //   link0.target(rect);
-
-  //   link1.source(rect);
-  //   link1.target(rect2);
-
-  //   link2.source(rect2);
-  //   link2.target(end);
-
-  //   link0.addTo(this.page);
-  //   link1.addTo(this.page);
-  //   link2.addTo(this.page);
-  // }
-
-  // public initJoint(): void {
-  //   this.page = new joint.shapes.chdsr.JointGraphPageModel();
-  //   const canvasWidth: number = $('.editor.canvas').innerWidth();
-  //   const canvasHeight: number = $('.editor.canvas').innerHeight();
-
-  //   const graphBBox = joint.layout.DirectedGraph.layout(this.page, {
-  //     nodeSep: 50,
-  //     edgeSep: 80,
-  //     rankDir: 'TB',
-  //   });
-
-  //   this.graph = new joint.shapes.chdsr.JointGraphModel({
-  //     el: document.getElementById('canvas'),
-  //     model: this.page,
-  //     width: canvasWidth,
-  //     height: canvasHeight,
-  //     gridSize: 10,
-  //     drawGrid: true,
-  //     defaultAnchor: (endView: joint.dia.ElementView, endMagnet: SVGElement, anchorReference: joint.g.Point, args: { [key: string]: any; }) => {
-  //       return this.customPerpendicularAnchor(endView, endMagnet, anchorReference, args);
-  //     },
-  //     defaultConnectionPoint: { name: 'boundary' },
-  //     defaultConnector: {
-  //       name: 'normal',
-  //     },
-  //   } as joint.dia.Paper.Options);
-
-  //   this.minimap = new joint.shapes.chdsr.JointGraphModel({
-  //     el: document.getElementById('canvas-minimap'),
-  //     model: this.page,
-  //     width: canvasWidth * 20 / 100,
-  //     height: canvasHeight * 20 / 100,
-  //     drawGrid: false,
-  //     interactive: false,
-  //     defaultAnchor: (endView: joint.dia.ElementView, endMagnet: SVGElement, anchorReference: joint.g.Point, args: { [key: string]: any; }) => {
-  //       return this.customPerpendicularAnchor(endView, endMagnet, anchorReference, args);
-  //     },
-  //     defaultConnectionPoint: { name: 'boundary' },
-  //     defaultConnector: {
-  //       name: 'normal',
-  //     },
-  //   });
-  //   this.minimap.scale(0.33334);
-
-  //   this.graph.on('blank:pointerdown', () => {
-  //     this.fn_graph_reset(this.graph);
-  //   });
-
-  //   this.graph.on('element:pointerdown', (elementView) => {
-  //     this.fn_graph_reset(this.graph);
-  //     const el = elementView as joint.dia.ElementView;
-  //     const currentElement = el.model;
-  //     currentElement.attr('.root/stroke', 'blue');
-  //   });
-
-  //   this.graph.on('element:pointerdblclick', (elementView) => {
-  //     const el = elementView as joint.dia.ElementView;
-  //     const currentELement = el.model;
-
-  //     const link: joint.shapes.chdsr.JointLinkModel = new joint.shapes.chdsr.JointLinkModel();
-  //     link.source(currentELement);
-  //     link.target(new joint.g.Point(currentELement.position().x + 100, currentELement.position().y));
-  //     link.addTo(this.page);
-  //   });
-
-  //   window.addEventListener('resize', () => {
-  //     this.graph.options.width = innerWidth;
-  //     this.graph.options.height = innerHeight;
-  //   });
-
-  //   this.initJointElements();
-  // }
-
-  // public graphReset(paper: joint.shapes.chdsr.JointGraphModel) {
-  //   const elements = paper.model.getElements();
-  //   for (let i = 0; i < elements.length; i++) {
-  //     const curr = elements[i];
-  //     if (curr.attributes.type === 'chdsr.JointStartEventModel') {
-  //       curr.attr('.root/stroke', '#21ba45');
-  //     } else if (curr.attributes.type === 'chdsr.JointEndEventModel') {
-  //       curr.attr('.root/stroke', '#db2828');
-  //       curr.attr('.root/fill', '#db2828');
-  //     } else {
-  //       curr.attr('.root/stroke', 'black');
-  //     }
-  //   }
-  // }
 
   /*
    * @author: clientIO
