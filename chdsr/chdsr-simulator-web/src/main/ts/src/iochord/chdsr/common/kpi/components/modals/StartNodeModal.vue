@@ -43,6 +43,8 @@
 
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
+declare const $: any;
+
 @Component
 export default class StartNodeModal extends Vue {
 

@@ -13,6 +13,7 @@
     "esModuleInterop": true,
     "sourceMap": true,
     "baseUrl": ".",
+    "typeRoots": ["./node_modules/@types", "./types"],
     "types": [
       "node",
       "jest"
@@ -20,7 +21,8 @@
     "paths": {
       "@/*": [
         "src/*"
-      ]
+      ],
+      "*": ["./types/*"],
     },
     "lib": [
       "es6",

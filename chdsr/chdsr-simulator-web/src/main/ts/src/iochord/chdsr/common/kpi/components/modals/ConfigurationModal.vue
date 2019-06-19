@@ -32,48 +32,50 @@
 </style>
 
 <script lang="ts">
-import { Component, Prop, Vue } from "vue-property-decorator";
+import { Component, Prop, Vue } from 'vue-property-decorator';
+declare const $: any;
+
 @Component
 export default class ConfigurationModal extends Vue {
-  private mounted(): void{
-    $(".ui.dropdown").dropdown();
-    $(".tabular.menu .item").tab();
+  private mounted(): void {
+    $('.ui.dropdown').dropdown();
+    $('.tabular.menu .item').tab();
 
-    $("#sim_config_generate").click(function() {
-      var rsc_val = $("#rsc_txt").val();
-      var gen_tbl = "";
+    $('#sim_config_generate').click(() => {
+      const rsc_val = $('#rsc_txt').val();
+      let gen_tbl = '';
 
-      $("#sim_config_tbl").html(gen_tbl);
+      $('#sim_config_tbl').html(gen_tbl);
 
-      var head_cols = "";
-      var body_cols = "";
+      let head_cols = '';
+      let body_cols = '';
 
-      var cols = rsc_val;
-      for (var i = 0; i <= cols; i++) {
-        head_cols += "<th>Config " + (i + 1) + "</th>";
+      const cols = rsc_val;
+      for (let i = 0; i <= cols; i++) {
+        head_cols += '<th>Config ' + (i + 1) + '</th>';
         body_cols += '<td><button class="ui button">...</button></td>';
       }
 
       gen_tbl += '<table class="ui celled compact table">';
-      gen_tbl += "<thead>";
-      gen_tbl += "<tr>";
-      gen_tbl += "<th>Module</th>";
+      gen_tbl += '<thead>';
+      gen_tbl += '<tr>';
+      gen_tbl += '<th>Module</th>';
       gen_tbl += head_cols;
-      gen_tbl += "</tr>";
-      gen_tbl += "</thead>";
-      gen_tbl += "<tbody>";
-      gen_tbl += "<tr>";
-      gen_tbl += "<td>Start</td>";
+      gen_tbl += '</tr>';
+      gen_tbl += '</thead>';
+      gen_tbl += '<tbody>';
+      gen_tbl += '<tr>';
+      gen_tbl += '<td>Start</td>';
       gen_tbl += body_cols;
-      gen_tbl += "</tr>";
-      gen_tbl += "<tr>";
-      gen_tbl += "<td>End</td>";
+      gen_tbl += '</tr>';
+      gen_tbl += '<tr>';
+      gen_tbl += '<td>End</td>';
       gen_tbl += body_cols;
-      gen_tbl += "</tr>";
-      gen_tbl += "</tbody>";
-      gen_tbl += "</table>";
+      gen_tbl += '</tr>';
+      gen_tbl += '</tbody>';
+      gen_tbl += '</table>';
 
-      $("#sim_config_tbl").html(gen_tbl);
+      $('#sim_config_tbl').html(gen_tbl);
     });
 
 

@@ -206,50 +206,52 @@
 </style>
 
 <script lang="ts">
-import { Component, Prop, Vue } from "vue-property-decorator";
+import { Component, Prop, Vue } from 'vue-property-decorator';
+
+declare const $: any;
 @Component
 export default class ActivityNodeModal extends Vue {
-  private selectedActivityType = "";
+  private selectedActivityType = '';
 
-  private updated(): void{
-    if (this.selectedActivityType == "standard") {
-      $("#basic-standard-sm-1").attr("style", "visibility:visible");
-      $("#basic-cbp-sm-1").attr("style", "visibility:hidden");
-      $("#basic-cbp-sm-2").attr("style", "visibility:hidden");
-      $("#basic-cbp-sm-3").attr("style", "visibility:hidden");
+  private updated(): void {
+    if (this.selectedActivityType === 'standard') {
+      $('#basic-standard-sm-1').attr('style', 'visibility:visible');
+      $('#basic-cbp-sm-1').attr('style', 'visibility:hidden');
+      $('#basic-cbp-sm-2').attr('style', 'visibility:hidden');
+      $('#basic-cbp-sm-3').attr('style', 'visibility:hidden');
 
-      $("#basic-split-sm-1").attr("style", "visibility:hidden");
-      $("#basic-split-sm-2").attr("style", "visibility:hidden");
-      $("#basic-split-sm-3").attr("style", "visibility:hidden");
-      $("#basic-split-sm-3").attr("style", "visibility:hidden");
-    } else if (this.selectedActivityType == "concurrent") {
-      $("#basic-standard-sm-1").attr("style", "visibility:hidden");
+      $('#basic-split-sm-1').attr('style', 'visibility:hidden');
+      $('#basic-split-sm-2').attr('style', 'visibility:hidden');
+      $('#basic-split-sm-3').attr('style', 'visibility:hidden');
+      $('#basic-split-sm-3').attr('style', 'visibility:hidden');
+    } else if (this.selectedActivityType === 'concurrent') {
+      $('#basic-standard-sm-1').attr('style', 'visibility:hidden');
 
-      $("#basic-cbp-sm-1").attr("style", "visibility:visible");
-      $("#basic-cbp-sm-2").attr("style", "visibility:visible");
-      $("#basic-cbp-sm-3").attr("style", "visibility:visible");
+      $('#basic-cbp-sm-1').attr('style', 'visibility:visible');
+      $('#basic-cbp-sm-2').attr('style', 'visibility:visible');
+      $('#basic-cbp-sm-3').attr('style', 'visibility:visible');
 
-      $("#basic-split-sm-1").attr("style", "visibility:hidden");
-      $("#basic-split-sm-2").attr("style", "visibility:hidden");
-      $("#basic-split-sm-3").attr("style", "visibility:hidden");
-      $("#basic-split-sm-3").attr("style", "visibility:hidden");
+      $('#basic-split-sm-1').attr('style', 'visibility:hidden');
+      $('#basic-split-sm-2').attr('style', 'visibility:hidden');
+      $('#basic-split-sm-3').attr('style', 'visibility:hidden');
+      $('#basic-split-sm-3').attr('style', 'visibility:hidden');
     } else {
-      $("#basic-standard-sm-1").attr("style", "visibility:hidden");
+      $('#basic-standard-sm-1').attr('style', 'visibility:hidden');
 
-      $("#basic-cbp-sm-1").attr("style", "visibility:hidden");
-      $("#basic-cbp-sm-2").attr("style", "visibility:hidden");
-      $("#basic-cbp-sm-3").attr("style", "visibility:hidden");
+      $('#basic-cbp-sm-1').attr('style', 'visibility:hidden');
+      $('#basic-cbp-sm-2').attr('style', 'visibility:hidden');
+      $('#basic-cbp-sm-3').attr('style', 'visibility:hidden');
 
-      $("#basic-split-sm-1").attr("style", "visibility:visible");
-      $("#basic-split-sm-2").attr("style", "visibility:visible");
-      $("#basic-split-sm-3").attr("style", "visibility:visible");
-      $("#basic-split-sm-4").attr("style", "visibility:visible");
+      $('#basic-split-sm-1').attr('style', 'visibility:visible');
+      $('#basic-split-sm-2').attr('style', 'visibility:visible');
+      $('#basic-split-sm-3').attr('style', 'visibility:visible');
+      $('#basic-split-sm-4').attr('style', 'visibility:visible');
     }
   }
-  
-  private mounted(): void{
-    $(".ui.dropdown").dropdown();
-    $(".tabular.menu .item").tab();
+
+  private mounted(): void {
+    $('.ui.dropdown').dropdown();
+    $('.tabular.menu .item').tab();
   }
 }
 </script>
