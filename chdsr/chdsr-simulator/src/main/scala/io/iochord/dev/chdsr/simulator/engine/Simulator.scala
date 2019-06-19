@@ -1,48 +1,83 @@
 package io.iochord.dev.chdsr.simulator.engine
 
+import scala.util.control.Breaks._
 import io.iochord.dev.chdsr.model.cpn.v1.impl.CPNGraph
 import io.iochord.dev.chdsr.model.cpn.v1.impl.Transition
 import io.iochord.dev.chdsr.simulator.util.ChdsrRandom
 
 object Simulator {
-  val globTime:Long = 0
+  var globtime:Long = 0
   
-  private def enabledTransitions(transitions: List[Transition]) = {
-    transitions.filter(_.isEnabled())
+  private def enabledTransitions(transitions: List[Transition[_]]) = {
+    transitions.filter(t => {t.isEnabled(globtime)})
   }
 
-  def enabledBindings(transitions: List[Transition]) = enabledTransitions(transitions).size > 0
+  private def evalGlobalTime(net:CPNGraph, globtime:Long):(Boolean,List[Transition[_]]) = {
+    var times = List[Long]()
+    net.allPlaces.foreach(place => { val multiset = place.getcurrentMarking().multiset; multiset.keys.filter(_._2 > globtime).foreach(key => { times = key._2::times }) })
+    times = times.distinct.sorted
+    times.foreach(time => { 
+      val trans = net.allTransitions.filter(t => {t.isEnabled(time)})
+      if(trans.size > 0) {
+        this.globtime = time
+        return (true, trans)
+      }
+    })
+    return (false,null)
+  }
   
-  def run(net: CPNGraph, steps: Int = 10) = {
+  def run(net:CPNGraph, steps:Int = 10) {
     
     val allTransitions = net.allTransitions
     
     var c = 0
-    while (enabledBindings(allTransitions) && steps > c) {
-      
-      val transitions = enabledTransitions(allTransitions)
-
-      val transition = ChdsrRandom.selectRandom(transitions)
-      
-      c += 1
+    var transitions:List[Transition[_]] = null
+    breakable {
+      while (steps > c) {
+        transitions = enabledTransitions(allTransitions)
+        if(transitions.size == 0) {
+          val (reseval, transitions_tmp) = evalGlobalTime(net, globtime)
+          if(!reseval)
+            break
+          transitions = transitions_tmp
+        }
+        
+        val transition = ChdsrRandom.selectRandom(transitions)
+        println("Step ",c," ",globtime)
+        println("Before")
+        net.allPlaces.foreach(place => { val multiset = place.getcurrentMarking().multiset; println(place.getId(),multiset) })
+        transition.execute(globtime)
+        println("After")
+        net.allPlaces.foreach(place => { val multiset = place.getcurrentMarking().multiset; println(place.getId(),multiset) })
+        c += 1
+      }
     }
+    
     if (c == steps)
       println("step : "+steps)
     else
       println("stop - no more enabled transitions")
   }
 
-  def fastRun[T](net: CPNGraph, stopCrit:T => Boolean, inpStopCrit:T) = {
+  def fastRun(net: CPNGraph, stopCrit:Any => Boolean, inpStopCrit:Any) = {
     val allTransitions = net.allTransitions
     
     var c = 0
-    while (enabledBindings(allTransitions) && stopCrit(inpStopCrit)) {
-      
+    var transitions:List[Transition[_]] = null
+    breakable {
+      while (stopCrit(inpStopCrit)) {
+        transitions = enabledTransitions(allTransitions)
+          if(transitions.size == 0) {
+            val (reseval, transitions_tmp) = evalGlobalTime(net, globtime)
+            if(!reseval)
+              break
+            transitions = transitions_tmp
+          }
+      }
     }
   }
   
-  def getGlobTime(): Long = { globTime }
+  def getGlobTime(): Long = { globtime }
   
-  def addGlobTime(addTime:Long): Unit = { globTime+addTime }
-  
+  def addGlobTime(addTime:Long): Unit = { globtime = globtime+addTime }
 }

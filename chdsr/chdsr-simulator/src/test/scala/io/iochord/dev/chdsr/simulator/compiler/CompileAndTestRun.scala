@@ -118,50 +118,7 @@ object CompileAndTestRun {
     def exp_arc1(token: Any) = token match { case colset:colset1 => (2*colset._1, colset._2) }
     def exp_arc2(token: Any) = token match { case colset:colset1 => (3*colset._1, colset._2) }
     
-    val ttrans1 = new Transition("tr1","transition1", new Guard()) {
-      override def isArcEnabled[B<:Bind]():(Boolean,List[B]) = {
-        var is_binding_arc1 = false
-        var is_binding_arc2 = false
-        
-        var lbe = List[B]()
-        
-        //start from arc1 with input pplace1
-        for(token1 <- listtoken1) { // first place (place1) is as bases variable initialization.. but here arc inscription use function
-          //arc from place1 to transition have 
-          //here exhaustive search
-          val start = 0//Int.MinValue
-          val stop = 1000//Int.MaxValue
-          
-          breakable {
-            y = token1.y.get
-            
-            for(i <- start to stop) {
-              if(exp_arc1(i, y) == (token1.x.get, token1.y.get)) {
-                  x = i
-                  is_binding_arc1 = true
-                  break
-              }
-            }
-          }
-          
-          //continue with arc2 with input pplace2
-          if(is_binding_arc1)
-            for(token2 <- listtoken2) {
-              if(exp_arc2(x, y) == (token2.x.get, token2.y.get)) {
-                is_binding_arc2 = true
-                //if all arc inscription is binding then add Binding class into list binding combination
-                val b = Bind1(Some(x),Some(y)).asInstanceOf[B]
-                lbe = lbe.::( b )
-                //print(x)
-              }
-            }
-        }
-        
-        //if all 
-        (is_binding_arc1 && is_binding_arc2, lbe)
-      }
-    }
-    
+    val ttrans1 = new Transition("tr1","transition1", new Guard())
     //guard is x >= 1
     def guard_exp_ttrans1(x:Int) = x >= 1
     
@@ -170,15 +127,15 @@ object CompileAndTestRun {
     val gen_guard_exp_ttrans1 = (listb: List[Any]) => listb match { case list: List[Bind1] => { list.exists(be =>  be.x.map(x => guard_exp_ttrans1(anyfunc(x))).get) } case _ => false }
     ttrans1.getGuard().setGuardBind(gen_guard_exp_ttrans1)
     
-    val arc1 = new Arc[colset1]("arc1", pplace1, ttrans1, Direction.PtT)
+    val arc1 = new Arc[colset1,Bind1]("arc1", pplace1, ttrans1, Direction.PtT)
     arc1.setArcExp(exp_arc1)
     
-    val arc2 = new Arc[colset1]("arc2", pplace2, ttrans1, Direction.PtT)
+    val arc2 = new Arc[colset1,Bind1]("arc2", pplace2, ttrans1, Direction.PtT)
     arc2.setArcExp(exp_arc2)
     
     val TtoB = (token: Any) => token match { case colset: colset1 => { Bind1(Some(colset._1),Some(colset._2)) } }
-    arc1.transTokenToBind(TtoB)
-    arc2.transTokenToBind(TtoB)
+    arc1.setTokenToBind(TtoB)
+    arc2.setTokenToBind(TtoB)
     
     ttrans1.addIn(arc1)
     ttrans1.addIn(arc2)

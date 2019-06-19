@@ -1,31 +1,47 @@
 package io.iochord.dev.chdsr.model.cpn.v1.impl
 
+import scala.util.control.Breaks._
 import io.iochord.dev.chdsr.model.cpn.v1._
 
-class Transition(
+class Transition[B <:Bind] (
   private var id: String,
   private var name: String,
-  private var guard: Guard) extends Element with Node {
+  private var guard: Guard[B] = null,
+  private var action: Action[B] = null) extends Element with Node {
   
-  private var in = List[Arc[_]]()
-  private var out = List[Arc[_]]()
+  private var in = List[Arc[_,_]]()
+  private var out = List[Arc[_,_]]()
   
-  def addIn(arc: Arc[_]) {
+  private var eval:(B,B) => Boolean = null
+  private var merge:(B,B) => B = null
+  
+  private var lbeBase:List[B] = null
+  
+  private val eval_full = (b1:Any, b2:B, arc:Arc[_,B], transArcExp:(Any,Arc[_,B]) => B) => {
+    val bmod = transArcExp(b1, arc)
+    getEval()(bmod, b2) 
+  }
+    
+  private val merge_full = (b1:B,b2:B) => { 
+    getMerge()(b1, b2)
+  }
+  
+  def addIn(arc: Arc[_,_]) {
     if(arc.getIsBase())
       in = arc :: in
     else
-      in = in ::: List[Arc[_]](arc)
+      in = in ::: List[Arc[_,_]](arc)
   }
 
-  def addOut(arc: Arc[_]) {
+  def addOut(arc: Arc[_,_]) {
     out = arc :: out
   }
 
-  def removeIn(arc: Arc[_]) {
+  def removeIn(arc: Arc[_,_]) {
     in = in.filterNot(_ == arc)
   }
 
-  def removeOut(arc: Arc[_]) {
+  def removeOut(arc: Arc[_,_]) {
     out = out.filterNot(_ == arc)
   }
   
@@ -37,105 +53,96 @@ class Transition(
   
   def setName(name: String) { this.name = name }
   
-  def getGuard(): Guard = guard
+  def getGuard(): Guard[B] = guard
   
-  def setGuard(guard: Guard) { this.guard = guard }
+  def setGuard(guard: Guard[B]) { this.guard = guard }
   
-  def isArcEnabled[B<:Bind]():(Boolean,List[B]) = { 
-    val globtime = 200 //set dummy global time 
-    
+  def getAction(): Action[B] = action
+  
+  def setAction(action: Action[B]) { this.action = action }
+  
+  def transArcExp(bind:Any, arc: Arc[_,B]) = (bind,arc) match { case (bind:B, arc:Arc[_,B]) => transform(bind,arc.getBindToToken(),arc.getArcExp(),arc.getTokenToBind()) }
+  
+  def isArcEnabled(globtime:Long):(Boolean,List[B]) = { 
     val iterator = in.iterator
-    
     var lbe = List[B]()
     
-    if(iterator.hasNext)
+    breakable{ while(iterator.hasNext)
     {
-      val arc = iterator.next()
-      val ms = arc.getPlace().getcurrentMarking()
-      val listbinding = ms.multiset.keys.filter(_._2 < globtime).map(token => token match { 
+      val arc = iterator.next() match { case arc:Arc[_,B] => arc }
+      val tokensBefGlobTime = arc.getPlace().getcurrentMarking().multiset.keys.filter(tokenWT => tokenWT._2 <= globtime)
+      
+      if(tokensBefGlobTime.isEmpty)
+        break
+        
+      val listbinding = tokensBefGlobTime.map(token => token match { 
         // we want to change from token to bind (need to change to bind to have common form of data type over all arcs for this transition
-        case (colset:arc.coltype, _:Long) => { arc.evalTokenToBind(colset).asInstanceOf[B] }
+        case (colset:arc.coltype, _:Long) => { arc.computeTokenToBind(colset).asInstanceOf[B] }
       } ).toList
       
-      for(binding <- listbinding) { //first arc in "in list" is base binding
-        var base = binding
-        var count_next = 1
-        
-        if(in.length == count_next)
-        {
-          lbe = base :: lbe
-        }
-        else {
-          count_next = count_next + 1
-          lbe = lbe ::: forRecursif(iterator, globtime, count_next, base)
-        }
-      }
-    }
+      lbe = if(lbe.isEmpty) listbinding else listbinding.flatMap(b2 => lbe.collect { case b1 if eval_full(b1,b2,arc,transArcExp) => merge_full(b1, b2) } )
+      if(lbe.isEmpty)
+        break
+    }}
     
     (lbe.length > 0, lbe) 
   }
   
-  def forRecursif[B<:Bind](iterator:Iterator[Arc[_]], globtime:Long, count:Int, b:B):List[B] = {
-    var lbe = List[B]()
+  def isEnabled(globtime:Long):Boolean = {
+    val (isArcEn, lbe) = isArcEnabled(globtime)
     
-    if(iterator.hasNext)
-    {
-      val arc = iterator.next()
-      print(arc.getId())
-      val ms = arc.getPlace().getcurrentMarking()
-      val listbinding = ms.multiset.keys.filter(_._2 < globtime).map(token => token match { 
-        // we want to change from token to bind (need to change to bind to have common form of data type over all arcs for this transition
-        case (colset:arc.coltype, _:Long) => { arc.evalTokenToBind(colset).asInstanceOf[B] }
-      } ).toList
-      
-      for(binding <- listbinding) { //first arc in "in list" is base binding
-        var base = b
-        var count_next = count
-        print(base+" ---- "+binding)
-        print("\n")
-        
-        if(arc.getIsBase()) {
-          base = binding 
-          if(in.length == count_next)
-          {
-            lbe = b :: lbe
-          }
-          else {
-            count_next = count_next + 1
-            lbe = lbe ::: forRecursif(iterator, globtime, count_next, base)
-          }
-        }
-        else {
-          print(arc.evalArcExp(arc.evalBindToToken(base))+" --- "+arc.evalBindToToken(binding)+" --- "+(arc.evalArcExp(arc.evalBindToToken(base)) == arc.evalBindToToken(binding)))
-          print("\n")
-          print("Masuk loh "+count_next+ " - "+in.length)
-          if(arc.evalArcExp(arc.evalBindToToken(base)) == arc.evalBindToToken(binding)) { 
-            if(in.length == count_next)
-            {
-              lbe = b :: lbe
-            }
-            else {
-              count_next = count_next + 1
-              lbe = lbe ::: forRecursif(iterator, globtime, count_next, base)
-            }
-          }
-        }
-      }
-    }  
-    
-    lbe
+    if(isArcEn && getGuard() != null) {
+      val resEvalG = getGuard().evalGuard(lbe)
+      setLbeBase(resEvalG._2)
+      resEvalG._1
+    }
+    else {
+      setLbeBase(lbe)
+      isArcEn
+    }
   }
   
-  def isEnabled():Boolean = {
-    val (isArcEn, lbe) = isArcEnabled()
-    
-    if(getGuard() != null) {
-      println("Transition "+getId()+" is enabled "+getGuard().evalGuard(lbe))
-      getGuard().evalGuard(lbe)
-    }
-    else
-      isArcEn
+  def execute(globtime:Long) {
+    val r = new java.util.Random();
+    val bindingChosen = lbeBase(r.nextInt(lbeBase.length))
+    //println(bindingChosen)
+    in.foreach(arc => { 
+      val setTokenWTChosen = arc.getPlace().getcurrentMarking().multiset.keys.filter(tokenWT => { val token = arc.computeArcExp(arc.computeBindToToken(bindingChosen)); tokenWT._2 <= globtime && token == tokenWT._1 } )
+      val tokenWTChosen = setTokenWTChosen.head
+      arc.getPlace().removeTokenWithTime(tokenWTChosen)
+    } )
+    out.foreach(arc => {
+      var bindingCombine:B = bindingChosen
+      if(action != null)
+      {
+        val bindingAction = action.computeTokenToBind(action.computeActionFun(action.computeBindToToken(bindingChosen))) 
+        bindingCombine = getMerge()(bindingChosen,bindingAction)
+      }
+      val tokenChosen = arc.computeArcExp(arc.computeBindToToken(bindingCombine))
+      val timetoken = globtime+arc.computeAddTime()
+      println("Time "+timetoken)
+      arc.getPlace().addTokenWithTime((tokenChosen, timetoken))
+    } )
   }
+  
+  def transform(bind:B, toToken:Any=>Any, arcIns:Any=>Any, toBind:Any=>B):B = {
+      val token = toToken(bind)
+      val tokenMod = arcIns(token)
+      val new_bind = toBind(tokenMod)
+      new_bind
+  }
+  
+  def setEval(eval:(B,B) => Boolean) = { this.eval = eval }
+  
+  def getEval():((B,B) => Boolean) = { this.eval }
+  
+  def setMerge(merge:(B,B) => B) = { this.merge = merge }
+  
+  def getMerge():((B,B) => B) = { this.merge }
+  
+  def setLbeBase(lbeBase:List[B]) = { this.lbeBase = lbeBase }
+  
+  def getLbeBase():List[B] = { this.lbeBase }
   
   override def toString = name
 }
