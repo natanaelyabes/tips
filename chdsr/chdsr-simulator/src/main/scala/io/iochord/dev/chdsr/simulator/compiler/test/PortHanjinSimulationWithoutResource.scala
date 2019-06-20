@@ -1,4 +1,4 @@
-package io.iochord.dev.chdsr.simulator.compiler
+package io.iochord.dev.chdsr.simulator.compiler.test
 
 import io.iochord.dev.chdsr.model.cpn.v1.impl._
 import io.iochord.dev.chdsr.model.cpn.v1._
