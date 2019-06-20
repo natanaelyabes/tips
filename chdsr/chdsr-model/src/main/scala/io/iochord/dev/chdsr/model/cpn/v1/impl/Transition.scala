@@ -135,7 +135,7 @@ class Transition[B <:Bind] (
         //println(arc.getId(),bindingCombine)
       }
       val tokenChosen = arc.computeArcExp(arc.computeBindToToken(bindingCombine))
-      val timetoken = if(arc.getAddTime() == null) globtime else globtime+arc.computeAddTime()
+      val timetoken = if(arc.getAddTime() == null) globtime else globtime+arc.computeAddTime(0)
       arc.getPlace().addTokenWithTime((tokenChosen, timetoken))
     } )
   }
