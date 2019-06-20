@@ -236,6 +236,6 @@ object CleanTestStandardForm1 {
     cgraph.addArc(arc7)
     cgraph.addArc(arc8)
     
-    Simulator().run(cgraph, 10)
+    Simulator.run(cgraph, 10)
   }
 }

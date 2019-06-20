@@ -154,7 +154,7 @@ object CompileAndTestRun {
     cgraph.addArc(arc1)
     cgraph.addArc(arc2)
     
-    Simulator().run(cgraph, 10)
+    Simulator.run(cgraph, 10)
     
     
     val normal_val = Gaussian(100, 10).draw() // mean (Double), sigma (Double)

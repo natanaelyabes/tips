@@ -372,6 +372,6 @@ object PortHanjinSimulationWithoutResource {
     cgraph.addArc(arc15)
     
     val stopCrit = (p: Any) => p match { case p:Place[Int] => p.getcurrentMarking().multiset.size > 1000 }
-    Simulator().fastRun(cgraph, stopCrit, pplace7)
+    Simulator.fastRun(cgraph, stopCrit, pplace7)
   }
 }

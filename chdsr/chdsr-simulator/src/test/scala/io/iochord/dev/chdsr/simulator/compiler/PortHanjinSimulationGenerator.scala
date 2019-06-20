@@ -99,6 +99,6 @@ object PortHanjinSimulationGenerator {
     cgraph.addArc(arc3)
     
     val stopCrit = (p: Any) => p match { case p:Place[Int] => p.getcurrentMarking().multiset.keys.filter(tokenWT => tokenWT._1 > 50).size > 0 }
-    Simulator().fastRun(cgraph, stopCrit, pplace1)
+    Simulator.fastRun(cgraph, stopCrit, pplace1)
   }
 }
