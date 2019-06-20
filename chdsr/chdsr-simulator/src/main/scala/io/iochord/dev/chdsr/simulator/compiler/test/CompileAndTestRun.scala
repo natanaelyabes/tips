@@ -6,6 +6,7 @@ import io.iochord.dev.chdsr.simulator.engine.Simulator
 
 import scala.collection.mutable._
 import scala.util.control.Breaks._
+import shapeless.TypeCase
 
 import breeze.stats.distributions.Gaussian
 import breeze.stats.distributions.Binomial
@@ -27,9 +28,6 @@ import io.iochord.dev.chdsr.simulator.dist._
 
 object CompileAndTestRun {
 
-  var x:Int = _
-  var y:String = _
-  
   def main(args: Array[String]) {
     
     val myclassSyntax = "new Simulation {\n"+
@@ -115,8 +113,9 @@ object CompileAndTestRun {
       }
     ).toList
     
-    def exp_arc1(token: Any) = token match { case colset:colset1 => (2*colset._1, colset._2) }
-    def exp_arc2(token: Any) = token match { case colset:colset1 => (3*colset._1, colset._2) }
+    val typecasecolset1 = TypeCase[colset1]
+    def exp_arc1(token: Any) = token match { case typecasecolset1(token) => (2*token._1, token._2) }
+    def exp_arc2(token: Any) = token match { case typecasecolset1(token) => (3*token._1, token._2) }
     
     val ttrans1 = new Transition("tr1","transition1", new Guard())
     //guard is x >= 1
@@ -124,7 +123,8 @@ object CompileAndTestRun {
     
     def anyfunc(x:Int):Int = 2*x
     
-    val gen_guard_exp_ttrans1 = (listb: List[Any]) => listb match { case list: List[Bind1] => { list.exists(be =>  be.x.map(x => guard_exp_ttrans1(anyfunc(x))).get) } case _ => false }
+    val typecaselistbind1 = TypeCase[List[Bind1]]
+    val gen_guard_exp_ttrans1 = (listb: List[Any]) => listb match { case typecaselistbind1(listb) => { listb.exists(be =>  be.x.map(x => guard_exp_ttrans1(anyfunc(x))).get) } case _ => false }
     ttrans1.getGuard().setGuardBind(gen_guard_exp_ttrans1)
     
     val arc1 = new Arc[colset1,Bind1]("arc1", pplace1, ttrans1, Direction.PtT)
@@ -133,7 +133,7 @@ object CompileAndTestRun {
     val arc2 = new Arc[colset1,Bind1]("arc2", pplace2, ttrans1, Direction.PtT)
     arc2.setArcExp(exp_arc2)
     
-    val TtoB = (token: Any) => token match { case colset: colset1 => { Bind1(Some(colset._1),Some(colset._2)) } }
+    val TtoB = (token: Any) => token match { case typecasecolset1(token) => { Bind1(Some(token._1),Some(token._2)) } }
     arc1.setTokenToBind(TtoB)
     arc2.setTokenToBind(TtoB)
     
