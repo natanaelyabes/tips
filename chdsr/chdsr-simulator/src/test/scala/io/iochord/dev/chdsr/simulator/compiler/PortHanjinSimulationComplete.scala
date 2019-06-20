@@ -781,17 +781,19 @@ object PortHanjinSimulationComplete {
     cgraph.addArc(arc9_cpres)
     cgraph.addArc(arc9_cp)
     
-    val sim = Simulator()
     /*
     val stopCrit = (p: Any) => p match { case p:Place[Int] => { 
       	p.getcurrentMarking().multiset.keys.filter(_._1 > 2).size > 0
       } 
     }
     */
-    val stopCrit = (sim: Any) => sim match { case sim:Simulator => { 
-        sim.getGlobTime() > 150
+    val globtime = GlobalTime(0)
+    
+    val stopCrit = (globtime: Any) => globtime match { case globtime:GlobalTime => { 
+        globtime.time > 250
       }
     }
-    sim.fastRun(cgraph, stopCrit, sim)
+    
+    Simulator.fastRun(cgraph, stopCrit, globtime, globtime)
   }
 }
