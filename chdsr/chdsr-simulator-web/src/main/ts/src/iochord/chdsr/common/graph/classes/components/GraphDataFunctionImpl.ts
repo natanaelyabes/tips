@@ -4,7 +4,6 @@ import { GraphDataObjectType } from '../../interfaces/components/GraphDataObject
 import { GraphUtil } from '../GraphUtil';
 
 export class GraphDataFunctionImpl extends GraphDataImpl implements GraphDataFunction {
-  public static readonly TYPE: string | null = 'function';
   public static instance: Map<string, GraphDataFunction> = new Map<string, GraphDataFunction>();
 
   /** @Override */
@@ -21,30 +20,20 @@ export class GraphDataFunctionImpl extends GraphDataImpl implements GraphDataFun
     return graphData;
   }
 
-  private inputParameters: Map<string, GraphDataObjectType> | null;
-  private code: string | null;
-  private outputVariables: Map<string, GraphDataObjectType> | null;
+  private inputParameters?: Map<string, GraphDataObjectType> | null = new Map<string, GraphDataObjectType>();
+  private code?: string | null;
+  private outputVariables?: Map<string, GraphDataObjectType> | null = new Map<string, GraphDataObjectType>();
 
-  constructor();
-  constructor(inputParameters: Map<string, GraphDataObjectType>, code: string, outputVariables: Map<string, GraphDataObjectType>);
-  constructor(inputParameters?: Map<string, GraphDataObjectType>, code?: string, outputVariables?: Map<string, GraphDataObjectType>) {
+  constructor() {
     super();
-    this.inputParameters = inputParameters || new Map<string, GraphDataObjectType>() || null;
-    this.code = code || null;
-    this.outputVariables = outputVariables || new Map<string, GraphDataObjectType>() || null;
-  }
-
-  /** @Override */
-  public getType(): string | null {
-    return this.TYPE;
   }
 
   public getInputParameters(): Map<string, GraphDataObjectType> | null {
-    return this.inputParameters;
+    return this.inputParameters as Map<string, GraphDataObjectType> | null;
   }
 
   public setInputParameters(inputParameters: Map<string, GraphDataObjectType>): void {
-    this.inputParameters = inputParameters;
+    this.inputParameters = inputParameters || this.inputParameters;
   }
 
   public getInputParametersRefs(): Map<string, string | null> | null {
@@ -52,19 +41,19 @@ export class GraphDataFunctionImpl extends GraphDataImpl implements GraphDataFun
   }
 
   public getCode(): string | null {
-    return this.code;
+    return this.code as string | null;
   }
 
   public setCode(code: string): void {
-    this.code = code;
+    this.code = code || this.code;
   }
 
   public getOutputVariables(): Map<string, GraphDataObjectType> | null {
-    return this.outputVariables;
+    return this.outputVariables as Map<string, GraphDataObjectType> | null;
   }
 
   public setOutputVariables(outputVariables: Map<string, GraphDataObjectType>): void {
-    this.outputVariables = outputVariables;
+    this.outputVariables = outputVariables || this.outputVariables;
   }
 
   public getOutputVariablesRefs(): Map<string, string | null> | null {

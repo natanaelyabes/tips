@@ -7,7 +7,6 @@ import { GraphDataImpl } from '../GraphDataImpl';
 import { DISTRIBUTION_TYPE } from '../../enums/DISTRIBUTION';
 
 export class GraphDataGeneratorImpl extends GraphDataImpl implements GraphDataGenerator {
-  public static readonly TYPE: string | null = 'generator';
   public static instance: Map<string, GraphDataGenerator> = new Map<string, GraphDataGenerator>();
 
   /** @Override */
@@ -28,38 +27,24 @@ export class GraphDataGeneratorImpl extends GraphDataImpl implements GraphDataGe
     return graphDataGenerator;
   }
 
-  private objectType: GraphDataObjectType | null;
-  private distributionType: DISTRIBUTION_TYPE | null = DISTRIBUTION_TYPE.RANDOM;
-  private expression: string | null = '';
-  private unit: TIME_UNIT | null;
-  private entitiesPerArrival: number | null = 1;
-  private maxArrival: number | null = 0;
-  private firstCreation: number | null = 0;
+  private objectType?: GraphDataObjectType | null;
+  private distributionType?: DISTRIBUTION_TYPE | null = DISTRIBUTION_TYPE.RANDOM;
+  private expression?: string | null = '';
+  private unit?: TIME_UNIT | null;
+  private entitiesPerArrival?: number | null = 1;
+  private maxArrival?: number | null = 0;
+  private firstCreation?: number | null = 0;
 
-  constructor();
-  constructor(objectType: GraphDataObjectType, expression: string, unit: TIME_UNIT, distributionType: DISTRIBUTION_TYPE, entitiesPerArrival: number, maxArrival: number, firstCreation: number);
-  constructor(objectType?: GraphDataObjectType, expression?: string, unit?: TIME_UNIT, distributionType?: DISTRIBUTION_TYPE, entitiesPerArrival?: number, maxArrival?: number, firstCreation?: number) {
+  constructor() {
     super();
-    this.objectType = objectType || null;
-    this.distributionType = distributionType || DISTRIBUTION_TYPE.RANDOM || null;
-    this.expression = expression || '' || null;
-    this.unit = unit || null;
-    this.entitiesPerArrival = entitiesPerArrival || 1 || null;
-    this.maxArrival = maxArrival || 0 || null;
-    this.firstCreation = firstCreation || 0 || null;
-  }
-
-  /** @Override */
-  public getType(): string | null {
-    return this.TYPE;
   }
 
   public getObjectType(): GraphDataObjectType | null {
-    return this.objectType;
+    return this.objectType as GraphDataObjectType | null;
   }
 
   public setObjectType(objectType: GraphDataObjectType): void {
-    this.objectType = objectType;
+    this.objectType = objectType || this.objectType;
   }
 
   public getObjectTypeRef(): string | null {
@@ -67,51 +52,51 @@ export class GraphDataGeneratorImpl extends GraphDataImpl implements GraphDataGe
   }
 
   public getDistributionType(): DISTRIBUTION_TYPE | null {
-    return this.distributionType;
+    return this.distributionType as DISTRIBUTION_TYPE | null;
   }
 
   public setDistributionType(distributionType: DISTRIBUTION_TYPE): void {
-    this.distributionType = distributionType;
+    this.distributionType = distributionType || this.distributionType;
   }
 
   public getExpression(): string | null {
-    return this.expression;
+    return this.expression as string | null;
   }
 
   public setExpression(expression: string): void {
-    this.expression = expression;
+    this.expression = expression || this.expression;
   }
 
   public getUnit(): TIME_UNIT | null {
-    return this.unit;
+    return this.unit as TIME_UNIT | null;
   }
 
   public setUnit(unit: TIME_UNIT): void {
-    this.unit = unit;
+    this.unit = unit || this.unit;
   }
 
   public getEntitiesPerArrival(): number | null {
-    return this.entitiesPerArrival;
+    return this.entitiesPerArrival as number | null;
   }
 
   public setEntitiesPerArrival(entitiesPerArrival: number): void {
-    this.entitiesPerArrival = entitiesPerArrival;
+    this.entitiesPerArrival = entitiesPerArrival || this.entitiesPerArrival;
   }
 
   public getMaxArrival(): number | null {
-    return this.maxArrival;
+    return this.maxArrival as number | null;
   }
 
   public setMaxArrival(maxArrival: number): void {
-    this.maxArrival = maxArrival;
+    this.maxArrival = maxArrival || this.maxArrival;
   }
 
   public getFirstCreation(): number | null {
-    return this.firstCreation;
+    return this.firstCreation as number | null;
   }
 
   public setFirstCreation(firstCreation: number): void {
-    this.firstCreation = firstCreation;
+    this.firstCreation = firstCreation || this.firstCreation;
   }
 
   /** @Override */
