@@ -782,7 +782,7 @@ object PortHanjinSimulationComplete {
     cgraph.addArc(arc9_cp)
     
     /*
-    val stopCrit = (p: Any) => p match { case p:Place[Int] => { 
+    val stopCrit = (p: Any) => p match { case p:Place[_] => { 
       	p.getcurrentMarking().multiset.keys.filter(_._1 > 2).size > 0
       } 
     }

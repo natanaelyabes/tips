@@ -6,6 +6,7 @@ import io.iochord.dev.chdsr.simulator.engine.Simulator
 
 import scala.collection.mutable._
 import scala.util.control.Breaks._
+import shapeless.{TypeCase, Typeable}
 
 import breeze.stats.distributions.Gaussian
 import breeze.stats.distributions.Binomial
@@ -98,7 +99,7 @@ object PortHanjinSimulationGenerator {
     cgraph.addArc(arc2)
     cgraph.addArc(arc3)
     
-    val stopCrit = (p: Any) => p match { case p:Place[Int] => p.getcurrentMarking().multiset.keys.filter(tokenWT => tokenWT._1 > 50).size > 0 }
+    val stopCrit = (p: Any) => p match { case p:Place[_] => p.getcurrentMarking().multiset.keys.filter(tokenWT => tokenWT._1 match { case x:Int => x > 50 } ).size > 0 }
     Simulator.fastRun(cgraph, stopCrit, pplace1)
   }
 }
