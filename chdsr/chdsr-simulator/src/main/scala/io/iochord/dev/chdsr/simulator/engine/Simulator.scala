@@ -3,9 +3,8 @@ package io.iochord.dev.chdsr.simulator.engine
 import scala.util.control.Breaks._
 import io.iochord.dev.chdsr.model.cpn.v1.impl.CPNGraph
 import io.iochord.dev.chdsr.model.cpn.v1.impl.Transition
-import io.iochord.dev.chdsr.simulator.util.ChdsrRandom
 
-object Simulator {
+case class Simulator() {
   var globtime:Long = 0
   
   private def enabledTransitions(transitions: List[Transition[_]]) = {
@@ -42,8 +41,10 @@ object Simulator {
           transitions = transitions_tmp
         }
         
-        val transition = ChdsrRandom.selectRandom(transitions)
-        println("Step ",c," ",globtime)
+        val r = new java.util.Random();
+        val transition = transitions(r.nextInt(transitions.length))
+        println("================ Step: "+c+" | globtime: "+globtime+" ================")
+        println("Transition: "+transition.getId(),transition.getName())
         println("Before")
         net.allPlaces.foreach(place => { val multiset = place.getcurrentMarking().multiset; println(place.getId(),multiset) })
         transition.execute(globtime)
@@ -64,20 +65,30 @@ object Simulator {
     
     var c = 0
     var transitions:List[Transition[_]] = null
+    
     breakable {
-      while (stopCrit(inpStopCrit)) {
+      while (!stopCrit(inpStopCrit)) {
         transitions = enabledTransitions(allTransitions)
-          if(transitions.size == 0) {
-            val (reseval, transitions_tmp) = evalGlobalTime(net, globtime)
-            if(!reseval)
-              break
-            transitions = transitions_tmp
-          }
+        if(transitions.size == 0) {
+          val (reseval, transitions_tmp) = evalGlobalTime(net, globtime)
+          if(!reseval)
+            break
+          transitions = transitions_tmp
+        }
+        
+        val r = new java.util.Random();
+        val transition = transitions(r.nextInt(transitions.length))
+        println("================ Step: "+c+" | globtime: "+globtime+" ================")
+        println("Transition: "+transition.getId(),transition.getName())
+        println("Before")
+        net.allPlaces.foreach(place => { val multiset = place.getcurrentMarking().multiset; println(place.getId(),multiset) })
+        transition.execute(globtime)
+        println("After")
+        net.allPlaces.foreach(place => { val multiset = place.getcurrentMarking().multiset; println(place.getId(),multiset) })
+        c += 1
       }
     }
   }
   
   def getGlobTime(): Long = { globtime }
-  
-  def addGlobTime(addTime:Long): Unit = { globtime = globtime+addTime }
 }
