@@ -14,12 +14,21 @@ class Transition[B <:Bind] (
   
   private var eval:(B,B) => Boolean = null
   private var merge:(B,B) => B = null
+  private var evalLast:B => Boolean = null
   
   private var lbeBase:List[B] = null
   
-  private val eval_full = (b1:Any, b2:B, arc:Arc[_,B], transArcExp:(Any,Arc[_,B]) => B) => {
-    val bmod = transArcExp(b1, arc)
-    getEval()(bmod, b2) 
+  private val eval_full = (b1:B, b2:B, arc:Arc[_,B], transArcExp:(Any,Arc[_,B]) => Any) => {
+    //println(arc.getId(),"In",arc.getIsBase())
+    if(arc.getIsBase()) {
+      if(transArcExp(b2,arc) == None)
+        false
+      else
+        getEval()(b1, b2)
+    }
+    else {
+      getEval()(arc.computeTokenToBind(transArcExp(b1,arc)),b2)
+    }
   }
     
   private val merge_full = (b1:B,b2:B) => { 
@@ -61,8 +70,6 @@ class Transition[B <:Bind] (
   
   def setAction(action: Action[B]) { this.action = action }
   
-  def transArcExp(bind:Any, arc: Arc[_,B]) = (bind,arc) match { case (bind:B, arc:Arc[_,B]) => transform(bind,arc.getBindToToken(),arc.getArcExp(),arc.getTokenToBind()) }
-  
   def isArcEnabled(globtime:Long):(Boolean,List[B]) = { 
     val iterator = in.iterator
     var lbe = List[B]()
@@ -72,12 +79,16 @@ class Transition[B <:Bind] (
       val arc = iterator.next() match { case arc:Arc[_,B] => arc }
       val tokensBefGlobTime = arc.getPlace().getcurrentMarking().multiset.keys.filter(tokenWT => tokenWT._2 <= globtime)
       
-      if(tokensBefGlobTime.isEmpty)
+      //println(arc.getId(),"first")
+      
+      if(tokensBefGlobTime.isEmpty) {
+        lbe = List[B]()
         break
-        
+      }
+      
       val listbinding = tokensBefGlobTime.map(token => token match { 
         // we want to change from token to bind (need to change to bind to have common form of data type over all arcs for this transition
-        case (colset:arc.coltype, _:Long) => { arc.computeTokenToBind(colset).asInstanceOf[B] }
+        case (colset:Any, _:Long) => { arc.computeTokenToBind(if(arc.getIsBase())arc.computeArcExp(colset) else colset).asInstanceOf[B] }
       } ).toList
       
       lbe = if(lbe.isEmpty) listbinding else listbinding.flatMap(b2 => lbe.collect { case b1 if eval_full(b1,b2,arc,transArcExp) => merge_full(b1, b2) } )
@@ -85,13 +96,15 @@ class Transition[B <:Bind] (
         break
     }}
     
+    lbe = lbe.filter(getEvalLast()(_))
+    
     (lbe.length > 0, lbe) 
   }
   
   def isEnabled(globtime:Long):Boolean = {
     val (isArcEn, lbe) = isArcEnabled(globtime)
-    
-    if(isArcEn && getGuard() != null) {
+    //println(isArcEn,lbe)
+    if(getGuard() != null) {
       val resEvalG = getGuard().evalGuard(lbe)
       setLbeBase(resEvalG._2)
       resEvalG._1
@@ -105,31 +118,34 @@ class Transition[B <:Bind] (
   def execute(globtime:Long) {
     val r = new java.util.Random();
     val bindingChosen = lbeBase(r.nextInt(lbeBase.length))
-    //println(bindingChosen)
     in.foreach(arc => { 
       val setTokenWTChosen = arc.getPlace().getcurrentMarking().multiset.keys.filter(tokenWT => { val token = arc.computeArcExp(arc.computeBindToToken(bindingChosen)); tokenWT._2 <= globtime && token == tokenWT._1 } )
-      val tokenWTChosen = setTokenWTChosen.head
-      arc.getPlace().removeTokenWithTime(tokenWTChosen)
+      if(setTokenWTChosen.size > 0) {
+        val tokenWTChosen = setTokenWTChosen.head
+        arc.getPlace().removeTokenWithTime(tokenWTChosen)
+      }
     } )
     out.foreach(arc => {
       var bindingCombine:B = bindingChosen
       if(action != null)
       {
         val bindingAction = action.computeTokenToBind(action.computeActionFun(action.computeBindToToken(bindingChosen))) 
+        println("Output with Action",arc.getId(),bindingAction)
         bindingCombine = getMerge()(bindingChosen,bindingAction)
+        //println(arc.getId(),bindingCombine)
       }
       val tokenChosen = arc.computeArcExp(arc.computeBindToToken(bindingCombine))
-      val timetoken = globtime+arc.computeAddTime()
-      println("Time "+timetoken)
+      val timetoken = if(arc.getAddTime() == null) globtime else globtime+arc.computeAddTime()
       arc.getPlace().addTokenWithTime((tokenChosen, timetoken))
     } )
   }
   
-  def transform(bind:B, toToken:Any=>Any, arcIns:Any=>Any, toBind:Any=>B):B = {
-      val token = toToken(bind)
-      val tokenMod = arcIns(token)
-      val new_bind = toBind(tokenMod)
-      new_bind
+  def transArcExp(bind:Any, arc: Arc[_,B]) = (bind,arc) match { case (bind:B, arc:Arc[_,B]) => transform(bind,arc.getBindToToken(),arc.getArcExp()) }
+  
+  def transform(bind:B, toToken:Any=>Any, arcIns:Any=>Any) = {
+    //println("Eval true",bind)
+    val token = toToken(bind)
+    arcIns(token)
   }
   
   def setEval(eval:(B,B) => Boolean) = { this.eval = eval }
@@ -139,6 +155,10 @@ class Transition[B <:Bind] (
   def setMerge(merge:(B,B) => B) = { this.merge = merge }
   
   def getMerge():((B,B) => B) = { this.merge }
+  
+  def setEvalLast(evalLast:B => Boolean) = { this.evalLast = evalLast }
+  
+  def getEvalLast():(B => Boolean) = { this.evalLast }
   
   def setLbeBase(lbeBase:List[B]) = { this.lbeBase = lbeBase }
   

@@ -18,18 +18,12 @@ class Place[T] (
   
   def initState() = currentMarking = initialMarking
   
-  def hasToken(token: Any) = { currentMarking hasToken token.asInstanceOf[T]}
-  
   def hasTokenWithTime(tokenWithTime: Any) = { currentMarking hasTokenWithTime tokenWithTime.asInstanceOf[(T,Long)]}
   
   def removeTokenWithTime(tokenWithTime: Any) {currentMarking - tokenWithTime.asInstanceOf[(T,Long)] }
 
   def addTokenWithTime(tokenWithTime: Any)  { currentMarking + tokenWithTime.asInstanceOf[(T,Long)] }
   
-  def hasTokens(tokens: Any) = currentMarking >>= tokens.asInstanceOf[Multiset[T]]
-
-  def removeTokens(tokens: Any) = currentMarking = currentMarking -- tokens.asInstanceOf[Multiset[T]]
-
   def addIn(arc: Arc[_,_]) {
     in = arc :: in
   }

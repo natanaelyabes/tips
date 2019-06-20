@@ -85,14 +85,14 @@ object CompileAndTestRun {
     
     type colset1 = (Int,String)
     
-    val ms1 = new Multiset[colset1](Map[(colset1,Long),Int](), classOf[colset1])
+    val ms1 = new Multiset[colset1](LinkedHashMap[(colset1,Long),Int](), classOf[colset1])
     ms1 + (((1,"Bert"),2L))
     ms1 + (((2,"Test"),2L))
     ms1 + (((3,"Merdeka"),2L))
     
     val pplace1 = new Place("id1","woo1",ms1)
     
-    val ms2 = new Multiset[colset1](Map[(colset1,Long),Int](), classOf[colset1])
+    val ms2 = new Multiset[colset1](LinkedHashMap[(colset1,Long),Int](), classOf[colset1])
     ms2 + (((1,"Amg"),2L))
     ms2 + (((3,"Test"),2L))
     ms2 + (((4,"Test"),2L))
@@ -154,7 +154,7 @@ object CompileAndTestRun {
     cgraph.addArc(arc1)
     cgraph.addArc(arc2)
     
-    Simulator.run(cgraph, 10)
+    Simulator().run(cgraph, 10)
     
     
     val normal_val = Gaussian(100, 10).draw() // mean (Double), sigma (Double)
