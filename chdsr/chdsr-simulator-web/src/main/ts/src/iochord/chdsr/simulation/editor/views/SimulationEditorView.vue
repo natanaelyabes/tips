@@ -447,7 +447,7 @@ export default class SimulationEditorView extends Vue implements ApplicationHasW
           const node = new JointGraphNodeImpl();
 
           node.setId(nodeValue.getId() as string);
-          node.setLabel(nodeValue.getLabel() || '' as string);
+          node.setLabel(nodeValue.getLabel() as string);
           node.setType((nodeValue as any)[keys.elementType] as string);
           node.setAttributes(nodeValue.getAttributes() as Map<string, string>);
           node.setPosition({ x: 300, y: 250 });

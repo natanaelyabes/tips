@@ -68,7 +68,7 @@ export class JointGraphNodeImpl extends GraphNodeImpl implements JointGraphEleme
     this.node = new joint.shapes.standard.Image();
     this.node.attr({
       label: {
-        text: this.getLabel() as string,
+        text: this.getLabel() !== undefined || null ? this.getLabel() as string : '',
       },
       image: {
         xlinkHref: this.imageIcon,
