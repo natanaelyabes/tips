@@ -21,8 +21,6 @@ import breeze.stats.distributions.StudentsT
 import breeze.stats.distributions.Uniform
 import breeze.stats.distributions.Rayleigh
 
-import io.iochord.dev.chdsr.simulator.dist._
-
 object PortHanjinSimulationGenerator {
   
   def main(args: Array[String]) {
