@@ -18,7 +18,7 @@ class Transition[B <:Bind] (
   
   private var lbeBase:List[B] = null
   
-  private val eval_full = (b1:B, b2:B, arc:Arc[_,B], transArcExp:(Any,Arc[_,B]) => Any) => {
+  private val eval_full = (b1:B, b2:B, arc:Arc[_,B], transArcExp:(B,Arc[_,B]) => Any) => {
     //println(arc.getId(),"In",arc.getIsBase())
     if(arc.getIsBase()) {
       if(transArcExp(b2,arc) == None)
@@ -140,7 +140,7 @@ class Transition[B <:Bind] (
     } )
   }
   
-  def transArcExp(bind:Any, arc: Arc[_,B]) = (bind,arc) match { case (bind:B, arc:Arc[_,B]) => transform(bind,arc.getBindToToken(),arc.getArcExp()) }
+  def transArcExp(bind:B, arc: Arc[_,B]) = transform(bind,arc.getBindToToken(),arc.getArcExp())
   
   def transform(bind:B, toToken:Any=>Any, arcIns:Any=>Any) = {
     //println("Eval true",bind)
