@@ -119,8 +119,11 @@ class Transition[B <:Bind] (
     val r = new java.util.Random();
     val bindingChosen = lbeBase(r.nextInt(lbeBase.length))
     in.foreach(arc => { 
+      println(arc.getId())
+      println(bindingChosen)
       val setTokenWTChosen = arc.getPlace().getcurrentMarking().multiset.keys.filter(tokenWT => { val token = arc.computeArcExp(arc.computeBindToToken(bindingChosen)); tokenWT._2 <= globtime && token == tokenWT._1 } )
       if(setTokenWTChosen.size > 0) {
+        println(setTokenWTChosen)
         val tokenWTChosen = setTokenWTChosen.head
         arc.getPlace().removeTokenWithTime(tokenWTChosen)
       }

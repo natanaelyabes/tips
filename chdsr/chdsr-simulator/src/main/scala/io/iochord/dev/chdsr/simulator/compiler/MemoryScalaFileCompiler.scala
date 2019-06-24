@@ -3,7 +3,7 @@ package io.iochord.dev.chdsr.simulator.compiler
 import scala.reflect.runtime.currentMirror
 import scala.tools.reflect.ToolBox
 
-case class MemoryScalaFileCompiler(filePath: String) {
+class MemoryScalaFileCompiler(filePath: String) {
   import reflect.runtime.currentMirror
   import tools.reflect.ToolBox
   val toolbox = currentMirror.mkToolBox()

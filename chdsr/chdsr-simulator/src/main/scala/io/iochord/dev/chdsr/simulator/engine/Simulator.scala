@@ -11,7 +11,7 @@ object Simulator {
     transitions.filter(t => {t.isEnabled(globtime.time)})
   }
 
-  private def evalGlobalTime(net:CPNGraph, globtime:GlobalTime = GlobalTime(0L)):(Boolean,List[Transition[_]]) = {
+  private def evalGlobalTime(net:CPNGraph, globtime:GlobalTime):(Boolean,List[Transition[_]]) = {
     var times = List[Long]()
     net.allPlaces.foreach(place => { val multiset = place.getcurrentMarking().multiset; multiset.keys.filter(_._2 > globtime.time).foreach(key => { times = key._2::times }) })
     times = times.distinct.sorted
@@ -25,7 +25,7 @@ object Simulator {
     return (false,null)
   }
   
-  def run(net:CPNGraph, steps:Int = 10, globtime:GlobalTime = GlobalTime(0L)) {
+  def run(net:CPNGraph, steps:Int = 10, globtime:GlobalTime = new GlobalTime(0L)) {
     
     val allTransitions = net.allTransitions
     
@@ -43,7 +43,7 @@ object Simulator {
         
         val r = new java.util.Random();
         val transition = transitions(r.nextInt(transitions.length))
-        println("================ Step: "+c+" | globtime: "+globtime+" ================")
+        println("================ Step: "+c+" | globtime: "+globtime.time+" ================")
         println("Transition: "+transition.getId(),transition.getName())
         println("Before")
         net.allPlaces.foreach(place => { val multiset = place.getcurrentMarking().multiset; println(place.getId(),multiset) })
@@ -60,7 +60,7 @@ object Simulator {
       println("stop - no more enabled transitions")
   }
 
-  def fastRun(net: CPNGraph, stopCrit:Any => Boolean, inpStopCrit:Any, globtime:GlobalTime = GlobalTime(0)) {
+  def fastRun(net: CPNGraph, stopCrit:Any => Boolean, inpStopCrit:Any, globtime:GlobalTime = new GlobalTime(0)) {
     
     val allTransitions = net.allTransitions
     
@@ -79,7 +79,7 @@ object Simulator {
         
         val r = new java.util.Random();
         val transition = transitions(r.nextInt(transitions.length))
-        println("================ Step: "+c+" | globtime: "+globtime+" ================")
+        println("================ Step: "+c+" | globtime: "+globtime.time+" ================")
         println("Transition: "+transition.getId(),transition.getName())
         println("Before")
         net.allPlaces.foreach(place => { val multiset = place.getcurrentMarking().multiset; println(place.getId(),multiset) })
