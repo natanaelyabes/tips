@@ -138,9 +138,6 @@ object CompileAndTestRun {
     ttrans1.addIn(arc1)
     ttrans1.addIn(arc2)
     
-    pplace1.addOut(arc1)
-    pplace1.addOut(arc2)
-    
     //add transitions
     cgraph.addTransition(ttrans1)
     
@@ -153,7 +150,6 @@ object CompileAndTestRun {
     cgraph.addArc(arc2)
     
     Simulator.run(cgraph, 10)
-    
     
     val normal_val = Gaussian(100, 10).draw() // mean (Double), sigma (Double)
     println("Normal "+normal_val)

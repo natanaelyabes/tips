@@ -37,26 +37,21 @@ class CPNGraph {
     import Direction._
 	  transitions.remove(transition.getId())
 	  arcs = arcs.filterNot(a => {
-	   if (a.getTransition().getId() == transition.getId()) {
-	     if (a.getDirection() == PtT)
-	       a.getPlace().removeOut(a)
-	     else a.getPlace().removeIn(a)
+	   if (a.getTransition().getId() == transition.getId())
 	     true
-	   } else false
+	   else 
+	     false
 	  })
   }
 	
 	def addArc (arc: Arc[_,_]) {	
 	  
 	  import Direction._
-	  if(arc.getDirection() == PtT){
+	  if(arc.getDirection() == PtT)
 	  	arc.getTransition().addIn(arc)
-	  	arc.getPlace().addOut(arc)
-	  }
-	  else{
+	  
+	  else
 	  	arc.getTransition().addOut(arc)
-	  	arc.getPlace().addIn(arc)
-	  }
 	  
 	  arcs = arc :: arcs
 	}
