@@ -1,11 +1,11 @@
 package io.iochord.dev.chdsr.model.cpn.v1.impl
 
-import scala.collection.mutable.LinkedHashMap
+import scala.collection.mutable.Map
 import scala.collection.IterableLike
 import scala.collection.mutable.Builder
 import io.iochord.dev.chdsr.model.cpn.v1._
 
-class Multiset[T] (val multiset: LinkedHashMap[(T,Long), Int], colset: Class[T]) {
+class Multiset[T] (val multiset: Map[(T,Long), Int], colset: Class[T]) {
   
   type coltype = T
   
