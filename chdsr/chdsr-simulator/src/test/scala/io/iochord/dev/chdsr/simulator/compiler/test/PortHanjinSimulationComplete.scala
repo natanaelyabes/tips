@@ -40,16 +40,16 @@ object PortHanjinSimulationComplete {
     
     //ENVIRONMENT
     //---------------------- place 1 ------------------
-    val ms1 = new Multiset[colset_CASEID](LinkedHashMap[(colset_CASEID,Long),Int](), classOf[colset_CASEID])
+    val ms1 = new Multiset[colset_CASEID](Map[(colset_CASEID,Long),Int](), classOf[colset_CASEID])
     ms1 + ((1,0L))
     val pplace1 = new Place("p1","next_case_id",ms1)
     
     //---------------------- place 2 ------------------
-    val ms2 = new Multiset[colset_CASEID](LinkedHashMap[(colset_CASEID,Long),Int](), classOf[colset_CASEID])
+    val ms2 = new Multiset[colset_CASEID](Map[(colset_CASEID,Long),Int](), classOf[colset_CASEID])
     val pplace2 = new Place("p2","place2",ms2)
     
     //---------------------- resource ------------------
-    val ms_res = new Multiset[colset_RES](LinkedHashMap[(colset_RES,Long),Int](), classOf[colset_RES])
+    val ms_res = new Multiset[colset_RES](Map[(colset_RES,Long),Int](), classOf[colset_RES])
     ms_res + (("TC272",0)) + (("TC273",0)) + (("TC271",0)) + (("YT507",0)) + (("YT506",0)) + (("YT508",0)) + (("YT514",0)) + (("YT513",0)) + (("YT516",0)) + (("YT515",0)) + (("YT510",0)) + (("YT512",0)) + (("YT511",0)) + (("YT594",0)) + (("YT593",0)) + (("YT596",0)) + (("YT595",0)) + (("TC265",0)) + (("YT590",0)) + (("TC266",0)) + (("TC263",0)) + (("YT592",0)) + (("TC264",0)) + (("TC261",0)) + (("TC262",0)) + (("YT518",0)) + (("YT517",0)) + (("YT519",0)) + (("YT525",0)) + (("RS309",0)) + (("YT524",0)) + (("YT527",0)) + (("YT526",0)) + (("YT521",0)) + (("YT520",0)) + (("YT523",0)) + (("YT522",0)) + (("RS301",0)) + (("TC256",0)) + (("RS304",0)) + (("TC254",0)) + (("TC255",0)) + (("RS302",0)) + (("TC252",0)) + (("RS303",0)) + (("TC253",0)) + (("YT529",0)) + (("YT528",0)) + (("YT536",0)) + (("YT535",0)) + (("YT538",0)) + (("YT537",0)) + (("YT532",0)) + (("YT531",0)) + (("YT534",0)) + (("YT533",0)) + (("YT530",0)) + (("TH311",0)) + (("TH313",0)) + (("TH312",0)) + (("YT539",0)) + (("YT547",0)) + (("YT546",0)) + (("YT549",0)) + (("YT548",0)) + (("YT543",0)) + (("YT542",0)) + (("YT545",0)) + (("YT544",0)) + (("YT541",0)) + (("YT540",0)) + (("TC276",0)) + (("TC274",0)) + (("TC275",0)) + (("GC102",0)) + (("YT558",0)) + (("GC101",0)) + (("YT557",0)) + (("YT559",0)) + (("YT554",0)) + (("YT553",0)) + (("YT556",0)) + (("YT555",0)) + (("TC225",0)) + (("YT550",0)) + (("TC226",0)) + (("TC223",0)) + (("YT552",0)) + (("GC107",0)) + (("TC224",0)) + (("YT551",0)) + (("GC106",0)) + (("TC221",0)) + (("GC105",0)) + (("TC222",0)) + (("GC104",0)) + (("GC103",0)) + (("YT569",0)) + (("YT565",0)) + (("YT564",0)) + (("TC216",0)) + (("YT567",0)) + (("YT566",0)) + (("TC214",0)) + (("YT561",0)) + (("TC215",0)) + (("YT560",0)) + (("TC212",0)) + (("YT563",0)) + (("TC213",0)) + (("YT562",0)) + (("TC211",0)) + (("TC251",0)) + (("YT579",0)) + (("YT576",0)) + (("YT575",0)) + (("YT578",0)) + (("YT577",0)) + (("YT572",0)) + (("YT571",0)) + (("TC245",0)) + (("YT574",0)) + (("TC246",0)) + (("YT573",0)) + (("TC243",0)) + (("TC244",0)) + (("TC241",0)) + (("YT570",0)) + (("TC242",0)) + (("YT503",0)) + (("YT502",0)) + (("YT505",0)) + (("YT504",0)) + (("YT587",0)) + (("YT586",0)) + (("YT501",0)) + (("YT589",0)) + (("YT500",0)) + (("YT588",0)) + (("TC236",0)) + (("YT583",0)) + (("YT582",0)) + (("TC234",0)) + (("YT585",0)) + (("TC235",0)) + (("YT584",0)) + (("TC232",0)) + (("TC233",0)) + (("YT581",0)) + (("TC231",0)) + (("YT580",0))
       
     val pplace_res = new Place("p_res","place_res",ms_res)
@@ -103,47 +103,47 @@ object PortHanjinSimulationComplete {
     
     //PROCESS
     //---------------------- place 2 tmp1 ------------------
-    val ms2tmp1 = new Multiset[colset_CASEIDxRES](LinkedHashMap[(colset_CASEIDxRES,Long),Int](), classOf[colset_CASEIDxRES])
+    val ms2tmp1 = new Multiset[colset_CASEIDxRES](Map[(colset_CASEIDxRES,Long),Int](), classOf[colset_CASEIDxRES])
     val pplace2tmp1 = new Place("p2tmp1","place 2 tmp1",ms2tmp1)
     
     //---------------------- place 2 tmp2 ------------------
-    val ms2tmp2 = new Multiset[colset_CASEIDxRES](LinkedHashMap[(colset_CASEIDxRES,Long),Int](), classOf[colset_CASEIDxRES])
+    val ms2tmp2 = new Multiset[colset_CASEIDxRES](Map[(colset_CASEIDxRES,Long),Int](), classOf[colset_CASEIDxRES])
     val pplace2tmp2 = new Place("p2tmp2","place 2 tmp2",ms2tmp2)
     
     //---------------------- place 3 ------------------
-    val ms3 = new Multiset[colset_CASEID](LinkedHashMap[(colset_CASEID,Long),Int](), classOf[colset_CASEID])
+    val ms3 = new Multiset[colset_CASEID](Map[(colset_CASEID,Long),Int](), classOf[colset_CASEID])
     val pplace3 = new Place("p3","place 3",ms3)
     
     //---------------------- place 3 tmp ------------------
-    val ms3tmp = new Multiset[colset_CASEIDxRES](LinkedHashMap[(colset_CASEIDxRES,Long),Int](), classOf[colset_CASEIDxRES])
+    val ms3tmp = new Multiset[colset_CASEIDxRES](Map[(colset_CASEIDxRES,Long),Int](), classOf[colset_CASEIDxRES])
     val pplace3tmp = new Place("p3tmp","place 3 tmp",ms3tmp)
     
     //---------------------- place 4 ------------------
-    val ms4 = new Multiset[colset_CASEID](LinkedHashMap[(colset_CASEID,Long),Int](), classOf[colset_CASEID])
+    val ms4 = new Multiset[colset_CASEID](Map[(colset_CASEID,Long),Int](), classOf[colset_CASEID])
     val pplace4 = new Place("p4","place 4",ms4)
     
     //---------------------- place 4 tmp ------------------
-    val ms4tmp = new Multiset[colset_CASEIDxRES](LinkedHashMap[(colset_CASEIDxRES,Long),Int](), classOf[colset_CASEIDxRES])
+    val ms4tmp = new Multiset[colset_CASEIDxRES](Map[(colset_CASEIDxRES,Long),Int](), classOf[colset_CASEIDxRES])
     val pplace4tmp = new Place("p4tmp","place 4 tmp",ms4tmp)
     
     //---------------------- place 5 ------------------
-    val ms5 = new Multiset[colset_CASEID](LinkedHashMap[(colset_CASEID,Long),Int](), classOf[colset_CASEID])
+    val ms5 = new Multiset[colset_CASEID](Map[(colset_CASEID,Long),Int](), classOf[colset_CASEID])
     val pplace5 = new Place("p5","place 5",ms5)
     
     //---------------------- place 5 tmp ------------------
-    val ms5tmp = new Multiset[colset_CASEIDxRES](LinkedHashMap[(colset_CASEIDxRES,Long),Int](), classOf[colset_CASEIDxRES])
+    val ms5tmp = new Multiset[colset_CASEIDxRES](Map[(colset_CASEIDxRES,Long),Int](), classOf[colset_CASEIDxRES])
     val pplace5tmp = new Place("p5tmp","place 5 tmp",ms5tmp)
     
     //---------------------- place 6 ------------------
-    val ms6 = new Multiset[colset_CASEID](LinkedHashMap[(colset_CASEID,Long),Int](), classOf[colset_CASEID])
+    val ms6 = new Multiset[colset_CASEID](Map[(colset_CASEID,Long),Int](), classOf[colset_CASEID])
     val pplace6 = new Place("p6","place 6",ms6)
     
     //---------------------- place 6 tmp ------------------
-    val ms6tmp = new Multiset[colset_CASEIDxRES](LinkedHashMap[(colset_CASEIDxRES,Long),Int](), classOf[colset_CASEIDxRES])
+    val ms6tmp = new Multiset[colset_CASEIDxRES](Map[(colset_CASEIDxRES,Long),Int](), classOf[colset_CASEIDxRES])
     val pplace6tmp = new Place("p6tmp","place 6 tmp",ms6tmp)
     
     //---------------------- place 7 ------------------
-    val ms7 = new Multiset[colset_CASEID](LinkedHashMap[(colset_CASEID,Long),Int](), classOf[colset_CASEID])
+    val ms7 = new Multiset[colset_CASEID](Map[(colset_CASEID,Long),Int](), classOf[colset_CASEID])
     val pplace7 = new Place("p7","place 7",ms7)
     
     val eval_trans2_start = (b1: BindTransProcess, b2: BindTransProcess) => {
