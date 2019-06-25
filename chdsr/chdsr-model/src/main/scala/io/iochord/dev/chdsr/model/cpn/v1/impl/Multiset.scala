@@ -21,8 +21,9 @@ class Multiset[T] (val multiset: Map[(T,Long), Int], colset: Class[T]) {
       return new Multiset(ms, colset)
     
     var count = n
-    if (ms.contains(elem)) 
+    if (ms.contains(elem)) {
       count += ms(elem)
+    }
     if (count > 0)
       ms += (elem -> count)
     else if (count == 0)
