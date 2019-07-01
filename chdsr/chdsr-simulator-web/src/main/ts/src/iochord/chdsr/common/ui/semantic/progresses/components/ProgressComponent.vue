@@ -11,16 +11,22 @@
 </style>
 
 <script lang="ts">
-import { Component, Prop, Vue } from 'vue-property-decorator';
+import { Component, Prop } from 'vue-property-decorator';
+import SemanticComponent from '@/iochord/chdsr/common/ui/semantic/SemanticComponent';
 
 declare const $: any;
 
 @Component
-export default class ProgressComponent extends Vue {
+export default class ProgressComponent extends SemanticComponent {
   @Prop() private percent!: number;
   @Prop() private color!: string;
 
-  private mounted(): void {
+  /** @Override */
+  public declareSemanticModules(): void {
+    this.declareProgress();
+  }
+
+  private declareProgress(): void {
     $('#progress').progress();
   }
 }

@@ -100,7 +100,7 @@
 }
 
 .blue.button:hover {
-  background: #03628c!important; 
+  background: #03628c!important;
 }
 
 .column {
@@ -138,38 +138,30 @@ h2.ui.white.header{
 
 <script lang="ts">
 // Vue & Libraries
-import { Component, Vue } from 'vue-property-decorator';
-import { VueHasLifeCycle } from '@/iochord/chdsr/common/lib/vue/interfaces/VueHasLifeCycle';
-import { SemanticModulesIsUsed } from '@/iochord/chdsr/common/ui/semantic/SemanticModulesIsUsed';
-import { BrowserHasProperties } from '@/iochord/chdsr/common/browser/interfaces/BrowserHasProperties';
+import { Component } from 'vue-property-decorator';
 import { BaseUrlEnum, ApplicationEnum } from '@/iochord/chdsr/common/enums';
 
+import PageView from '@/iochord/chdsr/common/lib/vue/classes/PageView';
+
 @Component
-export default class AuthenticationLoginView extends Vue
-implements SemanticModulesIsUsed, BrowserHasProperties {
+export default class AuthenticationLoginView extends PageView {
   private email: string = 'admin@iochord.com';
   private password: string = 'secret123';
   private error: boolean = false;
   private errorMessage: string = '';
 
-  public mounted(): void {
-    this.overrideProperties();
-
-    // Un-implemented
-    this.declareSemanticModules();
+  /** @Override */
+  public overrideBrowserProperties(): void {
+    this.setDocumentTitle('Login');
   }
 
-  public overrideProperties(): void {
-    document.title = `${BaseUrlEnum.IOCHORD}/${ApplicationEnum.NAME.toUpperCase()} · Login`;
-  }
-
-  public declareSemanticModules(): void {
-    throw new Error('Method not implemented.');
-  }
-
+  /**
+   * Handle login logic from view
+   *
+   * @memberof Index
+   */
   private login(): void {
-    if (this.email === 'admin@iochord.com' &&
-       this.password === 'secret123') {
+    if (this.email === 'admin@iochord.com' && this.password === 'secret123') {
       this.$router.push({ name: 'iochord-chdsr-home' });
     } else {
       this.error = true;

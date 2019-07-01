@@ -33,13 +33,14 @@ import { Component, Vue } from 'vue-property-decorator';
 
 // Components
 import BreadcrumbComponent from '@/iochord/chdsr/common/ui/semantic/breadcrumbs/components/BreadcrumbComponent.vue';
+import BaseComponent from '@/iochord/chdsr/common/lib/vue/classes/BaseComponent';
 
 @Component({
   components: {
     BreadcrumbComponent,
   },
 })
-export default class ApplicationHeaderComponent extends Vue {
+export default class ApplicationHeaderComponent extends BaseComponent {
   private get hasHeaderTitle(): boolean {
     return !!this.$slots['application-header-title'];
   }

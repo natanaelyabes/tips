@@ -85,88 +85,29 @@
 // Vue & Libraries
 import { Component, Vue } from 'vue-property-decorator';
 
-// Enums
-import { ApplicationEnum, BaseUrlEnum } from '@/iochord/chdsr/common/enums/index';
+// Classes
+import ApplicationWrapperView from '@/iochord/chdsr/common/ui/application/classes/ApplicationWrapperView';
 
 // Interfaces
 import { ApplicationHasWrapper } from '../../common/ui/application/interfaces/ApplicationHasWrapper';
-import { Breadcrumb } from '../../common/ui/semantic/breadcrumbs/interfaces/Breadcrumb';
-import { BrowserHasProperties } from '@/iochord/chdsr/common/browser/interfaces/BrowserHasProperties';
-import { SemanticModulesIsUsed } from '@/iochord/chdsr/common/ui/semantic/SemanticModulesIsUsed';
-import { VueHasLifeCycle } from '@/iochord/chdsr/common/lib/vue/interfaces/VueHasLifeCycle';
 
 // Components
 import ApplicationWrapper from '@/iochord/chdsr/common/ui/application/components/ApplicationWrapperComponent.vue';
-import { setTimeout } from 'timers';
 
 @Component({
   components: {
     ApplicationWrapper,
   },
 })
-export default class HomeView extends Vue
-implements ApplicationHasWrapper, SemanticModulesIsUsed, BrowserHasProperties {
-  public title: string = '';
-  public breadcrumbs!: Breadcrumb[];
-  public titleMenuBarItems: any;
-  public leftMenuBarItems: any;
-  public rightMenuBarItems: any;
-  public ribbonMenuItems: any;
-  public content: any;
-
-  public mounted(): void {
-    this.overrideProperties();
-    this.setApplicationWrapperProperties();
-
-    // Un-implemented
-    this.declareSemanticModules();
+export default class HomeView extends ApplicationWrapperView {
+  /** @Override */
+  public overrideBrowserProperties(): void {
+    this.setDocumentTitle('Home');
   }
 
-  public overrideProperties(): void {
-    document.title = `${BaseUrlEnum.IOCHORD}/${ApplicationEnum.NAME.toUpperCase()} · Home`;
-  }
-
-  public declareSemanticModules(): void {
-    // throw new Error('Method not implemented.');
-  }
-
+  /** @Override */
   public setTitle(): void {
     this.title = 'Home';
   }
-
-  public setBreadcrumb(): void {
-    // throw new Error('Method not implemented.');
-  }
-
-  public setTitleMenubar(): void {
-    // throw new Error('Method not implemented.');
-  }
-
-  public setLeftMenuSidebar(): void {
-    // throw new Error('Method not implemented.');
-  }
-
-  public setRightMenuSidebar(): void {
-    // throw new Error('Method not implemented.');
-  }
-
-  public setRibbonMenuItem(): void {
-    // throw new Error('Method not implemented.');
-  }
-
-  public setContent(): void {
-    // throw new Error('Method not implemented.');
-  }
-
-  public setApplicationWrapperProperties(): void {
-    this.setTitle();
-    this.setBreadcrumb();
-    this.setTitleMenubar();
-    this.setLeftMenuSidebar();
-    this.setRightMenuSidebar();
-    this.setRibbonMenuItem();
-    this.setContent();
-  }
-
 }
 </script>

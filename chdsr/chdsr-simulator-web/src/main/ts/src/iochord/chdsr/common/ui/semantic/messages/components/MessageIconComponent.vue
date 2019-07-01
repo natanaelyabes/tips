@@ -15,28 +15,16 @@
 </style>
 
 <script lang="ts">
-import { Component, Prop, Vue } from 'vue-property-decorator';
+import { Component, Prop } from 'vue-property-decorator';
+import BaseComponent from '@/iochord/chdsr/common/lib/vue/classes/BaseComponent';
+import MessageComponent from '@/iochord/chdsr/common/ui/semantic/messages/classes/MessageComponent';
 
 // JQuery Symbol Handler
 declare const $: any;
 
 @Component
-export default class MessageIconComponent extends Vue {
+export default class MessageIconComponent extends MessageComponent {
   @Prop() private color!: string; // warning|info|negative|error|positive|success|color
-  @Prop() private size!: string;  // mini|tiny|small|large|big|huge|massive
   @Prop() private icon!: string;
-  @Prop() private dismissable!: boolean;
-
-  private mounted(): void {
-    $('.message .close')
-      .on('click', function(this: any) {
-        $(this)
-          .closest('.message')
-          .transition('fade')
-        ;
-      })
-    ;
-  }
-
 }
 </script>

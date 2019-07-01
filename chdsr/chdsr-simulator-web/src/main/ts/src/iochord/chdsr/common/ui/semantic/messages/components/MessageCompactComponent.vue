@@ -14,26 +14,11 @@
 </style>
 
 <script lang="ts">
-import { Component, Prop, Vue } from 'vue-property-decorator';
-
-// JQuery Symbol Handler
-declare const $: any;
+import { Component, Prop } from 'vue-property-decorator';
+import MessageComponent from '@/iochord/chdsr/common/ui/semantic/messages/classes/MessageComponent';
 
 @Component
-export default class MessageCompactComponent extends Vue {
-  @Prop() private size!: string;  // mini|tiny|small|large|big|huge|massive
-  @Prop() private dismissable!: boolean;
-
-  private mounted(): void {
-    $('.message .close')
-      .on('click', function(this: any) {
-        $(this)
-          .closest('.message')
-          .transition('fade')
-        ;
-      })
-    ;
-  }
-
+export default class MessageCompactComponent extends MessageComponent {
+  //
 }
 </script>

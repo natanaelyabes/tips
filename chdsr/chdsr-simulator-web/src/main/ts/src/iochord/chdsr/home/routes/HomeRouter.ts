@@ -11,7 +11,7 @@ import { ChdsrHomeGuard } from '@/iochord/chdsr/home/guards/ChdsrHomeGuard';
 export default [
   {
     path: '',
-    beforeEnter: ChdsrHomeGuard.outputToConsole,
+    // beforeEnter: ChdsrHomeGuard.outputToConsole,
     name: `${BaseUrlEnum.IOCHORD}-${ApplicationEnum.NAME}-home`,
     component: () => import(/* webpackChunkName: "chdsr-home-view" */ '@/iochord/chdsr/home/views/HomeView.vue'),
   },

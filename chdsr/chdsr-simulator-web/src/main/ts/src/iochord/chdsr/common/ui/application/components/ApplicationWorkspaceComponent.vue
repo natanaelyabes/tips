@@ -48,6 +48,7 @@ import { Component, Vue } from 'vue-property-decorator';
 // Components
 import ApplicationSidebarComponent from './ApplicationSidebarComponent.vue';
 import ApplicationContentComponent from './ApplicationContentComponent.vue';
+import BaseComponent from '@/iochord/chdsr/common/lib/vue/classes/BaseComponent';
 
 @Component({
   components: {
@@ -55,7 +56,7 @@ import ApplicationContentComponent from './ApplicationContentComponent.vue';
     ApplicationContentComponent,
   },
 })
-export default class ApplicationWorkspaceComponent extends Vue {
+export default class ApplicationWorkspaceComponent extends BaseComponent {
   private get hasApplicationLeftSidebarComponent(): boolean {
     return !!this.$slots['application-left-sidebar-menu-item'];
   }

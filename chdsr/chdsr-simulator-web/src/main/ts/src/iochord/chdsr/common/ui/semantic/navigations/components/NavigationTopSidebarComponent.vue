@@ -80,22 +80,21 @@ import { Component, Vue } from 'vue-property-decorator';
 
 // Interfaces
 import { BrowserCanHandleBreakpoints } from '@/iochord/chdsr/common/browser/interfaces/BrowserCanHandleBreakpoints';
+import SemanticComponent from '@/iochord/chdsr/common/ui/semantic/SemanticComponent';
 
 // JQuery Symbol Handler
 declare const $: any;
 
 @Component
-export default class NavigationTopSidebarComponent extends Vue {
-
+export default class NavigationTopSidebarComponent extends SemanticComponent {
   private menuIsOpen: boolean = false;
 
-  private mounted(): void {
-    this.$nextTick(() => {
-      this.initSidebar();
-    });
+  /** @Override */
+  public declareSemanticModules(): void {
+    this.declareSidebar();
   }
 
-  private initSidebar(): void {
+  private declareSidebar(): void {
     $('.navigation-top-sidebar.component .ui.sidebar').sidebar({
       context: '.navigation-top-sidebar.component',
     });
@@ -104,7 +103,6 @@ export default class NavigationTopSidebarComponent extends Vue {
   }
 
   private makeResponsive(): void {
-
     this.evaluateBrowserWidth();
 
     // handle resize

@@ -57,8 +57,6 @@ import { JointGraphNodeImpl } from '@/iochord/chdsr/common/lib/joint/shapes/chds
 import { JointGraphPageImpl } from '@/iochord/chdsr/common/lib/joint/shapes/chdsr/classes/JointGraphPageImpl';
 
 // Interfaces
-import { VueHasLifeCycle } from '@/iochord/chdsr/common/lib/vue/interfaces/VueHasLifeCycle';
-import { SemanticModulesIsUsed } from '@/iochord/chdsr/common/ui/semantic/SemanticModulesIsUsed';
 import { GraphConnector } from '@/iochord/chdsr/common/graph/interfaces/GraphConnector';
 import { GraphData } from '@/iochord/chdsr/common/graph/interfaces/GraphData';
 import { GraphElement } from '@/iochord/chdsr/common/graph/interfaces/GraphElement';
@@ -67,12 +65,27 @@ import { GraphNode } from '@/iochord/chdsr/common/graph/interfaces/GraphNode';
 // Enums
 import { NODE_TYPE } from '@/iochord/chdsr/common/lib/joint/shapes/chdsr/enums/NODE';
 import { ARC_TYPE } from '@/iochord/chdsr/common/lib/joint/shapes/chdsr/enums/ARC';
+import BaseComponent from '../../../../../common/lib/vue/classes/BaseComponent';
+
+// Components
+import StartNodeModal from '@/iochord/chdsr/common/kpi/components/modals/StartNodeModal.vue';
+import ActivityNodeModal from '@/iochord/chdsr/common/kpi/components/modals/ActivityNodeModal.vue';
+import BranchNodeModal from '@/iochord/chdsr/common/kpi/components/modals/BranchNodeModal.vue';
+import StopNodeModal from '@/iochord/chdsr/common/kpi/components/modals/StopNodeModal.vue';
 
 // JQuery Handler
 declare const $: any;
 
-@Component
-export default class CanvasComponent extends Vue implements SemanticModulesIsUsed {
+@Component({
+  components: {
+    ActivityNodeModal,
+    BranchNodeModal,
+    CanvasComponent,
+    StartNodeModal,
+    StopNodeModal,
+  },
+})
+export default class CanvasComponent extends BaseComponent {
   @Prop() public response: any;
 
   // Joint.js global variable
@@ -83,13 +96,6 @@ export default class CanvasComponent extends Vue implements SemanticModulesIsUse
 
   public async mounted(): Promise<void> {
     this.testGraphDataStruct();
-
-    // Un-implemented
-    this.declareSemanticModules();
-  }
-
-  public declareSemanticModules(): void {
-    // throw new Error('Method not implemented.');
   }
 
   public testGraphDataStruct(): void {

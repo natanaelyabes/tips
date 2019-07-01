@@ -77,6 +77,7 @@ import { SemanticModulesIsUsed } from '@/iochord/chdsr/common/ui/semantic/Semant
 
 // Components
 import NavigationTopSidebarComponent from '@/iochord/chdsr/common/ui/semantic/navigations/components/NavigationTopSidebarComponent.vue';
+import IndexView from '@/iochord/chdsr/common/lib/vue/classes/IndexView';
 
 // JQuery Symbol Handler
 declare const $: any;
@@ -86,23 +87,28 @@ declare const $: any;
     NavigationTopSidebarComponent,
   },
 })
-export default class Index extends Vue
-implements SemanticModulesIsUsed {
+export default class Index extends IndexView {
+  /** @Override */
   public mounted(): void {
     this.declareSemanticModules();
-
-    // Un-implemented
   }
 
+  /** @Override */
   public declareSemanticModules(): void {
     this.declareDropdown();
   }
 
+  /** @Override */
   public declareDropdown(): void {
     $('.ui.dropdown').dropdown();
   }
 
-  public logout(): void {
+  /**
+   * Handle logout logic from view
+   *
+   * @memberof Index
+   */
+  private logout(): void {
     this.$router.push({name: 'iochord-chdsr-login'});
   }
 }

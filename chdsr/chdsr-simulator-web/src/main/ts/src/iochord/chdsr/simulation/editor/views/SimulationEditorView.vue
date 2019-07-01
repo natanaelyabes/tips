@@ -146,7 +146,6 @@
         </div>
       </template>
 
-
       <!-- Application Content -->
       <template slot="application-content">
         <template v-if="graphData !== {}">
@@ -269,6 +268,9 @@ import axios, { AxiosResponse, AxiosPromise } from 'axios';
 import * as joint from 'jointjs';
 import '#root/node_modules/jointjs/dist/joint.css';
 
+// Classes
+import ApplicationWrapperView from '../../../common/ui/application/classes/ApplicationWrapperView';
+
 // Interfaces
 import { ApplicationHasWrapper } from '@/iochord/chdsr/common/ui/application/interfaces/ApplicationHasWrapper';
 import { Breadcrumb } from '@/iochord/chdsr/common/ui/semantic/breadcrumbs/interfaces/Breadcrumb';
@@ -284,44 +286,20 @@ import ApplicationWrapperComponent from '@/iochord/chdsr/common/ui/application/c
 // Async component must be lazily load
 const CanvasComponent = () => import('@/iochord/chdsr/simulation/editor/components/canvas/components/CanvasComponent.vue');
 
-// Modals
-import StartNodeModal from '@/iochord/chdsr/common/kpi/components/modals/StartNodeModal.vue';
-import ActivityNodeModal from '@/iochord/chdsr/common/kpi/components/modals/ActivityNodeModal.vue';
-import BranchNodeModal from '@/iochord/chdsr/common/kpi/components/modals/BranchNodeModal.vue';
-import StopNodeModal from '@/iochord/chdsr/common/kpi/components/modals/StopNodeModal.vue';
-
 declare const $: any;
 
 @Component({
   components: {
-    ActivityNodeModal,
     ApplicationWrapperComponent,
-    BranchNodeModal,
     CanvasComponent,
-    StartNodeModal,
-    StopNodeModal,
   },
 })
-export default class SimulationEditorView extends Vue
-implements ApplicationHasWrapper, SemanticModulesIsUsed, BrowserHasProperties {
-  public title: string = '';
-  public breadcrumbs!: Breadcrumb[];
-  public titleMenuBarItems: any;
-  public leftMenuBarItems: any;
-  public rightMenuBarItems: any;
-  public ribbonMenuItems: any;
-  public content: any;
+export default class SimulationEditorView extends ApplicationWrapperView {
   public processModel: any;
   public animation: boolean = false;
   public editing: boolean = true;
   public modelPaneIsOpen: boolean = true;
   public graphData: any = {};
-
-  public reRenderKey: number = 0;
-
-  public forceRerender(): void {
-    this.reRenderKey += 1;
-  }
 
   public async mounted(): Promise<void> {
     try {
@@ -330,18 +308,24 @@ implements ApplicationHasWrapper, SemanticModulesIsUsed, BrowserHasProperties {
       console.log(e);
     }
 
-    // Application options
-    this.setApplicationWrapperProperties();
-    this.initDropdown();
-    this.initSlider();
-    this.forceRerender();
+    // Force re-render page component
+    this.forceReRender();
   }
 
-  public overrideProperties(): void {
-    document.title = `${BaseUrlEnum.IOCHORD}/${ApplicationEnum.NAME.toUpperCase()} · Simulation Editor: Editor`;
+  public overrideBrowserProperties(): void {
+    this.setDocumentTitle('Simulation Editor: Editor');
   }
 
-  public toggleModelPane(): void {
+  /** @Override */
+  public setTitle(): void {
+    this.title = `Editor`;
+  }
+
+  private showUploadFileModal(): void {
+    $('.ui.modal').modal('show');
+  }
+
+  private toggleModelPane(): void {
     if (this.modelPaneIsOpen) {
       this.modelPaneIsOpen = false;
       $('#canvas').width($('.editor.canvas').innerWidth() + 260);
@@ -350,61 +334,6 @@ implements ApplicationHasWrapper, SemanticModulesIsUsed, BrowserHasProperties {
       this.modelPaneIsOpen = true;
       $('#canvas').width($('.editor.canvas').innerWidth() - 260);
     }
-  }
-
-  public showUploadFileModal(): void {
-    $('.ui.modal').modal('show');
-  }
-
-  public initDropdown(): void {
-    setTimeout(() => {
-      $('.application.title-menu.bar.component .ui.dropdown').dropdown({ on: 'hover' });
-    }, 10);
-  }
-
-  public initSlider(): void {
-    $('.ui.slider').slider({
-      min: 0,
-      max: 100,
-      start: 50,
-    });
-  }
-
-  public setTitle(): void {
-    this.title = `Editor`;
-  }
-
-  public setBreadcrumb(): void {
-    //
-  }
-  public setTitleMenubar(): void {
-    //
-  }
-  public setLeftMenuSidebar(): void {
-    //
-  }
-  public setRightMenuSidebar(): void {
-    //
-  }
-  public setRibbonMenuItem(): void {
-    //
-  }
-  public setContent(): void {
-    //
-  }
-
-  public declareSemanticModules(): void {
-    //
-  }
-
-  public setApplicationWrapperProperties(): void {
-    this.setTitle();
-    this.setBreadcrumb();
-    this.setTitleMenubar();
-    this.setLeftMenuSidebar();
-    this.setRightMenuSidebar();
-    this.setRibbonMenuItem();
-    this.setContent();
   }
 }
 </script>

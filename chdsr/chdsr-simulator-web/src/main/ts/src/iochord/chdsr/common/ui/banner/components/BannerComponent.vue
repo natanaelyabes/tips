@@ -1,7 +1,6 @@
 <template>
   <div class="banner component">
     <slot name="content"></slot>
-    <!-- <img class="ui large image" src="@/assets/images/logos/bsclab_logo_transparent_color.png" alt="BSCLab Logo"> -->
   </div>
 </template>
 
@@ -11,10 +10,11 @@
 
 <script lang="ts">
 // Vue & Libraries
-import { Component, Vue } from 'vue-property-decorator';
+import { Component } from 'vue-property-decorator';
+import BaseComponent from '@/iochord/chdsr/common/lib/vue/classes/BaseComponent';
 
 @Component
-export default class BannerComponent extends Vue {
-
+export default class BannerComponent extends BaseComponent {
+  //
 }
 </script>
