@@ -10,13 +10,13 @@
           <div class="row">
             <div class="three wide column">Label</div>
             <div class="thirteen wide column">
-              <input type="text" id="stop_txt_label">
+              <input type="text" v-model="label" id="stop_txt_label">
             </div>
           </div>
           <div class="row">
             <div class="sixteen wide column">
               <div class="inline field">
-                <input type="checkbox" class="hidden">
+                <input type="checkbox" v-model="report" class="hidden">
                 <label>Report statistics</label>
               </div>
             </div>
@@ -39,5 +39,8 @@ import { Component, Prop, Vue } from 'vue-property-decorator';
 declare const $: any;
 
 @Component
-export default class StopNodeModal extends Vue {}
+export default class StopNodeModal extends Vue {
+  @Prop(String) private label!: string;
+  @Prop(String) private report!: boolean;
+}
 </script>

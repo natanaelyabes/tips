@@ -194,18 +194,26 @@
       </div>
     </div>
 
+    <h1>{{parentSelectedGate}}</h1>
+
     <!-- Model Modals -->
+    console.log(Array.from(nodeTypes));
     <template v-for="type in Array.from(nodeTypes)">
       <template v-if="type === 'start'">
         <StartNodeModal label="test" generator="test" v-bind:id="type" v-bind:key="type"/>
       </template>
 
-      <template v-if="type === 'activity'">
-        <ActivityNodeModal v-bind:id="type" v-bind:key="type"/>
+      <template v-if="type === 'branch'">
+        <BranchNodeModal label="this is branch" 
+        @changeLabel="changeLabelFromChild($event)"
+        @changeSelectedGate="selectedGateFromChild($event)"
+        @changeSelectedType="selectedTypeFromChild($event)"
+        @changeSelectedRule="selectedRuleFromChild($event)"
+        v-bind:id="type" v-bind:key="type"/>
       </template>
 
-      <template v-if="type === 'branch'">
-        <BranchNodeModal v-bind:id="type" v-bind:key="type"/>
+      <template v-if="type === 'activity'">
+        <ActivityNodeModal v-bind:id="type" v-bind:key="type"/>
       </template>
 
       <template v-if="type === 'stop'">
@@ -321,8 +329,8 @@ import { GraphData } from '../../../common/graph/interfaces/GraphData';
 
 // Modals
 import StartNodeModal from '../../../common/kpi/components/modals/StartNodeModal.vue';
-import ActivityNodeModal from '../../../common/kpi/components/modals/ActivityNodeModal.vue';
 import BranchNodeModal from '../../../common/kpi/components/modals/BranchNodeModal.vue';
+import ActivityNodeModal from '../../../common/kpi/components/modals/ActivityNodeModal.vue';
 import StopNodeModal from '../../../common/kpi/components/modals/StopNodeModal.vue';
 
 declare const $: any;
@@ -331,9 +339,9 @@ declare const $: any;
   components: {
     ApplicationWrapperComponent,
     StartNodeModal,
-    ActivityNodeModal,
     BranchNodeModal,
-    StopNodeModal,
+    ActivityNodeModal,
+    StopNodeModal
   },
 })
 export default class SimulationEditorView extends Vue implements ApplicationHasWrapper {
@@ -349,11 +357,33 @@ export default class SimulationEditorView extends Vue implements ApplicationHasW
   public editing: boolean = true;
   public modelPaneIsOpen: boolean = true;
 
+  public parentLabel: string = '';
+  public parentSelectedGate: string = '';
+  public parentSelectedType: string = '';
+  public parentSelectedRule: string = '';
+
   // Joint.js global variable
   public graphPage: JointGraphPageImpl = new JointGraphPageImpl();
 
   // Find all node types in the graph
   public nodeTypes: Set<string> = new Set<string>();
+
+  public changeLabelFromChild(e: any){
+    this.parentLabel = e;
+  }
+
+  public selectedGateFromChild(e: any) {
+    //console.log("Console Parent: "+e);
+    this.parentSelectedGate = e;
+  }
+
+  public selectedTypeFromChild(e: any) {
+    this.parentSelectedType = e;
+  }
+
+  public selectedRuleFromChild(e: any) {
+    this.parentSelectedRule = e;
+  }
 
   public async mounted(): Promise<void> {
     document.title = `${BaseUrlEnum.IOCHORD}/${ApplicationEnum.NAME.toUpperCase()} · Simulation Editor: Editor`;
@@ -387,6 +417,7 @@ export default class SimulationEditorView extends Vue implements ApplicationHasW
 
       // Load the model
       const response = await axios.get('http://192.168.11.154:3000/chdsr/api/v1/model/example');
+      //const response = await axios.get('http://164.125.62.132:3001/chdsr/api/v1/model/example');
 
       console.log(response);
 
@@ -507,12 +538,12 @@ export default class SimulationEditorView extends Vue implements ApplicationHasW
               $('#start').modal('show');
             }
 
-            if (currentElementType === 'activity') {
-              $('#activity').modal('show');
+            if (currentElementType === 'branch'){
+              $('#branch').modal('show');
             }
 
-            if (currentElementType === 'branch') {
-              $('#branch').modal('show');
+            if (currentElementType === 'activity') {
+              $('#activity').modal('show');
             }
 
             if (currentElementType === 'stop') {
