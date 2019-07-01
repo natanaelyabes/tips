@@ -1,29 +1,39 @@
 <template>
   <div class="canvas component">
     <div class="editor canvas">
+      <h1>{{parentSelectedGate}}</h1>
       <div id="canvas"></div>
     </div>
 
-    <!-- Modals -->
+
+    <!-- Model Modals -->
     <template v-for="type in Array.from(nodeTypes)">
       <template v-if="type === 'start'">
         <StartNodeModal label="test" generator="test" v-bind:id="type" v-bind:key="type"/>
+      </template>
+
+      <template v-if="type === 'branch'">
+        <BranchNodeModal label="this is branch"
+        @changeLabel="changeLabelFromChild($event)"
+        @changeSelectedGate="selectedGateFromChild($event)"
+        @changeSelectedType="selectedTypeFromChild($event)"
+        @changeSelectedRule="selectedRuleFromChild($event)"
+        v-bind:id="type" v-bind:key="type"/>
       </template>
 
       <template v-if="type === 'activity'">
         <ActivityNodeModal v-bind:id="type" v-bind:key="type"/>
       </template>
 
-      <template v-if="type === 'branch'">
-        <BranchNodeModal v-bind:id="type" v-bind:key="type"/>
-      </template>
-
       <template v-if="type === 'stop'">
         <StopNodeModal v-bind:id="type" v-bind:key="type"/>
       </template>
+
     </template>
 
-    {{ Array.from(nodeTypes) }}
+    <template v-if="Array.from(nodeTypes).length > 0">
+      {{ Array.from(nodeTypes) }}
+    </template>
 
   </div>
 </template>
@@ -94,14 +104,38 @@ export default class CanvasComponent extends BaseComponent {
   // Find all node types in the graph
   public nodeTypes: Set<string> = new Set<string>();
 
-  public async mounted(): Promise<void> {
+  public parentLabel: string = '';
+  public parentSelectedGate: string = '';
+  public parentSelectedType: string = '';
+  public parentSelectedRule: string = '';
+
+  public changeLabelFromChild(e: any) {
+    this.parentLabel = e;
+  }
+
+  public selectedGateFromChild(e: any) {
+    this.parentSelectedGate = e;
+  }
+
+  public selectedTypeFromChild(e: any) {
+    this.parentSelectedType = e;
+  }
+
+  public selectedRuleFromChild(e: any) {
+    this.parentSelectedRule = e;
+  }
+
+  public mounted(): void {
     this.testGraphDataStruct();
+    this.$forceUpdate();
   }
 
   public testGraphDataStruct(): void {
     try {
       // Deserialize the model
       const graph: Graph = GraphImpl.deserialize(this.response.data) as Graph;
+
+      console.log(graph);
 
       // Loop the model page
       for (const [key, value] of graph.getPages() as Map<string, GraphPage>) {
@@ -212,6 +246,8 @@ export default class CanvasComponent extends BaseComponent {
             const currentElement = elementView.model;
             currentElement.attr('body/stroke', 'red');
             const currentElementType = currentElement.attributes.type;
+
+            console.log(currentElementType);
 
             if (currentElementType === 'start') {
               $('#start').modal('show');

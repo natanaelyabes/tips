@@ -88,7 +88,6 @@
 
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
-import store from '../../../../../../store';
 
 declare const $: any;
 @Component
@@ -103,44 +102,38 @@ export default class BranchNodeModal extends Vue {
   private _selectedType!: string;
   private _selectedRule!: string;
 
-  public handleChangedLabel(): void{
+  public handleChangedLabel(): void {
     this.$emit('changeLabel', this._label);
   }
 
   public handleSelectedGate(): void {
     this.$emit('changeSelectedGate', this._selectedGate);
 
-    if(this._selectedGate !== '' && this._selectedType !== ''){
+    if (this._selectedGate !== '' && this._selectedType !== '') {
      this.showCondition();
     }
   }
 
-  public handleSelectedType(): void{
+  public handleSelectedType(): void {
     this.$emit('changeSelectedType', this._selectedType);
 
-    if(this._selectedGate !== '' && this._selectedType !== ''){
+    if (this._selectedGate !== '' && this._selectedType !== '') {
      this.showCondition();
     }
   }
 
-  public handleSelectedRule(): void{
+  public handleSelectedRule(): void {
     this.$emit('changeSelectedRule', this._selectedRule);
   }
 
-  private update(): void {
-    
-  }
-
-  private beforeMount(): void {
+  public beforeMount(): void {
     this._label = this.label;
     this._selectedGate = this.selectedGate;
     this._selectedType = this.selectedType;
     this._selectedRule = this.selectedRule;
   }
 
-  private mounted(): void {
-    //this.selectedGate = 'xor';
-
+  public mounted(): void {
     $('.ui.dropdown').dropdown();
     $('.tabular.menu .item').tab();
 
@@ -163,12 +156,12 @@ export default class BranchNodeModal extends Vue {
     });
   }
 
-  public showCondition(): void{
-    if (this._selectedGate === 'xor' && this._selectedType === 'split') {      
+  public showCondition(): void {
+    if (this._selectedGate === 'xor' && this._selectedType === 'split') {
       $('#row_branches_rule').attr('style', 'visibility:visible');
       $('#row_branches_if').attr('style', 'visibility:visible');
       $('#row_branches_tbl').attr('style', 'visibility:visible');
-    } else {      
+    } else {
       $('#row_branches_rule').attr('style', 'visibility:hidden');
       $('#row_branches_if').attr('style', 'visibility:hidden');
       $('#row_branches_tbl').attr('style', 'visibility:hidden');
