@@ -189,6 +189,36 @@
       </div>
     </div>
 
+    <h1>{{parentSelectedGate}}</h1>
+
+    <!-- Model Modals -->
+    console.log(Array.from(nodeTypes));
+    <template v-for="type in Array.from(nodeTypes)">
+      <template v-if="type === 'start'">
+        <StartNodeModal label="test" generator="test" v-bind:id="type" v-bind:key="type"/>
+      </template>
+
+      <template v-if="type === 'branch'">
+        <BranchNodeModal label="this is branch" 
+        @changeLabel="changeLabelFromChild($event)"
+        @changeSelectedGate="selectedGateFromChild($event)"
+        @changeSelectedType="selectedTypeFromChild($event)"
+        @changeSelectedRule="selectedRuleFromChild($event)"
+        v-bind:id="type" v-bind:key="type"/>
+      </template>
+
+      <template v-if="type === 'activity'">
+        <ActivityNodeModal v-bind:id="type" v-bind:key="type"/>
+      </template>
+
+      <template v-if="type === 'stop'">
+        <StopNodeModal v-bind:id="type" v-bind:key="type"/>
+      </template>
+
+    </template>
+
+    {{ Array.from(nodeTypes) }}
+
   </div>
 </template>
 
@@ -300,6 +330,34 @@ export default class SimulationEditorView extends ApplicationWrapperView {
   public editing: boolean = true;
   public modelPaneIsOpen: boolean = true;
   public graphData: any = {};
+
+  public parentLabel: string = '';
+  public parentSelectedGate: string = '';
+  public parentSelectedType: string = '';
+  public parentSelectedRule: string = '';
+
+  // Joint.js global variable
+  public graphPage: JointGraphPageImpl = new JointGraphPageImpl();
+
+  // Find all node types in the graph
+  public nodeTypes: Set<string> = new Set<string>();
+
+  public changeLabelFromChild(e: any){
+    this.parentLabel = e;
+  }
+
+  public selectedGateFromChild(e: any) {
+    //console.log("Console Parent: "+e);
+    this.parentSelectedGate = e;
+  }
+
+  public selectedTypeFromChild(e: any) {
+    this.parentSelectedType = e;
+  }
+
+  public selectedRuleFromChild(e: any) {
+    this.parentSelectedRule = e;
+  }
 
   public async mounted(): Promise<void> {
     try {

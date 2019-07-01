@@ -13,7 +13,7 @@
 
 <script lang="ts">
 // Vue & Libraries
-import { Component, Vue } from 'vue-property-decorator';
+import { Component, Vue  } from 'vue-property-decorator';
 
 // Interfaces
 import { VueHasLifeCycle } from '@/iochord/chdsr/common/lib/vue/interfaces/VueHasLifeCycle';

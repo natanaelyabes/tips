@@ -10,13 +10,13 @@
           <div class="row">
             <div class="four wide column">Label</div>
             <div class="twelve wide column">
-              <input type="text" id="x_txt_label">
+              <input type="text" @change="handleChangedLabel()" v-model="_label" id="x_txt_label">
             </div>
           </div>
           <div class="row">
             <div class="four wide column">Gate</div>
             <div class="twelve wide column">
-              <select class="ui dropdown" v-model="selectedGate">
+              <select class="ui dropdown" @change="handleSelectedGate()" v-model="_selectedGate">
                 <option value>Gate</option>
                 <option value="and">AND</option>
                 <option value="xor">XOR</option>
@@ -26,8 +26,8 @@
           <div class="row">
             <div class="four wide column">Type</div>
             <div class="twelve wide column">
-              <select class="ui dropdown" v-model="selectedSJ">
-                <option value>Gate</option>
+              <select class="ui dropdown" @change="handleSelectedType()" v-model="_selectedType">
+                <option value>Type</option>
                 <option value="split">Split</option>
                 <option value="join">Join</option>
               </select>
@@ -36,8 +36,8 @@
           <div id="row_branches_rule" class="row" style="visibility:hidden">
             <div class="four wide column">Rule</div>
             <div class="twelve wide column">
-              <select class="ui dropdown" v-model="selectedRule">
-                <option value>Rule</option>
+              <select class="ui dropdown" @change="handleSelectedRule()" v-model="_selectedRule">
+                <option value="rule">Rule</option>
                 <option value="data">Data</option>
                 <option value="probability">Probability</option>
               </select>
@@ -88,27 +88,59 @@
 
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
+import store from '../../../../../../store';
 
 declare const $: any;
 @Component
 export default class BranchNodeModal extends Vue {
-  private selectedGate = '';
-  private selectedSJ = '';
-  private selectedRule = '';
+  @Prop() private label!: string;
+  @Prop() private selectedGate!: string;
+  @Prop() private selectedType!: string;
+  @Prop() private selectedRule!: string;
 
-  private update(): void {
-    if (this.selectedGate === 'xor' && this.selectedSJ === 'split') {
-      $('#row_branches_rule').attr('style', 'visibility:visible');
-      $('#row_branches_if').attr('style', 'visibility:visible');
-      $('#row_branches_tbl').attr('style', 'visibility:visible');
-    } else {
-      $('#row_branches_rule').attr('style', 'visibility:hidden');
-      $('#row_branches_if').attr('style', 'visibility:hidden');
-      $('#row_branches_tbl').attr('style', 'visibility:hidden');
+  private _label!: string;
+  private _selectedGate!: string;
+  private _selectedType!: string;
+  private _selectedRule!: string;
+
+  public handleChangedLabel(): void{
+    this.$emit('changeLabel', this._label);
+  }
+
+  public handleSelectedGate(): void {
+    this.$emit('changeSelectedGate', this._selectedGate);
+
+    if(this._selectedGate !== '' && this._selectedType !== ''){
+     this.showCondition();
     }
   }
 
+  public handleSelectedType(): void{
+    this.$emit('changeSelectedType', this._selectedType);
+
+    if(this._selectedGate !== '' && this._selectedType !== ''){
+     this.showCondition();
+    }
+  }
+
+  public handleSelectedRule(): void{
+    this.$emit('changeSelectedRule', this._selectedRule);
+  }
+
+  private update(): void {
+    
+  }
+
+  private beforeMount(): void {
+    this._label = this.label;
+    this._selectedGate = this.selectedGate;
+    this._selectedType = this.selectedType;
+    this._selectedRule = this.selectedRule;
+  }
+
   private mounted(): void {
+    //this.selectedGate = 'xor';
+
     $('.ui.dropdown').dropdown();
     $('.tabular.menu .item').tab();
 
@@ -129,6 +161,18 @@ export default class BranchNodeModal extends Vue {
         .closest('tr')
         .remove();
     });
+  }
+
+  public showCondition(): void{
+    if (this._selectedGate === 'xor' && this._selectedType === 'split') {      
+      $('#row_branches_rule').attr('style', 'visibility:visible');
+      $('#row_branches_if').attr('style', 'visibility:visible');
+      $('#row_branches_tbl').attr('style', 'visibility:visible');
+    } else {      
+      $('#row_branches_rule').attr('style', 'visibility:hidden');
+      $('#row_branches_if').attr('style', 'visibility:hidden');
+      $('#row_branches_tbl').attr('style', 'visibility:hidden');
+    }
   }
 }
 </script>
