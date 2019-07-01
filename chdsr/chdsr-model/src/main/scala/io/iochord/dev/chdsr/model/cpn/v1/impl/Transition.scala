@@ -54,6 +54,10 @@ class Transition[B <:Bind] (
     out = out.filterNot(_ == arc)
   }
   
+  def getIn():List[Arc[_,_]] = in
+  
+  def getOut():List[Arc[_,_]] = out
+  
   def getId(): String = id
   
   def setId(id: String) { this.id = id }
@@ -115,15 +119,15 @@ class Transition[B <:Bind] (
     }
   }
   
-  def execute(globtime:Long) {
+  def execute(globtime:Long):B = {
     val r = new java.util.Random();
     val bindingChosen = lbeBase(r.nextInt(lbeBase.length))
     in.foreach(arc => { 
-      println(arc.getId())
-      println(bindingChosen)
+      //println(arc.getId())
+      //println(bindingChosen)
       val setTokenWTChosen = arc.getPlace().getcurrentMarking().multiset.keys.filter(tokenWT => { val token = arc.computeArcExp(arc.computeBindToToken(bindingChosen)); tokenWT._2 <= globtime && token == tokenWT._1 } )
       if(setTokenWTChosen.size > 0) {
-        println(setTokenWTChosen)
+        //println(setTokenWTChosen)
         val tokenWTChosen = setTokenWTChosen.head
         arc.getPlace().removeTokenWithTime(tokenWTChosen)
       }
@@ -138,9 +142,10 @@ class Transition[B <:Bind] (
         //println(arc.getId(),bindingCombine)
       }
       val tokenChosen = arc.computeArcExp(arc.computeBindToToken(bindingCombine))
-      val timetoken = if(arc.getAddTime() == null) globtime else globtime+arc.computeAddTime(0)
+      val timetoken = if(arc.getAddTime() == null) globtime else globtime+arc.computeAddTime(bindingChosen)
       arc.getPlace().addTokenWithTime((tokenChosen, timetoken))
     } )
+    bindingChosen
   }
   
   def transArcExp(bind:B, arc: Arc[_,B]) = transform(bind,arc.getBindToToken(),arc.getArcExp())

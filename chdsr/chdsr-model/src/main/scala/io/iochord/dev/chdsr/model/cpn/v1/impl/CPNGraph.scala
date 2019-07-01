@@ -19,6 +19,7 @@ class CPNGraph {
 	def removePlace(place: Place[_]) {
 	  import Direction._
 	  places.remove(place.getId())
+	  
 	  arcs = arcs.filterNot(a => {
 	   if (a.getPlace().getId() == place.getId()) {
 	     if (a.getDirection() == PtT)
