@@ -2,9 +2,9 @@
  *
  *
  * @export
- * @interface HasBreadcrumb
+ * @interface Breadcrumb
  */
-export interface HasBreadcrumb {
+export interface Breadcrumb {
   url: string | undefined;
   class: string;
   divider: string;

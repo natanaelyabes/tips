@@ -3,11 +3,11 @@
     <div class="ui middle aligned center aligned grid">
       <div class="column">
         <form class="ui large form">
-          <div class="ui blue inverted top attached segment">
+          <div class="ui teal inverted top attached segment">
             <div class="logo">
-              <img class="ui medium image centered" id="chdsr-logo" src="@/assets/images/logos/CHDSR-white-on-transparent.png" />
+              <img class="ui medium image centered" id="chdsr-logo" src="@/assets/images/logos/iochord.png" />
             </div>
-            <h2 class="ui white image header">
+            <h2 class="ui image header">
               <div class="content">
                 Log-in to your account
               </div>
@@ -27,12 +27,12 @@
                   <input type="password" name="password" v-model="password" placeholder="Password">
                 </div>
               </div>
-              <a v-on:click="login()" class="ui fluid large raised blue submit button">Login</a>
+              <a v-on:click="login()" class="ui fluid large raised black submit button">Login</a>
             </div>
           </div>
           <div v-if="error" class="ui negative message">{{ errorMessage }}</div>
         </form>
-        <div class="ui blue message">
+        <div class="ui teal message">
           New to us? <a href="#">Sign Up</a>
         </div>
         <footer>
@@ -49,7 +49,7 @@
 
 <style scoped>
 .login.view {
-  background: gainsboro;
+  background: #03628c;
   background-size: cover;
   height: 100%;
   top: 1em;
@@ -99,6 +99,10 @@
   background: #faa95a;
 }
 
+.blue.button:hover {
+  background: #03628c!important; 
+}
+
 .column {
   max-width: 450px;
 }
@@ -106,6 +110,7 @@
 h2.ui.white.header{
 	color: white;
 }
+
 .login.view footer{
   color: white;
   margin: 2em 0 1em 0;
@@ -113,7 +118,7 @@ h2.ui.white.header{
 
 .login.view .ui.form input[type]{
 	background-color: rgba(255,255,255,0.2);
-	color: #2185d0;
+	/* color: #2185d0; */
 }
 
 .login.view .ui.form input[type]:focus{
@@ -134,16 +139,32 @@ h2.ui.white.header{
 <script lang="ts">
 // Vue & Libraries
 import { Component, Vue } from 'vue-property-decorator';
+import { VueHasLifeCycle } from '@/iochord/chdsr/common/lib/vue/interfaces/VueHasLifeCycle';
+import { SemanticModulesIsUsed } from '@/iochord/chdsr/common/ui/semantic/SemanticModulesIsUsed';
+import { BrowserHasProperties } from '@/iochord/chdsr/common/browser/interfaces/BrowserHasProperties';
+import { BaseUrlEnum, ApplicationEnum } from '@/iochord/chdsr/common/enums';
 
 @Component
-export default class AuthenticationLoginView extends Vue {
+export default class AuthenticationLoginView extends Vue
+implements SemanticModulesIsUsed, BrowserHasProperties {
   private email: string = 'admin@iochord.com';
   private password: string = 'secret123';
   private error: boolean = false;
   private errorMessage: string = '';
 
-  private mounted(): void {
-    document.title = 'BSCLab UI - Login';
+  public mounted(): void {
+    this.overrideProperties();
+
+    // Un-implemented
+    this.declareSemanticModules();
+  }
+
+  public overrideProperties(): void {
+    document.title = `${BaseUrlEnum.IOCHORD}/${ApplicationEnum.NAME.toUpperCase()} · Login`;
+  }
+
+  public declareSemanticModules(): void {
+    throw new Error('Method not implemented.');
   }
 
   private login(): void {

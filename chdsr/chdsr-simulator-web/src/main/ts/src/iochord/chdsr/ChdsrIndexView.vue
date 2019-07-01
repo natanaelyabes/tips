@@ -4,8 +4,6 @@
       <template slot="top-right-menu-item">
         <!-- Right menu item -->
         <div class="right menu">
-          <router-link tag="a" to="/iochord" class="item icon" data-inverted="" data-content="Data Management" data-position="bottom right"><i class="save icon"></i></router-link>
-          <router-link tag="a" to="/iochord" class="item icon" data-inverted="" data-content="Data Filtering" data-position="bottom right"><i class="filter icon"></i></router-link>
           <div class="ui dropdown item">
             <img class="ui avatar image" src="@/assets/images/avatars/steve.jpg">
               Administrator
@@ -18,7 +16,7 @@
       </template>
       <div slot="app-logo">
         <router-link to="/iochord" tag="a" class="logo item">
-          <img id="chdsr-logo" class="ui centered small image" src="@/assets/images/logos/CHDSR-white-on-transparent.png" alt="CHDSR main logo">
+          <img id="app-logo" class="ui centered small image" src="@/assets/images/logos/iochord_logo_transparent_color.png" alt="main logo">
         </router-link>
       </div>
       <!--  -->
@@ -67,10 +65,6 @@
 .index.view {
   height: 100%;
 }
-
-.index.view img#chdsr-logo {
-  padding: 1em 0;
-}
 </style>
 
 <script lang="ts">
@@ -92,50 +86,23 @@ declare const $: any;
     NavigationTopSidebarComponent,
   },
 })
-export default class Index extends Vue implements VueHasLifeCycle, SemanticModulesIsUsed {
-  public beforeCreate(): void {
-    // throw new Error("Method not implemented.");
-  }
-
-  public created(): void {
-    // throw new Error("Method not implemented.");
-  }
-
-  public beforeMount(): void {
-    // throw new Error("Method not implemented.");
-  }
-
+export default class Index extends Vue
+implements SemanticModulesIsUsed {
   public mounted(): void {
-    this.$nextTick(() => {
-      this.declareModules();
-    });
+    this.declareSemanticModules();
+
+    // Un-implemented
   }
 
-  public beforeUpdate(): void {
-    // throw new Error("Method not implemented.");
-  }
-
-  public updated(): void {
-    // throw new Error("Method not implemented.");
-  }
-
-  public beforeDestroy(): void {
-    // throw new Error("Method not implemented.");
-  }
-
-  public destroyed(): void {
-    // throw new Error("Method not implemented.");
-  }
-
-  public declareModules(): void {
+  public declareSemanticModules(): void {
     this.declareDropdown();
   }
 
-  private declareDropdown(): void {
+  public declareDropdown(): void {
     $('.ui.dropdown').dropdown();
   }
 
-  private logout(): void {
+  public logout(): void {
     this.$router.push({name: 'iochord-chdsr-login'});
   }
 }

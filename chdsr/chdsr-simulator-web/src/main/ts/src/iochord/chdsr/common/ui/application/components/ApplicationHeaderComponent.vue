@@ -19,6 +19,11 @@
 .application.header.component .ui.basic.segment {
   margin: 0;
   border-bottom: 1px solid rgba(0,0,0,.2);
+  background-color: #81b0c5;
+}
+
+.breadcrumb.component {
+  color: white;
 }
 </style>
 

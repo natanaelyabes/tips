@@ -5,7 +5,7 @@
 
       <!-- Toogle sidebar -->
       <div class="item">
-        <div v-on:click="toggleMenu()" class="ui big basic icon compact toggle button" data-transition="overlay">
+        <div v-on:click="toggleMenu()" class="ui big black icon compact toggle button" data-transition="overlay">
           <i class="sidebar icon"></i>
         </div>
       </div>
@@ -13,16 +13,16 @@
       <slot name="top-right-menu-item"></slot>
     </div>
 
-    <div class="ui visible left vertical sidebar menu">
+    <!-- Vertical sidebar menu -->
+    <div class="ui visible inverted left vertical sidebar menu">
       <slot name="app-logo"></slot>
       <slot name="info"></slot>
       <slot name="sidebar-menu"></slot>
     </div>
+
+    <!-- Pusher component -->
     <div class="pusher">
-      <!-- Site content !-->
-      <!-- <div class="ui basic segment"> -->
-        <router-view/>
-      <!-- </div> -->
+      <router-view/>
     </div>
   </div>
 </template>
@@ -53,16 +53,12 @@
 }
 
 .ui.vertical.sidebar {
-  background: #f5f6fa;
+  background: #03628c;
 }
 
 .ui.vertical.sidebar a.logo.item {
   padding: 0.3em;
-  background: #2196F3;
-}
-
-.ui.vertical.sidebar a.logo.item:hover {
-  background: #03A9F4;
+  background: white;
 }
 
 #server-info {
@@ -136,10 +132,10 @@ export default class NavigationTopSidebarComponent extends Vue {
 
   private adjustTopFixedMenu(): void {
     setTimeout(() => {
-      const sidebarLogoItemHeight = $('.ui.vertical.sidebar.menu a.logo.item').css('height');
+      const sidebarLogoItemHeight = $('.logo.item').css('height');
       $('.ui.top.fixed.menu').css('height', sidebarLogoItemHeight);
       $('.pusher').css('padding-top', sidebarLogoItemHeight);
-    }, 10);
+    }, 200);
   }
 
   private toggleMenu(): void {

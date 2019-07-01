@@ -17,7 +17,7 @@ export default [
       {
         path: '',
         name: `${BaseUrlEnum.IOCHORD}-${ApplicationEnum.NAME}-simulation-editor`,
-        component: () => import(/* webpackChunkName: "chdsr-view" */ '@/iochord/chdsr/simulation/editor/views/SimulationEditorView.vue'),
+        component: () => import(/* webpackChunkName: "chdsr-simulation-editor-view" */ '@/iochord/chdsr/simulation/editor/views/SimulationEditorView.vue'),
       },
       {
         path: 'kpi',

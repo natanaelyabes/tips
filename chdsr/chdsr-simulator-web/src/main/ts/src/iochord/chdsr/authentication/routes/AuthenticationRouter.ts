@@ -6,17 +6,15 @@ import { ApplicationEnum, BaseUrlEnum } from '@/iochord/chdsr/common/enums/index
 
 // Router
 import AuthenticationLoginRouter from './AuthenticationLoginRouter';
-import AuthenticationRegisterRouter from './AuthenticationRegisterRouter';
 
 // Route config
 export default [
   {
     path: `/${BaseUrlEnum.IOCHORD}/${ApplicationEnum.NAME}/auth`,
     redirect: `/${BaseUrlEnum.IOCHORD}/${ApplicationEnum.NAME}/auth/login`,
-    component: () => import(/* webpackChunkName: "chdsr-view" */ '@/iochord/chdsr/authentication/views/AuthenticationIndexView.vue'),
+    component: () => import(/* webpackChunkName: "chdsr-login-view" */ '@/iochord/chdsr/authentication/views/AuthenticationIndexView.vue'),
     children: [
       ...AuthenticationLoginRouter as RouteConfig[],
-      ...AuthenticationRegisterRouter as RouteConfig[],
     ],
   },
 ] as RouteConfig[];

@@ -5,5 +5,5 @@
  * @interface SemanticModulesIsUsed
  */
 export interface SemanticModulesIsUsed {
-  declareModules(): void;
+  declareSemanticModules(): void;
 }

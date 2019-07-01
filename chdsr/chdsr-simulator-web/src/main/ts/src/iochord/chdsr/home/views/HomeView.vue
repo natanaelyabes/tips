@@ -2,7 +2,7 @@
   <div class="home view">
     <ApplicationWrapper >
       <template slot="application-header-breadcrumb">
-        <div class="active section">Home</div>
+        <div class="active section">{{title}}</div>
       </template>
       <template slot="application-content">
         <div class="ui basic segment">
@@ -68,7 +68,6 @@
             </div>
           </div>
         </div>
-
       </template>
     </ApplicationWrapper>
   </div>
@@ -79,7 +78,6 @@
   background: gainsboro;
   background-size: cover;
   height: 100%;
-  filter: hue-rotate(20deg);
 }
 </style>
 
@@ -88,61 +86,86 @@
 import { Component, Vue } from 'vue-property-decorator';
 
 // Enums
-import { ApplicationEnum } from '@/iochord/chdsr/common/enums/index';
+import { ApplicationEnum, BaseUrlEnum } from '@/iochord/chdsr/common/enums/index';
 
 // Interfaces
-import { VueHasLifeCycle } from '@/iochord/chdsr/common/lib/vue/interfaces/VueHasLifeCycle';
-import { SemanticModulesIsUsed } from '@/iochord/chdsr/common/ui/semantic/SemanticModulesIsUsed';
+import { ApplicationHasWrapper } from '../../common/ui/application/interfaces/ApplicationHasWrapper';
+import { Breadcrumb } from '../../common/ui/semantic/breadcrumbs/interfaces/Breadcrumb';
 import { BrowserHasProperties } from '@/iochord/chdsr/common/browser/interfaces/BrowserHasProperties';
+import { SemanticModulesIsUsed } from '@/iochord/chdsr/common/ui/semantic/SemanticModulesIsUsed';
+import { VueHasLifeCycle } from '@/iochord/chdsr/common/lib/vue/interfaces/VueHasLifeCycle';
 
 // Components
 import ApplicationWrapper from '@/iochord/chdsr/common/ui/application/components/ApplicationWrapperComponent.vue';
+import { setTimeout } from 'timers';
 
 @Component({
   components: {
     ApplicationWrapper,
   },
 })
-export default class Home extends Vue implements VueHasLifeCycle, SemanticModulesIsUsed, BrowserHasProperties {
-  public beforeCreate(): void {
-    // throw new Error("Method not implemented.");
-  }
-
-  public created(): void {
-    // throw new Error("Method not implemented.");
-  }
-
-  public beforeMount(): void {
-    // throw new Error("Method not implemented.");
-  }
+export default class HomeView extends Vue
+implements ApplicationHasWrapper, SemanticModulesIsUsed, BrowserHasProperties {
+  public title: string = '';
+  public breadcrumbs!: Breadcrumb[];
+  public titleMenuBarItems: any;
+  public leftMenuBarItems: any;
+  public rightMenuBarItems: any;
+  public ribbonMenuItems: any;
+  public content: any;
 
   public mounted(): void {
     this.overrideProperties();
-    this.declareModules();
-  }
+    this.setApplicationWrapperProperties();
 
-  public beforeUpdate(): void {
-    // throw new Error("Method not implemented.");
-  }
-
-  public updated(): void {
-    // throw new Error("Method not implemented.");
-  }
-
-  public beforeDestroy(): void {
-    // throw new Error("Method not implemented.");
-  }
-
-  public destroyed(): void {
-    // throw new Error("Method not implemented.");
+    // Un-implemented
+    this.declareSemanticModules();
   }
 
   public overrideProperties(): void {
-    document.title = `${ApplicationEnum.NAME} | Home`;
+    document.title = `${BaseUrlEnum.IOCHORD}/${ApplicationEnum.NAME.toUpperCase()} · Home`;
   }
 
-  public declareModules(): void {
-    // throw new Error("Method not implemented.");
+  public declareSemanticModules(): void {
+    // throw new Error('Method not implemented.');
+  }
+
+  public setTitle(): void {
+    this.title = 'Home';
+  }
+
+  public setBreadcrumb(): void {
+    // throw new Error('Method not implemented.');
+  }
+
+  public setTitleMenubar(): void {
+    // throw new Error('Method not implemented.');
+  }
+
+  public setLeftMenuSidebar(): void {
+    // throw new Error('Method not implemented.');
+  }
+
+  public setRightMenuSidebar(): void {
+    // throw new Error('Method not implemented.');
+  }
+
+  public setRibbonMenuItem(): void {
+    // throw new Error('Method not implemented.');
+  }
+
+  public setContent(): void {
+    // throw new Error('Method not implemented.');
+  }
+
+  public setApplicationWrapperProperties(): void {
+    this.setTitle();
+    this.setBreadcrumb();
+    this.setTitleMenubar();
+    this.setLeftMenuSidebar();
+    this.setRightMenuSidebar();
+    this.setRibbonMenuItem();
+    this.setContent();
   }
 
 }
