@@ -5,5 +5,5 @@
  * @interface BrowserHasProperties
  */
 export interface BrowserHasProperties {
-  overrideProperties(): void;
+  overrideBrowserProperties(): void;
 }

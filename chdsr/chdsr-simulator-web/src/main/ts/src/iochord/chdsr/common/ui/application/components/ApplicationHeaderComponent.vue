@@ -19,6 +19,11 @@
 .application.header.component .ui.basic.segment {
   margin: 0;
   border-bottom: 1px solid rgba(0,0,0,.2);
+  background-color: #81b0c5;
+}
+
+.breadcrumb.component {
+  color: white;
 }
 </style>
 
@@ -28,13 +33,14 @@ import { Component, Vue } from 'vue-property-decorator';
 
 // Components
 import BreadcrumbComponent from '@/iochord/chdsr/common/ui/semantic/breadcrumbs/components/BreadcrumbComponent.vue';
+import BaseComponent from '@/iochord/chdsr/common/lib/vue/classes/BaseComponent';
 
 @Component({
   components: {
     BreadcrumbComponent,
   },
 })
-export default class ApplicationHeaderComponent extends Vue {
+export default class ApplicationHeaderComponent extends BaseComponent {
   private get hasHeaderTitle(): boolean {
     return !!this.$slots['application-header-title'];
   }

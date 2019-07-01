@@ -1,4 +1,4 @@
-import { HasBreadcrumb } from '@/iochord/chdsr/common/ui/semantic/breadcrumbs/interfaces/HasBreadcrumb';
+import { Breadcrumb } from '@/iochord/chdsr/common/ui/semantic/breadcrumbs/interfaces/Breadcrumb';
 
 
 /**
@@ -9,7 +9,7 @@ import { HasBreadcrumb } from '@/iochord/chdsr/common/ui/semantic/breadcrumbs/in
  */
 export interface ApplicationHasWrapper {
   title: string;
-  breadcrumbs: HasBreadcrumb[];
+  breadcrumbs: Breadcrumb[];
   titleMenuBarItems: any;
   leftMenuBarItems: any;
   rightMenuBarItems: any;
@@ -22,4 +22,5 @@ export interface ApplicationHasWrapper {
   setRightMenuSidebar(): void;
   setRibbonMenuItem(): void;
   setContent(): void;
+  setApplicationWrapperProperties(): void;
 }

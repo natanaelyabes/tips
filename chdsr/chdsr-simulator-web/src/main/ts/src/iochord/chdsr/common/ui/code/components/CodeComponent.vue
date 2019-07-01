@@ -14,13 +14,14 @@
 </style>
 
 <script lang="ts">
-import { Component, Prop, Vue } from 'vue-property-decorator';
+import { Component, Prop } from 'vue-property-decorator';
+import BaseComponent from '@/iochord/chdsr/common/lib/vue/classes/BaseComponent';
 
-import '../../../../../node_modules/highlight.js/styles/default.css';
+import '#root/node_modules/highlight.js/styles/default.css';
 import * as hljs from 'highlight.js';
 
 @Component
-export default class CodeComponent extends Vue {
+export default class CodeComponent extends BaseComponent {
   @Prop() private code!: string;
   @Prop() private language!: string;
 

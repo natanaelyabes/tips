@@ -11,10 +11,11 @@
 </style>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
+import { Component } from 'vue-property-decorator';
+import IndexView from '@/iochord/chdsr/common/lib/vue/classes/IndexView';
 
 @Component
-export default class AuthenticationIndexView extends Vue {
-
+export default class AuthenticationIndexView extends IndexView {
+  //
 }
 </script>

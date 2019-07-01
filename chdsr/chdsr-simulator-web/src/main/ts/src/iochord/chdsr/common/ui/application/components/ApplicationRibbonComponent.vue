@@ -24,13 +24,14 @@ import { Component, Vue } from 'vue-property-decorator';
 
 // Components
 import NavigationBarComponent from '@/iochord/chdsr/common/ui/semantic/navigations/components/NavigationBarComponent.vue';
+import BaseComponent from '@/iochord/chdsr/common/lib/vue/classes/BaseComponent';
 
 @Component({
   components: {
     NavigationBarComponent,
   },
 })
-export default class ApplicationRibbonComponent extends Vue {
+export default class ApplicationRibbonComponent extends BaseComponent {
 
 }
 </script>

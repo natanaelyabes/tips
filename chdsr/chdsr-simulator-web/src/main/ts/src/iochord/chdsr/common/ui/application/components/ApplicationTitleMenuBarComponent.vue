@@ -26,6 +26,7 @@ import { Component, Vue } from 'vue-property-decorator';
 
 // Components
 import NavigationBarComponent from '@/iochord/chdsr/common/ui/semantic/navigations/components/NavigationBarComponent.vue';
+import BaseComponent from '@/iochord/chdsr/common/lib/vue/classes/BaseComponent';
 
 declare const $: any;
 @Component({
@@ -33,7 +34,7 @@ declare const $: any;
     NavigationBarComponent,
   },
 })
-export default class ApplicationTitleMenuBarComponent extends Vue {
-
+export default class ApplicationTitleMenuBarComponent extends BaseComponent {
+  //
 }
 </script>

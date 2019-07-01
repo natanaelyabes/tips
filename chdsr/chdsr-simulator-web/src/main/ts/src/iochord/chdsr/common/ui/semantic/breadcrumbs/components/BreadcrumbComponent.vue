@@ -11,12 +11,11 @@
 </style>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
+import { Component } from 'vue-property-decorator';
+import SemanticComponent from '@/iochord/chdsr/common/ui/semantic/SemanticComponent';
 
 @Component
-export default class BreadcrumbComponent extends Vue {
-  private mounted(): void {
-    //
-  }
+export default class BreadcrumbComponent extends SemanticComponent {
+  //
 }
 </script>

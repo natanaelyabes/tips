@@ -14,9 +14,10 @@
 
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
+import SemanticComponent from '@/iochord/chdsr/common/ui/semantic/SemanticComponent';
 
 @Component
-export default class NavigationBarComponent extends Vue {
+export default class NavigationBarComponent extends SemanticComponent {
   @Prop() private type!: string;
   @Prop() private color!: string;
   @Prop() private size!: string;

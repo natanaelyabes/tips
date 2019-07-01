@@ -11,7 +11,7 @@ import { AuthenticationLoginGuard } from '@/iochord/chdsr/authentication/guards/
 export default [
   {
     path: 'login',
-    beforeEnter: AuthenticationLoginGuard.outputToConsole,
+    // beforeEnter: AuthenticationLoginGuard.outputToConsole,
     name: `${BaseUrlEnum.IOCHORD}-${ApplicationEnum.NAME}-login`,
     component: () => import(/* webpackChunkName: "chdsr-view" */ '@/iochord/chdsr/authentication/views/AuthenticationLoginView.vue'),
   },

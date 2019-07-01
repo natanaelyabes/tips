@@ -15,10 +15,11 @@
 </style>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
+import { Component } from 'vue-property-decorator';
+import BaseComponent from '@/iochord/chdsr/common/lib/vue/classes/BaseComponent';
 
 @Component
-export default class FooterComponent extends Vue {
+export default class FooterComponent extends BaseComponent {
   private currentDate: Date = new Date();
 
   private get currentYear(): number {

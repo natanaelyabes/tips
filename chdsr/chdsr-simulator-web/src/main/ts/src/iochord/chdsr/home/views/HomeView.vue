@@ -2,7 +2,7 @@
   <div class="home view">
     <ApplicationWrapper >
       <template slot="application-header-breadcrumb">
-        <div class="active section">Home</div>
+        <div class="active section">{{title}}</div>
       </template>
       <template slot="application-content">
         <div class="ui basic segment">
@@ -68,7 +68,6 @@
             </div>
           </div>
         </div>
-
       </template>
     </ApplicationWrapper>
   </div>
@@ -79,7 +78,6 @@
   background: gainsboro;
   background-size: cover;
   height: 100%;
-  filter: hue-rotate(20deg);
 }
 </style>
 
@@ -87,13 +85,11 @@
 // Vue & Libraries
 import { Component, Vue } from 'vue-property-decorator';
 
-// Enums
-import { ApplicationEnum } from '@/iochord/chdsr/common/enums/index';
+// Classes
+import ApplicationWrapperView from '@/iochord/chdsr/common/ui/application/classes/ApplicationWrapperView';
 
 // Interfaces
-import { VueHasLifeCycle } from '@/iochord/chdsr/common/lib/vue/interfaces/VueHasLifeCycle';
-import { SemanticModulesIsUsed } from '@/iochord/chdsr/common/ui/semantic/SemanticModulesIsUsed';
-import { BrowserHasProperties } from '@/iochord/chdsr/common/browser/interfaces/BrowserHasProperties';
+import { ApplicationHasWrapper } from '../../common/ui/application/interfaces/ApplicationHasWrapper';
 
 // Components
 import ApplicationWrapper from '@/iochord/chdsr/common/ui/application/components/ApplicationWrapperComponent.vue';
@@ -103,47 +99,15 @@ import ApplicationWrapper from '@/iochord/chdsr/common/ui/application/components
     ApplicationWrapper,
   },
 })
-export default class Home extends Vue implements VueHasLifeCycle, SemanticModulesIsUsed, BrowserHasProperties {
-  public beforeCreate(): void {
-    // throw new Error("Method not implemented.");
+export default class HomeView extends ApplicationWrapperView {
+  /** @Override */
+  public overrideBrowserProperties(): void {
+    this.setDocumentTitle('Home');
   }
 
-  public created(): void {
-    // throw new Error("Method not implemented.");
+  /** @Override */
+  public setTitle(): void {
+    this.title = 'Home';
   }
-
-  public beforeMount(): void {
-    // throw new Error("Method not implemented.");
-  }
-
-  public mounted(): void {
-    this.overrideProperties();
-    this.declareModules();
-  }
-
-  public beforeUpdate(): void {
-    // throw new Error("Method not implemented.");
-  }
-
-  public updated(): void {
-    // throw new Error("Method not implemented.");
-  }
-
-  public beforeDestroy(): void {
-    // throw new Error("Method not implemented.");
-  }
-
-  public destroyed(): void {
-    // throw new Error("Method not implemented.");
-  }
-
-  public overrideProperties(): void {
-    document.title = `${ApplicationEnum.NAME} | Home`;
-  }
-
-  public declareModules(): void {
-    // throw new Error("Method not implemented.");
-  }
-
 }
 </script>

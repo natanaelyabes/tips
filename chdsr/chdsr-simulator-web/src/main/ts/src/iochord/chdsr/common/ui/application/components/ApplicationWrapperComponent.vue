@@ -50,6 +50,7 @@ import { Component, Prop, Vue } from 'vue-property-decorator';
 import ApplicationHeaderComponent from './ApplicationHeaderComponent.vue';
 import ApplicationTitleMenuBarComponent from './ApplicationTitleMenuBarComponent.vue';
 import ApplicationWorkspaceComponent from './ApplicationWorkspaceComponent.vue';
+import BaseComponent from '@/iochord/chdsr/common/lib/vue/classes/BaseComponent';
 
 @Component({
   components: {
@@ -58,7 +59,7 @@ import ApplicationWorkspaceComponent from './ApplicationWorkspaceComponent.vue';
     ApplicationWorkspaceComponent,
   },
 })
-export default class ApplicationWrapperComponent extends Vue {
+export default class ApplicationWrapperComponent extends BaseComponent {
 
   private get hasHeader(): boolean {
     return !!this.$slots['application-header-title'] || !!this.$slots['application-header-breadcrumb'];

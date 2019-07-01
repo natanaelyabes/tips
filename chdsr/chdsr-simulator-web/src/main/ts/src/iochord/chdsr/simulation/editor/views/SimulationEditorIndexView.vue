@@ -10,7 +10,8 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
-export default class IndexView extends Vue {
-
+import IndexView from '@/iochord/chdsr/common/lib/vue/classes/IndexView';
+export default class SimulationEditorIndexView extends IndexView {
+  //
 }
 </script>

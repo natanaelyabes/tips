@@ -25,13 +25,14 @@ import { Component, Vue } from 'vue-property-decorator';
 
 // Components
 import ApplicationRibbonComponent from './ApplicationRibbonComponent.vue';
+import BaseComponent from '@/iochord/chdsr/common/lib/vue/classes/BaseComponent';
 
 @Component({
   components: {
     ApplicationRibbonComponent,
   },
 })
-export default class ApplicationContentComponent extends Vue {
+export default class ApplicationContentComponent extends BaseComponent {
   private get hasApplicationRibbonComponent(): boolean {
     return !!this.$slots['application-ribbon-menu-item'];
   }
