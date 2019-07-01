@@ -49,6 +49,7 @@ public class Sbpnet2CpnBiConverter implements Converter<Sbpnet, CPNGraph> {
 				}
 				if (d instanceof Generator) {
 					Generator dg = (Generator) d;
+					/*
 					Place<String> dgP1 = new Place<>(dg.getId() + "_dgp1", dg.getLabel() + "_dgp1", null);
 					cnet.addPlace(dgP1);
 					Place<String> dgP2 = new Place<>(dg.getId() + "_dgp2", dg.getLabel() + "_dgp2", null);
@@ -62,6 +63,7 @@ public class Sbpnet2CpnBiConverter implements Converter<Sbpnet, CPNGraph> {
 					Transition dgT2 = new Transition(dg.getId() + "_dgt2", dg.getLabel() + "_dgt2", null);
 					cnet.addTransition(dgT2);
 					Arc<String> dga = new Arc<String>(dg.getId() + "_p1_t1", dgP1, dgT1, Direction.PtT());
+					*/
 				}
 				if (d instanceof Function) {
 					Function f = (Function) d;
@@ -102,6 +104,7 @@ public class Sbpnet2CpnBiConverter implements Converter<Sbpnet, CPNGraph> {
 				}
 				if (n instanceof Activity) {
 					Activity na = (Activity) n;
+					/*
 					Place<String> naP1 = new Place<>(na.getId() + "_nap1", na.getLabel() + "_nap1", null);
 					cnet.addPlace(naP1);
 					Place<String> naP2 = new Place<>(na.getId() + "_nap2", na.getLabel() + "_nap2", null);
@@ -122,6 +125,7 @@ public class Sbpnet2CpnBiConverter implements Converter<Sbpnet, CPNGraph> {
 					cnet.addPlace(naqP2);
 					Transition naqTPool = new Transition(na.getId() + "_naqtpool", na.getLabel() + "_naqtpool", null);
 					cnet.addTransition(naqTPool);
+					*/
 				}
 				if (n instanceof Branch) {
 					Branch b = (Branch) n;

@@ -9,14 +9,12 @@ import { DATA_TYPE } from '../enums/DATA';
 import { stringify } from 'querystring';
 
 export class GraphPageImpl extends GraphElementImpl implements GraphPage {
-  public static readonly TYPE: string | null = 'page';
-
   public static deserialize(object: any): Map<string, GraphPage> | null {
     const graphMap: Map<string, GraphPage> = new Map<string, GraphPage>();
     for (const key in object) {
       if (object.hasOwnProperty(key)) {
         const element = object[key];
-        const graphPage: GraphPageImpl = new GraphPageImpl();
+        const graphPage: GraphPage = new GraphPageImpl();
         const graphNodeMap: Map<string, GraphNode> = new Map<string, GraphNode>();
         const graphDataMap: Map<string, GraphData> = new Map<string, GraphData>();
         const graphConnectorMap: Map<string, GraphConnector> = new Map<string, GraphConnector>();
@@ -48,43 +46,36 @@ export class GraphPageImpl extends GraphElementImpl implements GraphPage {
     return graphMap;
   }
 
-  private data: Map<string, GraphData> | null = new Map<string, GraphData>();
-  private nodes: Map<string, GraphNode> | null = new Map<string, GraphNode>();
-  private arcs: Map<string, GraphConnector> | null = new Map<string, GraphConnector>();
+  private data?: Map<string, GraphData> | null = new Map<string, GraphData>();
+  private nodes?: Map<string, GraphNode> | null = new Map<string, GraphNode>();
+  private arcs?: Map<string, GraphConnector> | null = new Map<string, GraphConnector>();
 
-  constructor();
-  constructor(data: Map<string, GraphData>, nodes: Map<string, GraphNode>, arcs: Map<string, GraphConnector>);
-  constructor(data?: Map<string, GraphData>, nodes?: Map<string, GraphNode>, arcs?: Map<string, GraphConnector>) {
+  constructor() {
     super();
   }
 
-  /** @Override */
-  public getType(): string | null {
-    return this.TYPE;
-  }
-
   public getData(): Map<string, GraphData> | null {
-    return this.data;
+    return this.data as Map<string, GraphData> | null;
   }
 
   public setData(data: Map<string, GraphData>): void {
-    this.data = data;
+    this.data = data || this.data;
   }
 
   public getNodes(): Map<string, GraphNode> | null {
-    return this.nodes;
+    return this.nodes as Map<string, GraphNode> | null;
   }
 
   public setNodes(nodes: Map<string, GraphNode>): void {
-    this.nodes = nodes;
+    this.nodes = nodes || this.nodes;
   }
 
   public getArcs(): Map<string, GraphConnector> | null {
-    return this.arcs;
+    return this.arcs as Map<string, GraphConnector> | null;
   }
 
   public setArcs(arcs: Map<string, GraphConnector>): void {
-    this.arcs = arcs;
+    this.arcs = arcs || this.arcs;
   }
 
   /** @Override */

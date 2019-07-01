@@ -4,7 +4,6 @@ import { GraphDataTable } from '../../interfaces/components/GraphDataTable';
 import { GraphUtil } from '../GraphUtil';
 
 export class GraphDataObjectTypeImpl extends GraphDataImpl implements GraphDataObjectType {
-  public static readonly TYPE: string | null = 'objecttype';
   public static instance: Map<string, GraphDataObjectType> = new Map<string, GraphDataObjectType>();
 
   /** @Override */
@@ -12,32 +11,25 @@ export class GraphDataObjectTypeImpl extends GraphDataImpl implements GraphDataO
     const graphDataObjectType: GraphDataObjectType = new GraphDataObjectTypeImpl();
     graphDataObjectType.setId(object.id);
     graphDataObjectType.setLabel(object.label);
-    graphDataObjectType.setType(object.type);
+    graphDataObjectType.setType(object.elementType);
     graphDataObjectType.setAttributes(object.attributes);
     graphDataObjectType.setTypes(object.types);
     GraphDataObjectTypeImpl.instance.set(graphDataObjectType.getId() as string, graphDataObjectType);
     return graphDataObjectType;
   }
 
-  private types: Map<string, GraphDataTable> | null = new Map<string, GraphDataTable>() || null;
+  private types?: Map<string, GraphDataTable> | null = new Map<string, GraphDataTable>();
 
-  constructor();
-  constructor(types?: Map<string, GraphDataTable>) {
+  constructor() {
     super();
-    this.types = types || new Map<string, GraphDataTable>() || null;
-  }
-
-  /** @Override */
-  public getType(): string | null {
-    return this.TYPE;
   }
 
   public getTypes(): Map<string, GraphDataTable> | null {
-    return this.types;
+    return this.types as Map<string, GraphDataTable> | null;
   }
 
   public setTypes(types: Map<string, GraphDataTable>): void {
-    this.types = types;
+    this.types = types || this.types;
   }
 
   public getTypeRefs(): Map<string, string | null> | null {

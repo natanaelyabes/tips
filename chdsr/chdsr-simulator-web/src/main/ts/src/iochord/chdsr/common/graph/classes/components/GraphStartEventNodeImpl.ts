@@ -6,7 +6,6 @@ import { GraphDataGenerator } from '../../interfaces/components/GraphDataGenerat
 import { GraphDataGeneratorImpl } from './GraphDataGeneratorImpl';
 
 export class GraphStartEventNodeImpl extends GraphEventNodeImpl implements GraphStartEventNode {
-  public static readonly TYPE: string | null = 'start';
   public static instance: Map<string, GraphStartEventNode> = new Map<string, GraphStartEventNode>();
 
   public static deserialize(object: any): GraphStartEventNode | null {
@@ -22,20 +21,14 @@ export class GraphStartEventNodeImpl extends GraphEventNodeImpl implements Graph
     return graphStartEventNode;
   }
 
-  private generator: GraphDataGenerator | null;
+  private generator?: GraphDataGenerator | null;
 
-  constructor(generator?: GraphDataGenerator) {
+  constructor() {
     super();
-    this.generator = generator || null;
-  }
-
-  /** @Override */
-  public getType(): string | null {
-    return this.TYPE;
   }
 
   public getGenerator(): GraphDataGenerator | null {
-    return this.generator;
+    return this.generator as GraphDataGenerator | null;
   }
 
   public setGenerator(generator: GraphDataGenerator): void {

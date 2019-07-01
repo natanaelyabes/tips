@@ -414,9 +414,12 @@ export default class SimulationEditorView extends Vue implements ApplicationHasW
 
   public async testGraphDataStruct(): Promise<void> {
     try {
+
       // Load the model
       const response = await axios.get('http://192.168.11.154:3000/chdsr/api/v1/model/example');
       //const response = await axios.get('http://164.125.62.132:3001/chdsr/api/v1/model/example');
+
+      console.log(response);
 
       // Deserialize the model
       const graph: Graph = GraphImpl.deserialize(response.data) as Graph;
@@ -475,7 +478,7 @@ export default class SimulationEditorView extends Vue implements ApplicationHasW
           const node = new JointGraphNodeImpl();
 
           node.setId(nodeValue.getId() as string);
-          node.setLabel(nodeValue.getLabel() || '' as string);
+          node.setLabel(nodeValue.getLabel() as string);
           node.setType((nodeValue as any)[keys.elementType] as string);
           node.setAttributes(nodeValue.getAttributes() as Map<string, string>);
           node.setPosition({ x: 300, y: 250 });
@@ -574,6 +577,8 @@ export default class SimulationEditorView extends Vue implements ApplicationHasW
         }
 
       }
+
+      console.log(graph);
     } catch (e) {
       console.log(e);
     }
