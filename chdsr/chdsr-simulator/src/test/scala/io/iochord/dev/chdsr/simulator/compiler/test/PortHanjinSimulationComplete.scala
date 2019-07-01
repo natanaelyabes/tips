@@ -3,6 +3,8 @@ package io.iochord.dev.chdsr.simulator.compiler.test
 import io.iochord.dev.chdsr.model.cpn.v1.impl._
 import io.iochord.dev.chdsr.model.cpn.v1._
 import io.iochord.dev.chdsr.simulator.engine.Simulator
+import io.iochord.dev.chdsr.simulator.engine.observer.MarkingObserver
+import io.iochord.dev.chdsr.simulator.engine.subject.MarkingObservable
 
 import scala.collection.mutable._
 import scala.util.control.Breaks._
@@ -23,13 +25,20 @@ import breeze.stats.distributions.Rayleigh
 object PortHanjinSimulationComplete {
   
   def main(args: Array[String]) {
-    case class CaseData(name:String)
+    
+    val subject = new MarkingObservable()
+    subject.addObserver(new MarkingObserver())
+    
+    class CaseData(name:String)
     
     val filterResGroup1 = Set("GC102", "GC101", "GC107", "GC106", "GC105", "GC104", "GC103")
     val filterResGroup2 = Set("TC272", "TC273", "TC271", "TC225", "TC226", "TC223", "TC224", "TC221", "TC265", "TC222", "TC266", "TC263", "TC264", "TC261", "TC262", "RS309", "TC216", "TC214", "RS301", "TC215", "TC212", "TC256", "TC213", "RS304", "TC254", "TC211", "TC255", "RS302", "TC252", "RS303", "TC253", "TC251", "TC245", "TC246", "TC243", "TC244", "TC241", "TH311", "TC242", "TH313", "TH312", "TC236", "TC234", "TC235", "TC232", "TC276", "TC233", "TC274", "TC231", "TC275")
     val filterResGroup3 = Set("YT507", "YT506", "YT508", "YT514", "YT558", "YT513", "YT557", "YT516", "YT515", "YT559", "YT510", "YT554", "YT553", "YT512", "YT556", "YT511", "YT555", "YT550", "YT594", "YT593", "YT552", "YT596", "YT551", "YT595", "YT590", "YT592", "YT518", "YT517", "YT519", "YT525", "YT569", "YT524", "YT527", "YT526", "YT521", "YT565", "YT520", "YT564", "YT523", "YT567", "YT522", "YT566", "YT561", "YT560", "YT563", "YT562", "YT529", "YT528", "YT536", "YT535", "YT579", "YT538", "YT537", "YT532", "YT576", "YT531", "YT575", "YT534", "YT578", "YT533", "YT577", "YT572", "YT571", "YT530", "YT574", "YT573", "YT570", "YT539", "YT503", "YT547", "YT502", "YT546", "YT505", "YT549", "YT504", "YT548", "YT543", "YT587", "YT542", "YT586", "YT501", "YT545", "YT589", "YT500", "YT544", "YT588", "YT583", "YT582", "YT541", "YT585", "YT540", "YT584", "YT581", "YT580")
     
+    case class BindTransition(x:Option[Int], y:Option[String], c:Option[Int]) extends Bind
+    
     case class BindTransInit(x:Option[Int]) extends Bind
+    
     case class BindTransProcess(x:Option[Int], y:Option[String]) extends Bind
     
     val cgraph = CPNGraph()
@@ -40,8 +49,8 @@ object PortHanjinSimulationComplete {
     
     //ENVIRONMENT
     //---------------------- place 1 ------------------
-    val ms1 = new Multiset[colset_CASEID](Map[(colset_CASEID,Long),Int](), classOf[colset_CASEID])
-    ms1 + ((1,0L))
+    val map_1 = Map[(colset_CASEID,Long),Int]( ((1,0L),1))
+    val ms1 = new Multiset[colset_CASEID](map_1, classOf[colset_CASEID])
     val pplace1 = new Place("p1","next_case_id",ms1)
     
     //---------------------- place 2 ------------------
@@ -52,7 +61,7 @@ object PortHanjinSimulationComplete {
     //val ms_res = new Multiset[colset_RES](Map[(colset_RES,Long),Int](), classOf[colset_RES])
     //ms_res + (("TC272",0)) + (("TC273",0)) + (("TC271",0)) + (("YT507",0)) + (("YT506",0)) + (("YT508",0)) + (("YT514",0)) + (("YT513",0)) + (("YT516",0)) + (("YT515",0)) + (("YT510",0)) + (("YT512",0)) + (("YT511",0)) + (("YT594",0)) + (("YT593",0)) + (("YT596",0)) + (("YT595",0)) + (("TC265",0)) + (("YT590",0)) + (("TC266",0)) + (("TC263",0)) + (("YT592",0)) + (("TC264",0)) + (("TC261",0)) + (("TC262",0)) + (("YT518",0)) + (("YT517",0)) + (("YT519",0)) + (("YT525",0)) + (("RS309",0)) + (("YT524",0)) + (("YT527",0)) + (("YT526",0)) + (("YT521",0)) + (("YT520",0)) + (("YT523",0)) + (("YT522",0)) + (("RS301",0)) + (("TC256",0)) + (("RS304",0)) + (("TC254",0)) + (("TC255",0)) + (("RS302",0)) + (("TC252",0)) + (("RS303",0)) + (("TC253",0)) + (("YT529",0)) + (("YT528",0)) + (("YT536",0)) + (("YT535",0)) + (("YT538",0)) + (("YT537",0)) + (("YT532",0)) + (("YT531",0)) + (("YT534",0)) + (("YT533",0)) + (("YT530",0)) + (("TH311",0)) + (("TH313",0)) + (("TH312",0)) + (("YT539",0)) + (("YT547",0)) + (("YT546",0)) + (("YT549",0)) + (("YT548",0)) + (("YT543",0)) + (("YT542",0)) + (("YT545",0)) + (("YT544",0)) + (("YT541",0)) + (("YT540",0)) + (("TC276",0)) + (("TC274",0)) + (("TC275",0)) + (("GC102",0)) + (("YT558",0)) + (("GC101",0)) + (("YT557",0)) + (("YT559",0)) + (("YT554",0)) + (("YT553",0)) + (("YT556",0)) + (("YT555",0)) + (("TC225",0)) + (("YT550",0)) + (("TC226",0)) + (("TC223",0)) + (("YT552",0)) + (("GC107",0)) + (("TC224",0)) + (("YT551",0)) + (("GC106",0)) + (("TC221",0)) + (("GC105",0)) + (("TC222",0)) + (("GC104",0)) + (("GC103",0)) + (("YT569",0)) + (("YT565",0)) + (("YT564",0)) + (("TC216",0)) + (("YT567",0)) + (("YT566",0)) + (("TC214",0)) + (("YT561",0)) + (("TC215",0)) + (("YT560",0)) + (("TC212",0)) + (("YT563",0)) + (("TC213",0)) + (("YT562",0)) + (("TC211",0)) + (("TC251",0)) + (("YT579",0)) + (("YT576",0)) + (("YT575",0)) + (("YT578",0)) + (("YT577",0)) + (("YT572",0)) + (("YT571",0)) + (("TC245",0)) + (("YT574",0)) + (("TC246",0)) + (("YT573",0)) + (("TC243",0)) + (("TC244",0)) + (("TC241",0)) + (("YT570",0)) + (("TC242",0)) + (("YT503",0)) + (("YT502",0)) + (("YT505",0)) + (("YT504",0)) + (("YT587",0)) + (("YT586",0)) + (("YT501",0)) + (("YT589",0)) + (("YT500",0)) + (("YT588",0)) + (("TC236",0)) + (("YT583",0)) + (("YT582",0)) + (("TC234",0)) + (("YT585",0)) + (("TC235",0)) + (("YT584",0)) + (("TC232",0)) + (("TC233",0)) + (("YT581",0)) + (("TC231",0)) + (("YT580",0))
     val map_res = Map[(colset_RES,Long),Int]( (("TC272",0),1),(("TC273",0),1),(("TC271",0),1),(("YT507",0),1),(("YT506",0),1),(("YT508",0),1),(("YT514",0),1),(("YT513",0),1),(("YT516",0),1),(("YT515",0),1),(("YT510",0),1),(("YT512",0),1),(("YT511",0),1),(("YT594",0),1),(("YT593",0),1),(("YT596",0),1),(("YT595",0),1),(("TC265",0),1),(("YT590",0),1),(("TC266",0),1),(("TC263",0),1),(("YT592",0),1),(("TC264",0),1),(("TC261",0),1),(("TC262",0),1),(("YT518",0),1),(("YT517",0),1),(("YT519",0),1),(("YT525",0),1),(("RS309",0),1),(("YT524",0),1),(("YT527",0),1),(("YT526",0),1),(("YT521",0),1),(("YT520",0),1),(("YT523",0),1),(("YT522",0),1),(("RS301",0),1),(("TC256",0),1),(("RS304",0),1),(("TC254",0),1),(("TC255",0),1),(("RS302",0),1),(("TC252",0),1),(("RS303",0),1),(("TC253",0),1),(("YT529",0),1),(("YT528",0),1),(("YT536",0),1),(("YT535",0),1),(("YT538",0),1),(("YT537",0),1),(("YT532",0),1),(("YT531",0),1),(("YT534",0),1),(("YT533",0),1),(("YT530",0),1),(("TH311",0),1),(("TH313",0),1),(("TH312",0),1),(("YT539",0),1),(("YT547",0),1),(("YT546",0),1),(("YT549",0),1),(("YT548",0),1),(("YT543",0),1),(("YT542",0),1),(("YT545",0),1),(("YT544",0),1),(("YT541",0),1),(("YT540",0),1),(("TC276",0),1),(("TC274",0),1),(("TC275",0),1),(("GC102",0),1),(("YT558",0),1),(("GC101",0),1),(("YT557",0),1),(("YT559",0),1),(("YT554",0),1),(("YT553",0),1),(("YT556",0),1),(("YT555",0),1),(("TC225",0),1),(("YT550",0),1),(("TC226",0),1),(("TC223",0),1),(("YT552",0),1),(("GC107",0),1),(("TC224",0),1),(("YT551",0),1),(("GC106",0),1),(("TC221",0),1),(("GC105",0),1),(("TC222",0),1),(("GC104",0),1),(("GC103",0),1),(("YT569",0),1),(("YT565",0),1),(("YT564",0),1),(("TC216",0),1),(("YT567",0),1),(("YT566",0),1),(("TC214",0),1),(("YT561",0),1),(("TC215",0),1),(("YT560",0),1),(("TC212",0),1),(("YT563",0),1),(("TC213",0),1),(("YT562",0),1),(("TC211",0),1),(("TC251",0),1),(("YT579",0),1),(("YT576",0),1),(("YT575",0),1),(("YT578",0),1),(("YT577",0),1),(("YT572",0),1),(("YT571",0),1),(("TC245",0),1),(("YT574",0),1),(("TC246",0),1),(("YT573",0),1),(("TC243",0),1),(("TC244",0),1),(("TC241",0),1),(("YT570",0),1),(("TC242",0),1),(("YT503",0),1),(("YT502",0),1),(("YT505",0),1),(("YT504",0),1),(("YT587",0),1),(("YT586",0),1),(("YT501",0),1),(("YT589",0),1),(("YT500",0),1),(("YT588",0),1),(("TC236",0),1),(("YT583",0),1),(("YT582",0),1),(("TC234",0),1),(("YT585",0),1),(("TC235",0),1),(("YT584",0),1),(("TC232",0),1),(("TC233",0),1),(("YT581",0),1),(("TC231",0),1),(("YT580",0),1) )
-    val ms_res = new Multiset[colset_RES](map_res, classOf[colset_RES])  
+    val ms_res = new Multiset[colset_RES](map_res, classOf[colset_RES]) 
     val pplace_res = new Place("p_res","place_res",ms_res)
     
     val eval_trans1 = (b1: BindTransInit, b2: BindTransInit) => {
@@ -94,7 +103,7 @@ object PortHanjinSimulationComplete {
     val arcExpArc3 = (inp:Any) => inp match { case x:Int => { x+1  } } //arc2 exp
     val TtoBArc3 = (inp:Any) => BindTransInit(inp match { case x:Int => Some(x); case _ => None })
     val BtoTArc3 = (inp:Any) => inp match { case inp:BindTransInit => { inp.x.get } }
-    val addTimeArc3 = (inp:Any) => Math.round(Gaussian(100, 10).draw())
+    val addTimeArc3 = (inp:Any) => inp match { case inp:BindTransInit => Math.round(Gaussian(100, 10).draw()) }
     val arc3 = new Arc[colset_CASEID,BindTransInit]("arc3", pplace1, ttrans1, Direction.TtP)
     arc3.setArcExp(arcExpArc3)
     arc3.setTokenToBind(TtoBArc3)
@@ -788,11 +797,15 @@ object PortHanjinSimulationComplete {
     */
     val globtime = new GlobalTime(0)
     
-    val stopCrit = (globtime: Any) => globtime match { case globtime:GlobalTime => { 
+    Simulator.run(cgraph, 100, globtime, subject)
+    
+    /*
+     * val stopCrit = (globtime: Any) => globtime match { case globtime:GlobalTime => { 
         globtime.time > 3000
       }
     }
     
-    Simulator.fastRun(cgraph, stopCrit, globtime, globtime)
+    Simulator.fastRun(cgraph, stopCrit, globtime, globtime, subject)
+    */
   }
 }

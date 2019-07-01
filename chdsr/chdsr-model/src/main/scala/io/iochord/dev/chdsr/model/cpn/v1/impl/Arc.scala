@@ -11,9 +11,7 @@ class Arc[T,B <:Bind] (
   private var id: String,
   private var place: Place[_],
   private var transition: Transition[_],
-  private var direction: Direction.Value)
-  
-  extends Element {
+  private var direction: Direction.Value) extends Element {
   
   type coltype = T
   
@@ -62,5 +60,5 @@ class Arc[T,B <:Bind] (
   
   def getAddTime():(Any => Long) = { this.addTime }
   
-  def computeAddTime(time:Any) = { this.addTime(time) }
+  def computeAddTime(bind:Any) = { this.addTime(bind) }
 }

@@ -2,20 +2,28 @@ package io.iochord.dev.chdsr.simulator.compiler
 
 import scala.collection.mutable.HashMap
 
-import io.iochord.dev.chdsr.model.cpn.v1.impl.CPNGraph
-import io.iochord.dev.chdsr.model.cpn.v1.impl.Transition
-import io.iochord.dev.chdsr.model.cpn.v1.impl.Place
-import io.iochord.dev.chdsr.model.cpn.v1.impl.Arc
+import io.iochord.dev.chdsr.model.cpn.v1.impl._
+import io.iochord.dev.chdsr.simulator.engine.subject.MarkingObservable
+import io.iochord.dev.chdsr.simulator.engine.Simulator
 
 abstract class Simulation {
-  val cpnGraph = CPNGraph()
+  val cgraph = CPNGraph()
+  val globtime = new GlobalTime(0)
+  var step:Int = 10
+  var stopCrit:Any => Boolean = null
+  var inpStopCrit:Any = null
+  var subject:MarkingObservable = null
+ 
+  def runSimulation(): Unit = {
+    if(stopCrit != null || inpStopCrit != null) {
+      Simulator.fastRun(cgraph, stopCrit, inpStopCrit, globtime, subject)
+    }
+    else {
+      Simulator.run(cgraph, step, globtime, subject)
+    }
+  }
   
   val vars = HashMap[String,Any]() // some value generated from simulation will be saved here
-  
-  def runSimulation(cpnGraph: CPNGraph): Unit
-  def expState(): Unit
-  
-  def calcKPI[T](kpiFunc:T): Double
   
   def printDebugging(txtDebugging: String): Unit = {
     println(txtDebugging)

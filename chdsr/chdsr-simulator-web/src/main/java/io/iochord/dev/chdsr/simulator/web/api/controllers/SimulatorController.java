@@ -64,7 +64,6 @@ public class SimulatorController extends AServiceController {
 			    
 		MemoryScalaCompiler memoryScalaFactory = new MemoryScalaCompiler(myclassSyntax);
 	    Simulation memoryScala = memoryScalaFactory.getInstance();
-		memoryScala.calcKPI("Test KPI");
 		memoryScala.putVar("test3","Test Response");
 	    String result = (String) memoryScala.getVar("test1");
 		return result;
