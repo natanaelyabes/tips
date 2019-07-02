@@ -312,7 +312,6 @@ public class Sbpnet2CpnmlBiConverter implements Converter<Sbpnet, PetriNet> {
 					
 					eInputSets.put(n, Arrays.asList(new Node[] { nap1s }));
 					eOutputSets.put(n, Arrays.asList(new Node[] { nap3s }));
-					
 				}
 				if (n instanceof Branch) {
 					Branch b = (Branch) n;
