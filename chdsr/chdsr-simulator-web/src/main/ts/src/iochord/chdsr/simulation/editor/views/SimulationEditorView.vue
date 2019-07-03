@@ -18,7 +18,6 @@
           <div class="header">Control</div>
           <div class="menu">
             <a class="ui basic button item">
-              <!-- <i class="big clock outline icon"></i> -->
               <div class="image-icon">
                 <img src="@/assets/images/icons/simulation_editor_icon/control/control.png" alt="" class="ui centered image" />
               </div>
@@ -302,7 +301,7 @@ export default class SimulationEditorView extends ApplicationWrapperView {
 
   public async mounted(): Promise<void> {
     try {
-      this.graphData = await axios.get('http://192.168.11.154:3000/chdsr/api/v1/model/example');
+      this.graphData = await axios.get('http://164.125.62.134:3001/chdsr/api/v1/model/example');
     } catch (e) {
       console.log(e);
     }
@@ -311,6 +310,7 @@ export default class SimulationEditorView extends ApplicationWrapperView {
     this.forceReRender();
   }
 
+  /** @Override */
   public overrideBrowserProperties(): void {
     this.setDocumentTitle('Simulation Editor: Editor');
   }

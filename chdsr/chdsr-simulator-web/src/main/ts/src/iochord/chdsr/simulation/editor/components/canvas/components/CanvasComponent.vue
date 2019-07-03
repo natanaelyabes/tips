@@ -5,7 +5,6 @@
       <div id="canvas"></div>
     </div>
 
-
     <!-- Model Modals -->
     <template v-for="type in Array.from(nodeTypes)">
       <template v-if="type === 'start'">
@@ -14,11 +13,11 @@
 
       <template v-if="type === 'branch'">
         <BranchNodeModal label="this is branch"
-        @changeLabel="changeLabelFromChild($event)"
-        @changeSelectedGate="selectedGateFromChild($event)"
-        @changeSelectedType="selectedTypeFromChild($event)"
-        @changeSelectedRule="selectedRuleFromChild($event)"
-        v-bind:id="type" v-bind:key="type"/>
+          @changeLabel="changeLabelFromChild($event)"
+          @changeSelectedGate="selectedGateFromChild($event)"
+          @changeSelectedType="selectedTypeFromChild($event)"
+          @changeSelectedRule="selectedRuleFromChild($event)"
+          v-bind:id="type" v-bind:key="type" />
       </template>
 
       <template v-if="type === 'activity'">
@@ -28,13 +27,7 @@
       <template v-if="type === 'stop'">
         <StopNodeModal v-bind:id="type" v-bind:key="type"/>
       </template>
-
     </template>
-
-    <template v-if="Array.from(nodeTypes).length > 0">
-      {{ Array.from(nodeTypes) }}
-    </template>
-
   </div>
 </template>
 
@@ -75,7 +68,7 @@ import { GraphNode } from '@/iochord/chdsr/common/graph/interfaces/GraphNode';
 // Enums
 import { NODE_TYPE } from '@/iochord/chdsr/common/lib/joint/shapes/chdsr/enums/NODE';
 import { ARC_TYPE } from '@/iochord/chdsr/common/lib/joint/shapes/chdsr/enums/ARC';
-import BaseComponent from '../../../../../common/lib/vue/classes/BaseComponent';
+import BaseComponent from '@/iochord/chdsr/common/lib/vue/classes/BaseComponent';
 
 // Components
 import StartNodeModal from '@/iochord/chdsr/common/kpi/components/modals/StartNodeModal.vue';
@@ -98,11 +91,14 @@ declare const $: any;
 export default class CanvasComponent extends BaseComponent {
   @Prop() public response: any;
 
-  // Joint.js global variable
-  public graphPage: JointGraphPageImpl = new JointGraphPageImpl();
-
   // Find all node types in the graph
   public nodeTypes: Set<string> = new Set<string>();
+
+  // Graph data
+  public graph?: Graph;
+
+  // Active element
+  public selectedElement?: GraphElement;
 
   public parentLabel: string = '';
   public parentSelectedGate: string = '';
@@ -126,19 +122,17 @@ export default class CanvasComponent extends BaseComponent {
   }
 
   public mounted(): void {
-    this.testGraphDataStruct();
+    this.loadGraph();
     this.$forceUpdate();
   }
 
-  public testGraphDataStruct(): void {
+  public loadGraph(): void {
     try {
       // Deserialize the model
-      const graph: Graph = GraphImpl.deserialize(this.response.data) as Graph;
-
-      console.log(graph);
+      this.graph = GraphImpl.deserialize(this.response.data) as Graph;
 
       // Loop the model page
-      for (const [key, value] of graph.getPages() as Map<string, GraphPage>) {
+      for (const [key, value] of this.graph.getPages() as Map<string, GraphPage>) {
         const jointPage: JointGraphPageImpl = new JointGraphPageImpl();
         const canvasWidth: number = $('.editor.canvas').innerWidth();
         const canvasHeight: number = $('.editor.canvas').innerHeight();
@@ -210,6 +204,7 @@ export default class CanvasComponent extends BaseComponent {
           // render node
           node.render(jointPage.getGraph());
 
+          // Add node type to nodeTypes set
           this.nodeTypes.add(node.getType() as string);
         }
 
@@ -246,8 +241,8 @@ export default class CanvasComponent extends BaseComponent {
             const currentElement = elementView.model;
             currentElement.attr('body/stroke', 'red');
             const currentElementType = currentElement.attributes.type;
-
-            console.log(currentElementType);
+            const currentElementNodeId = currentElement.attributes.nodeId;
+            console.log(currentElementNodeId);
 
             if (currentElementType === 'start') {
               $('#start').modal('show');
@@ -288,7 +283,6 @@ export default class CanvasComponent extends BaseComponent {
               },
             });
           }
-
         }
       }
     } catch (e) {
