@@ -22,7 +22,7 @@ export default class SandboxTestView extends BaseView {
 
   /** @Override */
   public mounted(): void {
-    const socket = SocketIO('http://localhost:3001');
+    const socket = SocketIO('http://164.125.62.134:3002');
     socket.emit('sandbox test', { test: 'test payload' });
 
     socket.on('sandbox test message', (data: any) => {
