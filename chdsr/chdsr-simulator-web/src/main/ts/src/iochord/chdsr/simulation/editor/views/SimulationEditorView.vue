@@ -301,6 +301,7 @@ export default class SimulationEditorView extends ApplicationWrapperView {
 
   public async mounted(): Promise<void> {
     try {
+      console.log('SimulationEditorView works!');
       this.graphData = await axios.get('http://164.125.62.134:3001/chdsr/api/v1/model/example');
     } catch (e) {
       console.log(e);
