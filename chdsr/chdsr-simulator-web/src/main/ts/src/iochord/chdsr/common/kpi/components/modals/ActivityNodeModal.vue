@@ -26,21 +26,79 @@
                   <div class="row">
                     <div class="four wide column">Activity Type</div>
                     <div class="twelve wide column">
-                      <select class="ui dropdown" @change="handleSelectedActivityType()" v-model="_selectedActivityType">
+                      <select class="ui dropdown" v-model="selectedActivityType">
                         <option value="standard">Standard</option>
                         <option value="concurrent">Concurrent Batch Process</option>
                         <option value="split">Split Module Process</option>
                       </select>
                     </div>
                   </div>
-                  <div id="basic-standard-sm-1" class="row" style="padding:0px"></div>
-                  <div id="basic-cbp-sm-1" class="row" style="padding:0px"></div>
-                  <div id="basic-cbp-sm-2" class="row" style="padding:0px"></div>
-                  <div id="basic-cbp-sm-3" class="row" style="padding:0px"></div>
-                  <div id="basic-split-sm-1" class="row" style="padding:0px"></div>
-                  <div id="basic-split-sm-2" class="sixteen wide column" style="padding:0px"></div>
-                  <div id="basic-split-sm-3" class="row" style="padding:0px"></div>
-                  <div id="basic-split-sm-4" class="row" style="padding:0px"></div>
+                  <div id="basic-standard-sm-1" class="row" style="visibility:visible">
+                    <div class="four wide column">Resources</div>
+                    <div class="nine wide column">
+                      <input type="text" id="resources_txt_label">
+                    </div>
+                    <div class="three wide column">
+                      <button class="ui button">...</button>
+                    </div>
+                  </div>
+                  <div id="basic-cbp-sm-1" class="row" style="visibility:hidden">
+                    <div class="four wide column">Process Criteria</div>
+                    <div class="nine wide column">
+                      <input type="text" id="pc_txt_label">
+                    </div>
+                    <div class="three wide column">
+                      <button class="ui button">...</button>
+                    </div>
+                  </div>
+                  <div id="basic-cbp-sm-2" class="row" style="visibility:hidden">
+                    <div class="four wide column">Resources</div>
+                    <div class="nine wide column">
+                      <input type="text" id="resources_txt_label">
+                    </div>
+                    <div class="three wide column">
+                      <button class="ui button">...</button>
+                    </div>
+                  </div>
+                  <div id="basic-cbp-sm-3" class="row" style="visibility:hidden">
+                    <div class="four wide column">Limit</div>
+                    <div class="nine wide column">
+                      <input type="text" id="limit_txt_label">
+                    </div>
+                  </div>
+                  <div id="basic-split-sm-1" class="row" style="visibility:hidden">
+                    <div class="four wide column">Split Criteria</div>
+                    <div class="nine wide column">
+                      <input type="text" id="split_criteria_txt_label">
+                    </div>
+                    <div class="three wide column">
+                      <button class="ui button">...</button>
+                    </div>
+                  </div>
+                  <div id="basic-split-sm-2" class="sixteen wide column" style="visibility:hidden">
+                    <div class="inline field">
+                      <input type="checkbox" class="hidden">
+                      <label>Report scrap</label>
+                    </div>
+                  </div>
+                  <div id="basic-split-sm-3" class="row" style="visibility:hidden">
+                    <div class="four wide column">Resources</div>
+                    <div class="nine wide column">
+                      <input type="text" id="resources_txt_label">
+                    </div>
+                    <div class="three wide column">
+                      <button class="ui button">...</button>
+                    </div>
+                  </div>
+                  <div id="basic-split-sm-4" class="row" style="visibility:hidden">
+                    <div class="four wide column">Split Criteria</div>
+                    <div class="nine wide column">
+                      <input type="text" id="split_criteria2_txt_label">
+                    </div>
+                    <div class="three wide column">
+                      <button class="ui button">...</button>
+                    </div>
+                  </div>
                   <div class="sixteen wide column">
                     <div class="inline field">
                       <input type="checkbox" class="hidden">
@@ -153,161 +211,47 @@ import { Component, Prop, Vue } from 'vue-property-decorator';
 declare const $: any;
 @Component
 export default class ActivityNodeModal extends Vue {
-  @Prop() private selectedActivityType !: string;
-  
-  private _selectedActivityType !: string;
+  private selectedActivityType = '';
 
-  private basicStandardSM1 !: string;
-  private basicCbpSM1 !: string;
-  private basicCbpSM2 !: string;
-  private basicCbpSM3 !: string;
-  private basicSplitSM1 !: string;
-  private basicSplitSM2 !: string;
-  private basicSplitSM3 !: string;
-  private basicSplitSM4 !: string;
+  private updated(): void {
+    if (this.selectedActivityType === 'standard') {
+      $('#basic-standard-sm-1').attr('style', 'visibility:visible');
+      $('#basic-cbp-sm-1').attr('style', 'visibility:hidden');
+      $('#basic-cbp-sm-2').attr('style', 'visibility:hidden');
+      $('#basic-cbp-sm-3').attr('style', 'visibility:hidden');
 
-  public handleSelectedActivityType(): void{
-    this.$emit('changeSelectedActivityType', this._selectedActivityType);
-    this.showDetailBasic();
-  }
+      $('#basic-split-sm-1').attr('style', 'visibility:hidden');
+      $('#basic-split-sm-2').attr('style', 'visibility:hidden');
+      $('#basic-split-sm-3').attr('style', 'visibility:hidden');
+      $('#basic-split-sm-3').attr('style', 'visibility:hidden');
+    } else if (this.selectedActivityType === 'concurrent') {
+      $('#basic-standard-sm-1').attr('style', 'visibility:hidden');
 
-  public beforeMount(): void{
-    this._selectedActivityType = this.selectedActivityType;
-    this.basicStandardSM1 = "";
-    this.basicCbpSM1 = "";
-    this.basicCbpSM2 = "";
-    this.basicCbpSM3 = "";
-    this.basicSplitSM1 = "";
-    this.basicSplitSM2 = "";
-    this.basicSplitSM3 = "";
-    this.basicSplitSM4 = "";
+      $('#basic-cbp-sm-1').attr('style', 'visibility:visible');
+      $('#basic-cbp-sm-2').attr('style', 'visibility:visible');
+      $('#basic-cbp-sm-3').attr('style', 'visibility:visible');
+
+      $('#basic-split-sm-1').attr('style', 'visibility:hidden');
+      $('#basic-split-sm-2').attr('style', 'visibility:hidden');
+      $('#basic-split-sm-3').attr('style', 'visibility:hidden');
+      $('#basic-split-sm-3').attr('style', 'visibility:hidden');
+    } else {
+      $('#basic-standard-sm-1').attr('style', 'visibility:hidden');
+
+      $('#basic-cbp-sm-1').attr('style', 'visibility:hidden');
+      $('#basic-cbp-sm-2').attr('style', 'visibility:hidden');
+      $('#basic-cbp-sm-3').attr('style', 'visibility:hidden');
+
+      $('#basic-split-sm-1').attr('style', 'visibility:visible');
+      $('#basic-split-sm-2').attr('style', 'visibility:visible');
+      $('#basic-split-sm-3').attr('style', 'visibility:visible');
+      $('#basic-split-sm-4').attr('style', 'visibility:visible');
+    }
   }
 
   private mounted(): void {
     $('.ui.dropdown').dropdown();
     $('.tabular.menu .item').tab();
-
-    this.basicStandardSM1 += "<div class=\"four wide column\">Resources</div>";
-    this.basicStandardSM1 += "<div class=\"nine wide column\">";
-    this.basicStandardSM1 += "<input type=\"text\" id=\"resources_txt_label\">";
-    this.basicStandardSM1 += "</div>";
-    this.basicStandardSM1 += "<div class=\"three wide column\">";
-    this.basicStandardSM1 += "<button class=\"ui button\">...</button>";
-    this.basicStandardSM1 += "</div>";
-
-    this.basicCbpSM1 += "<div class=\"four wide column\">Process Criteria</div>";
-    this.basicCbpSM1 += "<div class=\"nine wide column\">";
-    this.basicCbpSM1 += "<input type=\"text\" id=\"pc_txt_label\">";
-    this.basicCbpSM1 += "</div>";
-    this.basicCbpSM1 += "<div class=\"three wide column\">";
-    this.basicCbpSM1 += "<button class=\"ui button\">...</button>";
-    this.basicCbpSM1 += "</div>";
-
-    this.basicCbpSM2 += "<div class=\"four wide column\">Resources</div>";
-    this.basicCbpSM2 += "<div class=\"nine wide column\">";
-    this.basicCbpSM2 += "<input type=\"text\" id=\"resources_txt_label\">";
-    this.basicCbpSM2 += "</div>";
-    this.basicCbpSM2 += "<div class=\"three wide column\">";
-    this.basicCbpSM2 += "<button class=\"ui button\">...</button>";
-    this.basicCbpSM2 += "</div>";
-
-    this.basicCbpSM3 += "<div class=\"four wide column\">Limit</div>";
-    this.basicCbpSM3 += "<div class=\"nine wide column\">";
-    this.basicCbpSM3 += "<input type=\"text\" id=\"limit_txt_label\">";
-    this.basicCbpSM3 += "</div>";
-
-    this.basicSplitSM1 += "<div class=\"four wide column\">Split Criteria</div>";
-    this.basicSplitSM1 += "<div class=\"nine wide column\">";
-    this.basicSplitSM1 += "<input type=\"text\" id=\"split_criteria_txt_label\">";
-    this.basicSplitSM1 += "</div>";
-    this.basicSplitSM1 += "<div class=\"three wide column\">";
-    this.basicSplitSM1 += "<button class=\"ui button\">...</button>";
-    this.basicSplitSM1 += "</div>";
-
-    this.basicSplitSM2 += "<div class=\"inline field\">";
-    this.basicSplitSM2 += "<input type=\"checkbox\" class=\"hidden\">";
-    this.basicSplitSM2 += "<label>Report scrap</label>";
-    this.basicSplitSM2 += "</div>";
-
-    this.basicSplitSM3 += "<div class=\"four wide column\">Resources</div>";
-    this.basicSplitSM3 += "<div class=\"nine wide column\">";
-    this.basicSplitSM3 += "<input type=\"text\" id=\"resources_txt_label\">";
-    this.basicSplitSM3 += "</div>";
-    this.basicSplitSM3 += "<div class=\"three wide column\">";
-    this.basicSplitSM3 += "<button class=\"ui button\">...</button>";
-    this.basicSplitSM3 += "</div>";
-
-    this.basicSplitSM4 += "<div class=\"four wide column\">Split Criteria</div>";
-    this.basicSplitSM4 += "<div class=\"nine wide column\">";
-    this.basicSplitSM4 += "<input type=\"text\" id=\"split_criteria2_txt_label\">";
-    this.basicSplitSM4 += "</div>";
-    this.basicSplitSM4 += "<div class=\"three wide column\">";
-    this.basicSplitSM4 += "<button class=\"ui button\">...</button>";
-    this.basicSplitSM4 += "</div>";
   }
-
-  public showDetailBasic(): void{
-    if(this._selectedActivityType === 'standard'){
-      $('#basic-standard-sm-1').html(this.basicStandardSM1);
-      $('#basic-standard-sm-1').attr('style','padding-top:14px;padding-bottom:14px;');
-
-      $('#basic-cbp-sm-1').html('');
-      $('#basic-cbp-sm-1').attr('style','padding:0px');
-      $('#basic-cbp-sm-2').html('');
-      $('#basic-cbp-sm-2').attr('style','padding:0px');
-      $('#basic-cbp-sm-3').html('');
-      $('#basic-cbp-sm-3').attr('style','padding:0px');
-
-      $('#basic-split-sm-1').html('');
-      $('#basic-split-sm-1').attr('style','padding:0px');
-      $('#basic-split-sm-2').html('');
-      $('#basic-split-sm-2').attr('style','padding:0px');
-      $('#basic-split-sm-3').html('');
-      $('#basic-split-sm-3').attr('style','padding:0px');
-      $('#basic-split-sm-4').html('');
-      $('#basic-split-sm-4').attr('style','padding:0px');
-    }else if(this._selectedActivityType === 'concurrent'){
-      $('#basic-standard-sm-1').html('');
-      $('#basic-standard-sm-1').attr('style','padding:0px');
-      
-      $('#basic-cbp-sm-1').html(this.basicCbpSM1);
-      $('#basic-cbp-sm-1').attr('style','padding-top:14px;padding-bottom:14px;');
-      $('#basic-cbp-sm-2').html(this.basicCbpSM2);
-      $('#basic-cbp-sm-2').attr('style','padding-top:14px;padding-bottom:14px;');
-      $('#basic-cbp-sm-3').html(this.basicCbpSM3);
-      $('#basic-cbp-sm-3').attr('style','padding-top:14px;padding-bottom:14px;');
-
-      $('#basic-split-sm-1').html('');
-      $('#basic-split-sm-1').attr('style','padding:0px');
-      $('#basic-split-sm-2').html('');
-      $('#basic-split-sm-2').attr('style','padding:0px');
-      $('#basic-split-sm-3').html('');
-      $('#basic-split-sm-3').attr('style','padding:0px');
-      $('#basic-split-sm-4').html('');
-      $('#basic-split-sm-4').attr('style','padding:0px');
-    }else{
-      $('#basic-standard-sm-1').html('');
-      $('#basic-standard-sm-1').attr('style','padding:0px');
-      $('#basic-cbp-sm-1').html('');
-      $('#basic-cbp-sm-1').attr('style','padding:0px');
-      $('#basic-cbp-sm-2').html('');
-      $('#basic-cbp-sm-2').attr('style','padding:0px');
-      $('#basic-cbp-sm-3').html('');
-      $('#basic-cbp-sm-3').attr('style','padding:0px');
-
-      $('#basic-split-sm-1').html(this.basicSplitSM1);
-      $('#basic-split-sm-1').attr('style','padding-top:14px;padding-bottom:14px;');
-      $('#basic-split-sm-2').html(this.basicSplitSM2);
-      $('#basic-split-sm-2').attr('style','padding-top:14px;padding-bottom:14px;');
-      $('#basic-split-sm-3').html(this.basicSplitSM3);
-      $('#basic-split-sm-3').attr('style','padding-top:14px;padding-bottom:14px;');
-      $('#basic-split-sm-4').html(this.basicSplitSM4);
-      $('#basic-split-sm-4').attr('style','padding-top:14px;padding-bottom:14px;');
-    }
-  }
-
-  private updated(): void {
-    
-  }  
 }
 </script>

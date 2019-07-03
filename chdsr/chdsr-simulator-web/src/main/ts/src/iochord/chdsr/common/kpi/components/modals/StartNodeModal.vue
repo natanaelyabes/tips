@@ -12,7 +12,7 @@
               Label
             </div>
             <div class="thirteen wide column">
-              <input type="text" @change="handleChangedLabel()" v-model="_startLabel" id="start_txt_label" />
+              <input type="text" v-model="label" id="start_txt_label" />
             </div>
           </div>
           <div class="row">
@@ -20,7 +20,7 @@
               Generator
             </div>
             <div class="ten wide column">
-              <input type="text" @change="handleChangedGenerator()" v-model="_generator" id="start_txt_generator" />
+              <input type="text" v-model="generator" id="start_txt_generator" />
             </div>
             <div class="three wide column">
               <button class="ui button">...</button>
@@ -47,23 +47,7 @@ declare const $: any;
 
 @Component
 export default class StartNodeModal extends Vue {
-  @Prop() private startLabel!: string;
-  @Prop() private generator!: string;
-
-  private _startLabel!:string;
-  private _generator!:string;
-
-  public handleChangedLabel(): void{
-    this.$emit('changeStartLabel', this._startLabel);
-  }
-
-  public handleChangedGenerator(): void{
-    this.$emit('changeGenerator', this._generator);
-  }
-
-  private beforeMount(): void{
-    this._startLabel = this.startLabel;
-    this._generator = this.generator;
-  }
+  @Prop(String) private label?: string;
+  @Prop(String) private generator?: string;
 }
 </script>

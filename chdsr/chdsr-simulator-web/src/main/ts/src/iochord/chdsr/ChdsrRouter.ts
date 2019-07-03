@@ -5,8 +5,9 @@ import { RouteConfig } from 'vue-router';
 import { ApplicationEnum, BaseUrlEnum } from '@/iochord/chdsr/common/enums/index';
 
 // Router
-import ChdsrHomeRouter from './home/routes/HomeRouter';
+import ChdsrHomeRouter from '@/iochord/chdsr/home/routes/HomeRouter';
 import SimulationEditorRouter from '@/iochord/chdsr/simulation/editor/routes/SimulationEditorRouter';
+import SandboxTestRouter from '@/iochord/chdsr/sandbox/routes/SandboxTestRouter';
 
 // Route config
 export default [
@@ -16,6 +17,7 @@ export default [
     children: [
       ...ChdsrHomeRouter as RouteConfig[],
       ...SimulationEditorRouter as RouteConfig[],
+      ...SandboxTestRouter as RouteConfig[],
     ],
   },
 ] as RouteConfig[];
