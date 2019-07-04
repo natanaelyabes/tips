@@ -45,15 +45,15 @@ object Simulator {
           transitions = transitions_tmp
         }
         
-        val r = new java.util.Random();
+        val r = new java.util.Random()
         val transition = transitions(r.nextInt(transitions.length))
         //println("================ Step: "+c+" | globtime: "+globtime.time+" ================")
         //println("Transition: "+transition.getId(),transition.getName())
         //println("Before")
         //net.allPlaces.foreach(place => { val multiset = place.getcurrentMarking().multiset; println(place.getId(),multiset) })
         
-        val markbefore = Map[String,String]()
-        val markafter = Map[String,String]()
+        val markbefore = Map[String,Any]()
+        val markafter = Map[String,Any]()
         
         transition.getIn().foreach(arc => { val multiset = arc.getPlace().getcurrentMarking().multiset; markbefore.put(arc.getPlace().getId(),multiset.toString()) } )
         transition.getOut().foreach(arc => { val multiset = arc.getPlace().getcurrentMarking().multiset; markbefore.put(arc.getPlace().getId(),multiset.toString()) } )
@@ -105,8 +105,8 @@ object Simulator {
         //println("Before")
         //net.allPlaces.foreach(place => { val multiset = place.getcurrentMarking().multiset; println(place.getId(),multiset) })
         
-        val markbefore = Map[String,String]()
-        val markafter = Map[String,String]()
+        val markbefore = Map[String,Any]()
+        val markafter = Map[String,Any]()
         
         transition.getIn().foreach(arc => { val multiset = arc.getPlace().getcurrentMarking().multiset; markbefore.put(arc.getPlace().getId(),multiset.toString()) } )
         transition.getOut().foreach(arc => { val multiset = arc.getPlace().getcurrentMarking().multiset; markbefore.put(arc.getPlace().getId(),multiset.toString()) } )
@@ -127,5 +127,10 @@ object Simulator {
         c += 1
       }
     }
+    
+    if (stopCrit(inpStopCrit))
+      println("stop criteria meet in step : "+c)
+    else
+      println("stop - no more enabled transitions")
   }
 }
