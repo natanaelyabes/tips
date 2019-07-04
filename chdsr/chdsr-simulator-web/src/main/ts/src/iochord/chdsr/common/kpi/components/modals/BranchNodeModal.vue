@@ -33,47 +33,9 @@
               </select>
             </div>
           </div>
-          <div id="row_branches_rule" class="row" style="visibility:hidden">
-            <div class="four wide column">Rule</div>
-            <div class="twelve wide column">
-              <select class="ui dropdown" @change="handleSelectedRule()" v-model="_selectedRule">
-                <option value="rule">Rule</option>
-                <option value="data">Data</option>
-                <option value="probability">Probability</option>
-              </select>
-            </div>
-          </div>
-          <div id="row_branches_if" class="row" style="visibility:hidden">
-            <div class="sixteen wide column">
-              <h4>If</h4>
-            </div>
-          </div>
-          <div id="row_branches_tbl" class="row" style="visibility:hidden">
-            <div class="sixteen wide column">
-              <table class="ui celled compact table">
-                <thead>
-                  <tr>
-                    <th>Condition</th>
-                    <th>
-                      <button id="btn_add_rule" class="ui positive basic button">
-                        <i class="plus icon"></i>
-                      </button>
-                    </th>
-                  </tr>
-                </thead>
-                <tbody id="tb_add_row">
-                  <tr>
-                    <td>Case.loan > 5000 and case.bank = 'A'</td>
-                    <td>
-                      <button id="btn_del_rule" class="ui negative basic button">
-                        <i class="close icon"></i>
-                      </button>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
+          <div id="row_branches_rule" class="row" style="padding:0px"></div>
+          <div id="row_branches_if" class="row" style="padding:0px"></div>
+          <div id="row_branches_tbl" class="row" style="padding:0px"></div>
         </div>
       </div>
     </div>
@@ -88,6 +50,7 @@
 
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
+import store from '../../../../../../store';
 
 declare const $: any;
 @Component
@@ -101,6 +64,10 @@ export default class BranchNodeModal extends Vue {
   private _selectedGate!: string;
   private _selectedType!: string;
   private _selectedRule!: string;
+
+  private rowBranchesRuleContent!: string;
+  private rowBranchesIfContent!: string;
+  private rowBranchesTblContent!: string;
 
   public handleChangedLabel(): void {
     this.$emit('changeLabel', this._label);
@@ -131,18 +98,60 @@ export default class BranchNodeModal extends Vue {
     this._selectedGate = this.selectedGate;
     this._selectedType = this.selectedType;
     this._selectedRule = this.selectedRule;
+
+    this.rowBranchesRuleContent = '';
+    this.rowBranchesIfContent = '';
+    this.rowBranchesTblContent = ''
   }
 
   public mounted(): void {
     $('.ui.dropdown').dropdown();
     $('.tabular.menu .item').tab();
 
+    this.rowBranchesRuleContent += '<div class=\'four wide column\'>Rule</div>';
+    this.rowBranchesRuleContent += '<div class=\'seven wide column\'>';
+    this.rowBranchesRuleContent += '<select class=\'ui dropdown\' @change=\'handleSelectedRule()\' v-model=\'_selectedRule\'>';
+    this.rowBranchesRuleContent += '<option value=\'rule\'>Rule</option>';
+    this.rowBranchesRuleContent += '<option value=\'data\'>Data</option>';
+    this.rowBranchesRuleContent += '<option value=\'probability\'>Probability</option>';
+    this.rowBranchesRuleContent += '</select>';
+    this.rowBranchesRuleContent += '</div>';
+
+    this.rowBranchesIfContent += '<div class=\'sixteen wide column\'>';
+    this.rowBranchesIfContent += '<h4>If</h4>';
+    this.rowBranchesIfContent += '</div>';
+
+    this.rowBranchesTblContent += '<div class=\'sixteen wide column\'>';
+    this.rowBranchesTblContent += '<table class=\'ui celled compact table\'>';
+    this.rowBranchesTblContent += '<thead>';
+    this.rowBranchesTblContent += '<tr>';
+    this.rowBranchesTblContent += '<th>Condition</th>';
+    this.rowBranchesTblContent += '<th>';
+    this.rowBranchesTblContent += '<button id=\'btn_add_rule\' class=\'ui positive basic button\'>';
+    this.rowBranchesTblContent += '<i class=\'plus icon\'></i>';
+    this.rowBranchesTblContent += '</button>';
+    this.rowBranchesTblContent += '</th>';
+    this.rowBranchesTblContent += '</tr>';
+    this.rowBranchesTblContent += '</thead>';
+    this.rowBranchesTblContent += '<tbody id=\'tb_add_row\'>';
+    this.rowBranchesTblContent += '<tr>';
+    this.rowBranchesTblContent += '<td>Case.loan > 5000 and case.bank = \'A\'</td>';
+    this.rowBranchesTblContent += '<td>';
+    this.rowBranchesTblContent += '<button id=\'btn_del_rule\' class=\'ui negative basic button\'>';
+    this.rowBranchesTblContent += '<i class=\'close icon\'></i>';
+    this.rowBranchesTblContent += '</button>';
+    this.rowBranchesTblContent += '</td>';
+    this.rowBranchesTblContent += '</tr>';
+    this.rowBranchesTblContent += '</tbody>';
+    this.rowBranchesTblContent += '</table>';
+    this.rowBranchesTblContent += '</div>';
+
     $('#btn_add_rule').click(() => {
       let new_row = '<tr>';
-      new_row += '<td>Case.loan > 5000 and case.bank = "A"</td>';
+      new_row += '<td>Case.loan > 5000 and case.bank = \'A\'</td>';
       new_row += '<td>';
-      new_row += '<button id="btn_del_rule" class="ui negative basic button">';
-      new_row += '<i class="close icon"></i>';
+      new_row += '<button id=\'btn_del_rule\' class=\'ui negative basic button\'>';
+      new_row += '<i class=\'close icon\'></i>';
       new_row += '</button>';
       new_row += '</td>';
       new_row += '</tr>';
@@ -158,13 +167,19 @@ export default class BranchNodeModal extends Vue {
 
   public showCondition(): void {
     if (this._selectedGate === 'xor' && this._selectedType === 'split') {
-      $('#row_branches_rule').attr('style', 'visibility:visible');
-      $('#row_branches_if').attr('style', 'visibility:visible');
-      $('#row_branches_tbl').attr('style', 'visibility:visible');
+      $('#row_branches_rule').html(this.rowBranchesRuleContent);
+      $('#row_branches_rule').attr('style','padding-top:14px;padding-bottom:14px;');
+      $('#row_branches_if').html(this.rowBranchesIfContent);
+      $('#row_branches_if').attr('style','padding-top:14px;padding-bottom:14px;');
+      $('#row_branches_tbl').html(this.rowBranchesTblContent);
+      $('#row_branches_tbl').attr('style','padding-top:14px;padding-bottom:14px;');
     } else {
-      $('#row_branches_rule').attr('style', 'visibility:hidden');
-      $('#row_branches_if').attr('style', 'visibility:hidden');
-      $('#row_branches_tbl').attr('style', 'visibility:hidden');
+      $('#row_branches_rule').html('');
+      $('#row_branches_rule').attr('style','padding:0px');
+      $('#row_branches_if').html('');
+      $('#row_branches_if').attr('style','padding:0px');
+      $('#row_branches_tbl').html('');
+      $('#row_branches_tbl').attr('style','padding:0px');
     }
   }
 }
