@@ -43,25 +43,26 @@
 
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
+import SemanticComponent from '../../../ui/semantic/SemanticComponent';
 declare const $: any;
 
 @Component
-export default class StartNodeModal extends Vue {
+export default class StartNodeModal extends SemanticComponent {
   @Prop() private startLabel!: string;
   @Prop() private generator!: string;
 
-  private _startLabel!:string;
-  private _generator!:string;
+  private _startLabel!: string;
+  private _generator!: string;
 
-  public handleChangedLabel(): void{
+  public handleChangedLabel(): void {
     this.$emit('changeStartLabel', this._startLabel);
   }
 
-  public handleChangedGenerator(): void{
+  public handleChangedGenerator(): void {
     this.$emit('changeGenerator', this._generator);
   }
 
-  private beforeMount(): void{
+  private beforeMount(): void {
     this._startLabel = this.startLabel;
     this._generator = this.generator;
   }

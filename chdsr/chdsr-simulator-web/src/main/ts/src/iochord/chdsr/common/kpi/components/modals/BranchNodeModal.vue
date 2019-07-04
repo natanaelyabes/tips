@@ -50,11 +50,11 @@
 
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
-import store from '../../../../../../store';
+import SemanticComponent from '../../../ui/semantic/SemanticComponent';
 
 declare const $: any;
 @Component
-export default class BranchNodeModal extends Vue {
+export default class BranchNodeModal extends SemanticComponent {
   @Prop() private label!: string;
   @Prop() private selectedGate!: string;
   @Prop() private selectedType!: string;
@@ -101,7 +101,7 @@ export default class BranchNodeModal extends Vue {
 
     this.rowBranchesRuleContent = '';
     this.rowBranchesIfContent = '';
-    this.rowBranchesTblContent = ''
+    this.rowBranchesTblContent = '';
   }
 
   public mounted(): void {
@@ -166,20 +166,23 @@ export default class BranchNodeModal extends Vue {
   }
 
   public showCondition(): void {
+    const paddingStyle14 = 'padding-top:14px;padding-bottom:14px;';
+    const paddingStyle0 = 'padding:0px';
+
     if (this._selectedGate === 'xor' && this._selectedType === 'split') {
       $('#row_branches_rule').html(this.rowBranchesRuleContent);
-      $('#row_branches_rule').attr('style','padding-top:14px;padding-bottom:14px;');
+      $('#row_branches_rule').attr('style', paddingStyle14);
       $('#row_branches_if').html(this.rowBranchesIfContent);
-      $('#row_branches_if').attr('style','padding-top:14px;padding-bottom:14px;');
+      $('#row_branches_if').attr('style', paddingStyle14);
       $('#row_branches_tbl').html(this.rowBranchesTblContent);
-      $('#row_branches_tbl').attr('style','padding-top:14px;padding-bottom:14px;');
+      $('#row_branches_tbl').attr('style', paddingStyle14);
     } else {
       $('#row_branches_rule').html('');
-      $('#row_branches_rule').attr('style','padding:0px');
+      $('#row_branches_rule').attr('style', paddingStyle0);
       $('#row_branches_if').html('');
-      $('#row_branches_if').attr('style','padding:0px');
+      $('#row_branches_if').attr('style', paddingStyle0);
       $('#row_branches_tbl').html('');
-      $('#row_branches_tbl').attr('style','padding:0px');
+      $('#row_branches_tbl').attr('style', paddingStyle0);
     }
   }
 }

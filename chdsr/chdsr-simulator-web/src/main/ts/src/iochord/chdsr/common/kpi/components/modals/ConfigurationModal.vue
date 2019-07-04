@@ -33,11 +33,12 @@
 
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
+import SemanticComponent from '../../../ui/semantic/SemanticComponent';
 declare const $: any;
 
 @Component
-export default class ConfigurationModal extends Vue {
-  private mounted(): void {
+export default class ConfigurationModal extends SemanticComponent {
+  public mounted(): void {
     $('.ui.dropdown').dropdown();
     $('.tabular.menu .item').tab();
 
