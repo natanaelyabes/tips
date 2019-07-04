@@ -49,7 +49,8 @@
 
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
+import SemanticComponent from '../../../ui/semantic/SemanticComponent';
 declare const $: any;
 @Component
-export default class FunctionDataModal extends Vue {}
+export default class FunctionDataModal extends SemanticComponent {}
 </script>

@@ -36,25 +36,26 @@
 
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
+import SemanticComponent from '../../../ui/semantic/SemanticComponent';
 declare const $: any;
 
 @Component
-export default class StopNodeModal extends Vue {
+export default class StopNodeModal extends SemanticComponent {
   @Prop() private stopLabel!: string;
   @Prop() private report!: boolean;
 
   private _stopLabel!: string;
-  private _report!:boolean;
+  private _report!: boolean;
 
-  public handleChangedLabel(): void{
+  public handleChangedLabel(): void {
     this.$emit('changeStopLabel', this._stopLabel);
   }
 
-  public handleChangedReport(): void{
+  public handleChangedReport(): void {
     this.$emit('changeReport', this._report);
   }
 
-  private beforeMount(): void{
+  private beforeMount(): void {
     this._stopLabel = this.stopLabel;
     this._report = this.report;
   }
