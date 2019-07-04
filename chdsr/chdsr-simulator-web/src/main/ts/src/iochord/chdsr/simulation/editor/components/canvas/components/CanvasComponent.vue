@@ -182,13 +182,7 @@ export default class CanvasComponent extends BaseComponent {
         jointPage.getMinimap().scale(0.2);
 
         // Center the minimap
-        // const MinimapViewportBBox = jointPage.getMinimap().viewport.getBBox();
-        const MinimapViewportBBox = {
-          width: jointPage.getMinimap().viewport.clientWidth,
-          height: jointPage.getMinimap().viewport.clientHeight,
-        };
-
-        console.log(MinimapViewportBBox);
+        const MinimapViewportBBox = jointPage.getMinimap().viewport.getBBox();
         jointPage.getMinimap().translate(
           (jointPage.getMinimap().options.width as number / 4) - (MinimapViewportBBox.width / 2),
           (jointPage.getMinimap().options.height as number / 2) - (MinimapViewportBBox.height / 2),
