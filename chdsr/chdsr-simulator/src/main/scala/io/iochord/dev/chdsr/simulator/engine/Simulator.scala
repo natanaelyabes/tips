@@ -100,10 +100,6 @@ object Simulator {
         
         val r = new java.util.Random();
         val transition = transitions(r.nextInt(transitions.length))
-        //println("================ Step: "+c+" | globtime: "+globtime.time+" ================")
-        //println("Transition: "+transition.getId(),transition.getName())
-        //println("Before")
-        //net.allPlaces.foreach(place => { val multiset = place.getcurrentMarking().multiset; println(place.getId(),multiset) })
         
         val markbefore = Map[String,Any]()
         val markafter = Map[String,Any]()
@@ -112,9 +108,6 @@ object Simulator {
         transition.getOut().foreach(arc => { val multiset = arc.getPlace().getcurrentMarking().multiset; markbefore.put(arc.getPlace().getId(),multiset.toString()) } )
         
         val bindingChosen = transition.execute(globtime.time)
-        
-        //println("After")
-        //net.allPlaces.foreach(place => { val multiset = place.getcurrentMarking().multiset; println(place.getId(),multiset) })
         
         transition.getIn().foreach(arc => { val multiset = arc.getPlace().getcurrentMarking().multiset; markafter.put(arc.getPlace().getId(),multiset.toString()) } )
         transition.getOut().foreach(arc => { val multiset = arc.getPlace().getcurrentMarking().multiset; markafter.put(arc.getPlace().getId(),multiset.toString()) } )
