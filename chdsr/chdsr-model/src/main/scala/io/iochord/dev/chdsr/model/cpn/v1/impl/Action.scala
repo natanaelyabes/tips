@@ -5,20 +5,20 @@ import io.iochord.dev.chdsr.model.cpn.v1._
 class Action[B <:Bind] { 
   
   private var actionFun:Any => Any = null
-  private var TtoBV:Any => B = null
-  private var BtoTV:Any => Any = null
+  private var TtoB:Any => B = null
+  private var BtoT:Any => Any = null
   
-  def setTokenToBind(TtoB:Any => B) = { TtoBV = TtoB }
+  def setTokenToBind(TtoB:Any => B) = { this.TtoB = TtoB }
   
-  def getTokenToBind():(Any => B) = { this.TtoBV }
+  def getTokenToBind():(Any => B) = { this.TtoB }
   
-  def computeTokenToBind(token:Any) = { this.TtoBV(token) }
+  def computeTokenToBind(token:Any) = { this.TtoB(token) }
   
-  def setBindToToken(BtoT:Any => Any) = { BtoTV = BtoT }
+  def setBindToToken(BtoT:Any => Any) = { this.BtoT = BtoT }
   
-  def getBindToToken():(Any => Any) = { this.BtoTV }
+  def getBindToToken():(Any => Any) = { this.BtoT }
   
-  def computeBindToToken(bind:Any) = { this.BtoTV(bind) }
+  def computeBindToToken(bind:Any) = { this.BtoT(bind) }
   
   def setActionFun(actionFun:Any => Any) = { this.actionFun = actionFun }
   
