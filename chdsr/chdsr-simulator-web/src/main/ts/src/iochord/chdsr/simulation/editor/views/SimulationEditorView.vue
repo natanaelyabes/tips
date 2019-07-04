@@ -280,6 +280,9 @@ import { ApplicationEnum, BaseUrlEnum } from '@/iochord/chdsr/common/enums/index
 
 // Components
 import ApplicationWrapperComponent from '@/iochord/chdsr/common/ui/application/components/ApplicationWrapperComponent.vue';
+import { SimulationModelService } from '../../../common/service/model/SimulationModelService';
+import { GraphImpl } from '../../../common/graph/classes/GraphImpl';
+import { Graph } from '@/iochord/chdsr/common/graph/interfaces/Graph';
 
 // Async component must be lazily load
 const CanvasComponent = () => import('@/iochord/chdsr/simulation/editor/components/canvas/components/CanvasComponent.vue');
@@ -297,12 +300,12 @@ export default class SimulationEditorView extends ApplicationWrapperView {
   public animation: boolean = false;
   public editing: boolean = true;
   public modelPaneIsOpen: boolean = true;
-  public graphData: any = {};
+  public graphData: Graph = new GraphImpl();
 
   public async mounted(): Promise<void> {
     try {
-      console.log('SimulationEditorView works!');
-      this.graphData = await axios.get('http://164.125.62.134:3001/chdsr/api/v1/model/example');
+      const response = await new SimulationModelService('http://164.125.62.134:3001/chdsr/api/v1/model/example').fetchResponse() as SimulationModelService;
+      this.graphData = response.getGraph();
     } catch (e) {
       console.log(e);
     }

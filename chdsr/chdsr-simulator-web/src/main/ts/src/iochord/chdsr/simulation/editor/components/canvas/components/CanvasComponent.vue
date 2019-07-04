@@ -89,7 +89,7 @@ declare const $: any;
   },
 })
 export default class CanvasComponent extends BaseComponent {
-  @Prop() public response: any;
+  @Prop() public response?: Graph;
 
   // Find all node types in the graph
   public nodeTypes: Set<string> = new Set<string>();
@@ -129,7 +129,7 @@ export default class CanvasComponent extends BaseComponent {
   public loadGraph(): void {
     try {
       // Deserialize the model
-      this.graph = GraphImpl.deserialize(this.response.data) as Graph;
+      this.graph = this.response as Graph;
 
       // Loop the model page
       for (const [key, value] of this.graph.getPages() as Map<string, GraphPage>) {
