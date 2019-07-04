@@ -177,8 +177,16 @@ export default class CanvasComponent extends BaseComponent {
           height: 150,
           gridSize: 1,
         } as joint.dia.Paper.Options));
+
+        // Scale down minimap
         jointPage.getMinimap().scale(0.2);
-        jointPage.getMinimap().translate($('#minimap').width() / 20, jointPage.getMinimap().options.height as number / 6);
+
+        // Center the minimap
+        const MinimapViewportBBox = jointPage.getMinimap().viewport.getBBox();
+        jointPage.getMinimap().translate(
+          (jointPage.getMinimap().options.width as number / 4) - (MinimapViewportBBox.width / 2),
+          (jointPage.getMinimap().options.height as number / 2) - (MinimapViewportBBox.height / 2),
+        );
 
         // for all nodes
         for (const [nodeKey, nodeValue] of jointPage.getNodes() as Map<string, GraphNode>) {
@@ -234,7 +242,8 @@ export default class CanvasComponent extends BaseComponent {
         } as joint.layout.DirectedGraph.LayoutOptions);
 
         // Center the view
-        jointPage.getPaper().translate(canvasWidth / 10, canvasHeight / 5);
+        const PageViewportBBox = jointPage.getPaper().viewport.getBBox();
+        jointPage.getPaper().translate((canvasWidth / 2) - (PageViewportBBox.width / 2), (canvasHeight / 2) - (PageViewportBBox.height / 2));
 
         jointPage.getPaper().on({
           'element:contextmenu': (elementView) => {
