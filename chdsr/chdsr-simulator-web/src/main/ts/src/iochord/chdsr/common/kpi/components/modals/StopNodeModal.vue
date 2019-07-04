@@ -10,13 +10,13 @@
           <div class="row">
             <div class="three wide column">Label</div>
             <div class="thirteen wide column">
-              <input type="text" v-model="label" id="stop_txt_label">
+              <input type="text" @change="handleChangedLabel()" v-model="_stopLabel" id="stop_txt_label">
             </div>
           </div>
           <div class="row">
             <div class="sixteen wide column">
               <div class="inline field">
-                <input type="checkbox" v-model="report" class="hidden">
+                <input type="checkbox" @change="handleChangedReport()" v-model="_report" class="hidden">
                 <label>Report statistics</label>
               </div>
             </div>
@@ -40,7 +40,23 @@ declare const $: any;
 
 @Component
 export default class StopNodeModal extends Vue {
-  @Prop(String) private label!: string;
-  @Prop(String) private report!: boolean;
+  @Prop() private stopLabel!: string;
+  @Prop() private report!: boolean;
+
+  private _stopLabel!: string;
+  private _report!:boolean;
+
+  public handleChangedLabel(): void{
+    this.$emit('changeStopLabel', this._stopLabel);
+  }
+
+  public handleChangedReport(): void{
+    this.$emit('changeReport', this._report);
+  }
+
+  private beforeMount(): void{
+    this._stopLabel = this.stopLabel;
+    this._report = this.report;
+  }
 }
 </script>
