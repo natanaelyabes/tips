@@ -152,8 +152,9 @@ import { Component, Prop, Vue } from 'vue-property-decorator';
 import SemanticComponent from '../../../ui/semantic/SemanticComponent';
 
 declare const $: any;
+
 @Component
-export default class ActivityNodeModal extends Vue {
+export default class ActivityNodeModal extends SemanticComponent {
   @Prop() private selectedActivityType !: string;
 
   private _selectedActivityType !: string;
@@ -167,12 +168,12 @@ export default class ActivityNodeModal extends Vue {
   private basicSplitSM3 !: string;
   private basicSplitSM4 !: string;
 
-  public handleSelectedActivityType(): void{
+  public handleSelectedActivityType(): void {
     this.$emit('changeSelectedActivityType', this._selectedActivityType);
     this.showDetailBasic();
   }
 
-  public beforeMount(): void{
+  public beforeMount(): void {
     this._selectedActivityType = this.selectedActivityType;
     this.basicStandardSM1 = '';
     this.basicCbpSM1 = '';
@@ -247,21 +248,19 @@ export default class ActivityNodeModal extends Vue {
     this.basicSplitSM4 += '</div>';
   }
 
-  public showDetailBasic(): void{
-    var paddingStyle14 = "padding-top:14px;padding-bottom:14px;";
-    var paddingStyle0 = "padding:0px";
+  public showDetailBasic(): void {
+    const paddingStyle14 = 'padding-top:14px;padding-bottom:14px;';
+    const paddingStyle0 = 'padding:0px';
 
-    if(this._selectedActivityType === 'standard'){
+    if (this._selectedActivityType === 'standard') {
       $('#basic-standard-sm-1').html(this.basicStandardSM1);
       $('#basic-standard-sm-1').attr('style', paddingStyle14);
-
       $('#basic-cbp-sm-1').html('');
       $('#basic-cbp-sm-1').attr('style', paddingStyle0);
       $('#basic-cbp-sm-2').html('');
       $('#basic-cbp-sm-2').attr('style', paddingStyle0);
       $('#basic-cbp-sm-3').html('');
       $('#basic-cbp-sm-3').attr('style', paddingStyle0);
-
       $('#basic-split-sm-1').html('');
       $('#basic-split-sm-1').attr('style', paddingStyle0);
       $('#basic-split-sm-2').html('');
@@ -270,17 +269,15 @@ export default class ActivityNodeModal extends Vue {
       $('#basic-split-sm-3').attr('style', paddingStyle0);
       $('#basic-split-sm-4').html('');
       $('#basic-split-sm-4').attr('style', paddingStyle0);
-    }else if(this._selectedActivityType === 'concurrent'){
+    } else if (this._selectedActivityType === 'concurrent') {
       $('#basic-standard-sm-1').html('');
-      $('#basic-standard-sm-1').attr('style',paddingStyle0);
-      
+      $('#basic-standard-sm-1').attr('style', paddingStyle0);
       $('#basic-cbp-sm-1').html(this.basicCbpSM1);
       $('#basic-cbp-sm-1').attr('style', paddingStyle14);
       $('#basic-cbp-sm-2').html(this.basicCbpSM2);
       $('#basic-cbp-sm-2').attr('style', paddingStyle14);
       $('#basic-cbp-sm-3').html(this.basicCbpSM3);
       $('#basic-cbp-sm-3').attr('style', paddingStyle14);
-
       $('#basic-split-sm-1').html('');
       $('#basic-split-sm-1').attr('style', paddingStyle0);
       $('#basic-split-sm-2').html('');
@@ -289,7 +286,7 @@ export default class ActivityNodeModal extends Vue {
       $('#basic-split-sm-3').attr('style', paddingStyle0);
       $('#basic-split-sm-4').html('');
       $('#basic-split-sm-4').attr('style', paddingStyle0);
-    }else{
+    } else {
       $('#basic-standard-sm-1').html('');
       $('#basic-standard-sm-1').attr('style', paddingStyle0);
       $('#basic-cbp-sm-1').html('');
@@ -298,7 +295,6 @@ export default class ActivityNodeModal extends Vue {
       $('#basic-cbp-sm-2').attr('style', paddingStyle0);
       $('#basic-cbp-sm-3').html('');
       $('#basic-cbp-sm-3').attr('style', paddingStyle0);
-
       $('#basic-split-sm-1').html(this.basicSplitSM1);
       $('#basic-split-sm-1').attr('style', paddingStyle14);
       $('#basic-split-sm-2').html(this.basicSplitSM2);

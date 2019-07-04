@@ -53,13 +53,20 @@ import lombok.Getter;
  * @author Nur Ichsan Utama <ichsan83@gmail.com>
  *
  */
-public class Sbpnet2CpnscalaBiConverter {//implements Converter<Sbpnet, String> {
+public class Sbpnet2CpnscalaBiConverter implements Converter<Sbpnet, String> {
+	
+	class KeyElement {
+		final static String type = "Type";
+		final static String place = "Place";
+		final static String transition = "Transition";
+		final static String arc = "Arc";
+	}
 	
 	StringBuilder factory = new StringBuilder();
 	
-	private Map<Class<?>, Integer> counters = new LinkedHashMap<>();
+	private Map<String, Integer> counters = new LinkedHashMap<>();
 	
-	private String getCounter(Class<?> clazz) {
+	private String getCounter(String clazz) {
 		if (!counters.containsKey(clazz)) {
 			counters.put(clazz, 0);
 		}
@@ -67,10 +74,145 @@ public class Sbpnet2CpnscalaBiConverter {//implements Converter<Sbpnet, String> 
 		return String.format("%8s", counters.get(clazz)).replace(' ', '0');
 	}
 	
-	public void createCPNGraph(String name) {
-		factory.append("var cgraph = CPNGraph(\"").append(name).append("\")");
+	public String convert(Sbpnet snet) {
+		String int_type_id = "colset"+getCounter(KeyElement.type);
+		String string_type_id = "colset"+getCounter(KeyElement.type);
+		
+		factory.append("type "+int_type_id+" = Int\n");
+		factory.append("type "+string_type_id+" = String\n");
+		factory.append("\n");
+		
+		for (String pi : snet.getPages().keySet()) {
+			io.iochord.dev.chdsr.model.sbpnet.v1.Page p = snet.getPages().get(pi);
+			// Convert Data Nodes
+			for (String di : p.getData().keySet()) {
+				Data d = p.getData().get(di);
+				if (d instanceof ObjectType) {
+					ObjectType ot = (ObjectType) d;
+					//prev use converter.addTypeDeclaration
+				}
+				if (d instanceof Generator) {
+					Generator dg = (Generator) d;
+					
+					String p_dgp4s = addPlace(dg.getLabel()+"_dgp4s", int_type_id, "");
+					String p_dgp1 = addPlace(dg.getLabel() + "_dgp1", int_type_id, "((1,0),1)");
+					String p_dgp2 = addPlace(dg.getLabel() + "_dgp2", int_type_id, "((1,0),1)");
+					String p_dgp3 = addPlace(dg.getLabel() + "_dgp3", int_type_id, "((1,0),1)");
+					
+					factory.append(p_dgp4s).append(p_dgp1).append(p_dgp2).append(p_dgp3);
+				}
+				if (d instanceof Function) {
+					Function f = (Function) d;
+					//Page fpage =  converter.addPage(net, "FUNCTION " + f.getLabel()); 
+					// TODO:
+				}
+				if (d instanceof Queue) {
+					Queue q = (Queue) d;
+					//Page qpage =  converter.addPage(net, "QUEUE " + q.getLabel()); 
+					// TODO:
+				}
+				if (d instanceof Resource) {
+					Resource r = (Resource) d;
+					//Page rpage =  converter.addPage(net, "RESOURCE " + r.getLabel()); 
+					// TODO:
+				}
+				if (d instanceof DataTable) {
+					DataTable dt = (DataTable) d;
+					//Page dtpage =  converter.addPage(net, "DATATABLE " + dt.getLabel()); 
+					// TODO:
+				}
+			}
+			
+			// Convert Nodes
+			for (String ni : p.getNodes().keySet()) {
+				io.iochord.dev.chdsr.model.sbpnet.v1.Node n = p.getNodes().get(ni);
+				if (n instanceof Start) {
+					Start na = (Start) n;
+//								Page napage =  converter.addPage(net, "START " + na.getLabel()); 
+//								Place nap = converter.addPlace(napage, na.getLabel() + "_nap1", "INT", "");
+					if (na.getGenerator() == null) {
+						String p_nap1 = addPlace(na.getLabel() + "_nap1", int_type_id, "");
+						
+						factory.append(p_nap1);
+					} else {
+						//if not null
+					}
+				}
+				if (n instanceof Stop) {
+					Stop no = (Stop) n;
+					String p_nop1 = addPlace(no.getLabel() + "_nop1", int_type_id, "");
+					
+					factory.append(p_nop1);
+				}
+				if (n instanceof Activity) {
+					Activity na = (Activity) n;
+					String p_nap1 = addPlace(na.getLabel() + "_nap1", int_type_id, "");
+					String p_nap2 = addPlace(na.getLabel() + "_nap2", int_type_id, "");
+					String p_nap3 = addPlace(na.getLabel() + "_nap3", int_type_id, "");
+					
+					factory.append(p_nap1);
+					factory.append(p_nap2);
+					factory.append(p_nap3);
+				}
+				if (n instanceof Branch) {
+					Branch b = (Branch) n;
+					String p_bp = addPlace(b.getLabel() + "_bp", int_type_id, "");
+					
+					factory.append(p_bp);
+					
+					int i = 0;
+					for (Connector c : p.getConnectors().values()) {
+						if (c.getTarget() != b) continue;
+						String bpis = addPlace(b.getLabel() + "_bpi" + i + "s", int_type_id, "");
+						
+						factory.append(bpis);
+						i++;
+					}
+					i = 0;
+					for (Connector c : p.getConnectors().values()) {
+						if (c.getSource() != b) continue;
+						String bpos = addPlace(b.getLabel() + "_bpo" + i + "s", int_type_id, "");
+						
+						factory.append(bpos);
+						i++;
+					}
+					// TODO:
+					// Temporary use activity definition
+				}
+				if (n instanceof Monitor) {
+					Monitor m = (Monitor) n;
+					//Page mpage =  converter.addPage(net, "MONITOR " + m.getLabel()); 
+					// TODO:
+				}
+			}
+			// Convert Arcs
+			for (String s : p.getConnectors().keySet()) {
+				Connector c = p.getConnectors().get(s);
+				
+			}
+		}
+	
+		return factory.toString();
 	}
 	
+	public Sbpnet revert(String scalacode) {
+		return null;
+	}
+	
+	public String addPlace(String name, String type, String initialMarking) {
+		String counter = getCounter(KeyElement.place);
+		String mapid = "map"+counter;
+		String multisetid = "map"+counter;
+		String placeid = "place"+counter;
+		
+		StringBuilder placefactory = new StringBuilder();
+		placefactory.append( "val "+mapid+" = Map[("+type+",Long),Int]( "+initialMarking+" )\n" );
+		placefactory.append( "val "+multisetid+" = new Multiset["+type+"]("+mapid+", classOf["+type+"])\n" );
+		placefactory.append( "val "+placeid+" = new Place(\""+placeid+"\",\""+name+"\","+multisetid+")\n" );
+		placefactory.append("\n");
+		
+		return placefactory.toString();
+	}
 	/*
 	public HLDeclaration addTypeDeclaration(PetriNet net, String name, CPNType value, boolean timed) {
 		HLDeclaration hl = factory.createHLDeclaration();
@@ -376,7 +518,7 @@ public class Sbpnet2CpnscalaBiConverter {//implements Converter<Sbpnet, String> 
 		}
 		return net;
 	}
-
+	
 	@Override
 	public Sbpnet revert(PetriNet o) {
 		// TODO Auto-generated method stub
