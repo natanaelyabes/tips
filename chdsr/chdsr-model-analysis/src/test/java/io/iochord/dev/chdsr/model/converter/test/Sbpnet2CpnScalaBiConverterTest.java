@@ -2,8 +2,6 @@ package io.iochord.dev.chdsr.model.converter.test;
 
 import java.io.PrintWriter;
 
-import org.cpntools.accesscpn.model.PetriNet;
-import org.cpntools.accesscpn.model.exporter.DOMGenerator;
 import org.junit.Test;
 
 import io.iochord.dev.chdsr.model.converter.sbp2cpn.Sbpnet2CpnscalaBiConverter;
