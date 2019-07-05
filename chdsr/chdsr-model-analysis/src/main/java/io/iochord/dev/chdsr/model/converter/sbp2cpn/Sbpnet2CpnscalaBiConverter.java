@@ -1,9 +1,6 @@
 package io.iochord.dev.chdsr.model.converter.sbp2cpn;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
 
 /*
@@ -33,7 +30,6 @@ import org.cpntools.accesscpn.model.declaration.VariableDeclaration;
 import io.iochord.dev.chdsr.model.converter.Converter;
 import io.iochord.dev.chdsr.model.sbpnet.v1.Connector;
 import io.iochord.dev.chdsr.model.sbpnet.v1.Data;
-import io.iochord.dev.chdsr.model.sbpnet.v1.Element;
 import io.iochord.dev.chdsr.model.sbpnet.v1.Sbpnet;
 import io.iochord.dev.chdsr.model.sbpnet.v1.components.Activity;
 import io.iochord.dev.chdsr.model.sbpnet.v1.components.Branch;
