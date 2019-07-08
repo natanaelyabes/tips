@@ -9,9 +9,7 @@ import { BaseService } from '../BaseService';
  */
 export class UserService extends BaseService {
 
-  public static readonly BASE_URI: string = BaseService.BASE_URI + '/simulator';
-  
-  private static __INSTANCE: UserService;
+  public static readonly BASE_URI: string = BaseService.BASE_URI + '/user';
 
   public static getInstance(): UserService {
     if (UserService.__INSTANCE == null) {
@@ -19,5 +17,7 @@ export class UserService extends BaseService {
     }
     return UserService.__INSTANCE;
   }
+
+  private static __INSTANCE: UserService;
 
 }

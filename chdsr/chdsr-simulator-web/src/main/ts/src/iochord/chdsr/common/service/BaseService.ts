@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios, { AxiosResponse } from 'axios';
 
 /**
  *
@@ -8,23 +8,22 @@ import axios from 'axios';
  *
  */
 export class BaseService {
-  
-  //*/
+
+  // /*/
   // PRODUCTION / COMMIT
   public static readonly BASE_URI: string = 'http://chdsr-api.tips.iochord.co.kr/chdsr/api';
   /*/
   // DEVELOPMENT / LOCAL
   public static readonly BASE_URI: string = 'http://chdsr-api.tips.iochord.co.kr/chdsr/api';
-  //*/
-  
+  // /*/
+
   public async remoteGet(url: string): Promise<AxiosResponse> {
     return await axios.get(url);
   }
-  
-  public async remotePost(url: string, data: Object): Promise<AxiosResponse> {
+
+  public async remotePost(url: string, data: object): Promise<AxiosResponse> {
     return await axios.post(url, data);
   }
-  
   // TODO: Inject Security Procedure !
-  
+
 }

@@ -306,8 +306,7 @@ export default class SimulationEditorView extends ApplicationWrapperView {
   /** @Override */
   public async mounted(): Promise<void> {
     try {
-      const response = await new SimulationModelService('http://chdsr.tips.iochord.co.kr/chdsr/api/model/example').fetchResponse() as SimulationModelService;
-      this.graphData = response.getGraph();
+      this.graphData = await SimulationModelService.getInstance().getExampleModel();
     } catch (e) {
       console.log(e);
     }
