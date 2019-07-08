@@ -267,7 +267,7 @@ import * as joint from 'jointjs';
 import '#root/node_modules/jointjs/dist/joint.css';
 
 // Classes
-import ApplicationWrapperView from '../../../common/ui/application/classes/ApplicationWrapperView';
+import ApplicationWrapperView from '@/iochord/chdsr/common/ui/application/classes/ApplicationWrapperView';
 
 // Interfaces
 import { ApplicationHasWrapper } from '@/iochord/chdsr/common/ui/application/interfaces/ApplicationHasWrapper';
@@ -280,8 +280,8 @@ import { ApplicationEnum, BaseUrlEnum } from '@/iochord/chdsr/common/enums/index
 
 // Components
 import ApplicationWrapperComponent from '@/iochord/chdsr/common/ui/application/components/ApplicationWrapperComponent.vue';
-import { SimulationModelService } from '../../../common/service/model/SimulationModelService';
-import { GraphImpl } from '../../../common/graph/classes/GraphImpl';
+import { SimulationModelService } from '@/iochord/chdsr/common/service/model/SimulationModelService';
+import { GraphImpl } from '@/iochord/chdsr/common/graph/classes/GraphImpl';
 import { Graph } from '@/iochord/chdsr/common/graph/interfaces/Graph';
 
 // Async component must be lazily load
@@ -300,11 +300,14 @@ export default class SimulationEditorView extends ApplicationWrapperView {
   public animation: boolean = false;
   public editing: boolean = true;
   public modelPaneIsOpen: boolean = true;
+
   public graphData: Graph = new GraphImpl();
 
+  /** @Override */
   public async mounted(): Promise<void> {
     try {
-      this.graphData = SimulationModelService.getInstance().getExampleModel();
+      const response = await new SimulationModelService('http://chdsr.tips.iochord.co.kr/chdsr/api/model/example').fetchResponse() as SimulationModelService;
+      this.graphData = response.getGraph();
     } catch (e) {
       console.log(e);
     }

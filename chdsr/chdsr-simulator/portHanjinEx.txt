@@ -759,5 +759,10 @@ this.cgraph.addArc(arc9_stres)
 this.cgraph.addArc(arc9_cpres)
 this.cgraph.addArc(arc9_cp)
 
+this.stopCrit = (globtime: Any) => globtime match { case globtime:GlobalTime => 
+	{ 
+		globtime.time > 3000
+	}
+}
 
-this.subject = subject
+this.inpStopCrit = globtime

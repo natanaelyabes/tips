@@ -1,9 +1,6 @@
 package io.iochord.dev.chdsr.model.converter.sbp2cpn;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
 
 /*
@@ -33,7 +30,6 @@ import org.cpntools.accesscpn.model.declaration.VariableDeclaration;
 import io.iochord.dev.chdsr.model.converter.Converter;
 import io.iochord.dev.chdsr.model.sbpnet.v1.Connector;
 import io.iochord.dev.chdsr.model.sbpnet.v1.Data;
-import io.iochord.dev.chdsr.model.sbpnet.v1.Element;
 import io.iochord.dev.chdsr.model.sbpnet.v1.Sbpnet;
 import io.iochord.dev.chdsr.model.sbpnet.v1.components.Activity;
 import io.iochord.dev.chdsr.model.sbpnet.v1.components.Branch;
@@ -53,13 +49,24 @@ import lombok.Getter;
  * @author Nur Ichsan Utama <ichsan83@gmail.com>
  *
  */
-public class Sbpnet2CpnscalaBiConverter {//implements Converter<Sbpnet, String> {
+public class Sbpnet2CpnscalaBiConverter implements Converter<Sbpnet, String> {
+	
+	class KeyElement {
+		final static String type = "Type";
+		final static String place = "Place";
+		final static String transition = "Transition";
+		final static String binding = "Binding";
+		final static String eval = "Eval";
+		final static String merge = "Merge";
+		final static String evalLast = "EvalLast";
+		final static String arc = "Arc";
+	}
 	
 	StringBuilder factory = new StringBuilder();
 	
-	private Map<Class<?>, Integer> counters = new LinkedHashMap<>();
+	private Map<String, Integer> counters = new LinkedHashMap<>();
 	
-	private String getCounter(Class<?> clazz) {
+	private String getCounter(String clazz) {
 		if (!counters.containsKey(clazz)) {
 			counters.put(clazz, 0);
 		}
@@ -67,10 +74,219 @@ public class Sbpnet2CpnscalaBiConverter {//implements Converter<Sbpnet, String> 
 		return String.format("%8s", counters.get(clazz)).replace(' ', '0');
 	}
 	
-	public void createCPNGraph(String name) {
-		factory.append("var cgraph = CPNGraph(\"").append(name).append("\")");
+	public String convert(Sbpnet snet) {
+		String int_type_id = "colset"+getCounter(KeyElement.type);
+		String string_type_id = "colset"+getCounter(KeyElement.type);
+		
+		factory.append("type "+int_type_id+" = Int\n");
+		factory.append("type "+string_type_id+" = String\n");
+		factory.append("\n");
+		
+		for (String pi : snet.getPages().keySet()) {
+			io.iochord.dev.chdsr.model.sbpnet.v1.Page p = snet.getPages().get(pi);
+			// Convert Data Nodes
+			for (String di : p.getData().keySet()) {
+				Data d = p.getData().get(di);
+				if (d instanceof ObjectType) {
+					ObjectType ot = (ObjectType) d;
+					//prev use converter.addTypeDeclaration
+				}
+				if (d instanceof Generator) {
+					Generator dg = (Generator) d;
+					
+					String p_dgp4s = addPlace(dg.getLabel()+"_dgp4s", int_type_id, "");
+					String p_dgp1 = addPlace(dg.getLabel() + "_dgp1", int_type_id, "((1,0),1)");
+					String p_dgp2 = addPlace(dg.getLabel() + "_dgp2", int_type_id, "((1,0),1)");
+					String p_dgp3 = addPlace(dg.getLabel() + "_dgp3", int_type_id, "((1,0),1)");
+					
+					String guard = "null";
+					String action = "null";
+					
+					String b_dgt1 = addBindingClass( "i:Option["+int_type_id+"]" );
+					String e_dgt1 = addEval("b1.i == b2.i || b1.i == None || b2.i == None", b_dgt1);
+					String m_dgt1 = addMerge("val i = if(b1.i == None) b2.i else b1.i", b_dgt1, "i");
+					String el_dgt1 = addEvalLast("b1.i != None", b_dgt1);
+					String dgt1 = addTransition(dg.getLabel() + "_dgt1", guard, action, b_dgt1, e_dgt1, m_dgt1, el_dgt1);
+					
+					String b_dgt2 = addBindingClass( "i:Option["+int_type_id+"]" );
+					String e_dgt2 = addEval("b1.i == b2.i || b1.i == None || b2.i == None", b_dgt2);
+					String m_dgt2 = addMerge("val i = if(b1.i == None) b2.i else b1.i", b_dgt2, "i");
+					String el_dgt2 = addEvalLast("b1.i != None", b_dgt2);
+					String dgt2 = addTransition(dg.getLabel() + "_dgt2", guard, action, b_dgt2, e_dgt2, m_dgt2, el_dgt2);
+				}
+				if (d instanceof Function) {
+					Function f = (Function) d;
+					//Page fpage =  converter.addPage(net, "FUNCTION " + f.getLabel()); 
+					// TODO:
+				}
+				if (d instanceof Queue) {
+					Queue q = (Queue) d;
+					//Page qpage =  converter.addPage(net, "QUEUE " + q.getLabel()); 
+					// TODO:
+				}
+				if (d instanceof Resource) {
+					Resource r = (Resource) d;
+					//Page rpage =  converter.addPage(net, "RESOURCE " + r.getLabel()); 
+					// TODO:
+				}
+				if (d instanceof DataTable) {
+					DataTable dt = (DataTable) d;
+					//Page dtpage =  converter.addPage(net, "DATATABLE " + dt.getLabel()); 
+					// TODO:
+				}
+			}
+			
+			// Convert Nodes
+			for (String ni : p.getNodes().keySet()) {
+				io.iochord.dev.chdsr.model.sbpnet.v1.Node n = p.getNodes().get(ni);
+				if (n instanceof Start) {
+					Start na = (Start) n;
+//								Page napage =  converter.addPage(net, "START " + na.getLabel()); 
+//								Place nap = converter.addPlace(napage, na.getLabel() + "_nap1", "INT", "");
+					if (na.getGenerator() == null) {
+						String p_nap1 = addPlace(na.getLabel() + "_nap1", int_type_id, "");
+					} else {
+						//if not null
+					}
+				}
+				if (n instanceof Stop) {
+					Stop no = (Stop) n;
+					String p_nop1 = addPlace(no.getLabel() + "_nop1", int_type_id, "");
+				}
+				if (n instanceof Activity) {
+					Activity na = (Activity) n;
+					String p_nap1 = addPlace(na.getLabel() + "_nap1", int_type_id, "");
+					String p_nap2 = addPlace(na.getLabel() + "_nap2", int_type_id, "");
+					String p_nap3 = addPlace(na.getLabel() + "_nap3", int_type_id, "");
+				}
+				if (n instanceof Branch) {
+					Branch b = (Branch) n;
+					String p_bp = addPlace(b.getLabel() + "_bp", int_type_id, "");
+					
+					int i = 0;
+					for (Connector c : p.getConnectors().values()) {
+						if (c.getTarget() != b) continue;
+						String bpis = addPlace(b.getLabel() + "_bpi" + i + "s", int_type_id, "");
+						
+						i++;
+					}
+					i = 0;
+					for (Connector c : p.getConnectors().values()) {
+						if (c.getSource() != b) continue;
+						String bpos = addPlace(b.getLabel() + "_bpo" + i + "s", int_type_id, "");
+						
+						i++;
+					}
+					// TODO:
+					// Temporary use activity definition
+				}
+				if (n instanceof Monitor) {
+					Monitor m = (Monitor) n;
+					//Page mpage =  converter.addPage(net, "MONITOR " + m.getLabel()); 
+					// TODO:
+				}
+			}
+			// Convert Arcs
+			for (String s : p.getConnectors().keySet()) {
+				Connector c = p.getConnectors().get(s);
+				
+			}
+		}
+	
+		return factory.toString();
 	}
 	
+	public Sbpnet revert(String scalacode) {
+		return null;
+	}
+	
+	public String addPlace(String name, String type, String initialMarking) {
+		String counter = getCounter(KeyElement.place);
+		String mapid = "map"+counter;
+		String multisetid = "map"+counter;
+		String placeid = "place"+counter;
+		
+		StringBuilder placefactory = new StringBuilder();
+		placefactory.append( "val "+mapid+" = Map[("+type+",Long),Int]( "+initialMarking+" )\n" );
+		placefactory.append( "val "+multisetid+" = new Multiset["+type+"]("+mapid+", classOf["+type+"])\n" );
+		placefactory.append( "val "+placeid+" = new Place(\""+placeid+"\",\""+name+"\","+multisetid+")\n" );
+		placefactory.append("\n");
+		
+		factory.append(placefactory.toString());
+		
+		return placeid;
+	}
+	
+	public String addTransition(String name, String guard, String action, String classbinding, String eval, String merge, String evalLast) {
+		String counter = getCounter(KeyElement.transition);
+		String transitionid = "trans"+counter;
+		
+		StringBuilder transfactory = new StringBuilder();
+		transfactory.append( "val "+transitionid+" = new Transition["+classbinding+"](\""+transitionid+"\",\""+name+"\","+guard+","+action+")\n" );
+		transfactory.append( transitionid+".setEval("+eval+")\n" );
+		transfactory.append( transitionid+".setMerge("+merge+")\n" );
+		transfactory.append( transitionid+".setEvalLast("+evalLast+")\n" );
+		transfactory.append("\n");
+		
+		factory.append(transfactory.toString());
+		
+		return transitionid;
+	}
+	
+	public String addBindingClass(String classdef) {
+		String counter = getCounter(KeyElement.binding);
+		String bindingid = "Binding"+counter;
+		
+		StringBuilder cBindingfactory = new StringBuilder();
+		cBindingfactory.append( "case class "+bindingid+"(").append(classdef).append(") extends Bind\n" );
+		
+		factory.append(cBindingfactory.toString());
+		
+		return bindingid;
+	}
+	
+	public String addEval(String evaldef, String classbinding) {
+		String counter = getCounter(KeyElement.eval);
+		String evalid = "Eval"+counter;
+		
+		StringBuilder evalfactory = new StringBuilder();
+		evalfactory.append( "val "+evalid+" = (b1:"+classbinding+", b2:"+classbinding+") => {\n" );
+		evalfactory.append( "\t"+evaldef+"\n" );
+		evalfactory.append( "}\n" );
+		
+		factory.append(evalfactory.toString());
+		
+		return evalid;
+	}
+	
+	public String addMerge(String mergedef, String classbinding, String mergeassign) {
+		String counter = getCounter(KeyElement.merge);
+		String mergeid = "Merge"+counter;
+		
+		StringBuilder mergefactory = new StringBuilder();
+		mergefactory.append( "val "+mergeid+" = (b1:"+classbinding+", b2:"+classbinding+") => {\n" );
+		mergefactory.append( "\t"+mergedef+"\n" );
+		mergefactory.append( "\t"+classbinding+"("+mergeassign+")\n" );
+		mergefactory.append( "}\n" );
+		
+		factory.append(mergefactory.toString());
+		
+		return mergeid;
+	}
+	
+	public String addEvalLast(String evalLastdef, String classbinding) {
+		String counter = getCounter(KeyElement.evalLast);
+		String evalLastid = "EvalLast"+counter;
+		
+		StringBuilder evalLastfactory = new StringBuilder();
+		evalLastfactory.append( "val "+evalLastid+" = (b:"+classbinding+") => {\n" );
+		evalLastfactory.append( "\t"+evalLastdef+"\n" );
+		evalLastfactory.append( "}\n" );
+		
+		factory.append(evalLastfactory.toString());
+		
+		return evalLastid;
+	}
 	/*
 	public HLDeclaration addTypeDeclaration(PetriNet net, String name, CPNType value, boolean timed) {
 		HLDeclaration hl = factory.createHLDeclaration();
@@ -214,7 +430,7 @@ public class Sbpnet2CpnscalaBiConverter {//implements Converter<Sbpnet, String> 
 					Generator dg = (Generator) d;
 					Page dgpage =  converter.addPage(net, "GENERATOR " + dg.getLabel()); 
 					Instance dgi = converter.addInstance(page, "GENERATOR " + dg.getLabel(), dgpage.getId());
-					Place dgp4s = converter.addPlace(page, dg.getLabel() + "_dgp1", "INT", "");
+					Place dgp4s = converter.addPlace(page, dg.getLabel() + "_dgp4s", "INT", "");
 					converter.addArc(page, dgi, dgp4s, "i");
 					
 					Place dgp1 = converter.addPlace(dgpage, dg.getLabel() + "_dgp1", "INT", "1`1");
@@ -376,7 +592,7 @@ public class Sbpnet2CpnscalaBiConverter {//implements Converter<Sbpnet, String> 
 		}
 		return net;
 	}
-
+	
 	@Override
 	public Sbpnet revert(PetriNet o) {
 		// TODO Auto-generated method stub

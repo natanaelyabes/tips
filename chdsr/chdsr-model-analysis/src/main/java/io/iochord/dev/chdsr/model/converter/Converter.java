@@ -7,5 +7,5 @@ package io.iochord.dev.chdsr.model.converter;
 public interface Converter<I, O> {
 	O convert(I i);
 
-	I revert(O o);
+	I revert(O o); 
 }

@@ -8,4 +8,7 @@ module.exports = {
     })
     config.resolve.alias.set('#root', path.join(__dirname))
   },
+  configureWebpack: {
+    devtool: 'source-map'
+  },
 }
