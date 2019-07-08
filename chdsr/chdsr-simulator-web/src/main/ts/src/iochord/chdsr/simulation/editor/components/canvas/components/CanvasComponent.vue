@@ -1,14 +1,21 @@
 <template>
   <div class="canvas component">
     <div class="editor canvas">
-      <h1>{{parentSelectedGate}}</h1>
+      <!-- <h1>{{parentSelectedGate}}</h1> -->
       <div id="canvas"></div>
     </div>
+
+    <!-- <div>
+      <button v-on:click = "changeStartLabel('Haloo')">Halo</button>
+    </div> -->
 
     <!-- Model Modals -->
     <template v-for="type in Array.from(nodeTypes)">
       <template v-if="type === 'start'">
-        <StartNodeModal label="test" generator="test" v-bind:id="type" v-bind:key="type"/>
+        <StartNodeModal label="test"
+        @changeStartLabel = "changeStartLabelFromChild($event)"
+        :startLabel.sync = "parentStartLabel"
+        :generator.sync = "parentGenerator" v-bind:id="type" v-bind:key="type"/>
       </template>
 
       <template v-if="type === 'branch'">
@@ -100,10 +107,30 @@ export default class CanvasComponent extends BaseComponent {
   // Active element
   public selectedElement?: GraphElement;
 
+  public parentStartLabel: string = '';
+  public parentGenerator: string = '';
+
   public parentLabel: string = '';
   public parentSelectedGate: string = '';
   public parentSelectedType: string = '';
   public parentSelectedRule: string = '';
+
+  public getStartLabel(): string {
+    return this.parentStartLabel;
+  }
+
+  public changeStartLabel(prmLabel: string): void {
+    this.parentStartLabel = prmLabel;
+    // console.log(this.parentStartLabel);
+  }
+
+  public changeGenerator(prmGenerator: string): void {
+    this.parentGenerator = prmGenerator;
+  }
+
+  public changeStartLabelFromChild(e: any) {
+    this.parentStartLabel = e;
+  }
 
   public changeLabelFromChild(e: any) {
     this.parentLabel = e;
@@ -122,12 +149,14 @@ export default class CanvasComponent extends BaseComponent {
   }
 
   public mounted(): void {
-    this.loadGraph();
+    this.changeStartLabel('From Parent Mounted - Label');
+    this.changeGenerator('From Parent Mounted - Generator');
+    this.loadGraph();    
     this.$forceUpdate();
   }
 
   public loadGraph(): void {
-    try {
+    try {      
       // Deserialize the model
       this.graph = this.response as Graph;
 
@@ -246,6 +275,18 @@ export default class CanvasComponent extends BaseComponent {
         jointPage.getPaper().translate((canvasWidth / 2) - (PageViewportBBox.width / 2), (canvasHeight / 2) - (PageViewportBBox.height / 2));
 
         jointPage.getPaper().on({
+          'element:pointerdblclick': (elementView) => {
+            const currentElement = elementView.model;
+            const currentElementType = currentElement.attributes.type;
+
+            if (currentElementType === 'start') {
+              alert('Masuk double klik');
+              console.log("sebelum "+this.parentStartLabel);
+              this.changeStartLabel('From Double Click - Start Label');
+              console.log(this.parentStartLabel);
+            }
+          },
+
           'element:contextmenu': (elementView) => {
             const currentElement = elementView.model;
             currentElement.attr('body/stroke', 'red');
