@@ -16,8 +16,13 @@ export default [
     children: [
       {
         path: '',
-        name: `${BaseUrlEnum.IOCHORD}-${ApplicationEnum.NAME}-sandbox`,
+        name: `${BaseUrlEnum.IOCHORD}-${ApplicationEnum.NAME}-sandbox-view`,
         component: () => import(/* webpackChunkName: "chdsr-sandbox-view" */ '@/iochord/chdsr/sandbox/views/SandboxTestView.vue'),
+      },
+      {
+        path: 'parent-child-view',
+        name: `${BaseUrlEnum.IOCHORD}-${ApplicationEnum.NAME}-parent-child-view-sandbox`,
+        component: () => import(/* webpackChunkName: "chdsr-parent-child-sandbox-view" */ '@/iochord/chdsr/sandbox/views/SandboxParentChildView.vue'),
       },
     ],
   },

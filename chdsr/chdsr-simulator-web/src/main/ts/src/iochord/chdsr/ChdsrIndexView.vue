@@ -30,7 +30,7 @@
             <router-link tag="a" class="item" to="#">Connection</router-link>
             <router-link tag="a" class="item" to="#">History / Browser</router-link>
             <router-link tag="a" class="item" to="#">Filter</router-link>
-            <router-link tag="a" class="item" to="#">Mapping></router-link>
+            <router-link tag="a" class="item" to="#">Mapping</router-link>
           </div>
         </div>
         <div class="item">
