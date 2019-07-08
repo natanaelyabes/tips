@@ -51,7 +51,8 @@ export default class SandboxParentChildView extends BaseComponent {
   public changeFromParent(): void {
     this.firstName = 'Natanael';
     this.lastName = 'Yabes';
-    console.log(this.firstName, this.lastName);
+    console.log('From parent: ', this.firstName);
+    console.log('From parent: ', this.lastName);
   }
 }
 </script>

@@ -1,6 +1,6 @@
-# bsclab-ui
+# IOChord-CHDSR-simulator
 
-![alt](src/assets/images/screenshots/20180806_10-39PM.png)
+![alt](src/assets/images/screenshots/chrome_2019-07-08_15-45-07.png)
 
 ## Project setup
 ```
