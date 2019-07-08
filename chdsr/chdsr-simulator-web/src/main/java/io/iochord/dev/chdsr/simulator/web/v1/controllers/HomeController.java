@@ -1,5 +1,7 @@
 package io.iochord.dev.chdsr.simulator.web.v1.controllers;
 
+import org.springframework.stereotype.Controller;
+
 /**
  *
  * @package chdsr-simulator-web
@@ -8,8 +10,9 @@ package io.iochord.dev.chdsr.simulator.web.v1.controllers;
  *
  *
  */
+@Controller
 public class HomeController extends AController {
 	
 	public static final String BASE_URI = AController.BASE_URI + "";
-
+	
 }
