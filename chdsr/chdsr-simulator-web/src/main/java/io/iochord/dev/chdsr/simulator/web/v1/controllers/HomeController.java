@@ -1,8 +1,5 @@
 package io.iochord.dev.chdsr.simulator.web.v1.controllers;
 
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RestController;
-
 /**
  *
  * @package chdsr-simulator-web
@@ -11,8 +8,6 @@ import org.springframework.web.bind.annotation.RestController;
  *
  *
  */
-@RestController
-@CrossOrigin
 public class HomeController extends AController {
 	
 	public static final String BASE_URI = AController.BASE_URI + "";

@@ -280,7 +280,7 @@ import { ApplicationEnum, BaseUrlEnum } from '@/iochord/chdsr/common/enums/index
 
 // Components
 import ApplicationWrapperComponent from '@/iochord/chdsr/common/ui/application/components/ApplicationWrapperComponent.vue';
-import { SimulationModelService } from '@/iochord/chdsr/common/service/model/SimulationModelService';
+import { SbpnetModelService } from '@/iochord/chdsr/common/service/model/SbpnetModelService';
 import { GraphImpl } from '@/iochord/chdsr/common/graph/classes/GraphImpl';
 import { Graph } from '@/iochord/chdsr/common/graph/interfaces/Graph';
 
@@ -306,7 +306,7 @@ export default class SimulationEditorView extends ApplicationWrapperView {
   /** @Override */
   public async mounted(): Promise<void> {
     try {
-      this.graphData = await SimulationModelService.getInstance().getExampleModel();
+      this.graphData = await SbpnetModelService.getInstance().getExampleModel();
     } catch (e) {
       console.log(e);
     }
