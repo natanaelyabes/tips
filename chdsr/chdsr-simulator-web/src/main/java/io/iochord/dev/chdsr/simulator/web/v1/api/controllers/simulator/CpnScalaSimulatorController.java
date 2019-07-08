@@ -1,4 +1,4 @@
-package io.iochord.dev.chdsr.simulator.web.api.controllers;
+package io.iochord.dev.chdsr.simulator.web.v1.api.controllers.simulator;
 
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -8,14 +8,17 @@ import io.iochord.dev.chdsr.simulator.compiler.MemoryScalaCompiler;
 import io.iochord.dev.chdsr.simulator.compiler.Simulation;
 
 /**
- * @author Iq Reviessay Pulshashi <pulshashi@ideas.web.id>
+ *
+ * @package chdsr-simulator-web
+ * @author  Iq Reviessay Pulshashi <pulshashi@ideas.web.id>
+ * @since   2019
+ *
  *
  */
-// TODO: Simulator Controller
 @RestController
 @CrossOrigin
-public class SimulatorController extends AServiceController {
-	public static final String BASE_URI = AServiceController.BASE_URI + "/simulator";
+public class CpnScalaSimulatorController extends ASimulatorController {
+	public static final String BASE_URI = ASimulatorController.BASE_URI + "/cpnscala";
 
 	@RequestMapping(BASE_URI + "")
 	public String getIndex() {

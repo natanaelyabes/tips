@@ -9,7 +9,11 @@ import io.iochord.dev.chdsr.model.sbpnet.v1.components.Control;
 import io.iochord.dev.chdsr.model.sbpnet.v1.impl.SbpnetImpl;
 
 /**
- * @author Iq Reviessay Pulshashi <pulshashi@ideas.web.id>
+ *
+ * @package chdsr-model
+ * @author  Iq Reviessay Pulshashi <pulshashi@ideas.web.id>
+ * @since   2019
+ *
  *
  */
 @JsonDeserialize(as = SbpnetImpl.class)

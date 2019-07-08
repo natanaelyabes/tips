@@ -5,7 +5,11 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.iochord.dev.chdsr.model.sbpnet.v1.impl.ConnectorImpl;
 
 /**
- * @author Iq Reviessay Pulshashi <pulshashi@ideas.web.id>
+ *
+ * @package chdsr-model
+ * @author  Iq Reviessay Pulshashi <pulshashi@ideas.web.id>
+ * @since   2019
+ *
  *
  */
 @JsonDeserialize(as = ConnectorImpl.class)

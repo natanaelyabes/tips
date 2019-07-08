@@ -38,7 +38,11 @@ import lombok.Getter;
 import lombok.Setter;
 
 /**
- * @author Iq Reviessay Pulshashi <pulshashi@ideas.web.id>
+ *
+ * @package chdsr-model
+ * @author  Iq Reviessay Pulshashi <pulshashi@ideas.web.id>
+ * @since   2019
+ *
  *
  */
 public class SbpnetFactoryImpl implements SbpnetFactory {

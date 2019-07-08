@@ -1,4 +1,4 @@
-package io.iochord.dev.chdsr.simulator.web.api.controllers;
+package io.iochord.dev.chdsr.simulator.web.v1.api.controllers;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -12,8 +12,14 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.mvc.method.RequestMappingInfo;
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
 
+import io.iochord.dev.chdsr.simulator.web.v1.api.AServiceController;
+
 /**
- * @author Iq Reviessay Pulshashi <pulshashi@ideas.web.id>
+ *
+ * @package chdsr-simulator-web
+ * @author  Iq Reviessay Pulshashi <pulshashi@ideas.web.id>
+ * @since   2019
+ *
  *
  */
 @RestController
