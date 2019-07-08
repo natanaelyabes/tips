@@ -8,8 +8,13 @@ import { BaseService } from '../BaseService';
  *
  */
 export class SimulatorService extends BaseService {
-
-  public static readonly BASE_URI: string = BaseService.BASE_URI + '/simulator';
+  //*/
+  // PRODUCTION / COMMIT
+  public static readonly BASE_URI: string = BaseService.BASE_URI + '/model';
+  /*/
+  // DEVELOPMENT / LOCAL
+  public static readonly BASE_URI: string = BaseService.BASE_URI + '/model/simulation';
+  //*/
   
   private static __INSTANCE: SimulatorService;
 
