@@ -9,13 +9,7 @@ import axios, { AxiosResponse } from 'axios';
  */
 export class BaseService {
 
-  // /*/
-  // PRODUCTION / COMMIT
-  public static readonly BASE_URI: string = `${process.env.VUE_APP_BASE_URI_PROD}/chdsr/api`;
-  /*/
-  // DEVELOPMENT / LOCAL
-  public static readonly BASE_URI: string = `${process.env.VUE_APP_BASE_URI_DEV}/chdsr/api`;
-  // /*/
+  public static readonly BASE_URI: string = `${process.env.VUE_APP_BASE_URI}/chdsr/api/v1`;
 
   public async remoteGet(url: string): Promise<AxiosResponse> {
     return await axios.get(url);
@@ -24,6 +18,5 @@ export class BaseService {
   public async remotePost(url: string, data: object): Promise<AxiosResponse> {
     return await axios.post(url, data);
   }
-  // TODO: Inject Security Procedure !
 
 }
