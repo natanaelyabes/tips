@@ -12,7 +12,7 @@
               Label
             </div>
             <div class="thirteen wide column">
-              <input type="text" @change="handleChangedLabel()" v-model="_startLabel" id="start_txt_label" />
+              <input type="text" @change="handleChangedLabel()" v-model="tempLabel" id="start_txt_label" />
             </div>
           </div>
           <div class="row">
@@ -20,7 +20,7 @@
               Generator
             </div>
             <div class="ten wide column">
-              <input type="text" @change="handleChangedGenerator()" v-model="_generator" id="start_txt_generator" />
+              <input type="text" @change="handleChangedGenerator()" v-model="tempGenerator" id="start_txtgen" />
             </div>
             <div class="three wide column">
               <button class="ui button">...</button>
@@ -42,8 +42,9 @@
 
 
 <script lang="ts">
-import { Component, Prop, Vue } from 'vue-property-decorator';
+import { Component, Prop, Vue, Watch } from 'vue-property-decorator';
 import SemanticComponent from '../../../ui/semantic/SemanticComponent';
+import { watch } from 'fs';
 declare const $: any;
 
 @Component
@@ -51,20 +52,32 @@ export default class StartNodeModal extends SemanticComponent {
   @Prop() private startLabel!: string;
   @Prop() private generator!: string;
 
-  private _startLabel!: string;
-  private _generator!: string;
+  private tempLabel: string = '';
+  private tempGenerator: string = '';
+
+  @Watch('startLabel')
+  public onChangeLabel(newVal: string): void {
+    this.tempLabel = newVal;
+  }
+
+  @Watch('generator')
+  public onChangeGenerator(newVal: string): void {
+    this.tempGenerator = newVal;
+  }
 
   public handleChangedLabel(): void {
-    this.$emit('changeStartLabel', this._startLabel);
+    this.$emit('changeStartLabel', this.tempLabel);
   }
 
   public handleChangedGenerator(): void {
-    this.$emit('changeGenerator', this._generator);
+    this.$emit('changeGenerator', this.tempGenerator);
   }
 
-  private beforeMount(): void {
-    this._startLabel = this.startLabel;
-    this._generator = this.generator;
+  public mounted(): void {
+    this.$nextTick(() => {
+      this.tempLabel = this.startLabel;
+      this.tempGenerator = this.generator;
+    });
   }
 }
 </script>
