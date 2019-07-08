@@ -1,18 +1,30 @@
 import axios from 'axios';
 
+/**
+ *
+ * @package chdsr
+ * @author  Iq Reviessay Pulshashi <pulshashi@ideas.web.id>
+ * @since   2019
+ *
+ */
 export class BaseService {
-  protected url: string;
-  protected response: any;
-
-  constructor(url: string) {
-    this.url = url;
+  
+  //*/
+  // PRODUCTION / COMMIT
+  public static readonly BASE_URI: string = 'http://chdsr-api.tips.iochord.co.kr/chdsr/api';
+  /*/
+  // DEVELOPMENT / LOCAL
+  public static readonly BASE_URI: string = 'http://chdsr-api.tips.iochord.co.kr/chdsr/api';
+  //*/
+  
+  public async remoteGet(url: string): Promise<AxiosResponse> {
+    return await axios.get(url);
   }
-  public async fetchResponse(): Promise<BaseService> {
-    try {
-      this.response = await axios.get(this.url as string);
-    } catch (e) {
-      console.log(e);
-    }
-    return this;
+  
+  public async remotePost(url: string, data: Object): Promise<AxiosResponse> {
+    return await axios.post(url, data);
   }
+  
+  // TODO: Inject Security Procedure !
+  
 }
