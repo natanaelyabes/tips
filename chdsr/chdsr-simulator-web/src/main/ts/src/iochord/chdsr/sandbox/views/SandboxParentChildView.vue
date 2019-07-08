@@ -3,11 +3,13 @@
     <div class="ui basic segment">
       <h1>Parent-Child Data Binding</h1>
       <FormComponent
-        :firstName.sync="firstName"
-        :lastName.sync="lastName"
+        :firstName="firstName"
+        :lastName="lastName"
         @changeFirstName="firstNameFromChild($event)"
         @changeLastName="lastNameFromChild($event)"
       />
+      <br />
+      <button class="ui button" @click="changeFromParent()">Change from parent</button>
     </div>
   </div>
 </template>
@@ -37,13 +39,19 @@ export default class SandboxParentChildView extends BaseComponent {
   }
 
   public firstNameFromChild(e: any) {
-    console.log(e);
     this.firstName = e;
+    console.log('From child: ', this.firstName);
   }
 
   public lastNameFromChild(e: any) {
-    console.log(e);
     this.lastName = e;
+    console.log('From child: ', this.lastName);
+  }
+
+  public changeFromParent(): void {
+    this.firstName = 'Natanael';
+    this.lastName = 'Yabes';
+    console.log(this.firstName, this.lastName);
   }
 }
 </script>
