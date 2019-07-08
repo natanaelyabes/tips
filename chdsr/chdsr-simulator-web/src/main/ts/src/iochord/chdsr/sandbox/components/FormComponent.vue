@@ -23,7 +23,7 @@
 </style>
 
 <script lang="ts">
-import { Component, Prop, Vue } from 'vue-property-decorator';
+import { Component, Prop, Vue, Watch } from 'vue-property-decorator';
 import BaseComponent from '@/iochord/chdsr/common/lib/vue/classes/BaseComponent';
 
 @Component
@@ -39,6 +39,16 @@ export default class FormComponent extends BaseComponent {
       this.fName = this.firstName;
       this.lName = this.lastName;
     });
+  }
+
+  @Watch('firstName')
+  public onFirstNameChange(newVal: string): void {
+    this.fName = newVal;
+  }
+
+  @Watch('lastName')
+  public onLastNameChange(newVal: string): void {
+    this.lName = newVal;
   }
 
   public changeFirstLastName(): void {
