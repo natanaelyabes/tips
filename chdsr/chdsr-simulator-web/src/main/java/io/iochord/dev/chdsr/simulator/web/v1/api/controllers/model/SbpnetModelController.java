@@ -1,4 +1,4 @@
-package io.iochord.dev.chdsr.simulator.web.api.controllers;
+package io.iochord.dev.chdsr.simulator.web.v1.api.controllers.model;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -9,8 +9,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import io.iochord.dev.chdsr.model.converter.sbp2cpn.Sbpnet2CpnBiConverter;
-import io.iochord.dev.chdsr.model.cpn.v1.impl.CPNGraph;
+import io.iochord.dev.chdsr.model.converter.sbp2cpn.Sbpnet2CpnscalaBiConverter;
 import io.iochord.dev.chdsr.model.example.SbpnetExample;
 import io.iochord.dev.chdsr.model.sbpnet.v1.Page;
 import io.iochord.dev.chdsr.model.sbpnet.v1.Sbpnet;
@@ -24,14 +23,17 @@ import io.iochord.dev.chdsr.model.sbpnet.v1.impl.SbpnetFactoryImpl;
 import io.iochord.dev.chdsr.util.SerializationUtil;
 
 /**
- * @author Iq Reviessay Pulshashi <pulshashi@ideas.web.id>
+ *
+ * @package chdsr-simulator-web
+ * @author  Iq Reviessay Pulshashi <pulshashi@ideas.web.id>
+ * @since   2019
+ *
  *
  */
-//TODO: Modelling Controller
 @RestController
 @CrossOrigin
-public class ModellingController extends AServiceController {
-	public static final String BASE_URI = AServiceController.BASE_URI + "/model";
+public class SbpnetModelController extends AModelController {
+	public static final String BASE_URI = AModelController.BASE_URI + "/sbpnet";
 	
 	@RequestMapping(BASE_URI + "")
 	public String getIndex() {
@@ -100,8 +102,8 @@ public class ModellingController extends AServiceController {
 	@RequestMapping(value=BASE_URI + "/examplecpn",produces= {MediaType.APPLICATION_JSON_VALUE})
 	public String getConvertExampleSimulationModel() {
 		Sbpnet snet = SbpnetExample.create();
-		Sbpnet2CpnBiConverter converter = new Sbpnet2CpnBiConverter();
-		CPNGraph cnet = converter.convert(snet);
-		return SerializationUtil.encode(cnet);
+		Sbpnet2CpnscalaBiConverter converter = new Sbpnet2CpnscalaBiConverter();
+		String cnet = converter.convert(snet);
+		return cnet;
 	}	
 }

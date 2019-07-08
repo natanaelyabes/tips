@@ -7,6 +7,16 @@ import com.fasterxml.jackson.module.scala.DefaultScalaModule;
 
 import lombok.Getter;
 
+/**
+ *
+ * XML data codec
+ *
+ * @package chdsr-common
+ * @author  Iq Reviessay Pulshashi <pulshashi@ideas.web.id>
+ * @since   2019
+ *
+ *
+ */
 public class XmlDataCodec extends JsonDataCodec implements DataCodec<String> {
 
 	@Getter

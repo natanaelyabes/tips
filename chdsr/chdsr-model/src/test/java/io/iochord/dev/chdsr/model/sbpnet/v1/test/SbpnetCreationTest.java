@@ -44,7 +44,11 @@ import io.iochord.dev.chdsr.model.sbpnet.v1.impl.SbpnetImpl;
 import io.iochord.dev.chdsr.util.SerializationUtil;
 
 /**
- * @author Iq Reviessay Pulshashi <pulshashi@ideas.web.id>
+ *
+ * @package chdsr-model
+ * @author  Iq Reviessay Pulshashi <pulshashi@ideas.web.id>
+ * @since   2019
+ *
  *
  */
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)

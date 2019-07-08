@@ -1,5 +1,13 @@
 package io.iochord.dev.chdsr.util;
 
+/**
+ *
+ * @package chdsr-common
+ * @author  Iq Reviessay Pulshashi <pulshashi@ideas.web.id>
+ * @since   2019
+ *
+ *
+ */
 public class SerializationUtil {
 
 	private static JsonDataCodec json;
@@ -20,14 +28,33 @@ public class SerializationUtil {
 		return xml;
 	}
 	
+	/**
+	 *
+	 * @param obj
+	 * @return
+	 *
+	 */
 	public static String encode(Object obj) {
 		return json().encode(obj);
 	}
 	
+	/**
+	 *
+	 * @param obj
+	 * @return
+	 *
+	 */
 	public static String encodePretty(Object obj) {
 		return json().encodePretty(obj);
 	}
 	
+	/**
+	 *
+	 * @param eobj
+	 * @param type
+	 * @return
+	 *
+	 */
 	public static <U> U decode(String eobj, Class<U> type) {
 		return json().decode(eobj, type);
 	}

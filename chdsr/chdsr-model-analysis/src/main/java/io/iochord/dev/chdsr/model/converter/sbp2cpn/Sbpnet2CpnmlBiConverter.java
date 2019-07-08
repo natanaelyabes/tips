@@ -35,7 +35,6 @@ import io.iochord.dev.chdsr.model.sbpnet.v1.Element;
 import io.iochord.dev.chdsr.model.sbpnet.v1.Sbpnet;
 import io.iochord.dev.chdsr.model.sbpnet.v1.components.Activity;
 import io.iochord.dev.chdsr.model.sbpnet.v1.components.Branch;
-import io.iochord.dev.chdsr.model.sbpnet.v1.components.BranchGate;
 import io.iochord.dev.chdsr.model.sbpnet.v1.components.DataTable;
 import io.iochord.dev.chdsr.model.sbpnet.v1.components.Function;
 import io.iochord.dev.chdsr.model.sbpnet.v1.components.Generator;
@@ -48,7 +47,11 @@ import io.iochord.dev.chdsr.model.sbpnet.v1.components.Stop;
 import lombok.Getter;
 
 /**
- * @author Iq Reviessay Pulshashi <pulshashi@ideas.web.id>
+ *
+ * @package chdsr-model-analysis
+ * @author  Iq Reviessay Pulshashi <pulshashi@ideas.web.id>
+ * @since   2019
+ *
  *
  */
 public class Sbpnet2CpnmlBiConverter implements Converter<Sbpnet, PetriNet> {
