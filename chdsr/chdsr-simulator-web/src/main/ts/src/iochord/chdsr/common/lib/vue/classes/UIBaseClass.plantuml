@@ -1,0 +1,69 @@
+@startuml UIBaseClass
+' Component
+class BaseComponent extends Vue {
+
+}
+
+interface SemanticModuleIsUsed {
+  + declareSemanticModule(): void;
+}
+
+class SemanticComponent extends BaseComponent implements SemanticModuleIsUsed {
+  + declareSemanticModule(): void;
+}
+
+
+' View
+class BaseView extends Vue {
+
+}
+
+class IndexView extends BaseView {
+
+}
+
+interface BrowserHasProperties {
+  + overrideBrowserProperties(): void;
+}
+
+class PageView extends BaseView implements BrowserHasProperties {
+  + overrideBrowserProperties(): void;
+  + setDocumentTitle(title: string): void;
+}
+
+interface ApplicationHasWrapper {
+  + title: string;
+  + breadcrumbs: Breadcrumb[];
+  + titleMenuBarItems: any;
+  + leftMenuBarItems: any;
+  + rightMenuBarItems: any;
+  + ribbonMenuItems: any;
+  + content: any;
+  + setTitle(): void;
+  + setBreadcrumb(): void;
+  + setTitleMenubar(): void;
+  + setLeftMenuSidebar(): void;
+  + setRightMenuSidebar(): void;
+  + setRibbonMenuItem(): void;
+  + setContent(): void;
+  + setApplicationWrapperProperties(): void;
+}
+
+class ApplicationWrapperView extends PageView implements ApplicationHasWrapper {
+  + title: string;
+  + breadcrumbs: Breadcrumb[];
+  + titleMenuBarItems: any;
+  + leftMenuBarItems: any;
+  + rightMenuBarItems: any;
+  + ribbonMenuItems: any;
+  + content: any;
+  + setTitle(): void;
+  + setBreadcrumb(): void;
+  + setTitleMenubar(): void;
+  + setLeftMenuSidebar(): void;
+  + setRightMenuSidebar(): void;
+  + setRibbonMenuItem(): void;
+  + setContent(): void;
+  + setApplicationWrapperProperties(): void;
+}
+@enduml

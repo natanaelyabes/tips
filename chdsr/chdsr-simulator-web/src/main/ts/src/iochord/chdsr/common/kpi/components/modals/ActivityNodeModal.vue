@@ -185,10 +185,12 @@ export default class ActivityNodeModal extends SemanticComponent {
     this.basicSplitSM4 = '';
   }
 
-  public mounted(): void {
+  public declareSemanticModules() {
     $('.ui.dropdown').dropdown();
     $('.tabular.menu .item').tab();
+  }
 
+  public mounted(): void {
     this.basicStandardSM1 += '<div class=\'four wide column\'>Resources</div>';
     this.basicStandardSM1 += '<div class=\'nine wide column\'>';
     this.basicStandardSM1 += '<input type=\'text\' id=\'resources_txt_label\'>';

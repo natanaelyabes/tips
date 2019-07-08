@@ -11,10 +11,10 @@ export class BaseService {
 
   // /*/
   // PRODUCTION / COMMIT
-  public static readonly BASE_URI: string = 'http://chdsr-api.tips.iochord.co.kr/chdsr/api';
+  public static readonly BASE_URI: string = `${process.env.VUE_APP_BASE_URI_PROD}/chdsr/api`;
   /*/
   // DEVELOPMENT / LOCAL
-  public static readonly BASE_URI: string = 'http://chdsr-api.tips.iochord.co.kr/chdsr/api';
+  public static readonly BASE_URI: string = `${process.env.VUE_APP_BASE_URI_DEV}/chdsr/api`;
   // /*/
 
   public async remoteGet(url: string): Promise<AxiosResponse> {

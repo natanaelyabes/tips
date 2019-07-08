@@ -25,7 +25,7 @@ export default class SandboxTestView extends BaseView {
 
   /** @Override */
   public mounted(): void {
-    const socket = SocketIO(process.env.VUE_APP_SOCKET_URL as string);
+    const socket = SocketIO('http://localhost:3001');
 
     socket.emit('sandbox test', { test: 'test payload' });
 
