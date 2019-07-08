@@ -1,4 +1,4 @@
-package io.iochord.dev.chdsr.simulator.web.v1;
+package io.iochord.dev.chdsr.simulator.web;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
