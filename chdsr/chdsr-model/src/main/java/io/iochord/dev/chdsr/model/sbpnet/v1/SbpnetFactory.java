@@ -13,7 +13,11 @@ import io.iochord.dev.chdsr.model.sbpnet.v1.components.Start;
 import io.iochord.dev.chdsr.model.sbpnet.v1.components.Stop;
 
 /**
- * @author Iq Reviessay Pulshashi <pulshashi@ideas.web.id>
+ *
+ * @package chdsr-model
+ * @author  Iq Reviessay Pulshashi <pulshashi@ideas.web.id>
+ * @since   2019
+ *
  *
  */
 public interface SbpnetFactory {

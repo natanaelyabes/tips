@@ -6,7 +6,11 @@ import io.iochord.dev.chdsr.model.sbpnet.v1.Node;
 import io.iochord.dev.chdsr.model.sbpnet.v1.components.impl.MonitorImpl;
 
 /**
- * @author Iq Reviessay Pulshashi <pulshashi@ideas.web.id>
+ *
+ * @package chdsr-model
+ * @author  Iq Reviessay Pulshashi <pulshashi@ideas.web.id>
+ * @since   2019
+ *
  *
  */
 @JsonDeserialize(as = MonitorImpl.class)

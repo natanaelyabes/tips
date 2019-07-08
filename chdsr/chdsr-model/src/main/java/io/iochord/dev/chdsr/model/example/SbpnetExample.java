@@ -22,9 +22,13 @@ import io.iochord.dev.chdsr.model.sbpnet.v1.impl.SbpnetFactoryImpl;
 import io.iochord.dev.chdsr.model.sbpnet.v1.impl.SbpnetImpl;
 
 /**
+ *
  * Example SBPNet Model
- * 
- * @author Iq Reviessay Pulshashi <pulshashi@ideas.web.id>
+ *
+ * @package chdsr-model
+ * @author  Iq Reviessay Pulshashi <pulshashi@ideas.web.id>
+ * @since   2019
+ *
  *
  */
 public class SbpnetExample {

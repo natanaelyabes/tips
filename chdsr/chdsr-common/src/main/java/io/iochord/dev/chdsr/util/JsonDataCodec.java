@@ -7,11 +7,21 @@ import com.fasterxml.jackson.module.scala.DefaultScalaModule;
 
 import lombok.Getter;
 
+/**
+ * 
+ * JSON data codec
+ *
+ * @package chdsr-common
+ * @author  Iq Reviessay Pulshashi <pulshashi@ideas.web.id>
+ * @since   2019
+ *
+ *
+ */
 public class JsonDataCodec implements DataCodec<String> {
 
 	@Getter
 	private final String type = "json";
-	
+
 	public static ObjectMapper getSerializer() {
 		ObjectMapper omDefault = new ObjectMapper();
 		omDefault.registerModule(new DefaultScalaModule());

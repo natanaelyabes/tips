@@ -1,7 +1,13 @@
 package io.iochord.dev.chdsr.model.converter;
 
 /**
- * @author Iq Reviessay Pulshashi <pulshashi@ideas.web.id>
+ *
+ * @package chdsr-model-analysis
+ * @author  Iq Reviessay Pulshashi <pulshashi@ideas.web.id>
+ * @since   2019
+ *
+ * @param <I>
+ * @param <O>
  *
  */
 public interface ConversionModel<I, O> {
