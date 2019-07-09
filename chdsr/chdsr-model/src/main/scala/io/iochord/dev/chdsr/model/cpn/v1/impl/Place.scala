@@ -15,9 +15,9 @@ class Place[T] (
   
   def hasTokenWithTime(tokenWithTime: Any) = { currentMarking hasTokenWithTime tokenWithTime.asInstanceOf[(T,Long)]}
   
-  def removeTokenWithTime(tokenWithTime: Any) {currentMarking - tokenWithTime.asInstanceOf[(T,Long)] }
+  def removeTokenWithTime(tokenWithTime: Any, noToken: Int) {currentMarking - (tokenWithTime.asInstanceOf[(T,Long)],noToken) }
 
-  def addTokenWithTime(tokenWithTime: Any)  { currentMarking + tokenWithTime.asInstanceOf[(T,Long)] }
+  def addTokenWithTime(tokenWithTime: Any, noToken: Int)  { currentMarking + (tokenWithTime.asInstanceOf[(T,Long)],noToken) }
   
   def getcurrentMarking():Multiset[T] = currentMarking
   

@@ -60,6 +60,10 @@ public class Sbpnet2CpnscalaBiConverter implements Converter<Sbpnet, String> {
 		final static String merge = "Merge";
 		final static String evalLast = "EvalLast";
 		final static String arc = "Arc";
+		final static String arcexp = "ArcExp";
+		final static String TtB = "TtB";
+		final static String BtT = "BtT";
+		final static String addTime = "addTime";
 	}
 	
 	StringBuilder factory = new StringBuilder();
@@ -75,6 +79,9 @@ public class Sbpnet2CpnscalaBiConverter implements Converter<Sbpnet, String> {
 	}
 	
 	public String convert(Sbpnet snet) {
+		factory.append("this.subject = new MarkingObservable()\n");
+	    factory.append("subject.addObserver(new MarkingObserver())\n");
+	    
 		String int_type_id = "colset"+getCounter(KeyElement.type);
 		String string_type_id = "colset"+getCounter(KeyElement.type);
 		
@@ -99,20 +106,27 @@ public class Sbpnet2CpnscalaBiConverter implements Converter<Sbpnet, String> {
 					String p_dgp2 = addPlace(dg.getLabel() + "_dgp2", int_type_id, "((1,0),1)");
 					String p_dgp3 = addPlace(dg.getLabel() + "_dgp3", int_type_id, "((1,0),1)");
 					
-					String guard = "null";
-					String action = "null";
+					String guard = null;
+					String action = null;
 					
 					String b_dgt1 = addBindingClass( "i:Option["+int_type_id+"]" );
 					String e_dgt1 = addEval("b1.i == b2.i || b1.i == None || b2.i == None", b_dgt1);
 					String m_dgt1 = addMerge("val i = if(b1.i == None) b2.i else b1.i", b_dgt1, "i");
-					String el_dgt1 = addEvalLast("b1.i != None", b_dgt1);
-					String dgt1 = addTransition(dg.getLabel() + "_dgt1", guard, action, b_dgt1, e_dgt1, m_dgt1, el_dgt1);
+					String dgt1 = addTransition(dg.getLabel() + "_dgt1", guard, action, b_dgt1, e_dgt1, m_dgt1);
 					
 					String b_dgt2 = addBindingClass( "i:Option["+int_type_id+"]" );
 					String e_dgt2 = addEval("b1.i == b2.i || b1.i == None || b2.i == None", b_dgt2);
 					String m_dgt2 = addMerge("val i = if(b1.i == None) b2.i else b1.i", b_dgt2, "i");
-					String el_dgt2 = addEvalLast("b1.i != None", b_dgt2);
-					String dgt2 = addTransition(dg.getLabel() + "_dgt2", guard, action, b_dgt2, e_dgt2, m_dgt2, el_dgt2);
+					String dgt2 = addTransition(dg.getLabel() + "_dgt2", guard, action, b_dgt2, e_dgt2, m_dgt2);
+					
+					addArc(p_dgp1, dgt1, "PtT", int_type_id, b_dgt1, addArcExp("case i:"+int_type_id+" => { Some(i) }"), addTtB(b_dgt1,"inp match { case i:"+int_type_id+" => Some(i); case _ => None }"), addBtT(b_dgt1,"b.i.get"), null);
+					addArc(p_dgp1, dgt1, "TtP", int_type_id, b_dgt1, addArcExp("case i:"+int_type_id+" => { Some(i) }"), addTtB(b_dgt1,"inp match { case i:"+int_type_id+" => Some(i); case _ => None }"), addBtT(b_dgt1,"b.i.get"), addAddedTime(b_dgt1,"10L"));
+					addArc(p_dgp2, dgt1, "TtP", int_type_id, b_dgt1, addArcExp("case i:"+int_type_id+" => { Some(i) }"), addTtB(b_dgt1,"inp match { case i:"+int_type_id+" => Some(i); case _ => None }"), addBtT(b_dgt1,"b.i.get"), addAddedTime(b_dgt1,"20L"));
+					addArc(p_dgp2, dgt2, "PtT", int_type_id, b_dgt2, addArcExp("case i:"+int_type_id+" => { Some(i) }"), addTtB(b_dgt2,"inp match { case i:"+int_type_id+" => Some(i); case _ => None }"), addBtT(b_dgt2,"b.i.get"), null);
+					
+					addArc(p_dgp2, dgt2, "TtP", int_type_id, b_dgt2, addArcExp("case i:"+int_type_id+" => { Some(i) }"), addTtB(b_dgt2,"inp match { case i:"+int_type_id+" => Some(i); case _ => None }"), addBtT(b_dgt2,"b.i.get"), addAddedTime(b_dgt2,"10L"));
+					addArc(p_dgp4s, dgt2, "TtP", int_type_id, b_dgt2, addArcExp("case i:"+int_type_id+" => { Some(i) }"), addTtB(b_dgt2,"inp match { case i:"+int_type_id+" => Some(i); case _ => None }"), addBtT(b_dgt2,"b.i.get"), addAddedTime(b_dgt2,"0L"));
+					addArc(p_dgp3, dgt2, "TtP", int_type_id, b_dgt2, addArcExp("case i:"+int_type_id+" => { Some(i) }"), addTtB(b_dgt2,"inp match { case i:"+int_type_id+" => Some(i); case _ => None }"), addBtT(b_dgt2,"b.i.get"), addAddedTime(b_dgt2,"10L"));
 				}
 				if (d instanceof Function) {
 					Function f = (Function) d;
@@ -203,13 +217,14 @@ public class Sbpnet2CpnscalaBiConverter implements Converter<Sbpnet, String> {
 	public String addPlace(String name, String type, String initialMarking) {
 		String counter = getCounter(KeyElement.place);
 		String mapid = "map"+counter;
-		String multisetid = "map"+counter;
+		String multisetid = "ms"+counter;
 		String placeid = "place"+counter;
 		
 		StringBuilder placefactory = new StringBuilder();
 		placefactory.append( "val "+mapid+" = Map[("+type+",Long),Int]( "+initialMarking+" )\n" );
-		placefactory.append( "val "+multisetid+" = new Multiset["+type+"]("+mapid+", classOf["+type+"])\n" );
+		placefactory.append( "val "+multisetid+" = new Multiset["+type+"]("+mapid+")\n" );
 		placefactory.append( "val "+placeid+" = new Place(\""+placeid+"\",\""+name+"\","+multisetid+")\n" );
+		placefactory.append( "cgraph.addPlace("+placeid+")\n" );
 		placefactory.append("\n");
 		
 		factory.append(placefactory.toString());
@@ -217,15 +232,20 @@ public class Sbpnet2CpnscalaBiConverter implements Converter<Sbpnet, String> {
 		return placeid;
 	}
 	
-	public String addTransition(String name, String guard, String action, String classbinding, String eval, String merge, String evalLast) {
+	public String addTransition(String name, String guard, String action, String classbinding, String eval, String merge) {
 		String counter = getCounter(KeyElement.transition);
 		String transitionid = "trans"+counter;
+		
+		if(guard == null)
+			guard = "null";
+		if(action == null)
+			action = "null";
 		
 		StringBuilder transfactory = new StringBuilder();
 		transfactory.append( "val "+transitionid+" = new Transition["+classbinding+"](\""+transitionid+"\",\""+name+"\","+guard+","+action+")\n" );
 		transfactory.append( transitionid+".setEval("+eval+")\n" );
 		transfactory.append( transitionid+".setMerge("+merge+")\n" );
-		transfactory.append( transitionid+".setEvalLast("+evalLast+")\n" );
+		transfactory.append( "cgraph.addTransition("+transitionid+")\n" );
 		transfactory.append("\n");
 		
 		factory.append(transfactory.toString());
@@ -274,18 +294,71 @@ public class Sbpnet2CpnscalaBiConverter implements Converter<Sbpnet, String> {
 		return mergeid;
 	}
 	
-	public String addEvalLast(String evalLastdef, String classbinding) {
-		String counter = getCounter(KeyElement.evalLast);
-		String evalLastid = "EvalLast"+counter;
+	public String addArc(String placeid, String transitionid, String direction, String type, String classbinding, String arcexp, String TtB, String BtT, String addTime) {
+		String counter = getCounter(KeyElement.arc);
+		String arcid = "arc"+counter;
 		
-		StringBuilder evalLastfactory = new StringBuilder();
-		evalLastfactory.append( "val "+evalLastid+" = (b:"+classbinding+") => {\n" );
-		evalLastfactory.append( "\t"+evalLastdef+"\n" );
-		evalLastfactory.append( "}\n" );
+		StringBuilder arcfactory = new StringBuilder();
+		arcfactory.append( "val "+arcid+" = new Arc["+type+","+classbinding+"](\""+arcid+"\","+placeid+","+transitionid+",Direction."+direction+")\n" );
+		arcfactory.append( arcid+".setArcExp("+arcexp+")\n" );
+		arcfactory.append( arcid+".setTokenToBind("+TtB+")\n" );
+		arcfactory.append( arcid+".setBindToToken("+BtT+")\n" );
+		if(addTime != null)
+			arcfactory.append( arcid+".setAddTime("+addTime+")\n" );
+		arcfactory.append( "cgraph.addArc("+arcid+")\n" );
+		arcfactory.append("\n");
 		
-		factory.append(evalLastfactory.toString());
+		factory.append(arcfactory.toString());
 		
-		return evalLastid;
+		return arcid;
+	}
+	
+	public String addArcExp(String arcexpdef) {
+		String counter = getCounter(KeyElement.arcexp);
+		String arcexpid = "arcexp"+counter;
+		
+		StringBuilder arcexpfactory = new StringBuilder();
+		arcexpfactory.append( "val "+arcexpid+" = (inp:Any) => inp match { "+arcexpdef+" }\n" );
+		
+		factory.append(arcexpfactory.toString());
+		
+		return arcexpid;
+	}
+	
+	public String addTtB(String classbinding, String TtBdef) {
+		String counter = getCounter(KeyElement.TtB);
+		String TtBid = "tTb"+counter;
+		
+		StringBuilder TtBfactory = new StringBuilder();
+		TtBfactory.append( "val "+TtBid+" = (inp:Any) => "+classbinding+"("+TtBdef+")\n" );
+		
+		factory.append(TtBfactory.toString());
+		
+		return TtBid;
+	}
+	
+	public String addBtT(String classbinding, String BtTdef) {
+		String counter = getCounter(KeyElement.BtT);
+		String BtTid = "bTt"+counter;
+		
+		StringBuilder BtTfactory = new StringBuilder();
+		BtTfactory.append( "val "+BtTid+" = (b:"+classbinding+") => {"+BtTdef+"}\n" );
+		
+		factory.append(BtTfactory.toString());
+		
+		return BtTid;
+	}
+	
+	public String addAddedTime(String classbinding, String addedTimedef) {
+		String counter = getCounter(KeyElement.addTime);
+		String addTimeid = "addTime"+counter;
+		
+		StringBuilder addTimefactory = new StringBuilder();
+		addTimefactory.append( "val "+addTimeid+" = (b:"+classbinding+") => {"+addedTimedef+"}\n" );
+		
+		factory.append(addTimefactory.toString());
+		
+		return addTimeid;
 	}
 	/*
 	public HLDeclaration addTypeDeclaration(PetriNet net, String name, CPNType value, boolean timed) {

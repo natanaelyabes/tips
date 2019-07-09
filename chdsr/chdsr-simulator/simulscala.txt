@@ -1,0 +1,206 @@
+this.subject = new MarkingObservable()
+subject.addObserver(new MarkingObserver())
+type colset00000001 = Int
+type colset00000002 = String
+
+val map00000001 = Map[(colset00000001,Long),Int](  )
+val ms00000001 = new Multiset[colset00000001](map00000001)
+val place00000001 = new Place("place00000001","Customer MU_dgp4s",ms00000001)
+cgraph.addPlace(place00000001)
+
+val map00000002 = Map[(colset00000001,Long),Int]( ((1,0),1) )
+val ms00000002 = new Multiset[colset00000001](map00000002)
+val place00000002 = new Place("place00000002","Customer MU_dgp1",ms00000002)
+cgraph.addPlace(place00000002)
+
+val map00000003 = Map[(colset00000001,Long),Int]( ((1,0),1) )
+val ms00000003 = new Multiset[colset00000001](map00000003)
+val place00000003 = new Place("place00000003","Customer MU_dgp2",ms00000003)
+cgraph.addPlace(place00000003)
+
+val map00000004 = Map[(colset00000001,Long),Int]( ((1,0),1) )
+val ms00000004 = new Multiset[colset00000001](map00000004)
+val place00000004 = new Place("place00000004","Customer MU_dgp3",ms00000004)
+cgraph.addPlace(place00000004)
+
+case class Binding00000001(i:Option[colset00000001]) extends Bind
+val Eval00000001 = (b1:Binding00000001, b2:Binding00000001) => {
+	b1.i == b2.i || b1.i == None || b2.i == None
+}
+val Merge00000001 = (b1:Binding00000001, b2:Binding00000001) => {
+	val i = if(b1.i == None) b2.i else b1.i
+	Binding00000001(i)
+}
+val trans00000001 = new Transition[Binding00000001]("trans00000001","Customer MU_dgt1",null,null)
+trans00000001.setEval(Eval00000001)
+trans00000001.setMerge(Merge00000001)
+cgraph.addTransition(trans00000001)
+
+case class Binding00000002(i:Option[colset00000001]) extends Bind
+val Eval00000002 = (b1:Binding00000002, b2:Binding00000002) => {
+	b1.i == b2.i || b1.i == None || b2.i == None
+}
+val Merge00000002 = (b1:Binding00000002, b2:Binding00000002) => {
+	val i = if(b1.i == None) b2.i else b1.i
+	Binding00000002(i)
+}
+val trans00000002 = new Transition[Binding00000002]("trans00000002","Customer MU_dgt2",null,null)
+trans00000002.setEval(Eval00000002)
+trans00000002.setMerge(Merge00000002)
+cgraph.addTransition(trans00000002)
+
+val arcexp00000001 = (inp:Any) => inp match { case i:colset00000001 => { Some(i) } }
+val tTb00000001 = (inp:Any) => Binding00000001(inp match { case i:colset00000001 => Some(i); case _ => None })
+val bTt00000001 = (b:Binding00000001) => {b.i.get}
+val arc00000001 = new Arc[colset00000001,Binding00000001]("arc00000001",place00000002,trans00000001,Direction.PtT)
+arc00000001.setArcExp(arcexp00000001)
+arc00000001.setTokenToBind(tTb00000001)
+arc00000001.setBindToToken(bTt00000001)
+cgraph.addArc(arc00000001)
+
+val arcexp00000002 = (inp:Any) => inp match { case i:colset00000001 => { Some(i) } }
+val tTb00000002 = (inp:Any) => Binding00000001(inp match { case i:colset00000001 => Some(i); case _ => None })
+val bTt00000002 = (b:Binding00000001) => {b.i.get}
+val addTime00000001 = (b:Binding00000001) => {10L}
+val arc00000002 = new Arc[colset00000001,Binding00000001]("arc00000002",place00000002,trans00000001,Direction.TtP)
+arc00000002.setArcExp(arcexp00000002)
+arc00000002.setTokenToBind(tTb00000002)
+arc00000002.setBindToToken(bTt00000002)
+arc00000002.setAddTime(addTime00000001)
+cgraph.addArc(arc00000002)
+
+val arcexp00000003 = (inp:Any) => inp match { case i:colset00000001 => { Some(i) } }
+val tTb00000003 = (inp:Any) => Binding00000001(inp match { case i:colset00000001 => Some(i); case _ => None })
+val bTt00000003 = (b:Binding00000001) => {b.i.get}
+val addTime00000002 = (b:Binding00000001) => {20L}
+val arc00000003 = new Arc[colset00000001,Binding00000001]("arc00000003",place00000003,trans00000001,Direction.TtP)
+arc00000003.setArcExp(arcexp00000003)
+arc00000003.setTokenToBind(tTb00000003)
+arc00000003.setBindToToken(bTt00000003)
+arc00000003.setAddTime(addTime00000002)
+cgraph.addArc(arc00000003)
+
+val arcexp00000004 = (inp:Any) => inp match { case i:colset00000001 => { Some(i) } }
+val tTb00000004 = (inp:Any) => Binding00000002(inp match { case i:colset00000001 => Some(i); case _ => None })
+val bTt00000004 = (b:Binding00000002) => {b.i.get}
+val arc00000004 = new Arc[colset00000001,Binding00000002]("arc00000004",place00000003,trans00000002,Direction.PtT)
+arc00000004.setArcExp(arcexp00000004)
+arc00000004.setTokenToBind(tTb00000004)
+arc00000004.setBindToToken(bTt00000004)
+cgraph.addArc(arc00000004)
+
+val map00000005 = Map[(colset00000001,Long),Int](  )
+val ms00000005 = new Multiset[colset00000001](map00000005)
+val place00000005 = new Place("place00000005","Teller Service_nap1",ms00000005)
+cgraph.addPlace(place00000005)
+
+val map00000006 = Map[(colset00000001,Long),Int](  )
+val ms00000006 = new Multiset[colset00000001](map00000006)
+val place00000006 = new Place("place00000006","Teller Service_nap2",ms00000006)
+cgraph.addPlace(place00000006)
+
+val map00000007 = Map[(colset00000001,Long),Int](  )
+val ms00000007 = new Multiset[colset00000001](map00000007)
+val place00000007 = new Place("place00000007","Teller Service_nap3",ms00000007)
+cgraph.addPlace(place00000007)
+
+val map00000008 = Map[(colset00000001,Long),Int](  )
+val ms00000008 = new Multiset[colset00000001](map00000008)
+val place00000008 = new Place("place00000008","ATM Service_nap1",ms00000008)
+cgraph.addPlace(place00000008)
+
+val map00000009 = Map[(colset00000001,Long),Int](  )
+val ms00000009 = new Multiset[colset00000001](map00000009)
+val place00000009 = new Place("place00000009","ATM Service_nap2",ms00000009)
+cgraph.addPlace(place00000009)
+
+val map00000010 = Map[(colset00000001,Long),Int](  )
+val ms00000010 = new Multiset[colset00000001](map00000010)
+val place00000010 = new Place("place00000010","ATM Service_nap3",ms00000010)
+cgraph.addPlace(place00000010)
+
+val map00000011 = Map[(colset00000001,Long),Int](  )
+val ms00000011 = new Multiset[colset00000001](map00000011)
+val place00000011 = new Place("place00000011","null_nop1",ms00000011)
+cgraph.addPlace(place00000011)
+
+val map00000012 = Map[(colset00000001,Long),Int](  )
+val ms00000012 = new Multiset[colset00000001](map00000012)
+val place00000012 = new Place("place00000012","1_bp",ms00000012)
+cgraph.addPlace(place00000012)
+
+val map00000013 = Map[(colset00000001,Long),Int](  )
+val ms00000013 = new Multiset[colset00000001](map00000013)
+val place00000013 = new Place("place00000013","1_bpi0s",ms00000013)
+cgraph.addPlace(place00000013)
+
+val map00000014 = Map[(colset00000001,Long),Int](  )
+val ms00000014 = new Multiset[colset00000001](map00000014)
+val place00000014 = new Place("place00000014","1_bpo0s",ms00000014)
+cgraph.addPlace(place00000014)
+
+val map00000015 = Map[(colset00000001,Long),Int](  )
+val ms00000015 = new Multiset[colset00000001](map00000015)
+val place00000015 = new Place("place00000015","1_bpo1s",ms00000015)
+cgraph.addPlace(place00000015)
+
+val map00000016 = Map[(colset00000001,Long),Int](  )
+val ms00000016 = new Multiset[colset00000001](map00000016)
+val place00000016 = new Place("place00000016","2_bp",ms00000016)
+cgraph.addPlace(place00000016)
+
+val map00000017 = Map[(colset00000001,Long),Int](  )
+val ms00000017 = new Multiset[colset00000001](map00000017)
+val place00000017 = new Place("place00000017","2_bpi0s",ms00000017)
+cgraph.addPlace(place00000017)
+
+val map00000018 = Map[(colset00000001,Long),Int](  )
+val ms00000018 = new Multiset[colset00000001](map00000018)
+val place00000018 = new Place("place00000018","2_bpo0s",ms00000018)
+cgraph.addPlace(place00000018)
+
+val map00000019 = Map[(colset00000001,Long),Int](  )
+val ms00000019 = new Multiset[colset00000001](map00000019)
+val place00000019 = new Place("place00000019","2_bpo1s",ms00000019)
+cgraph.addPlace(place00000019)
+
+val map00000020 = Map[(colset00000001,Long),Int](  )
+val ms00000020 = new Multiset[colset00000001](map00000020)
+val place00000020 = new Place("place00000020","1_bp",ms00000020)
+cgraph.addPlace(place00000020)
+
+val map00000021 = Map[(colset00000001,Long),Int](  )
+val ms00000021 = new Multiset[colset00000001](map00000021)
+val place00000021 = new Place("place00000021","1_bpi0s",ms00000021)
+cgraph.addPlace(place00000021)
+
+val map00000022 = Map[(colset00000001,Long),Int](  )
+val ms00000022 = new Multiset[colset00000001](map00000022)
+val place00000022 = new Place("place00000022","1_bpi1s",ms00000022)
+cgraph.addPlace(place00000022)
+
+val map00000023 = Map[(colset00000001,Long),Int](  )
+val ms00000023 = new Multiset[colset00000001](map00000023)
+val place00000023 = new Place("place00000023","1_bpo0s",ms00000023)
+cgraph.addPlace(place00000023)
+
+val map00000024 = Map[(colset00000001,Long),Int](  )
+val ms00000024 = new Multiset[colset00000001](map00000024)
+val place00000024 = new Place("place00000024","2_bp",ms00000024)
+cgraph.addPlace(place00000024)
+
+val map00000025 = Map[(colset00000001,Long),Int](  )
+val ms00000025 = new Multiset[colset00000001](map00000025)
+val place00000025 = new Place("place00000025","2_bpi0s",ms00000025)
+cgraph.addPlace(place00000025)
+
+val map00000026 = Map[(colset00000001,Long),Int](  )
+val ms00000026 = new Multiset[colset00000001](map00000026)
+val place00000026 = new Place("place00000026","2_bpi1s",ms00000026)
+cgraph.addPlace(place00000026)
+
+val map00000027 = Map[(colset00000001,Long),Int](  )
+val ms00000027 = new Multiset[colset00000001](map00000027)
+val place00000027 = new Place("place00000027","2_bpo0s",ms00000027)
+cgraph.addPlace(place00000027)
+
