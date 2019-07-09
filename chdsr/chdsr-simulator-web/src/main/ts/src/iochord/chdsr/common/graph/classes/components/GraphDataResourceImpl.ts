@@ -14,6 +14,7 @@ import { RESOURCE_CRITERIA } from '../../enums/RESOURCE';
  *
  */
 export class GraphDataResourceImpl extends GraphDataImpl implements GraphDataResource {
+  public static TYPE: string = 'resource';
   public static instance: Map<string, GraphDataResource> = new Map<string, GraphDataResource>();
 
   /** @Override */

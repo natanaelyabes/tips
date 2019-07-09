@@ -74,7 +74,7 @@ object SimpleTest {
     arc1.setBindToToken(BtoTArc1)
     
     // x (int) input arc for init from place2_id
-    val arcExpArc2:(colset_CASEID => Option[colset_CASEID]) = (inp:Any) => inp match { case(x:colset_CASEID) => { None } } //arc2 exp
+    val arcExpArc2:(colset_CASEID => Option[colset_CASEID]) = (inp:Any) => inp match { case(x:colset_CASEID) => { Some(x) } } //arc2 exp
     val TtoBArc2:(colset_CASEID => BindTransInit) = (inp:Any) => BindTransInit(inp match { case x:Int => Some(x); case _ => None })
     val BtoTArc2:(BindTransInit => colset_CASEID) = (b:BindTransInit) => { b.x.get }
     val arc2 = new Arc[colset_CASEID,BindTransInit]("arc2", pplace2, ttrans1, Direction.PtT, classOf[colset_CASEID])

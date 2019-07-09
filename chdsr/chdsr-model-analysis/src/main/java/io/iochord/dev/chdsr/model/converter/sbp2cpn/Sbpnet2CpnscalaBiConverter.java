@@ -77,142 +77,6 @@ public class Sbpnet2CpnscalaBiConverter implements Converter<Sbpnet, String> {
 		return String.format("%8s", counters.get(clazz)).replace(' ', '0');
 	}
 	
-	public String convert(Sbpnet snet) {
-		factory.append("this.subject = new MarkingObservable()\n");
-	    factory.append("subject.addObserver(new MarkingObserver())\n");
-	    
-		String int_type_id = "colset"+getCounter(KeyElement.type);
-		String string_type_id = "colset"+getCounter(KeyElement.type);
-		
-		factory.append("type "+int_type_id+" = Int\n");
-		factory.append("type "+string_type_id+" = String\n");
-		factory.append("\n");
-		
-		for (String pi : snet.getPages().keySet()) {
-			io.iochord.dev.chdsr.model.sbpnet.v1.Page p = snet.getPages().get(pi);
-			// Convert Data Nodes
-			for (String di : p.getData().keySet()) {
-				Data d = p.getData().get(di);
-				if (d instanceof ObjectType) {
-					ObjectType ot = (ObjectType) d;
-					//prev use converter.addTypeDeclaration
-				}
-				if (d instanceof Generator) {
-					Generator dg = (Generator) d;
-					
-					String p_dgp4s = addPlace(dg.getLabel()+"_dgp4s", int_type_id, "");
-					String p_dgp1 = addPlace(dg.getLabel() + "_dgp1", int_type_id, "((1,0),1)");
-					String p_dgp2 = addPlace(dg.getLabel() + "_dgp2", int_type_id, "((1,0),1)");
-					String p_dgp3 = addPlace(dg.getLabel() + "_dgp3", int_type_id, "((1,0),1)");
-					
-					String guard = null;
-					String action = null;
-					
-					String b_dgt1 = addBindingClass( "i:Option["+int_type_id+"]" );
-					String e_dgt1 = addEval("b1.i == b2.i || b1.i == None || b2.i == None", b_dgt1);
-					String m_dgt1 = addMerge("val i = if(b1.i == None) b2.i else b1.i", b_dgt1, "i");
-					String dgt1 = addTransition(dg.getLabel() + "_dgt1", guard, action, b_dgt1, e_dgt1, m_dgt1);
-					
-					String b_dgt2 = addBindingClass( "i:Option["+int_type_id+"]" );
-					String e_dgt2 = addEval("b1.i == b2.i || b1.i == None || b2.i == None", b_dgt2);
-					String m_dgt2 = addMerge("val i = if(b1.i == None) b2.i else b1.i", b_dgt2, "i");
-					String dgt2 = addTransition(dg.getLabel() + "_dgt2", guard, action, b_dgt2, e_dgt2, m_dgt2);
-					
-					addArc(p_dgp1, dgt1, "PtT", int_type_id, b_dgt1, addArcExp("case i:"+int_type_id+" => { Some(i) }"), addTtB(b_dgt1,"inp match { case i:"+int_type_id+" => Some(i); case _ => None }"), addBtT(b_dgt1,"b.i.get"), null);
-					addArc(p_dgp1, dgt1, "TtP", int_type_id, b_dgt1, addArcExp("case i:"+int_type_id+" => { Some(i) }"), addTtB(b_dgt1,"inp match { case i:"+int_type_id+" => Some(i); case _ => None }"), addBtT(b_dgt1,"b.i.get"), addAddedTime(b_dgt1,"10L"));
-					addArc(p_dgp2, dgt1, "TtP", int_type_id, b_dgt1, addArcExp("case i:"+int_type_id+" => { Some(i) }"), addTtB(b_dgt1,"inp match { case i:"+int_type_id+" => Some(i); case _ => None }"), addBtT(b_dgt1,"b.i.get"), addAddedTime(b_dgt1,"20L"));
-					addArc(p_dgp2, dgt2, "PtT", int_type_id, b_dgt2, addArcExp("case i:"+int_type_id+" => { Some(i) }"), addTtB(b_dgt2,"inp match { case i:"+int_type_id+" => Some(i); case _ => None }"), addBtT(b_dgt2,"b.i.get"), null);
-					
-					addArc(p_dgp2, dgt2, "TtP", int_type_id, b_dgt2, addArcExp("case i:"+int_type_id+" => { Some(i) }"), addTtB(b_dgt2,"inp match { case i:"+int_type_id+" => Some(i); case _ => None }"), addBtT(b_dgt2,"b.i.get"), addAddedTime(b_dgt2,"10L"));
-					addArc(p_dgp4s, dgt2, "TtP", int_type_id, b_dgt2, addArcExp("case i:"+int_type_id+" => { Some(i) }"), addTtB(b_dgt2,"inp match { case i:"+int_type_id+" => Some(i); case _ => None }"), addBtT(b_dgt2,"b.i.get"), addAddedTime(b_dgt2,"0L"));
-					addArc(p_dgp3, dgt2, "TtP", int_type_id, b_dgt2, addArcExp("case i:"+int_type_id+" => { Some(i) }"), addTtB(b_dgt2,"inp match { case i:"+int_type_id+" => Some(i); case _ => None }"), addBtT(b_dgt2,"b.i.get"), addAddedTime(b_dgt2,"10L"));
-				}
-				if (d instanceof Function) {
-					Function f = (Function) d;
-					//Page fpage =  converter.addPage(net, "FUNCTION " + f.getLabel()); 
-					// TODO:
-				}
-				if (d instanceof Queue) {
-					Queue q = (Queue) d;
-					//Page qpage =  converter.addPage(net, "QUEUE " + q.getLabel()); 
-					// TODO:
-				}
-				if (d instanceof Resource) {
-					Resource r = (Resource) d;
-					//Page rpage =  converter.addPage(net, "RESOURCE " + r.getLabel()); 
-					// TODO:
-				}
-				if (d instanceof DataTable) {
-					DataTable dt = (DataTable) d;
-					//Page dtpage =  converter.addPage(net, "DATATABLE " + dt.getLabel()); 
-					// TODO:
-				}
-			}
-			
-			// Convert Nodes
-			for (String ni : p.getNodes().keySet()) {
-				io.iochord.dev.chdsr.model.sbpnet.v1.Node n = p.getNodes().get(ni);
-				if (n instanceof Start) {
-					Start na = (Start) n;
-//								Page napage =  converter.addPage(net, "START " + na.getLabel()); 
-//								Place nap = converter.addPlace(napage, na.getLabel() + "_nap1", "INT", "");
-					if (na.getGenerator() == null) {
-						String p_nap1 = addPlace(na.getLabel() + "_nap1", int_type_id, "");
-					} else {
-						//if not null
-					}
-				}
-				if (n instanceof Stop) {
-					Stop no = (Stop) n;
-					String p_nop1 = addPlace(no.getLabel() + "_nop1", int_type_id, "");
-				}
-				if (n instanceof Activity) {
-					Activity na = (Activity) n;
-					String p_nap1 = addPlace(na.getLabel() + "_nap1", int_type_id, "");
-					String p_nap2 = addPlace(na.getLabel() + "_nap2", int_type_id, "");
-					String p_nap3 = addPlace(na.getLabel() + "_nap3", int_type_id, "");
-				}
-				if (n instanceof Branch) {
-					Branch b = (Branch) n;
-					String p_bp = addPlace(b.getLabel() + "_bp", int_type_id, "");
-					
-					int i = 0;
-					for (Connector c : p.getConnectors().values()) {
-						if (c.getTarget() != b) continue;
-						String bpis = addPlace(b.getLabel() + "_bpi" + i + "s", int_type_id, "");
-						
-						i++;
-					}
-					i = 0;
-					for (Connector c : p.getConnectors().values()) {
-						if (c.getSource() != b) continue;
-						String bpos = addPlace(b.getLabel() + "_bpo" + i + "s", int_type_id, "");
-						
-						i++;
-					}
-					// TODO:
-					// Temporary use activity definition
-				}
-				if (n instanceof Monitor) {
-					Monitor m = (Monitor) n;
-					//Page mpage =  converter.addPage(net, "MONITOR " + m.getLabel()); 
-					// TODO:
-				}
-			}
-			// Convert Arcs
-			for (String s : p.getConnectors().keySet()) {
-				Connector c = p.getConnectors().get(s);
-				
-			}
-		}
-	
-		return factory.toString();
-	}
-	
-	public Sbpnet revert(String scalacode) {
-		return null;
-	}
-	
 	public String addPlace(String name, String type, String initialMarking) {
 		String counter = getCounter(KeyElement.place);
 		String mapid = "map"+counter;
@@ -436,7 +300,7 @@ public class Sbpnet2CpnscalaBiConverter implements Converter<Sbpnet, String> {
 				io.iochord.dev.chdsr.model.sbpnet.v1.Node n = p.getNodes().get(ni);
 				if (n instanceof Start) {
 					Start na = (Start) n;
-//					Page napage =  converter.addPage(net, "START " + na.getLabel()); 
+//					Page napage = converter.addPage(net, "START " + na.getLabel()); 
 //					Place nap = converter.addPlace(napage, na.getLabel() + "_nap1", "INT", "");
 					if (na.getGenerator() == null) {
 						Place nap = converter.addPlace(page, na.getLabel() + "_nap1", "INT", "");
@@ -552,4 +416,129 @@ public class Sbpnet2CpnscalaBiConverter implements Converter<Sbpnet, String> {
 		return net;
 	}
 	*/
+	
+	public String convert(Sbpnet snet) {
+		factory.append("this.subject = new MarkingObservable()\n");
+	    factory.append("subject.addObserver(new MarkingObserver())\n");
+	    
+		String int_type_id = "colset"+getCounter(KeyElement.type);
+		String string_type_id = "colset"+getCounter(KeyElement.type);
+		
+		factory.append("type "+int_type_id+" = Int\n");
+		factory.append("type "+string_type_id+" = String\n");
+		factory.append("\n");
+		
+		for (String pi : snet.getPages().keySet()) {
+			io.iochord.dev.chdsr.model.sbpnet.v1.Page p = snet.getPages().get(pi);
+			// Convert Data Nodes
+			for (String di : p.getData().keySet()) {
+				Data d = p.getData().get(di);
+				if (d instanceof ObjectType) {
+					ObjectType ot = (ObjectType) d;
+					//prev use converter.addTypeDeclaration
+				}
+				if (d instanceof Generator) {
+					Generator dg = (Generator) d;
+					
+					String p_dgNextCaseId = addPlace(dg.getLabel()+"_dgNextCaseId", int_type_id, "((1,0),1)");
+					String p_dgStart = addPlace(dg.getLabel() + "_dgStart", int_type_id, "((1,0),1)");
+					
+					String guard = null;
+					String action = null;
+					
+					String b_dgt1 = addBindingClass( "i:Option["+int_type_id+"]" );
+					String e_dgt1 = addEval("b1.i == b2.i || b1.i == None || b2.i == None", b_dgt1);
+					String m_dgt1 = addMerge("val i = if(b1.i == None) b2.i else b1.i", b_dgt1, "i");
+					String dgt1 = addTransition(dg.getLabel() + "_dgt1", guard, action, b_dgt1, e_dgt1, m_dgt1);
+					
+					addArc(p_dgNextCaseId, dgt1, "PtT", int_type_id, b_dgt1, addArcExp("case i:"+int_type_id+" => { Some(i) }"), addTtB(b_dgt1,"inp match { case i:"+int_type_id+" => Some(i); case _ => None }"), addBtT(b_dgt1,"b.i.get"), null);
+					addArc(p_dgNextCaseId, dgt1, "TtP", int_type_id, b_dgt1, addArcExp("case i:"+int_type_id+" => { Some(i) }"), addTtB(b_dgt1,"inp match { case i:"+int_type_id+" => Some(i); case _ => None }"), addBtT(b_dgt1,"b.i.get"), addAddedTime(b_dgt1,"Math.round(Gaussian(100, 10).draw())"));
+					addArc(p_dgStart, dgt1, "TtP", int_type_id, b_dgt1, addArcExp("case i:"+int_type_id+" => { Some(i) }"), addTtB(b_dgt1,"inp match { case i:"+int_type_id+" => Some(i); case _ => None }"), addBtT(b_dgt1,"b.i.get"), addAddedTime(b_dgt1,"0L"));
+				}
+				if (d instanceof Function) {
+					Function f = (Function) d;
+					//Page fpage =  converter.addPage(net, "FUNCTION " + f.getLabel()); 
+					// TODO:
+				}
+				if (d instanceof Queue) {
+					Queue q = (Queue) d;
+					//Page qpage =  converter.addPage(net, "QUEUE " + q.getLabel()); 
+					// TODO:
+				}
+				if (d instanceof Resource) {
+					Resource r = (Resource) d;
+					//Page rpage =  converter.addPage(net, "RESOURCE " + r.getLabel()); 
+					// TODO:
+				}
+				if (d instanceof DataTable) {
+					DataTable dt = (DataTable) d;
+					//Page dtpage =  converter.addPage(net, "DATATABLE " + dt.getLabel()); 
+					// TODO:
+				}
+			}
+			
+			// Convert Nodes
+			for (String ni : p.getNodes().keySet()) {
+				io.iochord.dev.chdsr.model.sbpnet.v1.Node n = p.getNodes().get(ni);
+				if (n instanceof Start) {
+					Start na = (Start) n;
+//								Page napage =  converter.addPage(net, "START " + na.getLabel()); 
+//								Place nap = converter.addPlace(napage, na.getLabel() + "_nap1", "INT", "");
+					if (na.getGenerator() == null) {
+						String p_nap1 = addPlace(na.getLabel() + "_nap1", int_type_id, "");
+					} else {
+						//if not null
+					}
+				}
+				if (n instanceof Stop) {
+					Stop no = (Stop) n;
+					String p_nop1 = addPlace(no.getLabel() + "_nop1", int_type_id, "");
+				}
+				if (n instanceof Activity) {
+					Activity na = (Activity) n;
+					String p_nap1 = addPlace(na.getLabel() + "_nap1", int_type_id, "");
+					String p_nap2 = addPlace(na.getLabel() + "_nap2", int_type_id, "");
+					String p_nap3 = addPlace(na.getLabel() + "_nap3", int_type_id, "");
+				}
+				if (n instanceof Branch) {
+					Branch b = (Branch) n;
+					String p_bp = addPlace(b.getLabel() + "_bp", int_type_id, "");
+					
+					int i = 0;
+					for (Connector c : p.getConnectors().values()) {
+						if (c.getTarget() != b) continue;
+						String bpis = addPlace(b.getLabel() + "_bpi" + i + "s", int_type_id, "");
+						
+						i++;
+					}
+					i = 0;
+					for (Connector c : p.getConnectors().values()) {
+						if (c.getSource() != b) continue;
+						String bpos = addPlace(b.getLabel() + "_bpo" + i + "s", int_type_id, "");
+						
+						i++;
+					}
+					// TODO:
+					// Temporary use activity definition
+				}
+				if (n instanceof Monitor) {
+					Monitor m = (Monitor) n;
+					//Page mpage =  converter.addPage(net, "MONITOR " + m.getLabel()); 
+					// TODO:
+				}
+			}
+			// Convert Arcs
+			for (String s : p.getConnectors().keySet()) {
+				Connector c = p.getConnectors().get(s);
+				
+			}
+		}
+	
+		return factory.toString();
+	}
+	
+	public Sbpnet revert(String scalacode) {
+		return null;
+	}
+	
 }

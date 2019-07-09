@@ -10,6 +10,7 @@ import { QUEUE_TYPE } from '../../enums/QUEUE';
  *
  */
 export class GraphDataQueueImpl extends GraphDataImpl implements GraphDataQueue {
+  public static TYPE: string = 'queue';
   public static instance: Map<string, GraphDataQueue> = new Map<string, GraphDataQueue>();
 
   /** @Override */

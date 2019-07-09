@@ -89,6 +89,39 @@ arc00000004.setTokenToBind(tTb00000004)
 arc00000004.setBindToToken(bTt00000004)
 cgraph.addArc(arc00000004)
 
+val arcexp00000005 = (inp:Any) => inp match { case i:colset00000001 => { Some(i) } }
+val tTb00000005 = (inp:Any) => Binding00000002(inp match { case i:colset00000001 => Some(i); case _ => None })
+val bTt00000005 = (b:Binding00000002) => {b.i.get}
+val addTime00000003 = (b:Binding00000002) => {10L}
+val arc00000005 = new Arc[colset00000001,Binding00000002]("arc00000005",place00000003,trans00000002,Direction.TtP)
+arc00000005.setArcExp(arcexp00000005)
+arc00000005.setTokenToBind(tTb00000005)
+arc00000005.setBindToToken(bTt00000005)
+arc00000005.setAddTime(addTime00000003)
+cgraph.addArc(arc00000005)
+
+val arcexp00000006 = (inp:Any) => inp match { case i:colset00000001 => { Some(i) } }
+val tTb00000006 = (inp:Any) => Binding00000002(inp match { case i:colset00000001 => Some(i); case _ => None })
+val bTt00000006 = (b:Binding00000002) => {b.i.get}
+val addTime00000004 = (b:Binding00000002) => {0L}
+val arc00000006 = new Arc[colset00000001,Binding00000002]("arc00000006",place00000001,trans00000002,Direction.TtP)
+arc00000006.setArcExp(arcexp00000006)
+arc00000006.setTokenToBind(tTb00000006)
+arc00000006.setBindToToken(bTt00000006)
+arc00000006.setAddTime(addTime00000004)
+cgraph.addArc(arc00000006)
+
+val arcexp00000007 = (inp:Any) => inp match { case i:colset00000001 => { Some(i) } }
+val tTb00000007 = (inp:Any) => Binding00000002(inp match { case i:colset00000001 => Some(i); case _ => None })
+val bTt00000007 = (b:Binding00000002) => {b.i.get}
+val addTime00000005 = (b:Binding00000002) => {10L}
+val arc00000007 = new Arc[colset00000001,Binding00000002]("arc00000007",place00000004,trans00000002,Direction.TtP)
+arc00000007.setArcExp(arcexp00000007)
+arc00000007.setTokenToBind(tTb00000007)
+arc00000007.setBindToToken(bTt00000007)
+arc00000007.setAddTime(addTime00000005)
+cgraph.addArc(arc00000007)
+
 val map00000005 = Map[(colset00000001,Long),Int](  )
 val ms00000005 = new Multiset[colset00000001](map00000005)
 val place00000005 = new Place("place00000005","Teller Service_nap1",ms00000005)

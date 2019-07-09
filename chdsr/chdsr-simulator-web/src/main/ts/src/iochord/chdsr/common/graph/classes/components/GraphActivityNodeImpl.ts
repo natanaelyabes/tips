@@ -21,6 +21,7 @@ import { GraphUtil } from '../GraphUtil';
  *
  */
 export class GraphActivityNodeImpl extends GraphNodeImpl implements GraphActivityNode {
+  public static TYPE: string = 'activity';
   public static instance: Map<string, GraphActivityNode> = new Map<string, GraphActivityNode>();
 
   public static deserialize(object: any): GraphActivityNode | null {
