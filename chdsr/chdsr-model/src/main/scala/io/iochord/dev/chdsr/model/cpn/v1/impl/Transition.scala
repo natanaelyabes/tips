@@ -19,17 +19,16 @@ class Transition[B <:Bind] (
   
   private var lbeBase:List[B] = null
   
-  def eval_full[T] = (b1:B, b2:B, noToken:Int, arc:Arc[T,B]) => {
+  private def evalFull[T] = (b1:B, b2:B, noToken:Int, arc:Arc[T,B]) => {
     if(arc.getIsBase()) {
-      getEval()(b1, b2)
+      getEval()(b1, b2) && noToken >= arc.getNoTokArcExp()
     }
     else {
-      val optToken = arc.computeArcExp(arc.computeBindToToken(b1))
-      getEval()(arc.computeTokenToBind(optToken.get),b2) && noToken >= arc.getNoTokArcExp()
+      getEval()(arc.computeTokenToBind(arc.computeArcExp(arc.computeBindToToken(b1)).get),b2) && noToken >= arc.getNoTokArcExp()
     }
   }
     
-  private val merge_full = (b1:B,b2:B) => { 
+  private def mergeFull = (b1:B,b2:B) => { 
     getMerge()(b1,b2)
   }
   
@@ -85,7 +84,7 @@ class Transition[B <:Bind] (
       val mapListBinding = Map[B,Int]()
       var listBinding = List[B]()
       
-      //if arc base with optToken is equal None, dismiss (using this representation we don't have to use lasteval) => more efficient
+      //if arc base with optToken is equal None -> dismiss token (using this representation we don't have to use evalLast) => more efficient
       tokensBefGlobTime.foreach(tokenWT => tokenWT match { 
         case ((colset:arc.coltype, _:Long),num:Int) => { val optToken:Option[arc.coltype] = if(arc.getIsBase()) arc.computeArcExp(colset) else Some(colset); if(optToken != None) { val bind = arc.computeTokenToBind(optToken.get).asInstanceOf[B]; mapListBinding += (bind -> (mapListBinding.getOrElse(bind, 0)+num)) } }
       } )
@@ -95,9 +94,27 @@ class Transition[B <:Bind] (
       else
         listBinding = mapListBinding.keys.toList
       
-      //--- warning --- problem if some of the input place is empty but arc is None, expected behaviour should be accepted the binding, actual behaviour binding is rejected
-      //we can just do more calculation before this code below, but it will significantly cost more computation (because all the lbe should be rechecked again) 
-      lbe = if(lbe.isEmpty) listBinding else listBinding.flatMap(b2 => lbe.collect { case b1 if eval_full(b1,b2,mapListBinding(b2),arc) => merge_full(b1, b2) } )
+      //change representation to consider lbe first than listBinding
+      //we need to change to this representation to handle case as follow
+      //if the place is empty but arc have None inscription, binding still should be enabled, previously it will be rejected
+      //code previousely as follow lbe = if(lbe.isEmpty) listBinding else listBinding.flatMap(b2 => lbe.collect { case b1 if evalFull(b1,b2,mapListBinding(b2),arc) => mergeFull(b1, b2) } )
+      lbe = if(lbe.isEmpty) 
+              listBinding 
+            else 
+              lbe.flatMap(b1 => {
+                if(!arc.getIsBase()) { 
+                  val optToken = arc.computeArcExp(arc.computeBindToToken(b1))
+                  if(optToken == None) { 
+                    List(b1)
+                  } 
+                  else {
+                    listBinding.collect { case b2 if evalFull(b1,b2,mapListBinding(b2),arc) => mergeFull(b1, b2) }
+                  } 
+                }
+                else {
+                  listBinding.collect { case b2 if evalFull(b1,b2,mapListBinding(b2),arc) => mergeFull(b1, b2) }
+                }
+              })
       //println(arc.getId(),lbe,arc.getArcExp().toString())
       if(lbe.isEmpty)
         break
