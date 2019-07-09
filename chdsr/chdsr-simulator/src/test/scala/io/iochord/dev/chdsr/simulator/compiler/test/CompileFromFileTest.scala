@@ -14,7 +14,8 @@ object CompileFromFileTest {
   
   def main(args: Array[String]) {
     //val pathfile = "testSimul.txt"
-    val pathfile = "portHanjinEx.txt"
+    //val pathfile = "portHanjinEx.txt"
+    val pathfile = "simulscala.txt"
     val memoryScalaFactory = new MemoryScalaFileCompiler(pathfile)
     val memoryScala = memoryScalaFactory.getInstance
     memoryScala.runSimulation()

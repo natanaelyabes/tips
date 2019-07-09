@@ -9,28 +9,32 @@ object Direction extends Enumeration {
 
 class Arc[T,B <:Bind] (
   private var id: String,
-  private var place: Place[_],
-  private var transition: Transition[_],
-  private var direction: Direction.Value) extends Element {
-  
-  type coltype = T
+  private var place: Place[T],
+  private var transition: Transition[B],
+  private var direction: Direction.Value,
+  private var coltype: Class[_] = null) extends Element {
   
   private var isBase: Boolean = false
   
-  private var arcExpV:Any => Any = null
-  private var TtoBV:Any => B = null
-  private var BtoTV:Any => Any = null
-  private var addTime:Any => Long = null
+  private var noTokArcExp:Int = 1
+  private var arcExpV:coltype => Option[coltype] = null
+  private var TtoBV:T => B = null
+  private var BtoTV:B => T = null
+  private var addTime:B => Long = null
+  
+  def getColtype(): Class[_] = { coltype }
+  
+  type coltype = T
   
   def getIsBase(): Boolean = isBase
   
   def setIsBase(isBase:Boolean) { this.isBase = isBase }
   
-  def getPlace(): Place[_] = { place }
+  def getPlace(): Place[T] = { place }
   
-  def setPlace(place:Place[_]) = { this.place = place }
+  def setPlace(place:Place[T]) = { this.place = place }
   
-  def getTransition(): Transition[_] = transition
+  def getTransition(): Transition[B] = transition
   
   def getDirection():Direction.Value = direction
   
@@ -38,27 +42,31 @@ class Arc[T,B <:Bind] (
   
   def setId(id: String) { this.id = id }
   
-  def setTokenToBind(TtoB:Any => B) = { TtoBV = TtoB }
+  def setTokenToBind(TtoB:coltype => B) = { TtoBV = TtoB }
   
-  def getTokenToBind():(Any => B) = { this.TtoBV }
+  def getTokenToBind():(coltype => B) = { this.TtoBV }
   
-  def computeTokenToBind(token:Any) = { this.TtoBV(token) }
+  def computeTokenToBind(token:coltype):B = { this.TtoBV(token) }
   
-  def setBindToToken(BtoT:Any => Any) = { BtoTV = BtoT }
+  def setBindToToken(BtoT:B => coltype) = { BtoTV = BtoT }
   
-  def getBindToToken():(Any => Any) = { this.BtoTV }
+  def getBindToToken():(B => coltype) = { this.BtoTV }
   
-  def computeBindToToken(bind:Any) = { this.BtoTV(bind) }
+  def computeBindToToken(bind:B):coltype = { this.BtoTV(bind) }
   
-  def setArcExp(arcExp:Any => Any) = { this.arcExpV = arcExp }
+  def setArcExp(arcExp:coltype => Option[coltype]) = { this.arcExpV = arcExp }
   
-  def getArcExp():(Any => Any) = { this.arcExpV }
+  def getArcExp():(coltype => Option[coltype]) = { this.arcExpV }
   
-  def computeArcExp(token:Any) = { this.arcExpV(token) }
+  def computeArcExp(token:coltype) = { this.arcExpV(token) }
   
-  def setAddTime(addTime:Any => Long) = { this.addTime = addTime }
+  def setAddTime(addTime:B => Long) = { this.addTime = addTime }
   
-  def getAddTime():(Any => Long) = { this.addTime }
+  def getAddTime():(B => Long) = { this.addTime }
   
-  def computeAddTime(bind:Any) = { this.addTime(bind) }
+  def computeAddTime(bind:B) = { this.addTime(bind) }
+  
+  def setNoTokArcExp(noToken:Int) = { this.noTokArcExp = noTokArcExp }
+  
+  def getNoTokArcExp():Int = { this.noTokArcExp }
 }

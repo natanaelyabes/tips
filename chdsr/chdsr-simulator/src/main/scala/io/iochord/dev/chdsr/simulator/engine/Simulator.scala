@@ -76,7 +76,7 @@ object Simulator {
     }
     
     if (c == steps)
-      println("step : "+steps)
+      println("Finish at step : "+steps)
     else
       println("stop - no more enabled transitions")
   }

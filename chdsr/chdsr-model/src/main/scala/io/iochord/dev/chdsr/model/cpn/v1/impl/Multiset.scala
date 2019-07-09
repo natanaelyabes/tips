@@ -5,11 +5,11 @@ import scala.collection.IterableLike
 import scala.collection.mutable.Builder
 import io.iochord.dev.chdsr.model.cpn.v1._
 
-class Multiset[T] (val multiset: Map[(T,Long), Int], colset: Class[T]) {
+class Multiset[T] (val multiset: Map[(T,Long), Int], val coltype: Class[_] = null) {
+  
+  def getColtype(): Class[_] = { coltype }
   
   type coltype = T
-  
-  def colclass: Class[T]= colset
   
   def hasToken(elem: T): Boolean = multiset.filter(x => x._1._1 equals(elem)).size > 0
   
@@ -17,8 +17,6 @@ class Multiset[T] (val multiset: Map[(T,Long), Int], colset: Class[T]) {
    
   def +(elem: (T,Long), n: Int): Multiset[T] = {
     val ms = multiset
-    if(elem._1 == None)
-      return new Multiset(ms, colset)
     
     var count = n
     if (ms.contains(elem)) {
@@ -30,7 +28,7 @@ class Multiset[T] (val multiset: Map[(T,Long), Int], colset: Class[T]) {
       ms -= (elem)
     else
       throw new IllegalArgumentException("Cannot remove less than exist token")
-    new Multiset(ms, colset)
+    new Multiset(ms)
   }
   
   def +(elem: (T,Long)): Multiset[T] = this + (elem, 1)
