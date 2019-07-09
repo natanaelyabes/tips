@@ -17,7 +17,7 @@
               Label
             </div>
             <div class="thirteen wide column">
-              <input type="text" @change="handleChangedLabel()" v-model="tempLabel" id="start_txt_label" />
+              <input type="text" @change="handleChangedLabel()" v-model="tempStartLabel" id="start_txt_label" />
             </div>
           </div>
           <div class="row">
@@ -71,12 +71,12 @@ export default class StartNodeModal extends SemanticComponent {
   @Prop() private startLabel!: string;
   @Prop() private generator!: string;
 
-  private tempLabel: string = '';
+  private tempStartLabel: string = '';
   private tempGenerator: string = '';
 
   @Watch('startLabel')
-  public onChangeLabel(newVal: string): void {
-    this.tempLabel = newVal;
+  public onChangeStartLabel(newVal: string): void {
+    this.tempStartLabel = newVal;
   }
 
   @Watch('generator')
@@ -85,7 +85,7 @@ export default class StartNodeModal extends SemanticComponent {
   }
 
   public handleChangedLabel(): void {
-    this.$emit('changeStartLabel', this.tempLabel);
+    this.$emit('changeStartLabel', this.tempStartLabel);
   }
 
   public handleChangedGenerator(): void {
@@ -94,7 +94,7 @@ export default class StartNodeModal extends SemanticComponent {
 
   public mounted(): void {
     this.$nextTick(() => {
-      this.tempLabel = this.startLabel;
+      this.tempStartLabel = this.startLabel;
       this.tempGenerator = this.generator;
     });
   }
