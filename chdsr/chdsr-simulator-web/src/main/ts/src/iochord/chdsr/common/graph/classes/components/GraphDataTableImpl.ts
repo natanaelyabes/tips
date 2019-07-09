@@ -9,6 +9,8 @@ import { GraphDataTable } from '../../interfaces/components/GraphDataTable';
  *
  */
 export class GraphDataTableImpl extends GraphDataImpl implements GraphDataTable {
+  public static TYPE: string = 'datatable';
+
   public static instance: Map<number, Map<string, GraphDataTable>> = new Map<number, Map<string, GraphDataTable>>();
 
   /** @Override */
@@ -17,6 +19,7 @@ export class GraphDataTableImpl extends GraphDataImpl implements GraphDataTable 
     GraphDataTableImpl.instance.set(GraphDataTableImpl.instance.size, graphDataTableMap);
     return graphDataTableMap;
   }
+
 
   private fields?: Map<string, string> | null;
   private data?: Map<string, Map<string, object>> | null;

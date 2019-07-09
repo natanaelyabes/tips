@@ -11,6 +11,8 @@ import { GraphUtil } from '../GraphUtil';
  *
  */
 export class GraphDataObjectTypeImpl extends GraphDataImpl implements GraphDataObjectType {
+  public static TYPE: string = 'objecttype';
+
   public static instance: Map<string, GraphDataObjectType> = new Map<string, GraphDataObjectType>();
 
   /** @Override */
