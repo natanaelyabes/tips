@@ -16,18 +16,18 @@ import io.iochord.dev.chdsr.simulator.compiler.Simulation;
  */
 public class TestSimulator {
 	public static void main(String[] args) {
-		String pathFile = "portHanjinEx.txt";
+		String pathFile = "simulscala.txt";
 		MemoryScalaFileCompiler msfc = new MemoryScalaFileCompiler(pathFile);
 		Simulation simulation = msfc.getInstance();
 		Observer obs = new Observer() {
 			
 			@Override
 			public void update(Observable o, Object arg) {
-				System.out.println(o);
+				System.out.println("JAVAOBS: " + o);
 				System.out.println(arg);
 			}
 		};
-		//TODO: simulation.addObserver(obs);
+		simulation.addObserver(obs);
 		simulation.runSimulation();
 	}
 }

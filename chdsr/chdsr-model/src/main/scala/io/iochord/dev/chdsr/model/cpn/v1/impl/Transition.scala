@@ -20,12 +20,8 @@ class Transition[B <:Bind] (
   private var lbeBase:List[B] = null
   
   private def evalFull[T] = (b1:B, b2:B, noToken:Int, arc:Arc[T,B]) => {
-    if(arc.getIsBase()) {
-      getEval()(b1, b2) && noToken >= arc.getNoTokArcExp()
-    }
-    else {
-      getEval()(arc.computeTokenToBind(arc.computeArcExp(arc.computeBindToToken(b1)).get),b2) && noToken >= arc.getNoTokArcExp()
-    }
+    val b = if(arc.getIsBase()) b1 else arc.computeTokenToBind(arc.computeArcExp(arc.computeBindToToken(b1)).get)
+    getEval()(b, b2) && noToken >= arc.getNoTokArcExp()
   }
     
   private def mergeFull = (b1:B,b2:B) => { 
