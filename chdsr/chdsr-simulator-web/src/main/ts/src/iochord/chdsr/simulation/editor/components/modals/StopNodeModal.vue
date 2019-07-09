@@ -1,8 +1,3 @@
-<!--
-  @package chdsr
-  @author Taufik Nur Adi <taufik.nur.adi@gmail.com>
-  @since 2019
--->
 <template>
   <div class="ui tiny stop modal">
     <i class="close icon"></i>
@@ -15,13 +10,13 @@
           <div class="row">
             <div class="three wide column">Label</div>
             <div class="thirteen wide column">
-              <input type="text" @change="handleChangedLabel()" v-model="_stopLabel" id="stop_txt_label">
+              <input type="text" @change="handleChangedLabel()" v-model="tempStopLabel" id="stop_txt_label">
             </div>
           </div>
           <div class="row">
             <div class="sixteen wide column">
               <div class="inline field">
-                <input type="checkbox" @change="handleChangedReport()" v-model="_report" class="hidden">
+                <input type="checkbox" @change="handleChangedReport()" v-model="tempReport" class="hidden">
                 <label>Report statistics</label>
               </div>
             </div>
@@ -37,48 +32,44 @@
 </template>
 
 <style>
-/**
- *
- * @package chdsr
- * @author Taufik Nur Adi <taufik.nur.adi@gmail.com>
- * @since 2019
- *
- */
 </style>
 
 <script lang="ts">
-import { Component, Prop, Vue } from 'vue-property-decorator';
-import SemanticComponent from '@/iochord/chdsr/common/ui/semantic/SemanticComponent';
-
+import { Component, Prop, Vue, Watch } from 'vue-property-decorator';
+import SemanticComponent from '../../../ui/semantic/SemanticComponent';
 declare const $: any;
 
-
-/**
- *
- * @package chdsr
- * @author Taufik Nur Adi <taufik.nur.adi@gmail.com>
- * @since 2019
- *
- */
 @Component
 export default class StopNodeModal extends SemanticComponent {
   @Prop() private stopLabel!: string;
   @Prop() private report!: boolean;
 
-  private _stopLabel!: string;
-  private _report!: boolean;
+  private tempStopLabel: string = '';
+  private tempReport: boolean = false;
+
+  @Watch('stopLabel')
+  public onChangeStopLabel(newVal: string): void {
+    this.tempStopLabel = newVal;
+  }
+
+  @Watch('report')
+  public onChangeReport(newVal: string): void {
+    this.tempReport = newVal;
+  }
 
   public handleChangedLabel(): void {
-    this.$emit('changeStopLabel', this._stopLabel);
+    this.$emit('changeStopLabel', this.tempStopLabel);
   }
 
   public handleChangedReport(): void {
-    this.$emit('changeReport', this._report);
+    this.$emit('changeReport', this.tempReport);
   }
 
-  private beforeMount(): void {
-    this._stopLabel = this.stopLabel;
-    this._report = this.report;
+  public mounted(): void {
+    this.$nextTick(() =>{
+      this.tempStopLabel = this.stopLabel;
+      this.tempReport = this.report;
+    });
   }
 }
 </script>
