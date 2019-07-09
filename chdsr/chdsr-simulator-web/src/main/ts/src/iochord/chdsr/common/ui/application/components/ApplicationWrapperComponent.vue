@@ -1,3 +1,8 @@
+<!--
+  @package chdsr
+  @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
+  @since 2019
+-->
 <template>
   <div class="application wrapper component">
 
@@ -37,6 +42,13 @@
 </template>
 
 <style scoped>
+/**
+ *
+ * @package chdsr
+ * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
+ * @since 2019
+ *
+ */
 .application.wrapper.component {
   height: 100%;
   display: flex;
@@ -52,6 +64,14 @@ import ApplicationTitleMenuBarComponent from './ApplicationTitleMenuBarComponent
 import ApplicationWorkspaceComponent from './ApplicationWorkspaceComponent.vue';
 import BaseComponent from '@/iochord/chdsr/common/lib/vue/classes/BaseComponent';
 
+
+/**
+ *
+ * @package chdsr
+ * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
+ * @since 2019
+ *
+ */
 @Component({
   components: {
     ApplicationHeaderComponent,

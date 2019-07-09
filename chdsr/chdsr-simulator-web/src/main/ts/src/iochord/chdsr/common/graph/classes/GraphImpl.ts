@@ -9,6 +9,13 @@ import { GraphConfigurationImpl } from './GraphConfigurationImpl';
 import { GraphControlImpl } from './components/GraphControlImpl';
 import { GraphDataImpl } from './GraphDataImpl';
 
+/**
+ *
+ * @package chdsr
+ * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
+ * @since 2019
+ *
+ */
 export class GraphImpl extends GraphElementImpl implements Graph {
   public static readonly TYPE: string | null = 'net';
 

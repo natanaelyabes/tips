@@ -3,6 +3,13 @@ import { GraphDataImpl } from '../GraphDataImpl';
 import { GraphDataObjectType } from '../../interfaces/components/GraphDataObjectType';
 import { GraphUtil } from '../GraphUtil';
 
+/**
+ *
+ * @package chdsr
+ * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
+ * @since 2019
+ *
+ */
 export class GraphDataFunctionImpl extends GraphDataImpl implements GraphDataFunction {
   public static instance: Map<string, GraphDataFunction> = new Map<string, GraphDataFunction>();
 

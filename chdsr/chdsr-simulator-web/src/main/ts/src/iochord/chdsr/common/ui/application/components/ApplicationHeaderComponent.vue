@@ -1,3 +1,8 @@
+<!--
+  @package chdsr
+  @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
+  @since 2019
+-->
 <template>
   <div class="application header component">
     <div class="ui basic segment">
@@ -16,6 +21,13 @@
 </template>
 
 <style scoped>
+/**
+ *
+ * @package chdsr
+ * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
+ * @since 2019
+ *
+ */
 .application.header.component .ui.basic.segment {
   margin: 0;
   border-bottom: 1px solid rgba(0,0,0,.2);
@@ -35,6 +47,14 @@ import { Component, Vue } from 'vue-property-decorator';
 import BreadcrumbComponent from '@/iochord/chdsr/common/ui/semantic/breadcrumbs/components/BreadcrumbComponent.vue';
 import BaseComponent from '@/iochord/chdsr/common/lib/vue/classes/BaseComponent';
 
+
+/**
+ *
+ * @package chdsr
+ * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
+ * @since 2019
+ *
+ */
 @Component({
   components: {
     BreadcrumbComponent,

@@ -6,6 +6,13 @@ import { TIME_UNIT } from './../../enums/TIME_UNIT';
 import { GraphDataImpl } from '../GraphDataImpl';
 import { DISTRIBUTION_TYPE } from '../../enums/DISTRIBUTION';
 
+/**
+ *
+ * @package chdsr
+ * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
+ * @since 2019
+ *
+ */
 export class GraphDataGeneratorImpl extends GraphDataImpl implements GraphDataGenerator {
   public static instance: Map<string, GraphDataGenerator> = new Map<string, GraphDataGenerator>();
 

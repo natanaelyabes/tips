@@ -6,6 +6,13 @@ import { GraphDataResource } from '../../interfaces/components/GraphDataResource
 import { GraphDataTable } from '../../interfaces/components/GraphDataTable';
 import { RESOURCE_CRITERIA } from '../../enums/RESOURCE';
 
+/**
+ *
+ * @package chdsr
+ * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
+ * @since 2019
+ *
+ */
 export class GraphDataResourceImpl extends GraphDataImpl implements GraphDataResource {
   public static instance: Map<string, GraphDataResource> = new Map<string, GraphDataResource>();
 

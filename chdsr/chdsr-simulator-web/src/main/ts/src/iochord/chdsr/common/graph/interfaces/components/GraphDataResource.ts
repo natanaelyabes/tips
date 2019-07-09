@@ -1,11 +1,16 @@
 import { TIME_UNIT } from './../../enums/TIME_UNIT';
-import { GraphDataFunction } from './GraphDataFunction';
-import { GraphDataQueue } from './GraphDataQueue';
 import { DISTRIBUTION_TYPE } from './../../enums/DISTRIBUTION';
 import { GraphDataTable } from './GraphDataTable';
 import { GraphData } from '../GraphData';
 import { RESOURCE_CRITERIA } from '../../enums/RESOURCE';
 
+/**
+ *
+ * @package chdsr
+ * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
+ * @since 2019
+ *
+ */
 export interface GraphDataResource extends GraphData {
   getGroupId(): string | null;
   setGroupId(groupId: string): void;

@@ -1,6 +1,6 @@
 import { ModelService } from './ModelService';
 import { Graph } from '@/iochord/chdsr/common/graph/interfaces/Graph';
-import { GraphImpl } from './../../graph/classes/GraphImpl';
+import { GraphImpl } from '@/iochord/chdsr/common/graph/classes/GraphImpl';
 
 /**
  *

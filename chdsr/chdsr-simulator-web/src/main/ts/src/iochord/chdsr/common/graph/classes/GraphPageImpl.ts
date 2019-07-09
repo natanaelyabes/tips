@@ -8,6 +8,13 @@ import { NODE_TYPE } from '../enums/NODE';
 import { DATA_TYPE } from '../enums/DATA';
 import { stringify } from 'querystring';
 
+/**
+ *
+ * @package chdsr
+ * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
+ * @since 2019
+ *
+ */
 export class GraphPageImpl extends GraphElementImpl implements GraphPage {
   public static deserialize(object: any): Map<string, GraphPage> | null {
     const graphMap: Map<string, GraphPage> = new Map<string, GraphPage>();

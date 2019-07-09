@@ -11,6 +11,13 @@ import { NODE_TYPE } from '../enums/NODE';
 import { GraphActivityNodeImpl } from './components/GraphActivityNodeImpl';
 import { GraphStartEventNodeImpl } from './components/GraphStartEventNodeImpl';
 
+/**
+ *
+ * @package chdsr
+ * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
+ * @since 2019
+ *
+ */
 export class GraphConnectorImpl extends GraphElementImpl implements GraphConnector {
   public static deserialize(object: any): Map<string, GraphConnector> | null {
     const graphArcMap: Map<string, GraphConnector> = new Map<string, GraphConnector>();

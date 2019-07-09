@@ -5,6 +5,13 @@ import { GraphEventNodeImpl } from './GraphEventNodeImpl';
 import { GraphDataGenerator } from '../../interfaces/components/GraphDataGenerator';
 import { GraphDataGeneratorImpl } from './GraphDataGeneratorImpl';
 
+/**
+ *
+ * @package chdsr
+ * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
+ * @since 2019
+ *
+ */
 export class GraphStartEventNodeImpl extends GraphEventNodeImpl implements GraphStartEventNode {
   public static instance: Map<string, GraphStartEventNode> = new Map<string, GraphStartEventNode>();
 

@@ -1,3 +1,8 @@
+<!--
+  @package chdsr
+  @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
+  @since 2019
+-->
 <template>
   <div class="ui icon message" v-bind:class="[color, size]">
     <i v-if="dismissable" class="close icon"></i>
@@ -11,7 +16,13 @@
 </template>
 
 <style scoped>
-
+/**
+ *
+ * @package chdsr
+ * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
+ * @since 2019
+ *
+ */
 </style>
 
 <script lang="ts">
@@ -22,6 +33,14 @@ import MessageComponent from '@/iochord/chdsr/common/ui/semantic/messages/classe
 // JQuery Symbol Handler
 declare const $: any;
 
+
+/**
+ *
+ * @package chdsr
+ * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
+ * @since 2019
+ *
+ */
 @Component
 export default class MessageIconComponent extends MessageComponent {
   @Prop() private color!: string; // warning|info|negative|error|positive|success|color

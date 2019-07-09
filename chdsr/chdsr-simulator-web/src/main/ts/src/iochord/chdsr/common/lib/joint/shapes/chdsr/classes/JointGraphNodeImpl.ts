@@ -5,6 +5,13 @@ import * as joint from 'jointjs';
 import { JointGraphElementHasPosition } from '../interfaces/JointGraphElementHasPosition';
 import { JointGraphElementIsPaintable } from '../interfaces/JointGraphElementIsPaintable';
 
+/**
+ *
+ * @package chdsr
+ * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
+ * @since 2019
+ *
+ */
 export class JointGraphNodeImpl extends GraphNodeImpl implements JointGraphElementHasMarkup, JointGraphElementHasPosition, JointGraphElementHasSize, JointGraphElementIsPaintable {
   private markup: string | null;
   private attr: joint.dia.Cell.Selectors | null;

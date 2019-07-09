@@ -37,6 +37,13 @@
 // import { GraphMonitorNodeImpl } from './components/GraphMonitorNodeImpl';
 // import { GraphStopEventNode } from '../interfaces/components/GraphStopEventNode';
 
+/**
+ *
+ * @package chdsr
+ * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
+ * @since 2019
+ *
+ */
 // export class GraphFactoryImpl implements GraphFactory {
 //   public static getInstance(): GraphFactory {
 //     return this.instance;

@@ -1,6 +1,13 @@
 import { GraphPageImpl } from '@/iochord/chdsr/common/graph/classes/GraphPageImpl';
 import * as joint from 'jointjs';
 
+/**
+ *
+ * @package chdsr
+ * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
+ * @since 2019
+ *
+ */
 export class JointGraphPageImpl extends GraphPageImpl {
   private graph: joint.dia.Graph = new joint.dia.Graph();
   private paper: joint.dia.Paper = new joint.dia.Paper({} as joint.dia.Paper.Options);

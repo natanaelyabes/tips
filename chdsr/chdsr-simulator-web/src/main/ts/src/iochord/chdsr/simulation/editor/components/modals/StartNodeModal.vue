@@ -1,3 +1,8 @@
+<!--
+  @package chdsr
+  @author Taufik Nur Adi <taufik.nur.adi@gmail.com>
+  @since 2019
+-->
 <template>
   <div class="ui tiny start modal">
     <i class="close icon"></i>
@@ -37,16 +42,30 @@
 </template>
 
 <style>
-
+/**
+ *
+ * @package chdsr
+ * @author Taufik Nur Adi <taufik.nur.adi@gmail.com>
+ * @since 2019
+ *
+ */
 </style>
 
 
 <script lang="ts">
 import { Component, Prop, Vue, Watch } from 'vue-property-decorator';
-import SemanticComponent from '../../../ui/semantic/SemanticComponent';
-import { watch } from 'fs';
+import SemanticComponent from '@/iochord/chdsr/common/ui/semantic/SemanticComponent';
+
 declare const $: any;
 
+
+/**
+ *
+ * @package chdsr
+ * @author Taufik Nur Adi <taufik.nur.adi@gmail.com>
+ * @since 2019
+ *
+ */
 @Component
 export default class StartNodeModal extends SemanticComponent {
   @Prop() private startLabel!: string;

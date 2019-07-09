@@ -3,6 +3,13 @@ import { GraphNode } from './GraphNode';
 import { GraphConnector } from './GraphConnector';
 import { GraphData } from './GraphData';
 
+/**
+ *
+ * @package chdsr
+ * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
+ * @since 2019
+ *
+ */
 export interface GraphPage extends GraphElement {
   getData(): Map<string, GraphData> | null;
   setData(data: Map<string, GraphData>): void;

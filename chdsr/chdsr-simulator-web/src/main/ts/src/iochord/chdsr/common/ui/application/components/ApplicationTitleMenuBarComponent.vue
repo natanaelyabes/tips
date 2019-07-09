@@ -1,3 +1,8 @@
+<!--
+  @package chdsr
+  @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
+  @since 2019
+-->
 <template>
   <div class="application title-menu bar component">
     <NavigationBarComponent type="secondary">
@@ -9,12 +14,26 @@
 </template>
 
 <style scoped>
+/**
+ *
+ * @package chdsr
+ * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
+ * @since 2019
+ *
+ */
 .application.title-menu.bar.component {
   border-bottom: 1px solid rgba(0,0,0,.2);
 }
 </style>
 
 <style>
+/**
+ *
+ * @package chdsr
+ * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
+ * @since 2019
+ *
+ */
 .application.title-menu.bar.component .ui.menu .dropdown.item .menu {
   min-width: max-content;
 }
@@ -29,6 +48,15 @@ import NavigationBarComponent from '@/iochord/chdsr/common/ui/semantic/navigatio
 import BaseComponent from '@/iochord/chdsr/common/lib/vue/classes/BaseComponent';
 
 declare const $: any;
+
+
+/**
+ *
+ * @package chdsr
+ * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
+ * @since 2019
+ *
+ */
 @Component({
   components: {
     NavigationBarComponent,

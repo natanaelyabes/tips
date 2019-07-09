@@ -8,6 +8,13 @@ import { GraphDataQueue } from './GraphDataQueue';
 import { GraphDataResource } from './GraphDataResource';
 import { GraphNode } from '../GraphNode';
 
+/**
+ *
+ * @package chdsr
+ * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
+ * @since 2019
+ *
+ */
 export interface GraphActivityNode extends GraphNode {
   getActivityType(): ACTIVITY_TYPE | null;
   setActivityType(type: ACTIVITY_TYPE): void;

@@ -2,6 +2,13 @@ import { GraphDataQueue } from './../../interfaces/components/GraphDataQueue';
 import { GraphDataImpl } from '../GraphDataImpl';
 import { QUEUE_TYPE } from '../../enums/QUEUE';
 
+/**
+ *
+ * @package chdsr
+ * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
+ * @since 2019
+ *
+ */
 export class GraphDataQueueImpl extends GraphDataImpl implements GraphDataQueue {
   public static instance: Map<string, GraphDataQueue> = new Map<string, GraphDataQueue>();
 

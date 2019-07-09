@@ -3,9 +3,10 @@ import { Breadcrumb } from '@/iochord/chdsr/common/ui/semantic/breadcrumbs/inter
 
 /**
  *
+ * @package chdsr
+ * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
+ * @since 2019
  *
- * @export
- * @interface ApplicationHasWrapper
  */
 export interface ApplicationHasWrapper {
   title: string;

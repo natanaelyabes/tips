@@ -2,6 +2,13 @@ import { GraphNode } from '../interfaces/GraphNode';
 import { GraphElementImpl } from './GraphElementImpl';
 import { GraphElement } from '../interfaces/GraphElement';
 
+/**
+ *
+ * @package chdsr
+ * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
+ * @since 2019
+ *
+ */
 export class GraphNodeImpl extends GraphElementImpl implements GraphNode {
   private groupName?: string | null;
   private reportStatistics?: boolean | null = false;

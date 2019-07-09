@@ -7,7 +7,14 @@ import { ApplicationEnum, BaseUrlEnum } from '@/iochord/chdsr/common/enums/index
 // Guards
 import { ChdsrHomeGuard } from '@/iochord/chdsr/home/guards/ChdsrHomeGuard';
 
-// Route config
+
+/**
+ *
+ * @package chdsr
+ * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
+ * @since 2019
+ *
+ */
 export default [
   {
     path: '',

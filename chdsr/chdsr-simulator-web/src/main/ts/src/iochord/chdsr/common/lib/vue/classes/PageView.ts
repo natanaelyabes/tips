@@ -6,11 +6,10 @@ import { Component } from 'vue-property-decorator';
 
 /**
  *
+ * @package chdsr
+ * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
+ * @since 2019
  *
- * @export
- * @class PageView
- * @extends {BaseView}
- * @implements {BrowserHasProperties}
  */
 @Component
 export default class PageView extends BaseView

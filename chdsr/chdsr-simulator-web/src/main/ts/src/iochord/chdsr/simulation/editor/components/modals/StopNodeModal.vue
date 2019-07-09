@@ -1,3 +1,8 @@
+<!--
+  @package chdsr
+  @author Taufik Nur Adi <taufik.nur.adi@gmail.com>
+  @since 2019
+-->
 <template>
   <div class="ui tiny stop modal">
     <i class="close icon"></i>
@@ -32,13 +37,29 @@
 </template>
 
 <style>
+/**
+ *
+ * @package chdsr
+ * @author Taufik Nur Adi <taufik.nur.adi@gmail.com>
+ * @since 2019
+ *
+ */
 </style>
 
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
-import SemanticComponent from '../../../ui/semantic/SemanticComponent';
+import SemanticComponent from '@/iochord/chdsr/common/ui/semantic/SemanticComponent';
+
 declare const $: any;
 
+
+/**
+ *
+ * @package chdsr
+ * @author Taufik Nur Adi <taufik.nur.adi@gmail.com>
+ * @since 2019
+ *
+ */
 @Component
 export default class StopNodeModal extends SemanticComponent {
   @Prop() private stopLabel!: string;

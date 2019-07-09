@@ -1,5 +1,12 @@
 import { ObjectSerializable } from '../../object/ObjectSerializable';
 
+/**
+ *
+ * @package chdsr
+ * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
+ * @since 2019
+ *
+ */
 export interface GraphElement extends ObjectSerializable {
   getId(): string | null;
   setId(id: string): void;

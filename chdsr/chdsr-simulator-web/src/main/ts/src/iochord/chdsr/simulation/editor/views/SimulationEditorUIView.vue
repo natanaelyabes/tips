@@ -1,3 +1,8 @@
+<!--
+  @package chdsr
+  @author Taufik Nur Adi <taufik.nur.adi@gmail.com>
+  @since 2019
+-->
 <template>
   <div class="simulation editor test view">
     <div class="ui basic segment">
@@ -42,6 +47,13 @@
 </template>
 
 <style>
+/**
+ *
+ * @package chdsr
+ * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
+ * @since 2019
+ *
+ */
 </style>
 
 <script lang="ts">
@@ -54,6 +66,14 @@ import StartNodeModal from '../../../common/kpi/components/modals/StartNodeModal
 
 declare const $: any;
 
+
+/**
+ *
+ * @package chdsr
+ * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
+ * @since 2019
+ *
+ */
 @Component
 export default class SimulationEditorUIView extends Vue {
   private selectedGate = '';

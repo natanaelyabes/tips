@@ -5,6 +5,14 @@ import { SemanticModulesIsUsed } from '@/iochord/chdsr/common/ui/semantic/Semant
 // jQuery Symbol Handler
 declare const $: any;
 
+
+/**
+ *
+ * @package chdsr
+ * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
+ * @since 2019
+ *
+ */
 @Component
 export default class MessageComponent extends SemanticComponent {
   @Prop() private size!: string;  // mini|tiny|small|large|big|huge|massive

@@ -3,6 +3,13 @@ import { DISTRIBUTION_TYPE } from './../../enums/DISTRIBUTION';
 import { GraphDataObjectType } from './GraphDataObjectType';
 import { GraphData } from '../GraphData';
 
+/**
+ *
+ * @package chdsr
+ * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
+ * @since 2019
+ *
+ */
 export interface GraphDataGenerator extends GraphData {
   getObjectType(): GraphDataObjectType | null;
   setObjectType(objectType: GraphDataObjectType): void;

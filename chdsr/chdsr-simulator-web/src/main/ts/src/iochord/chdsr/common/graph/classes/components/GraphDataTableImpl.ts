@@ -1,6 +1,13 @@
 import { GraphDataImpl } from '../GraphDataImpl';
 import { GraphDataTable } from '../../interfaces/components/GraphDataTable';
 
+/**
+ *
+ * @package chdsr
+ * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
+ * @since 2019
+ *
+ */
 export class GraphDataTableImpl extends GraphDataImpl implements GraphDataTable {
   public static instance: Map<number, Map<string, GraphDataTable>> = new Map<number, Map<string, GraphDataTable>>();
 

@@ -4,6 +4,13 @@ import { GraphConnectorImpl } from '@/iochord/chdsr/common/graph/classes/GraphCo
 import { JointGraphElementHasMarkup } from '../interfaces/JointGraphElementHasMarkup';
 import * as joint from 'jointjs';
 
+/**
+ *
+ * @package chdsr
+ * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
+ * @since 2019
+ *
+ */
 export class JointGraphConnectorImpl extends GraphConnectorImpl implements JointGraphElementHasMarkup, JointGraphElementIsPaintable {
   private markup: string | null;
   private attr: joint.dia.Cell.Selectors | null;

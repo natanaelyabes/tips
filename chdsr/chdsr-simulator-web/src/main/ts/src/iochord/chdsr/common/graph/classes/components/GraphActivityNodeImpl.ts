@@ -13,6 +13,13 @@ import { DISTRIBUTION_TYPE } from '../../enums/DISTRIBUTION';
 import { VARIABLE_TYPE } from '../../enums/VARIABLE';
 import { GraphUtil } from '../GraphUtil';
 
+/**
+ *
+ * @package chdsr
+ * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
+ * @since 2019
+ *
+ */
 export class GraphActivityNodeImpl extends GraphNodeImpl implements GraphActivityNode {
   public static instance: Map<string, GraphActivityNode> = new Map<string, GraphActivityNode>();
 

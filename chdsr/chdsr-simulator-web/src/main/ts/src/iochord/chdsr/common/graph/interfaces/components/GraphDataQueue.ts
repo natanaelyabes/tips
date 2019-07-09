@@ -1,6 +1,13 @@
 import { QUEUE_TYPE } from '../../enums/QUEUE';
 import { GraphData } from '../GraphData';
 
+/**
+ *
+ * @package chdsr
+ * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
+ * @since 2019
+ *
+ */
 export interface GraphDataQueue extends GraphData {
   getQueueType(): QUEUE_TYPE | null;
   setQueueType(type: QUEUE_TYPE): void;

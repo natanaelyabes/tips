@@ -3,6 +3,13 @@ import { GraphDataImpl } from '../GraphDataImpl';
 import { GraphDataTable } from '../../interfaces/components/GraphDataTable';
 import { GraphUtil } from '../GraphUtil';
 
+/**
+ *
+ * @package chdsr
+ * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
+ * @since 2019
+ *
+ */
 export class GraphDataObjectTypeImpl extends GraphDataImpl implements GraphDataObjectType {
   public static instance: Map<string, GraphDataObjectType> = new Map<string, GraphDataObjectType>();
 

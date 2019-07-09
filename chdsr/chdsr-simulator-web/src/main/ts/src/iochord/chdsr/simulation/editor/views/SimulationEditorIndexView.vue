@@ -1,3 +1,8 @@
+<!--
+  @package chdsr
+  @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
+  @since 2019
+-->
 <template>
   <div class="index view">
     <router-view></router-view>
@@ -5,12 +10,27 @@
 </template>
 
 <style>
-
+/**
+ *
+ * @package chdsr
+ * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
+ * @since 2019
+ *
+ */
 </style>
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
 import IndexView from '@/iochord/chdsr/common/lib/vue/classes/IndexView';
+
+
+/**
+ *
+ * @package chdsr
+ * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
+ * @since 2019
+ *
+ */
 export default class SimulationEditorIndexView extends IndexView {
   //
 }

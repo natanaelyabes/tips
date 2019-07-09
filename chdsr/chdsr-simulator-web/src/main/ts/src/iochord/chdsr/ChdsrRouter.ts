@@ -9,7 +9,14 @@ import ChdsrHomeRouter from '@/iochord/chdsr/home/routes/HomeRouter';
 import SimulationEditorRouter from '@/iochord/chdsr/simulation/editor/routes/SimulationEditorRouter';
 import SandboxTestRouter from '@/iochord/chdsr/sandbox/routes/SandboxTestRouter';
 
-// Route config
+
+/**
+ *
+ * @package chdsr
+ * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
+ * @since 2019
+ *
+ */
 export default [
   {
     path: `/${BaseUrlEnum.IOCHORD}/${ApplicationEnum.NAME}`,

@@ -4,6 +4,13 @@ import { GraphConfiguration } from './GraphConfiguration';
 import { GraphData } from './GraphData';
 import { GraphControl } from './components/GraphControl';
 
+/**
+ *
+ * @package chdsr
+ * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
+ * @since 2019
+ *
+ */
 export interface Graph extends GraphElement {
   getVersion(): string | null;
   getPages(): Map<string, GraphPage> | null;

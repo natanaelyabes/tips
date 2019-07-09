@@ -1,3 +1,8 @@
+<!--
+  @package chdsr
+  @author Taufik Nur Adi <taufik.nur.adi@gmail.com>
+  @since 2019
+-->
 <template>
   <div class="simulation editor kpi view">
     <div class="ui basic segment">
@@ -33,7 +38,13 @@
 </template>
 
 <style>
-
+/**
+ *
+ * @package chdsr
+ * @author Taufik Nur Adi <taufik.nur.adi@gmail.com>
+ * @since 2019
+ *
+ */
 </style>
 
 <script lang="ts">
@@ -43,6 +54,14 @@ import '#root/node_modules/jointjs/dist/joint.css';
 
 declare const $: any;
 
+
+/**
+ *
+ * @package chdsr
+ * @author Taufik Nur Adi <taufik.nur.adi@gmail.com>
+ * @since 2019
+ *
+ */
 @Component
 export default class SimulationEditorKpiView extends Vue {
   private mounted(): void {

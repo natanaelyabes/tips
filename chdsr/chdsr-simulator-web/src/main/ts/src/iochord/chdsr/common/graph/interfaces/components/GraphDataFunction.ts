@@ -1,6 +1,13 @@
 import { GraphDataObjectType } from './GraphDataObjectType';
 import { GraphData } from '../GraphData';
 
+/**
+ *
+ * @package chdsr
+ * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
+ * @since 2019
+ *
+ */
 export interface GraphDataFunction extends GraphData {
   getInputParameters(): Map<string, GraphDataObjectType> | null;
   setInputParameters(inputParameters: Map<string, GraphDataObjectType>): void;

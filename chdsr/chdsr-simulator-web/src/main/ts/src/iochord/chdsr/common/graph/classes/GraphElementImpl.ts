@@ -1,5 +1,12 @@
 import { GraphElement } from '../interfaces/GraphElement';
 
+/**
+ *
+ * @package chdsr
+ * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
+ * @since 2019
+ *
+ */
 export class GraphElementImpl implements GraphElement {
   private id?: string | null;
   private label?: string | null;

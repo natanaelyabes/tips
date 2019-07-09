@@ -1,3 +1,8 @@
+<!--
+  @package chdsr
+  @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
+  @since 2019
+-->
 <template>
   <div class="test view">
     <div class="ui basic segment">
@@ -7,6 +12,13 @@
 </template>
 
 <style>
+/**
+ *
+ * @package chdsr
+ * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
+ * @since 2019
+ *
+ */
 .socket-io {
   color: green;
   cursor: pointer;
@@ -19,6 +31,14 @@ import BaseView from '@/iochord/chdsr/common/lib/vue/classes/BaseView';
 
 import SocketIO from 'socket.io-client';
 
+
+/**
+ *
+ * @package chdsr
+ * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
+ * @since 2019
+ *
+ */
 @Component
 export default class SandboxTestView extends BaseView {
   public test: any = 'test';
