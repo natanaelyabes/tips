@@ -11,6 +11,7 @@ import { GraphUtil } from '../GraphUtil';
  *
  */
 export class GraphDataFunctionImpl extends GraphDataImpl implements GraphDataFunction {
+  public static TYPE: string = 'function';
   public static instance: Map<string, GraphDataFunction> = new Map<string, GraphDataFunction>();
 
   /** @Override */

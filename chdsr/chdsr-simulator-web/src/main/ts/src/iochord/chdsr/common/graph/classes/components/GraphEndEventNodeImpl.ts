@@ -9,6 +9,7 @@ import { GraphStopEventNode } from '../../interfaces/components/GraphStopEventNo
  *
  */
 export class GraphStopEventNodeImpl extends GraphEventNodeImpl implements GraphStopEventNode {
+  public static TYPE: string = 'stop';
   public static instance: Map<string, GraphStopEventNode> = new Map<string, GraphStopEventNode>();
 
   public static deserialize(object: any): GraphStopEventNode | null {

@@ -9,6 +9,7 @@ import { GraphMonitorNode } from '../../interfaces/components/GraphMonitorNode';
  *
  */
 export class GraphMonitorNodeImpl extends GraphNodeImpl implements GraphMonitorNode {
+  public static TYPE: string = 'monitor';
   /** @Override */
   public serialize(): string | null {
     return JSON.stringify(this);

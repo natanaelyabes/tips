@@ -14,6 +14,7 @@ import { DISTRIBUTION_TYPE } from '../../enums/DISTRIBUTION';
  *
  */
 export class GraphDataGeneratorImpl extends GraphDataImpl implements GraphDataGenerator {
+  public static TYPE: string = 'generator';
   public static instance: Map<string, GraphDataGenerator> = new Map<string, GraphDataGenerator>();
 
   /** @Override */
