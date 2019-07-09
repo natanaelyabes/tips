@@ -91,7 +91,7 @@ public class DataProviderMongoTest {
 		}
 	}
 
-	@Test
+	//@Test
 	public void test02Selection() throws Exception {
 		Sort s = new Sort(Sort.Direction.ASC, "caseId");
 		s.and(new Sort(Sort.Direction.ASC, "timestamp"));
