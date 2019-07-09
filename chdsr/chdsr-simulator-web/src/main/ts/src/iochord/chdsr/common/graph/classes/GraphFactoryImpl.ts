@@ -37,13 +37,13 @@
 // import { GraphMonitorNodeImpl } from './components/GraphMonitorNodeImpl';
 // import { GraphStopEventNode } from '../interfaces/components/GraphStopEventNode';
 
-/**
- *
- * @package chdsr
- * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
- * @since 2019
- *
- */
+// /**
+//  *
+//  * @package chdsr
+//  * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
+//  * @since 2019
+//  *
+//  */
 // export class GraphFactoryImpl implements GraphFactory {
 //   public static getInstance(): GraphFactory {
 //     return this.instance;
@@ -78,9 +78,9 @@
 //     if (net !== null) {
 //       const page: GraphPage = new GraphPageImpl();
 //       const netPage: Map<string, GraphPage> | null = net.getPages();
-//       const size: number = netPage!.size;
+//       const size: number = (netPage as Map<string, GraphPage>).size;
 //       page.setId(size.toString());
-//       netPage!.set(net.getId() as string, page);
+//       (netPage as Map<string, GraphPage>).set(net.getId() as string, page);
 //       return page;
 //     }
 //     return null;
@@ -92,7 +92,7 @@
 //       try {
 //         const data: GraphData = new (DATA_TYPE as any)[dt]();
 //         data.setId(`${page.getId()}-${page.getData().size.toString()}`);
-//         page.getData().set(data.getId() as string, data);
+//         (page.getData() as Map<string, GraphData>).set(data.getId() as string, data);
 //         return data;
 //       } catch (e) {
 //         throw new Error(e);
