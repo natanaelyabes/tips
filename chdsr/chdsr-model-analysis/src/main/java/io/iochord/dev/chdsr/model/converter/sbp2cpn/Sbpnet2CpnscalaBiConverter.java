@@ -58,7 +58,6 @@ public class Sbpnet2CpnscalaBiConverter implements Converter<Sbpnet, String> {
 		final static String binding = "Binding";
 		final static String eval = "Eval";
 		final static String merge = "Merge";
-		final static String evalLast = "EvalLast";
 		final static String arc = "Arc";
 		final static String arcexp = "ArcExp";
 		final static String TtB = "TtB";
@@ -360,121 +359,8 @@ public class Sbpnet2CpnscalaBiConverter implements Converter<Sbpnet, String> {
 		
 		return addTimeid;
 	}
+	
 	/*
-	public HLDeclaration addTypeDeclaration(PetriNet net, String name, CPNType value, boolean timed) {
-		HLDeclaration hl = factory.createHLDeclaration();
-		TypeDeclaration type;
-		type = dfactory.createTypeDeclaration();
-		type.setTypeName(name);
-		type.setSort(value);
-		value.setTimed(timed);
-		hl.setStructure(type);
-		hl.setId("HL" + getCounter(HLDeclaration.class));
-		net.getLabel().add(hl);
-		return hl;
-	}
-
-	public HLDeclaration addVariableDeclaration(PetriNet net, String name, String tname) {
-		HLDeclaration hl = factory.createHLDeclaration();
-		VariableDeclaration type;
-		type = dfactory.createVariableDeclaration();
-		type.setTypeName(tname);
-		type.getVariables().add(name);
-		hl.setStructure(type);
-		hl.setId("HL" + getCounter(HLDeclaration.class));
-		net.getLabel().add(hl);
-		return hl;
-	}
-	
-	public Page addPage(PetriNet net, String name) {
-		Page page = factory.createPage();
-		page.setId("PAGE" + getCounter(Page.class));
-		Name n = factory.createName();
-		n.setText(name);
-		page.setName(n);
-		net.getPage().add(page);
-		return page;
-	}
-	
-	public Place addPlace(Page page, String name, String type, String initialMarking) {
-		Place place = factory.createPlace();
-		place.setId("ID" + getCounter(Place.class));
-		Name n = factory.createName();
-		n.setText(name);
-		place.setName(n);
-		if (initialMarking != null) {
-			HLMarking ml = factory.createHLMarking();
-			ml.setText(initialMarking);
-			place.setInitialMarking(ml);
-		}
-		Sort sort = factory.createSort();
-		sort.setText(type);
-		place.setSort(sort);
-		page.getObject().add(place);
-		return place;
-	}
-	
-	public RefPlace addRefPlace(Page page, String name, String type, String initialMarking) {
-		RefPlace rplace = factory.createRefPlace();
-		rplace.setId("ID" + getCounter(Place.class));
-		Name n = factory.createName();
-		n.setText(name);
-		rplace.setName(n);
-		if (initialMarking != null) {
-			HLMarking ml = factory.createHLMarking();
-			ml.setText(initialMarking);
-			rplace.setInitialMarking(ml);
-		}
-		Sort sort = factory.createSort();
-		sort.setText(type);
-		rplace.setSort(sort);
-		page.getObject().add(rplace);
-		return rplace;
-	}
-
-	public Instance addInstance(Page page, String name, String subpageId) {
-		Instance subst = factory.createInstance();
-		subst.setId("SUBST" + getCounter(Transition.class));
-		subst.setSubPageID(subpageId);
-		Name n = factory.createName();
-		n.setText(name);
-		subst.setName(n);
-		page.getObject().add(subst);
-		return subst;
-	}
-	
-	public ParameterAssignment addPortSocketAssignment(Instance instance, RefPlace source, Place target) {
-		ParameterAssignment pa = factory.createParameterAssignment();
-		pa.setInstance(instance);
-		pa.setValue(source.getId());
-		pa.setParameter(target.getId());
-		source.setRef(target);
-		instance.getParameterAssignment().add(pa);
-		return pa;
-	}
-	
-	public Transition addTransition(Page page, String name) {
-		Transition trans = factory.createTransition();
-		trans.setId("TRANS" + getCounter(Transition.class));
-		Name n = factory.createName();
-		n.setText(name);
-		trans.setName(n);
-		page.getObject().add(trans);
-		return trans;
-	}
-	
-	public Arc addArc(Page page, Node source, Node target, String inscription) {
-		Arc arc = factory.createArc();
-		arc.setId("ARC" + getCounter(Arc.class));
-		arc.setSource(source);
-		arc.setTarget(target);
-		HLAnnotation ann = factory.createHLAnnotation();
-		ann.setText(inscription);
-		arc.setHlinscription(ann);
-		page.getArc().add(arc);
-		return arc;
-	}
-	
 	@Override
 	public PetriNet convert(Sbpnet snet) {
 		Sbpnet2CpnscalaBiConverter converter = this;
@@ -664,12 +550,6 @@ public class Sbpnet2CpnscalaBiConverter implements Converter<Sbpnet, String> {
 			}
 		}
 		return net;
-	}
-	
-	@Override
-	public Sbpnet revert(PetriNet o) {
-		// TODO Auto-generated method stub
-		return null;
 	}
 	*/
 }
