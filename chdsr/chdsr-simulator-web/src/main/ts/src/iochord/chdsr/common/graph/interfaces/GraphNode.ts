@@ -1,5 +1,12 @@
 import { GraphElement } from './GraphElement';
 
+/**
+ *
+ * @package chdsr
+ * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
+ * @since 2019
+ *
+ */
 export interface GraphNode extends GraphElement {
   getGroupName(): string | null;
   setGroupName(groupName: string): void;

@@ -1,3 +1,8 @@
+<!--
+  @package chdsr
+  @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
+  @since 2019
+-->
 <template>
   <div class="index view">
     <NavigationTopSidebarComponent>
@@ -63,6 +68,13 @@
 </template>
 
 <style>
+/**
+ *
+ * @package chdsr
+ * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
+ * @since 2019
+ *
+ */
 .index.view {
   height: 100%;
 }
@@ -83,6 +95,14 @@ import IndexView from '@/iochord/chdsr/common/lib/vue/classes/IndexView';
 // JQuery Symbol Handler
 declare const $: any;
 
+
+/**
+ *
+ * @package chdsr
+ * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
+ * @since 2019
+ *
+ */
 @Component({
   components: {
     NavigationTopSidebarComponent,

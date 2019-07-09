@@ -1,21 +1,23 @@
+<!--
+  @package chdsr
+  @author Taufik Nur Adi <taufik.nur.adi@gmail.com>
+  @since 2019
+-->
 <template>
   <div class="canvas component">
     <div class="editor canvas">
-      <!-- <h1>{{parentSelectedGate}}</h1> -->
       <div id="canvas"></div>
     </div>
-
-    <!-- <div>
-      <button v-on:click = "changeStartLabel('Haloo')">Halo</button>
-    </div> -->
 
     <!-- Model Modals -->
     <template v-for="type in Array.from(nodeTypes)">
       <template v-if="type === 'start'">
         <StartNodeModal label="test"
-        @changeStartLabel = "changeStartLabelFromChild($event)"
-        :startLabel.sync = "parentStartLabel"
-        :generator.sync = "parentGenerator" v-bind:id="type" v-bind:key="type"/>
+          @changeStartLabel="changeStartLabelFromChild($event)"
+          :startLabel.sync="parentStartLabel"
+          :generator.sync="parentGenerator"
+          v-bind:id="type" v-bind:key="type"
+        />
       </template>
 
       <template v-if="type === 'branch'">
@@ -24,7 +26,8 @@
           @changeSelectedGate="selectedGateFromChild($event)"
           @changeSelectedType="selectedTypeFromChild($event)"
           @changeSelectedRule="selectedRuleFromChild($event)"
-          v-bind:id="type" v-bind:key="type" />
+          v-bind:id="type" v-bind:key="type"
+        />
       </template>
 
       <template v-if="type === 'activity'">
@@ -39,6 +42,13 @@
 </template>
 
 <style scoped>
+/**
+ *
+ * @package chdsr
+ * @author Taufik Nur Adi <taufik.nur.adi@gmail.com>
+ * @since 2019
+ *
+ */
 .canvas.component {
   height: 100%;
 }
@@ -78,14 +88,22 @@ import { ARC_TYPE } from '@/iochord/chdsr/common/lib/joint/shapes/chdsr/enums/AR
 import BaseComponent from '@/iochord/chdsr/common/lib/vue/classes/BaseComponent';
 
 // Components
-import StartNodeModal from '@/iochord/chdsr/common/kpi/components/modals/StartNodeModal.vue';
-import ActivityNodeModal from '@/iochord/chdsr/common/kpi/components/modals/ActivityNodeModal.vue';
-import BranchNodeModal from '@/iochord/chdsr/common/kpi/components/modals/BranchNodeModal.vue';
-import StopNodeModal from '@/iochord/chdsr/common/kpi/components/modals/StopNodeModal.vue';
+import StartNodeModal from '@/iochord/chdsr/simulation/editor/components/modals/StartNodeModal.vue';
+import ActivityNodeModal from '@/iochord/chdsr/simulation/editor/components/modals/ActivityNodeModal.vue';
+import BranchNodeModal from '@/iochord/chdsr/simulation/editor/components/modals/BranchNodeModal.vue';
+import StopNodeModal from '@/iochord/chdsr/simulation/editor/components/modals/StopNodeModal.vue';
 
 // JQuery Handler
 declare const $: any;
 
+
+/**
+ *
+ * @package chdsr
+ * @author Taufik Nur Adi <taufik.nur.adi@gmail.com>
+ * @since 2019
+ *
+ */
 @Component({
   components: {
     ActivityNodeModal,
@@ -121,7 +139,6 @@ export default class CanvasComponent extends BaseComponent {
 
   public changeStartLabel(prmLabel: string): void {
     this.parentStartLabel = prmLabel;
-    // console.log(this.parentStartLabel);
   }
 
   public changeGenerator(prmGenerator: string): void {
@@ -151,12 +168,12 @@ export default class CanvasComponent extends BaseComponent {
   public mounted(): void {
     this.changeStartLabel('From Parent Mounted - Label');
     this.changeGenerator('From Parent Mounted - Generator');
-    this.loadGraph();    
+    this.loadGraph();
     this.$forceUpdate();
   }
 
   public loadGraph(): void {
-    try {      
+    try {
       // Deserialize the model
       this.graph = this.response as Graph;
 
@@ -275,24 +292,26 @@ export default class CanvasComponent extends BaseComponent {
         jointPage.getPaper().translate((canvasWidth / 2) - (PageViewportBBox.width / 2), (canvasHeight / 2) - (PageViewportBBox.height / 2));
 
         jointPage.getPaper().on({
-          'element:pointerdblclick': (elementView) => {
+          'element:pointerclick': (elementView: joint.dia.ElementView) => {
+            console.log(elementView);
+          },
+          'element:pointerdblclick': (elementView: joint.dia.ElementView) => {
             const currentElement = elementView.model;
             const currentElementType = currentElement.attributes.type;
 
             if (currentElementType === 'start') {
               alert('Masuk double klik');
-              console.log("sebelum "+this.parentStartLabel);
+              console.log('sebelum ' + this.parentStartLabel);
               this.changeStartLabel('From Double Click - Start Label');
               console.log(this.parentStartLabel);
             }
           },
 
-          'element:contextmenu': (elementView) => {
+          'element:contextmenu': (elementView: joint.dia.ElementView) => {
             const currentElement = elementView.model;
             currentElement.attr('body/stroke', 'red');
             const currentElementType = currentElement.attributes.type;
             const currentElementNodeId = currentElement.attributes.nodeId;
-            console.log(currentElementNodeId);
 
             if (currentElementType === 'start') {
               $('#start').modal('show');

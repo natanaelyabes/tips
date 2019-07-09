@@ -1,6 +1,13 @@
 import { GraphConfiguration } from '../interfaces/GraphConfiguration';
 import { GraphElementImpl } from './GraphElementImpl';
 
+/**
+ *
+ * @package chdsr
+ * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
+ * @since 2019
+ *
+ */
 export class GraphConfigurationImpl extends GraphElementImpl implements GraphConfiguration {
   public static instance: Map<string, GraphConfiguration> = new Map<string, GraphConfiguration>();
 

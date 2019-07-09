@@ -1,3 +1,8 @@
+<!--
+  @package chdsr
+  @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
+  @since 2019
+-->
 <template>
   <div class="editor view">
 
@@ -191,6 +196,13 @@
 </template>
 
 <style scoped>
+/**
+ *
+ * @package chdsr
+ * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
+ * @since 2019
+ *
+ */
 .image-icon .ui.image {
   border-radius: 0;
   margin-bottom: .5em;
@@ -240,7 +252,13 @@ i.big.icon {
 </style>
 
 <style>
-/* Done */
+/**
+ *
+ * @package chdsr
+ * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
+ * @since 2019
+ *
+ */
 .editor.view {
   height: 100%;
   display: flex;
@@ -289,6 +307,14 @@ const CanvasComponent = () => import('@/iochord/chdsr/simulation/editor/componen
 
 declare const $: any;
 
+
+/**
+ *
+ * @package chdsr
+ * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
+ * @since 2019
+ *
+ */
 @Component({
   components: {
     ApplicationWrapperComponent,

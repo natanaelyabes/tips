@@ -1,5 +1,12 @@
 import * as joint from 'jointjs';
 
+/**
+ *
+ * @package chdsr
+ * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
+ * @since 2019
+ *
+ */
 export const ARC_TYPE = {
   connector: {
     attr: {

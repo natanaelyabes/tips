@@ -4,11 +4,10 @@ import { SemanticModulesIsUsed } from '@/iochord/chdsr/common/ui/semantic/Semant
 
 /**
  *
+ * @package chdsr
+ * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
+ * @since 2019
  *
- * @export
- * @class BaseView
- * @extends {Vue}
- * @implements {SemanticModulesIsUsed}
  */
 @Component
 export default class BaseView extends Vue

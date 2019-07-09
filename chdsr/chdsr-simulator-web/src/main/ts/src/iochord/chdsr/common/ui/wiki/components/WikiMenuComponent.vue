@@ -1,3 +1,8 @@
+<!--
+  @package chdsr
+  @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
+  @since 2019
+-->
 <template>
   <div class="wiki-menu component">
     <div class="ui compact message">
@@ -8,6 +13,13 @@
 </template>
 
 <style scoped>
+/**
+ *
+ * @package chdsr
+ * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
+ * @since 2019
+ *
+ */
 .wiki-menu.component .ui.compact.message {
   z-index: 9999;
 }
@@ -17,6 +29,14 @@
 import { Component, Prop } from 'vue-property-decorator';
 import BaseComponent from '@/iochord/chdsr/common/lib/vue/classes/BaseComponent';
 
+
+/**
+ *
+ * @package chdsr
+ * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
+ * @since 2019
+ *
+ */
 @Component
 export default class WikiMenuComponent extends BaseComponent {
 

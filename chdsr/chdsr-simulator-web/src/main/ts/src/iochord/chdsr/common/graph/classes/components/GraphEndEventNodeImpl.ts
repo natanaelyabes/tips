@@ -1,6 +1,13 @@
 import { GraphEventNodeImpl } from './GraphEventNodeImpl';
 import { GraphStopEventNode } from '../../interfaces/components/GraphStopEventNode';
 
+/**
+ *
+ * @package chdsr
+ * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
+ * @since 2019
+ *
+ */
 export class GraphStopEventNodeImpl extends GraphEventNodeImpl implements GraphStopEventNode {
   public static instance: Map<string, GraphStopEventNode> = new Map<string, GraphStopEventNode>();
 

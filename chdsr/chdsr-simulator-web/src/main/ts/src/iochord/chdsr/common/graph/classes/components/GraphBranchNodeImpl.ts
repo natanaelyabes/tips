@@ -3,6 +3,13 @@ import { GraphNodeImpl } from '../GraphNodeImpl';
 import { GraphBranchNode } from '../../interfaces/components/GraphBranchNode';
 import { BRANCH_TYPE, BRANCH_RULE } from '../../enums/BRANCH';
 
+/**
+ *
+ * @package chdsr
+ * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
+ * @since 2019
+ *
+ */
 export class GraphBranchNodeImpl extends GraphNodeImpl implements GraphBranchNode {
   public static instance: Map<string, GraphBranchNode> = new Map<string, GraphBranchNode>();
 

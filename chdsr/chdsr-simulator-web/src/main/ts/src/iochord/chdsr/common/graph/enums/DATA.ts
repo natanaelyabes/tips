@@ -5,6 +5,13 @@ import { GraphDataFunctionImpl } from '../classes/components/GraphDataFunctionIm
 import { GraphDataQueueImpl } from '../classes/components/GraphDataQueueImpl';
 import { GraphDataResourceImpl } from '../classes/components/GraphDataResourceImpl';
 
+/**
+ *
+ * @package chdsr
+ * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
+ * @since 2019
+ *
+ */
 export const DATA_TYPE = {
   datatable: GraphDataTableImpl,
   objecttype: GraphDataObjectTypeImpl,

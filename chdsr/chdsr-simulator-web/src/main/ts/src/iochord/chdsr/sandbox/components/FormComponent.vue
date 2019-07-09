@@ -1,3 +1,8 @@
+<!--
+  @package chdsr
+  @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
+  @since 2019
+-->
 <template>
   <div class="ui form">
     <div class="field">
@@ -19,13 +24,27 @@
 </template>
 
 <style>
-
+/**
+ *
+ * @package chdsr
+ * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
+ * @since 2019
+ *
+ */
 </style>
 
 <script lang="ts">
 import { Component, Prop, Vue, Watch } from 'vue-property-decorator';
 import BaseComponent from '@/iochord/chdsr/common/lib/vue/classes/BaseComponent';
 
+
+/**
+ *
+ * @package chdsr
+ * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
+ * @since 2019
+ *
+ */
 @Component
 export default class FormComponent extends BaseComponent {
   @Prop(String) private firstName!: string;

@@ -1,3 +1,8 @@
+<!--
+  @package chdsr
+  @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
+  @since 2019
+-->
 <template>
   <div class="ui floating message" v-bind:class="size">
     <i v-if="dismissable" class="close icon"></i>
@@ -10,7 +15,13 @@
 </template>
 
 <style scoped>
-
+/**
+ *
+ * @package chdsr
+ * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
+ * @since 2019
+ *
+ */
 </style>
 
 <script lang="ts">
@@ -20,6 +31,14 @@ import MessageComponent from '@/iochord/chdsr/common/ui/semantic/messages/classe
 // JQuery Symbol Handler
 declare const $: any;
 
+
+/**
+ *
+ * @package chdsr
+ * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
+ * @since 2019
+ *
+ */
 @Component
 export default class MessageFloatingComponent extends MessageComponent {
   //

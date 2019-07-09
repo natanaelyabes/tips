@@ -17,39 +17,19 @@ import { Component, Vue  } from 'vue-property-decorator';
 
 // Interfaces
 import { VueHasLifeCycle } from '@/iochord/chdsr/common/lib/vue/interfaces/VueHasLifeCycle';
+import IndexView from '@/iochord/chdsr/common/lib/vue/classes/IndexView';
+
+
+/**
+ *
+ * @package chdsr
+ * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
+ * @since 2019
+ *
+ */
 
 @Component
-export default class ChdsrApp extends Vue implements VueHasLifeCycle {
-  public beforeCreate(): void {
-    // throw new Error('Method not implemented.');
-  }
-
-  public created(): void {
-    // throw new Error('Method not implemented.');
-  }
-
-  public beforeMount(): void {
-    // throw new Error('Method not implemented.');
-  }
-
-  public mounted(): void {
-    // throw new Error('Method not implemented.');
-  }
-
-  public beforeUpdate(): void {
-    // throw new Error('Method not implemented.');
-  }
-
-  public updated(): void {
-    // throw new Error('Method not implemented.');
-  }
-
-  public beforeDestroy(): void {
-    // throw new Error('Method not implemented.');
-  }
-
-  public destroyed(): void {
-    // throw new Error('Method not implemented.');
-  }
+export default class ChdsrApp extends IndexView {
+  //
 }
 </script>

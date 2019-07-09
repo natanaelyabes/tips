@@ -1,6 +1,13 @@
 import { BRANCH_TYPE, BRANCH_RULE, BRANCH_GATE } from './../../enums/BRANCH';
 import { GraphNode } from '../GraphNode';
 
+/**
+ *
+ * @package chdsr
+ * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
+ * @since 2019
+ *
+ */
 export interface GraphBranchNode extends GraphNode {
   getGate(): BRANCH_GATE | null;
   setGate(gate: BRANCH_GATE): void;

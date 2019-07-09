@@ -1,3 +1,8 @@
+<!--
+  @package chdsr
+  @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
+  @since 2019
+-->
 <template>
   <div class="navigation-top-sidebar component">
     <!-- Top-bar menu -->
@@ -28,6 +33,13 @@
 </template>
 
 <style scoped>
+/**
+ *
+ * @package chdsr
+ * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
+ * @since 2019
+ *
+ */
 .pusher {
   transform: translate3d(0,0,0)!important;
   padding-left: 260px;
@@ -85,6 +97,14 @@ import SemanticComponent from '@/iochord/chdsr/common/ui/semantic/SemanticCompon
 // JQuery Symbol Handler
 declare const $: any;
 
+
+/**
+ *
+ * @package chdsr
+ * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
+ * @since 2019
+ *
+ */
 @Component
 export default class NavigationTopSidebarComponent extends SemanticComponent {
   private menuIsOpen: boolean = false;

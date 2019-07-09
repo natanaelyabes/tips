@@ -1,3 +1,8 @@
+<!--
+  @package chdsr
+  @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
+  @since 2019
+-->
 <template>
   <div class="sandbox parent child view">
     <div class="ui basic segment">
@@ -15,7 +20,13 @@
 </template>
 
 <style>
-
+/**
+ *
+ * @package chdsr
+ * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
+ * @since 2019
+ *
+ */
 </style>
 
 
@@ -24,6 +35,14 @@ import { Component, Vue } from 'vue-property-decorator';
 import BaseComponent from '@/iochord/chdsr/common/lib/vue/classes/BaseComponent';
 import FormComponent from '@/iochord/chdsr/sandbox/components/FormComponent.vue';
 
+
+/**
+ *
+ * @package chdsr
+ * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
+ * @since 2019
+ *
+ */
 @Component({
   components: {
     FormComponent,
@@ -51,7 +70,8 @@ export default class SandboxParentChildView extends BaseComponent {
   public changeFromParent(): void {
     this.firstName = 'Natanael';
     this.lastName = 'Yabes';
-    console.log(this.firstName, this.lastName);
+    console.log('From parent: ', this.firstName);
+    console.log('From parent: ', this.lastName);
   }
 }
 </script>

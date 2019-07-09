@@ -1,3 +1,8 @@
+<!--
+  @package chdsr
+  @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
+  @since 2019
+-->
 <template>
   <div class="application workspace component">
     <!-- Left sidebar -->
@@ -27,6 +32,13 @@
 </template>
 
 <style scoped>
+/**
+ *
+ * @package chdsr
+ * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
+ * @since 2019
+ *
+ */
 .application.workspace.component {
   height: 100%;
   overflow: hidden;
@@ -37,7 +49,13 @@
 </style>
 
 <style>
-
+/**
+ *
+ * @package chdsr
+ * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
+ * @since 2019
+ *
+ */
 </style>
 
 
@@ -50,6 +68,14 @@ import ApplicationSidebarComponent from './ApplicationSidebarComponent.vue';
 import ApplicationContentComponent from './ApplicationContentComponent.vue';
 import BaseComponent from '@/iochord/chdsr/common/lib/vue/classes/BaseComponent';
 
+
+/**
+ *
+ * @package chdsr
+ * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
+ * @since 2019
+ *
+ */
 @Component({
   components: {
     ApplicationSidebarComponent,

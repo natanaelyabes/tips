@@ -5,6 +5,13 @@ import { GraphDataImpl } from '@/iochord/chdsr/common/graph/classes/GraphDataImp
 import { JointGraphElementHasPosition } from '../interfaces/JointGraphElementHasPosition';
 import * as joint from 'jointjs';
 
+/**
+ *
+ * @package chdsr
+ * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
+ * @since 2019
+ *
+ */
 export class JointGraphDataImpl extends GraphDataImpl implements JointGraphElementHasMarkup, JointGraphElementHasSize, JointGraphElementHasPosition, JointGraphElementIsPaintable {
   private markup: string | null;
   private attr: joint.dia.Cell.Selectors | null;

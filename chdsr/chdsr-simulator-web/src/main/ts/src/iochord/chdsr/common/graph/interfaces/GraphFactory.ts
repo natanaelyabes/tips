@@ -17,6 +17,13 @@ import { Graph } from './Graph';
 import { GraphPage } from './GraphPage';
 import { GraphDataObjectType } from './components/GraphDataObjectType';
 
+/**
+ *
+ * @package chdsr
+ * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
+ * @since 2019
+ *
+ */
 export interface GraphFactory {
   create(ref?: Graph): Graph | null;
   addPage(net: Graph): GraphPage | null;

@@ -1,4 +1,12 @@
 import { GraphElement } from './../interfaces/GraphElement';
+
+/**
+ *
+ * @package chdsr
+ * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
+ * @since 2019
+ *
+ */
 export class GraphUtil {
   public static generateRef<T extends GraphElement>(e: T | null): string | null {
     if (e !== null) {

@@ -7,11 +7,10 @@ import PageView from '@/iochord/chdsr/common/lib/vue/classes/PageView';
 
 /**
  *
+ * @package chdsr
+ * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
+ * @since 2019
  *
- * @export
- * @class ApplicationWrapperView
- * @extends {BaseView}
- * @implements {ApplicationHasWrapper}
  */
 @Component
 export default class ApplicationWrapperView extends PageView

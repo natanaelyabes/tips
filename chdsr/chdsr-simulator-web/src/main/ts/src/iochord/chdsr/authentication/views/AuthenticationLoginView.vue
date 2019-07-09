@@ -1,3 +1,8 @@
+<!--
+  @package chdsr
+  @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
+  @since 2019
+-->
 <template>
   <div class="login view">
     <div class="ui middle aligned center aligned grid">
@@ -48,6 +53,13 @@
 </template>
 
 <style scoped>
+/**
+ *
+ * @package chdsr
+ * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
+ * @since 2019
+ *
+ */
 .login.view {
   background: #03628c;
   background-size: cover;
@@ -143,6 +155,13 @@ import { BaseUrlEnum, ApplicationEnum } from '@/iochord/chdsr/common/enums';
 
 import PageView from '@/iochord/chdsr/common/lib/vue/classes/PageView';
 
+/**
+ *
+ * @package chdsr
+ * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
+ * @since 2019
+ *
+ */
 @Component
 export default class AuthenticationLoginView extends PageView {
   private email: string = 'admin@iochord.com';

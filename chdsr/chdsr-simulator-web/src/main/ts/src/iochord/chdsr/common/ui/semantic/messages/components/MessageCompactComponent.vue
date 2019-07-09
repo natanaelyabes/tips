@@ -1,3 +1,8 @@
+<!--
+  @package chdsr
+  @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
+  @since 2019
+-->
 <template>
   <div class="ui compact message" v-bind:class="size">
     <i v-if="dismissable" class="close icon"></i>
@@ -10,13 +15,27 @@
 </template>
 
 <style scoped>
-
+/**
+ *
+ * @package chdsr
+ * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
+ * @since 2019
+ *
+ */
 </style>
 
 <script lang="ts">
 import { Component, Prop } from 'vue-property-decorator';
 import MessageComponent from '@/iochord/chdsr/common/ui/semantic/messages/classes/MessageComponent';
 
+
+/**
+ *
+ * @package chdsr
+ * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
+ * @since 2019
+ *
+ */
 @Component
 export default class MessageCompactComponent extends MessageComponent {
   //

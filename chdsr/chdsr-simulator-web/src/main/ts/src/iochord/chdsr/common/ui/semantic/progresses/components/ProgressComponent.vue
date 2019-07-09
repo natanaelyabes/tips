@@ -1,3 +1,8 @@
+<!--
+  @package chdsr
+  @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
+  @since 2019
+-->
 <template>
   <div class="progress component">
     <div id="progress" v-bind:data-percent="percent" v-bind:class="color" class="ui top attached progress">
@@ -7,7 +12,13 @@
 </template>
 
 <style>
-
+/**
+ *
+ * @package chdsr
+ * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
+ * @since 2019
+ *
+ */
 </style>
 
 <script lang="ts">
@@ -16,6 +27,14 @@ import SemanticComponent from '@/iochord/chdsr/common/ui/semantic/SemanticCompon
 
 declare const $: any;
 
+
+/**
+ *
+ * @package chdsr
+ * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
+ * @since 2019
+ *
+ */
 @Component
 export default class ProgressComponent extends SemanticComponent {
   @Prop() private percent!: number;
