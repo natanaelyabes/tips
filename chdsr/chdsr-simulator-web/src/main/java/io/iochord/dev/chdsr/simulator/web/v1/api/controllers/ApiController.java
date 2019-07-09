@@ -12,8 +12,6 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.mvc.method.RequestMappingInfo;
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
 
-import io.iochord.dev.chdsr.simulator.web.v1.api.AServiceController;
-
 /**
  *
  * @package chdsr-simulator-web

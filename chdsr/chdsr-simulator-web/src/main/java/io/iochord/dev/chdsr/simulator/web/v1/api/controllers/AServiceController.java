@@ -1,4 +1,4 @@
-package io.iochord.dev.chdsr.simulator.web.v1.api;
+package io.iochord.dev.chdsr.simulator.web.v1.api.controllers;
 
 import io.iochord.dev.chdsr.simulator.web.v1.controllers.AController;
 

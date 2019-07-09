@@ -1,6 +1,6 @@
 package io.iochord.dev.chdsr.simulator.web.v1.api.controllers.user;
 
-import io.iochord.dev.chdsr.simulator.web.v1.api.AServiceController;
+import io.iochord.dev.chdsr.simulator.web.v1.api.controllers.AServiceController;
 
 /**
  *
