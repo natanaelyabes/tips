@@ -16,7 +16,7 @@ class CPNGraph {
 	  places += (place.getId() -> place)
 	}
 	
-	def removePlace(place: Place[_]) {
+	def removePlace (place: Place[_]) {
 	  import Direction._
 	  places.remove(place.getId())
 	  
@@ -45,7 +45,7 @@ class CPNGraph {
 	  })
   }
 	
-	def addArc (arc: Arc[_,_]) {	
+	def addArc[T,B<:Bind] (arc: Arc[T,B]) {	
 	  
 	  import Direction._
 	  if(arc.getDirection() == PtT)
@@ -57,7 +57,7 @@ class CPNGraph {
 	  arcs = arc :: arcs
 	}
 	
-	def removeArc(arc: Arc[_,_]) {
+	def removeArc[T,B<:Bind] (arc: Arc[T,B]) {
 	  val oldCount = arcs.size
 	  arcs = arcs filterNot(a => a.getId() == arc.getId())
 	  val newCount = arcs.size
