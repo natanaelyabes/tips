@@ -55,6 +55,8 @@ public class Sbpnet2CpnscalaBiConverter implements Converter<Sbpnet, String> {
 		final static String type = "Type";
 		final static String place = "Place";
 		final static String transition = "Transition";
+		final static String guard = "Guard";
+		final static String action = "Action";
 		final static String binding = "Binding";
 		final static String eval = "Eval";
 		final static String merge = "Merge";
@@ -66,6 +68,11 @@ public class Sbpnet2CpnscalaBiConverter implements Converter<Sbpnet, String> {
 	}
 	
 	StringBuilder factory = new StringBuilder();
+	
+	private Map<String, String> objecttypes = new LinkedHashMap<>();
+	private Map<String, String> generators = new LinkedHashMap<>();
+	private Map<String, String> resources = new LinkedHashMap<>();
+	private Map<String, String> queues = new LinkedHashMap<>();
 	
 	private Map<String, Integer> counters = new LinkedHashMap<>();
 	
@@ -116,6 +123,38 @@ public class Sbpnet2CpnscalaBiConverter implements Converter<Sbpnet, String> {
 		return transitionid;
 	}
 	
+	public String addGuard(String classbinding, String guarddef) {
+		String counter = getCounter(KeyElement.guard);
+		String guardid = "Guard"+counter;
+		String bindguardexpid = "BindGuard"+counter;
+		
+		StringBuilder guardfactory = new StringBuilder();
+		guardfactory.append( "val "+guardid+" = new Guard["+classbinding+"]()\n" );
+		guardfactory.append( "val "+bindguardexpid+" = (bind:"+classbinding+") => {"+guarddef+"}\n" );
+		guardfactory.append( guardid+".setGuardBind()\n" );
+		factory.append(guardfactory.toString());
+		
+		return guardid;
+	}
+	
+	public String addAction(String classbinding, String actionfundef) {
+		String counter = getCounter(KeyElement.action);
+		String actionid = "action"+counter;
+		String actionfunid = "actionFun"+counter;
+		String actionfun = "def "+actionfunid+"(b:"+classbinding+"):"+classbinding+" = { "+actionfundef+" }";
+		factory.append( actionfun+"\n" );
+		factory.append("\n");
+		
+		StringBuilder actionfactory = new StringBuilder();
+		actionfactory.append( "val "+actionid+" = new Action["+classbinding+"]()\n" );
+		actionfactory.append( actionid+".setActionFun("+actionfunid+")\n" );
+		actionfactory.append("\n");
+		
+		factory.append(actionfactory.toString());
+		
+		return actionid;
+	}
+	
 	public String addBindingClass(String classdef) {
 		String counter = getCounter(KeyElement.binding);
 		String bindingid = "Binding"+counter;
@@ -157,7 +196,7 @@ public class Sbpnet2CpnscalaBiConverter implements Converter<Sbpnet, String> {
 		return mergeid;
 	}
 	
-	public String addArc(String placeid, String transitionid, String direction, String type, String classbinding, String arcexp, String TtB, String BtT, String addTime) {
+	public String addArc(String placeid, String transitionid, String direction, String type, String classbinding, String arcexp, String TtB, String BtT, String addTime, String noToken) {
 		String counter = getCounter(KeyElement.arc);
 		String arcid = "arc"+counter;
 		
@@ -166,8 +205,11 @@ public class Sbpnet2CpnscalaBiConverter implements Converter<Sbpnet, String> {
 		arcfactory.append( arcid+".setArcExp("+arcexp+")\n" );
 		arcfactory.append( arcid+".setTokenToBind("+TtB+")\n" );
 		arcfactory.append( arcid+".setBindToToken("+BtT+")\n" );
+		arcfactory.append( arcid+".setBindToToken("+BtT+")\n" );
 		if(addTime != null)
 			arcfactory.append( arcid+".setAddTime("+addTime+")\n" );
+		if(noToken != null)
+			arcfactory.append( arcid+".setNoTokArcExp("+noToken+")\n" );
 		arcfactory.append( "cgraph.addArc("+arcid+")\n" );
 		arcfactory.append("\n");
 		
@@ -418,42 +460,55 @@ public class Sbpnet2CpnscalaBiConverter implements Converter<Sbpnet, String> {
 	*/
 	
 	public String convert(Sbpnet snet) {
-		factory.append("this.subject = new MarkingObservable()\n");
-	    factory.append("subject.addObserver(new MarkingObserver())\n");
-	    
-		String int_type_id = "colset"+getCounter(KeyElement.type);
-		String string_type_id = "colset"+getCounter(KeyElement.type);
-		
-		factory.append("type "+int_type_id+" = Int\n");
-		factory.append("type "+string_type_id+" = String\n");
-		factory.append("\n");
-		
 		for (String pi : snet.getPages().keySet()) {
 			io.iochord.dev.chdsr.model.sbpnet.v1.Page p = snet.getPages().get(pi);
+			
+			String CaseData = "case class CaseData(name:String,age:Int)";
+			factory.append(CaseData+"\n");
+			factory.append("\n");
+			
+			String entTypeId = "colset"+getCounter(KeyElement.type);
+			objecttypes.put("entityTypeId", entTypeId);
+			factory.append("type "+entTypeId+" = (Int,String)\n");
+			factory.append("\n");
+			
+					
+			String dataTypeId = "colset"+getCounter(KeyElement.type);
+			factory.append("type "+dataTypeId+" = (Int,String,CaseData)\n");
+			factory.append("\n");
+			
 			// Convert Data Nodes
 			for (String di : p.getData().keySet()) {
 				Data d = p.getData().get(di);
 				if (d instanceof ObjectType) {
 					ObjectType ot = (ObjectType) d;
-					//prev use converter.addTypeDeclaration
+					String typeId = "colset"+getCounter(KeyElement.type);
+					objecttypes.put(ot.getId(), typeId);
+					factory.append("type "+typeId+" = Int\n");
+					factory.append("\n");
 				}
 				if (d instanceof Generator) {
 					Generator dg = (Generator) d;
 					
-					String p_dgNextCaseId = addPlace(dg.getLabel()+"_dgNextCaseId", int_type_id, "((1,0),1)");
-					String p_dgStart = addPlace(dg.getLabel() + "_dgStart", int_type_id, "((1,0),1)");
+					String typeId = objecttypes.get(dg.getObjectType().getId());
+					
+					String p_dgNextCaseId = addPlace(dg.getLabel()+"_dgNextCaseId", typeId, "((1,0),1)");
+					String p_dgStart = addPlace(dg.getLabel() + "_dgStart", entTypeId, "");
+					String p_dgData = addPlace(dg.getLabel() + "_dgData", dataTypeId, "");
+					
+					String b_dgt1 = addBindingClass( "tid:Option[Int],gid:Option[String],data:Option[CaseData]" );
+					String e_dgt1 = addEval("(b1.tid == b2.tid || b1.tid == None || b2.tid == None) && (b1.gid == b2.gid || b1.tid == None || b2.tid == None) && (b1.gid == b2.data || b1.data == None || b2.data == None)", b_dgt1);
+					String m_dgt1 = addMerge("val tid = if(b1.tid == None) b2.tid else b1.tid;val gid = if(b1.gid == None) b2.gid else b1.gid;val data = if(b1.data == None) b2.data else b1.data;", b_dgt1, "tid,gid,data");
 					
 					String guard = null;
-					String action = null;
+					String action = addAction(b_dgt1,"val r = new java.util.Random();val rint = r.nextInt();val gid = \""+dg.getId()+"\";val data = CaseData(\"nama\"+rint,rint);"+b_dgt1+"(b.tid,Some(gid),Some(data))");
 					
-					String b_dgt1 = addBindingClass( "i:Option["+int_type_id+"]" );
-					String e_dgt1 = addEval("b1.i == b2.i || b1.i == None || b2.i == None", b_dgt1);
-					String m_dgt1 = addMerge("val i = if(b1.i == None) b2.i else b1.i", b_dgt1, "i");
 					String dgt1 = addTransition(dg.getLabel() + "_dgt1", guard, action, b_dgt1, e_dgt1, m_dgt1);
 					
-					addArc(p_dgNextCaseId, dgt1, "PtT", int_type_id, b_dgt1, addArcExp("case i:"+int_type_id+" => { Some(i) }"), addTtB(b_dgt1,"inp match { case i:"+int_type_id+" => Some(i); case _ => None }"), addBtT(b_dgt1,"b.i.get"), null);
-					addArc(p_dgNextCaseId, dgt1, "TtP", int_type_id, b_dgt1, addArcExp("case i:"+int_type_id+" => { Some(i) }"), addTtB(b_dgt1,"inp match { case i:"+int_type_id+" => Some(i); case _ => None }"), addBtT(b_dgt1,"b.i.get"), addAddedTime(b_dgt1,"Math.round(Gaussian(100, 10).draw())"));
-					addArc(p_dgStart, dgt1, "TtP", int_type_id, b_dgt1, addArcExp("case i:"+int_type_id+" => { Some(i) }"), addTtB(b_dgt1,"inp match { case i:"+int_type_id+" => Some(i); case _ => None }"), addBtT(b_dgt1,"b.i.get"), addAddedTime(b_dgt1,"0L"));
+					addArc(p_dgNextCaseId, dgt1, "PtT", typeId, b_dgt1, addArcExp("case tid:"+typeId+" => { Some(tid) }"), addTtB(b_dgt1,"inp match { case tid:"+typeId+" => Some(tid); case _ => None }, None, None"), addBtT(b_dgt1,"b.tid.get"), null, null);
+					addArc(p_dgNextCaseId, dgt1, "TtP", typeId, b_dgt1, addArcExp("case tid:"+typeId+" => { Some(tid+1) }"), addTtB(b_dgt1,"inp match { case tid:"+typeId+" => Some(tid); case _ => None }, None, None"), addBtT(b_dgt1,"b.tid.get"), addAddedTime(b_dgt1,"Math.round(Gaussian(100, 10).draw())"), null);
+					addArc(p_dgStart, dgt1, "TtP", entTypeId, b_dgt1, addArcExp("case (tid:"+typeId+",gid:String) => { Some(tid,gid) }"), addTtB(b_dgt1,"inp match { case (tid:"+typeId+",gid:Any) => Some(tid); case _ => None }, inp match { case (tid:Any,gid:String) => Some(gid); case _ => None }, None"), addBtT(b_dgt1,"(b.tid.get,b.gid.get)"), null, "3");
+					addArc(p_dgData, dgt1, "TtP", dataTypeId, b_dgt1, addArcExp("case (tid:"+typeId+",gid:String,data:CaseData) => { Some(tid,gid,data) }"), addTtB(b_dgt1,"inp match { case (tid:"+typeId+",gid:Any,data:Any) => Some(tid); case _ => None }, inp match { case (tid:Any,gid:String,data:Any) => Some(gid); case _ => None }, inp match { case (tid:Any,gid:Any,data:CaseData) => Some(data); case _ => None }"), addBtT(b_dgt1,"(b.tid.get,b.gid.get,b.data.get)"), null, "3");
 				}
 				if (d instanceof Function) {
 					Function f = (Function) d;
@@ -485,36 +540,36 @@ public class Sbpnet2CpnscalaBiConverter implements Converter<Sbpnet, String> {
 //								Page napage =  converter.addPage(net, "START " + na.getLabel()); 
 //								Place nap = converter.addPlace(napage, na.getLabel() + "_nap1", "INT", "");
 					if (na.getGenerator() == null) {
-						String p_nap1 = addPlace(na.getLabel() + "_nap1", int_type_id, "");
+						String p_nap1 = addPlace(na.getLabel() + "_nap1", entTypeId, "");
 					} else {
 						//if not null
 					}
 				}
 				if (n instanceof Stop) {
 					Stop no = (Stop) n;
-					String p_nop1 = addPlace(no.getLabel() + "_nop1", int_type_id, "");
+					String p_nop1 = addPlace(no.getLabel() + "_nop1", entTypeId, "");
 				}
 				if (n instanceof Activity) {
 					Activity na = (Activity) n;
-					String p_nap1 = addPlace(na.getLabel() + "_nap1", int_type_id, "");
-					String p_nap2 = addPlace(na.getLabel() + "_nap2", int_type_id, "");
-					String p_nap3 = addPlace(na.getLabel() + "_nap3", int_type_id, "");
+					String p_nap1 = addPlace(na.getLabel() + "_nap1", entTypeId, "");
+					String p_nap2 = addPlace(na.getLabel() + "_nap2", entTypeId, "");
+					String p_nap3 = addPlace(na.getLabel() + "_nap3", entTypeId, "");
 				}
 				if (n instanceof Branch) {
 					Branch b = (Branch) n;
-					String p_bp = addPlace(b.getLabel() + "_bp", int_type_id, "");
+					String p_bp = addPlace(b.getLabel() + "_bp", entTypeId, "");
 					
 					int i = 0;
 					for (Connector c : p.getConnectors().values()) {
 						if (c.getTarget() != b) continue;
-						String bpis = addPlace(b.getLabel() + "_bpi" + i + "s", int_type_id, "");
+						String bpis = addPlace(b.getLabel() + "_bpi" + i + "s", entTypeId, "");
 						
 						i++;
 					}
 					i = 0;
 					for (Connector c : p.getConnectors().values()) {
 						if (c.getSource() != b) continue;
-						String bpos = addPlace(b.getLabel() + "_bpo" + i + "s", int_type_id, "");
+						String bpos = addPlace(b.getLabel() + "_bpo" + i + "s", entTypeId, "");
 						
 						i++;
 					}
