@@ -150,15 +150,13 @@ class Transition[B <:Bind] (
         }
       }
     } )
+    var bindingCombine:B = bindingChosen
+    if(action != null)
+    {
+      val bindingAction = action.computeActionFun(bindingChosen)//action.computeTokenToBind(action.computeActionFun(action.computeBindToToken(bindingChosen))) 
+      bindingCombine = getMerge()(bindingChosen,bindingAction)
+    }
     out.foreach(arc => {
-      var bindingCombine:B = bindingChosen
-      if(action != null)
-      {
-        val bindingAction = action.computeTokenToBind(action.computeActionFun(action.computeBindToToken(bindingChosen))) 
-        println("Output with Action",arc.getId(),bindingAction)
-        bindingCombine = getMerge()(bindingChosen,bindingAction)
-        //println(arc.getId(),bindingCombine)
-      }
       val optTokenChosen = arc.computeArcExp(arc.computeBindToToken(bindingCombine))
       if(optTokenChosen != None) {
         val timetoken = if(arc.getAddTime() == null) globtime else globtime+arc.computeAddTime(bindingChosen)

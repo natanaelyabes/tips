@@ -66,7 +66,7 @@ class Arc[T,B <:Bind] (
   
   def computeAddTime(bind:B) = { this.addTime(bind) }
   
-  def setNoTokArcExp(noToken:Int) = { this.noTokArcExp = noTokArcExp }
+  def setNoTokArcExp(noToken:Int) = { this.noTokArcExp = noToken }
   
   def getNoTokArcExp():Int = { this.noTokArcExp }
 }

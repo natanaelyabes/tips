@@ -4,6 +4,14 @@ import io.iochord.dev.chdsr.model.cpn.v1._
 
 class Action[B <:Bind] { 
   
+  private var actionFun:B => B = null
+  
+  def setActionFun(actionFun:B => B) = { this.actionFun = actionFun }
+  
+  def getActionFun():(B => B) = { this.actionFun }
+  
+  def computeActionFun(bind:B) = { this.actionFun(bind) }
+  /*
   private var actionFun:Any => Any = null
   private var TtoB:Any => B = null
   private var BtoT:Any => Any = null
@@ -25,4 +33,5 @@ class Action[B <:Bind] {
   def getActionFun():(Any => Any) = { this.actionFun }
   
   def computeActionFun(token:Any) = { this.actionFun(token) }
+  */
 }
