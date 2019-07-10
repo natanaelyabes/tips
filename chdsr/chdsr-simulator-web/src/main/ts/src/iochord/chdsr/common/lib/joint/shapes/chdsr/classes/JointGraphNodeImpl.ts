@@ -72,13 +72,17 @@ export class JointGraphNodeImpl extends GraphNodeImpl implements JointGraphEleme
 
   public render(graph: joint.dia.Graph): void {
 
-    this.node = new joint.shapes.standard.Image();
+    this.node = new joint.shapes.standard.BorderedImage();
     this.node.attr({
       label: {
         text: this.getLabel() !== undefined || null ? this.getLabel() as string : '',
       },
       image: {
         xlinkHref: this.imageIcon,
+      },
+      border: {
+        strokeWidth: 0,
+        rx: 5,
       },
     });
     this.node.attributes.nodeId = this.getId();

@@ -27,8 +27,13 @@ export default [
       },
       {
         path: 'parent-child-view',
-        name: `${BaseUrlEnum.IOCHORD}-${ApplicationEnum.NAME}-parent-child-view-sandbox`,
+        name: `${BaseUrlEnum.IOCHORD}-${ApplicationEnum.NAME}-sandbox-parent-child-view`,
         component: () => import(/* webpackChunkName: "chdsr-parent-child-sandbox-view" */ '@/iochord/chdsr/sandbox/views/SandboxParentChildView.vue'),
+      },
+      {
+        path: 'sandbox-editor-test',
+        name: `${BaseUrlEnum.IOCHORD}-${ApplicationEnum.NAME}-sandbox-editor-test`,
+        component: () => import(/* webpackChunkName: "chdsr-sandbox-editor-test-view" */ '@/iochord/chdsr/sandbox/views/SandboxEditorTest.vue'),
       },
     ],
   },

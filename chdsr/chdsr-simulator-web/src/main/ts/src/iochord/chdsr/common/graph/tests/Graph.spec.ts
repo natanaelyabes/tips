@@ -1,7 +1,6 @@
 import { GraphDataGenerator } from './../interfaces/components/GraphDataGenerator';
 import { GraphDataObjectType } from './../interfaces/components/GraphDataObjectType';
 import { GraphPage } from './../interfaces/GraphPage';
-import { Graph } from '../interfaces/Graph';
 import { GraphFactory } from '../interfaces/GraphFactory';
 import { GraphFactoryImpl } from '../classes/GraphFactoryImpl';
 import { GraphImpl } from '../classes/GraphImpl';

@@ -334,7 +334,7 @@ export default class SimulationEditorView extends ApplicationWrapperView {
     try {
       this.graphData = await SbpnetModelService.getInstance().getExampleModel();
     } catch (e) {
-      console.log(e);
+      console.error(e);
     }
 
     // Force re-render page component
