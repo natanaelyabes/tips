@@ -15,13 +15,13 @@
           <div class="row">
             <div class="four wide column">Label</div>
             <div class="twelve wide column">
-              <input type="text" @change="handleChangedLabel()" v-model="_label" id="x_txt_label">
+              <input type="text" @change="handleChangedLabel()" v-model="tempBranchLabel">
             </div>
           </div>
           <div class="row">
             <div class="four wide column">Gate</div>
             <div class="twelve wide column">
-              <select class="ui dropdown" @change="handleSelectedGate()" v-model="_selectedGate">
+              <select class="ui dropdown" @change="handleSelectedGate()" v-model="tempSelectedGate">
                 <option value>Gate</option>
                 <option value="and">AND</option>
                 <option value="xor">XOR</option>
@@ -31,7 +31,7 @@
           <div class="row">
             <div class="four wide column">Type</div>
             <div class="twelve wide column">
-              <select class="ui dropdown" @change="handleSelectedType()" v-model="_selectedType">
+              <select class="ui dropdown" @change="handleSelectedType()" v-model="tempSelectedType">
                 <option value>Type</option>
                 <option value="split">Split</option>
                 <option value="join">Join</option>
@@ -56,7 +56,7 @@
 </style>
 
 <script lang="ts">
-import { Component, Prop, Vue } from 'vue-property-decorator';
+import { Component, Prop, Vue, Watch } from 'vue-property-decorator';
 import SemanticComponent from '@/iochord/chdsr/common/ui/semantic/SemanticComponent';
 
 declare const $: any;
@@ -71,72 +71,94 @@ declare const $: any;
  */
 @Component
 export default class BranchNodeModal extends SemanticComponent {
-  @Prop() private label!: string;
+  @Prop() private branchLabel!: string;
   @Prop() private selectedGate!: string;
   @Prop() private selectedType!: string;
   @Prop() private selectedRule!: string;
 
-  private _label!: string;
-  private _selectedGate!: string;
-  private _selectedType!: string;
-  private _selectedRule!: string;
+  private tempBranchLabel!: string;
+  private tempSelectedGate!: string;
+  private tempSelectedType!: string;
+  private tempSelectedRule!: string;
 
   private rowBranchesRuleContent!: string;
   private rowBranchesIfContent!: string;
   private rowBranchesTblContent!: string;
 
+  @Watch('branchLabel')
+  public onChangeBranchLabel(newVal: string): void {
+    this.tempBranchLabel = this.branchLabel;
+  }
+
+  @Watch('selectedGate')
+  public onChangeSelectedGate(newVal: string): void {
+    this.tempSelectedGate = this.selectedGate;
+  }
+
+  @Watch('selectedType')
+  public onChangeSelectedType(newVal: string): void {
+    this.tempSelectedType = this.selectedType;
+  }
+
+  @Watch('selectedRule')
+  public onChangeSelectedRule(newVal: string): void {
+    this.tempSelectedRule = this.selectedRule;
+  }
+
   public handleChangedLabel(): void {
-    this.$emit('changeLabel', this._label);
+    this.$emit('changeLabel', this.tempBranchLabel);
   }
 
   public handleSelectedGate(): void {
-    this.$emit('changeSelectedGate', this._selectedGate);
+    this.$emit('changeSelectedGate', this.tempSelectedGate);
 
-    if (this._selectedGate !== '' && this._selectedType !== '') {
+    if (this.tempSelectedGate !== '' && this.tempSelectedType !== '') {
      this.showCondition();
     }
   }
 
   public handleSelectedType(): void {
-    this.$emit('changeSelectedType', this._selectedType);
+    this.$emit('changeSelectedType', this.tempSelectedType);
 
-    if (this._selectedGate !== '' && this._selectedType !== '') {
+    if (this.tempSelectedGate !== '' && this.tempSelectedType !== '') {
      this.showCondition();
     }
   }
 
   public handleSelectedRule(): void {
-    this.$emit('changeSelectedRule', this._selectedRule);
+    this.$emit('changeSelectedRule', this.tempSelectedRule);
   }
 
   public beforeMount(): void {
-    this._label = this.label;
-    this._selectedGate = this.selectedGate;
-    this._selectedType = this.selectedType;
-    this._selectedRule = this.selectedRule;
-
     this.rowBranchesRuleContent = '';
     this.rowBranchesIfContent = '';
     this.rowBranchesTblContent = '';
   }
 
-  public mounted(): void {
+  public declareSemanticModules(): void {
     $('.ui.dropdown').dropdown();
     $('.tabular.menu .item').tab();
+  }
+
+  public mounted(): void {
+    this.$nextTick(() => {
+      this.tempBranchLabel = this.branchLabel;
+      this.tempSelectedGate = this.selectedGate;
+      this.tempSelectedType = this.selectedType;
+      this.tempSelectedRule = this.selectedRule;
+    });
 
     this.rowBranchesRuleContent += '<div class=\'four wide column\'>Rule</div>';
     this.rowBranchesRuleContent += '<div class=\'seven wide column\'>';
-    this.rowBranchesRuleContent += '<select class=\'ui dropdown\' @change=\'handleSelectedRule()\' v-model=\'_selectedRule\'>';
+    this.rowBranchesRuleContent += '<select class=\'ui dropdown\' @change=\'handleSelectedRule()\' v-model=\'tempSelectedRule\'>';
     this.rowBranchesRuleContent += '<option value=\'rule\'>Rule</option>';
     this.rowBranchesRuleContent += '<option value=\'data\'>Data</option>';
     this.rowBranchesRuleContent += '<option value=\'probability\'>Probability</option>';
     this.rowBranchesRuleContent += '</select>';
     this.rowBranchesRuleContent += '</div>';
-
     this.rowBranchesIfContent += '<div class=\'sixteen wide column\'>';
     this.rowBranchesIfContent += '<h4>If</h4>';
     this.rowBranchesIfContent += '</div>';
-
     this.rowBranchesTblContent += '<div class=\'sixteen wide column\'>';
     this.rowBranchesTblContent += '<table class=\'ui celled compact table\'>';
     this.rowBranchesTblContent += '<thead>';
@@ -185,7 +207,7 @@ export default class BranchNodeModal extends SemanticComponent {
     const paddingStyle14 = 'padding-top:14px;padding-bottom:14px;';
     const paddingStyle0 = 'padding:0px';
 
-    if (this._selectedGate === 'xor' && this._selectedType === 'split') {
+    if (this.tempSelectedGate === 'xor' && this.tempSelectedType === 'split') {
       $('#row_branches_rule').html(this.rowBranchesRuleContent);
       $('#row_branches_rule').attr('style', paddingStyle14);
       $('#row_branches_if').html(this.rowBranchesIfContent);
