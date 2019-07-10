@@ -160,18 +160,18 @@ declare const $: any;
 
 @Component
 export default class ActivityNodeModal extends SemanticComponent {
-  @Prop() private selectedActivityType !: string;
-  @Prop() private report !: boolean;
-  @Prop() private customMonitor !: string;
-  @Prop() private processingTime !: string;
-  @Prop() private parameter1 !: string;
-  @Prop() private setupTime !: string;
-  @Prop() private parameter2 !: string;
-  @Prop() private unit !: string;
-  @Prop() private queueLabel !: string;
-  @Prop() private inputType !: string;
-  @Prop() private outputType !: string;
-  @Prop() private codeSegment !: string;
+  @Prop() private actNodeSelectedActivityType !: string;
+  @Prop() private actNodeReport !: boolean;
+  @Prop() private actNodeCustomMonitor !: string;
+  @Prop() private actNodeProcessingTime !: string;
+  @Prop() private actNodeParameter1 !: string;
+  @Prop() private actNodeSetupTime !: string;
+  @Prop() private actNodeParameter2 !: string;
+  @Prop() private actNodeUnit !: string;
+  @Prop() private actNodeQueueLabel !: string;
+  @Prop() private actNodeInputType !: string;
+  @Prop() private actNodeOutputType !: string;
+  @Prop() private actNodeCodeSegment !: string;
 
   private tempSelectedActivityType: string = '';
   private tempReport: boolean = false;
@@ -195,62 +195,62 @@ export default class ActivityNodeModal extends SemanticComponent {
   private basicSplitSM3 !: string;
   private basicSplitSM4 !: string;
 
-  @Watch('selectedActivityType')
+  @Watch('actNodeSelectedActivityType')
   public onChangeSelectedActivityType(newVal: string): void {
     this.tempSelectedActivityType = newVal;
   }
 
-  @Watch('report')
+  @Watch('actNodeReport')
   public onChangeReport(newVal: boolean): void {
     this.tempReport = newVal;
   }
 
-  @Watch('customMonitor')
+  @Watch('actNodeCustomMonitor')
   public onChangeCustomMonitor(newVal: string): void {
     this.tempCustomMonitor = newVal;
   }
 
-  @Watch('processingTime')
+  @Watch('actNodeProcessingTime')
   public onChangeProcessingTime(newVal: string): void {
     this.tempProcessingTime = newVal;
   }
 
-  @Watch('parameter1')
+  @Watch('actNodeParameter1')
   public onChangeParameter1(newVal: string): void {
     this.tempParameter1 = newVal;
   }
 
-  @Watch('setupTime')
+  @Watch('actNodeSetupTime')
   public onChangeSetupTime(newVal: string): void {
     this.tempSetupTime = newVal;
   }
 
-  @Watch('parameter2')
+  @Watch('actNodeParameter2')
   public onChangeParameter2(newVal: string): void {
     this.tempParameter2 = newVal;
   }
 
-  @Watch('unit')
+  @Watch('actNodeUnit')
   public onChangeUnit(newVal: string): void {
     this.tempUnit = newVal;
   }
 
-  @Watch('queueLabel')
+  @Watch('actNodeQueueLabel')
   public onChangeQueueLabel(newVal: string): void {
     this.tempQueueLabel = newVal;
   }
 
-  @Watch('inputType')
+  @Watch('actNodeInputType')
   public onChangeInputType(newVal: string): void {
     this.tempInputType = newVal;
   }
 
-  @Watch('outputType')
+  @Watch('actNodeOutputType')
   public onChangeOutputType(newVal: string): void {
     this.tempOutputType = newVal;
   }
 
-  @Watch('codeSegment')
+  @Watch('actNodeCodeSegment')
   public onChangeCodeSegment(newVal: string): void {
     this.tempCodeSegment = newVal;
   }
@@ -306,7 +306,7 @@ export default class ActivityNodeModal extends SemanticComponent {
   }
 
   public beforeMount(): void {
-    this.tempSelectedActivityType = this.selectedActivityType;
+    this.tempSelectedActivityType = this.actNodeSelectedActivityType;
     this.basicStandardSM1 = '';
     this.basicCbpSM1 = '';
     this.basicCbpSM2 = '';
@@ -324,17 +324,18 @@ export default class ActivityNodeModal extends SemanticComponent {
 
   public mounted(): void {
     this.$nextTick(() => {
-      this.tempSelectedActivityType = this.selectedActivityType;
-      this.tempReport = this.report;
-      this.tempCustomMonitor = this.customMonitor;
-      this.tempProcessingTime = this.processingTime;
-      this.tempParameter1 = this.parameter1;
-      this.tempSetupTime = this.setupTime;
-      this.tempParameter2 = this.parameter2;
-      this.tempUnit = this.unit;
-      this.tempInputType = this.inputType;
-      this.tempOutputType = this.outputType;
-      this.tempCodeSegment = this.codeSegment;
+      this.tempSelectedActivityType = this.actNodeSelectedActivityType;
+      this.tempReport = this.actNodeReport;
+      this.tempCustomMonitor = this.actNodeCustomMonitor;
+      this.tempProcessingTime = this.actNodeProcessingTime;
+      this.tempParameter1 = this.actNodeParameter1;
+      this.tempSetupTime = this.actNodeSetupTime;
+      this.tempParameter2 = this.actNodeParameter2;
+      this.tempUnit = this.actNodeUnit;
+      this.tempQueueLabel = this.actNodeQueueLabel;
+      this.tempInputType = this.actNodeInputType;
+      this.tempOutputType = this.actNodeOutputType;
+      this.tempCodeSegment = this.actNodeCodeSegment;
     });
 
     this.basicStandardSM1 += '<div class=\'four wide column\'>Resources</div>';

@@ -54,7 +54,7 @@ declare const $: any;
 @Component
 export default class StopNodeModal extends SemanticComponent {
   @Prop() private stopLabel!: string;
-  @Prop() private report!: boolean;
+  @Prop() private stopReport!: boolean;
 
   private tempStopLabel: string = '';
   private tempReport: boolean = false;
@@ -64,7 +64,7 @@ export default class StopNodeModal extends SemanticComponent {
     this.tempStopLabel = newVal;
   }
 
-  @Watch('report')
+  @Watch('stopReport')
   public onChangeReport(newVal: boolean): void {
     this.tempReport = newVal;
   }
@@ -74,13 +74,13 @@ export default class StopNodeModal extends SemanticComponent {
   }
 
   public handleChangedReport(): void {
-    this.$emit('changeReport', this.tempReport);
+    this.$emit('changeStopReport', this.tempReport);
   }
 
   public mounted(): void {
     this.$nextTick(() => {
       this.tempStopLabel = this.stopLabel;
-      this.tempReport = this.report;
+      this.tempReport = this.stopReport;
     });
   }
 }
