@@ -45,7 +45,7 @@
 </style>
 
 <script lang="ts">
-import { Component, Prop, Vue } from 'vue-property-decorator';
+import { Component, Prop, Vue, Watch } from 'vue-property-decorator';
 import SemanticComponent from '@/iochord/chdsr/common/ui/semantic/SemanticComponent';
 declare const $: any;
 
@@ -59,10 +59,11 @@ declare const $: any;
  */
 @Component
 export default class ConfigurationModal extends SemanticComponent {
-  public mounted(): void {
+  public declareSemanticModules(): void {
     $('.ui.dropdown').dropdown();
     $('.tabular.menu .item').tab();
-
+  }
+  public mounted(): void {
     $('#sim_config_generate').click(() => {
       const rsc_val = $('#rsc_txt').val();
       let gen_tbl = '';
@@ -99,8 +100,6 @@ export default class ConfigurationModal extends SemanticComponent {
 
       $('#sim_config_tbl').html(gen_tbl);
     });
-
-
   }
 }
 </script>

@@ -1,3 +1,8 @@
+<!--
+  @package chdsr
+  @author Taufik Nur Adi <taufik.nur.adi@gmail.com>
+  @since 2019
+-->
 <template>
   <div class="ui tiny activity modal">
     <i class="close icon"></i>
@@ -149,7 +154,7 @@
 
 <script lang="ts">
 import { Component, Prop, Vue, Watch } from 'vue-property-decorator';
-import SemanticComponent from '../../../ui/semantic/SemanticComponent';
+import SemanticComponent from '@/iochord/chdsr/common/ui/semantic/SemanticComponent';
 
 declare const $: any;
 
@@ -168,18 +173,18 @@ export default class ActivityNodeModal extends SemanticComponent {
   @Prop() private outputType !: string;
   @Prop() private codeSegment !: string;
 
-  private tempSelectedActivityType : string = '';
-  private tempReport : boolean = false;
-  private tempCustomMonitor : string = '';
-  private tempProcessingTime : string = '';
-  private tempParameter1 : string = '';
-  private tempSetupTime : string = '';
-  private tempParameter2 : string = '';
-  private tempUnit : string = '';
-  private tempQueueLabel : string = '';
-  private tempInputType : string = '';
-  private tempOutputType : string = '';
-  private tempCodeSegment : string = '';
+  private tempSelectedActivityType: string = '';
+  private tempReport: boolean = false;
+  private tempCustomMonitor: string = '';
+  private tempProcessingTime: string = '';
+  private tempParameter1: string = '';
+  private tempSetupTime: string = '';
+  private tempParameter2: string = '';
+  private tempUnit: string = '';
+  private tempQueueLabel: string = '';
+  private tempInputType: string = '';
+  private tempOutputType: string = '';
+  private tempCodeSegment: string = '';
 
   private basicStandardSM1 !: string;
   private basicCbpSM1 !: string;
