@@ -31,7 +31,7 @@
                   <div class="row">
                     <div class="four wide column">Activity Type</div>
                     <div class="twelve wide column">
-                      <select class="ui dropdown" @change="handleSelectedActivityType()" v-model="_selectedActivityType">
+                      <select class="ui dropdown" @change="handleSelectedActivityType()" v-model="tempSelectedActivityType">
                         <option value="standard">Standard</option>
                         <option value="concurrent">Concurrent Batch Process</option>
                         <option value="split">Split Module Process</option>
@@ -48,14 +48,14 @@
                   <div id="basic-split-sm-4" class="row" style="padding:0px"></div>
                   <div class="sixteen wide column">
                     <div class="inline field">
-                      <input type="checkbox" class="hidden">
+                      <input type="checkbox" @change="handleChangedReport()" v-model="tempReport" class="hidden">
                       <label>Report statistics</label>
                     </div>
                   </div>
                   <div class="row">
                     <div class="four wide column">Custom Monitor</div>
                     <div class="nine wide column">
-                      <input type="text" id="cm_type_txt_label">
+                      <input type="text" @change="handleChangedCustomMonitor()" v-model="tempCustomMonitor">
                     </div>
                     <div class="three wide column">
                       <button class="ui button">...</button>
@@ -69,37 +69,37 @@
                   <div class="row">
                     <div class="three wide column">Processing Time</div>
                     <div class="thirteen wide column">
-                      <input type="text" id="processing_time_txt_label">
+                      <input type="text" @change="handleChangedProcessingTime()" v-model="tempProcessingTime">
                     </div>
                   </div>
                   <div class="row">
                     <div class="three wide column">Parameter</div>
                     <div class="thirteen wide column">
-                      <input type="text" id="parameter_pt_txt_label">
+                      <input type="text" @change="handleChangedParameter1()" v-model="tempParameter1">
                     </div>
                   </div>
                   <div class="row">
                     <div class="three wide column">Setup Time</div>
                     <div class="thirteen wide column">
-                      <input type="text" id="setup_time_txt_label">
+                      <input type="text" @change="handleChangedSetupTime()" v-model="tempSetupTime">
                     </div>
                   </div>
                   <div class="row">
                     <div class="three wide column">Parameter</div>
                     <div class="thirteen wide column">
-                      <input type="text" id="parameter_st_txt_label">
+                      <input type="text" @change="handleChangedParameter2()" v-model="tempParameter2">
                     </div>
                   </div>
                   <div class="row">
                     <div class="three wide column">Unit</div>
                     <div class="thirteen wide column">
-                      <input type="text" id="unit_txt_label">
+                      <input type="text" @change="handleChangedUnit()" v-model="tempUnit">
                     </div>
                   </div>
                   <div class="row">
                     <div class="four wide column">Queue label</div>
                     <div class="nine wide column">
-                      <input type="text" id="ql_txt_label">
+                      <input type="text" @change="handleChangedQueueLabel()" v-model="tempQueueLabel">
                     </div>
                     <div class="three wide column">
                       <button class="ui button">...</button>
@@ -113,7 +113,7 @@
                   <div class="row">
                     <div class="four wide column">Input Type</div>
                     <div class="nine wide column">
-                      <input type="text" id="input_type_txt_label">
+                      <input type="text" @change="handleChangedInputType()" v-model="tempInputType">
                     </div>
                     <div class="three wide column">
                       <button class="ui button">...</button>
@@ -122,7 +122,7 @@
                   <div class="row">
                     <div class="four wide column">Output Type</div>
                     <div class="nine wide column">
-                      <input type="text" id="input_type_txt_label">
+                      <input type="text" @change="handleChangedOutputType()" v-model="tempOutputType">
                     </div>
                     <div class="three wide column">
                       <button class="ui button">...</button>
@@ -132,7 +132,7 @@
                     <div class="sixteen wide column">
                       <div class="field">
                         <label>Code Segment</label>
-                        <textarea id="code_segment"></textarea>
+                        <textarea id="code_segment" @change="handleChangedCodeSegment()" v-model="tempCodeSegment"></textarea>
                       </div>
                     </div>
                   </div>
@@ -149,36 +149,42 @@
     </div>
   </div>
 </template>
-
 <style>
-/**
- *
- * @package chdsr
- * @author Taufik Nur Adi <taufik.nur.adi@gmail.com>
- * @since 2019
- *
- */
 </style>
 
 <script lang="ts">
-import { Component, Prop, Vue } from 'vue-property-decorator';
+import { Component, Prop, Vue, Watch } from 'vue-property-decorator';
 import SemanticComponent from '@/iochord/chdsr/common/ui/semantic/SemanticComponent';
 
 declare const $: any;
 
-
-/**
- *
- * @package chdsr
- * @author Taufik Nur Adi <taufik.nur.adi@gmail.com>
- * @since 2019
- *
- */
 @Component
 export default class ActivityNodeModal extends SemanticComponent {
   @Prop() private selectedActivityType !: string;
+  @Prop() private report !: boolean;
+  @Prop() private customMonitor !: string;
+  @Prop() private processingTime !: string;
+  @Prop() private parameter1 !: string;
+  @Prop() private setupTime !: string;
+  @Prop() private parameter2 !: string;
+  @Prop() private unit !: string;
+  @Prop() private queueLabel !: string;
+  @Prop() private inputType !: string;
+  @Prop() private outputType !: string;
+  @Prop() private codeSegment !: string;
 
-  private _selectedActivityType !: string;
+  private tempSelectedActivityType: string = '';
+  private tempReport: boolean = false;
+  private tempCustomMonitor: string = '';
+  private tempProcessingTime: string = '';
+  private tempParameter1: string = '';
+  private tempSetupTime: string = '';
+  private tempParameter2: string = '';
+  private tempUnit: string = '';
+  private tempQueueLabel: string = '';
+  private tempInputType: string = '';
+  private tempOutputType: string = '';
+  private tempCodeSegment: string = '';
 
   private basicStandardSM1 !: string;
   private basicCbpSM1 !: string;
@@ -189,13 +195,118 @@ export default class ActivityNodeModal extends SemanticComponent {
   private basicSplitSM3 !: string;
   private basicSplitSM4 !: string;
 
+  @Watch('selectedActivityType')
+  public onChangeSelectedActivityType(newVal: string): void {
+    this.tempSelectedActivityType = newVal;
+  }
+
+  @Watch('report')
+  public onChangeReport(newVal: boolean): void {
+    this.tempReport = newVal;
+  }
+
+  @Watch('customMonitor')
+  public onChangeCustomMonitor(newVal: string): void {
+    this.tempCustomMonitor = newVal;
+  }
+
+  @Watch('processingTime')
+  public onChangeProcessingTime(newVal: string): void {
+    this.tempProcessingTime = newVal;
+  }
+
+  @Watch('parameter1')
+  public onChangeParameter1(newVal: string): void {
+    this.tempParameter1 = newVal;
+  }
+
+  @Watch('setupTime')
+  public onChangeSetupTime(newVal: string): void {
+    this.tempSetupTime = newVal;
+  }
+
+  @Watch('parameter2')
+  public onChangeParameter2(newVal: string): void {
+    this.tempParameter2 = newVal;
+  }
+
+  @Watch('unit')
+  public onChangeUnit(newVal: string): void {
+    this.tempUnit = newVal;
+  }
+
+  @Watch('queueLabel')
+  public onChangeQueueLabel(newVal: string): void {
+    this.tempQueueLabel = newVal;
+  }
+
+  @Watch('inputType')
+  public onChangeInputType(newVal: string): void {
+    this.tempInputType = newVal;
+  }
+
+  @Watch('outputType')
+  public onChangeOutputType(newVal: string): void {
+    this.tempOutputType = newVal;
+  }
+
+  @Watch('codeSegment')
+  public onChangeCodeSegment(newVal: string): void {
+    this.tempCodeSegment = newVal;
+  }
+
+
   public handleSelectedActivityType(): void {
-    this.$emit('changeSelectedActivityType', this._selectedActivityType);
+    this.$emit('changeSelectedActivityType', this.tempSelectedActivityType);
     this.showDetailBasic();
   }
 
+  public handleChangedReport(): void {
+    this.$emit('changeReport', this.tempReport);
+  }
+
+  public handleChangedCustomMonitor(): void {
+    this.$emit('changeCustomMonitor', this.tempCustomMonitor);
+  }
+
+  public handleChangedProcessingTime(): void {
+    this.$emit('changeProcessingTime', this.tempProcessingTime);
+  }
+
+  public handleChangedParameter1(): void {
+    this.$emit('changeParameter1', this.tempParameter1);
+  }
+
+  public handleChangedSetupTime(): void {
+    this.$emit('changeSetupTime', this.tempSetupTime);
+  }
+
+  public handleChangedParameter2(): void {
+    this.$emit('changeParameter2', this.tempParameter2);
+  }
+
+  public handleChangedUnit(): void {
+    this.$emit('changeUnit', this.tempUnit);
+  }
+
+  public handleChangedQueueLabel(): void {
+    this.$emit('changeQueueLabel', this.tempQueueLabel);
+  }
+
+  public handleChangedInputType(): void {
+    this.$emit('changeInputType', this.tempInputType);
+  }
+
+  public handleChangedOutputType(): void {
+    this.$emit('changeOutputType', this.tempOutputType);
+  }
+
+  public handleChangedCodeSegment(): void {
+    this.$emit('changeCodeSegment', this.tempCodeSegment);
+  }
+
   public beforeMount(): void {
-    this._selectedActivityType = this.selectedActivityType;
+    this.tempSelectedActivityType = this.selectedActivityType;
     this.basicStandardSM1 = '';
     this.basicCbpSM1 = '';
     this.basicCbpSM2 = '';
@@ -212,6 +323,20 @@ export default class ActivityNodeModal extends SemanticComponent {
   }
 
   public mounted(): void {
+    this.$nextTick(() => {
+      this.tempSelectedActivityType = this.selectedActivityType;
+      this.tempReport = this.report;
+      this.tempCustomMonitor = this.customMonitor;
+      this.tempProcessingTime = this.processingTime;
+      this.tempParameter1 = this.parameter1;
+      this.tempSetupTime = this.setupTime;
+      this.tempParameter2 = this.parameter2;
+      this.tempUnit = this.unit;
+      this.tempInputType = this.inputType;
+      this.tempOutputType = this.outputType;
+      this.tempCodeSegment = this.codeSegment;
+    });
+
     this.basicStandardSM1 += '<div class=\'four wide column\'>Resources</div>';
     this.basicStandardSM1 += '<div class=\'nine wide column\'>';
     this.basicStandardSM1 += '<input type=\'text\' id=\'resources_txt_label\'>';
@@ -275,7 +400,7 @@ export default class ActivityNodeModal extends SemanticComponent {
     const paddingStyle14 = 'padding-top:14px;padding-bottom:14px;';
     const paddingStyle0 = 'padding:0px';
 
-    if (this._selectedActivityType === 'standard') {
+    if (this.tempSelectedActivityType === 'standard') {
       $('#basic-standard-sm-1').html(this.basicStandardSM1);
       $('#basic-standard-sm-1').attr('style', paddingStyle14);
       $('#basic-cbp-sm-1').html('');
@@ -292,7 +417,7 @@ export default class ActivityNodeModal extends SemanticComponent {
       $('#basic-split-sm-3').attr('style', paddingStyle0);
       $('#basic-split-sm-4').html('');
       $('#basic-split-sm-4').attr('style', paddingStyle0);
-    } else if (this._selectedActivityType === 'concurrent') {
+    } else if (this.tempSelectedActivityType === 'concurrent') {
       $('#basic-standard-sm-1').html('');
       $('#basic-standard-sm-1').attr('style', paddingStyle0);
       $('#basic-cbp-sm-1').html(this.basicCbpSM1);
