@@ -13,19 +13,24 @@
     <template v-for="type in Array.from(nodeTypes)">
       <template v-if="type === 'start'">
         <StartNodeModal label="test"
-          @changeStartLabel="changeStartLabelFromChild($event)"
+          @changeStartLabel = "changeStartLabelFromChild($event)"
+          @changeStartGenerator = "changeStartGeneratorFromChild($event)"
           :startLabel.sync="parentStartLabel"
-          :generator.sync="parentGenerator"
+          :startGenerator.sync="parentStartGenerator"
           v-bind:id="type" v-bind:key="type"
         />
       </template>
 
       <template v-if="type === 'branch'">
         <BranchNodeModal label="this is branch"
-          @changeLabel="changeLabelFromChild($event)"
-          @changeSelectedGate="selectedGateFromChild($event)"
-          @changeSelectedType="selectedTypeFromChild($event)"
-          @changeSelectedRule="selectedRuleFromChild($event)"
+          @changeBranchLabel = "changeBranchLabelFromChild($event)"
+          @changeBranchSelectedGate = "changeBranchSelectedGateFromChild($event)"
+          @changeBranchSelectedType = "changeBranchSelectedTypeFromChild($event)"
+          @changeBranchSelectedRule = "changeBranchSelectedRuleFromChild($event)"
+          :branchLabel.sync = "parentBranchLabel"
+          :selectedGate.sync = "parentBranchSelectedGate"
+          :selectedType.sync = "parentBranchSelectedType"
+          :selectedRule.sync = "parentBranchSelectedRule"
           v-bind:id="type" v-bind:key="type"
         />
       </template>
@@ -35,7 +40,12 @@
       </template>
 
       <template v-if="type === 'stop'">
-        <StopNodeModal v-bind:id="type" v-bind:key="type"/>
+        <StopNodeModal
+        @changeStopLabel = "changeStopLabelFromChild($event)"
+        @changeStopReport = "changeStopReportFromChild($event)"
+        :stopLabel = "parentStopLabel"
+        :stopReport = "parentStopReport"
+        v-bind:id="type" v-bind:key="type"/>
       </template>
     </template>
   </div>
@@ -126,48 +136,102 @@ export default class CanvasComponent extends BaseComponent {
   public selectedElement?: GraphElement;
 
   public parentStartLabel: string = '';
-  public parentGenerator: string = '';
+  public parentStartGenerator: string = '';
 
-  public parentLabel: string = '';
-  public parentSelectedGate: string = '';
-  public parentSelectedType: string = '';
-  public parentSelectedRule: string = '';
+  public parentBranchLabel: string = '';
+  public parentBranchSelectedGate: string = '';
+  public parentBranchSelectedType: string = '';
+  public parentBranchSelectedRule: string = '';
 
-  public getStartLabel(): string {
-    return this.parentStartLabel;
+  public parentStopLabel: string = '';
+  public parentStopReport: boolean = false;
+
+/*
+  Start Node functions
+  - Send changes from parent to child
+  - Retrieve changes from child to parent
+*/
+  public changeStartLabel(newVal: string): void {
+    this.parentStartLabel = newVal;
   }
 
-  public changeStartLabel(prmLabel: string): void {
-    this.parentStartLabel = prmLabel;
+  public changeStartGenerator(newVal: string): void {
+    this.parentStartGenerator = newVal;
   }
 
-  public changeGenerator(prmGenerator: string): void {
-    this.parentGenerator = prmGenerator;
-  }
-
+  /* Start updated from Child */
   public changeStartLabelFromChild(e: any) {
     this.parentStartLabel = e;
   }
 
-  public changeLabelFromChild(e: any) {
-    this.parentLabel = e;
+  public changeStartGeneratorFromChild(e: any) {
+    this.parentStartGenerator = e;
   }
 
-  public selectedGateFromChild(e: any) {
-    this.parentSelectedGate = e;
+/*
+  Branch Node functions
+  - Send changes from parent to child
+  - Retrieve changes from child to parent
+*/
+  public changeBranchLabel(newVal: string): void {
+    this.parentBranchLabel = newVal;
   }
 
-  public selectedTypeFromChild(e: any) {
-    this.parentSelectedType = e;
+  public changeBranchSelectedGate(newVal: string): void {
+    this.parentBranchSelectedGate = newVal;
   }
 
-  public selectedRuleFromChild(e: any) {
-    this.parentSelectedRule = e;
+  public changeBranchSelectedType(newVal: string): void {
+    this.parentBranchSelectedType = newVal;
+  }
+
+  public changeBranchSelectedRule(newVal: string) {
+    this.parentBranchSelectedRule = newVal;
+  }
+
+  /* Branch updated from Child */
+  public changeBranchLabelFromChild(e: any) {
+    this.parentBranchLabel = e;
+  }
+
+  public changeBranchSelectedGateFromChild(e: any) {
+    this.parentBranchSelectedGate = e;
+  }
+
+  public changeBranchSelectedTypeFromChild(e: any) {
+    this.parentBranchSelectedType = e;
+  }
+
+  public changeBranchSelectedRuleFromChild(e: any) {
+    this.parentBranchSelectedRule = e;
+  }
+
+/*
+  Stop Node functions
+  - Send changes from parent to child
+  - Retrieve changes from child to parent
+*/
+
+  public changeStopLabel(newVal: string): void {
+    this.parentStopLabel = newVal;
+  }
+
+  public changeStopReport(newVal: boolean): void {
+    this.parentStopReport = newVal;
+  }
+
+  /* Stop updated from Child */
+  public changeStopLabelFromChild(e: any) {
+    this.parentStopLabel = e;
+  }
+
+  public changeStopReportFromChild(e: any) {
+    this.parentStopReport = e;
   }
 
   public mounted(): void {
     this.changeStartLabel('From Parent Mounted - Label');
-    this.changeGenerator('From Parent Mounted - Generator');
+    this.changeStartGenerator('From Parent Mounted - Generator');
     this.loadGraph();
     this.$forceUpdate();
   }

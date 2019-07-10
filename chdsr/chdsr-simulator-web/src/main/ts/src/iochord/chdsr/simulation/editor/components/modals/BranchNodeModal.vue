@@ -106,11 +106,11 @@ export default class BranchNodeModal extends SemanticComponent {
   }
 
   public handleChangedLabel(): void {
-    this.$emit('changeLabel', this.tempBranchLabel);
+    this.$emit('changeBranchLabel', this.tempBranchLabel);
   }
 
   public handleSelectedGate(): void {
-    this.$emit('changeSelectedGate', this.tempSelectedGate);
+    this.$emit('changeBranchSelectedGate', this.tempSelectedGate);
 
     if (this.tempSelectedGate !== '' && this.tempSelectedType !== '') {
      this.showCondition();
@@ -118,7 +118,7 @@ export default class BranchNodeModal extends SemanticComponent {
   }
 
   public handleSelectedType(): void {
-    this.$emit('changeSelectedType', this.tempSelectedType);
+    this.$emit('changeBranchSelectedType', this.tempSelectedType);
 
     if (this.tempSelectedGate !== '' && this.tempSelectedType !== '') {
      this.showCondition();
@@ -126,7 +126,7 @@ export default class BranchNodeModal extends SemanticComponent {
   }
 
   public handleSelectedRule(): void {
-    this.$emit('changeSelectedRule', this.tempSelectedRule);
+    this.$emit('changeBranchSelectedRule', this.tempSelectedRule);
   }
 
   public beforeMount(): void {
