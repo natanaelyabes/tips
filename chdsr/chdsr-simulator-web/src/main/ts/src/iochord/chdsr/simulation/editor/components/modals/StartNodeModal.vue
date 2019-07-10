@@ -66,7 +66,7 @@ declare const $: any;
 @Component
 export default class StartNodeModal extends SemanticComponent {
   @Prop() private startLabel!: string;
-  @Prop() private generator!: string;
+  @Prop() private startGenerator!: string;
 
   private tempStartLabel: string = '';
   private tempGenerator: string = '';
@@ -76,7 +76,7 @@ export default class StartNodeModal extends SemanticComponent {
     this.tempStartLabel = newVal;
   }
 
-  @Watch('generator')
+  @Watch('startGenerator')
   public onChangeGenerator(newVal: string): void {
     this.tempGenerator = newVal;
   }
@@ -86,13 +86,13 @@ export default class StartNodeModal extends SemanticComponent {
   }
 
   public handleChangedGenerator(): void {
-    this.$emit('changeGenerator', this.tempGenerator);
+    this.$emit('changeStartGenerator', this.tempGenerator);
   }
 
   public mounted(): void {
     this.$nextTick(() => {
       this.tempStartLabel = this.startLabel;
-      this.tempGenerator = this.generator;
+      this.tempGenerator = this.startGenerator;
     });
   }
 }
