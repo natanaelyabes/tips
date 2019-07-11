@@ -335,7 +335,7 @@ public class Sbpnet2CpnscalaBiConverter implements Converter<Sbpnet, String> {
 					String typeId = objecttypes.get(dg.getObjectType().getId());
 					
 					String p_dgNextCaseId = addPlace(null, dg.getLabel()+"_dgNextCaseId", typeId, "((1,0),1)");
-					String p_dgStart = addPlace(dg.getId()+ "_start_0",dg.getLabel()+"_dgStart", entTypeId, "");
+					String p_dgp1 = addPlace(dg.getId()+ "_start_0",dg.getLabel()+"_dgp1", entTypeId, "");
 					String p_dgData = addPlace(null,dg.getLabel()+"_dgData", dataTypeId, "");
 					
 					String b_dgt1 = addBindingClass( "tid:Option[Int],gid:Option[String],data:Option[CaseData]" );
@@ -344,17 +344,17 @@ public class Sbpnet2CpnscalaBiConverter implements Converter<Sbpnet, String> {
 					
 					String guard = null;
 					String action = addAction(b_dgt1,
-							"val r = new java.util.Random();"
-							+ "val rint = r.nextInt();val gid = \""+dg.getId()+"\";"
-							+ "val data = CaseData(\"nama\"+rint,rint);"
+							"val r = new java.util.Random()\n"
+							+ "val rint = r.nextInt();val gid = \""+dg.getId()+"\"\n"
+							+ "val data = CaseData(\"nama\"+rint,rint)\n"
 							+ b_dgt1+"(b.tid,Some(gid),Some(data))");
 					
 					String t_dgt1 = addTransition(dg.getLabel()+"_dgt1", guard, action, b_dgt1, e_dgt1, m_dgt1);
 					
 					addArc(p_dgNextCaseId, t_dgt1, "PtT", typeId, b_dgt1, addArcExp("case tid:"+typeId+" => { Some(tid) }"), addTtB(b_dgt1,"inp match { case tid:"+typeId+" => Some(tid); case _ => None }, None, None"), addBtT(b_dgt1,"b.tid.get"), null, null, true);
-					addArc(p_dgNextCaseId, t_dgt1, "TtP", typeId, b_dgt1, addArcExp("case tid:"+typeId+" => { Some(tid+1) }"), addTtB(b_dgt1,"inp match { case tid:"+typeId+" => Some(tid); case _ => None }, None, None"), addBtT(b_dgt1,"b.tid.get"), addAddedTime(b_dgt1,"Math.round(Gaussian(100, 10).draw())"), null, false);
-					addArc(p_dgStart, t_dgt1, "TtP", entTypeId, b_dgt1, addArcExp("case (tid:"+typeId+",gid:String) => { Some(tid,gid) }"), addTtB(b_dgt1,"inp match { case (tid:"+typeId+",gid:Any) => Some(tid); case _ => None }, inp match { case (tid:Any,gid:String) => Some(gid); case _ => None }, None"), addBtT(b_dgt1,"(b.tid.get,b.gid.get)"), null, "3", false);
-					addArc(p_dgData, t_dgt1, "TtP", dataTypeId, b_dgt1, addArcExp("case (tid:"+typeId+",gid:String,data:CaseData) => { Some(tid,gid,data) }"), addTtB(b_dgt1,"inp match { case (tid:"+typeId+",gid:Any,data:Any) => Some(tid); case _ => None }, inp match { case (tid:Any,gid:String,data:Any) => Some(gid); case _ => None }, inp match { case (tid:Any,gid:Any,data:CaseData) => Some(data); case _ => None }"), addBtT(b_dgt1,"(b.tid.get,b.gid.get,b.data.get)"), null, "3", false);
+					addArc(p_dgNextCaseId, t_dgt1, "TtP", typeId, b_dgt1, addArcExp("case tid:"+typeId+" => { Some(tid+1) }"), addTtB(b_dgt1,"inp match { case tid:"+typeId+" => Some(tid); case _ => None }, None, None"), addBtT(b_dgt1,"b.tid.get"), addAddedTime(b_dgt1,dg.getExpression()), null, false);
+					addArc(p_dgp1, t_dgt1, "TtP", entTypeId, b_dgt1, addArcExp("case (tid:"+typeId+",gid:String) => { Some(tid,gid) }"), addTtB(b_dgt1,"inp match { case (tid:"+typeId+",gid:Any) => Some(tid); case _ => None }, inp match { case (tid:Any,gid:String) => Some(gid); case _ => None }, None"), addBtT(b_dgt1,"(b.tid.get,b.gid.get)"), null, null, false);
+					addArc(p_dgData, t_dgt1, "TtP", dataTypeId, b_dgt1, addArcExp("case (tid:"+typeId+",gid:String,data:CaseData) => { Some(tid,gid,data) }"), addTtB(b_dgt1,"inp match { case (tid:"+typeId+",gid:Any,data:Any) => Some(tid); case _ => None }, inp match { case (tid:Any,gid:String,data:Any) => Some(gid); case _ => None }, inp match { case (tid:Any,gid:Any,data:CaseData) => Some(data); case _ => None }"), addBtT(b_dgt1,"(b.tid.get,b.gid.get,b.data.get)"), null, null, false);
 				}
 				if (d instanceof Function) {
 					Function f = (Function) d;
@@ -400,7 +400,7 @@ public class Sbpnet2CpnscalaBiConverter implements Converter<Sbpnet, String> {
 					String t_natstart = addTransition(na.getLabel()+"_natstart", null, null, b_entTypeId, e_entTypeId, m_entTypeId);
 					addArc(p_nap1, t_natstart, "PtT", entTypeId, b_entTypeId, addArcExp("case entity:"+entTypeId+" => { Some(entity) }"), addTtB(b_entTypeId,"inp match { case entity:"+entTypeId+" => Some(entity); case _ => None }"), addBtT(b_entTypeId,"b.entity.get"), null, null, true);
 					String p_nap2 = addPlace(null, na.getLabel() + "_nap2", entTypeId, "");
-					addArc(p_nap2, t_natstart, "TtP", entTypeId, b_entTypeId, addArcExp("case entity:"+entTypeId+" => { Some(entity) }"), addTtB(b_entTypeId,"inp match { case entity:"+entTypeId+" => Some(entity); case _ => None }"), addBtT(b_entTypeId,"b.entity.get"), null, null, false);
+					addArc(p_nap2, t_natstart, "TtP", entTypeId, b_entTypeId, addArcExp("case entity:"+entTypeId+" => { Some(entity) }"), addTtB(b_entTypeId,"inp match { case entity:"+entTypeId+" => Some(entity); case _ => None }"), addBtT(b_entTypeId,"b.entity.get"), addAddedTime(b_entTypeId,na.getProcessingTimeParameter()), null, false);
 					String t_natend = addTransition(na.getLabel()+"_natend", null, null, b_entTypeId, e_entTypeId, m_entTypeId);
 					addArc(p_nap2, t_natend, "PtT", entTypeId, b_entTypeId, addArcExp("case entity:"+entTypeId+" => { Some(entity) }"), addTtB(b_entTypeId,"inp match { case entity:"+entTypeId+" => Some(entity); case _ => None }"), addBtT(b_entTypeId,"b.entity.get"), null, null, true);
 					String p_nap3 = addPlace(na.getId()+"_start_0", na.getLabel() + "_nap3", entTypeId, "");
@@ -468,8 +468,8 @@ public class Sbpnet2CpnscalaBiConverter implements Converter<Sbpnet, String> {
 				String target = placeshub.get(c.getTarget().getId()+"_end_"+c.getTargetIndex());
 				
 				String t_silent = addTransition("silent_no_name", null, null, b_entTypeId, e_entTypeId, m_entTypeId);
-				addArc(target, t_silent, "PtT", entTypeId, b_entTypeId, addArcExp("case entity:"+entTypeId+" => { Some(entity) }"), addTtB(b_entTypeId,"inp match { case entity:"+entTypeId+" => Some(entity); case _ => None }"), addBtT(b_entTypeId,"b.entity.get"), null, null, true);
-				addArc(source, t_silent, "TtP", entTypeId, b_entTypeId, addArcExp("case entity:"+entTypeId+" => { Some(entity) }"), addTtB(b_entTypeId,"inp match { case entity:"+entTypeId+" => Some(entity); case _ => None }"), addBtT(b_entTypeId,"b.entity.get"), null, null, true);
+				addArc(source, t_silent, "PtT", entTypeId, b_entTypeId, addArcExp("case entity:"+entTypeId+" => { Some(entity) }"), addTtB(b_entTypeId,"inp match { case entity:"+entTypeId+" => Some(entity); case _ => None }"), addBtT(b_entTypeId,"b.entity.get"), null, null, true);
+				addArc(target, t_silent, "TtP", entTypeId, b_entTypeId, addArcExp("case entity:"+entTypeId+" => { Some(entity) }"), addTtB(b_entTypeId,"inp match { case entity:"+entTypeId+" => Some(entity); case _ => None }"), addBtT(b_entTypeId,"b.entity.get"), null, null, true);
 			}
 		}
 		

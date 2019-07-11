@@ -43,7 +43,7 @@ public class SbpnetExample {
 		GeneratorImpl custMu = (GeneratorImpl) factory.addGenerator(page);
 		custMu.setLabel(cust.getLabel() + " MU");
 		custMu.setObjectType(cust);
-		custMu.setExpression("Exp(20)");
+		custMu.setExpression("Math.round(Gaussian(100,10).draw())");
 		custMu.setUnit(TimeUnit.MINUTES);
 		custMu.setMaxArrival(100);
 
@@ -61,7 +61,7 @@ public class SbpnetExample {
 		actTeller.setQueue(qTeller);
 		actTeller.setResource(resTeller);
 		actTeller.setProcessingTime(DistributionType.CONSTANT);
-		actTeller.setProcessingTimeParameter("constant(5,35)");
+		actTeller.setProcessingTimeParameter("Math.round(Gaussian(400, 70).draw())");
 		actTeller.setUnit(TimeUnit.MINUTES);
 
 		QueueImpl qATM = (QueueImpl) factory.addQueue(page);
@@ -75,7 +75,7 @@ public class SbpnetExample {
 		actATM.setQueue(qATM);
 		actATM.setResource(resATM);
 		actATM.setProcessingTime(DistributionType.CONSTANT);
-		actATM.setProcessingTimeParameter("constant(5,15)");
+		actATM.setProcessingTimeParameter("Math.round(Gaussian(300, 30).draw())");
 		actATM.setUnit(TimeUnit.MINUTES);
 
 		StopImpl end = (StopImpl) factory.addStop(page);
@@ -97,7 +97,7 @@ public class SbpnetExample {
 		GeneratorImpl custMu = (GeneratorImpl) factory.addGenerator(page);
 		custMu.setLabel(cust.getLabel() + " MU");
 		custMu.setObjectType(cust);
-		custMu.setExpression("Exp(20)");
+		custMu.setExpression("Math.round(Gaussian(100,10).draw())");
 		custMu.setUnit(TimeUnit.MINUTES);
 		custMu.setMaxArrival(100);
 
@@ -115,7 +115,7 @@ public class SbpnetExample {
 		actTeller.setQueue(qTeller);
 		actTeller.setResource(resTeller);
 		actTeller.setProcessingTime(DistributionType.CONSTANT);
-		actTeller.setProcessingTimeParameter("constant(5,35)");
+		actTeller.setProcessingTimeParameter("Math.round(Gaussian(400, 70).draw())");
 		actTeller.setUnit(TimeUnit.MINUTES);
 
 		QueueImpl qATM = (QueueImpl) factory.addQueue(page);
@@ -129,7 +129,7 @@ public class SbpnetExample {
 		actATM.setQueue(qATM);
 		actATM.setResource(resATM);
 		actATM.setProcessingTime(DistributionType.CONSTANT);
-		actATM.setProcessingTimeParameter("constant(5,15)");
+		actATM.setProcessingTimeParameter("Math.round(Gaussian(300, 30).draw())");
 		actATM.setUnit(TimeUnit.MINUTES);
 
 		StopImpl end = (StopImpl) factory.addStop(page);
