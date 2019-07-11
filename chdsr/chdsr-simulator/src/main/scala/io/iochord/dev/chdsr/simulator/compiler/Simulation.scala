@@ -7,7 +7,7 @@ import io.iochord.dev.chdsr.simulator.engine.subject.MarkingObservable
 import io.iochord.dev.chdsr.simulator.engine.Simulator
 import java.util.Observer
 
-abstract class Simulation {
+abstract class Simulation(val simulator:Simulator = new Simulator()) {
   val cgraph = CPNGraph()
   val globtime = new GlobalTime(0)
   var step:Int = 10
@@ -19,13 +19,15 @@ abstract class Simulation {
     subject.addObserver(observer)
   }
   
-  def runSimulation(): Unit = {
-    if(stopCrit != null || inpStopCrit != null) {
-      Simulator.fastRun(cgraph, stopCrit, inpStopCrit, globtime, subject)
-    }
-    else {
-      Simulator.run(cgraph, step, globtime, subject)
-    }
+  def runStepSimulation(n:Int): Unit = {
+    step = n
+    simulator.run(cgraph, step, globtime, subject)
+  }
+  
+  def runStopCritSimulation(stopCritLoc:Any => Boolean = this.stopCrit, inpStopCritLoc:Any = this.inpStopCrit): Unit = {
+    this.stopCrit = stopCritLoc
+    this.inpStopCrit = inpStopCritLoc
+    simulator.fastRun(cgraph, stopCrit, inpStopCrit, globtime, subject)
   }
   
   val vars = HashMap[String,Any]() // some value generated from simulation will be saved here

@@ -473,8 +473,6 @@ public class Sbpnet2CpnscalaBiConverter implements Converter<Sbpnet, String> {
 			}
 		}
 		
-		factory.append("stopCrit = (stop:Any) => stop match { case stop:Boolean => stop }\n");
-		factory.append("inpStopCrit = false\n");
 		return factory.toString();
 	}
 	
