@@ -70,21 +70,36 @@ export class JointGraphNodeImpl extends GraphNodeImpl implements JointGraphEleme
     this.imageIcon = imageIcon;
   }
 
+  public getNode(): joint.shapes.standard.BorderedImage {
+    return this.node;
+  }
+
+  public setNode(node: joint.shapes.standard.BorderedImage) {
+    this.node = node;
+  }
+
   public render(graph: joint.dia.Graph): void {
 
-    this.node = new joint.shapes.standard.Image();
-    this.node.attr({
-      label: {
-        text: this.getLabel() !== undefined || null ? this.getLabel() as string : '',
-      },
-      image: {
-        xlinkHref: this.imageIcon,
-      },
-    });
-    this.node.attributes.nodeId = this.getId();
-    this.node.attributes.type = this.getType();
+    if (!graph.getCell(this.node.id)) {
+      this.node = new joint.shapes.standard.BorderedImage();
+      this.node.attr({
+        label: {
+          text: this.getLabel() !== undefined || null ? this.getLabel() as string : '',
+        },
+        image: {
+          xlinkHref: this.imageIcon,
+        },
+        border: {
+          strokeWidth: 0,
+          rx: 5,
+        },
+      });
+      this.node.attributes.nodeId = this.getId();
+      this.node.attributes.type = this.getType();
+      this.node.addTo(graph);
+    }
+
     this.node.resize(this.size!.width, this.size!.height);
     this.node.position(this.position!.x, this.position!.y);
-    this.node.addTo(graph);
   }
 }
