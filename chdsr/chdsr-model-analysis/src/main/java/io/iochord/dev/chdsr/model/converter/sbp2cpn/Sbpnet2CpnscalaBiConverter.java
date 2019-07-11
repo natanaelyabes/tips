@@ -137,8 +137,8 @@ public class Sbpnet2CpnscalaBiConverter implements Converter<Sbpnet, String> {
 		
 		StringBuilder guardfactory = new StringBuilder();
 		guardfactory.append( "val "+guardid+" = new Guard["+classbinding+"]()\n" );
-		guardfactory.append( "val "+bindguardexpid+" = (bind:"+classbinding+") => {"+guarddef+"}\n" );
-		guardfactory.append( guardid+".setGuardBind()\n" );
+		guardfactory.append( "val "+bindguardexpid+" = (b:"+classbinding+") => {"+guarddef+"}\n" );
+		guardfactory.append( guardid+".setGuardBind("+bindguardexpid+")\n" );
 		factory.append(guardfactory.toString());
 		
 		return guardid;
@@ -342,7 +342,7 @@ public class Sbpnet2CpnscalaBiConverter implements Converter<Sbpnet, String> {
 					String e_dgt1 = addEval("(b1.tid == b2.tid || b1.tid == None || b2.tid == None) && (b1.gid == b2.gid || b1.gid == None || b2.gid == None) && (b1.data == b2.data || b1.data == None || b2.data == None)", b_dgt1);
 					String m_dgt1 = addMerge("val tid = if(b1.tid == None) b2.tid else b1.tid;val gid = if(b1.gid == None) b2.gid else b1.gid;val data = if(b1.data == None) b2.data else b1.data;", b_dgt1, "tid,gid,data");
 					
-					String guard = null;
+					String guard = addGuard(b_dgt1, "b.tid.get < "+dg.getMaxArrival());
 					String action = addAction(b_dgt1,
 							"val r = new java.util.Random()\n"
 							+ "val rint = r.nextInt();val gid = \""+dg.getId()+"\"\n"
@@ -473,6 +473,8 @@ public class Sbpnet2CpnscalaBiConverter implements Converter<Sbpnet, String> {
 			}
 		}
 		
+		factory.append("stopCrit = (stop:Any) => stop match { case stop:Boolean => stop }\n");
+		factory.append("inpStopCrit = false\n");
 		return factory.toString();
 	}
 	

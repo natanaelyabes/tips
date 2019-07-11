@@ -37,6 +37,9 @@ val Merge00000002 = (b1:Binding00000002, b2:Binding00000002) => {
 	val tid = if(b1.tid == None) b2.tid else b1.tid;val gid = if(b1.gid == None) b2.gid else b1.gid;val data = if(b1.data == None) b2.data else b1.data;
 	Binding00000002(tid,gid,data)
 }
+val Guard00000001 = new Guard[Binding00000002]()
+val BindGuard00000001 = (b:Binding00000002) => {b.tid.get < 100}
+Guard00000001.setGuardBind(BindGuard00000001)
 def actionFun00000001(b:Binding00000002):Binding00000002 = { val r = new java.util.Random()
 val rint = r.nextInt();val gid = "0-generator-1"
 val data = CaseData("nama"+rint,rint)
@@ -45,7 +48,7 @@ Binding00000002(b.tid,Some(gid),Some(data)) }
 val action00000001 = new Action[Binding00000002]()
 action00000001.setActionFun(actionFun00000001)
 
-val trans00000001 = new Transition[Binding00000002]("trans00000001","Customer MU_dgt1",null,action00000001)
+val trans00000001 = new Transition[Binding00000002]("trans00000001","Customer MU_dgt1",Guard00000001,action00000001)
 trans00000001.setEval(Eval00000002)
 trans00000001.setMerge(Merge00000002)
 cgraph.addTransition(trans00000001)
@@ -890,3 +893,5 @@ arc00000054.setBindToToken(bTt00000054)
 arc00000054.setBindToToken(bTt00000054)
 cgraph.addArc(arc00000054)
 
+stopCrit = (stop:Any) => stop match { case stop:Boolean => stop }
+inpStopCrit = false
