@@ -255,54 +255,53 @@ export default class ActivityNodeModal extends SemanticComponent {
     this.tempCodeSegment = newVal;
   }
 
-
   public handleSelectedActivityType(): void {
-    this.$emit('changeSelectedActivityType', this.tempSelectedActivityType);
+    this.$emit('changeActNodeSelectedActivityType', this.tempSelectedActivityType);
     this.showDetailBasic();
   }
 
   public handleChangedReport(): void {
-    this.$emit('changeReport', this.tempReport);
+    this.$emit('changeActNodeReport', this.tempReport);
   }
 
   public handleChangedCustomMonitor(): void {
-    this.$emit('changeCustomMonitor', this.tempCustomMonitor);
+    this.$emit('changeActNodeCustomMonitor', this.tempCustomMonitor);
   }
 
   public handleChangedProcessingTime(): void {
-    this.$emit('changeProcessingTime', this.tempProcessingTime);
+    this.$emit('changeActNodeProcessingTime', this.tempProcessingTime);
   }
 
   public handleChangedParameter1(): void {
-    this.$emit('changeParameter1', this.tempParameter1);
+    this.$emit('changeActNodeParameter1', this.tempParameter1);
   }
 
   public handleChangedSetupTime(): void {
-    this.$emit('changeSetupTime', this.tempSetupTime);
+    this.$emit('changeActNodeSetupTime', this.tempSetupTime);
   }
 
   public handleChangedParameter2(): void {
-    this.$emit('changeParameter2', this.tempParameter2);
+    this.$emit('changeActNodeParameter2', this.tempParameter2);
   }
 
   public handleChangedUnit(): void {
-    this.$emit('changeUnit', this.tempUnit);
+    this.$emit('changeActNodeUnit', this.tempUnit);
   }
 
   public handleChangedQueueLabel(): void {
-    this.$emit('changeQueueLabel', this.tempQueueLabel);
+    this.$emit('changeActNodeQueueLabel', this.tempQueueLabel);
   }
 
   public handleChangedInputType(): void {
-    this.$emit('changeInputType', this.tempInputType);
+    this.$emit('changeActNodeInputType', this.tempInputType);
   }
 
   public handleChangedOutputType(): void {
-    this.$emit('changeOutputType', this.tempOutputType);
+    this.$emit('changeActNodeOutputType', this.tempOutputType);
   }
 
   public handleChangedCodeSegment(): void {
-    this.$emit('changeCodeSegment', this.tempCodeSegment);
+    this.$emit('changeActNodeCodeSegment', this.tempCodeSegment);
   }
 
   public beforeMount(): void {
