@@ -28,6 +28,8 @@ public class TestSimulator {
 			}
 		};
 		simulation.addObserver(obs);
-		simulation.runSimulation();
+		simulation.runStepSimulation(5);
+		simulation.runStepSimulation(10);
+		simulation.runStepSimulation(5);
 	}
 }

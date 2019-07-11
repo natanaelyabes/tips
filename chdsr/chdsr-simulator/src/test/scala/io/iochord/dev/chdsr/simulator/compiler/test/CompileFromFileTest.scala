@@ -19,6 +19,10 @@ object CompileFromFileTest {
     val memoryScalaFactory = new MemoryScalaFileCompiler(pathfile)
     val simulation = memoryScalaFactory.getInstance
     simulation.addObserver(new MarkingObserver())
-    simulation.runSimulation()
+    
+    val stopCrit = (stop:Any) => stop match { case stop:Boolean => stop }
+    val inpStopCritLoc = false
+    
+    simulation.runStopCritSimulation(stopCrit, inpStopCritLoc)
   }
 }

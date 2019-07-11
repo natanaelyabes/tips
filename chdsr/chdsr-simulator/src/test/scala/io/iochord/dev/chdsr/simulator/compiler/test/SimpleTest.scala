@@ -113,7 +113,7 @@ object SimpleTest {
     */
     val globtime = new GlobalTime(0)
     
-    Simulator.run(cgraph, 4, globtime, subject)
+    new Simulator().run(cgraph, 4, globtime, subject)
     
     val stopCrit = (globtime: Any) => globtime match { case globtime:GlobalTime => { 
         globtime.time > 3000

@@ -9,8 +9,10 @@ import io.iochord.dev.chdsr.simulator.engine.subject._
 
 import scala.collection.mutable._
 
-object Simulator {
+case class Simulator() {
   
+  var c = 0
+    
   private def enabledTransitions(transitions: List[Transition[_]],globtime:GlobalTime) = {
     transitions.filter(t => {t.isEnabled(globtime.time)})
   }
@@ -29,11 +31,11 @@ object Simulator {
     return (false,null)
   }
   
-  def run(net:CPNGraph, steps:Int = 10, globtime:GlobalTime = new GlobalTime(0L), subject:MarkingObservable = null) {
+  def run(net:CPNGraph, stepsRef:Int = 10, globtime:GlobalTime = new GlobalTime(0L), subject:MarkingObservable = null) {
+    val steps = c+stepsRef;
     
     val allTransitions = net.allTransitions
     
-    var c = 0
     var transitions:List[Transition[_]] = null
     breakable {
       while (steps > c) {
@@ -75,9 +77,7 @@ object Simulator {
       }
     }
     
-    if (c == steps)
-      println("Finish at step : "+steps)
-    else
+    if (c != steps)
       println("stop - no more enabled transitions")
   }
 
@@ -85,7 +85,6 @@ object Simulator {
     
     val allTransitions = net.allTransitions
     
-    var c = 0
     var transitions:List[Transition[_]] = null
     
     breakable {
