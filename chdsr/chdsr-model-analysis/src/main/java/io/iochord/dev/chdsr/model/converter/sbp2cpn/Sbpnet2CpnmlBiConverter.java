@@ -35,6 +35,7 @@ import io.iochord.dev.chdsr.model.sbpnet.v1.Element;
 import io.iochord.dev.chdsr.model.sbpnet.v1.Sbpnet;
 import io.iochord.dev.chdsr.model.sbpnet.v1.components.Activity;
 import io.iochord.dev.chdsr.model.sbpnet.v1.components.Branch;
+import io.iochord.dev.chdsr.model.sbpnet.v1.components.BranchGate;
 import io.iochord.dev.chdsr.model.sbpnet.v1.components.DataTable;
 import io.iochord.dev.chdsr.model.sbpnet.v1.components.Function;
 import io.iochord.dev.chdsr.model.sbpnet.v1.components.Generator;
@@ -324,11 +325,11 @@ public class Sbpnet2CpnmlBiConverter implements Converter<Sbpnet, PetriNet> {
 					Instance bi = converter.addInstance(page, "BRANCH " + b.getGate() + " " + b.getType() + " " + b.getLabel(), bpage.getId());
 					Transition bt = null;
 					Place bp = null;
-//					if (b.getGate() == BranchGate.AND) { 
+					if (b.getGate() == BranchGate.AND) { 
 						bt = converter.addTransition(bpage, b.getLabel() + "_bt");
-//					} else if (b.getGate() == BranchGate.XOR) {
-						bp = converter.addPlace(page, b.getLabel() + "_bp", "INT", "");
-//					}
+					} else if (b.getGate() == BranchGate.XOR) {
+						bp = converter.addPlace(bpage, b.getLabel() + "_bp", "INT", "");
+					}
 					int i = 0;
 					for (Connector c : p.getConnectors().values()) {
 						if (c.getTarget() != b) continue;
@@ -336,13 +337,13 @@ public class Sbpnet2CpnmlBiConverter implements Converter<Sbpnet, PetriNet> {
 						converter.addArc(page, bpis, bi, "i");
 						RefPlace bpi = converter.addRefPlace(bpage, b.getLabel() + "_bpi" + i, "INT", "");
 						converter.addPortSocketAssignment(bi, bpi, bpis);
-//						if (b.getGate() == BranchGate.AND) { 
+						if (b.getGate() == BranchGate.AND) { 
 							converter.addArc(bpage, bpi, bt, "i");
-//						} else if (b.getGate() == BranchGate.XOR) {
-//							Transition bti = converter.addTransition(bpage, b.getLabel() + "_bti" + i);
-//							converter.addArc(bpage, bpi, bti, "i");
-//							converter.addArc(bpage, bti, bp, "i");
-//						}
+						} else if (b.getGate() == BranchGate.XOR) {
+							Transition bti = converter.addTransition(bpage, b.getLabel() + "_bti" + i);
+							converter.addArc(bpage, bpi, bti, "i");
+							converter.addArc(bpage, bti, bp, "i");
+						}
 						binputs.add(bpis);
 						i++;
 					}
@@ -353,13 +354,13 @@ public class Sbpnet2CpnmlBiConverter implements Converter<Sbpnet, PetriNet> {
 						converter.addArc(page, bi, bpos, "i");
 						RefPlace bpo = converter.addRefPlace(bpage, b.getLabel() + "_bpo" + i, "INT", "");
 						converter.addPortSocketAssignment(bi, bpo, bpos);
-//						if (b.getGate() == BranchGate.AND) { 
+						if (b.getGate() == BranchGate.AND) { 
 							converter.addArc(bpage, bt, bpo, "i");
-//						} else if (b.getGate() == BranchGate.XOR) {
-//							Transition bto = converter.addTransition(bpage, b.getLabel() + "_bto" + i);
-//							converter.addArc(bpage, bp, bto, "i");
-//							converter.addArc(bpage, bto, bpo, "i");
-//						}
+						} else if (b.getGate() == BranchGate.XOR) {
+							Transition bto = converter.addTransition(bpage, b.getLabel() + "_bto" + i);
+							converter.addArc(bpage, bp, bto, "i");
+							converter.addArc(bpage, bto, bpo, "i");
+						}
 						boutputs.add(bpos);
 						i++;
 					}
