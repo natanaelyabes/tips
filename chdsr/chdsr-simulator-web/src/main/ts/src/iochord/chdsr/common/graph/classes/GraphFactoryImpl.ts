@@ -30,7 +30,7 @@ import { GraphDataFunctionImpl } from './components/GraphDataFunctionImpl';
 import { GraphDataQueueImpl } from './components/GraphDataQueueImpl';
 import { GraphDataResourceImpl } from './components/GraphDataResourceImpl';
 import { GraphStartEventNodeImpl } from './components/GraphStartEventNodeImpl';
-import { GraphStopEventNodeImpl } from './components/GraphEndEventNodeImpl';
+import { GraphStopEventNodeImpl } from './components/GraphStopEventNodeImpl';
 import { GraphActivityNodeImpl } from './components/GraphActivityNodeImpl';
 import { GraphBranchNodeImpl } from './components/GraphBranchNodeImpl';
 import { GraphMonitorNodeImpl } from './components/GraphMonitorNodeImpl';

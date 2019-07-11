@@ -1,4 +1,4 @@
-import { GraphStopEventNodeImpl } from './components/GraphEndEventNodeImpl';
+import { GraphStopEventNodeImpl } from './components/GraphStopEventNodeImpl';
 import { GraphMonitorNodeImpl } from './components/GraphMonitorNodeImpl';
 import { GraphConfigurationImpl } from './GraphConfigurationImpl';
 import { GraphBranchNodeImpl } from './components/GraphBranchNodeImpl';

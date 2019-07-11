@@ -1,4 +1,4 @@
-import { GraphNode } from '../interfaces/GraphNode';
+import { GraphNode } from './../interfaces/GraphNode';
 import { GraphElementImpl } from './GraphElementImpl';
 import { GraphElement } from '../interfaces/GraphElement';
 
@@ -10,6 +10,8 @@ import { GraphElement } from '../interfaces/GraphElement';
  *
  */
 export class GraphNodeImpl extends GraphElementImpl implements GraphNode {
+  public static instance: Map<string, GraphNode> = new Map<string, GraphNode>();
+
   private groupName?: string | null;
   private reportStatistics?: boolean | null = false;
   private inputTypes?: GraphElement[] | null = new Array<GraphElement>();

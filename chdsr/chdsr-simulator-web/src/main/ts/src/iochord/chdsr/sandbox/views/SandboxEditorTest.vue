@@ -1,7 +1,27 @@
 <template>
   <div class="sandbox editor test view">
+
+    <div id="palette" class="ui vertical labeled icon menu">
+      <a class="item" @mousedown="createItem('start', $event)">
+        <i class="green outline circle icon"></i>
+        Start
+      </a>
+      <a class="item" @mousedown="createItem('stop', $event)">
+        <i class="red circle icon"></i>
+        Stop
+      </a>
+      <a class="item" @mousedown="createItem('activity', $event)">
+        <i class="blue outline square icon"></i>
+        Activity
+      </a>
+      <a class="item" @mousedown="createItem('branch', $event)">
+        <i style="transform: rotate(45deg)" class="blue outline square icon"></i>
+        Branch
+      </a>
+    </div>
+
     <div id="canvas-container" class="editor canvas">
-      <div id="canvas"></div>
+      <div id="canvas" @mousemove="moveItem(newItem, $event)" @mouseup="saveItem(newItem)"></div>
     </div>
   </div>
 </template>
@@ -10,9 +30,17 @@
 .sandbox.editor.test.view {
   height: 100%;
 }
+
 .sandbox.editor.test.view .editor.canvas {
   width: 100%;
   height: 100%;
+}
+
+.sandbox.editor #palette {
+  position: absolute;
+  z-index: 9999;
+  top: 50%;
+  transform: translateY(-50%);
 }
 </style>
 
@@ -30,7 +58,7 @@ import { JointGraphPageImpl } from '../../common/lib/joint/shapes/chdsr/classes/
 import { SbpnetModelService } from '../../common/service/model/SbpnetModelService';
 import { NODE_TYPE } from '../../common/lib/joint/shapes/chdsr/enums/NODE';
 import { ARC_TYPE } from '../../common/lib/joint/shapes/chdsr/enums/ARC';
-
+import * as NODE_ENUMS from '@/iochord/chdsr/common/graph/enums/NODE';
 
 // JointJS
 import * as joint from 'jointjs';
@@ -38,26 +66,106 @@ import '#root/node_modules/jointjs/dist/joint.css';
 
 // Class
 import PageView from '@/iochord/chdsr/common/lib/vue/classes/PageView';
+import { GraphNodeImpl } from '../../common/graph/classes/GraphNodeImpl';
+import { GraphActivityNodeImpl } from '../../common/graph/classes/components/GraphActivityNodeImpl';
 
 declare const $: any;
+
+enum NODE {
+  activity,
+  start,
+  stop,
+  branch,
+  monitor,
+}
 
 @Component
 export default class SandboxEditorTest extends PageView {
   private graphData: Graph = new GraphImpl();
+  private jointPages: Map<string, JointGraphPageImpl> = new Map<string, JointGraphPageImpl>();
+
+  private newItem: JointGraphNodeImpl | null = null;
+  private activePage?: string;
+
+  private dragging: boolean = false;
+
+  public createItem(type: NODE, e: MouseEvent): void {
+    this.newItem = new JointGraphNodeImpl();
+    const keys: any = {
+      elementType: 'elementType',
+    };
+
+
+    this.newItem.setId(`0-${type}-${GraphNodeImpl.instance.size}`);
+    this.newItem.setLabel(`New Node ${GraphNodeImpl.instance.size}`);
+    this.newItem.setType(type.toString());
+    this.newItem.setSize((NODE_TYPE as any)[type].size);
+    this.newItem.setMarkup((NODE_TYPE as any)[type].markup);
+    this.newItem.setAttr((NODE_TYPE as any)[type].attr);
+    this.newItem.setImageIcon((NODE_TYPE as any)[type].image);
+
+    const svgPoint = (this.jointPages.get(this.activePage as string)!.getPaper().svg as SVGSVGElement).createSVGPoint();
+    svgPoint.x = e.offsetX;
+    svgPoint.y = e.offsetY;
+
+    const pointTransformed = svgPoint.matrixTransform(this.jointPages.get(this.activePage as string)!.getPaper().viewport.getCTM()!.inverse());
+
+    this.newItem.setPosition({
+      x: pointTransformed.x - (this.newItem.getSize()!.width / 2),
+      y: pointTransformed.y - (this.newItem.getSize()!.height / 2),
+    });
+
+    this.newItem.render(this.jointPages.get(this.activePage as string)!.getGraph());
+
+    this.dragging = true;
+  }
+
+  public moveItem(newItem: JointGraphNodeImpl, e: MouseEvent): void {
+    if (this.dragging && newItem !== null) {
+      const svgPoint = (this.jointPages.get(this.activePage as string)!.getPaper().svg as SVGSVGElement).createSVGPoint();
+      svgPoint.x = e.offsetX;
+      svgPoint.y = e.offsetY;
+
+      const pointTransformed = svgPoint.matrixTransform(this.jointPages.get(this.activePage as string)!.getPaper().viewport.getCTM()!.inverse());
+
+      newItem.setPosition({
+        x: pointTransformed.x - (newItem.getSize()!.width / 2),
+        y: pointTransformed.y - (newItem.getSize()!.height / 2),
+      });
+
+      newItem.getNode().attr('border/strokeWidth', 2);
+      newItem.getNode().attr('border/stroke', 'blue');
+      newItem.render(this.jointPages.get(this.activePage as string)!.getGraph());
+    }
+  }
+
+  public saveItem(newItem: JointGraphNodeImpl): void {
+    this.dragging = false;
+    if (this.newItem !== null) {
+      // add to GraphData
+      const nodes = (this.graphData.getPages()!.get(this.activePage as string) as GraphPage).getNodes() as Map<string, GraphNode>;
+      nodes.set(newItem.getId() as string, (NODE_ENUMS.NODE_TYPE as any)[newItem.getType() as string].deserialize(newItem));
+
+      GraphNodeImpl.instance.set(newItem.getId() as string, (NODE_ENUMS.NODE_TYPE as any)[newItem.getType() as string].deserialize(newItem));
+
+      newItem.getNode().attr('border/strokeWidth', 0);
+      newItem.getNode().attr('border/stroke', 'transparent');
+
+      this.newItem = null;
+    }
+  }
 
   /** @Override */
   public async mounted(): Promise<void> {
     try {
       this.graphData = await SbpnetModelService.getInstance().getExampleModel();
 
-      console.log(this.graphData);
-
       // Loop the model page
       for (const [key, value] of this.graphData.getPages() as Map<string, GraphPage>) {
         const jointPage: JointGraphPageImpl = new JointGraphPageImpl();
         const canvasWidth: number = $('#canvas-container').innerWidth();
         const canvasHeight: number = $('#canvas-container').innerHeight();
-        console.log(canvasHeight);
+
         const keys: any = {
           elementType: 'elementType',
         };
@@ -70,6 +178,9 @@ export default class SandboxEditorTest extends PageView {
         jointPage.setNodes(value.getNodes() as Map<string, GraphNode>);
         jointPage.setArcs(value.getArcs() as Map<string, GraphConnector>);
         jointPage.setData(value.getData() as Map<string, GraphData>);
+
+        // set active page
+        this.activePage = jointPage.getId() as string;
 
         // Set the paper as the graph container
         jointPage.setPaper(new joint.dia.Paper({
@@ -193,11 +304,12 @@ export default class SandboxEditorTest extends PageView {
           },
         });
 
+        this.jointPages.set(jointPage.getId() as string, jointPage);
+
         function resetAll(_paper: joint.dia.Paper) {
 
           /* Reset all elements in the paper */
           const elements = _paper.model.getElements();
-          console.log(elements);
           for (let i = 0, ii = elements.length; i < ii; i++) {
             const currentElement = elements[i];
             currentElement.attr('border/strokeWidth', 0);
@@ -219,6 +331,8 @@ export default class SandboxEditorTest extends PageView {
 
         }
       }
+
+
     } catch (e) {
       console.error(e);
     }

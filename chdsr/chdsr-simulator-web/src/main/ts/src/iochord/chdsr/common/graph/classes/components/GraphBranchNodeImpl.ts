@@ -12,7 +12,6 @@ import { BRANCH_TYPE, BRANCH_RULE } from '../../enums/BRANCH';
  */
 export class GraphBranchNodeImpl extends GraphNodeImpl implements GraphBranchNode {
   public static TYPE: string = 'branch';
-  public static instance: Map<string, GraphBranchNode> = new Map<string, GraphBranchNode>();
 
   public static deserialize(object: any): GraphBranchNode | null {
     const graphBranchNode: GraphBranchNode = new GraphBranchNodeImpl();

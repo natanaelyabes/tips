@@ -11,12 +11,12 @@ import { GraphDataTable } from '../../interfaces/components/GraphDataTable';
 export class GraphDataTableImpl extends GraphDataImpl implements GraphDataTable {
   public static TYPE: string = 'datatable';
 
-  public static instance: Map<number, Map<string, GraphDataTable>> = new Map<number, Map<string, GraphDataTable>>();
+  // public static instance: Map<number, Map<string, GraphDataTable>> = new Map<number, Map<string, GraphDataTable>>();
 
   /** @Override */
   public static deserialize(object: any): Map<string, GraphDataTable> | null {
     const graphDataTableMap: Map<string, GraphDataTable> = new Map<string, GraphDataTable>();
-    GraphDataTableImpl.instance.set(GraphDataTableImpl.instance.size, graphDataTableMap);
+    // GraphDataTableImpl.instance.set(GraphDataTableImpl.instance.size, graphDataTableMap);
     return graphDataTableMap;
   }
 

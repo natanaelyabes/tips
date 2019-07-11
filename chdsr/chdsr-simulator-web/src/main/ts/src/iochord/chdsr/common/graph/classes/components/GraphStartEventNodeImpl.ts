@@ -14,7 +14,6 @@ import { GraphDataGeneratorImpl } from './GraphDataGeneratorImpl';
  */
 export class GraphStartEventNodeImpl extends GraphEventNodeImpl implements GraphStartEventNode {
   public static TYPE: string = 'start';
-  public static instance: Map<string, GraphStartEventNode> = new Map<string, GraphStartEventNode>();
 
   public static deserialize(object: any): GraphStartEventNode | null {
     const graphStartEventNode: GraphStartEventNode = new GraphStartEventNodeImpl();
