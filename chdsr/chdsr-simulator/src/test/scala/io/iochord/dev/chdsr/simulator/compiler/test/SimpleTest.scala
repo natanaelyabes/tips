@@ -25,7 +25,6 @@ import breeze.stats.distributions.Rayleigh
 object SimpleTest {
   
   def main(args: Array[String]) {
-    
     val subject = new MarkingObservable()
     subject.addObserver(new MarkingObserver())
     

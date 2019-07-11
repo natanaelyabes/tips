@@ -21,7 +21,7 @@ cgraph.addPlace(place00000001)
 
 val map00000002 = Map[(colset00000001,Long),Int](  )
 val ms00000002 = new Multiset[colset00000001](map00000002)
-val place00000002 = new Place("place00000002","Customer MU_dgStart",ms00000002)
+val place00000002 = new Place("place00000002","Customer MU_dgp1",ms00000002)
 cgraph.addPlace(place00000002)
 
 val map00000003 = Map[(colset00000002,Long),Int](  )
@@ -37,7 +37,10 @@ val Merge00000002 = (b1:Binding00000002, b2:Binding00000002) => {
 	val tid = if(b1.tid == None) b2.tid else b1.tid;val gid = if(b1.gid == None) b2.gid else b1.gid;val data = if(b1.data == None) b2.data else b1.data;
 	Binding00000002(tid,gid,data)
 }
-def actionFun00000001(b:Binding00000002):Binding00000002 = { val r = new java.util.Random();val rint = r.nextInt();val gid = "0-generator-1";val data = CaseData("nama"+rint,rint);Binding00000002(b.tid,Some(gid),Some(data)) }
+def actionFun00000001(b:Binding00000002):Binding00000002 = { val r = new java.util.Random()
+val rint = r.nextInt();val gid = "0-generator-1"
+val data = CaseData("nama"+rint,rint)
+Binding00000002(b.tid,Some(gid),Some(data)) }
 
 val action00000001 = new Action[Binding00000002]()
 action00000001.setActionFun(actionFun00000001)
@@ -61,7 +64,7 @@ cgraph.addArc(arc00000001)
 val arcexp00000002 = (inp:Any) => inp match { case tid:colset00000003 => { Some(tid+1) } }
 val tTb00000002 = (inp:Any) => Binding00000002(inp match { case tid:colset00000003 => Some(tid); case _ => None }, None, None)
 val bTt00000002 = (b:Binding00000002) => {b.tid.get}
-val addTime00000001 = (b:Binding00000002) => {Math.round(Gaussian(100, 10).draw())}
+val addTime00000001 = (b:Binding00000002) => {Math.round(Gaussian(100,10).draw())}
 val arc00000002 = new Arc[colset00000003,Binding00000002]("arc00000002",place00000001,trans00000001,Direction.TtP)
 arc00000002.setIsBase(false)
 arc00000002.setArcExp(arcexp00000002)
@@ -80,7 +83,6 @@ arc00000003.setArcExp(arcexp00000003)
 arc00000003.setTokenToBind(tTb00000003)
 arc00000003.setBindToToken(bTt00000003)
 arc00000003.setBindToToken(bTt00000003)
-arc00000003.setNoTokArcExp(3)
 cgraph.addArc(arc00000003)
 
 val arcexp00000004 = (inp:Any) => inp match { case (tid:colset00000003,gid:String,data:CaseData) => { Some(tid,gid,data) } }
@@ -92,7 +94,6 @@ arc00000004.setArcExp(arcexp00000004)
 arc00000004.setTokenToBind(tTb00000004)
 arc00000004.setBindToToken(bTt00000004)
 arc00000004.setBindToToken(bTt00000004)
-arc00000004.setNoTokArcExp(3)
 cgraph.addArc(arc00000004)
 
 val map00000004 = Map[(colset00000001,Long),Int](  )
@@ -124,12 +125,14 @@ cgraph.addPlace(place00000005)
 val arcexp00000006 = (inp:Any) => inp match { case entity:colset00000001 => { Some(entity) } }
 val tTb00000006 = (inp:Any) => Binding00000001(inp match { case entity:colset00000001 => Some(entity); case _ => None })
 val bTt00000006 = (b:Binding00000001) => {b.entity.get}
+val addTime00000002 = (b:Binding00000001) => {Math.round(Gaussian(400, 70).draw())}
 val arc00000006 = new Arc[colset00000001,Binding00000001]("arc00000006",place00000005,trans00000002,Direction.TtP)
 arc00000006.setIsBase(false)
 arc00000006.setArcExp(arcexp00000006)
 arc00000006.setTokenToBind(tTb00000006)
 arc00000006.setBindToToken(bTt00000006)
 arc00000006.setBindToToken(bTt00000006)
+arc00000006.setAddTime(addTime00000002)
 cgraph.addArc(arc00000006)
 
 val trans00000003 = new Transition[Binding00000001]("trans00000003","Teller Service_natend",null,null)
@@ -193,12 +196,14 @@ cgraph.addPlace(place00000008)
 val arcexp00000010 = (inp:Any) => inp match { case entity:colset00000001 => { Some(entity) } }
 val tTb00000010 = (inp:Any) => Binding00000001(inp match { case entity:colset00000001 => Some(entity); case _ => None })
 val bTt00000010 = (b:Binding00000001) => {b.entity.get}
+val addTime00000003 = (b:Binding00000001) => {Math.round(Gaussian(300, 30).draw())}
 val arc00000010 = new Arc[colset00000001,Binding00000001]("arc00000010",place00000008,trans00000004,Direction.TtP)
 arc00000010.setIsBase(false)
 arc00000010.setArcExp(arcexp00000010)
 arc00000010.setTokenToBind(tTb00000010)
 arc00000010.setBindToToken(bTt00000010)
 arc00000010.setBindToToken(bTt00000010)
+arc00000010.setAddTime(addTime00000003)
 cgraph.addArc(arc00000010)
 
 val trans00000005 = new Transition[Binding00000001]("trans00000005","ATM Service_natend",null,null)
@@ -650,7 +655,7 @@ cgraph.addTransition(trans00000018)
 val arcexp00000037 = (inp:Any) => inp match { case entity:colset00000001 => { Some(entity) } }
 val tTb00000037 = (inp:Any) => Binding00000001(inp match { case entity:colset00000001 => Some(entity); case _ => None })
 val bTt00000037 = (b:Binding00000001) => {b.entity.get}
-val arc00000037 = new Arc[colset00000001,Binding00000001]("arc00000037",place00000012,trans00000018,Direction.PtT)
+val arc00000037 = new Arc[colset00000001,Binding00000001]("arc00000037",place00000002,trans00000018,Direction.PtT)
 arc00000037.setIsBase(true)
 arc00000037.setArcExp(arcexp00000037)
 arc00000037.setTokenToBind(tTb00000037)
@@ -661,7 +666,7 @@ cgraph.addArc(arc00000037)
 val arcexp00000038 = (inp:Any) => inp match { case entity:colset00000001 => { Some(entity) } }
 val tTb00000038 = (inp:Any) => Binding00000001(inp match { case entity:colset00000001 => Some(entity); case _ => None })
 val bTt00000038 = (b:Binding00000001) => {b.entity.get}
-val arc00000038 = new Arc[colset00000001,Binding00000001]("arc00000038",place00000002,trans00000018,Direction.TtP)
+val arc00000038 = new Arc[colset00000001,Binding00000001]("arc00000038",place00000012,trans00000018,Direction.TtP)
 arc00000038.setIsBase(true)
 arc00000038.setArcExp(arcexp00000038)
 arc00000038.setTokenToBind(tTb00000038)
@@ -677,7 +682,7 @@ cgraph.addTransition(trans00000019)
 val arcexp00000039 = (inp:Any) => inp match { case entity:colset00000001 => { Some(entity) } }
 val tTb00000039 = (inp:Any) => Binding00000001(inp match { case entity:colset00000001 => Some(entity); case _ => None })
 val bTt00000039 = (b:Binding00000001) => {b.entity.get}
-val arc00000039 = new Arc[colset00000001,Binding00000001]("arc00000039",place00000020,trans00000019,Direction.PtT)
+val arc00000039 = new Arc[colset00000001,Binding00000001]("arc00000039",place00000013,trans00000019,Direction.PtT)
 arc00000039.setIsBase(true)
 arc00000039.setArcExp(arcexp00000039)
 arc00000039.setTokenToBind(tTb00000039)
@@ -688,7 +693,7 @@ cgraph.addArc(arc00000039)
 val arcexp00000040 = (inp:Any) => inp match { case entity:colset00000001 => { Some(entity) } }
 val tTb00000040 = (inp:Any) => Binding00000001(inp match { case entity:colset00000001 => Some(entity); case _ => None })
 val bTt00000040 = (b:Binding00000001) => {b.entity.get}
-val arc00000040 = new Arc[colset00000001,Binding00000001]("arc00000040",place00000013,trans00000019,Direction.TtP)
+val arc00000040 = new Arc[colset00000001,Binding00000001]("arc00000040",place00000020,trans00000019,Direction.TtP)
 arc00000040.setIsBase(true)
 arc00000040.setArcExp(arcexp00000040)
 arc00000040.setTokenToBind(tTb00000040)
@@ -704,7 +709,7 @@ cgraph.addTransition(trans00000020)
 val arcexp00000041 = (inp:Any) => inp match { case entity:colset00000001 => { Some(entity) } }
 val tTb00000041 = (inp:Any) => Binding00000001(inp match { case entity:colset00000001 => Some(entity); case _ => None })
 val bTt00000041 = (b:Binding00000001) => {b.entity.get}
-val arc00000041 = new Arc[colset00000001,Binding00000001]("arc00000041",place00000007,trans00000020,Direction.PtT)
+val arc00000041 = new Arc[colset00000001,Binding00000001]("arc00000041",place00000014,trans00000020,Direction.PtT)
 arc00000041.setIsBase(true)
 arc00000041.setArcExp(arcexp00000041)
 arc00000041.setTokenToBind(tTb00000041)
@@ -715,7 +720,7 @@ cgraph.addArc(arc00000041)
 val arcexp00000042 = (inp:Any) => inp match { case entity:colset00000001 => { Some(entity) } }
 val tTb00000042 = (inp:Any) => Binding00000001(inp match { case entity:colset00000001 => Some(entity); case _ => None })
 val bTt00000042 = (b:Binding00000001) => {b.entity.get}
-val arc00000042 = new Arc[colset00000001,Binding00000001]("arc00000042",place00000014,trans00000020,Direction.TtP)
+val arc00000042 = new Arc[colset00000001,Binding00000001]("arc00000042",place00000007,trans00000020,Direction.TtP)
 arc00000042.setIsBase(true)
 arc00000042.setArcExp(arcexp00000042)
 arc00000042.setTokenToBind(tTb00000042)
@@ -731,7 +736,7 @@ cgraph.addTransition(trans00000021)
 val arcexp00000043 = (inp:Any) => inp match { case entity:colset00000001 => { Some(entity) } }
 val tTb00000043 = (inp:Any) => Binding00000001(inp match { case entity:colset00000001 => Some(entity); case _ => None })
 val bTt00000043 = (b:Binding00000001) => {b.entity.get}
-val arc00000043 = new Arc[colset00000001,Binding00000001]("arc00000043",place00000016,trans00000021,Direction.PtT)
+val arc00000043 = new Arc[colset00000001,Binding00000001]("arc00000043",place00000009,trans00000021,Direction.PtT)
 arc00000043.setIsBase(true)
 arc00000043.setArcExp(arcexp00000043)
 arc00000043.setTokenToBind(tTb00000043)
@@ -742,7 +747,7 @@ cgraph.addArc(arc00000043)
 val arcexp00000044 = (inp:Any) => inp match { case entity:colset00000001 => { Some(entity) } }
 val tTb00000044 = (inp:Any) => Binding00000001(inp match { case entity:colset00000001 => Some(entity); case _ => None })
 val bTt00000044 = (b:Binding00000001) => {b.entity.get}
-val arc00000044 = new Arc[colset00000001,Binding00000001]("arc00000044",place00000009,trans00000021,Direction.TtP)
+val arc00000044 = new Arc[colset00000001,Binding00000001]("arc00000044",place00000016,trans00000021,Direction.TtP)
 arc00000044.setIsBase(true)
 arc00000044.setArcExp(arcexp00000044)
 arc00000044.setTokenToBind(tTb00000044)
@@ -758,7 +763,7 @@ cgraph.addTransition(trans00000022)
 val arcexp00000045 = (inp:Any) => inp match { case entity:colset00000001 => { Some(entity) } }
 val tTb00000045 = (inp:Any) => Binding00000001(inp match { case entity:colset00000001 => Some(entity); case _ => None })
 val bTt00000045 = (b:Binding00000001) => {b.entity.get}
-val arc00000045 = new Arc[colset00000001,Binding00000001]("arc00000045",place00000021,trans00000022,Direction.PtT)
+val arc00000045 = new Arc[colset00000001,Binding00000001]("arc00000045",place00000017,trans00000022,Direction.PtT)
 arc00000045.setIsBase(true)
 arc00000045.setArcExp(arcexp00000045)
 arc00000045.setTokenToBind(tTb00000045)
@@ -769,7 +774,7 @@ cgraph.addArc(arc00000045)
 val arcexp00000046 = (inp:Any) => inp match { case entity:colset00000001 => { Some(entity) } }
 val tTb00000046 = (inp:Any) => Binding00000001(inp match { case entity:colset00000001 => Some(entity); case _ => None })
 val bTt00000046 = (b:Binding00000001) => {b.entity.get}
-val arc00000046 = new Arc[colset00000001,Binding00000001]("arc00000046",place00000017,trans00000022,Direction.TtP)
+val arc00000046 = new Arc[colset00000001,Binding00000001]("arc00000046",place00000021,trans00000022,Direction.TtP)
 arc00000046.setIsBase(true)
 arc00000046.setArcExp(arcexp00000046)
 arc00000046.setTokenToBind(tTb00000046)
@@ -785,7 +790,7 @@ cgraph.addTransition(trans00000023)
 val arcexp00000047 = (inp:Any) => inp match { case entity:colset00000001 => { Some(entity) } }
 val tTb00000047 = (inp:Any) => Binding00000001(inp match { case entity:colset00000001 => Some(entity); case _ => None })
 val bTt00000047 = (b:Binding00000001) => {b.entity.get}
-val arc00000047 = new Arc[colset00000001,Binding00000001]("arc00000047",place00000025,trans00000023,Direction.PtT)
+val arc00000047 = new Arc[colset00000001,Binding00000001]("arc00000047",place00000018,trans00000023,Direction.PtT)
 arc00000047.setIsBase(true)
 arc00000047.setArcExp(arcexp00000047)
 arc00000047.setTokenToBind(tTb00000047)
@@ -796,7 +801,7 @@ cgraph.addArc(arc00000047)
 val arcexp00000048 = (inp:Any) => inp match { case entity:colset00000001 => { Some(entity) } }
 val tTb00000048 = (inp:Any) => Binding00000001(inp match { case entity:colset00000001 => Some(entity); case _ => None })
 val bTt00000048 = (b:Binding00000001) => {b.entity.get}
-val arc00000048 = new Arc[colset00000001,Binding00000001]("arc00000048",place00000018,trans00000023,Direction.TtP)
+val arc00000048 = new Arc[colset00000001,Binding00000001]("arc00000048",place00000025,trans00000023,Direction.TtP)
 arc00000048.setIsBase(true)
 arc00000048.setArcExp(arcexp00000048)
 arc00000048.setTokenToBind(tTb00000048)
@@ -812,7 +817,7 @@ cgraph.addTransition(trans00000024)
 val arcexp00000049 = (inp:Any) => inp match { case entity:colset00000001 => { Some(entity) } }
 val tTb00000049 = (inp:Any) => Binding00000001(inp match { case entity:colset00000001 => Some(entity); case _ => None })
 val bTt00000049 = (b:Binding00000001) => {b.entity.get}
-val arc00000049 = new Arc[colset00000001,Binding00000001]("arc00000049",place00000004,trans00000024,Direction.PtT)
+val arc00000049 = new Arc[colset00000001,Binding00000001]("arc00000049",place00000022,trans00000024,Direction.PtT)
 arc00000049.setIsBase(true)
 arc00000049.setArcExp(arcexp00000049)
 arc00000049.setTokenToBind(tTb00000049)
@@ -823,7 +828,7 @@ cgraph.addArc(arc00000049)
 val arcexp00000050 = (inp:Any) => inp match { case entity:colset00000001 => { Some(entity) } }
 val tTb00000050 = (inp:Any) => Binding00000001(inp match { case entity:colset00000001 => Some(entity); case _ => None })
 val bTt00000050 = (b:Binding00000001) => {b.entity.get}
-val arc00000050 = new Arc[colset00000001,Binding00000001]("arc00000050",place00000022,trans00000024,Direction.TtP)
+val arc00000050 = new Arc[colset00000001,Binding00000001]("arc00000050",place00000004,trans00000024,Direction.TtP)
 arc00000050.setIsBase(true)
 arc00000050.setArcExp(arcexp00000050)
 arc00000050.setTokenToBind(tTb00000050)
@@ -839,7 +844,7 @@ cgraph.addTransition(trans00000025)
 val arcexp00000051 = (inp:Any) => inp match { case entity:colset00000001 => { Some(entity) } }
 val tTb00000051 = (inp:Any) => Binding00000001(inp match { case entity:colset00000001 => Some(entity); case _ => None })
 val bTt00000051 = (b:Binding00000001) => {b.entity.get}
-val arc00000051 = new Arc[colset00000001,Binding00000001]("arc00000051",place00000024,trans00000025,Direction.PtT)
+val arc00000051 = new Arc[colset00000001,Binding00000001]("arc00000051",place00000006,trans00000025,Direction.PtT)
 arc00000051.setIsBase(true)
 arc00000051.setArcExp(arcexp00000051)
 arc00000051.setTokenToBind(tTb00000051)
@@ -850,7 +855,7 @@ cgraph.addArc(arc00000051)
 val arcexp00000052 = (inp:Any) => inp match { case entity:colset00000001 => { Some(entity) } }
 val tTb00000052 = (inp:Any) => Binding00000001(inp match { case entity:colset00000001 => Some(entity); case _ => None })
 val bTt00000052 = (b:Binding00000001) => {b.entity.get}
-val arc00000052 = new Arc[colset00000001,Binding00000001]("arc00000052",place00000006,trans00000025,Direction.TtP)
+val arc00000052 = new Arc[colset00000001,Binding00000001]("arc00000052",place00000024,trans00000025,Direction.TtP)
 arc00000052.setIsBase(true)
 arc00000052.setArcExp(arcexp00000052)
 arc00000052.setTokenToBind(tTb00000052)
@@ -866,7 +871,7 @@ cgraph.addTransition(trans00000026)
 val arcexp00000053 = (inp:Any) => inp match { case entity:colset00000001 => { Some(entity) } }
 val tTb00000053 = (inp:Any) => Binding00000001(inp match { case entity:colset00000001 => Some(entity); case _ => None })
 val bTt00000053 = (b:Binding00000001) => {b.entity.get}
-val arc00000053 = new Arc[colset00000001,Binding00000001]("arc00000053",place00000010,trans00000026,Direction.PtT)
+val arc00000053 = new Arc[colset00000001,Binding00000001]("arc00000053",place00000026,trans00000026,Direction.PtT)
 arc00000053.setIsBase(true)
 arc00000053.setArcExp(arcexp00000053)
 arc00000053.setTokenToBind(tTb00000053)
@@ -877,7 +882,7 @@ cgraph.addArc(arc00000053)
 val arcexp00000054 = (inp:Any) => inp match { case entity:colset00000001 => { Some(entity) } }
 val tTb00000054 = (inp:Any) => Binding00000001(inp match { case entity:colset00000001 => Some(entity); case _ => None })
 val bTt00000054 = (b:Binding00000001) => {b.entity.get}
-val arc00000054 = new Arc[colset00000001,Binding00000001]("arc00000054",place00000026,trans00000026,Direction.TtP)
+val arc00000054 = new Arc[colset00000001,Binding00000001]("arc00000054",place00000010,trans00000026,Direction.TtP)
 arc00000054.setIsBase(true)
 arc00000054.setArcExp(arcexp00000054)
 arc00000054.setTokenToBind(tTb00000054)
