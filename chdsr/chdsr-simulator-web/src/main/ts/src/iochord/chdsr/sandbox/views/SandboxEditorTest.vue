@@ -21,7 +21,7 @@
     </div>
 
     <div id="canvas-container" class="editor canvas">
-      <div id="canvas" @mousemove="moveItem(newItem, $event)" @mouseup="saveItem(newItem)"></div>
+      <div id="canvas" tabindex="0" @keydown.esc="cancelCreateItem()" @mousemove="moveItem($event)" @mouseup="saveItem()"></div>
     </div>
   </div>
 </template>
@@ -87,71 +87,119 @@ export default class SandboxEditorTest extends PageView {
   private newItem: JointGraphNodeImpl | null = null;
   private activePage?: string;
 
+  /** Current implementation only allows state to be handled seperately */
   private dragging: boolean = false;
 
+  /** Later, a global state must be initialized to represent the latest state of CanvasComponent */
+  // private state: 'dragging' | 'moving'
+
+
   public createItem(type: NODE, e: MouseEvent): void {
-    this.newItem = new JointGraphNodeImpl();
+
+    /** Local variable initialization */
     const keys: any = {
       elementType: 'elementType',
     };
 
+    /** Create new item container */
+    this.newItem = new JointGraphNodeImpl();
 
+    /** Set properties for the newly created item */
     this.newItem.setId(`0-${type}-${GraphNodeImpl.instance.size}`);
-    this.newItem.setLabel(`New Node ${GraphNodeImpl.instance.size}`);
     this.newItem.setType(type.toString());
     this.newItem.setSize((NODE_TYPE as any)[type].size);
     this.newItem.setMarkup((NODE_TYPE as any)[type].markup);
     this.newItem.setAttr((NODE_TYPE as any)[type].attr);
     this.newItem.setImageIcon((NODE_TYPE as any)[type].image);
 
-    const svgPoint = (this.jointPages.get(this.activePage as string)!.getPaper().svg as SVGSVGElement).createSVGPoint();
-    svgPoint.x = e.offsetX;
-    svgPoint.y = e.offsetY;
+    /** No need to set label for start and stop node */
+    if (!(type.toString() === 'start' || type.toString() === 'stop')) {
+      this.newItem.setLabel(`New Node ${GraphNodeImpl.instance.size}`);
+    }
 
-    const pointTransformed = svgPoint.matrixTransform(this.jointPages.get(this.activePage as string)!.getPaper().viewport.getCTM()!.inverse());
-
-    this.newItem.setPosition({
-      x: pointTransformed.x - (this.newItem.getSize()!.width / 2),
-      y: pointTransformed.y - (this.newItem.getSize()!.height / 2),
-    });
-
-    this.newItem.render(this.jointPages.get(this.activePage as string)!.getGraph());
-
+    /** Set dragging state to true */
     this.dragging = true;
   }
 
-  public moveItem(newItem: JointGraphNodeImpl, e: MouseEvent): void {
-    if (this.dragging && newItem !== null) {
+  public moveItem(e: MouseEvent): void {
+
+    /**
+     * Only move item when current state is dragging and
+     * newItem container has been created and initialized with default value
+     */
+    if (this.dragging && this.newItem !== null) {
+
+      /** Capture svgPoint from MouseEvent */
       const svgPoint = (this.jointPages.get(this.activePage as string)!.getPaper().svg as SVGSVGElement).createSVGPoint();
       svgPoint.x = e.offsetX;
       svgPoint.y = e.offsetY;
 
+      /** Transform svgPoint to joint.js paper matrix */
       const pointTransformed = svgPoint.matrixTransform(this.jointPages.get(this.activePage as string)!.getPaper().viewport.getCTM()!.inverse());
 
-      newItem.setPosition({
-        x: pointTransformed.x - (newItem.getSize()!.width / 2),
-        y: pointTransformed.y - (newItem.getSize()!.height / 2),
+      /** Set position according to the transformed point captured from MouseEvent */
+      this.newItem.setPosition({
+        x: pointTransformed.x - (this.newItem.getSize()!.width / 2),
+        y: pointTransformed.y - (this.newItem.getSize()!.height / 2),
       });
 
-      newItem.getNode().attr('border/strokeWidth', 2);
-      newItem.getNode().attr('border/stroke', 'blue');
-      newItem.render(this.jointPages.get(this.activePage as string)!.getGraph());
+      /** Focus newItem */
+      this.newItem.getNode().attr('border/strokeWidth', 2);
+      this.newItem.getNode().attr('border/stroke', 'blue');
+      this.newItem.render(this.jointPages.get(this.activePage as string)!.getGraph());
+
+      /** Listen to keydown event to check esc button */
+      window.addEventListener('keydown', this.cancelCreateItem);
     }
   }
 
-  public saveItem(newItem: JointGraphNodeImpl): void {
+  public cancelCreateItem(e: KeyboardEvent): any {
+
+    /** If esc key was pressed */
+    if (e.key === 'Escape') {
+
+      /**
+       * And if current state is dragging and
+       * newItem container has been created and initialized
+       */
+      if (this.dragging && this.newItem !== null) {
+
+        /** Set state drag to false */
+        this.dragging = false;
+
+        /** Remove node from joint.js canvas */
+        this.newItem.getNode().remove();
+
+        /** Set newItem container to null */
+        this.newItem = null;
+      }
+    }
+  }
+
+  public saveItem(): void {
+
+    /** Set drag state to false */
     this.dragging = false;
+
+    /** If newItem container contains data */
     if (this.newItem !== null) {
-      // add to GraphData
+
+      /** Add newItem to GraphData */
       const nodes = (this.graphData.getPages()!.get(this.activePage as string) as GraphPage).getNodes() as Map<string, GraphNode>;
-      nodes.set(newItem.getId() as string, (NODE_ENUMS.NODE_TYPE as any)[newItem.getType() as string].deserialize(newItem));
+      nodes.set(this.newItem.getId() as string, (NODE_ENUMS.NODE_TYPE as any)[this.newItem.getType() as string].deserialize(this.newItem));
 
-      GraphNodeImpl.instance.set(newItem.getId() as string, (NODE_ENUMS.NODE_TYPE as any)[newItem.getType() as string].deserialize(newItem));
+      /** Add newItem to GraphNodeInstance */
+      GraphNodeImpl.instance.set(this.newItem.getId() as string, (NODE_ENUMS.NODE_TYPE as any)[this.newItem.getType() as string].deserialize(this.newItem));
 
-      newItem.getNode().attr('border/strokeWidth', 0);
-      newItem.getNode().attr('border/stroke', 'transparent');
+      /** Unfocus the newly created item */
+      this.newItem.getNode().attr('border/strokeWidth', 0);
+      this.newItem.getNode().attr('border/stroke', 'transparent');
 
+      /** Set newItem container variable to null */
       this.newItem = null;
+
+      /** Remove keyboard event listener for newItem */
+      window.removeEventListener('keydown', this.cancelCreateItem);
     }
   }
 
@@ -284,6 +332,8 @@ export default class SandboxEditorTest extends PageView {
             const currentElement = elementView.model;
             currentElement.attr('border/strokeWidth', 2);
             currentElement.attr('border/stroke', 'blue');
+
+            // window.addEventListener('keydown', this.handleSelectedElement);
           },
 
           'element:pointerdblclick': (elementView: joint.dia.ElementView) => {
@@ -308,7 +358,7 @@ export default class SandboxEditorTest extends PageView {
 
         function resetAll(_paper: joint.dia.Paper) {
 
-          /* Reset all elements in the paper */
+          /** Reset all elements in the paper */
           const elements = _paper.model.getElements();
           for (let i = 0, ii = elements.length; i < ii; i++) {
             const currentElement = elements[i];
@@ -339,6 +389,8 @@ export default class SandboxEditorTest extends PageView {
 
     this.forceReRender();
   }
+
+
 
   /** @Override */
   public overrideBrowserProperties(): void {
