@@ -23,6 +23,6 @@ object CompileFromFileTest {
     val stopCrit = (stop:Any) => stop match { case stop:Boolean => stop }
     val inpStopCritLoc = false
     
-    simulation.runStopCritSimulation(stopCrit, inpStopCritLoc)
+    simulation.runStopCriteriaSimulation(stopCrit, inpStopCritLoc)
   }
 }

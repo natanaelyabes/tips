@@ -49,29 +49,22 @@ case class Simulator() {
         
         val r = new java.util.Random()
         val transition = transitions(r.nextInt(transitions.length))
-        //println("================ Step: "+c+" | globtime: "+globtime.time+" ================")
-        //println("Transition: "+transition.getId(),transition.getName())
-        //println("Before")
-        //net.allPlaces.foreach(place => { val multiset = place.getcurrentMarking().multiset; println(place.getId(),multiset) })
         
         val markbefore = Map[String,Any]()
         val markafter = Map[String,Any]()
         
-        transition.getIn().foreach(arc => { val multiset = arc.getPlace().getcurrentMarking().multiset; markbefore.put(arc.getPlace().getName(),multiset.toString()) } )
-        transition.getOut().foreach(arc => { val multiset = arc.getPlace().getcurrentMarking().multiset; markbefore.put(arc.getPlace().getName(),multiset.toString()) } )
+        transition.getIn().foreach(arc => { val multiset = arc.getPlace().getcurrentMarking().multiset; markbefore.put(arc.getPlace().getName(),multiset) } )
+        transition.getOut().foreach(arc => { val multiset = arc.getPlace().getcurrentMarking().multiset; markbefore.put(arc.getPlace().getName(),multiset) } )
         
         val bindingChosen = transition.execute(globtime.time)
         
-        //println("After")
-        //net.allPlaces.foreach(place => { val multiset = place.getcurrentMarking().multiset; println(place.getId(),multiset) })
-        
-        transition.getIn().foreach(arc => { val multiset = arc.getPlace().getcurrentMarking().multiset; markafter.put(arc.getPlace().getName(),multiset.toString()) } )
-        transition.getOut().foreach(arc => { val multiset = arc.getPlace().getcurrentMarking().multiset; markafter.put(arc.getPlace().getName(),multiset.toString()) } )
+        transition.getIn().foreach(arc => { val multiset = arc.getPlace().getcurrentMarking().multiset; markafter.put(arc.getPlace().getName(),multiset) } )
+        transition.getOut().foreach(arc => { val multiset = arc.getPlace().getcurrentMarking().multiset; markafter.put(arc.getPlace().getName(),multiset) } )
         
         if(subject != null) {
           println("================ Step: "+c+" | globtime: "+globtime.time+" ================")
           println("Transition: "+transition.getId(),transition.getName())
-          subject.setMarking((markbefore,markafter,transition.getId()+" - "+bindingChosen))  
+          subject.setMarking((markbefore,markafter,transition.getId()+" - "+bindingChosen,globtime.getTime()))  
         }
         c += 1
       }
@@ -103,18 +96,18 @@ case class Simulator() {
         val markbefore = Map[String,Any]()
         val markafter = Map[String,Any]()
         
-        transition.getIn().foreach(arc => { val multiset = arc.getPlace().getcurrentMarking().multiset; markbefore.put(arc.getPlace().getName(),multiset.toString()) } )
-        transition.getOut().foreach(arc => { val multiset = arc.getPlace().getcurrentMarking().multiset; markbefore.put(arc.getPlace().getName(),multiset.toString()) } )
+        transition.getIn().foreach(arc => { val multiset = arc.getPlace().getcurrentMarking().multiset; markbefore.put(arc.getPlace().getName(),multiset) } )
+        transition.getOut().foreach(arc => { val multiset = arc.getPlace().getcurrentMarking().multiset; markbefore.put(arc.getPlace().getName(),multiset) } )
         
         val bindingChosen = transition.execute(globtime.time)
         
-        transition.getIn().foreach(arc => { val multiset = arc.getPlace().getcurrentMarking().multiset; markafter.put(arc.getPlace().getName(),multiset.toString()) } )
-        transition.getOut().foreach(arc => { val multiset = arc.getPlace().getcurrentMarking().multiset; markafter.put(arc.getPlace().getName(),multiset.toString()) } )
+        transition.getIn().foreach(arc => { val multiset = arc.getPlace().getcurrentMarking().multiset; markafter.put(arc.getPlace().getName(),multiset) } )
+        transition.getOut().foreach(arc => { val multiset = arc.getPlace().getcurrentMarking().multiset; markafter.put(arc.getPlace().getName(),multiset) } )
         
         if(subject != null) {
           println("================ Step: "+c+" | globtime: "+globtime.time+" ================")
           println("Transition: "+transition.getId(),transition.getName())
-          subject.setMarking((markbefore,markafter,transition.getId()+" - "+bindingChosen))  
+          subject.setMarking((markbefore,markafter,transition.getId()+" - "+bindingChosen,globtime.getTime()))  
         }
         c += 1
       }
