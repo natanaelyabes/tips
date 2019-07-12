@@ -2,13 +2,10 @@ package io.iochord.dev.chdsr.simulator.compiler
 
 import scala.reflect.runtime.currentMirror
 import scala.tools.reflect.ToolBox
-
+  
 class MemoryScalaCompiler(scalaSource: String) {
-  import reflect.runtime.currentMirror
-  import tools.reflect.ToolBox
   
   val toolbox = ToolBox(currentMirror).mkToolBox()
-  
   import toolbox.u._
   
   val tree = toolbox.parse(
@@ -32,7 +29,7 @@ class MemoryScalaCompiler(scalaSource: String) {
       "import breeze.stats.distributions.StudentsT; \n"+
       "import breeze.stats.distributions.Uniform; \n"+
       "import breeze.stats.distributions.Rayleigh \n"+
-      scalaSource)
+      "new Simulation {\n"+scalaSource+"\n}")
      
   val compiledCode = toolbox.compile(tree)
   
