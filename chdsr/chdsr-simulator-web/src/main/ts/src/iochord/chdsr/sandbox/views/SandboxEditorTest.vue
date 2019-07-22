@@ -21,7 +21,12 @@
     </div>
 
     <div id="canvas-container" class="editor canvas">
-      <div id="canvas" tabindex="0" @keydown.esc="cancelCreateItem()" @mousemove="moveItem($event)" @mouseup="saveItem()"></div>
+      <div id="canvas" tabindex="0" 
+        @keydown.esc="cancelCreateItem($event)"
+        @mousedown="handleCanvasMouseDown($event)"
+        @mousemove="handleCanvasMouseMove($event)"
+        @mouseup="handleCanvasMouseUp($event)">
+      </div>
     </div>
   </div>
 </template>
@@ -46,28 +51,28 @@
 
 <script lang="ts">
 import { Component } from 'vue-property-decorator';
-import { Graph } from '@/iochord/chdsr/common/graph/interfaces/Graph';
-import { GraphConnector } from '../../common/graph/interfaces/GraphConnector';
-import { GraphData } from '../../common/graph/interfaces/GraphData';
-import { GraphImpl } from '@/iochord/chdsr/common/graph/classes/GraphImpl';
-import { GraphPage } from '../../common/graph/interfaces/GraphPage';
-import { GraphNode } from '../../common/graph/interfaces/GraphNode';
-import { JointGraphConnectorImpl } from '../../common/lib/joint/shapes/chdsr/classes/JointGraphConnectorImpl';
-import { JointGraphNodeImpl } from '../../common/lib/joint/shapes/chdsr/classes/JointGraphNodeImpl';
-import { JointGraphPageImpl } from '../../common/lib/joint/shapes/chdsr/classes/JointGraphPageImpl';
+import { Graph } from '@/iochord/chdsr/common/graph/sbpnet/interfaces/Graph';
+import { GraphConnector } from '../../common/graph/sbpnet/interfaces/GraphConnector';
+import { GraphData } from '../../common/graph/sbpnet/interfaces/GraphData';
+import { GraphImpl } from '@/iochord/chdsr/common/graph/sbpnet/classes/GraphImpl';
+import { GraphPage } from '../../common/graph/sbpnet/interfaces/GraphPage';
+import { GraphNode } from '../../common/graph/sbpnet/interfaces/GraphNode';
+import { JointGraphConnectorImpl } from '../../common/graph/sbpnet/rendering-engine/joint/shapes/chdsr/classes/JointGraphConnectorImpl';
+import { JointGraphNodeImpl } from '../../common/graph/sbpnet/rendering-engine/joint/shapes/chdsr/classes/JointGraphNodeImpl';
+import { JointGraphPageImpl } from '../../common/graph/sbpnet/rendering-engine/joint/shapes/chdsr/classes/JointGraphPageImpl';
 import { SbpnetModelService } from '../../common/service/model/SbpnetModelService';
-import { NODE_TYPE } from '../../common/lib/joint/shapes/chdsr/enums/NODE';
-import { ARC_TYPE } from '../../common/lib/joint/shapes/chdsr/enums/ARC';
-import * as NODE_ENUMS from '@/iochord/chdsr/common/graph/enums/NODE';
+import { NODE_TYPE } from '../../common/graph/sbpnet/rendering-engine/joint/shapes/chdsr/enums/NODE';
+import { ARC_TYPE } from '../../common/graph/sbpnet/rendering-engine/joint/shapes/chdsr/enums/ARC';
+import * as NODE_ENUMS from '@/iochord/chdsr/common/graph/sbpnet/enums/NODE';
 
 // JointJS
 import * as joint from 'jointjs';
 import '#root/node_modules/jointjs/dist/joint.css';
 
 // Class
-import PageView from '@/iochord/chdsr/common/lib/vue/classes/PageView';
-import { GraphNodeImpl } from '../../common/graph/classes/GraphNodeImpl';
-import { GraphActivityNodeImpl } from '../../common/graph/classes/components/GraphActivityNodeImpl';
+import PageLayout from '@/iochord/chdsr/common/ui/layout/classes/PageLayout';
+import { GraphNodeImpl } from '../../common/graph/sbpnet/classes/GraphNodeImpl';
+import { GraphActivityNodeImpl } from '../../common/graph/sbpnet/classes/components/GraphActivityNodeImpl';
 
 declare const $: any;
 
@@ -80,11 +85,15 @@ enum NODE {
 }
 
 @Component
-export default class SandboxEditorTest extends PageView {
+export default class SandboxEditorTest extends PageLayout {
   private graphData: Graph = new GraphImpl();
   private jointPages: Map<string, JointGraphPageImpl> = new Map<string, JointGraphPageImpl>();
 
   private newItem: JointGraphNodeImpl | null = null;
+  private newSelector: JointGraphNodeImpl | null = null;
+
+  private startPoint: { x: number, y: number } = { x: 0, y: 0 };
+
   private activePage?: string;
 
   /** Current implementation only allows state to be handled seperately */
@@ -93,6 +102,74 @@ export default class SandboxEditorTest extends PageView {
   /** Later, a global state must be initialized to represent the latest state of CanvasComponent */
   // private state: 'dragging' | 'moving'
 
+  public createSelector(e: MouseEvent): void {
+    /** Local variable initialization */
+    const keys: any = {
+      elementType: 'elementType',
+    };
+
+    /** Create new item container */
+    this.newSelector = new JointGraphNodeImpl();
+    this.newSelector.setType('selector');
+    this.newSelector.setAttr({
+      background: {
+        fill: 'rgba(0,0,0,0.5)',
+      },
+    });
+
+    /** Capture svgPoint from MouseEvent */
+    const svgPoint = (this.jointPages.get(this.activePage as string)!.getPaper().svg as SVGSVGElement).createSVGPoint();
+    svgPoint.x = e.offsetX;
+    svgPoint.y = e.offsetY;
+
+    /** Transform svgPoint to joint.js paper matrix */
+    const pointTransformed = svgPoint.matrixTransform(this.jointPages.get(this.activePage as string)!.getPaper().viewport.getCTM()!.inverse());
+
+    this.startPoint.x = pointTransformed.x;
+    this.startPoint.y = pointTransformed.y;
+
+    this.dragging = true;
+    console.log(this.newSelector, ' Selector created');
+  }
+
+  public moveSelector(e: MouseEvent): void {
+    if (this.dragging && this.newSelector !== null) {
+
+      /** Capture svgPoint from MouseEvent */
+      const svgPoint = (this.jointPages.get(this.activePage as string)!.getPaper().svg as SVGSVGElement).createSVGPoint();
+      svgPoint.x = e.offsetX;
+      svgPoint.y = e.offsetY;
+
+      /** Transform svgPoint to joint.js paper matrix */
+      const pointTransformed = svgPoint.matrixTransform(this.jointPages.get(this.activePage as string)!.getPaper().viewport.getCTM()!.inverse());
+
+      this.newSelector.setSize({
+        width: pointTransformed.x - this.startPoint.x,
+        height: pointTransformed.y - this.startPoint.y,
+        // direction: pointTransformed.x - this.startPoint.x > 0 &&
+      });
+
+      /** Set position according to the transformed point captured from MouseEvent */
+      this.newSelector.setPosition({
+        x: this.startPoint.x,
+        y: this.startPoint.y,
+      });
+
+      this.newSelector.render(this.jointPages.get(this.activePage as string)!.getGraph());
+
+      console.log('Move selector');
+    }
+  }
+
+  public destroySelector(e: MouseEvent): void {
+    this.dragging = false;
+    if (this.newSelector !== null) {
+      console.log(this.newSelector.getNode());
+      this.newSelector.getNode().remove();
+      this.newSelector = new JointGraphNodeImpl();
+      console.log('Destroy selector');
+    }
+  }
 
   public createItem(type: NODE, e: MouseEvent): void {
 
@@ -176,7 +253,7 @@ export default class SandboxEditorTest extends PageView {
     }
   }
 
-  public saveItem(): void {
+  public saveItem(e: MouseEvent): void {
 
     /** Set drag state to false */
     this.dragging = false;
@@ -201,6 +278,20 @@ export default class SandboxEditorTest extends PageView {
       /** Remove keyboard event listener for newItem */
       window.removeEventListener('keydown', this.cancelCreateItem);
     }
+  }
+
+  public handleCanvasMouseDown(e: MouseEvent): void {
+    this.createSelector(e);
+  }
+
+  public handleCanvasMouseMove(e: MouseEvent): void {
+    this.moveItem(e);
+    this.moveSelector(e);
+  }
+
+  public handleCanvasMouseUp(e: MouseEvent): void {
+    this.saveItem(e);
+    this.destroySelector(e);
   }
 
   /** @Override */
@@ -365,24 +456,8 @@ export default class SandboxEditorTest extends PageView {
             currentElement.attr('border/strokeWidth', 0);
             currentElement.attr('border/stroke', 'transparent');
           }
-
-          // const links = _paper.model.getLinks();
-          // for (let j = 0, jj = links.length; j < jj; j++) {
-          //   const currentLink = links[j];
-          //   currentLink.attr('line/stroke', 'black');
-          //   currentLink.label(0, {
-          //     attrs: {
-          //       body: {
-          //         stroke: 'black',
-          //       },
-          //     },
-          //   });
-          // }
-
         }
       }
-
-
     } catch (e) {
       console.error(e);
     }

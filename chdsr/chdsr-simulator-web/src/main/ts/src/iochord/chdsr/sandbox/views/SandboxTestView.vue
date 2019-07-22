@@ -27,7 +27,7 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
-import BaseView from '@/iochord/chdsr/common/lib/vue/classes/BaseView';
+import BaseLayout from '@/iochord/chdsr/common/ui/layout/classes/BaseLayout';
 
 import SocketIO from 'socket.io-client';
 
@@ -40,7 +40,7 @@ import SocketIO from 'socket.io-client';
  *
  */
 @Component
-export default class SandboxTestView extends BaseView {
+export default class SandboxTestView extends BaseLayout {
   public test: any = 'test';
 
   /** @Override */

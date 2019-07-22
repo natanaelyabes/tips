@@ -6,10 +6,10 @@
 <template>
   <div class="editor view">
 
-    <ApplicationWrapperComponent>
+    <WrapperComponent>
 
       <!-- Header -->
-      <template slot="application-header-breadcrumb">
+      <template slot="header-breadcrumb">
         <router-link to="/iochord/chdsr" tag="a" class="section">Home</router-link>
         <i class="right angle icon divider"></i>
         <div class="section">Simulation Editor</div>
@@ -17,8 +17,8 @@
         <div class="active section">{{this.title}}</div>
       </template>
 
-      <!-- Application Left Sidebar Menu Item -->
-      <template slot="application-left-sidebar-menu-item">
+      <!--  Left Sidebar Menu Item -->
+      <template slot="left-sidebar-menu-item">
         <div class="item">
           <div class="header">Control</div>
           <div class="menu">
@@ -121,8 +121,8 @@
         </div>
       </template>
 
-      <!-- Application Ribbon Menu Item -->
-      <template slot="application-ribbon-menu-item">
+      <!--  Ribbon Menu Item -->
+      <template slot="ribbon-menu-item">
         <div class="item"><div class="header"><strong>Simulation Player</strong></div></div>
         <div class="item">
           <div class="ui basic icon buttons">
@@ -150,20 +150,20 @@
         </div>
       </template>
 
-      <!-- Application Content -->
-      <template slot="application-content">
+      <!--  Content -->
+      <template slot="content">
         <template v-if="graphData !== {}">
           <CanvasComponent :key="reRenderKey" v-bind:response="graphData" />
         </template>
       </template>
 
-      <template slot="application-right-sidebar-menu-item">
+      <template slot="right-sidebar-menu-item">
         <div class="ui basic segment" style="width: 260px">
           <h2>Model Pane</h2>
           <div id="minimap"></div>
         </div>
       </template>
-    </ApplicationWrapperComponent>
+    </WrapperComponent>
 
     <!-- Upload Modals -->
     <div class="ui upload file modal">
@@ -285,22 +285,21 @@ import * as joint from 'jointjs';
 import '#root/node_modules/jointjs/dist/joint.css';
 
 // Classes
-import ApplicationWrapperView from '@/iochord/chdsr/common/ui/application/classes/ApplicationWrapperView';
+import Layout01View from '@/iochord/chdsr/common/ui/layout/classes/Layout01';
 
 // Interfaces
-import { ApplicationHasWrapper } from '@/iochord/chdsr/common/ui/application/interfaces/ApplicationHasWrapper';
-import { Breadcrumb } from '@/iochord/chdsr/common/ui/semantic/breadcrumbs/interfaces/Breadcrumb';
+import { Layout01HasWrapper } from '@/iochord/chdsr/common/ui/layout/interfaces/Layout01HasWrapper';
 import { BrowserHasProperties } from '@/iochord/chdsr/common/browser/interfaces/BrowserHasProperties';
-import { SemanticModulesIsUsed } from '@/iochord/chdsr/common/ui/semantic/SemanticModulesIsUsed';
+import { SemanticModulesIsUsed } from '@/iochord/chdsr/common/ui/semantic-components/SemanticModulesIsUsed';
 
 // Enums
 import { ApplicationEnum, BaseUrlEnum } from '@/iochord/chdsr/common/enums/index';
 
 // Components
-import ApplicationWrapperComponent from '@/iochord/chdsr/common/ui/application/components/ApplicationWrapperComponent.vue';
+import WrapperComponent from '@/iochord/chdsr/common/ui/layout/components/WrapperComponent.vue';
 import { SbpnetModelService } from '@/iochord/chdsr/common/service/model/SbpnetModelService';
-import { GraphImpl } from '@/iochord/chdsr/common/graph/classes/GraphImpl';
-import { Graph } from '@/iochord/chdsr/common/graph/interfaces/Graph';
+import { GraphImpl } from '@/iochord/chdsr/common/graph/sbpnet/classes/GraphImpl';
+import { Graph } from '@/iochord/chdsr/common/graph/sbpnet/interfaces/Graph';
 
 // Async component must be lazily load
 const CanvasComponent = () => import('@/iochord/chdsr/simulation/editor/components/canvas/components/CanvasComponent.vue');
@@ -317,11 +316,11 @@ declare const $: any;
  */
 @Component({
   components: {
-    ApplicationWrapperComponent,
+    WrapperComponent,
     CanvasComponent,
   },
 })
-export default class SimulationEditorView extends ApplicationWrapperView {
+export default class SimulationEditorView extends Layout01View {
   public processModel: any;
   public animation: boolean = false;
   public editing: boolean = true;

@@ -102,25 +102,25 @@ import * as joint from 'jointjs';
 import '#root/node_modules/jointjs/dist/joint.css';
 
 // Classes
-import { Graph } from '@/iochord/chdsr/common/graph/interfaces/Graph';
-import { GraphControlImpl } from '@/iochord/chdsr/common/graph/classes/components/GraphControlImpl';
-import { GraphImpl } from '@/iochord/chdsr/common/graph/classes/GraphImpl';
-import { GraphPage } from '@/iochord/chdsr/common/graph/interfaces/GraphPage';
-import { GraphPageImpl } from '@/iochord/chdsr/common/graph/classes/GraphPageImpl';
-import { JointGraphConnectorImpl } from '@/iochord/chdsr/common/lib/joint/shapes/chdsr/classes/JointGraphConnectorImpl';
-import { JointGraphNodeImpl } from '@/iochord/chdsr/common/lib/joint/shapes/chdsr/classes/JointGraphNodeImpl';
-import { JointGraphPageImpl } from '@/iochord/chdsr/common/lib/joint/shapes/chdsr/classes/JointGraphPageImpl';
+import { Graph } from '@/iochord/chdsr/common/graph/sbpnet/interfaces/Graph';
+import { GraphControlImpl } from '@/iochord/chdsr/common/graph/sbpnet/classes/components/GraphControlImpl';
+import { GraphImpl } from '@/iochord/chdsr/common/graph/sbpnet/classes/GraphImpl';
+import { GraphPage } from '@/iochord/chdsr/common/graph/sbpnet/interfaces/GraphPage';
+import { GraphPageImpl } from '@/iochord/chdsr/common/graph/sbpnet/classes/GraphPageImpl';
+import { JointGraphConnectorImpl } from '@/iochord/chdsr/common/graph/sbpnet/rendering-engine/joint/shapes/chdsr/classes/JointGraphConnectorImpl';
+import { JointGraphNodeImpl } from '@/iochord/chdsr/common/graph/sbpnet/rendering-engine/joint/shapes/chdsr/classes/JointGraphNodeImpl';
+import { JointGraphPageImpl } from '@/iochord/chdsr/common/graph/sbpnet/rendering-engine/joint/shapes/chdsr/classes/JointGraphPageImpl';
 
 // Interfaces
-import { GraphConnector } from '@/iochord/chdsr/common/graph/interfaces/GraphConnector';
-import { GraphData } from '@/iochord/chdsr/common/graph/interfaces/GraphData';
-import { GraphElement } from '@/iochord/chdsr/common/graph/interfaces/GraphElement';
-import { GraphNode } from '@/iochord/chdsr/common/graph/interfaces/GraphNode';
+import { GraphConnector } from '@/iochord/chdsr/common/graph/sbpnet/interfaces/GraphConnector';
+import { GraphData } from '@/iochord/chdsr/common/graph/sbpnet/interfaces/GraphData';
+import { GraphElement } from '@/iochord/chdsr/common/graph/sbpnet/interfaces/GraphElement';
+import { GraphNode } from '@/iochord/chdsr/common/graph/sbpnet/interfaces/GraphNode';
 
 // Enums
-import { NODE_TYPE } from '@/iochord/chdsr/common/lib/joint/shapes/chdsr/enums/NODE';
-import { ARC_TYPE } from '@/iochord/chdsr/common/lib/joint/shapes/chdsr/enums/ARC';
-import BaseComponent from '@/iochord/chdsr/common/lib/vue/classes/BaseComponent';
+import { NODE_TYPE } from '@/iochord/chdsr/common/graph/sbpnet/rendering-engine/joint/shapes/chdsr/enums/NODE';
+import { ARC_TYPE } from '@/iochord/chdsr/common/graph/sbpnet/rendering-engine/joint/shapes/chdsr/enums/ARC';
+import BaseComponent from '@/iochord/chdsr/common/ui/layout/classes/BaseComponent';
 
 // Components
 import StartNodeModal from '@/iochord/chdsr/simulation/editor/components/modals/StartNodeModal.vue';

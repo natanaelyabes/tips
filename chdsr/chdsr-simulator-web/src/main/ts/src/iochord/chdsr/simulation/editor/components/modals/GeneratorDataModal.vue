@@ -95,7 +95,7 @@
 
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
-import SemanticComponent from '@/iochord/chdsr/common/ui/semantic/SemanticComponent';
+import SemanticComponent from '@/iochord/chdsr/common/ui/semantic-components/SemanticComponent';
 
 declare const $: any;
 
