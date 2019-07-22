@@ -24,23 +24,14 @@ abstract class Simulation(val simulator:Simulator = new Simulator()) {
     simulator.run(cgraph, step, globtime, subject)
   }
   
-  def runStopCritSimulation(stopCritLoc:Any => Boolean = this.stopCrit, inpStopCritLoc:Any = this.inpStopCrit): Unit = {
-    this.stopCrit = stopCritLoc
-    this.inpStopCrit = inpStopCritLoc
+  def runUntilMaxArrival(): Unit = {
+    this.stopCrit = (stop:Any) => stop match { case stop:Boolean => stop }
+    this.inpStopCrit = false
+    
     simulator.fastRun(cgraph, stopCrit, inpStopCrit, globtime, subject)
   }
   
-  val vars = HashMap[String,Any]() // some value generated from simulation will be saved here
-  
-  def printDebugging(txtDebugging: String): Unit = {
-    println(txtDebugging)
-  }
-  
-  def getVar(nvar1:String): Any = {
-    return vars.get(nvar1).getOrElse(null)
-  }
-  
-  def putVar[T](key:String, var1:T): Unit = {
-    vars.put(key,var1)
+  def runStopCriteriaSimulation(stopCritLoc:Any => Boolean = (stop:Any) => stop match { case stop:Boolean => stop }, inpStopCritLoc:Any = false): Unit = {
+    simulator.fastRun(cgraph, stopCrit, inpStopCrit, globtime, subject)
   }
 }

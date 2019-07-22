@@ -93,7 +93,7 @@ class Transition[B <:Bind] (
       //change representation to consider lbe first than listBinding
       //we need to change to this representation to handle case as follow
       //if the place is empty but arc have None inscription, binding still should be enabled, previously it will be rejected
-      //code previousely as follow lbe = if(lbe.isEmpty) listBinding else listBinding.flatMap(b2 => lbe.collect { case b1 if evalFull(b1,b2,mapListBinding(b2),arc) => mergeFull(b1, b2) } )
+      //code previously as follow lbe = if(lbe.isEmpty) listBinding else listBinding.flatMap(b2 => lbe.collect { case b1 if evalFull(b1,b2,mapListBinding(b2),arc) => mergeFull(b1, b2) } )
       lbe = if(lbe.isEmpty) 
               listBinding 
             else 
@@ -137,8 +137,6 @@ class Transition[B <:Bind] (
     val r = new java.util.Random();
     val bindingChosen = lbeBase(r.nextInt(lbeBase.length))
     in.foreach(arc => { 
-      //println(arc.getId()+" - "+arc.getPlace().getId()+" - "+arc.getPlace().getcurrentMarking().multiset)
-      //println(bindingChosen)
       val optTokenChosen = arc.computeArcExp(arc.computeBindToToken(bindingChosen))
       if(optTokenChosen != None) {
         val setTokenWTChosen = arc.getPlace().getcurrentMarking().multiset.keys.filter(tokenWT => { tokenWT._2 <= globtime && optTokenChosen.get == tokenWT._1 } ).toIterator
@@ -153,7 +151,7 @@ class Transition[B <:Bind] (
     var bindingCombine:B = bindingChosen
     if(action != null)
     {
-      val bindingAction = action.computeActionFun(bindingChosen)//action.computeTokenToBind(action.computeActionFun(action.computeBindToToken(bindingChosen))) 
+      val bindingAction = action.computeActionFun(bindingChosen)
       bindingCombine = getMerge()(bindingChosen,bindingAction)
     }
     out.foreach(arc => {
