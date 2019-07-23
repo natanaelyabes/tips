@@ -127,6 +127,7 @@ import StartNodeModal from '@/iochord/chdsr/simulation/editor/components/modals/
 import ActivityNodeModal from '@/iochord/chdsr/simulation/editor/components/modals/ActivityNodeModal.vue';
 import BranchNodeModal from '@/iochord/chdsr/simulation/editor/components/modals/BranchNodeModal.vue';
 import StopNodeModal from '@/iochord/chdsr/simulation/editor/components/modals/StopNodeModal.vue';
+import { GraphStartEventNode } from '../../../../../common/graph/sbpnet/interfaces/components/GraphStartEventNode';
 
 // JQuery Handler
 declare const $: any;
@@ -184,6 +185,9 @@ export default class CanvasComponent extends BaseComponent {
   public parentStopLabel: string = '';
   public parentStopReport: boolean = false;
 
+  public currentSelectedElement?: GraphNode;
+  public activePage?: GraphPage;
+
 /*
   Start Node functions
   - Send changes from parent to child
@@ -200,6 +204,10 @@ export default class CanvasComponent extends BaseComponent {
   /* Start updated from Child */
   public changeStartLabelFromChild(e: any) {
     this.parentStartLabel = e;
+    this.currentSelectedElement!.setLabel(this.parentStartLabel);
+    this.graph!.getPages()!
+      .get(this.activePage!.getId() as string)!.getNodes()!
+      .set(this.currentSelectedElement!.getId() as string, this.currentSelectedElement as GraphNode);
   }
 
   public changeStartGeneratorFromChild(e: any) {
@@ -362,16 +370,23 @@ export default class CanvasComponent extends BaseComponent {
   /* Stop updated from Child */
   public changeStopLabelFromChild(e: any) {
     this.parentStopLabel = e;
+    this.currentSelectedElement!.setLabel(this.parentStopLabel);
+    this.graph!.getPages()!
+      .get(this.activePage!.getId() as string)!.getNodes()!
+      .set(this.currentSelectedElement!.getId() as string, this.currentSelectedElement as GraphNode);
   }
 
   public changeStopReportFromChild(e: any) {
     this.parentStopReport = e;
+    this.currentSelectedElement!.setReportStatistics(this.parentStopReport);
+    this.graph!.getPages()!
+      .get(this.activePage!.getId() as string)!.getNodes()!
+      .set(this.currentSelectedElement!.getId() as string, this.currentSelectedElement as GraphNode);
   }
 
   public mounted(): void {
-    this.changeStartLabel('From Parent Mounted - Label');
-    this.changeStartGenerator('From Parent Mounted - Generator');
     this.loadGraph();
+    this.activePage = this.graph!.getPages()!.get('0');
     this.$forceUpdate();
   }
 
@@ -518,10 +533,19 @@ export default class CanvasComponent extends BaseComponent {
 
             if (currentElementType === 'start') {
               $('#start').modal('show');
+              this.parentStartLabel = jointPage.getNodes()!.get(currentElementNodeId)!.getLabel() as string;
+              this.parentStartGenerator =
+                (jointPage.getNodes()!.get(currentElementNodeId)! as GraphStartEventNode)
+                  .getGenerator()!.getLabel() as string +
+                  ' - ' +
+                (jointPage.getNodes()!.get(currentElementNodeId)! as GraphStartEventNode)
+                  .getGenerator()!.getDistributionType() as string;
+              this.currentSelectedElement = jointPage.getNodes()!.get(currentElementNodeId);
             }
 
             if (currentElementType === 'activity') {
               $('#activity').modal('show');
+              console.log(this.parentActNodeSelectedActivityType);
             }
 
             if (currentElementType === 'branch') {
@@ -530,6 +554,9 @@ export default class CanvasComponent extends BaseComponent {
 
             if (currentElementType === 'stop') {
               $('#stop').modal('show');
+              this.parentStopLabel = jointPage.getNodes()!.get(currentElementNodeId)!.getLabel() as string;
+              this.parentStopReport = jointPage.getNodes()!.get(currentElementNodeId)!.isReportStatistics() as boolean;
+              this.currentSelectedElement = jointPage.getNodes()!.get(currentElementNodeId);
             }
           },
         });
