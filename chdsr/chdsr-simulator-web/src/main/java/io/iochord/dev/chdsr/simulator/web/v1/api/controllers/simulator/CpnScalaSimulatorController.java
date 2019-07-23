@@ -50,6 +50,7 @@ public class CpnScalaSimulatorController extends ASimulatorController {
 		return "Ok";
 	}
 
+/*
 	@RequestMapping(BASE_URI + "/test")
 	public String test() {
 		String myclassSyntax = "new Simulation {\n"+
@@ -70,5 +71,5 @@ public class CpnScalaSimulatorController extends ASimulatorController {
 		memoryScala.putVar("test3","Test Response");
 	    String result = (String) memoryScala.getVar("test1");
 		return result;
-	}
+	}*/
 }
