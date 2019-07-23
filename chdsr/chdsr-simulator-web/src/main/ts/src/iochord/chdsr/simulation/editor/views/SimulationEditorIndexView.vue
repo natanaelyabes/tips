@@ -21,7 +21,7 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
-import IndexView from '@/iochord/chdsr/common/lib/vue/classes/IndexView';
+import IndexLayout from '@/iochord/chdsr/common/ui/layout/classes/IndexLayout';
 
 
 /**
@@ -31,7 +31,7 @@ import IndexView from '@/iochord/chdsr/common/lib/vue/classes/IndexView';
  * @since 2019
  *
  */
-export default class SimulationEditorIndexView extends IndexView {
+export default class SimulationEditorIndexView extends IndexLayout {
   //
 }
 </script>

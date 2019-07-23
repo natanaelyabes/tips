@@ -85,12 +85,11 @@
 import { Component, Vue } from 'vue-property-decorator';
 
 // Interfaces
-import { VueHasLifeCycle } from '@/iochord/chdsr/common/lib/vue/interfaces/VueHasLifeCycle';
-import { SemanticModulesIsUsed } from '@/iochord/chdsr/common/ui/semantic/SemanticModulesIsUsed';
+import { SemanticModulesIsUsed } from '@/iochord/chdsr/common/ui/semantic-components/SemanticModulesIsUsed';
 
 // Components
-import NavigationTopSidebarComponent from '@/iochord/chdsr/common/ui/semantic/navigations/components/NavigationTopSidebarComponent.vue';
-import IndexView from '@/iochord/chdsr/common/lib/vue/classes/IndexView';
+import NavigationTopSidebarComponent from '@/iochord/chdsr/common/ui/semantic-components/navigations/components/NavigationTopSidebarComponent.vue';
+import IndexLayout from '@/iochord/chdsr/common/ui/layout/classes/IndexLayout';
 
 // JQuery Symbol Handler
 declare const $: any;
@@ -108,7 +107,7 @@ declare const $: any;
     NavigationTopSidebarComponent,
   },
 })
-export default class Index extends IndexView {
+export default class Index extends IndexLayout {
   /** @Override */
   public mounted(): void {
     this.declareSemanticModules();

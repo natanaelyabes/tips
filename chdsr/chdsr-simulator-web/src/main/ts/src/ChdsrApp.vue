@@ -16,8 +16,7 @@
 import { Component, Vue  } from 'vue-property-decorator';
 
 // Interfaces
-import { VueHasLifeCycle } from '@/iochord/chdsr/common/lib/vue/interfaces/VueHasLifeCycle';
-import IndexView from '@/iochord/chdsr/common/lib/vue/classes/IndexView';
+import IndexLayout from '@/iochord/chdsr/common/ui/layout/classes/IndexLayout';
 
 
 /**
@@ -29,7 +28,7 @@ import IndexView from '@/iochord/chdsr/common/lib/vue/classes/IndexView';
  */
 
 @Component
-export default class ChdsrApp extends IndexView {
+export default class ChdsrApp extends IndexLayout {
   //
 }
 </script>

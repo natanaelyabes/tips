@@ -5,11 +5,11 @@
 -->
 <template>
   <div class="home view">
-    <ApplicationWrapper >
-      <template slot="application-header-breadcrumb">
+    <WrapperComponent>
+      <template slot="header-breadcrumb">
         <div class="active section">{{title}}</div>
       </template>
-      <template slot="application-content">
+      <template slot="content">
         <div class="ui basic segment">
           <div class="ui stackable three cards">
             <div class="ui card">
@@ -74,7 +74,7 @@
           </div>
         </div>
       </template>
-    </ApplicationWrapper>
+    </WrapperComponent>
   </div>
 </template>
 
@@ -98,13 +98,13 @@
 import { Component, Vue } from 'vue-property-decorator';
 
 // Classes
-import ApplicationWrapperView from '@/iochord/chdsr/common/ui/application/classes/ApplicationWrapperView';
+import Layout01 from '@/iochord/chdsr/common/ui/layout/classes/Layout01';
 
 // Interfaces
-import { ApplicationHasWrapper } from '../../common/ui/application/interfaces/ApplicationHasWrapper';
+import { Layout01HasWrapper } from '../../common/ui/layout/interfaces/Layout01HasWrapper';
 
 // Components
-import ApplicationWrapper from '@/iochord/chdsr/common/ui/application/components/ApplicationWrapperComponent.vue';
+import WrapperComponent from '@/iochord/chdsr/common/ui/layout/components/WrapperComponent.vue';
 
 
 /**
@@ -116,10 +116,10 @@ import ApplicationWrapper from '@/iochord/chdsr/common/ui/application/components
  */
 @Component({
   components: {
-    ApplicationWrapper,
+    WrapperComponent,
   },
 })
-export default class HomeView extends ApplicationWrapperView {
+export default class HomeView extends Layout01 {
   /** @Override */
   public overrideBrowserProperties(): void {
     this.setDocumentTitle('Home');

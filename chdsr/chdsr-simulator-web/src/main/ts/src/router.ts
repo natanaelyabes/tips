@@ -7,7 +7,7 @@ import { ApplicationEnum, BaseUrlEnum } from '@/iochord/chdsr/common/enums/index
 
 // Router
 import ChdsrRouter from '@/iochord/chdsr/ChdsrRouter';
-import AuthenticationRouter from '@/iochord/chdsr/authentication/routes/AuthenticationRouter';
+import AuthenticationRouter from '@/iochord/chdsr/user/authentication/routes/AuthenticationRouter';
 
 Vue.use(Router);
 

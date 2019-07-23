@@ -32,7 +32,7 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
-import BaseComponent from '@/iochord/chdsr/common/lib/vue/classes/BaseComponent';
+import BaseComponent from '@/iochord/chdsr/common/ui/layout/classes/BaseComponent';
 import FormComponent from '@/iochord/chdsr/sandbox/components/FormComponent.vue';
 
 

@@ -23,7 +23,7 @@
 import { Component, Vue } from 'vue-property-decorator';
 
 // Classes
-import IndexView from '@/iochord/chdsr/common/lib/vue/classes/IndexView';
+import IndexLayout from '@/iochord/chdsr/common/ui/layout/classes/IndexLayout';
 
 /**
  *
@@ -33,7 +33,7 @@ import IndexView from '@/iochord/chdsr/common/lib/vue/classes/IndexView';
  *
  */
 @Component
-export default class SandboxIndexView extends IndexView {
+export default class SandboxIndexView extends IndexLayout {
   public mounted(): void {
     //
   }
