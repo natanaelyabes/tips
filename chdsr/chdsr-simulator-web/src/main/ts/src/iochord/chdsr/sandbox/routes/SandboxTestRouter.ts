@@ -35,6 +35,11 @@ export default [
         name: `${BaseUrlEnum.IOCHORD}-${ApplicationEnum.NAME}-sandbox-editor-test`,
         component: () => import(/* webpackChunkName: "chdsr-sandbox-editor-test-view" */ '@/iochord/chdsr/sandbox/views/SandboxEditorTest.vue'),
       },
+      {
+        path: 'hello-world',
+        name: `${BaseUrlEnum.IOCHORD}-${ApplicationEnum.NAME}-hello-world`,
+        component: () => import(/* webpackChunkName: "chdsr-sandbox-hello-world" */ '@/iochord/chdsr/sandbox/views/SandboxHelloWorld.vue'),
+      },
     ],
   },
 ] as RouteConfig[];

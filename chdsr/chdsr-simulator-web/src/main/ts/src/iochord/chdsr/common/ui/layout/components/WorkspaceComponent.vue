@@ -4,9 +4,9 @@
   @since 2019
 -->
 <template>
-  <div class=" workspace component">
+  <div class="workspace component">
     <!-- Left sidebar -->
-    <SidebarComponent v-if="hasLeftSidebarComponent">
+    <SidebarComponent type="labeled icon" v-if="hasLeftSidebarComponent">
       <template slot="sidebar-menu-item">
         <slot name="left-sidebar-menu-item"></slot>
       </template>
@@ -23,7 +23,7 @@
     </ContentComponent>
 
     <!-- Right sidebar -->
-    <SidebarComponent v-if="hasRightSidebarComponent">
+    <SidebarComponent type="labeled icon" v-if="hasRightSidebarComponent">
       <template slot="sidebar-menu-item">
         <slot name="right-sidebar-menu-item"></slot>
       </template>

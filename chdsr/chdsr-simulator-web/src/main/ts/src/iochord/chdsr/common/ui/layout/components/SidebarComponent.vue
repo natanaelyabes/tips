@@ -5,7 +5,7 @@
 -->
 <template>
   <div class="sidebar component">
-    <NavigationBarComponent type="vertical labeled icon">
+    <NavigationBarComponent :type="'vertical ' + type">
       <template slot="menu-item">
         <slot name="sidebar-menu-item"></slot>
       </template>
@@ -62,7 +62,7 @@
 
 <script lang="ts">
 // Vue & Libraries
-import { Component, Vue } from 'vue-property-decorator';
+import { Component, Vue, Prop } from 'vue-property-decorator';
 
 // Components
 import NavigationBarComponent from '@/iochord/chdsr/common/ui/semantic-components/navigations/components/NavigationBarComponent.vue';
@@ -82,6 +82,6 @@ import BaseComponent from '@/iochord/chdsr/common/ui/layout/classes/BaseComponen
   },
 })
 export default class SidebarComponent extends BaseComponent {
-  //
+  @Prop() private type!: string;
 }
 </script>
