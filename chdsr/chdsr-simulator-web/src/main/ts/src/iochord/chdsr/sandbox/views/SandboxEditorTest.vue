@@ -92,7 +92,7 @@ export default class SandboxEditorTest extends PageLayout {
   private newItem: JointGraphNodeImpl | null = null;
   private newSelector: JointGraphNodeImpl | null = null;
 
-  private startPoint: { x: number, y: number } = { x: 0, y: 0 };
+  private startPoint: { x: number, y: number, direction?: 'left' | 'top' | 'right' | 'bottom' | 'top-left' | 'top-right' | 'bottom-right' | 'bottom-left' | undefined } = { x: 0, y: 0 };
 
   private activePage?: string;
 
@@ -129,7 +129,7 @@ export default class SandboxEditorTest extends PageLayout {
     this.startPoint.y = pointTransformed.y;
 
     this.dragging = true;
-    console.log(this.newSelector, ' Selector created');
+    console.log('Selector created');
   }
 
   public moveSelector(e: MouseEvent): void {
@@ -144,9 +144,8 @@ export default class SandboxEditorTest extends PageLayout {
       const pointTransformed = svgPoint.matrixTransform(this.jointPages.get(this.activePage as string)!.getPaper().viewport.getCTM()!.inverse());
 
       this.newSelector.setSize({
-        width: pointTransformed.x - this.startPoint.x,
-        height: pointTransformed.y - this.startPoint.y,
-        // direction: pointTransformed.x - this.startPoint.x > 0 &&
+        width: pointTransformed.x - this.startPoint.x < 0 ? 0 : pointTransformed.x - this.startPoint.x,
+        height: pointTransformed.y - this.startPoint.y < 0 ? 0 : pointTransformed.y - this.startPoint.y,
       });
 
       /** Set position according to the transformed point captured from MouseEvent */
@@ -164,7 +163,6 @@ export default class SandboxEditorTest extends PageLayout {
   public destroySelector(e: MouseEvent): void {
     this.dragging = false;
     if (this.newSelector !== null) {
-      console.log(this.newSelector.getNode());
       this.newSelector.getNode().remove();
       this.newSelector = new JointGraphNodeImpl();
       console.log('Destroy selector');
@@ -281,6 +279,7 @@ export default class SandboxEditorTest extends PageLayout {
   }
 
   public handleCanvasMouseDown(e: MouseEvent): void {
+    this.destroySelector(e);
     this.createSelector(e);
   }
 

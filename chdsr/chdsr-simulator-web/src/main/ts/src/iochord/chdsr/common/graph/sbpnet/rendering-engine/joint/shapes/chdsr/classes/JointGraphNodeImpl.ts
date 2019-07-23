@@ -16,7 +16,7 @@ export class JointGraphNodeImpl extends GraphNodeImpl implements JointGraphEleme
   private markup: string | null;
   private attr: joint.dia.Cell.Selectors | null;
   private position: { x: number, y: number } | null;
-  private size: { width: number, height: number, direction?: 'left' | 'top' | 'right' | 'bottom' | 'top-left' | 'top-right' | 'bottom-right' | 'bottom-left' | undefined } | null;
+  private size: { width: number, height: number } | null;
   private node: joint.shapes.basic.Generic = new joint.shapes.basic.Generic();
   private imageIcon: string = '';
 
