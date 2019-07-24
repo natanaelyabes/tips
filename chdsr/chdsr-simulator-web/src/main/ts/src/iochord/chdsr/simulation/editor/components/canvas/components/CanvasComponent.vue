@@ -208,6 +208,8 @@ export default class CanvasComponent extends BaseComponent {
     this.graph!.getPages()!
       .get(this.activePage!.getId() as string)!.getNodes()!
       .set(this.currentSelectedElement!.getId() as string, this.currentSelectedElement as GraphNode);
+
+    console.log(this.graph);
   }
 
   public changeStartGeneratorFromChild(e: any) {
