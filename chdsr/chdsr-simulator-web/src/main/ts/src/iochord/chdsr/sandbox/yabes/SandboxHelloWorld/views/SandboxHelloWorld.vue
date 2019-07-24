@@ -60,9 +60,9 @@
 
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator';
-import PageLayout from '../../common/ui/layout/classes/PageLayout';
-import DepthTwoLeftWrapperComponent from '../components/data-connection-component-yabes/DepthTwoLeftWrapperComponent.vue';
-import NavigationBarComponent from '../../common/ui/semantic-components/navigations/components/NavigationBarComponent.vue';
+import PageLayout from '@/iochord/chdsr/common/ui/layout/classes/PageLayout';
+import DepthTwoLeftWrapperComponent from '../components/DepthTwoLeftWrapperComponent.vue';
+import NavigationBarComponent from '@/iochord/chdsr/common/ui/semantic-components/navigations/components/NavigationBarComponent.vue';
 
 @Component({
   components: {

@@ -331,12 +331,18 @@ export default class SimulationEditorView extends Layout01View {
   public async mounted(): Promise<void> {
     try {
       this.graphData = await SbpnetModelService.getInstance().getExampleModel();
+      console.log(this.graphData);
     } catch (e) {
       console.error(e);
     }
 
     // Force re-render page component
     this.forceReRender();
+
+    // Always reload component when resizing content
+    window.addEventListener('resize', () => {
+      this.forceReRender();
+    });
   }
 
   /** @Override */
@@ -357,7 +363,6 @@ export default class SimulationEditorView extends Layout01View {
     if (this.modelPaneIsOpen) {
       this.modelPaneIsOpen = false;
       $('#canvas').width($('.editor.canvas').innerWidth() + 260);
-
     } else {
       this.modelPaneIsOpen = true;
       $('#canvas').width($('.editor.canvas').innerWidth() - 260);
