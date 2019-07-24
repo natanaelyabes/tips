@@ -33,9 +33,4 @@ export default [
     name: `${BaseUrlEnum.IOCHORD}-${ApplicationEnum.NAME}-hello-world`,
     component: () => import(/* webpackChunkName: "chdsr-sandbox-hello-world" */ '@/iochord/chdsr/sandbox/yabes/SandboxHelloWorld/views/SandboxHelloWorld.vue'),
   },
-  {
-    path: 'sandbox-data-connection',
-    name: `${BaseUrlEnum.IOCHORD}-${ApplicationEnum.NAME}-sandbox-data-connection`,
-    component: () => import(/* webpackChunkName: "chdsr-sandbox-data-connection-view" */ '@/iochord/chdsr/sandbox/riska/views/SandboxDataConnection.vue'),
-  },
 ] as RouteConfig[];

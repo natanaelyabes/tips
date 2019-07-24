@@ -16,6 +16,11 @@ export default [
   {
     path: 'sandbox-data-connection',
     name: `${BaseUrlEnum.IOCHORD}-${ApplicationEnum.NAME}-sandbox-data-connection`,
-    component: () => import(/* webpackChunkName: "chdsr-sandbox-data-connection-view" */ '@/iochord/chdsr/sandbox/riska/views/SandboxDataConnection.vue'),
+    component: () => import(/* webpackChunkName: "chdsr-sandbox-data-connection-view" */ '@/iochord/chdsr/sandbox/riska/SandboxDataConnection/views/SandboxDataConnection.vue'),
+  },
+  {
+    path: 'sandbox-data-management',
+    name: `${BaseUrlEnum.IOCHORD}-${ApplicationEnum.NAME}-sandbox-data-management`,
+    component: () => import(/* webpackChunkName: "chdsr-sandbox-data-connection-view" */ '@/iochord/chdsr/sandbox/riska/SandboxDataManagement/views/SandboxDataManagement.vue'),
   },
 ] as RouteConfig[];
