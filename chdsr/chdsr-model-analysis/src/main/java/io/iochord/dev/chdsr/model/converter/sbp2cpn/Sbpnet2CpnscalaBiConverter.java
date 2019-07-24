@@ -3,30 +3,6 @@ package io.iochord.dev.chdsr.model.converter.sbp2cpn;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-/*
-import org.cpntools.accesscpn.model.Arc;
-import org.cpntools.accesscpn.model.HLAnnotation;
-import org.cpntools.accesscpn.model.HLDeclaration;
-import org.cpntools.accesscpn.model.HLMarking;
-import org.cpntools.accesscpn.model.Instance;
-import org.cpntools.accesscpn.model.ModelFactory;
-import org.cpntools.accesscpn.model.Name;
-import org.cpntools.accesscpn.model.Node;
-import org.cpntools.accesscpn.model.Page;
-import org.cpntools.accesscpn.model.ParameterAssignment;
-import org.cpntools.accesscpn.model.PetriNet;
-import org.cpntools.accesscpn.model.Place;
-import org.cpntools.accesscpn.model.RefPlace;
-import org.cpntools.accesscpn.model.Sort;
-import org.cpntools.accesscpn.model.Transition;
-import org.cpntools.accesscpn.model.cpntypes.CPNProduct;
-import org.cpntools.accesscpn.model.cpntypes.CPNType;
-import org.cpntools.accesscpn.model.cpntypes.CpntypesFactory;
-import org.cpntools.accesscpn.model.declaration.DeclarationFactory;
-import org.cpntools.accesscpn.model.declaration.TypeDeclaration;
-import org.cpntools.accesscpn.model.declaration.VariableDeclaration;
-*/
-
 import io.iochord.dev.chdsr.model.converter.Converter;
 import io.iochord.dev.chdsr.model.sbpnet.v1.Connector;
 import io.iochord.dev.chdsr.model.sbpnet.v1.Data;
@@ -43,13 +19,13 @@ import io.iochord.dev.chdsr.model.sbpnet.v1.components.Queue;
 import io.iochord.dev.chdsr.model.sbpnet.v1.components.Resource;
 import io.iochord.dev.chdsr.model.sbpnet.v1.components.Start;
 import io.iochord.dev.chdsr.model.sbpnet.v1.components.Stop;
-import lombok.Getter;
 
+import io.iochord.dev.chdsr.model.cpn.v1.rep.*;
 /**
  * @author Nur Ichsan Utama <ichsan83@gmail.com>
  *
  */
-public class Sbpnet2CpnscalaBiConverter implements Converter<Sbpnet, String> {
+public class Sbpnet2CpnscalaBiConverter implements Converter<Sbpnet, CPNGraphRep> {
 	
 	class KeyElement {
 		final static String type = "Type";
@@ -298,7 +274,7 @@ public class Sbpnet2CpnscalaBiConverter implements Converter<Sbpnet, String> {
 		return addTimeid;
 	}
 	
-	public String convert(Sbpnet snet) {
+	public CPNGraphRep convert(Sbpnet snet) {
 		for (String pi : snet.getPages().keySet()) {
 			io.iochord.dev.chdsr.model.sbpnet.v1.Page p = snet.getPages().get(pi);
 			
@@ -473,10 +449,10 @@ public class Sbpnet2CpnscalaBiConverter implements Converter<Sbpnet, String> {
 			}
 		}
 		
-		return factory.toString();
+		return null;
 	}
 	
-	public Sbpnet revert(String scalacode) {
+	public Sbpnet revert(CPNGraphRep cgraphrep) {
 		return null;
 	}
 	

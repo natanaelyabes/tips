@@ -32,8 +32,6 @@ class Arc[T,B <:Bind] (
   
   def getPlace(): Place[T] = { place }
   
-  def setPlace(place:Place[T]) = { this.place = place }
-  
   def getTransition(): Transition[B] = transition
   
   def getDirection():Direction.Value = direction

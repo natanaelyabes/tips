@@ -31,57 +31,19 @@ case class Simulator() {
     return (false,null)
   }
   
-  def run(net:CPNGraph, stepsRef:Int = 10, globtime:GlobalTime = new GlobalTime(0L), subject:MarkingObservable = null) {
+  def getCurrentStep() = {
+    c
+  }
+  
+  def run(net: CPNGraph, stopCrit:Any => Boolean, inpStopCrit:Any, stepsRef:Int = 0, globtime:GlobalTime = new GlobalTime(0), subject:MarkingObservable = null) {
     val steps = c+stepsRef;
     
     val allTransitions = net.allTransitions
     
     var transitions:List[Transition[_]] = null
-    breakable {
-      while (steps > c) {
-        transitions = enabledTransitions(allTransitions,globtime)
-        if(transitions.size == 0) {
-          val (reseval, transitions_tmp) = evalGlobalTime(net, globtime)
-          if(!reseval)
-            break
-          transitions = transitions_tmp
-        }
-        
-        val r = new java.util.Random()
-        val transition = transitions(r.nextInt(transitions.length))
-        
-        val markbefore = Map[String,Any]()
-        val markafter = Map[String,Any]()
-        
-        transition.getIn().foreach(arc => { val multiset = arc.getPlace().getcurrentMarking().multiset; markbefore.put(arc.getPlace().getName(),multiset) } )
-        transition.getOut().foreach(arc => { val multiset = arc.getPlace().getcurrentMarking().multiset; markbefore.put(arc.getPlace().getName(),multiset) } )
-        
-        val bindingChosen = transition.execute(globtime.time)
-        
-        transition.getIn().foreach(arc => { val multiset = arc.getPlace().getcurrentMarking().multiset; markafter.put(arc.getPlace().getName(),multiset) } )
-        transition.getOut().foreach(arc => { val multiset = arc.getPlace().getcurrentMarking().multiset; markafter.put(arc.getPlace().getName(),multiset) } )
-        
-        if(subject != null) {
-          println("================ Step: "+c+" | globtime: "+globtime.time+" ================")
-          println("Transition: "+transition.getId(),transition.getName())
-          subject.setMarking((markbefore,markafter,transition.getId()+" - "+bindingChosen,globtime.getTime()))  
-        }
-        c += 1
-      }
-    }
-    
-    if (c != steps)
-      println("stop - no more enabled transitions")
-  }
-
-  def fastRun(net: CPNGraph, stopCrit:Any => Boolean, inpStopCrit:Any, globtime:GlobalTime = new GlobalTime(0), subject:MarkingObservable = null) {
-    
-    val allTransitions = net.allTransitions
-    
-    var transitions:List[Transition[_]] = null
     
     breakable {
-      while (!stopCrit(inpStopCrit)) {
+      while ((stepsRef < 0 || steps > c) && !stopCrit(inpStopCrit)) {
         transitions = enabledTransitions(allTransitions, globtime)
         if(transitions.size == 0) {
           val (reseval, transitions_tmp) = evalGlobalTime(net, globtime)

@@ -29,9 +29,9 @@ public class TestSimulator {
 		};
 		simulation.addObserver(obs);
 		
-		simulation.runStepSimulation(5);
-		simulation.runStepSimulation(3);
-		simulation.runStepSimulation(3);
+		simulation.runStep(5);
+		simulation.runStep(3);
+		simulation.runStep(3);
 		
 	}
 }
