@@ -37,40 +37,40 @@
 
       <template v-if="type === 'activity'">
         <ActivityNodeModal
-        @changeActNodeSelectedActivityType = "changeActNodeSelectedActivityTypeFromChild($event)"
-        @changeActNodeReport = "changeActNodeReportFromChild($event)"
-        @changeActNodeCustomMonitor = "changeActNodeCustomMonitorFromChild($event)"
-        @changeActNodeProcessingTime = "changeActNodeProcessingTimeFromChild($event)"
-        @changeActNodeParameter1 = "changeActNodeParameter1FromChild($event)"
-        @changeActNodeSetupTime = "changeActNodeSetupTimeFromChild($event)"
-        @changeActNodeParameter2 = "changeActNodeParameter2FromChild($event)"
-        @changeActNodeUnit = "changeActNodeUnitFromChild($event)"
-        @changeActNodeQueueLabel = "changeActNodeQueueLabelFromChild($event)"
-        @changeActNodeInputType = "changeActNodeInputTypeFromChild($event)"
-        @changeActNodeOutputType = "changeActNodeOutputTypeFromChild($event)"
-        @changeActNodeCodeSegment = "changeActNodeCodeSegmentFromChild($event)"
-        :actNodeSelectedActivityType = "parentActNodeSelectedActivityType"
-        :actNodeReport = "parentActNodeReport"
-        :actNodeCustomMonitor = "parentActNodeCustomMonitor"
-        :actNodeProcessingTime = "parentActNodeProcessingTime"
-        :actNodeParameter1 = "parentActNodeParameter1"
-        :actNodeSetupTime = "parentActNodeSetupTime"
-        :actNodeParameter2 = "parentActNodeParameter2"
-        :actNodeUnit = "parentActNodeUnit"
-        :actNodeQueueLabel = "parentActNodeQueueLabel"
-        :actNodeInputType = "parentActNodeInputType"
-        :actNodeOutputType = "parentActNodeOutputType"
-        :actNodeCodeSegment = "parentActNodeCodeSegment"
-        v-bind:id="type" v-bind:key="type"/>
+          @changeActNodeSelectedActivityType = "changeActNodeSelectedActivityTypeFromChild($event)"
+          @changeActNodeReport = "changeActNodeReportFromChild($event)"
+          @changeActNodeCustomMonitor = "changeActNodeCustomMonitorFromChild($event)"
+          @changeActNodeProcessingTime = "changeActNodeProcessingTimeFromChild($event)"
+          @changeActNodeParameter1 = "changeActNodeParameter1FromChild($event)"
+          @changeActNodeSetupTime = "changeActNodeSetupTimeFromChild($event)"
+          @changeActNodeParameter2 = "changeActNodeParameter2FromChild($event)"
+          @changeActNodeUnit = "changeActNodeUnitFromChild($event)"
+          @changeActNodeQueueLabel = "changeActNodeQueueLabelFromChild($event)"
+          @changeActNodeInputType = "changeActNodeInputTypeFromChild($event)"
+          @changeActNodeOutputType = "changeActNodeOutputTypeFromChild($event)"
+          @changeActNodeCodeSegment = "changeActNodeCodeSegmentFromChild($event)"
+          :actNodeSelectedActivityType = "parentActNodeSelectedActivityType"
+          :actNodeReport = "parentActNodeReport"
+          :actNodeCustomMonitor = "parentActNodeCustomMonitor"
+          :actNodeProcessingTime = "parentActNodeProcessingTime"
+          :actNodeParameter1 = "parentActNodeParameter1"
+          :actNodeSetupTime = "parentActNodeSetupTime"
+          :actNodeParameter2 = "parentActNodeParameter2"
+          :actNodeUnit = "parentActNodeUnit"
+          :actNodeQueueLabel = "parentActNodeQueueLabel"
+          :actNodeInputType = "parentActNodeInputType"
+          :actNodeOutputType = "parentActNodeOutputType"
+          :actNodeCodeSegment = "parentActNodeCodeSegment"
+          v-bind:id="type" v-bind:key="type"/>
       </template>
 
       <template v-if="type === 'stop'">
         <StopNodeModal
-        @changeStopLabel = "changeStopLabelFromChild($event)"
-        @changeStopReport = "changeStopReportFromChild($event)"
-        :stopLabel = "parentStopLabel"
-        :stopReport = "parentStopReport"
-        v-bind:id="type" v-bind:key="type"/>
+          @changeStopLabel = "changeStopLabelFromChild($event)"
+          @changeStopReport = "changeStopReportFromChild($event)"
+          :stopLabel = "parentStopLabel"
+          :stopReport = "parentStopReport"
+          v-bind:id="type" v-bind:key="type"/>
       </template>
     </template>
   </div>
@@ -158,9 +158,6 @@ export default class CanvasComponent extends BaseComponent {
   // Graph data
   public graph?: Graph;
 
-  // Active element
-  public selectedElement?: GraphElement;
-
   public parentStartLabel: string = '';
   public parentStartGenerator: string = '';
 
@@ -188,11 +185,11 @@ export default class CanvasComponent extends BaseComponent {
   public currentSelectedElement?: GraphNode;
   public activePage?: GraphPage;
 
-/*
-  Start Node functions
-  - Send changes from parent to child
-  - Retrieve changes from child to parent
-*/
+  /*
+    Start Node functions
+    - Send changes from parent to child
+    - Retrieve changes from child to parent
+  */
   public changeStartLabel(newVal: string): void {
     this.parentStartLabel = newVal;
   }
@@ -208,19 +205,18 @@ export default class CanvasComponent extends BaseComponent {
     this.graph!.getPages()!
       .get(this.activePage!.getId() as string)!.getNodes()!
       .set(this.currentSelectedElement!.getId() as string, this.currentSelectedElement as GraphNode);
-
-    console.log(this.graph);
+    this.loadGraph();
   }
 
   public changeStartGeneratorFromChild(e: any) {
     this.parentStartGenerator = e;
   }
 
-/*
-  Branch Node functions
-  - Send changes from parent to child
-  - Retrieve changes from child to parent
-*/
+  /*
+    Branch Node functions
+    - Send changes from parent to child
+    - Retrieve changes from child to parent
+  */
   public changeBranchLabel(newVal: string): void {
     this.parentBranchLabel = newVal;
   }
@@ -254,12 +250,11 @@ export default class CanvasComponent extends BaseComponent {
     this.parentBranchSelectedRule = e;
   }
 
-/*
-  Activity Node functions
-  - Send changes from parent to child
-  - Retrieve changes from child to parent
-*/
-
+  /*
+    Activity Node functions
+    - Send changes from parent to child
+    - Retrieve changes from child to parent
+  */
   public changeActNodeSelectedActivityType(newVal: string): void {
     this.parentActNodeSelectedActivityType = newVal;
   }
@@ -376,6 +371,7 @@ export default class CanvasComponent extends BaseComponent {
     this.graph!.getPages()!
       .get(this.activePage!.getId() as string)!.getNodes()!
       .set(this.currentSelectedElement!.getId() as string, this.currentSelectedElement as GraphNode);
+    this.loadGraph();
   }
 
   public changeStopReportFromChild(e: any) {
@@ -384,6 +380,7 @@ export default class CanvasComponent extends BaseComponent {
     this.graph!.getPages()!
       .get(this.activePage!.getId() as string)!.getNodes()!
       .set(this.currentSelectedElement!.getId() as string, this.currentSelectedElement as GraphNode);
+    this.loadGraph();
   }
 
   public mounted(): void {

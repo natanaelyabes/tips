@@ -52,17 +52,17 @@
 <script lang="ts">
 import { Component } from 'vue-property-decorator';
 import { Graph } from '@/iochord/chdsr/common/graph/sbpnet/interfaces/Graph';
-import { GraphConnector } from '../../common/graph/sbpnet/interfaces/GraphConnector';
-import { GraphData } from '../../common/graph/sbpnet/interfaces/GraphData';
+import { GraphConnector } from '@/iochord/chdsr/common/graph/sbpnet/interfaces/GraphConnector';
+import { GraphData } from '@/iochord/chdsr/common/graph/sbpnet/interfaces/GraphData';
 import { GraphImpl } from '@/iochord/chdsr/common/graph/sbpnet/classes/GraphImpl';
-import { GraphPage } from '../../common/graph/sbpnet/interfaces/GraphPage';
-import { GraphNode } from '../../common/graph/sbpnet/interfaces/GraphNode';
-import { JointGraphConnectorImpl } from '../../common/graph/sbpnet/rendering-engine/joint/shapes/chdsr/classes/JointGraphConnectorImpl';
-import { JointGraphNodeImpl } from '../../common/graph/sbpnet/rendering-engine/joint/shapes/chdsr/classes/JointGraphNodeImpl';
-import { JointGraphPageImpl } from '../../common/graph/sbpnet/rendering-engine/joint/shapes/chdsr/classes/JointGraphPageImpl';
-import { SbpnetModelService } from '../../common/service/model/SbpnetModelService';
-import { NODE_TYPE } from '../../common/graph/sbpnet/rendering-engine/joint/shapes/chdsr/enums/NODE';
-import { ARC_TYPE } from '../../common/graph/sbpnet/rendering-engine/joint/shapes/chdsr/enums/ARC';
+import { GraphPage } from '@/iochord/chdsr/common/graph/sbpnet/interfaces/GraphPage';
+import { GraphNode } from '@/iochord/chdsr/common/graph/sbpnet/interfaces/GraphNode';
+import { JointGraphConnectorImpl } from '@/iochord/chdsr/common/graph/sbpnet/rendering-engine/joint/shapes/chdsr/classes/JointGraphConnectorImpl';
+import { JointGraphNodeImpl } from '@/iochord/chdsr/common/graph/sbpnet/rendering-engine/joint/shapes/chdsr/classes/JointGraphNodeImpl';
+import { JointGraphPageImpl } from '@/iochord/chdsr/common/graph/sbpnet/rendering-engine/joint/shapes/chdsr/classes/JointGraphPageImpl';
+import { SbpnetModelService } from '@/iochord/chdsr/common/service/model/SbpnetModelService';
+import { NODE_TYPE } from '@/iochord/chdsr/common/graph/sbpnet/rendering-engine/joint/shapes/chdsr/enums/NODE';
+import { ARC_TYPE } from '@/iochord/chdsr/common/graph/sbpnet/rendering-engine/joint/shapes/chdsr/enums/ARC';
 import * as NODE_ENUMS from '@/iochord/chdsr/common/graph/sbpnet/enums/NODE';
 
 // JointJS
@@ -71,8 +71,8 @@ import '#root/node_modules/jointjs/dist/joint.css';
 
 // Class
 import PageLayout from '@/iochord/chdsr/common/ui/layout/classes/PageLayout';
-import { GraphNodeImpl } from '../../common/graph/sbpnet/classes/GraphNodeImpl';
-import { GraphActivityNodeImpl } from '../../common/graph/sbpnet/classes/components/GraphActivityNodeImpl';
+import { GraphNodeImpl } from '@/iochord/chdsr/common/graph/sbpnet/classes/GraphNodeImpl';
+import { GraphActivityNodeImpl } from '@/iochord/chdsr/common/graph/sbpnet/classes/components/GraphActivityNodeImpl';
 
 declare const $: any;
 
@@ -214,8 +214,8 @@ export default class SandboxEditorTest extends PageLayout {
 
       /** Set position according to the transformed point captured from MouseEvent */
       this.newItem.setPosition({
-        x: pointTransformed.x - (this.newItem.getSize()!.width / 2),
-        y: pointTransformed.y - (this.newItem.getSize()!.height / 2),
+        x: pointTransformed.x,
+        y: pointTransformed.y,
       });
 
       /** Focus newItem */

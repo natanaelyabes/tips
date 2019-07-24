@@ -5,9 +5,18 @@
 </template>
 
 <style>
+/**
+ *
+ * @package chdsr
+ * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
+ * @since 2019
+ *
+ */
 #chdsr-app {
   height: 100%;
+  zoom: 90%;
 }
+
 </style>
 
 
@@ -26,7 +35,6 @@ import IndexLayout from '@/iochord/chdsr/common/ui/layout/classes/IndexLayout';
  * @since 2019
  *
  */
-
 @Component
 export default class ChdsrApp extends IndexLayout {
   //
