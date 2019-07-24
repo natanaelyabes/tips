@@ -12,6 +12,6 @@ import BaseComponent from '../../../common/ui/layout/classes/BaseComponent';
 
 @Component
 export default class ContentTitleComponent extends BaseComponent {
-  
+
 }
 </script>
