@@ -1,14 +1,14 @@
 <template>
   <div class="depth two component">
     <!-- Depth One Menu Item -->
-    <SidebarComponent>
+    <SidebarComponent id="depth-one">
       <template slot="sidebar-menu-item">
         <slot name="depth-one-menu-item"></slot>
       </template>
     </SidebarComponent>
 
     <!-- Depth Two Menu Item -->
-    <SidebarComponent>
+    <SidebarComponent id="depth-two">
       <template slot="sidebar-menu-item">
         <slot name="depth-two-menu-item"></slot>
       </template>
@@ -44,6 +44,10 @@
   max-height: 100%;
   position: relative;
   display: flex;
+}
+
+#depth-one {
+  white-space: nowrap;
 }
 
 .ui.basic.segment {

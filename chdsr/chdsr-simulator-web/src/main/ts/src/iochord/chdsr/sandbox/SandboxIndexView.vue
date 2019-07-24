@@ -34,8 +34,6 @@ import IndexLayout from '@/iochord/chdsr/common/ui/layout/classes/IndexLayout';
  */
 @Component
 export default class SandboxIndexView extends IndexLayout {
-  public mounted(): void {
-    //
-  }
+
 }
 </script>
