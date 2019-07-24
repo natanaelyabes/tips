@@ -32,7 +32,7 @@
     </form>
 
     <h4 class="ui dividing header">Data Preview</h4>
-      <div style="overflow-x: scroll; overflow-y: scroll; height: 500px; width: 100%">
+      <div style="overflow-x: hidden; overflow-y: scroll; border: 1px solid rgba(34,36,38,.15); height: 500px; width: 100%">
         <table class="ui celled striped table">
           <thead>
             <tr>

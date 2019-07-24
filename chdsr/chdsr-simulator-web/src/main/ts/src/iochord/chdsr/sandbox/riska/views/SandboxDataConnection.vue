@@ -27,10 +27,10 @@
 
       <!-- Content -->
       <template slot="content">
-        <!-- <ContentOraclePropertiesComponent></ContentOraclePropertiesComponent>
-        <ContentFileQueryComponent></ContentFileQueryComponent>
-        <ContentDataViewComponent></ContentDataViewComponent> -->
-        <ContentDataUploadComponent></ContentDataUploadComponent>
+        <ContentOraclePropertiesComponent></ContentOraclePropertiesComponent>
+        <!-- <ContentFileQueryComponent></ContentFileQueryComponent> -->
+        <!-- <ContentDataViewComponent></ContentDataViewComponent> -->
+        <!-- <ContentDataUploadComponent></ContentDataUploadComponent> -->
       </template>
     </DepthTwoLeftWrapperComponent>
   </div>
@@ -42,6 +42,11 @@
 <style>
 .sandbox.data.connection {
   height: 100%;
+}
+
+a.section {
+  color: white!important;
+  text-decoration: underline;
 }
 </style>
 
