@@ -43,7 +43,7 @@ export default [
       {
         path: 'sandbox-data-connection',
         name: `${BaseUrlEnum.IOCHORD}-${ApplicationEnum.NAME}-sandbox-data-connection`,
-        component: () => import(/* webpackChunkName: "chdsr-sandbox-data-connection-view" */ '@/iochord/chdsr/sandbox/views/SandboxDataConnection.vue'),
+        component: () => import(/* webpackChunkName: "chdsr-sandbox-data-connection-view" */ '@/iochord/chdsr/sandbox/riska/views/SandboxDataConnection.vue'),
       },
     ],
   },
