@@ -58,7 +58,7 @@ import SidebarComponent from '../../../common/ui/layout/components/SidebarCompon
 
 @Component({
   components: {
-      SidebarComponent
+    SidebarComponent,
   },
 })
 export default class DepthTwoLeftWorkspaceComponent extends BaseComponent {

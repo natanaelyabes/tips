@@ -29,20 +29,20 @@
 </style>
 
 <script lang="ts">
-import { Vue, Component } from 'vue-property-decorator'
+import { Vue, Component } from 'vue-property-decorator';
 import PageLayout from '../../common/ui/layout/classes/PageLayout';
 import DepthTwoWrapperComponent from '../components/data-connection-components/DepthTwoWrapperComponent.vue';
 
 @Component({
   components: {
-    DepthTwoWrapperComponent
-  }
+    DepthTwoWrapperComponent,
+  },
 })
-export default class SandBoxDataConnection extends PageLayout{
+export default class SandBoxDataConnection extends PageLayout {
   public title: string = '';
 
-  public mounted(): void { //implement business logic
-   // alert('ding! DD ppang juwa');
+  public mounted(): void { // implement business logic
+    console.log('SandBoxDataConnection successfully initialized!');
   }
 
   /** @override */

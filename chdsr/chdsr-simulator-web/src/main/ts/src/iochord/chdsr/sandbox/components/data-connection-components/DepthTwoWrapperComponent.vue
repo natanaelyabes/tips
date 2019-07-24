@@ -48,7 +48,7 @@
 </style>
 
 <script lang="ts">
-import { Vue, Component } from 'vue-property-decorator'
+import { Vue, Component } from 'vue-property-decorator';
 import BaseComponent from '@/iochord/chdsr/common/ui/layout/classes/BaseComponent';
 import HeaderComponent from '../../../common/ui/layout/components/HeaderComponent.vue';
 import DepthTwoLeftWorkspaceComponent from './DepthTwoLeftWorkspaceComponent.vue';
@@ -58,8 +58,8 @@ import DepthTwoLeftWorkspaceComponent from './DepthTwoLeftWorkspaceComponent.vue
 @Component({
   components: {
     HeaderComponent,
-    DepthTwoLeftWorkspaceComponent
-  }
+    DepthTwoLeftWorkspaceComponent,
+  },
 })
 export default class DepthTwoWrapperComponent extends BaseComponent {
 
