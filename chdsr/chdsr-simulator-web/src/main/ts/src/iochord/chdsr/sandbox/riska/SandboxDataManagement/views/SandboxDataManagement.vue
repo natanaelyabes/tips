@@ -21,11 +21,12 @@
 
       <!-- Depth Two Left Sidebar Menu Item -->
       <template slot="depth-two-menu-item">
-        
+        <ItemFilterComponent></ItemFilterComponent>
       </template>
 
        <!-- Content -->
       <template slot="content">
+        <ContentFilterAttributesComponent></ContentFilterAttributesComponent>
       </template>
     </DepthTwoLeftWrapperComponent>
   </div>
@@ -35,16 +36,33 @@
 .sandbox.data.management {
   height: 100%;
 }
+
+a.section {
+  color: white!important;
+  text-decoration: underline;
+}
 </style>
 
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator';
 import Layout02View from '@/iochord/chdsr/sandbox/riska/SandboxDataConnection/classes/Layout02';
 import DepthTwoLeftWrapperComponent from '@/iochord/chdsr/sandbox/riska/SandboxDataConnection/components/DepthTwoLeftWrapperComponent.vue';
+import ItemFilterComponent from '../components/ItemFilterComponent.vue';
+import ContentHistoryComponent from '../components/ContentHistoryComponent.vue';
+import ContentMappingComponent from '../components/ContentMappingComponent.vue';
+import ContentFilterTimeComponent from '../components/ContentFilterTimeComponent.vue';
+import ContentFilterPerformanceComponent from '../components/ContentFilterPerformanceComponent.vue';
+import ContentFilterAttributesComponent from '../components/ContentFilterAttributesComponent.vue';
 
 @Component({
   components: {
     DepthTwoLeftWrapperComponent,
+    ItemFilterComponent,
+    ContentHistoryComponent,
+    ContentMappingComponent,
+    ContentFilterTimeComponent,
+    ContentFilterPerformanceComponent,
+    ContentFilterAttributesComponent,
   },
 })
 export default class SandboxDataManagement extends Layout02View {
