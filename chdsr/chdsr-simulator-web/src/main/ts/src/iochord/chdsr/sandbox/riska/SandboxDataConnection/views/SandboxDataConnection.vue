@@ -47,18 +47,18 @@
 
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator';
-import Layout02View from '../classes/Layout02';
-import DepthTwoLeftWrapperComponent from '../components/data-connection-components/DepthTwoLeftWrapperComponent.vue';
-import ContentOraclePropertiesComponent from '../components/data-connection-components/ContentOraclePropertiesComponent.vue';
-import ContentMssqlPropertiesComponent from '../components/data-connection-components/ContentMssqlPropertiesComponent.vue';
-import ContentMysqlPropertiesComponent from '../components/data-connection-components/ContentMysqlPropertiesComponent.vue';
-import ContentHadoopPropertiesComponent from '../components/data-connection-components/ContentHadoopPropertiesComponent.vue';
-import ContentDataViewComponent from '../components/data-connection-components/ContentDataViewComponent.vue';
-import ContentDataUploadComponent from '../components/data-connection-components/ContentDataUploadComponent.vue';
-import ContentQueryComponent from '../components/data-connection-components/ContentQueryComponent.vue';
-import ContentFileQueryComponent from '../components/data-connection-components/ContentFileQueryComponent.vue';
-import ItemUploadComponent from '../components/data-connection-components/ItemUploadComponent.vue';
-import ItemConnectionComponent from '../components/data-connection-components/ItemConnectionComponent.vue';
+import Layout02View from '@/iochord/chdsr/sandbox/riska/SandboxDataConnection/classes/Layout02';
+import DepthTwoLeftWrapperComponent from '../components/DepthTwoLeftWrapperComponent.vue';
+import ContentOraclePropertiesComponent from '../components/ContentOraclePropertiesComponent.vue';
+import ContentMssqlPropertiesComponent from '../components/ContentMssqlPropertiesComponent.vue';
+import ContentMysqlPropertiesComponent from '../components/ContentMysqlPropertiesComponent.vue';
+import ContentHadoopPropertiesComponent from '../components/ContentHadoopPropertiesComponent.vue';
+import ContentDataViewComponent from '../components/ContentDataViewComponent.vue';
+import ContentDataUploadComponent from '../components/ContentDataUploadComponent.vue';
+import ContentQueryComponent from '../components/ContentQueryComponent.vue';
+import ContentFileQueryComponent from '../components/ContentFileQueryComponent.vue';
+import ItemUploadComponent from '../components/ItemUploadComponent.vue';
+import ItemConnectionComponent from '../components/ItemConnectionComponent.vue';
 
 @Component({
   components: {

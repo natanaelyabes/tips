@@ -1,4 +1,4 @@
-import PageLayout from '../../../common/ui/layout/classes/PageLayout';
+import PageLayout from '@/iochord/chdsr/common/ui/layout/classes/PageLayout';
 import { Layout02HasWrapper } from '../interfaces/Layout02HasWrapper';
 import { Component } from 'vue-property-decorator';
 
