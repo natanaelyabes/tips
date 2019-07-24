@@ -10,7 +10,6 @@ import java.util.Observer
 abstract class Simulation(val simulator:Simulator = new Simulator()) {
   val cgraph = CPNGraph()
   val globtime = new GlobalTime(0)
-  var step:Int = 10
   var stopCrit:Any => Boolean = null
   var inpStopCrit:Any = null
   var subject:MarkingObservable = new MarkingObservable()
@@ -19,19 +18,39 @@ abstract class Simulation(val simulator:Simulator = new Simulator()) {
     subject.addObserver(observer)
   }
   
-  def runStepSimulation(n:Int): Unit = {
-    step = n
-    simulator.run(cgraph, step, globtime, subject)
+  def runStep(n:Int): Unit = {
+    this.stopCrit = (stop:Any) => stop match { case stop:Boolean => stop }
+    this.inpStopCrit = false
+    
+    simulator.run(cgraph, stopCrit, inpStopCrit, n, globtime, subject)
+  }
+  
+  def runStepTime(timeUntil:Long, n:Int) = {
+    this.stopCrit = (globT:Any) => globT match { case globT:GlobalTime => globT.time >= timeUntil }
+    this.inpStopCrit = globtime
+    
+    if(n <= 0)
+      simulator.run(cgraph, stopCrit, inpStopCrit, -1, globtime, subject)
+    else
+      simulator.run(cgraph, stopCrit, inpStopCrit, n, globtime, subject)
+  }
+  
+  def getCurrentStep() = {
+    simulator.getCurrentStep()
+  }
+  
+  def getCurrentTime() = {
+    globtime.getTime();
   }
   
   def runUntilMaxArrival(): Unit = {
     this.stopCrit = (stop:Any) => stop match { case stop:Boolean => stop }
     this.inpStopCrit = false
     
-    simulator.fastRun(cgraph, stopCrit, inpStopCrit, globtime, subject)
+    simulator.run(cgraph, stopCrit, inpStopCrit, -1, globtime, subject)
   }
   
-  def runStopCriteriaSimulation(stopCritLoc:Any => Boolean = (stop:Any) => stop match { case stop:Boolean => stop }, inpStopCritLoc:Any = false): Unit = {
-    simulator.fastRun(cgraph, stopCrit, inpStopCrit, globtime, subject)
+  def runStopCriteria(stopCritLoc:Any => Boolean = (stop:Any) => stop match { case stop:Boolean => stop }, inpStopCritLoc:Any = false): Unit = {
+    simulator.run(cgraph, stopCrit, inpStopCrit, -1, globtime, subject)
   }
 }

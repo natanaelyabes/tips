@@ -105,21 +105,12 @@ object SimpleTest {
     cgraph.addArc(arc2)
     cgraph.addArc(arc3)
     
-    /*
-    val stopCrit = (p: Any) => p match { case p:Place[_] => { 
-      	p.getcurrentMarking().multiset.keys.filter(_._1 > 2).size > 0
-      } 
-    }
-    */
     val globtime = new GlobalTime(0)
     
-    new Simulator().run(cgraph, 4, globtime, subject)
+    val stopCrit = (stop:Any) => stop match { case stop:Boolean => stop }
+    val inpStopCrit = false
     
-    val stopCrit = (globtime: Any) => globtime match { case globtime:GlobalTime => { 
-        globtime.time > 3000
-      }
-    }
+    new Simulator().run(cgraph, stopCrit, inpStopCrit, 4, globtime, subject)
     
-    //Simulator.fastRun(cgraph, stopCrit, globtime, globtime, subject)
   }
 }
