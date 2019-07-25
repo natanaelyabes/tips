@@ -47,4 +47,9 @@ export default [
     name: `${BaseUrlEnum.IOCHORD}-${ApplicationEnum.NAME}-graph-store`,
     component: () => import(/* webpackChunkName: "chdsr-sandbox-graph-store" */ '@/iochord/chdsr/sandbox/yabes/SandboxGraphStore/views/SandboxGraphStoreView.vue'),
   },
+  {
+    path: 'joint-js-tutorial',
+    name: `${BaseUrlEnum.IOCHORD}-${ApplicationEnum.NAME}-joint-js-tutorial`,
+    component: () => import(/* webpackChunkName: "chdsr-sandbox-joint-js-tutorial" */ '@/iochord/chdsr/sandbox/yabes/SandboxJointJs/views/SandboxJointJsView.vue'),
+  },
 ] as RouteConfig[];

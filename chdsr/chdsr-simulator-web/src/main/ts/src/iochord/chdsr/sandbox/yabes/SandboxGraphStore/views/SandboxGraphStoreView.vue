@@ -23,7 +23,7 @@ export default class SandboxGraphStoreView extends PageLayout {
 
   /** @Override */
   public async mounted(): Promise<void> {
-    graphModule.fetchGraph();
+    await graphModule.fetchGraph();
     console.log(graphModule.graph);
   }
 }

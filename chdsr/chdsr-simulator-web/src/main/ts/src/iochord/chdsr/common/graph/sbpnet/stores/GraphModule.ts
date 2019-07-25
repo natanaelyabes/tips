@@ -19,7 +19,7 @@ export default class GraphModule extends VuexModule {
   public graph: Graph = {} as Graph;
 
   @MutationAction({ mutate: ['graph'] })
-  public async fetchGraph() {
+  public async fetchGraph(url?: string) {
     const graph: Graph = await SbpnetModelService.getInstance().getExampleModel();
     return { graph };
   }
