@@ -20,3 +20,12 @@ export const DATA_TYPE = {
   queue: GraphDataQueueImpl,
   resource: GraphDataResourceImpl,
 };
+
+export enum DATA_TYPE_ENUM {
+  datatable,
+  objecttype,
+  generator,
+  function,
+  queue,
+  resource,
+}

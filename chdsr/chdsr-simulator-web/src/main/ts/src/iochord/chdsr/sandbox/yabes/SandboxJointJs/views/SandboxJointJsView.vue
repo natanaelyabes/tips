@@ -100,11 +100,9 @@ export default class SandboxJointJsView extends PageLayout {
       stroke: 'black',
     });
 
-    (onToTurnOff.findView(paper) as joint.dia.LinkView).sendToken((token as any), {
-      duration: 10000 }, () => {
-        console.log('animation end');
-      }
-    );
+    (onToTurnOff.findView(paper) as joint.dia.LinkView).sendToken((token as any), { duration: 10000 }, () => {
+      console.log('animation end');
+    });
   }
 }
 </script>
