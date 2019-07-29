@@ -27,10 +27,17 @@ export default class SandboxGraphStoreView extends PageLayout {
   public async mounted(): Promise<void> {
     await graphModule.fetchGraph();
     const page = graphModule.page('0') as GraphPage;
-    console.log(page);
-    console.log(graphModule.pageArc(page, '0'));
-    console.log(graphModule.pageData(page, 'resource'));
-    console.log(graphModule.pageDatum(page, 'objecttype', '1'));
+    console.log('Page 0: ', page);
+    console.log('Default page: ', graphModule.defaultPage as GraphPage);
+    console.log('Page 0 Arcs: ', graphModule.pageArcs(page));
+    console.log('Page 0 Arc 0', graphModule.pageArc(page, '0'));
+    console.log('Page 0 Data', graphModule.pageData(page));
+    console.log('Page 0 Data 0', graphModule.pageDatum(page, '0'));
+    console.log('Page 0 Type', graphModule.pageElementType(page));
+    console.log('Page 0 Id', graphModule.pageId(page));
+    console.log('Page 0 Label', graphModule.pageLabel(page));
+    console.log('Page 0 Nodes', graphModule.pageNodes(page));
+    console.log('Page 0 Node 0', graphModule.pageNode(page, '0'));
   }
 }
 </script>
