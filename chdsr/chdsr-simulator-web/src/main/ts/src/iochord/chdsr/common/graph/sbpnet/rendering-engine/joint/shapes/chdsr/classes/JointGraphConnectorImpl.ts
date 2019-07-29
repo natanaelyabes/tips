@@ -57,6 +57,8 @@ export class JointGraphConnectorImpl extends GraphConnectorImpl implements Joint
 
     this.connector.source(source);
     this.connector.target(target);
+    this.connector.attributes.arcId = this.getId();
+
     this.connector.addTo(graph);
   }
 }

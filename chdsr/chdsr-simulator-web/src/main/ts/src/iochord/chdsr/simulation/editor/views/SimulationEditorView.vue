@@ -331,7 +331,6 @@ export default class SimulationEditorView extends Layout01View {
   public async mounted(): Promise<void> {
     try {
       this.graphData = await SbpnetModelService.getInstance().getExampleModel();
-      console.log(this.graphData);
     } catch (e) {
       console.error(e);
     }

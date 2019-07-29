@@ -129,7 +129,6 @@ export default class SandboxEditorTest extends PageLayout {
     this.startPoint.y = pointTransformed.y;
 
     this.dragging = true;
-    console.log('Selector created');
   }
 
   public moveSelector(e: MouseEvent): void {
@@ -155,8 +154,6 @@ export default class SandboxEditorTest extends PageLayout {
       });
 
       this.newSelector.render(this.jointPages.get(this.activePage as string)!.getGraph());
-
-      console.log('Move selector');
     }
   }
 
@@ -165,7 +162,6 @@ export default class SandboxEditorTest extends PageLayout {
     if (this.newSelector !== null) {
       this.newSelector.getNode().remove();
       this.newSelector = new JointGraphNodeImpl();
-      console.log('Destroy selector');
     }
   }
 
@@ -218,9 +214,7 @@ export default class SandboxEditorTest extends PageLayout {
         y: pointTransformed.y,
       });
 
-      /** Focus newItem */
-      this.newItem.getNode().attr('border/strokeWidth', 2);
-      this.newItem.getNode().attr('border/stroke', 'blue');
+      /** Render newItem */
       this.newItem.render(this.jointPages.get(this.activePage as string)!.getGraph());
 
       /** Listen to keydown event to check esc button */
@@ -266,10 +260,6 @@ export default class SandboxEditorTest extends PageLayout {
       /** Add newItem to GraphNodeInstance */
       GraphNodeImpl.instance.set(this.newItem.getId() as string, (NODE_ENUMS.NODE_TYPE as any)[this.newItem.getType() as string].deserialize(this.newItem));
 
-      /** Unfocus the newly created item */
-      this.newItem.getNode().attr('border/strokeWidth', 0);
-      this.newItem.getNode().attr('border/stroke', 'transparent');
-
       /** Set newItem container variable to null */
       this.newItem = null;
 
@@ -279,18 +269,18 @@ export default class SandboxEditorTest extends PageLayout {
   }
 
   public handleCanvasMouseDown(e: MouseEvent): void {
-    this.destroySelector(e);
-    this.createSelector(e);
+    // this.destroySelector(e);
+    // this.createSelector(e);
   }
 
   public handleCanvasMouseMove(e: MouseEvent): void {
     this.moveItem(e);
-    this.moveSelector(e);
+    // this.moveSelector(e);
   }
 
   public handleCanvasMouseUp(e: MouseEvent): void {
     this.saveItem(e);
-    this.destroySelector(e);
+    // this.destroySelector(e);
   }
 
   /** @Override */
@@ -406,7 +396,6 @@ export default class SandboxEditorTest extends PageLayout {
           edgeSep: 300,
           nodeSep: 200,
           rankSep: 80,
-          // align: 'UL',
         } as joint.layout.DirectedGraph.LayoutOptions);
 
         // Center the view
@@ -420,41 +409,49 @@ export default class SandboxEditorTest extends PageLayout {
           'element:pointerdown': (elementView: joint.dia.ElementView) => {
             resetAll(jointPage.getPaper());
             const currentElement = elementView.model;
-            currentElement.attr('border/strokeWidth', 2);
-            currentElement.attr('border/stroke', 'blue');
-
-            // window.addEventListener('keydown', this.handleSelectedElement);
+            currentElement.findView(jointPage.getPaper()).highlight();
           },
-
           'element:pointerdblclick': (elementView: joint.dia.ElementView) => {
             resetAll(jointPage.getPaper());
             const currentElement = elementView.model;
             const currentElementType = currentElement.attributes.type;
-            currentElement.attr('border/strokeWidth', 2);
-            currentElement.attr('border/stroke', 'blue');
+            currentElement.findView(jointPage.getPaper()).highlight();
           },
-
           'element:contextmenu': (elementView: joint.dia.ElementView) => {
+            resetAll(jointPage.getPaper());
             const currentElement = elementView.model;
             const currentElementType = currentElement.attributes.type;
             const currentElementNodeId = currentElement.attributes.nodeId;
+            currentElement.findView(jointPage.getPaper()).highlight();
+          },
+          'cell:highlight': (elementView: joint.dia.ElementView) => {
+            const currentElement = elementView.model;
+            const links = jointPage.getGraph().getConnectedLinks(currentElement);
 
-            currentElement.attr('border/strokeWidth', 2);
-            currentElement.attr('border/stroke', 'blue');
+            window.addEventListener('keydown', (e: KeyboardEvent) => {
+              if (e.keyCode === 46) {
+
+                // Remove node
+                jointPage.getNodes()!.delete(currentElement.attributes.nodeId);
+                currentElement.remove();
+
+                console.log(this.graphData);
+
+                // Remove link
+                links.forEach((link) => {
+                  jointPage.getArcs()!.delete(link.attributes.arcId);
+                  link.remove();
+                });
+              }
+            });
           },
         });
 
         this.jointPages.set(jointPage.getId() as string, jointPage);
 
         function resetAll(_paper: joint.dia.Paper) {
-
           /** Reset all elements in the paper */
-          const elements = _paper.model.getElements();
-          for (let i = 0, ii = elements.length; i < ii; i++) {
-            const currentElement = elements[i];
-            currentElement.attr('border/strokeWidth', 0);
-            currentElement.attr('border/stroke', 'transparent');
-          }
+          _paper.findViewsInArea(jointPage.getPaper().getArea()).forEach((cell) => { cell.unhighlight(); });
         }
       }
     } catch (e) {
