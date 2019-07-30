@@ -435,8 +435,6 @@ export default class SandboxEditorTest extends PageLayout {
                 jointPage.getNodes()!.delete(currentElement.attributes.nodeId);
                 currentElement.remove();
 
-                console.log(this.graphData);
-
                 // Remove link
                 links.forEach((link) => {
                   jointPage.getArcs()!.delete(link.attributes.arcId);

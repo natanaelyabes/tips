@@ -9,6 +9,7 @@ import { GraphControl } from '../interfaces/components/GraphControl';
 import { SbpnetModelService } from '../../../service/model/SbpnetModelService';
 
 import Vuex from 'vuex';
+import { GraphNode } from '../interfaces/GraphNode';
 
 interface StoreType {
   graphModule: GraphModule;
@@ -71,8 +72,10 @@ export default class GraphModule extends VuexModule {
           const elType = res.value.split('-')[1];
           const dId = res.value.split('-')[2];
 
+          const id = `${page.getId()}-${elType}-${dId}`;
+
           if (elType === elementType) {
-            result.set(dId, data!.get(dId) as GraphData);
+            result.set(id, data!.get(id) as GraphData);
           }
 
           res = keys ? keys.next() : null;
@@ -85,13 +88,14 @@ export default class GraphModule extends VuexModule {
     };
   }
 
-  public get pageDatum(): (page: GraphPage, elementType: string, datumId: string) => GraphData | null {
-    return (page: GraphPage, elementType: string, datumId: string) => {
+  public get pageDatum(): (page: GraphPage, datumId: string) => GraphData | null {
+    return (page: GraphPage, datumId: string) => {
       const data = this.pageData(page) !== null ? this.pageData(page) : null;
       const keys = (data as Map<string, GraphData>).keys();
 
       const findKeyId: (keys: IterableIterator<string>) => string[] | undefined = () => {
         let result = keys.next();
+
         while (!result.done) {
           const elType = result.value.split('-')[1];
           const dId = result.value.split('-')[2];
@@ -106,8 +110,90 @@ export default class GraphModule extends VuexModule {
 
       const keyId = findKeyId(keys);
 
-      const datum = (data as Map<string, GraphData>).get(`${page.getId()}-${keyId![0]}-${keyId![1]}`);
-      return datum !== null || datum !== undefined ? datum as GraphData : null;
+      if (keyId) {
+        const datum = (data as Map<string, GraphData>).get(`${page.getId()}-${keyId[0]}-${keyId[1]}`);
+        return datum !== null || datum !== undefined ? datum as GraphData : null;
+      } else {
+        return null;
+      }
+    };
+  }
+
+  public get pageElementType(): (page: GraphPage) => string | null {
+    return (page: GraphPage) => {
+      return ((this.graph.getPages() as Map<string, GraphPage>).get(page.getId() as string) as GraphPage).getType() as string;
+    };
+  }
+
+  public get pageId(): (page: GraphPage) => string | null {
+    return (page: GraphPage) => {
+      return ((this.graph.getPages() as Map<string, GraphPage>).get(page.getId() as string) as GraphPage).getId() as string;
+    };
+  }
+
+  public get pageLabel(): (page: GraphPage) => string | null {
+    return (page: GraphPage) => {
+      return ((this.graph.getPages() as Map<string, GraphPage>).get(page.getId() as string) as GraphPage).getLabel() as string;
+    };
+  }
+
+  public get pageNodes(): (page: GraphPage, elementType?: string) => Map<string, GraphData> | null {
+    return (page: GraphPage, elementType?: string) => {
+      let result: Map<string, GraphNode> | null = new Map<string, GraphNode>();
+      const nodes = page.getNodes() ? page.getNodes() : null;
+
+      if (elementType) {
+        const keys = nodes ? nodes.keys() : null;
+        let res = keys ? keys.next() : null;
+
+        while (res && !res.done) {
+          const elType = res.value.split('-')[1];
+          const nId = res.value.split('-')[2];
+
+          const id = `${page.getId()}-${elType}-${nId}`;
+
+          if (elType === elementType) {
+            result.set(id, nodes!.get(id) as GraphNode);
+          }
+
+          res = keys ? keys.next() : null;
+        }
+
+      } else {
+        result = nodes !== null ? nodes : null;
+      }
+      return result;
+    };
+  }
+
+  public get pageNode(): (page: GraphPage, nodeId: string) => GraphNode | null {
+    return (page: GraphPage, nodeId: string) => {
+      const nodes = this.pageNodes(page) !== null ? this.pageNodes(page) : null;
+      const keys = (nodes as Map<string, GraphNode>).keys();
+
+      const findKeyId: (keys: IterableIterator<string>) => string[] | undefined = () => {
+        let result = keys.next();
+
+        while (!result.done) {
+          const elType = result.value.split('-')[1];
+          const nId = result.value.split('-')[2];
+
+          if (nId === nodeId) {
+            return [elType, nId];
+          }
+
+          result = keys.next();
+        }
+      };
+
+      const keyId = findKeyId(keys);
+
+      if (keyId) {
+        const node = (nodes as Map<string, GraphNode>).get(`${page.getId()}-${keyId[0]}-${keyId[1]}`);
+        return node !== null || node !== undefined ? node as GraphNode : null;
+      } else {
+        return null;
+      }
     };
   }
 
