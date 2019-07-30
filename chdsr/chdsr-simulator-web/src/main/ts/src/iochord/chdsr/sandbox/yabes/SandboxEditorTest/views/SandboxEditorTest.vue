@@ -50,29 +50,40 @@
 </style>
 
 <script lang="ts">
+// Vue & Libraries
 import { Component } from 'vue-property-decorator';
+import { getModule } from 'vuex-module-decorators';
+
+// Interfaces
 import { Graph } from '@/iochord/chdsr/common/graph/sbpnet/interfaces/Graph';
 import { GraphConnector } from '@/iochord/chdsr/common/graph/sbpnet/interfaces/GraphConnector';
 import { GraphData } from '@/iochord/chdsr/common/graph/sbpnet/interfaces/GraphData';
-import { GraphImpl } from '@/iochord/chdsr/common/graph/sbpnet/classes/GraphImpl';
 import { GraphPage } from '@/iochord/chdsr/common/graph/sbpnet/interfaces/GraphPage';
 import { GraphNode } from '@/iochord/chdsr/common/graph/sbpnet/interfaces/GraphNode';
-import { JointGraphConnectorImpl } from '@/iochord/chdsr/common/graph/sbpnet/rendering-engine/joint/shapes/chdsr/classes/JointGraphConnectorImpl';
-import { JointGraphNodeImpl } from '@/iochord/chdsr/common/graph/sbpnet/rendering-engine/joint/shapes/chdsr/classes/JointGraphNodeImpl';
-import { JointGraphPageImpl } from '@/iochord/chdsr/common/graph/sbpnet/rendering-engine/joint/shapes/chdsr/classes/JointGraphPageImpl';
+
+// Services
 import { SbpnetModelService } from '@/iochord/chdsr/common/service/model/SbpnetModelService';
+
+// Enums
 import { NODE_TYPE } from '@/iochord/chdsr/common/graph/sbpnet/rendering-engine/joint/shapes/chdsr/enums/NODE';
 import { ARC_TYPE } from '@/iochord/chdsr/common/graph/sbpnet/rendering-engine/joint/shapes/chdsr/enums/ARC';
 import * as NODE_ENUMS from '@/iochord/chdsr/common/graph/sbpnet/enums/NODE';
 
+// Classes
+import PageLayout from '@/iochord/chdsr/common/ui/layout/classes/PageLayout';
+import { GraphActivityNodeImpl } from '@/iochord/chdsr/common/graph/sbpnet/classes/components/GraphActivityNodeImpl';
+import { GraphImpl } from '@/iochord/chdsr/common/graph/sbpnet/classes/GraphImpl';
+import { GraphNodeImpl } from '@/iochord/chdsr/common/graph/sbpnet/classes/GraphNodeImpl';
+import { JointGraphConnectorImpl } from '@/iochord/chdsr/common/graph/sbpnet/rendering-engine/joint/shapes/chdsr/classes/JointGraphConnectorImpl';
+import { JointGraphNodeImpl } from '@/iochord/chdsr/common/graph/sbpnet/rendering-engine/joint/shapes/chdsr/classes/JointGraphNodeImpl';
+import { JointGraphPageImpl } from '@/iochord/chdsr/common/graph/sbpnet/rendering-engine/joint/shapes/chdsr/classes/JointGraphPageImpl';
+
+// Vuex module
+import GraphModule from '@/iochord/chdsr/common/graph/sbpnet/stores/GraphModule';
+
 // JointJS
 import * as joint from 'jointjs';
 import '#root/node_modules/jointjs/dist/joint.css';
-
-// Class
-import PageLayout from '@/iochord/chdsr/common/ui/layout/classes/PageLayout';
-import { GraphNodeImpl } from '@/iochord/chdsr/common/graph/sbpnet/classes/GraphNodeImpl';
-import { GraphActivityNodeImpl } from '@/iochord/chdsr/common/graph/sbpnet/classes/components/GraphActivityNodeImpl';
 
 declare const $: any;
 
@@ -83,6 +94,8 @@ enum NODE {
   branch,
   monitor,
 }
+
+const graphModule = getModule(GraphModule);
 
 @Component
 export default class SandboxEditorTest extends PageLayout {
@@ -254,8 +267,17 @@ export default class SandboxEditorTest extends PageLayout {
     if (this.newItem !== null) {
 
       /** Add newItem to GraphData */
-      const nodes = (this.graphData.getPages()!.get(this.activePage as string) as GraphPage).getNodes() as Map<string, GraphNode>;
-      nodes.set(this.newItem.getId() as string, (NODE_ENUMS.NODE_TYPE as any)[this.newItem.getType() as string].deserialize(this.newItem));
+      // const nodes = (this.graphData.getPages()!.get(this.activePage as string) as GraphPage).getNodes() as Map<string, GraphNode>;
+      // nodes.set(this.newItem.getId() as string, (NODE_ENUMS.NODE_TYPE as any)[this.newItem.getType() as string].deserialize(this.newItem));
+
+      graphModule.addPageNode(
+        {
+          page: graphModule.graph.getPages()!.get(this.activePage as string) as GraphPage,
+          node: this.newItem as GraphNode,
+        },
+      );
+
+      console.log(graphModule.graph);
 
       /** Add newItem to GraphNodeInstance */
       GraphNodeImpl.instance.set(this.newItem.getId() as string, (NODE_ENUMS.NODE_TYPE as any)[this.newItem.getType() as string].deserialize(this.newItem));
@@ -286,10 +308,12 @@ export default class SandboxEditorTest extends PageLayout {
   /** @Override */
   public async mounted(): Promise<void> {
     try {
-      this.graphData = await SbpnetModelService.getInstance().getExampleModel();
+      // this.graphData = await SbpnetModelService.getInstance().getExampleModel();
+
+      await graphModule.fetchGraph();
 
       // Loop the model page
-      for (const [key, value] of this.graphData.getPages() as Map<string, GraphPage>) {
+      for (const [key, value] of graphModule.graph.getPages() as Map<string, GraphPage>) {
         const jointPage: JointGraphPageImpl = new JointGraphPageImpl();
         const canvasWidth: number = $('#canvas-container').innerWidth();
         const canvasHeight: number = $('#canvas-container').innerHeight();

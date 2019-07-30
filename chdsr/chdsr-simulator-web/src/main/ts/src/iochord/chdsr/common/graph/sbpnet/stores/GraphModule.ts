@@ -3,7 +3,7 @@ import { GraphConnector } from '@/iochord/chdsr/common/graph/sbpnet/interfaces/G
 import { GraphData } from './../interfaces/GraphData';
 import { GraphConfiguration } from './../interfaces/GraphConfiguration';
 import { GraphPage } from '@/iochord/chdsr/common/graph/sbpnet/interfaces/GraphPage';
-import { VuexModule, Module, MutationAction } from 'vuex-module-decorators';
+import { VuexModule, Module, MutationAction, Mutation, Action } from 'vuex-module-decorators';
 import { Graph } from '../interfaces/Graph';
 import { GraphControl } from '../interfaces/components/GraphControl';
 import { SbpnetModelService } from '../../../service/model/SbpnetModelService';
@@ -21,12 +21,287 @@ const store = new Vuex.Store<StoreType>({});
 export default class GraphModule extends VuexModule {
   public graph: Graph = {} as Graph;
 
+  // Mutations
   @MutationAction({ mutate: ['graph'] })
   public async fetchGraph(url?: string) {
     const graph: Graph = await SbpnetModelService.getInstance().getExampleModel();
     return { graph };
   }
 
+  @Mutation
+  public setPages(pages: Map<string, GraphPage>): void {
+    this.graph.setPages(pages);
+  }
+
+  @Mutation
+  public setDefaultPage(page: GraphPage): void {
+    this.graph.setDefaultPage(page);
+  }
+
+  @Mutation
+  public addPage(page: GraphPage): void {
+    const pages = this.graph.getPages();
+
+    if (pages !== null) {
+      const exists = pages.get(page.getId() as string);
+      if (exists) {
+        throw new Error(`Page ${page.getId()} had existed in Graph ${this.graph.getId()}`);
+      }
+      pages.set(page.getId() as string, page);
+    }
+  }
+
+  @Mutation
+  public overridePage(page: GraphPage): void {
+    const pages = this.graph.getPages();
+
+    if (pages !== null) {
+      const exists = pages.get(page.getId() as string);
+      if (exists) {
+        pages.set(page.getId() as string, page);
+      } else {
+        this.addPage(page);
+      }
+    }
+  }
+
+  @Mutation
+  public deletePage(page: GraphPage): void {
+    const pages = this.graph.getPages();
+
+    if (pages !== null) {
+      const exists = pages.get(page.getId() as string);
+      if (exists) {
+        pages.delete(page.getId() as string);
+      } else {
+        throw new Error(`Page ${page.getId()} does not exists in Graph ${this.graph.getId()}`);
+      }
+    }
+  }
+
+  @Mutation
+  public setPageArcs(page: GraphPage, arcs: Map<string, GraphConnector>): void {
+    const pages = this.graph.getPages();
+
+    if (pages !== null) {
+      const exists = pages.get(page.getId() as string);
+      if (exists) {
+        exists.setArcs(arcs);
+      } else {
+        throw new Error(`Page ${page.getId()} does not exists in Graph ${this.graph.getId()}`);
+      }
+    }
+  }
+
+  @Mutation
+  public addPageArc(page: GraphPage, arc: GraphConnector) {
+    const arcs = page.getArcs();
+
+    if (arcs !== null) {
+      const exists = arcs.get(arc.getId() as string);
+      if (exists) {
+        throw new Error(`Arc ${arc.getId()} had existed in Page ${page.getId()}`);
+      }
+      arcs.set(arc.getId() as string, arc);
+    }
+  }
+
+  @Mutation
+  public overridePageArc(page: GraphPage, arc: GraphConnector) {
+    const arcs = page.getArcs();
+
+    if (arcs !== null) {
+      const exists = arcs.get(arc.getId() as string);
+      if (exists) {
+        arcs.set(arc.getId() as string, arc);
+      } else {
+        this.addPageArc(page, arc);
+      }
+    }
+  }
+
+  @Mutation
+  public deletePageArc(page: GraphPage, arc: GraphConnector) {
+    const arcs = page.getArcs();
+
+    if (arcs !== null) {
+      const exists = arcs.get(arc.getId() as string);
+      if (exists) {
+        arcs.delete(arc.getId() as string);
+      } else {
+        throw new Error(`Arc ${arc.getId()} had existed in Page ${page.getId()}`);
+      }
+    }
+  }
+
+  @Mutation
+  public setPageData(page: GraphPage, data: Map<string, GraphData>): void {
+    const pages = this.graph.getPages();
+
+    if (pages !== null) {
+      const exists = pages.get(page.getId() as string);
+      if (exists) {
+        exists.setData(data);
+      } else {
+        throw new Error(`Page ${page.getId()} does not exists in Graph ${this.graph.getId()}`);
+      }
+    }
+  }
+
+  @Mutation
+  public addPageDatum(page: GraphPage, datum: GraphData): void {
+    const data = page.getData();
+
+    if (data !== null) {
+      const exists = data.get(datum.getId() as string);
+      if (exists) {
+        throw new Error(`Datum ${datum.getId()} had existed in Page ${page.getId()}`);
+      }
+      data.set(datum.getId() as string, datum);
+    }
+  }
+
+  @Mutation
+  public overridePageDatum(page: GraphPage, datum: GraphData) {
+    const data = page.getData();
+
+    if (data !== null) {
+      const exists = data.get(datum.getId() as string);
+      if (exists) {
+        data.set(datum.getId() as string, datum);
+      } else {
+        this.addPageDatum(page, datum);
+      }
+    }
+  }
+
+  @Mutation
+  public deletePageDatum(page: GraphPage, datum: GraphData) {
+    const data = page.getData();
+
+    if (data !== null) {
+      const exists = data.get(datum.getId() as string);
+      if (exists) {
+        data.delete(datum.getId() as string);
+      } else {
+        throw new Error(`Datum ${datum.getId()} had existed in Page ${page.getId()}`);
+      }
+    }
+  }
+
+  @Mutation
+  public setPageElementType(page: GraphPage, elementType: string) {
+    const pages = this.graph.getPages();
+
+    if (pages !== null) {
+      const exists = pages.get(page.getId() as string);
+      if (exists) {
+        exists.setType(elementType);
+      } else {
+        throw new Error(`Page ${page.getId()} does not exists in Graph ${this.graph.getId()}`);
+      }
+    }
+  }
+
+  @Mutation
+  public setPageId(page: GraphPage, id: string) {
+    const pages = this.graph.getPages();
+
+    if (pages !== null) {
+      const exists = pages.get(page.getId() as string);
+      if (exists) {
+        exists.setId(id);
+      } else {
+        throw new Error(`Page ${page.getId()} does not exists in Graph ${this.graph.getId()}`);
+      }
+    }
+  }
+
+  @Mutation
+  public setPageLabel(page: GraphPage, label: string) {
+    const pages = this.graph.getPages();
+
+    if (pages !== null) {
+      const exists = pages.get(page.getId() as string);
+      if (exists) {
+        exists.setLabel(label);
+      } else {
+        throw new Error(`Page ${page.getId()} does not exists in Graph ${this.graph.getId()}`);
+      }
+    }
+  }
+
+  @Mutation
+  public setPageNodes(page: GraphPage, nodes: Map<string, GraphNode>) {
+    const pages = this.graph.getPages();
+
+    if (pages !== null) {
+      const exists = pages.get(page.getId() as string);
+      if (exists) {
+        exists.setNodes(nodes);
+      } else {
+        throw new Error(`Page ${page.getId()} does not exists in Graph ${this.graph.getId()}`);
+      }
+    }
+  }
+
+  @Mutation
+  public addPageNode({page, node}: {page: GraphPage, node: GraphNode}): void {
+    const nodes = page.getNodes();
+
+    if (nodes !== null) {
+      const exists = nodes.get(node.getId() as string);
+      if (exists) {
+        throw new Error(`Node ${node.getId()} had existed in Page ${page.getId()}`);
+      }
+      nodes.set(node.getId() as string, node);
+    }
+  }
+
+  @Mutation
+  public overridePageNode(page: GraphPage, node: GraphNode) {
+    const nodes = page.getNodes();
+
+    if (nodes !== null) {
+      const exists = nodes.get(node.getId() as string);
+      if (exists) {
+        nodes.set(node.getId() as string, node);
+      } else {
+        this.addPageNode({page, node});
+      }
+    }
+  }
+
+  @Mutation
+  public deletePageNode(page: GraphPage, node: GraphNode) {
+    const nodes = page.getNodes();
+
+    if (nodes !== null) {
+      const exists = nodes.get(node.getId() as string);
+      if (exists) {
+        nodes.delete(node.getId() as string);
+      } else {
+        throw new Error(`Datum ${node.getId()} had existed in Page ${page.getId()}`);
+      }
+    }
+  }
+
+  @Mutation
+  public setConfigurations(configurations: Map<string, GraphConfiguration>): void {
+    this.graph.setConfigurations(configurations);
+  }
+
+  @Mutation
+  public setControl(control: GraphControl): void {
+    this.graph.setControl(control);
+  }
+
+  @Mutation
+  public setData(data: Map<string, GraphData>): void {
+    this.graph.setData(data);
+  }
+
+  // Getters
   public get version(): string | null {
     return this.graph ? this.graph.getVersion() : null;
   }
