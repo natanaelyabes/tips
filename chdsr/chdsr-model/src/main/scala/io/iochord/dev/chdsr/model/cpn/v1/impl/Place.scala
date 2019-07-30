@@ -23,7 +23,7 @@ class Place[T] (
 
   def addTokenWithTime(tokenWithTime: Any, noToken: Int)  { currentMarking + (tokenWithTime.asInstanceOf[(T,Long)],noToken) }
   
-  def getcurrentMarking():Multiset[T] = currentMarking
+  def getCurrentMarking():Multiset[T] = currentMarking
   
   def setCurrentMarking(cm:Multiset[T]) { currentMarking = cm }
   

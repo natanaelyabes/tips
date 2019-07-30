@@ -86,7 +86,7 @@ class Transition[B <:Bind] (
     {
       val arc = iterator.next() match { case arc:Arc[_,B] => arc }
       
-      val tokensBefGlobTime = arc.getPlace().getcurrentMarking().multiset.filter(tokenWT => tokenWT._1._2 <= globtime)
+      val tokensBefGlobTime = arc.getPlace().getCurrentMarking().multiset.filter(tokenWT => tokenWT._1._2 <= globtime)
       
       val mapListBinding = Map[B,Int]()
       var listBinding = List[B]()
@@ -150,7 +150,7 @@ class Transition[B <:Bind] (
     in.foreach(arc => { 
       val optTokenChosen = arc.computeArcExp(arc.computeBindToToken(bindingChosen))
       if(optTokenChosen != None) {
-        val setTokenWTChosen = arc.getPlace().getcurrentMarking().multiset.keys.filter(tokenWT => { tokenWT._2 <= globtime && optTokenChosen.get == tokenWT._1 } ).toIterator
+        val setTokenWTChosen = arc.getPlace().getCurrentMarking().multiset.keys.filter(tokenWT => { tokenWT._2 <= globtime && optTokenChosen.get == tokenWT._1 } ).toIterator
         for(i <- 1 to arc.getNoTokArcExp()) {
           if(setTokenWTChosen.hasNext)
           {
