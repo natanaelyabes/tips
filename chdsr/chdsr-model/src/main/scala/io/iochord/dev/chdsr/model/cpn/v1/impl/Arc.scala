@@ -1,6 +1,7 @@
 package io.iochord.dev.chdsr.model.cpn.v1.impl
 
 import io.iochord.dev.chdsr.model.cpn.v1._
+import scala.collection.mutable.Map
 
 //PtT -> Place to Transition and TtP -> Transition to Place
 object Direction extends Enumeration {
@@ -22,6 +23,9 @@ class Arc[T,B <:Bind] (
   private var BtoTV:B => T = null
   private var addTime:B => Long = null
   
+  private var origin:Map[String,String] = null
+  private var attributes:Map[String,Any] = null
+  
   def getColtype(): Class[_] = { coltype }
   
   type coltype = T
@@ -39,6 +43,14 @@ class Arc[T,B <:Bind] (
   def getId(): String = id
   
   def setId(id: String) { this.id = id }
+  
+  def getOrigin(): Map[String,String] = origin
+  
+  def setOrigin(origin: Map[String,String]) { this.origin = origin }
+  
+  def getAttributes(): Map[String,Any] = attributes
+  
+  def setAttributes(attributes: Map[String,Any]) { this.attributes = attributes }
   
   def setTokenToBind(TtoB:coltype => B) = { TtoBV = TtoB }
   
