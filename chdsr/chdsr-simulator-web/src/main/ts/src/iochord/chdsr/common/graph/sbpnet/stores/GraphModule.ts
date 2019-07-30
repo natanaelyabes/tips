@@ -246,7 +246,7 @@ export default class GraphModule extends VuexModule {
   }
 
   @Mutation
-  public addPageNode(page: GraphPage, node: GraphNode): void {
+  public addPageNode({page, node}: {page: GraphPage, node: GraphNode}): void {
     const nodes = page.getNodes();
 
     if (nodes !== null) {
@@ -267,7 +267,7 @@ export default class GraphModule extends VuexModule {
       if (exists) {
         nodes.set(node.getId() as string, node);
       } else {
-        this.addPageNode(page, node);
+        this.addPageNode({page, node});
       }
     }
   }

@@ -300,9 +300,14 @@ import WrapperComponent from '@/iochord/chdsr/common/ui/layout/components/Wrappe
 import { SbpnetModelService } from '@/iochord/chdsr/common/service/model/SbpnetModelService';
 import { GraphImpl } from '@/iochord/chdsr/common/graph/sbpnet/classes/GraphImpl';
 import { Graph } from '@/iochord/chdsr/common/graph/sbpnet/interfaces/Graph';
+import { getModule } from 'vuex-module-decorators';
+import GraphModule from '@/iochord/chdsr/common/graph/sbpnet/stores/GraphModule';
 
 // Async component must be lazily load
 const CanvasComponent = () => import('@/iochord/chdsr/simulation/editor/components/canvas/components/CanvasComponent.vue');
+
+// Vuex module
+const graphModule = getModule(GraphModule);
 
 declare const $: any;
 
@@ -325,12 +330,11 @@ export default class SimulationEditorView extends Layout01View {
   public editing: boolean = true;
   public modelPaneIsOpen: boolean = true;
 
-  public graphData: Graph = new GraphImpl();
-
   /** @Override */
   public async mounted(): Promise<void> {
     try {
-      this.graphData = await SbpnetModelService.getInstance().getExampleModel();
+      // await graphModule.fetchGraph(); // fetchGraph must capture the latest state of graph, otherwise, it will render only the example graph
+      console.log(graphModule.graph);
     } catch (e) {
       console.error(e);
     }
@@ -342,6 +346,10 @@ export default class SimulationEditorView extends Layout01View {
     window.addEventListener('resize', () => {
       this.forceReRender();
     });
+  }
+
+  public get graphData(): Graph {
+    return graphModule.graph;
   }
 
   /** @Override */
