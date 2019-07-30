@@ -19,7 +19,7 @@ case class Simulator() {
 
   private def evalGlobalTime(net:CPNGraph, globtime:GlobalTime):(Boolean,List[Transition[_]]) = {
     var times = List[Long]()
-    net.allPlaces.foreach(place => { val multiset = place.getcurrentMarking().multiset; multiset.keys.filter(_._2 > globtime.time).foreach(key => { times = key._2::times }) })
+    net.allPlaces.foreach(place => { val multiset = place.getCurrentMarking().multiset; multiset.keys.filter(_._2 > globtime.time).foreach(key => { times = key._2::times }) })
     times = times.distinct.sorted
     times.foreach(time => {
       val trans = net.allTransitions.filter(t => {t.isEnabled(time)})
@@ -58,13 +58,13 @@ case class Simulator() {
         val markbefore = Map[String,Any]()
         val markafter = Map[String,Any]()
         
-        transition.getIn().foreach(arc => { val multiset = arc.getPlace().getcurrentMarking().multiset; markbefore.put(arc.getPlace().getName(),multiset) } )
-        transition.getOut().foreach(arc => { val multiset = arc.getPlace().getcurrentMarking().multiset; markbefore.put(arc.getPlace().getName(),multiset) } )
+        transition.getIn().foreach(arc => { val multiset = arc.getPlace().getCurrentMarking().multiset; markbefore.put(arc.getPlace().getName(),multiset) } )
+        transition.getOut().foreach(arc => { val multiset = arc.getPlace().getCurrentMarking().multiset; markbefore.put(arc.getPlace().getName(),multiset) } )
         
         val bindingChosen = transition.execute(globtime.time)
         
-        transition.getIn().foreach(arc => { val multiset = arc.getPlace().getcurrentMarking().multiset; markafter.put(arc.getPlace().getName(),multiset) } )
-        transition.getOut().foreach(arc => { val multiset = arc.getPlace().getcurrentMarking().multiset; markafter.put(arc.getPlace().getName(),multiset) } )
+        transition.getIn().foreach(arc => { val multiset = arc.getPlace().getCurrentMarking().multiset; markafter.put(arc.getPlace().getName(),multiset) } )
+        transition.getOut().foreach(arc => { val multiset = arc.getPlace().getCurrentMarking().multiset; markafter.put(arc.getPlace().getName(),multiset) } )
         
         if(subject != null) {
           println("================ Step: "+c+" | globtime: "+globtime.time+" ================")

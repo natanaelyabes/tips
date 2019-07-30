@@ -14,6 +14,10 @@ abstract class Simulation(val simulator:Simulator = new Simulator()) {
   var inpStopCrit:Any = null
   var subject:MarkingObservable = new MarkingObservable()
   
+  def getPetriNet():CPNGraph = {
+    this.cgraph
+  }
+  
   def addObserver(observer:Observer) {
     subject.addObserver(observer)
   }

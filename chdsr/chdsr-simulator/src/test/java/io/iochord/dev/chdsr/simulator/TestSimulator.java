@@ -3,6 +3,9 @@ package io.iochord.dev.chdsr.simulator;
 import java.util.Observable;
 import java.util.Observer;
 
+import io.iochord.dev.chdsr.model.cpn.v1.impl.CPNGraph;
+import io.iochord.dev.chdsr.model.cpn.v1.impl.Place;
+import io.iochord.dev.chdsr.model.cpn.v1.impl.Transition;
 import io.iochord.dev.chdsr.simulator.compiler.MemoryScalaFileCompiler;
 import io.iochord.dev.chdsr.simulator.compiler.Simulation;
 
@@ -32,6 +35,16 @@ public class TestSimulator {
 		simulation.runStep(5);
 		simulation.runStep(3);
 		simulation.runStep(3);
+		
+		CPNGraph cgraph = simulation.getPetriNet();
+		for(Transition t : cgraph.getTransitions()) {
+			System.out.println(t.getId());
+		}
+		
+		for(Place p : cgraph.getPlaces()) {
+			System.out.println(p.getId());
+			System.out.println(p.getCurrentMarking().getMap());
+		}
 		
 	}
 }

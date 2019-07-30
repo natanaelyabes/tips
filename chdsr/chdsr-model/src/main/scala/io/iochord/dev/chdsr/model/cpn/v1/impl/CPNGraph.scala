@@ -1,7 +1,10 @@
 package io.iochord.dev.chdsr.model.cpn.v1.impl
 
 import scala.collection.mutable.HashMap
+import collection.JavaConverters._
+
 import io.iochord.dev.chdsr.model.cpn.v1._
+
 
 class CPNGraph {
   private var places = HashMap[String, Place[_]]()
@@ -72,14 +75,11 @@ class CPNGraph {
 	    arc.getTransition().removeOut(arc)
 	}
 	
-	def getPlaces():HashMap[String, Place[_]] = places
-	def setPlaces(locplaces: HashMap[String, Place[_]]) { places = locplaces }
+	def getPlaces():java.util.List[Place[_]] = allPlaces.asJava
 	
-	def getTransitions():HashMap[String, Transition[_]] = transitions
-	def setTransitions(loctransitions: HashMap[String, Transition[_]]) { transitions = loctransitions }
+	def getTransitions():java.util.List[Transition[_]] = allTransitions.asJava
 	
-	def getArcs():List[Arc[_,_]] = arcs
-	def setArcs(arcs: List[Arc[_,_]]) { this.arcs = arcs }
+	def getArcs():java.util.List[Arc[_,_]] = arcs.asJava
 }
 
 object CPNGraph {

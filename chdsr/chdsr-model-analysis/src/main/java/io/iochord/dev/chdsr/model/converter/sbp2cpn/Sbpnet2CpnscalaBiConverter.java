@@ -77,7 +77,7 @@ public class Sbpnet2CpnscalaBiConverter implements Converter<Sbpnet, String> {
 		placefactory.append( "val "+mapid+" = Map[("+type+",Long),Int]( "+initialMarking+" )\n" );
 		placefactory.append( "val "+multisetid+" = new Multiset["+type+"]("+mapid+")\n" );
 		placefactory.append( "val "+placeid+" = new Place(\""+placeid+"\",\""+name+"\","+multisetid+")\n" );
-		placefactory.append( placeid+".setOrigin(Map[String,String]("+origin+","+name+"))" );
+		placefactory.append( placeid+".setOrigin(Map[String,String]((\""+origin+"\",\""+name+"\")))\n" );
 		placefactory.append( "cgraph.addPlace("+placeid+")\n" );
 		placefactory.append("\n");
 		
@@ -99,7 +99,7 @@ public class Sbpnet2CpnscalaBiConverter implements Converter<Sbpnet, String> {
 		transfactory.append( "val "+transitionid+" = new Transition["+classbinding+"](\""+transitionid+"\",\""+name+"\","+guard+","+action+")\n" );
 		transfactory.append( transitionid+".setEval("+eval+")\n" );
 		transfactory.append( transitionid+".setMerge("+merge+")\n" );
-		transfactory.append( transitionid+".setOrigin(Map[String,String]("+origin+","+name+"))" );
+		transfactory.append( transitionid+".setOrigin(Map[String,String]((\""+origin+"\",\""+name+"\")))\n" );
 		transfactory.append( "cgraph.addTransition("+transitionid+")\n" );
 		transfactory.append("\n");
 		
@@ -220,7 +220,7 @@ public class Sbpnet2CpnscalaBiConverter implements Converter<Sbpnet, String> {
 			arcfactory.append( arcid+".setAddTime("+addTime+")\n" );
 		if(noToken != null)
 			arcfactory.append( arcid+".setNoTokArcExp("+noToken+")\n" );
-		arcfactory.append( arcid+".setOrigin(Map[String,String]("+origin+","+arcid+"))" );
+		arcfactory.append( arcid+".setOrigin(Map[String,String]((\""+origin+"\",\""+arcid+"\")))\n" );
 		arcfactory.append( "cgraph.addArc("+arcid+")\n" );
 		arcfactory.append("\n");
 		
