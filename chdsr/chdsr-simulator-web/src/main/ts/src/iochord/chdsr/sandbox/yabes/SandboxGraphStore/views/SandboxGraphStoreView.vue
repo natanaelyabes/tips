@@ -24,9 +24,15 @@ const graphModule = getModule(GraphModule);
 export default class SandboxGraphStoreView extends PageLayout {
 
   /** @Override */
+  public overrideBrowserProperties(): void {
+    this.setDocumentTitle('Graph Store');
+  }
+
+  /** @Override */
   public async mounted(): Promise<void> {
     await graphModule.fetchGraph();
     const page = graphModule.page('0') as GraphPage;
+    console.log('Graph: ', graphModule.graph);
     console.log('Page 0: ', page);
     console.log('Default page: ', graphModule.defaultPage as GraphPage);
     console.log('Page 0 Arcs: ', graphModule.pageArcs(page));
@@ -38,6 +44,9 @@ export default class SandboxGraphStoreView extends PageLayout {
     console.log('Page 0 Label', graphModule.pageLabel(page));
     console.log('Page 0 Nodes', graphModule.pageNodes(page));
     console.log('Page 0 Node 0', graphModule.pageNode(page, '0'));
+
+    /** Delete tests */
+    // console.log('Delete Page 0', graphModule.deletePage(page), graphModule.graph);
   }
 }
 </script>
