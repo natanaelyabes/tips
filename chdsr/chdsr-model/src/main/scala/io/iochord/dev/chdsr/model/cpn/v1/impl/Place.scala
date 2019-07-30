@@ -3,6 +3,7 @@ package io.iochord.dev.chdsr.model.cpn.v1.impl
 import io.iochord.dev.chdsr.model.cpn.v1._
 
 import scala.collection.generic._
+import scala.collection.mutable.Map
 
 class Place[T] (
   private var id: String,
@@ -10,6 +11,9 @@ class Place[T] (
   private var initialMarking: Multiset[T]) extends Element with Node {
   
   private var currentMarking = initialMarking
+  
+  private var origin:Map[String,String] = null
+  private var attributes:Map[String,Any] = null
   
   def initState() = currentMarking = initialMarking
   
@@ -30,6 +34,14 @@ class Place[T] (
   def getName():String = name
   
   def setName(name: String) { this.name = name }
+  
+  def getOrigin(): Map[String,String] = origin
+  
+  def setOrigin(origin: Map[String,String]) { this.origin = origin }
+  
+  def getAttributes(): Map[String,Any] = attributes
+  
+  def setAttributes(attributes: Map[String,Any]) { this.attributes = attributes }
   
   override def toString = name
 }

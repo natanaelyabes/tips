@@ -893,5 +893,3 @@ arc00000054.setBindToToken(bTt00000054)
 arc00000054.setBindToToken(bTt00000054)
 cgraph.addArc(arc00000054)
 
-stopCrit = (stop:Any) => stop match { case stop:Boolean => stop }
-inpStopCrit = false

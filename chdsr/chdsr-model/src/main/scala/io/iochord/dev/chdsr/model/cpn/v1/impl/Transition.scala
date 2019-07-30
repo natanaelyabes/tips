@@ -19,6 +19,9 @@ class Transition[B <:Bind] (
   
   private var lbeBase:List[B] = null
   
+  private var origin:Map[String,String] = null
+  private var attributes:Map[String,Any] = null
+  
   private def evalFull[T] = (b1:B, b2:B, noToken:Int, arc:Arc[T,B]) => {
     val b = if(arc.getIsBase()) b1 else arc.computeTokenToBind(arc.computeArcExp(arc.computeBindToToken(b1)).get)
     getEval()(b, b2) && noToken >= arc.getNoTokArcExp()
@@ -58,6 +61,14 @@ class Transition[B <:Bind] (
   def getName():String = name
   
   def setName(name: String) { this.name = name }
+  
+  def getOrigin(): Map[String,String] = origin
+  
+  def setOrigin(origin: Map[String,String]) { this.origin = origin }
+  
+  def getAttributes(): Map[String,Any] = attributes
+  
+  def setAttributes(attributes: Map[String,Any]) { this.attributes = attributes }
   
   def getGuard(): Guard[B] = guard
   
