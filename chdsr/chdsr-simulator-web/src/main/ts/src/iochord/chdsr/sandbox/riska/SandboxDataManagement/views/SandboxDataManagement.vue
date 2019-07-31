@@ -26,7 +26,7 @@
 
        <!-- Content -->
       <template slot="content">
-        <ContentFilterAttributesComponent></ContentFilterAttributesComponent>
+        <ContentFilterTimeComponent></ContentFilterTimeComponent>
       </template>
     </DepthTwoLeftWrapperComponent>
   </div>
@@ -53,6 +53,8 @@ import ContentMappingComponent from '../components/ContentMappingComponent.vue';
 import ContentFilterTimeComponent from '../components/ContentFilterTimeComponent.vue';
 import ContentFilterPerformanceComponent from '../components/ContentFilterPerformanceComponent.vue';
 import ContentFilterAttributesComponent from '../components/ContentFilterAttributesComponent.vue';
+import ContentFilterFollowerComponent from '../components/ContentFilterFollowerComponent.vue';
+import ContentFilterPointsComponent from '../components/ContentFilterPointsComponent.vue';
 
 @Component({
   components: {
@@ -63,6 +65,8 @@ import ContentFilterAttributesComponent from '../components/ContentFilterAttribu
     ContentFilterTimeComponent,
     ContentFilterPerformanceComponent,
     ContentFilterAttributesComponent,
+    ContentFilterFollowerComponent,
+    ContentFilterPointsComponent,
   },
 })
 export default class SandboxDataManagement extends Layout02View {

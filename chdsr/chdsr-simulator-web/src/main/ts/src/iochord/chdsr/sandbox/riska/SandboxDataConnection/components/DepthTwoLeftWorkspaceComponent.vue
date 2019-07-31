@@ -19,12 +19,11 @@
       <slot name="content"></slot>
     </div>
 
-
-
-
-    <!-- <template name="depth-two-menu">
-      <slot name="depth-two-menu">dsdksdjk</slot>
-    </template> -->
+    <!-- <SidebarComponent type="labeled icon" v-if="hasRightSidebarComponent">
+      <template slot="sidebar-menu-item">
+        <slot name="right-sidebar-menu-item"></slot>
+      </template>
+    </SidebarComponent> -->
   </div>
 
 
