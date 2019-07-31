@@ -302,6 +302,7 @@ import { GraphImpl } from '@/iochord/chdsr/common/graph/sbpnet/classes/GraphImpl
 import { Graph } from '@/iochord/chdsr/common/graph/sbpnet/interfaces/Graph';
 import { getModule } from 'vuex-module-decorators';
 import GraphModule from '@/iochord/chdsr/common/graph/sbpnet/stores/GraphModule';
+import GraphSubject from '../../../common/graph/sbpnet/rxjs/GraphSubject';
 
 // Async component must be lazily load
 const CanvasComponent = () => import('@/iochord/chdsr/simulation/editor/components/canvas/components/CanvasComponent.vue');
@@ -318,10 +319,17 @@ declare const $: any;
  * @since 2019
  *
  */
-@Component({
+@Component<SimulationEditorView>({
   components: {
     WrapperComponent,
     CanvasComponent,
+  },
+  subscriptions: () => {
+    return (
+      {
+        graph: GraphSubject.toObservable(),
+      }
+    );
   },
 })
 export default class SimulationEditorView extends Layout01View {
@@ -333,8 +341,9 @@ export default class SimulationEditorView extends Layout01View {
   /** @Override */
   public async mounted(): Promise<void> {
     try {
-      // await graphModule.fetchGraph(); // fetchGraph must capture the latest state of graph, otherwise, it will render only the example graph
-      console.log(graphModule.graph);
+      this.$observables.graph.subscribe((graph: Graph) => {
+        graphModule.setGraph(graph);
+      });
     } catch (e) {
       console.error(e);
     }

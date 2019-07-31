@@ -81,6 +81,9 @@ import { JointGraphPageImpl } from '@/iochord/chdsr/common/graph/sbpnet/renderin
 // Vuex module
 import GraphModule from '@/iochord/chdsr/common/graph/sbpnet/stores/GraphModule';
 
+// RxJs subject
+import GraphSubject from '@/iochord/chdsr/common/graph/sbpnet/rxjs/GraphSubject';
+
 // JointJS
 import * as joint from 'jointjs';
 import '#root/node_modules/jointjs/dist/joint.css';
@@ -97,12 +100,20 @@ enum NODE {
 
 const graphModule = getModule(GraphModule);
 
-@Component
+@Component<SandboxEditorTest>({
+  subscriptions: () => {
+    return (
+      {
+        graph: GraphSubject.toObservable(),
+      }
+    );
+  },
+})
 export default class SandboxEditorTest extends PageLayout {
   private graphData: Graph = new GraphImpl();
   private jointPages: Map<string, JointGraphPageImpl> = new Map<string, JointGraphPageImpl>();
 
-  private newItem: JointGraphNodeImpl | null = null;
+  private newItem: any = null;
   private newSelector: JointGraphNodeImpl | null = null;
 
   private startPoint: { x: number, y: number, direction?: 'left' | 'top' | 'right' | 'bottom' | 'top-left' | 'top-right' | 'bottom-right' | 'bottom-left' | undefined } = { x: 0, y: 0 };
@@ -187,18 +198,17 @@ export default class SandboxEditorTest extends PageLayout {
 
     /** Create new item container */
     this.newItem = new JointGraphNodeImpl();
-
     /** Set properties for the newly created item */
-    this.newItem.setId(`0-${type}-${GraphNodeImpl.instance.size}`);
-    this.newItem.setType(type.toString());
-    this.newItem.setSize((NODE_TYPE as any)[type].size);
-    this.newItem.setMarkup((NODE_TYPE as any)[type].markup);
-    this.newItem.setAttr((NODE_TYPE as any)[type].attr);
-    this.newItem.setImageIcon((NODE_TYPE as any)[type].image);
+    (this.newItem as JointGraphNodeImpl).setId(`0-${type}-${GraphNodeImpl.instance.size}`);
+    (this.newItem as JointGraphNodeImpl).setType(type.toString());
+    (this.newItem as JointGraphNodeImpl).setSize((NODE_TYPE as any)[type].size);
+    (this.newItem as JointGraphNodeImpl).setMarkup((NODE_TYPE as any)[type].markup);
+    (this.newItem as JointGraphNodeImpl).setAttr((NODE_TYPE as any)[type].attr);
+    (this.newItem as JointGraphNodeImpl).setImageIcon((NODE_TYPE as any)[type].image);
 
     /** No need to set label for start and stop node */
     if (!(type.toString() === 'start' || type.toString() === 'stop')) {
-      this.newItem.setLabel(`New Node ${GraphNodeImpl.instance.size}`);
+      (this.newItem as JointGraphNodeImpl).setLabel(`New Node ${GraphNodeImpl.instance.size}`);
     }
 
     /** Set dragging state to true */
@@ -222,13 +232,13 @@ export default class SandboxEditorTest extends PageLayout {
       const pointTransformed = svgPoint.matrixTransform(this.jointPages.get(this.activePage as string)!.getPaper().viewport.getCTM()!.inverse());
 
       /** Set position according to the transformed point captured from MouseEvent */
-      this.newItem.setPosition({
+      (this.newItem as JointGraphNodeImpl).setPosition({
         x: pointTransformed.x,
         y: pointTransformed.y,
       });
 
       /** Render newItem */
-      this.newItem.render(this.jointPages.get(this.activePage as string)!.getGraph());
+      (this.newItem as JointGraphNodeImpl).render(this.jointPages.get(this.activePage as string)!.getGraph());
 
       /** Listen to keydown event to check esc button */
       window.addEventListener('keydown', this.cancelCreateItem);
@@ -244,13 +254,13 @@ export default class SandboxEditorTest extends PageLayout {
        * And if current state is dragging and
        * newItem container has been created and initialized
        */
-      if (this.dragging && this.newItem !== null) {
+      if (this.dragging && (this.newItem as JointGraphNodeImpl) !== null) {
 
         /** Set state drag to false */
         this.dragging = false;
 
         /** Remove node from joint.js canvas */
-        this.newItem.getNode().remove();
+        (this.newItem as JointGraphNodeImpl).getNode().remove();
 
         /** Set newItem container to null */
         this.newItem = null;
@@ -266,18 +276,17 @@ export default class SandboxEditorTest extends PageLayout {
     /** If newItem container contains data */
     if (this.newItem !== null) {
 
-      /** Add newItem to GraphData */
-      // const nodes = (this.graphData.getPages()!.get(this.activePage as string) as GraphPage).getNodes() as Map<string, GraphNode>;
-      // nodes.set(this.newItem.getId() as string, (NODE_ENUMS.NODE_TYPE as any)[this.newItem.getType() as string].deserialize(this.newItem));
-
+      /** Add newItem to graphModule */
       graphModule.addPageNode(
         {
           page: graphModule.graph.getPages()!.get(this.activePage as string) as GraphPage,
-          node: this.newItem as GraphNode,
+          node: this.newItem,
         },
       );
 
       console.log(graphModule.graph);
+
+      GraphSubject.update(graphModule.graph);
 
       /** Add newItem to GraphNodeInstance */
       GraphNodeImpl.instance.set(this.newItem.getId() as string, (NODE_ENUMS.NODE_TYPE as any)[this.newItem.getType() as string].deserialize(this.newItem));
@@ -308,9 +317,10 @@ export default class SandboxEditorTest extends PageLayout {
   /** @Override */
   public async mounted(): Promise<void> {
     try {
-      // this.graphData = await SbpnetModelService.getInstance().getExampleModel();
 
-      await graphModule.fetchGraph();
+      this.$observables.graph.subscribe((graph: Graph) => {
+        graphModule.setGraph(graph);
+      });
 
       // Loop the model page
       for (const [key, value] of graphModule.graph.getPages() as Map<string, GraphPage>) {
@@ -476,6 +486,8 @@ export default class SandboxEditorTest extends PageLayout {
           _paper.findViewsInArea(jointPage.getPaper().getArea()).forEach((cell) => { cell.unhighlight(); });
         }
       }
+
+
     } catch (e) {
       console.error(e);
     }

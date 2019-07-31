@@ -1,5 +1,7 @@
 // Vue.js
 import Vue from 'vue';
+import VueRx from 'vue-rx';
+import Rx from 'rxjs/Rx';
 import ChdsrApp from './ChdsrApp.vue';
 import router from '@/router';
 import store from '@/store';
@@ -14,6 +16,8 @@ import * as $ from 'jquery';
 import '../public/semantic/dist/semantic.min.css';
 import '../public/semantic/dist/semantic.min.js';
 
+
+Vue.use(VueRx, Rx);
 Vue.config.productionTip = false;
 
 new Vue({
