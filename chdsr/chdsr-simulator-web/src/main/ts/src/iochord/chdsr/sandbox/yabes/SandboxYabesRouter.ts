@@ -52,4 +52,9 @@ export default [
     name: `${BaseUrlEnum.IOCHORD}-${ApplicationEnum.NAME}-joint-js-tutorial`,
     component: () => import(/* webpackChunkName: "chdsr-sandbox-joint-js-tutorial" */ '@/iochord/chdsr/sandbox/yabes/SandboxJointJs/views/SandboxJointJsView.vue'),
   },
+  {
+    path: 'vue-rx',
+    name: `${BaseUrlEnum.IOCHORD}-${ApplicationEnum.NAME}-vue-rx`,
+    component: () => import(/* webpackChunkName: "chdsr-sandbox-vue-rx" */ '@/iochord/chdsr/sandbox/yabes/SandboxRxJs/views/SandboxRxJsView.vue'),
+  },
 ] as RouteConfig[];
