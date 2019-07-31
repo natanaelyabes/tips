@@ -1,7 +1,9 @@
 <template>
   <div class="sandbox rx js view">
     <div class="ui basic segment">
-      <h1>Hello</h1>
+      <template v-for="(str, index) in list">
+        <h1 :key="index">{{str}}</h1>
+      </template>
     </div>
   </div>
 </template>
@@ -16,7 +18,7 @@ import PageLayout from '@/iochord/chdsr/common/ui/layout/classes/PageLayout';
 import { DataService } from '@/iochord/chdsr/sandbox/yabes/SandboxRxJs/classes/DataService';
 
 @Component<SandboxRxJsView>({
-  subscriptions() {
+  subscriptions: () => {
     return (
       {
         data: DataService.fetchData(),
@@ -25,10 +27,12 @@ import { DataService } from '@/iochord/chdsr/sandbox/yabes/SandboxRxJs/classes/D
   },
 })
 export default class SandboxRxJsView extends PageLayout {
+  private list: string[] = new Array<string>();
+
   /** @Override */
   public mounted(): void {
     this.$observables.data.subscribe((message) => {
-      console.log(message);
+      this.list.push(message);
     });
     DataService.sendData('Test');
     DataService.sendData('A');

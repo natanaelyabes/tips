@@ -81,6 +81,9 @@ import { JointGraphPageImpl } from '@/iochord/chdsr/common/graph/sbpnet/renderin
 // Vuex module
 import GraphModule from '@/iochord/chdsr/common/graph/sbpnet/stores/GraphModule';
 
+// RxJs subject
+import GraphSubject from '@/iochord/chdsr/common/graph/sbpnet/rxjs/GraphSubject';
+
 // JointJS
 import * as joint from 'jointjs';
 import '#root/node_modules/jointjs/dist/joint.css';
@@ -97,7 +100,15 @@ enum NODE {
 
 const graphModule = getModule(GraphModule);
 
-@Component
+@Component<SandboxEditorTest>({
+  subscriptions: () => {
+    return (
+      {
+        graph: GraphSubject.toObservable(),
+      }
+    );
+  },
+})
 export default class SandboxEditorTest extends PageLayout {
   private graphData: Graph = new GraphImpl();
   private jointPages: Map<string, JointGraphPageImpl> = new Map<string, JointGraphPageImpl>();
@@ -275,6 +286,8 @@ export default class SandboxEditorTest extends PageLayout {
 
       console.log(graphModule.graph);
 
+      GraphSubject.update(graphModule.graph);
+
       /** Add newItem to GraphNodeInstance */
       GraphNodeImpl.instance.set(this.newItem.getId() as string, (NODE_ENUMS.NODE_TYPE as any)[this.newItem.getType() as string].deserialize(this.newItem));
 
@@ -304,9 +317,10 @@ export default class SandboxEditorTest extends PageLayout {
   /** @Override */
   public async mounted(): Promise<void> {
     try {
-      // this.graphData = await SbpnetModelService.getInstance().getExampleModel();
 
-      await graphModule.fetchGraph();
+      this.$observables.graph.subscribe((graph: Graph) => {
+        graphModule.setGraph(graph);
+      });
 
       // Loop the model page
       for (const [key, value] of graphModule.graph.getPages() as Map<string, GraphPage>) {
@@ -472,6 +486,8 @@ export default class SandboxEditorTest extends PageLayout {
           _paper.findViewsInArea(jointPage.getPaper().getArea()).forEach((cell) => { cell.unhighlight(); });
         }
       }
+
+
     } catch (e) {
       console.error(e);
     }
