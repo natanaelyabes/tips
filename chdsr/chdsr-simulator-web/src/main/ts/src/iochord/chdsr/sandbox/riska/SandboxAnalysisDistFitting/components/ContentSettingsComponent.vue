@@ -1,26 +1,14 @@
 <template>
   <div class="content settings component">
-    <div class="ui basic segment">
+        <div class="ui basic segment">
       <form class="ui form">
         <div class="two fields">
           <div class="field">
-            <label>Classifiers</label>
+            <label>Algorithms</label>
             <select>
-              <option>J48</option>
               <option>Algorithm A</option>
               <option>Algorithm B</option>
             </select>
-          </div>
-          <div class="field">
-            <div class="ui checkbox">
-              <input type="checkbox" tabindex="0" class="hidden">
-              <label>Structure</label>
-            </div>
-          </div>
-          <div class="field">
-            <button class="ui button">
-              Select existing structure
-            </button>
           </div>
         </div>
         <div class="inline fields">
@@ -47,7 +35,7 @@
           </div>
           <div class="field">
             <button class="ui primary button">
-              Mine
+              Calculate
             </button>
           </div>
         </div>
@@ -186,7 +174,6 @@
         </div>
       </form>
     </div>
-
   </div>
 </template>
 
@@ -196,10 +183,10 @@
 
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator';
-import BaseComponent from '@/iochord/chdsr/common/ui/layout/classes/BaseComponent';
+import BaseComponent from '../../../../common/ui/layout/classes/BaseComponent';
 
 @Component
-export default class ContentSettingsComponent extends BaseComponent {
+export default class ContentSettingsComponent extends BaseComponent{
 
 }
 </script>
