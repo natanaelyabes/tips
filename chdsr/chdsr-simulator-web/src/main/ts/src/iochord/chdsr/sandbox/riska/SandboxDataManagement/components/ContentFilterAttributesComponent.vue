@@ -1,7 +1,7 @@
 <template>
   <div class="content filter attributes component">
     <form class="ui form">
-      <h4 class="ui dividing header">Perfomance</h4>
+      <h4 class="ui dividing header">Filter Attributes</h4>
         <div class="three fields">
           <div class="eight wide field">
               <label>Category</label>
@@ -67,135 +67,79 @@
             </a>
           </div>
         </div>
-        
-        <div style="overflow-x: hidden; overflow-y: scroll; border: 1px solid rgba(34,36,38,.15); height: 500px; width: 100%">
+
+        <div style="overflow-x: hidden; overflow-y: scroll; border: 1px solid rgba(34,36,38,.15); height: 500px; width: 50%">
         <table class="ui celled striped table">
           <thead>
             <tr>
-              <th>Column 1</th>
-              <th>Column 2</th>
-              <th>Column 3</th>
+              <th></th>
+              <th>Values</th>
             </tr>
           </thead>
           <tbody>
             <tr>
-              <td class="selectable">
-                node_modules
+              <td class="collapsing">
+                <div class="ui fitted slider checkbox">
+                  <input type="checkbox"> <label></label>
+                </div>
               </td>
-              <td>Initial commit</td>
-              <td class="right aligned">10 hours ago</td>
+              <td>Case 1</td>
             </tr>
             <tr>
               <td>
-                test
+                <div class="ui fitted slider checkbox">
+                  <input type="checkbox"> <label></label>
+                </div>
               </td>
-              <td>Initial commit</td>
-              <td class="right aligned">10 hours ago</td>
+              <td>Case 3</td>
             </tr>
             <tr>
               <td>
-                build
+                <div class="ui fitted slider checkbox">
+                  <input type="checkbox"> <label></label>
+                </div>
               </td>
-              <td>Initial commit</td>
-              <td class="right aligned">10 hours ago</td>
+              <td>Case 4</td>
             </tr>
             <tr>
               <td>
-                package.json
+                <div class="ui fitted slider checkbox">
+                  <input type="checkbox"> <label></label>
+                </div>
               </td>
-              <td>Initial commit</td>
-              <td class="right aligned">10 hours ago</td>
+              <td>Case 5</td>
             </tr>
             <tr>
               <td>
-                Gruntfile.js
+                <div class="ui fitted slider checkbox">
+                  <input type="checkbox"> <label></label>
+                </div>
               </td>
-              <td>Initial commit</td>
-              <td class="right aligned">10 hours ago</td>
+              <td>Case 6</td>
             </tr>
             <tr>
               <td>
-                build
+                <div class="ui fitted slider checkbox">
+                  <input type="checkbox"> <label></label>
+                </div>
               </td>
-              <td>Initial commit</td>
-              <td class="right aligned">10 hours ago</td>
+              <td>Case 7</td>
             </tr>
             <tr>
               <td>
-                package.json
+                <div class="ui fitted slider checkbox">
+                  <input type="checkbox"> <label></label>
+                </div>
               </td>
-              <td>Initial commit</td>
-              <td class="right aligned">10 hours ago</td>
+              <td>Case 8</td>
             </tr>
             <tr>
               <td>
-                Gruntfile.js
+                <div class="ui fitted slider checkbox">
+                  <input type="checkbox"> <label></label>
+                </div>
               </td>
-              <td>Initial commit</td>
-              <td class="right aligned">10 hours ago</td>
-            </tr>
-            <tr>
-              <td>
-                build
-              </td>
-              <td>Initial commit</td>
-              <td class="right aligned">10 hours ago</td>
-            </tr>
-            <tr>
-              <td>
-                package.json
-              </td>
-              <td>Initial commit</td>
-              <td class="right aligned">10 hours ago</td>
-            </tr>
-            <tr>
-              <td>
-                Gruntfile.js
-              </td>
-              <td>Initial commit</td>
-              <td class="right aligned">10 hours ago</td>
-            </tr>
-            <tr>
-              <td>
-                build
-              </td>
-              <td>Initial commit</td>
-              <td class="right aligned">10 hours ago</td>
-            </tr>
-            <tr>
-              <td>
-                package.json
-              </td>
-              <td>Initial commit</td>
-              <td class="right aligned">10 hours ago</td>
-            </tr>
-            <tr>
-              <td>
-                Gruntfile.js
-              </td>
-              <td>Initial commit</td>
-              <td class="right aligned">10 hours ago</td>
-            </tr>
-            <tr>
-              <td>
-                build
-              </td>
-              <td>Initial commit</td>
-              <td class="right aligned">10 hours ago</td>
-            </tr>
-            <tr>
-              <td>
-                package.json
-              </td>
-              <td>Initial commit</td>
-              <td class="right aligned">10 hours ago</td>
-            </tr>
-            <tr>
-              <td>
-                Gruntfile.js
-              </td>
-              <td>Initial commit</td>
-              <td class="right aligned">10 hours ago</td>
+              <td>Case 9</td>
             </tr>
           </tbody>
         </table>

@@ -22,12 +22,12 @@
 
       <!-- Depth Two Left Sidebar Menu Item -->
       <template slot="depth-two-menu-item">
-        <ItemUploadComponent></ItemUploadComponent>
+        <ItemConnectionComponent></ItemConnectionComponent>
       </template>
 
       <!-- Content -->
       <template slot="content">
-        <ContentOraclePropertiesComponent></ContentOraclePropertiesComponent>
+        <ContentMysqlPropertiesComponent></ContentMysqlPropertiesComponent>
         <!-- <ContentFileQueryComponent></ContentFileQueryComponent> -->
         <!-- <ContentDataViewComponent></ContentDataViewComponent> -->
         <!-- <ContentDataUploadComponent></ContentDataUploadComponent> -->
@@ -80,7 +80,7 @@ import ItemConnectionComponent from '../components/ItemConnectionComponent.vue';
       ItemConnectionComponent,
    },
  })
-export default class SandBoxDataConnection extends Layout02View {
+export default class SandboxDataConnection extends Layout02View {
   public title: string = '';
 
 

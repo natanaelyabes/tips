@@ -16,17 +16,20 @@ type colset00000003 = Int
 
 val map00000001 = Map[(colset00000003,Long),Int]( ((1,0),1) )
 val ms00000001 = new Multiset[colset00000003](map00000001)
-val place00000001 = new Place("place00000001","Customer MU_dgNextCaseId",ms00000001)
+val place00000001 = new Place("place00000001","Customer MU_dgp1",ms00000001)
+place00000001.setOrigin(Map[String,String](("0-generator-1","Customer MU_dgp1")))
 cgraph.addPlace(place00000001)
 
 val map00000002 = Map[(colset00000001,Long),Int](  )
 val ms00000002 = new Multiset[colset00000001](map00000002)
-val place00000002 = new Place("place00000002","Customer MU_dgp1",ms00000002)
+val place00000002 = new Place("place00000002","Customer MU_dgp2",ms00000002)
+place00000002.setOrigin(Map[String,String](("0-generator-1","Customer MU_dgp2")))
 cgraph.addPlace(place00000002)
 
 val map00000003 = Map[(colset00000002,Long),Int](  )
 val ms00000003 = new Multiset[colset00000002](map00000003)
-val place00000003 = new Place("place00000003","Customer MU_dgData",ms00000003)
+val place00000003 = new Place("place00000003","Customer MU_dgpData",ms00000003)
+place00000003.setOrigin(Map[String,String](("0-generator-1","Customer MU_dgpData")))
 cgraph.addPlace(place00000003)
 
 case class Binding00000002(tid:Option[Int],gid:Option[String],data:Option[CaseData]) extends Bind
@@ -51,6 +54,7 @@ action00000001.setActionFun(actionFun00000001)
 val trans00000001 = new Transition[Binding00000002]("trans00000001","Customer MU_dgt1",Guard00000001,action00000001)
 trans00000001.setEval(Eval00000002)
 trans00000001.setMerge(Merge00000002)
+trans00000001.setOrigin(Map[String,String](("Map[String,String](0-generator-1,Customer MU_dgt1)","Customer MU_dgt1")))
 cgraph.addTransition(trans00000001)
 
 val arcexp00000001 = (inp:Any) => inp match { case tid:colset00000003 => { Some(tid) } }
@@ -62,6 +66,7 @@ arc00000001.setArcExp(arcexp00000001)
 arc00000001.setTokenToBind(tTb00000001)
 arc00000001.setBindToToken(bTt00000001)
 arc00000001.setBindToToken(bTt00000001)
+arc00000001.setOrigin(Map[String,String](("0-generator-1","arc00000001")))
 cgraph.addArc(arc00000001)
 
 val arcexp00000002 = (inp:Any) => inp match { case tid:colset00000003 => { Some(tid+1) } }
@@ -75,6 +80,7 @@ arc00000002.setTokenToBind(tTb00000002)
 arc00000002.setBindToToken(bTt00000002)
 arc00000002.setBindToToken(bTt00000002)
 arc00000002.setAddTime(addTime00000001)
+arc00000002.setOrigin(Map[String,String](("0-generator-1","arc00000002")))
 cgraph.addArc(arc00000002)
 
 val arcexp00000003 = (inp:Any) => inp match { case (tid:colset00000003,gid:String) => { Some(tid,gid) } }
@@ -86,6 +92,7 @@ arc00000003.setArcExp(arcexp00000003)
 arc00000003.setTokenToBind(tTb00000003)
 arc00000003.setBindToToken(bTt00000003)
 arc00000003.setBindToToken(bTt00000003)
+arc00000003.setOrigin(Map[String,String](("0-generator-1","arc00000003")))
 cgraph.addArc(arc00000003)
 
 val arcexp00000004 = (inp:Any) => inp match { case (tid:colset00000003,gid:String,data:CaseData) => { Some(tid,gid,data) } }
@@ -97,16 +104,19 @@ arc00000004.setArcExp(arcexp00000004)
 arc00000004.setTokenToBind(tTb00000004)
 arc00000004.setBindToToken(bTt00000004)
 arc00000004.setBindToToken(bTt00000004)
+arc00000004.setOrigin(Map[String,String](("0-generator-1","arc00000004")))
 cgraph.addArc(arc00000004)
 
 val map00000004 = Map[(colset00000001,Long),Int](  )
 val ms00000004 = new Multiset[colset00000001](map00000004)
 val place00000004 = new Place("place00000004","Teller Service_nap1",ms00000004)
+place00000004.setOrigin(Map[String,String](("0-activity-1","Teller Service_nap1")))
 cgraph.addPlace(place00000004)
 
 val trans00000002 = new Transition[Binding00000001]("trans00000002","Teller Service_natstart",null,null)
 trans00000002.setEval(Eval00000001)
 trans00000002.setMerge(Merge00000001)
+trans00000002.setOrigin(Map[String,String](("0-activity-1","Teller Service_natstart")))
 cgraph.addTransition(trans00000002)
 
 val arcexp00000005 = (inp:Any) => inp match { case entity:colset00000001 => { Some(entity) } }
@@ -118,11 +128,13 @@ arc00000005.setArcExp(arcexp00000005)
 arc00000005.setTokenToBind(tTb00000005)
 arc00000005.setBindToToken(bTt00000005)
 arc00000005.setBindToToken(bTt00000005)
+arc00000005.setOrigin(Map[String,String](("0-activity-1","arc00000005")))
 cgraph.addArc(arc00000005)
 
 val map00000005 = Map[(colset00000001,Long),Int](  )
 val ms00000005 = new Multiset[colset00000001](map00000005)
 val place00000005 = new Place("place00000005","Teller Service_nap2",ms00000005)
+place00000005.setOrigin(Map[String,String](("0-activity-1","Teller Service_nap2")))
 cgraph.addPlace(place00000005)
 
 val arcexp00000006 = (inp:Any) => inp match { case entity:colset00000001 => { Some(entity) } }
@@ -136,11 +148,13 @@ arc00000006.setTokenToBind(tTb00000006)
 arc00000006.setBindToToken(bTt00000006)
 arc00000006.setBindToToken(bTt00000006)
 arc00000006.setAddTime(addTime00000002)
+arc00000006.setOrigin(Map[String,String](("0-activity-1","arc00000006")))
 cgraph.addArc(arc00000006)
 
 val trans00000003 = new Transition[Binding00000001]("trans00000003","Teller Service_natend",null,null)
 trans00000003.setEval(Eval00000001)
 trans00000003.setMerge(Merge00000001)
+trans00000003.setOrigin(Map[String,String](("0-activity-1","Teller Service_natend")))
 cgraph.addTransition(trans00000003)
 
 val arcexp00000007 = (inp:Any) => inp match { case entity:colset00000001 => { Some(entity) } }
@@ -152,11 +166,13 @@ arc00000007.setArcExp(arcexp00000007)
 arc00000007.setTokenToBind(tTb00000007)
 arc00000007.setBindToToken(bTt00000007)
 arc00000007.setBindToToken(bTt00000007)
+arc00000007.setOrigin(Map[String,String](("0-activity-1","arc00000007")))
 cgraph.addArc(arc00000007)
 
 val map00000006 = Map[(colset00000001,Long),Int](  )
 val ms00000006 = new Multiset[colset00000001](map00000006)
 val place00000006 = new Place("place00000006","Teller Service_nap3",ms00000006)
+place00000006.setOrigin(Map[String,String](("0-activity-1","Teller Service_nap3")))
 cgraph.addPlace(place00000006)
 
 val arcexp00000008 = (inp:Any) => inp match { case entity:colset00000001 => { Some(entity) } }
@@ -168,16 +184,19 @@ arc00000008.setArcExp(arcexp00000008)
 arc00000008.setTokenToBind(tTb00000008)
 arc00000008.setBindToToken(bTt00000008)
 arc00000008.setBindToToken(bTt00000008)
+arc00000008.setOrigin(Map[String,String](("0-activity-1","arc00000008")))
 cgraph.addArc(arc00000008)
 
 val map00000007 = Map[(colset00000001,Long),Int](  )
 val ms00000007 = new Multiset[colset00000001](map00000007)
 val place00000007 = new Place("place00000007","ATM Service_nap1",ms00000007)
+place00000007.setOrigin(Map[String,String](("0-activity-2","ATM Service_nap1")))
 cgraph.addPlace(place00000007)
 
 val trans00000004 = new Transition[Binding00000001]("trans00000004","ATM Service_natstart",null,null)
 trans00000004.setEval(Eval00000001)
 trans00000004.setMerge(Merge00000001)
+trans00000004.setOrigin(Map[String,String](("0-activity-2","ATM Service_natstart")))
 cgraph.addTransition(trans00000004)
 
 val arcexp00000009 = (inp:Any) => inp match { case entity:colset00000001 => { Some(entity) } }
@@ -189,11 +208,13 @@ arc00000009.setArcExp(arcexp00000009)
 arc00000009.setTokenToBind(tTb00000009)
 arc00000009.setBindToToken(bTt00000009)
 arc00000009.setBindToToken(bTt00000009)
+arc00000009.setOrigin(Map[String,String](("0-activity-2","arc00000009")))
 cgraph.addArc(arc00000009)
 
 val map00000008 = Map[(colset00000001,Long),Int](  )
 val ms00000008 = new Multiset[colset00000001](map00000008)
 val place00000008 = new Place("place00000008","ATM Service_nap2",ms00000008)
+place00000008.setOrigin(Map[String,String](("0-activity-2","ATM Service_nap2")))
 cgraph.addPlace(place00000008)
 
 val arcexp00000010 = (inp:Any) => inp match { case entity:colset00000001 => { Some(entity) } }
@@ -207,11 +228,13 @@ arc00000010.setTokenToBind(tTb00000010)
 arc00000010.setBindToToken(bTt00000010)
 arc00000010.setBindToToken(bTt00000010)
 arc00000010.setAddTime(addTime00000003)
+arc00000010.setOrigin(Map[String,String](("0-activity-2","arc00000010")))
 cgraph.addArc(arc00000010)
 
 val trans00000005 = new Transition[Binding00000001]("trans00000005","ATM Service_natend",null,null)
 trans00000005.setEval(Eval00000001)
 trans00000005.setMerge(Merge00000001)
+trans00000005.setOrigin(Map[String,String](("0-activity-2","ATM Service_natend")))
 cgraph.addTransition(trans00000005)
 
 val arcexp00000011 = (inp:Any) => inp match { case entity:colset00000001 => { Some(entity) } }
@@ -223,11 +246,13 @@ arc00000011.setArcExp(arcexp00000011)
 arc00000011.setTokenToBind(tTb00000011)
 arc00000011.setBindToToken(bTt00000011)
 arc00000011.setBindToToken(bTt00000011)
+arc00000011.setOrigin(Map[String,String](("0-activity-2","arc00000011")))
 cgraph.addArc(arc00000011)
 
 val map00000009 = Map[(colset00000001,Long),Int](  )
 val ms00000009 = new Multiset[colset00000001](map00000009)
 val place00000009 = new Place("place00000009","ATM Service_nap3",ms00000009)
+place00000009.setOrigin(Map[String,String](("0-activity-2","ATM Service_nap3")))
 cgraph.addPlace(place00000009)
 
 val arcexp00000012 = (inp:Any) => inp match { case entity:colset00000001 => { Some(entity) } }
@@ -239,26 +264,31 @@ arc00000012.setArcExp(arcexp00000012)
 arc00000012.setTokenToBind(tTb00000012)
 arc00000012.setBindToToken(bTt00000012)
 arc00000012.setBindToToken(bTt00000012)
+arc00000012.setOrigin(Map[String,String](("0-activity-2","arc00000012")))
 cgraph.addArc(arc00000012)
 
 val map00000010 = Map[(colset00000001,Long),Int](  )
 val ms00000010 = new Multiset[colset00000001](map00000010)
 val place00000010 = new Place("place00000010","null_nop1",ms00000010)
+place00000010.setOrigin(Map[String,String](("0-stop-3","null_nop1")))
 cgraph.addPlace(place00000010)
 
 val map00000011 = Map[(colset00000001,Long),Int](  )
 val ms00000011 = new Multiset[colset00000001](map00000011)
-val place00000011 = new Place("place00000011","1_merge",ms00000011)
+val place00000011 = new Place("place00000011","1_bp",ms00000011)
+place00000011.setOrigin(Map[String,String](("0-branch-4","1_bp")))
 cgraph.addPlace(place00000011)
 
 val map00000012 = Map[(colset00000001,Long),Int](  )
 val ms00000012 = new Multiset[colset00000001](map00000012)
 val place00000012 = new Place("place00000012","1_bpi0s",ms00000012)
+place00000012.setOrigin(Map[String,String](("0-branch-4","1_bpi0s")))
 cgraph.addPlace(place00000012)
 
 val trans00000006 = new Transition[Binding00000001]("trans00000006","1_temps_0",null,null)
 trans00000006.setEval(Eval00000001)
 trans00000006.setMerge(Merge00000001)
+trans00000006.setOrigin(Map[String,String](("0-branch-4","1_temps_0")))
 cgraph.addTransition(trans00000006)
 
 val arcexp00000013 = (inp:Any) => inp match { case entity:colset00000001 => { Some(entity) } }
@@ -270,6 +300,7 @@ arc00000013.setArcExp(arcexp00000013)
 arc00000013.setTokenToBind(tTb00000013)
 arc00000013.setBindToToken(bTt00000013)
 arc00000013.setBindToToken(bTt00000013)
+arc00000013.setOrigin(Map[String,String](("0-branch-4","arc00000013")))
 cgraph.addArc(arc00000013)
 
 val arcexp00000014 = (inp:Any) => inp match { case entity:colset00000001 => { Some(entity) } }
@@ -281,16 +312,19 @@ arc00000014.setArcExp(arcexp00000014)
 arc00000014.setTokenToBind(tTb00000014)
 arc00000014.setBindToToken(bTt00000014)
 arc00000014.setBindToToken(bTt00000014)
+arc00000014.setOrigin(Map[String,String](("0-branch-4","arc00000014")))
 cgraph.addArc(arc00000014)
 
 val map00000013 = Map[(colset00000001,Long),Int](  )
 val ms00000013 = new Multiset[colset00000001](map00000013)
 val place00000013 = new Place("place00000013","1_bpo0s",ms00000013)
+place00000013.setOrigin(Map[String,String](("0-branch-4","1_bpo0s")))
 cgraph.addPlace(place00000013)
 
 val trans00000007 = new Transition[Binding00000001]("trans00000007","1_temps_0",null,null)
 trans00000007.setEval(Eval00000001)
 trans00000007.setMerge(Merge00000001)
+trans00000007.setOrigin(Map[String,String](("0-branch-4","1_temps_0")))
 cgraph.addTransition(trans00000007)
 
 val arcexp00000015 = (inp:Any) => inp match { case entity:colset00000001 => { Some(entity) } }
@@ -302,6 +336,7 @@ arc00000015.setArcExp(arcexp00000015)
 arc00000015.setTokenToBind(tTb00000015)
 arc00000015.setBindToToken(bTt00000015)
 arc00000015.setBindToToken(bTt00000015)
+arc00000015.setOrigin(Map[String,String](("0-branch-4","arc00000015")))
 cgraph.addArc(arc00000015)
 
 val arcexp00000016 = (inp:Any) => inp match { case entity:colset00000001 => { Some(entity) } }
@@ -313,16 +348,19 @@ arc00000016.setArcExp(arcexp00000016)
 arc00000016.setTokenToBind(tTb00000016)
 arc00000016.setBindToToken(bTt00000016)
 arc00000016.setBindToToken(bTt00000016)
+arc00000016.setOrigin(Map[String,String](("0-branch-4","arc00000016")))
 cgraph.addArc(arc00000016)
 
 val map00000014 = Map[(colset00000001,Long),Int](  )
 val ms00000014 = new Multiset[colset00000001](map00000014)
 val place00000014 = new Place("place00000014","1_bpo1s",ms00000014)
+place00000014.setOrigin(Map[String,String](("0-branch-4","1_bpo1s")))
 cgraph.addPlace(place00000014)
 
 val trans00000008 = new Transition[Binding00000001]("trans00000008","1_temps_1",null,null)
 trans00000008.setEval(Eval00000001)
 trans00000008.setMerge(Merge00000001)
+trans00000008.setOrigin(Map[String,String](("0-branch-4","1_temps_1")))
 cgraph.addTransition(trans00000008)
 
 val arcexp00000017 = (inp:Any) => inp match { case entity:colset00000001 => { Some(entity) } }
@@ -334,6 +372,7 @@ arc00000017.setArcExp(arcexp00000017)
 arc00000017.setTokenToBind(tTb00000017)
 arc00000017.setBindToToken(bTt00000017)
 arc00000017.setBindToToken(bTt00000017)
+arc00000017.setOrigin(Map[String,String](("0-branch-4","arc00000017")))
 cgraph.addArc(arc00000017)
 
 val arcexp00000018 = (inp:Any) => inp match { case entity:colset00000001 => { Some(entity) } }
@@ -345,21 +384,25 @@ arc00000018.setArcExp(arcexp00000018)
 arc00000018.setTokenToBind(tTb00000018)
 arc00000018.setBindToToken(bTt00000018)
 arc00000018.setBindToToken(bTt00000018)
+arc00000018.setOrigin(Map[String,String](("0-branch-4","arc00000018")))
 cgraph.addArc(arc00000018)
 
 val map00000015 = Map[(colset00000001,Long),Int](  )
 val ms00000015 = new Multiset[colset00000001](map00000015)
-val place00000015 = new Place("place00000015","2_merge",ms00000015)
+val place00000015 = new Place("place00000015","2_bp",ms00000015)
+place00000015.setOrigin(Map[String,String](("0-branch-5","2_bp")))
 cgraph.addPlace(place00000015)
 
 val map00000016 = Map[(colset00000001,Long),Int](  )
 val ms00000016 = new Multiset[colset00000001](map00000016)
 val place00000016 = new Place("place00000016","2_bpi0s",ms00000016)
+place00000016.setOrigin(Map[String,String](("0-branch-5","2_bpi0s")))
 cgraph.addPlace(place00000016)
 
 val trans00000009 = new Transition[Binding00000001]("trans00000009","2_temps_0",null,null)
 trans00000009.setEval(Eval00000001)
 trans00000009.setMerge(Merge00000001)
+trans00000009.setOrigin(Map[String,String](("0-branch-5","2_temps_0")))
 cgraph.addTransition(trans00000009)
 
 val arcexp00000019 = (inp:Any) => inp match { case entity:colset00000001 => { Some(entity) } }
@@ -371,6 +414,7 @@ arc00000019.setArcExp(arcexp00000019)
 arc00000019.setTokenToBind(tTb00000019)
 arc00000019.setBindToToken(bTt00000019)
 arc00000019.setBindToToken(bTt00000019)
+arc00000019.setOrigin(Map[String,String](("0-branch-5","arc00000019")))
 cgraph.addArc(arc00000019)
 
 val arcexp00000020 = (inp:Any) => inp match { case entity:colset00000001 => { Some(entity) } }
@@ -382,16 +426,19 @@ arc00000020.setArcExp(arcexp00000020)
 arc00000020.setTokenToBind(tTb00000020)
 arc00000020.setBindToToken(bTt00000020)
 arc00000020.setBindToToken(bTt00000020)
+arc00000020.setOrigin(Map[String,String](("0-branch-5","arc00000020")))
 cgraph.addArc(arc00000020)
 
 val map00000017 = Map[(colset00000001,Long),Int](  )
 val ms00000017 = new Multiset[colset00000001](map00000017)
 val place00000017 = new Place("place00000017","2_bpo0s",ms00000017)
+place00000017.setOrigin(Map[String,String](("0-branch-5","2_bpo0s")))
 cgraph.addPlace(place00000017)
 
 val trans00000010 = new Transition[Binding00000001]("trans00000010","2_temps_0",null,null)
 trans00000010.setEval(Eval00000001)
 trans00000010.setMerge(Merge00000001)
+trans00000010.setOrigin(Map[String,String](("0-branch-5","2_temps_0")))
 cgraph.addTransition(trans00000010)
 
 val arcexp00000021 = (inp:Any) => inp match { case entity:colset00000001 => { Some(entity) } }
@@ -403,6 +450,7 @@ arc00000021.setArcExp(arcexp00000021)
 arc00000021.setTokenToBind(tTb00000021)
 arc00000021.setBindToToken(bTt00000021)
 arc00000021.setBindToToken(bTt00000021)
+arc00000021.setOrigin(Map[String,String](("0-branch-5","arc00000021")))
 cgraph.addArc(arc00000021)
 
 val arcexp00000022 = (inp:Any) => inp match { case entity:colset00000001 => { Some(entity) } }
@@ -414,16 +462,19 @@ arc00000022.setArcExp(arcexp00000022)
 arc00000022.setTokenToBind(tTb00000022)
 arc00000022.setBindToToken(bTt00000022)
 arc00000022.setBindToToken(bTt00000022)
+arc00000022.setOrigin(Map[String,String](("0-branch-5","arc00000022")))
 cgraph.addArc(arc00000022)
 
 val map00000018 = Map[(colset00000001,Long),Int](  )
 val ms00000018 = new Multiset[colset00000001](map00000018)
 val place00000018 = new Place("place00000018","2_bpo1s",ms00000018)
+place00000018.setOrigin(Map[String,String](("0-branch-5","2_bpo1s")))
 cgraph.addPlace(place00000018)
 
 val trans00000011 = new Transition[Binding00000001]("trans00000011","2_temps_1",null,null)
 trans00000011.setEval(Eval00000001)
 trans00000011.setMerge(Merge00000001)
+trans00000011.setOrigin(Map[String,String](("0-branch-5","2_temps_1")))
 cgraph.addTransition(trans00000011)
 
 val arcexp00000023 = (inp:Any) => inp match { case entity:colset00000001 => { Some(entity) } }
@@ -435,6 +486,7 @@ arc00000023.setArcExp(arcexp00000023)
 arc00000023.setTokenToBind(tTb00000023)
 arc00000023.setBindToToken(bTt00000023)
 arc00000023.setBindToToken(bTt00000023)
+arc00000023.setOrigin(Map[String,String](("0-branch-5","arc00000023")))
 cgraph.addArc(arc00000023)
 
 val arcexp00000024 = (inp:Any) => inp match { case entity:colset00000001 => { Some(entity) } }
@@ -446,21 +498,25 @@ arc00000024.setArcExp(arcexp00000024)
 arc00000024.setTokenToBind(tTb00000024)
 arc00000024.setBindToToken(bTt00000024)
 arc00000024.setBindToToken(bTt00000024)
+arc00000024.setOrigin(Map[String,String](("0-branch-5","arc00000024")))
 cgraph.addArc(arc00000024)
 
 val map00000019 = Map[(colset00000001,Long),Int](  )
 val ms00000019 = new Multiset[colset00000001](map00000019)
-val place00000019 = new Place("place00000019","1_merge",ms00000019)
+val place00000019 = new Place("place00000019","1_bp",ms00000019)
+place00000019.setOrigin(Map[String,String](("0-branch-6","1_bp")))
 cgraph.addPlace(place00000019)
 
 val map00000020 = Map[(colset00000001,Long),Int](  )
 val ms00000020 = new Multiset[colset00000001](map00000020)
 val place00000020 = new Place("place00000020","1_bpi0s",ms00000020)
+place00000020.setOrigin(Map[String,String](("0-branch-6","1_bpi0s")))
 cgraph.addPlace(place00000020)
 
 val trans00000012 = new Transition[Binding00000001]("trans00000012","1_temps_0",null,null)
 trans00000012.setEval(Eval00000001)
 trans00000012.setMerge(Merge00000001)
+trans00000012.setOrigin(Map[String,String](("0-branch-6","1_temps_0")))
 cgraph.addTransition(trans00000012)
 
 val arcexp00000025 = (inp:Any) => inp match { case entity:colset00000001 => { Some(entity) } }
@@ -472,6 +528,7 @@ arc00000025.setArcExp(arcexp00000025)
 arc00000025.setTokenToBind(tTb00000025)
 arc00000025.setBindToToken(bTt00000025)
 arc00000025.setBindToToken(bTt00000025)
+arc00000025.setOrigin(Map[String,String](("0-branch-6","arc00000025")))
 cgraph.addArc(arc00000025)
 
 val arcexp00000026 = (inp:Any) => inp match { case entity:colset00000001 => { Some(entity) } }
@@ -483,16 +540,19 @@ arc00000026.setArcExp(arcexp00000026)
 arc00000026.setTokenToBind(tTb00000026)
 arc00000026.setBindToToken(bTt00000026)
 arc00000026.setBindToToken(bTt00000026)
+arc00000026.setOrigin(Map[String,String](("0-branch-6","arc00000026")))
 cgraph.addArc(arc00000026)
 
 val map00000021 = Map[(colset00000001,Long),Int](  )
 val ms00000021 = new Multiset[colset00000001](map00000021)
 val place00000021 = new Place("place00000021","1_bpi1s",ms00000021)
+place00000021.setOrigin(Map[String,String](("0-branch-6","1_bpi1s")))
 cgraph.addPlace(place00000021)
 
 val trans00000013 = new Transition[Binding00000001]("trans00000013","1_temps_1",null,null)
 trans00000013.setEval(Eval00000001)
 trans00000013.setMerge(Merge00000001)
+trans00000013.setOrigin(Map[String,String](("0-branch-6","1_temps_1")))
 cgraph.addTransition(trans00000013)
 
 val arcexp00000027 = (inp:Any) => inp match { case entity:colset00000001 => { Some(entity) } }
@@ -504,6 +564,7 @@ arc00000027.setArcExp(arcexp00000027)
 arc00000027.setTokenToBind(tTb00000027)
 arc00000027.setBindToToken(bTt00000027)
 arc00000027.setBindToToken(bTt00000027)
+arc00000027.setOrigin(Map[String,String](("0-branch-6","arc00000027")))
 cgraph.addArc(arc00000027)
 
 val arcexp00000028 = (inp:Any) => inp match { case entity:colset00000001 => { Some(entity) } }
@@ -515,16 +576,19 @@ arc00000028.setArcExp(arcexp00000028)
 arc00000028.setTokenToBind(tTb00000028)
 arc00000028.setBindToToken(bTt00000028)
 arc00000028.setBindToToken(bTt00000028)
+arc00000028.setOrigin(Map[String,String](("0-branch-6","arc00000028")))
 cgraph.addArc(arc00000028)
 
 val map00000022 = Map[(colset00000001,Long),Int](  )
 val ms00000022 = new Multiset[colset00000001](map00000022)
 val place00000022 = new Place("place00000022","1_bpo0s",ms00000022)
+place00000022.setOrigin(Map[String,String](("0-branch-6","1_bpo0s")))
 cgraph.addPlace(place00000022)
 
 val trans00000014 = new Transition[Binding00000001]("trans00000014","1_temps_0",null,null)
 trans00000014.setEval(Eval00000001)
 trans00000014.setMerge(Merge00000001)
+trans00000014.setOrigin(Map[String,String](("0-branch-6","1_temps_0")))
 cgraph.addTransition(trans00000014)
 
 val arcexp00000029 = (inp:Any) => inp match { case entity:colset00000001 => { Some(entity) } }
@@ -536,6 +600,7 @@ arc00000029.setArcExp(arcexp00000029)
 arc00000029.setTokenToBind(tTb00000029)
 arc00000029.setBindToToken(bTt00000029)
 arc00000029.setBindToToken(bTt00000029)
+arc00000029.setOrigin(Map[String,String](("0-branch-6","arc00000029")))
 cgraph.addArc(arc00000029)
 
 val arcexp00000030 = (inp:Any) => inp match { case entity:colset00000001 => { Some(entity) } }
@@ -547,21 +612,25 @@ arc00000030.setArcExp(arcexp00000030)
 arc00000030.setTokenToBind(tTb00000030)
 arc00000030.setBindToToken(bTt00000030)
 arc00000030.setBindToToken(bTt00000030)
+arc00000030.setOrigin(Map[String,String](("0-branch-6","arc00000030")))
 cgraph.addArc(arc00000030)
 
 val map00000023 = Map[(colset00000001,Long),Int](  )
 val ms00000023 = new Multiset[colset00000001](map00000023)
-val place00000023 = new Place("place00000023","2_merge",ms00000023)
+val place00000023 = new Place("place00000023","2_bp",ms00000023)
+place00000023.setOrigin(Map[String,String](("0-branch-7","2_bp")))
 cgraph.addPlace(place00000023)
 
 val map00000024 = Map[(colset00000001,Long),Int](  )
 val ms00000024 = new Multiset[colset00000001](map00000024)
 val place00000024 = new Place("place00000024","2_bpi0s",ms00000024)
+place00000024.setOrigin(Map[String,String](("0-branch-7","2_bpi0s")))
 cgraph.addPlace(place00000024)
 
 val trans00000015 = new Transition[Binding00000001]("trans00000015","2_temps_0",null,null)
 trans00000015.setEval(Eval00000001)
 trans00000015.setMerge(Merge00000001)
+trans00000015.setOrigin(Map[String,String](("0-branch-7","2_temps_0")))
 cgraph.addTransition(trans00000015)
 
 val arcexp00000031 = (inp:Any) => inp match { case entity:colset00000001 => { Some(entity) } }
@@ -573,6 +642,7 @@ arc00000031.setArcExp(arcexp00000031)
 arc00000031.setTokenToBind(tTb00000031)
 arc00000031.setBindToToken(bTt00000031)
 arc00000031.setBindToToken(bTt00000031)
+arc00000031.setOrigin(Map[String,String](("0-branch-7","arc00000031")))
 cgraph.addArc(arc00000031)
 
 val arcexp00000032 = (inp:Any) => inp match { case entity:colset00000001 => { Some(entity) } }
@@ -584,16 +654,19 @@ arc00000032.setArcExp(arcexp00000032)
 arc00000032.setTokenToBind(tTb00000032)
 arc00000032.setBindToToken(bTt00000032)
 arc00000032.setBindToToken(bTt00000032)
+arc00000032.setOrigin(Map[String,String](("0-branch-7","arc00000032")))
 cgraph.addArc(arc00000032)
 
 val map00000025 = Map[(colset00000001,Long),Int](  )
 val ms00000025 = new Multiset[colset00000001](map00000025)
 val place00000025 = new Place("place00000025","2_bpi1s",ms00000025)
+place00000025.setOrigin(Map[String,String](("0-branch-7","2_bpi1s")))
 cgraph.addPlace(place00000025)
 
 val trans00000016 = new Transition[Binding00000001]("trans00000016","2_temps_1",null,null)
 trans00000016.setEval(Eval00000001)
 trans00000016.setMerge(Merge00000001)
+trans00000016.setOrigin(Map[String,String](("0-branch-7","2_temps_1")))
 cgraph.addTransition(trans00000016)
 
 val arcexp00000033 = (inp:Any) => inp match { case entity:colset00000001 => { Some(entity) } }
@@ -605,6 +678,7 @@ arc00000033.setArcExp(arcexp00000033)
 arc00000033.setTokenToBind(tTb00000033)
 arc00000033.setBindToToken(bTt00000033)
 arc00000033.setBindToToken(bTt00000033)
+arc00000033.setOrigin(Map[String,String](("0-branch-7","arc00000033")))
 cgraph.addArc(arc00000033)
 
 val arcexp00000034 = (inp:Any) => inp match { case entity:colset00000001 => { Some(entity) } }
@@ -616,16 +690,19 @@ arc00000034.setArcExp(arcexp00000034)
 arc00000034.setTokenToBind(tTb00000034)
 arc00000034.setBindToToken(bTt00000034)
 arc00000034.setBindToToken(bTt00000034)
+arc00000034.setOrigin(Map[String,String](("0-branch-7","arc00000034")))
 cgraph.addArc(arc00000034)
 
 val map00000026 = Map[(colset00000001,Long),Int](  )
 val ms00000026 = new Multiset[colset00000001](map00000026)
 val place00000026 = new Place("place00000026","2_bpo0s",ms00000026)
+place00000026.setOrigin(Map[String,String](("0-branch-7","2_bpo0s")))
 cgraph.addPlace(place00000026)
 
 val trans00000017 = new Transition[Binding00000001]("trans00000017","2_temps_0",null,null)
 trans00000017.setEval(Eval00000001)
 trans00000017.setMerge(Merge00000001)
+trans00000017.setOrigin(Map[String,String](("0-branch-7","2_temps_0")))
 cgraph.addTransition(trans00000017)
 
 val arcexp00000035 = (inp:Any) => inp match { case entity:colset00000001 => { Some(entity) } }
@@ -637,6 +714,7 @@ arc00000035.setArcExp(arcexp00000035)
 arc00000035.setTokenToBind(tTb00000035)
 arc00000035.setBindToToken(bTt00000035)
 arc00000035.setBindToToken(bTt00000035)
+arc00000035.setOrigin(Map[String,String](("0-branch-7","arc00000035")))
 cgraph.addArc(arc00000035)
 
 val arcexp00000036 = (inp:Any) => inp match { case entity:colset00000001 => { Some(entity) } }
@@ -648,11 +726,13 @@ arc00000036.setArcExp(arcexp00000036)
 arc00000036.setTokenToBind(tTb00000036)
 arc00000036.setBindToToken(bTt00000036)
 arc00000036.setBindToToken(bTt00000036)
+arc00000036.setOrigin(Map[String,String](("0-branch-7","arc00000036")))
 cgraph.addArc(arc00000036)
 
-val trans00000018 = new Transition[Binding00000001]("trans00000018","silent_no_name",null,null)
+val trans00000018 = new Transition[Binding00000001]("trans00000018","",null,null)
 trans00000018.setEval(Eval00000001)
 trans00000018.setMerge(Merge00000001)
+trans00000018.setOrigin(Map[String,String](("Connector","")))
 cgraph.addTransition(trans00000018)
 
 val arcexp00000037 = (inp:Any) => inp match { case entity:colset00000001 => { Some(entity) } }
@@ -664,6 +744,7 @@ arc00000037.setArcExp(arcexp00000037)
 arc00000037.setTokenToBind(tTb00000037)
 arc00000037.setBindToToken(bTt00000037)
 arc00000037.setBindToToken(bTt00000037)
+arc00000037.setOrigin(Map[String,String](("Connector","arc00000037")))
 cgraph.addArc(arc00000037)
 
 val arcexp00000038 = (inp:Any) => inp match { case entity:colset00000001 => { Some(entity) } }
@@ -675,11 +756,13 @@ arc00000038.setArcExp(arcexp00000038)
 arc00000038.setTokenToBind(tTb00000038)
 arc00000038.setBindToToken(bTt00000038)
 arc00000038.setBindToToken(bTt00000038)
+arc00000038.setOrigin(Map[String,String](("Connector","arc00000038")))
 cgraph.addArc(arc00000038)
 
-val trans00000019 = new Transition[Binding00000001]("trans00000019","silent_no_name",null,null)
+val trans00000019 = new Transition[Binding00000001]("trans00000019","",null,null)
 trans00000019.setEval(Eval00000001)
 trans00000019.setMerge(Merge00000001)
+trans00000019.setOrigin(Map[String,String](("Connector","")))
 cgraph.addTransition(trans00000019)
 
 val arcexp00000039 = (inp:Any) => inp match { case entity:colset00000001 => { Some(entity) } }
@@ -691,6 +774,7 @@ arc00000039.setArcExp(arcexp00000039)
 arc00000039.setTokenToBind(tTb00000039)
 arc00000039.setBindToToken(bTt00000039)
 arc00000039.setBindToToken(bTt00000039)
+arc00000039.setOrigin(Map[String,String](("Connector","arc00000039")))
 cgraph.addArc(arc00000039)
 
 val arcexp00000040 = (inp:Any) => inp match { case entity:colset00000001 => { Some(entity) } }
@@ -702,11 +786,13 @@ arc00000040.setArcExp(arcexp00000040)
 arc00000040.setTokenToBind(tTb00000040)
 arc00000040.setBindToToken(bTt00000040)
 arc00000040.setBindToToken(bTt00000040)
+arc00000040.setOrigin(Map[String,String](("Connector","arc00000040")))
 cgraph.addArc(arc00000040)
 
-val trans00000020 = new Transition[Binding00000001]("trans00000020","silent_no_name",null,null)
+val trans00000020 = new Transition[Binding00000001]("trans00000020","",null,null)
 trans00000020.setEval(Eval00000001)
 trans00000020.setMerge(Merge00000001)
+trans00000020.setOrigin(Map[String,String](("Connector","")))
 cgraph.addTransition(trans00000020)
 
 val arcexp00000041 = (inp:Any) => inp match { case entity:colset00000001 => { Some(entity) } }
@@ -718,6 +804,7 @@ arc00000041.setArcExp(arcexp00000041)
 arc00000041.setTokenToBind(tTb00000041)
 arc00000041.setBindToToken(bTt00000041)
 arc00000041.setBindToToken(bTt00000041)
+arc00000041.setOrigin(Map[String,String](("Connector","arc00000041")))
 cgraph.addArc(arc00000041)
 
 val arcexp00000042 = (inp:Any) => inp match { case entity:colset00000001 => { Some(entity) } }
@@ -729,11 +816,13 @@ arc00000042.setArcExp(arcexp00000042)
 arc00000042.setTokenToBind(tTb00000042)
 arc00000042.setBindToToken(bTt00000042)
 arc00000042.setBindToToken(bTt00000042)
+arc00000042.setOrigin(Map[String,String](("Connector","arc00000042")))
 cgraph.addArc(arc00000042)
 
-val trans00000021 = new Transition[Binding00000001]("trans00000021","silent_no_name",null,null)
+val trans00000021 = new Transition[Binding00000001]("trans00000021","",null,null)
 trans00000021.setEval(Eval00000001)
 trans00000021.setMerge(Merge00000001)
+trans00000021.setOrigin(Map[String,String](("Connector","")))
 cgraph.addTransition(trans00000021)
 
 val arcexp00000043 = (inp:Any) => inp match { case entity:colset00000001 => { Some(entity) } }
@@ -745,6 +834,7 @@ arc00000043.setArcExp(arcexp00000043)
 arc00000043.setTokenToBind(tTb00000043)
 arc00000043.setBindToToken(bTt00000043)
 arc00000043.setBindToToken(bTt00000043)
+arc00000043.setOrigin(Map[String,String](("Connector","arc00000043")))
 cgraph.addArc(arc00000043)
 
 val arcexp00000044 = (inp:Any) => inp match { case entity:colset00000001 => { Some(entity) } }
@@ -756,11 +846,13 @@ arc00000044.setArcExp(arcexp00000044)
 arc00000044.setTokenToBind(tTb00000044)
 arc00000044.setBindToToken(bTt00000044)
 arc00000044.setBindToToken(bTt00000044)
+arc00000044.setOrigin(Map[String,String](("Connector","arc00000044")))
 cgraph.addArc(arc00000044)
 
-val trans00000022 = new Transition[Binding00000001]("trans00000022","silent_no_name",null,null)
+val trans00000022 = new Transition[Binding00000001]("trans00000022","",null,null)
 trans00000022.setEval(Eval00000001)
 trans00000022.setMerge(Merge00000001)
+trans00000022.setOrigin(Map[String,String](("Connector","")))
 cgraph.addTransition(trans00000022)
 
 val arcexp00000045 = (inp:Any) => inp match { case entity:colset00000001 => { Some(entity) } }
@@ -772,6 +864,7 @@ arc00000045.setArcExp(arcexp00000045)
 arc00000045.setTokenToBind(tTb00000045)
 arc00000045.setBindToToken(bTt00000045)
 arc00000045.setBindToToken(bTt00000045)
+arc00000045.setOrigin(Map[String,String](("Connector","arc00000045")))
 cgraph.addArc(arc00000045)
 
 val arcexp00000046 = (inp:Any) => inp match { case entity:colset00000001 => { Some(entity) } }
@@ -783,11 +876,13 @@ arc00000046.setArcExp(arcexp00000046)
 arc00000046.setTokenToBind(tTb00000046)
 arc00000046.setBindToToken(bTt00000046)
 arc00000046.setBindToToken(bTt00000046)
+arc00000046.setOrigin(Map[String,String](("Connector","arc00000046")))
 cgraph.addArc(arc00000046)
 
-val trans00000023 = new Transition[Binding00000001]("trans00000023","silent_no_name",null,null)
+val trans00000023 = new Transition[Binding00000001]("trans00000023","",null,null)
 trans00000023.setEval(Eval00000001)
 trans00000023.setMerge(Merge00000001)
+trans00000023.setOrigin(Map[String,String](("Connector","")))
 cgraph.addTransition(trans00000023)
 
 val arcexp00000047 = (inp:Any) => inp match { case entity:colset00000001 => { Some(entity) } }
@@ -799,6 +894,7 @@ arc00000047.setArcExp(arcexp00000047)
 arc00000047.setTokenToBind(tTb00000047)
 arc00000047.setBindToToken(bTt00000047)
 arc00000047.setBindToToken(bTt00000047)
+arc00000047.setOrigin(Map[String,String](("Connector","arc00000047")))
 cgraph.addArc(arc00000047)
 
 val arcexp00000048 = (inp:Any) => inp match { case entity:colset00000001 => { Some(entity) } }
@@ -810,11 +906,13 @@ arc00000048.setArcExp(arcexp00000048)
 arc00000048.setTokenToBind(tTb00000048)
 arc00000048.setBindToToken(bTt00000048)
 arc00000048.setBindToToken(bTt00000048)
+arc00000048.setOrigin(Map[String,String](("Connector","arc00000048")))
 cgraph.addArc(arc00000048)
 
-val trans00000024 = new Transition[Binding00000001]("trans00000024","silent_no_name",null,null)
+val trans00000024 = new Transition[Binding00000001]("trans00000024","",null,null)
 trans00000024.setEval(Eval00000001)
 trans00000024.setMerge(Merge00000001)
+trans00000024.setOrigin(Map[String,String](("Connector","")))
 cgraph.addTransition(trans00000024)
 
 val arcexp00000049 = (inp:Any) => inp match { case entity:colset00000001 => { Some(entity) } }
@@ -826,6 +924,7 @@ arc00000049.setArcExp(arcexp00000049)
 arc00000049.setTokenToBind(tTb00000049)
 arc00000049.setBindToToken(bTt00000049)
 arc00000049.setBindToToken(bTt00000049)
+arc00000049.setOrigin(Map[String,String](("Connector","arc00000049")))
 cgraph.addArc(arc00000049)
 
 val arcexp00000050 = (inp:Any) => inp match { case entity:colset00000001 => { Some(entity) } }
@@ -837,11 +936,13 @@ arc00000050.setArcExp(arcexp00000050)
 arc00000050.setTokenToBind(tTb00000050)
 arc00000050.setBindToToken(bTt00000050)
 arc00000050.setBindToToken(bTt00000050)
+arc00000050.setOrigin(Map[String,String](("Connector","arc00000050")))
 cgraph.addArc(arc00000050)
 
-val trans00000025 = new Transition[Binding00000001]("trans00000025","silent_no_name",null,null)
+val trans00000025 = new Transition[Binding00000001]("trans00000025","",null,null)
 trans00000025.setEval(Eval00000001)
 trans00000025.setMerge(Merge00000001)
+trans00000025.setOrigin(Map[String,String](("Connector","")))
 cgraph.addTransition(trans00000025)
 
 val arcexp00000051 = (inp:Any) => inp match { case entity:colset00000001 => { Some(entity) } }
@@ -853,6 +954,7 @@ arc00000051.setArcExp(arcexp00000051)
 arc00000051.setTokenToBind(tTb00000051)
 arc00000051.setBindToToken(bTt00000051)
 arc00000051.setBindToToken(bTt00000051)
+arc00000051.setOrigin(Map[String,String](("Connector","arc00000051")))
 cgraph.addArc(arc00000051)
 
 val arcexp00000052 = (inp:Any) => inp match { case entity:colset00000001 => { Some(entity) } }
@@ -864,11 +966,13 @@ arc00000052.setArcExp(arcexp00000052)
 arc00000052.setTokenToBind(tTb00000052)
 arc00000052.setBindToToken(bTt00000052)
 arc00000052.setBindToToken(bTt00000052)
+arc00000052.setOrigin(Map[String,String](("Connector","arc00000052")))
 cgraph.addArc(arc00000052)
 
-val trans00000026 = new Transition[Binding00000001]("trans00000026","silent_no_name",null,null)
+val trans00000026 = new Transition[Binding00000001]("trans00000026","",null,null)
 trans00000026.setEval(Eval00000001)
 trans00000026.setMerge(Merge00000001)
+trans00000026.setOrigin(Map[String,String](("Connector","")))
 cgraph.addTransition(trans00000026)
 
 val arcexp00000053 = (inp:Any) => inp match { case entity:colset00000001 => { Some(entity) } }
@@ -880,6 +984,7 @@ arc00000053.setArcExp(arcexp00000053)
 arc00000053.setTokenToBind(tTb00000053)
 arc00000053.setBindToToken(bTt00000053)
 arc00000053.setBindToToken(bTt00000053)
+arc00000053.setOrigin(Map[String,String](("Connector","arc00000053")))
 cgraph.addArc(arc00000053)
 
 val arcexp00000054 = (inp:Any) => inp match { case entity:colset00000001 => { Some(entity) } }
@@ -891,7 +996,6 @@ arc00000054.setArcExp(arcexp00000054)
 arc00000054.setTokenToBind(tTb00000054)
 arc00000054.setBindToToken(bTt00000054)
 arc00000054.setBindToToken(bTt00000054)
+arc00000054.setOrigin(Map[String,String](("Connector","arc00000054")))
 cgraph.addArc(arc00000054)
 
-stopCrit = (stop:Any) => stop match { case stop:Boolean => stop }
-inpStopCrit = false

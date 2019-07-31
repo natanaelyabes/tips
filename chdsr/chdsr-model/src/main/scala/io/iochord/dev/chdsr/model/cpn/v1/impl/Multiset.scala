@@ -36,4 +36,6 @@ class Multiset[T] (val multiset: Map[(T,Long), Int], val coltype: Class[_] = nul
   def -(elem: (T,Long)) = this + (elem, -1)
 
   def -(elem: (T,Long), n: Int) = this + (elem, -n)
+  
+  def getMap() = multiset
 }

@@ -19,6 +19,9 @@ class Transition[B <:Bind] (
   
   private var lbeBase:List[B] = null
   
+  private var origin:Map[String,String] = null
+  private var attributes:Map[String,Any] = null
+  
   private def evalFull[T] = (b1:B, b2:B, noToken:Int, arc:Arc[T,B]) => {
     val b = if(arc.getIsBase()) b1 else arc.computeTokenToBind(arc.computeArcExp(arc.computeBindToToken(b1)).get)
     getEval()(b, b2) && noToken >= arc.getNoTokArcExp()
@@ -59,6 +62,14 @@ class Transition[B <:Bind] (
   
   def setName(name: String) { this.name = name }
   
+  def getOrigin(): Map[String,String] = origin
+  
+  def setOrigin(origin: Map[String,String]) { this.origin = origin }
+  
+  def getAttributes(): Map[String,Any] = attributes
+  
+  def setAttributes(attributes: Map[String,Any]) { this.attributes = attributes }
+  
   def getGuard(): Guard[B] = guard
   
   def setGuard(guard: Guard[B]) { this.guard = guard }
@@ -75,7 +86,7 @@ class Transition[B <:Bind] (
     {
       val arc = iterator.next() match { case arc:Arc[_,B] => arc }
       
-      val tokensBefGlobTime = arc.getPlace().getcurrentMarking().multiset.filter(tokenWT => tokenWT._1._2 <= globtime)
+      val tokensBefGlobTime = arc.getPlace().getCurrentMarking().multiset.filter(tokenWT => tokenWT._1._2 <= globtime)
       
       val mapListBinding = Map[B,Int]()
       var listBinding = List[B]()
@@ -139,7 +150,7 @@ class Transition[B <:Bind] (
     in.foreach(arc => { 
       val optTokenChosen = arc.computeArcExp(arc.computeBindToToken(bindingChosen))
       if(optTokenChosen != None) {
-        val setTokenWTChosen = arc.getPlace().getcurrentMarking().multiset.keys.filter(tokenWT => { tokenWT._2 <= globtime && optTokenChosen.get == tokenWT._1 } ).toIterator
+        val setTokenWTChosen = arc.getPlace().getCurrentMarking().multiset.keys.filter(tokenWT => { tokenWT._2 <= globtime && optTokenChosen.get == tokenWT._1 } ).toIterator
         for(i <- 1 to arc.getNoTokArcExp()) {
           if(setTokenWTChosen.hasNext)
           {
