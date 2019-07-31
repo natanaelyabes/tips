@@ -1,4 +1,3 @@
-import { DATA_TYPE, DATA_TYPE_ENUM } from './../enums/DATA';
 import { GraphConnector } from '@/iochord/chdsr/common/graph/sbpnet/interfaces/GraphConnector';
 import { GraphData } from './../interfaces/GraphData';
 import { GraphConfiguration } from './../interfaces/GraphConfiguration';
@@ -26,6 +25,11 @@ export default class GraphModule extends VuexModule {
   public async fetchGraph(url?: string) {
     const graph: Graph = await SbpnetModelService.getInstance().getExampleModel();
     return { graph };
+  }
+
+  @Mutation
+  public setGraph(graph: Graph): void {
+    this.graph = graph;
   }
 
   @Mutation

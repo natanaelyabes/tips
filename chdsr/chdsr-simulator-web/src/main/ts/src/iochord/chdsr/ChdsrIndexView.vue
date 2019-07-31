@@ -90,10 +90,16 @@ import { SemanticModulesIsUsed } from '@/iochord/chdsr/common/ui/semantic-compon
 // Components
 import NavigationTopSidebarComponent from '@/iochord/chdsr/common/ui/semantic-components/navigations/components/NavigationTopSidebarComponent.vue';
 import IndexLayout from '@/iochord/chdsr/common/ui/layout/classes/IndexLayout';
+import { getModule } from 'vuex-module-decorators';
+import GraphModule from './common/graph/sbpnet/stores/GraphModule';
+import GraphSubject from './common/graph/sbpnet/rxjs/GraphSubject';
+import { Graph } from './common/graph/sbpnet/interfaces/Graph';
 
 // JQuery Symbol Handler
 declare const $: any;
 
+
+const graphModule = getModule(GraphModule);
 
 /**
  *
@@ -102,15 +108,33 @@ declare const $: any;
  * @since 2019
  *
  */
-@Component({
+@Component<ChdsrIndexView>({
   components: {
     NavigationTopSidebarComponent,
   },
+  subscriptions: () => {
+    return (
+      {
+        graph: GraphSubject.toObservable(),
+      }
+    );
+  },
 })
-export default class Index extends IndexLayout {
+export default class ChdsrIndexView extends IndexLayout {
   /** @Override */
-  public mounted(): void {
-    this.declareSemanticModules();
+  public async mounted(): Promise<void> {
+    await this.declareSemanticModules();
+
+    // Fetch graph to Vuex state
+    await graphModule.fetchGraph();
+
+    // Update rxjs subject
+    GraphSubject.update(graphModule.graph);
+
+    // Listen to changes
+    this.$observables.graph.subscribe((graph: Graph) => {
+      graphModule.setGraph(graph);
+    });
   }
 
   /** @Override */
