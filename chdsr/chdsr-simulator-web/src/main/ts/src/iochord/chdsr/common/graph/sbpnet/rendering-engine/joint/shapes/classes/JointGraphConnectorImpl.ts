@@ -1,7 +1,7 @@
 import { JointGraphNodeImpl } from './JointGraphNodeImpl';
-import { JointGraphElementIsPaintable } from '@/iochord/chdsr/common/graph/sbpnet/rendering-engine/joint/shapes/chdsr/interfaces/JointGraphElementIsPaintable';
+import { JointGraphElementIsPaintable } from '@/iochord/chdsr/common/graph/sbpnet/rendering-engine/joint/shapes/interfaces/JointGraphElementIsPaintable';
 import { GraphConnectorImpl } from '@/iochord/chdsr/common/graph/sbpnet/classes/GraphConnectorImpl';
-import { JointGraphElementHasMarkup } from '@/iochord/chdsr/common/graph/sbpnet/rendering-engine/joint/shapes/chdsr/interfaces/JointGraphElementHasMarkup';
+import { JointGraphElementHasMarkup } from '@/iochord/chdsr/common/graph/sbpnet/rendering-engine/joint/shapes/interfaces/JointGraphElementHasMarkup';
 import * as joint from 'jointjs';
 
 /**

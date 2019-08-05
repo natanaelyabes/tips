@@ -57,4 +57,9 @@ export default [
     name: `${BaseUrlEnum.IOCHORD}-${ApplicationEnum.NAME}-vue-rx`,
     component: () => import(/* webpackChunkName: "chdsr-sandbox-vue-rx" */ '@/iochord/chdsr/sandbox/yabes/SandboxRxJs/views/SandboxRxJsView.vue'),
   },
+  {
+    path: 'api-test',
+    name: `${BaseUrlEnum.IOCHORD}-${ApplicationEnum.NAME}-api-test`,
+    component: () => import(/* webpackChunkName: "chdsr-sandbox-api-test" */ '@/iochord/chdsr/sandbox/yabes/SandboxApiTest/views/SandboxApiTestView.vue'),
+  },
 ] as RouteConfig[];

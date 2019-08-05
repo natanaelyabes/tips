@@ -305,7 +305,7 @@ import GraphModule from '@/iochord/chdsr/common/graph/sbpnet/stores/GraphModule'
 import GraphSubject from '../../../common/graph/sbpnet/rxjs/GraphSubject';
 
 // Async component must be lazily load
-const CanvasComponent = () => import('@/iochord/chdsr/simulation/editor/components/canvas/components/CanvasComponent.vue');
+const CanvasComponent = () => import('@/iochord/chdsr/simulation/editor/components/canvas/CanvasComponent.vue');
 
 // Vuex module
 const graphModule = getModule(GraphModule);

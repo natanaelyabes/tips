@@ -134,6 +134,8 @@ export default class ChdsrIndexView extends IndexLayout {
     // Listen to changes
     this.$observables.graph.subscribe((graph: Graph) => {
       graphModule.setGraph(graph);
+
+      // Implementation to update the graph data to server
     });
   }
 
