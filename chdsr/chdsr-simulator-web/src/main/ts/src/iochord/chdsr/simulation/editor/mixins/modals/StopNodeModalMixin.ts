@@ -27,6 +27,7 @@ export default class StopNodeModalMixin extends BaseComponent {
   /* Stop updated from Child */
   public changeStopLabelFromChild(e: any, graph: Graph, activePage: GraphPage, currentSelectedElement: GraphNode, callback: () => void) {
     this.parentStopLabel = e;
+    console.log(currentSelectedElement);
     currentSelectedElement.setLabel(this.parentStopLabel);
     graph.getPages() !
       .get(activePage.getId() as string) !.getNodes() !

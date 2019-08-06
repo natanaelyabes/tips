@@ -5,7 +5,6 @@ import { GraphConnector } from '@/iochord/chdsr/common/graph/sbpnet/interfaces/G
 import { GraphData } from '@/iochord/chdsr/common/graph/sbpnet/interfaces/GraphData';
 import { GraphNode } from '@/iochord/chdsr/common/graph/sbpnet/interfaces/GraphNode';
 import { GraphPage } from '@/iochord/chdsr/common/graph/sbpnet/interfaces/GraphPage';
-import { GraphStartEventNode } from '@/iochord/chdsr/common/graph/sbpnet/interfaces/components/GraphStartEventNode';
 
 // Enums
 import { NODE_TYPE } from '@/iochord/chdsr/common/graph/sbpnet/rendering-engine/joint/shapes/enums/NODE';
@@ -34,8 +33,9 @@ import StartNodeModalMixin from '@/iochord/chdsr/simulation/editor/mixins/modals
 import StopNodeModalMixin from '@/iochord/chdsr/simulation/editor/mixins/modals/StopNodeModalMixin';
 
 // JQuery
-// declare const $: any;
-import $ from 'jquery';
+// import $ from 'jquery';
+import 'jquery';
+declare const $: any;
 
 export default class JointJsRenderer extends Mixins(ActivityNodeModalMixin, BranchNodeModalMixin, StartNodeModalMixin, StopNodeModalMixin) {
   public canvasWidth?: number;
@@ -47,8 +47,9 @@ export default class JointJsRenderer extends Mixins(ActivityNodeModalMixin, Bran
   // Graph data
   public graph?: Graph;
 
-  public currentSelectedElement?: GraphNode;
   public activePage?: GraphPage;
+  public jointPages: JointGraphPageImpl[] = new Array<JointGraphPageImpl>();
+  public currentSelectedElement?: GraphNode;
 
   constructor(graph: Graph, activePage: GraphPage, currentSelectedElement: GraphNode) {
     super();
@@ -57,6 +58,7 @@ export default class JointJsRenderer extends Mixins(ActivityNodeModalMixin, Bran
     this.currentSelectedElement = currentSelectedElement;
 
     try {
+
       // Loop all model pages
       for (const [id, page] of graph.getPages() as Map<string, GraphPage>) {
         const jointPage: JointGraphPageImpl = new JointGraphPageImpl();
@@ -85,8 +87,7 @@ export default class JointJsRenderer extends Mixins(ActivityNodeModalMixin, Bran
           // align: 'UL',
         } as joint.layout.DirectedGraph.LayoutOptions);
 
-        // Listen to events
-        this.whileListenToEvents(jointPage);
+        this.jointPages.push(jointPage);
       }
     } catch (e) {
       console.error(e);
@@ -109,6 +110,7 @@ export default class JointJsRenderer extends Mixins(ActivityNodeModalMixin, Bran
   }
 
   private renderPage(jointPage: JointGraphPageImpl): void {
+
     // Set the paper as the graph container
     jointPage.setPaper(new joint.dia.Paper({
       el: document.getElementById('canvas'),
@@ -131,6 +133,7 @@ export default class JointJsRenderer extends Mixins(ActivityNodeModalMixin, Bran
   }
 
   private renderMinimap(jointPage: JointGraphPageImpl): void {
+
     // Set the minimap for each page
     jointPage.setMinimap(new joint.dia.Paper({
       el: document.getElementById('minimap'),
@@ -200,72 +203,5 @@ export default class JointJsRenderer extends Mixins(ActivityNodeModalMixin, Bran
       // render connector
       arc.render(jointPage.getGraph());
     }
-  }
-
-  private whileListenToEvents(jointPage: JointGraphPageImpl): void {
-
-    // Helper to reset all elements
-    const resetAll = (paper: any) => {
-
-      /* Reset all elements in the paper */
-      const elements = paper.model.getElements();
-      for (let i = 0, ii = elements.length; i < ii; i++) {
-        const currentElement = elements[i];
-        currentElement.attr('body/stroke', 'black');
-      }
-    };
-
-    // Listening to events
-    jointPage.getPaper().on({
-      'element:pointerclick': (elementView: joint.dia.ElementView) => {
-        console.log(elementView);
-      },
-      'element:pointerdblclick': (elementView: joint.dia.ElementView) => {
-        const currentElement = elementView.model;
-        const currentElementType = currentElement.attributes.type;
-
-        if (currentElementType === 'start') {
-          alert('Masuk double klik');
-          console.log('sebelum ' + this.parentStartLabel);
-          this.changeStartLabel('From Double Click - Start Label');
-          console.log(this.parentStartLabel);
-        }
-      },
-
-      'element:contextmenu': (elementView: joint.dia.ElementView) => {
-        const currentElement = elementView.model;
-        currentElement.attr('body/stroke', 'red');
-        const currentElementType = currentElement.attributes.type;
-        const currentElementNodeId = currentElement.attributes.nodeId;
-
-        if (currentElementType === 'start') {
-          ($('#start') as any).modal('show');
-          this.parentStartLabel = jointPage.getNodes()!.get(currentElementNodeId)!.getLabel() as string;
-          this.parentStartGenerator =
-            (jointPage.getNodes()!.get(currentElementNodeId)! as GraphStartEventNode)
-              .getGenerator()!.getLabel() as string +
-              ' - ' +
-            (jointPage.getNodes()!.get(currentElementNodeId)! as GraphStartEventNode)
-              .getGenerator()!.getDistributionType() as string;
-          this.currentSelectedElement = jointPage.getNodes()!.get(currentElementNodeId);
-        }
-
-        if (currentElementType === 'activity') {
-          ($('#activity') as any).modal('show');
-          console.log(this.parentActNodeSelectedActivityType);
-        }
-
-        if (currentElementType === 'branch') {
-          ($('#branch') as any).modal('show');
-        }
-
-        if (currentElementType === 'stop') {
-          ($('#stop') as any).modal('show');
-          this.parentStopLabel = jointPage.getNodes()!.get(currentElementNodeId)!.getLabel() as string;
-          this.parentStopReport = jointPage.getNodes()!.get(currentElementNodeId)!.isReportStatistics() as boolean;
-          this.currentSelectedElement = jointPage.getNodes()!.get(currentElementNodeId);
-        }
-      },
-    });
   }
 }
