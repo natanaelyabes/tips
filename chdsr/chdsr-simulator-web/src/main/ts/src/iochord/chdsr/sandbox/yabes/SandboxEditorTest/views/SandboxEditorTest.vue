@@ -322,6 +322,7 @@ export default class SandboxEditorTest extends PageLayout {
       });
 
       // Loop the model page
+      console.log(graphModule.graph.getPages());
       for (const [key, value] of graphModule.graph.getPages() as Map<string, GraphPage>) {
         const jointPage: JointGraphPageImpl = new JointGraphPageImpl();
         const canvasWidth: number = $('#canvas-container').innerWidth();

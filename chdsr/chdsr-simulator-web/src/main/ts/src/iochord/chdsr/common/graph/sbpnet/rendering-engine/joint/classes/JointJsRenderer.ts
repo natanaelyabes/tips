@@ -27,16 +27,13 @@ import { JointGraphPageImpl } from './../shapes/classes/JointGraphPageImpl';
 import { ARC_TYPE } from '../shapes/enums/ARC';
 
 // Mixins
-import ActivityNodeModalMixin from '@/iochord/chdsr/simulation/editor/mixins/modals/ActivityNodeModalMixin';
-import BranchNodeModalMixin from '@/iochord/chdsr/simulation/editor/mixins/modals/BranchNodeModalMixin';
-import StartNodeModalMixin from '@/iochord/chdsr/simulation/editor/mixins/modals/StartNodeModalMixin';
-import StopNodeModalMixin from '@/iochord/chdsr/simulation/editor/mixins/modals/StopNodeModalMixin';
+import ModalMixin from '@/iochord/chdsr/simulation/editor/mixins/modals/ModalMixin';
 
 // JQuery
 import 'jquery';
 declare const $: any;
 
-export default class JointJsRenderer extends Mixins(ActivityNodeModalMixin, BranchNodeModalMixin, StartNodeModalMixin, StopNodeModalMixin) {
+export default class JointJsRenderer extends ModalMixin {
   public canvasWidth?: number;
   public canvasHeight?: number;
 
@@ -56,14 +53,14 @@ export default class JointJsRenderer extends Mixins(ActivityNodeModalMixin, Bran
     this.activePage = activePage;
     this.currentSelectedElement = currentSelectedElement;
 
+    this.canvasWidth = $('.editor.canvas').innerWidth();
+    this.canvasHeight = $('.editor.canvas').innerHeight();
+
     try {
 
       // Loop all model pages
       for (const [id, page] of graph.getPages() as Map<string, GraphPage>) {
         const jointPage: JointGraphPageImpl = new JointGraphPageImpl();
-
-        this.canvasWidth = $('.editor.canvas').innerWidth();
-        this.canvasHeight = $('.editor.canvas').innerHeight();
 
         // Set properties of the graph page
         this.setProperties(jointPage, page);
@@ -77,18 +74,10 @@ export default class JointJsRenderer extends Mixins(ActivityNodeModalMixin, Bran
         this.renderArcs(jointPage);
 
         // Automatic layout
-        joint.layout.DirectedGraph.layout(jointPage.getGraph(), {
-          ranker: 'network-simplex',
-          rankDir: 'LR',
-          edgeSep: 300,
-          nodeSep: 200,
-          rankSep: 80,
-          // align: 'UL',
-        } as joint.layout.DirectedGraph.LayoutOptions);
+        this.autoLayoutGraph(jointPage);
 
         // Center the view
-        const PageViewportBBox = jointPage.getPaper().viewport.getBBox();
-        jointPage.getPaper().translate((this.canvasWidth as number / 2) - (PageViewportBBox.width / 2), (this.canvasHeight as number / 2) - (PageViewportBBox.height / 2));
+        this.centerGraph(jointPage);
 
         this.jointPages.push(jointPage);
       }
@@ -202,5 +191,21 @@ export default class JointJsRenderer extends Mixins(ActivityNodeModalMixin, Bran
       // render connector
       arc.render(jointPage.getGraph());
     }
+  }
+
+  private autoLayoutGraph(jointPage: JointGraphPageImpl): void {
+    joint.layout.DirectedGraph.layout(jointPage.getGraph(), {
+      ranker: 'network-simplex',
+      rankDir: 'LR',
+      edgeSep: 300,
+      nodeSep: 200,
+      rankSep: 80,
+      // align: 'UL',
+    } as joint.layout.DirectedGraph.LayoutOptions);
+  }
+
+  private centerGraph(jointPage: JointGraphPageImpl): void {
+    const PageViewportBBox = jointPage.getPaper().viewport.getBBox();
+    jointPage.getPaper().translate((this.canvasWidth as number / 2) - (PageViewportBBox.width / 2), (this.canvasHeight as number / 2) - (PageViewportBBox.height / 2));
   }
 }

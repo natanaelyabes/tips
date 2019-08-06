@@ -150,14 +150,20 @@
         </div>
       </template>
 
-      <!--  Content -->
+      <!-- Content -->
       <template slot="content">
-        <template v-if="graphData !== {}">
+        <template v-if="graphData">
           <CanvasComponent :key="reRenderKey" v-bind:response="graphData" />
+        </template>
+        <template v-else>
+          <div class="ui active inverted dimmer">
+            <div class="ui text loader">Loading</div>
+          </div>
         </template>
       </template>
 
       <template slot="right-sidebar-menu-item">
+        <!-- TODO: Minimap component --->
         <div class="ui basic segment" style="width: 260px">
           <h2>Model Pane</h2>
           <div id="minimap"></div>
@@ -357,7 +363,7 @@ export default class SimulationEditorView extends Layout01View {
     });
   }
 
-  public get graphData(): Graph {
+  public get graphData(): Graph | undefined {
     return graphModule.graph;
   }
 

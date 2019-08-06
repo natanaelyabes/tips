@@ -6,7 +6,8 @@
 <template>
   <div class="canvas component">
     <div class="editor canvas">
-      <div id="canvas"></div>
+      <!-- TODO: Develop mouse event handler for canvas -->
+      <div @mousedown="doSomething" id="canvas"></div>
     </div>
 
     <!-- Model Modals -->
@@ -132,10 +133,7 @@ import BranchNodeModal from '@/iochord/chdsr/simulation/editor/components/modals
 import StopNodeModal from '@/iochord/chdsr/simulation/editor/components/modals/StopNodeModal.vue';
 
 // Mixins
-import ActivityNodeModalMixin from '@/iochord/chdsr/simulation/editor/mixins/modals/ActivityNodeModalMixin';
-import BranchNodeModalMixin from '@/iochord/chdsr/simulation/editor/mixins/modals/BranchNodeModalMixin';
-import StartNodeModalMixin from '@/iochord/chdsr/simulation/editor/mixins/modals/StartNodeModalMixin';
-import StopNodeModalMixin from '@/iochord/chdsr/simulation/editor/mixins/modals/StopNodeModalMixin';
+import ModalMixin from '@/iochord/chdsr/simulation/editor/mixins/modals/ModalMixin';
 
 // JQuery Handler
 declare const $: any;
@@ -157,17 +155,15 @@ declare const $: any;
     StopNodeModal,
   },
 })
-export default class CanvasComponent extends Mixins(BaseComponent, ActivityNodeModalMixin, BranchNodeModalMixin, StartNodeModalMixin, StopNodeModalMixin) {
+export default class CanvasComponent extends Mixins(BaseComponent, ModalMixin) {
   @Prop() public response?: Graph;
 
-  // Find all node types in the graph
-  public nodeTypes: Set<string> = new Set<string>();
-
-  // Graph data
   public graph?: Graph;
+  public activePage?: GraphPage;
 
   public currentSelectedElement?: GraphNode;
-  public activePage?: GraphPage;
+
+  public nodeTypes: Set<string> = new Set<string>();
 
   public mounted(): void {
     this.loadGraph();
@@ -180,7 +176,12 @@ export default class CanvasComponent extends Mixins(BaseComponent, ActivityNodeM
       // Deserialize the model
       this.graph = this.response as Graph;
 
-      // we can choose any rendering engine later
+      // TODO: we can choose any rendering engine later
+
+      // TODO:
+      // Extend the capability of the renderer.
+      // For example, we dont have to rerender the graph
+      // every time user apply changes to the graph.
       const renderer = new JointJsRenderer(
         this.graph,
         this.activePage as GraphPage,
@@ -190,13 +191,17 @@ export default class CanvasComponent extends Mixins(BaseComponent, ActivityNodeM
       // Get node types that need to be rendered in the canvas
       this.nodeTypes = renderer.getNodeTypes();
 
-      // Listen to events can only be done after all components were rendered
+      // 'Listening to events' can only be done after all components were rendered
       renderer.jointPages.forEach((jointPage: JointGraphPageImpl) => {
         this.whileListenToEvents(jointPage);
       });
     } catch (e) {
       console.log(e);
     }
+  }
+
+  private doSomething(): void {
+    // this.$emit('event-name', doSomethingAwesome())
   }
 
   private whileListenToEvents(jointPage: JointGraphPageImpl): void {
@@ -212,23 +217,11 @@ export default class CanvasComponent extends Mixins(BaseComponent, ActivityNodeM
       }
     };
 
-    // Listening to events
+    // Listening to events (TODO: later each of these event handler must be encapsulated within methods or classes)
     jointPage.getPaper().on({
       'element:pointerclick': (elementView: joint.dia.ElementView) => {
         console.log(elementView);
       },
-      'element:pointerdblclick': (elementView: joint.dia.ElementView) => {
-        const currentElement = elementView.model;
-        const currentElementType = currentElement.attributes.type;
-
-        if (currentElementType === 'start') {
-          alert('Masuk double klik');
-          console.log('sebelum ' + this.parentStartLabel);
-          this.changeStartLabel('From Double Click - Start Label');
-          console.log(this.parentStartLabel);
-        }
-      },
-
       'element:contextmenu': (elementView: joint.dia.ElementView) => {
         const currentElement = elementView.model;
         const currentElementType = currentElement.attributes.type;
