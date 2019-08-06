@@ -18,5 +18,4 @@ export class BaseService {
   public async remotePost(url: string, data: object): Promise<AxiosResponse> {
     return await axios.post(url, data);
   }
-
 }
