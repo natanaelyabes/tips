@@ -14,7 +14,7 @@ import io.iochord.dev.chdsr.simulator.compiler.test.SimulatorPerformAnalysis;
 /**
  *
  * @package chdsr-simulator-web
- * @author  Iq Reviessay Pulshashi <pulshashi@ideas.web.id>
+ * @author  Nur Ichsan Utama <nichsan@gmail.com>
  * @since   2019
  *
  *
