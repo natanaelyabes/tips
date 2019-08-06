@@ -33,7 +33,6 @@ import StartNodeModalMixin from '@/iochord/chdsr/simulation/editor/mixins/modals
 import StopNodeModalMixin from '@/iochord/chdsr/simulation/editor/mixins/modals/StopNodeModalMixin';
 
 // JQuery
-// import $ from 'jquery';
 import 'jquery';
 declare const $: any;
 
@@ -87,6 +86,10 @@ export default class JointJsRenderer extends Mixins(ActivityNodeModalMixin, Bran
           // align: 'UL',
         } as joint.layout.DirectedGraph.LayoutOptions);
 
+        // Center the view
+        const PageViewportBBox = jointPage.getPaper().viewport.getBBox();
+        jointPage.getPaper().translate((this.canvasWidth as number / 2) - (PageViewportBBox.width / 2), (this.canvasHeight as number / 2) - (PageViewportBBox.height / 2));
+
         this.jointPages.push(jointPage);
       }
     } catch (e) {
@@ -126,10 +129,6 @@ export default class JointJsRenderer extends Mixins(ActivityNodeModalMixin, Bran
       defaultConnectionPoint: { name: 'boundary' },
       defaultConnector: { name: 'rounded' },
     } as joint.dia.Paper.Options ));
-
-    // Center the view
-    const PageViewportBBox = jointPage.getPaper().viewport.getBBox();
-    jointPage.getPaper().translate((this.canvasWidth as number / 2) - (PageViewportBBox.width / 2), (this.canvasHeight as number / 2) - (PageViewportBBox.height / 2));
   }
 
   private renderMinimap(jointPage: JointGraphPageImpl): void {

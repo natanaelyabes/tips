@@ -156,7 +156,6 @@ declare const $: any;
     StartNodeModal,
     StopNodeModal,
   },
-  // mixins: [ActivityNodeModalMixin, BranchNodeModalMixin, StartNodeModalMixin, StopNodeModalMixin],
 })
 export default class CanvasComponent extends Mixins(BaseComponent, ActivityNodeModalMixin, BranchNodeModalMixin, StartNodeModalMixin, StopNodeModalMixin) {
   @Prop() public response?: Graph;
@@ -232,7 +231,6 @@ export default class CanvasComponent extends Mixins(BaseComponent, ActivityNodeM
 
       'element:contextmenu': (elementView: joint.dia.ElementView) => {
         const currentElement = elementView.model;
-        currentElement.attr('body/stroke', 'red');
         const currentElementType = currentElement.attributes.type;
         const currentElementNodeId = currentElement.attributes.nodeId;
 
