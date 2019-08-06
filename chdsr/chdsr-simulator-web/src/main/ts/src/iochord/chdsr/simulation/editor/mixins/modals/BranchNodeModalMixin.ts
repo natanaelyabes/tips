@@ -1,5 +1,7 @@
 import BaseComponent from '@/iochord/chdsr/common/ui/layout/classes/BaseComponent';
+import { Component } from 'vue-property-decorator';
 
+@Component
 export default class BranchNodeModalMixins extends BaseComponent {
   // Parent branch
   public parentBranchLabel: string = '';

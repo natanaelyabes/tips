@@ -95,7 +95,7 @@
 
 <script lang="ts">
 // Vue & Libraries
-import { Component, Prop, Vue, Mixins } from 'vue-property-decorator';
+import { Component, Prop, Mixins, Vue } from 'vue-property-decorator';
 
 // JointJS
 import * as joint from 'jointjs';
@@ -156,6 +156,7 @@ declare const $: any;
     StartNodeModal,
     StopNodeModal,
   },
+  // mixins: [ActivityNodeModalMixin, BranchNodeModalMixin, StartNodeModalMixin, StopNodeModalMixin],
 })
 export default class CanvasComponent extends Mixins(BaseComponent, ActivityNodeModalMixin, BranchNodeModalMixin, StartNodeModalMixin, StopNodeModalMixin) {
   @Prop() public response?: Graph;
@@ -186,6 +187,8 @@ export default class CanvasComponent extends Mixins(BaseComponent, ActivityNodeM
         this.activePage as GraphPage,
         this.currentSelectedElement as GraphNode,
       );
+
+      this.nodeTypes = renderer.getNodeTypes();
 
     } catch (e) {
       console.log(e);

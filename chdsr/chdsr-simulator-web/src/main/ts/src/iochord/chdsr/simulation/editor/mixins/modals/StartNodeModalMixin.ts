@@ -2,6 +2,10 @@ import BaseComponent from '@/iochord/chdsr/common/ui/layout/classes/BaseComponen
 import { GraphNode } from '@/iochord/chdsr/common/graph/sbpnet/interfaces/GraphNode';
 import { Graph } from '@/iochord/chdsr/common/graph/sbpnet/interfaces/Graph';
 import { GraphPage } from '@/iochord/chdsr/common/graph/sbpnet/interfaces/GraphPage';
+import { Component } from 'vue-property-decorator';
+
+
+@Component
 export default class StartNodeModalMixin extends BaseComponent {
 
   // Parent start
@@ -19,6 +23,10 @@ export default class StartNodeModalMixin extends BaseComponent {
 
   public changeStartGenerator(newVal: string): void {
     this.parentStartGenerator = newVal;
+  }
+
+  public getParentStartLabel(): string {
+    return this.parentStartLabel;
   }
 
   /* Start updated from Child */

@@ -2,7 +2,9 @@ import BaseComponent from '@/iochord/chdsr/common/ui/layout/classes/BaseComponen
 import { Graph } from '@/iochord/chdsr/common/graph/sbpnet/interfaces/Graph';
 import { GraphPage } from '@/iochord/chdsr/common/graph/sbpnet/interfaces/GraphPage';
 import { GraphNode } from '@/iochord/chdsr/common/graph/sbpnet/interfaces/GraphNode';
+import { Component } from 'vue-property-decorator';
 
+@Component
 export default class StopNodeModalMixin extends BaseComponent {
 
   // Parent stop

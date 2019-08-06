@@ -93,6 +93,10 @@ export default class JointJsRenderer extends Mixins(ActivityNodeModalMixin, Bran
     }
   }
 
+  public getNodeTypes(): Set<string> {
+    return this.nodeTypes;
+  }
+
   private setProperties(jointPage: JointGraphPageImpl, currentPage: GraphPage): void {
     jointPage.setId(currentPage.getId() as string);
     jointPage.setLabel(currentPage.getLabel() as string);
@@ -235,7 +239,7 @@ export default class JointJsRenderer extends Mixins(ActivityNodeModalMixin, Bran
         const currentElementNodeId = currentElement.attributes.nodeId;
 
         if (currentElementType === 'start') {
-          $('#start').modal('show');
+          ($('#start') as any).modal('show');
           this.parentStartLabel = jointPage.getNodes()!.get(currentElementNodeId)!.getLabel() as string;
           this.parentStartGenerator =
             (jointPage.getNodes()!.get(currentElementNodeId)! as GraphStartEventNode)
@@ -247,16 +251,16 @@ export default class JointJsRenderer extends Mixins(ActivityNodeModalMixin, Bran
         }
 
         if (currentElementType === 'activity') {
-          $('#activity').modal('show');
+          ($('#activity') as any).modal('show');
           console.log(this.parentActNodeSelectedActivityType);
         }
 
         if (currentElementType === 'branch') {
-          $('#branch').modal('show');
+          ($('#branch') as any).modal('show');
         }
 
         if (currentElementType === 'stop') {
-          $('#stop').modal('show');
+          ($('#stop') as any).modal('show');
           this.parentStopLabel = jointPage.getNodes()!.get(currentElementNodeId)!.getLabel() as string;
           this.parentStopReport = jointPage.getNodes()!.get(currentElementNodeId)!.isReportStatistics() as boolean;
           this.currentSelectedElement = jointPage.getNodes()!.get(currentElementNodeId);
