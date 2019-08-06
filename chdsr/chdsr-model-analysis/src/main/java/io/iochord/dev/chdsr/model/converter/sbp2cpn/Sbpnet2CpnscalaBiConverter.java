@@ -20,7 +20,6 @@ import io.iochord.dev.chdsr.model.sbpnet.v1.components.Resource;
 import io.iochord.dev.chdsr.model.sbpnet.v1.components.Start;
 import io.iochord.dev.chdsr.model.sbpnet.v1.components.Stop;
 
-import io.iochord.dev.chdsr.model.cpn.v1.rep.*;
 /**
  * @author Nur Ichsan Utama <ichsan83@gmail.com>
  *
