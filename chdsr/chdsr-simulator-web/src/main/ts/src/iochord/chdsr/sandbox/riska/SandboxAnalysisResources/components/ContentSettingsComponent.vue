@@ -182,11 +182,11 @@
 </style>
 
 <script lang="ts">
-import { Vue, Component } from 'vue-property-decorator';
+import { Component, Vue } from 'vue-property-decorator';
 import BaseComponent from '../../../../common/ui/layout/classes/BaseComponent';
 
 @Component
-export default class ContentSettingsComponent extends BaseComponent{
+export default class ContentSettingsComponent extends BaseComponent {
 
 }
 </script>

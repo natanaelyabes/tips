@@ -82,7 +82,7 @@ import BaseComponent from '@/iochord/chdsr/common/ui/layout/classes/BaseComponen
 export default class WrapperComponent extends BaseComponent {
 
   private get hasHeader(): boolean {
-    return !!this.$slots['header-title'] || !!this.$slots['header-breadcrumb'];
+    return !!this.$slots['header-breadcrumb'];
   }
 
   private get hasTitleMenu(): boolean {

@@ -21,7 +21,7 @@
     </div>
 
     <div id="canvas-container" class="editor canvas">
-      <div id="canvas" tabindex="0" 
+      <div id="canvas" tabindex="0"
         @keydown.esc="cancelCreateItem($event)"
         @mousedown="handleCanvasMouseDown($event)"
         @mousemove="handleCanvasMouseMove($event)"
@@ -65,8 +65,8 @@ import { GraphNode } from '@/iochord/chdsr/common/graph/sbpnet/interfaces/GraphN
 import { SbpnetModelService } from '@/iochord/chdsr/common/service/model/SbpnetModelService';
 
 // Enums
-import { NODE_TYPE } from '@/iochord/chdsr/common/graph/sbpnet/rendering-engine/joint/shapes/chdsr/enums/NODE';
-import { ARC_TYPE } from '@/iochord/chdsr/common/graph/sbpnet/rendering-engine/joint/shapes/chdsr/enums/ARC';
+import { NODE_TYPE } from '@/iochord/chdsr/common/graph/sbpnet/rendering-engine/joint/shapes/enums/NODE';
+import { ARC_TYPE } from '@/iochord/chdsr/common/graph/sbpnet/rendering-engine/joint/shapes/enums/ARC';
 import * as NODE_ENUMS from '@/iochord/chdsr/common/graph/sbpnet/enums/NODE';
 
 // Classes
@@ -74,9 +74,9 @@ import PageLayout from '@/iochord/chdsr/common/ui/layout/classes/PageLayout';
 import { GraphActivityNodeImpl } from '@/iochord/chdsr/common/graph/sbpnet/classes/components/GraphActivityNodeImpl';
 import { GraphImpl } from '@/iochord/chdsr/common/graph/sbpnet/classes/GraphImpl';
 import { GraphNodeImpl } from '@/iochord/chdsr/common/graph/sbpnet/classes/GraphNodeImpl';
-import { JointGraphConnectorImpl } from '@/iochord/chdsr/common/graph/sbpnet/rendering-engine/joint/shapes/chdsr/classes/JointGraphConnectorImpl';
-import { JointGraphNodeImpl } from '@/iochord/chdsr/common/graph/sbpnet/rendering-engine/joint/shapes/chdsr/classes/JointGraphNodeImpl';
-import { JointGraphPageImpl } from '@/iochord/chdsr/common/graph/sbpnet/rendering-engine/joint/shapes/chdsr/classes/JointGraphPageImpl';
+import { JointGraphConnectorImpl } from '@/iochord/chdsr/common/graph/sbpnet/rendering-engine/joint/shapes/classes/JointGraphConnectorImpl';
+import { JointGraphNodeImpl } from '@/iochord/chdsr/common/graph/sbpnet/rendering-engine/joint/shapes/classes/JointGraphNodeImpl';
+import { JointGraphPageImpl } from '@/iochord/chdsr/common/graph/sbpnet/rendering-engine/joint/shapes/classes/JointGraphPageImpl';
 
 // Vuex module
 import GraphModule from '@/iochord/chdsr/common/graph/sbpnet/stores/GraphModule';
@@ -198,6 +198,7 @@ export default class SandboxEditorTest extends PageLayout {
 
     /** Create new item container */
     this.newItem = new JointGraphNodeImpl();
+
     /** Set properties for the newly created item */
     (this.newItem as JointGraphNodeImpl).setId(`0-${type}-${GraphNodeImpl.instance.size}`);
     (this.newItem as JointGraphNodeImpl).setType(type.toString());
@@ -283,8 +284,6 @@ export default class SandboxEditorTest extends PageLayout {
           node: this.newItem,
         },
       );
-
-      console.log(graphModule.graph);
 
       GraphSubject.update(graphModule.graph);
 
