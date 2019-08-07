@@ -7,7 +7,10 @@
   <div class="canvas component">
     <div class="editor canvas">
       <!-- TODO: Develop mouse event handler for canvas -->
-      <div @mousedown="doSomething" id="canvas"></div>
+      <div id="canvas"
+        @mousedown="handleCanvasMouseDown($event)"
+        @mousemove="handleCanvasMouseMove($event)"
+        @mouseup="handleCanvasMouseUp($event)"></div>
     </div>
 
     <!-- Model Modals -->
@@ -114,7 +117,6 @@ import { JointGraphNodeImpl } from '@/iochord/chdsr/common/graph/sbpnet/renderin
 import { JointGraphPageImpl } from '@/iochord/chdsr/common/graph/sbpnet/rendering-engine/joint/shapes/classes/JointGraphPageImpl';
 import JointJsRenderer from '@/iochord/chdsr/common/graph/sbpnet/rendering-engine/joint/classes/JointJsRenderer';
 
-
 // Interfaces
 import { GraphConnector } from '@/iochord/chdsr/common/graph/sbpnet/interfaces/GraphConnector';
 import { GraphData } from '@/iochord/chdsr/common/graph/sbpnet/interfaces/GraphData';
@@ -134,10 +136,10 @@ import StopNodeModal from '@/iochord/chdsr/simulation/editor/components/modals/S
 
 // Mixins
 import ModalMixin from '@/iochord/chdsr/simulation/editor/mixins/modals/ModalMixin';
+import CanvasMixin from '@/iochord/chdsr/simulation/editor/mixins/editors/CanvasMixin';
 
 // JQuery Handler
 declare const $: any;
-
 
 /**
  *
@@ -155,19 +157,11 @@ declare const $: any;
     StopNodeModal,
   },
 })
-export default class CanvasComponent extends Mixins(BaseComponent, ModalMixin) {
+export default class CanvasComponent extends Mixins(BaseComponent, ModalMixin, CanvasMixin) {
   @Prop() public response?: Graph;
-
-  public graph?: Graph;
-  public activePage?: GraphPage;
-
-  public currentSelectedElement?: GraphNode;
-
-  public nodeTypes: Set<string> = new Set<string>();
 
   public mounted(): void {
     this.loadGraph();
-    this.activePage = this.graph!.getPages()!.get('0');
     this.$forceUpdate();
   }
 
@@ -195,6 +189,14 @@ export default class CanvasComponent extends Mixins(BaseComponent, ModalMixin) {
       renderer.jointPages.forEach((jointPage: JointGraphPageImpl) => {
         this.whileListenToEvents(jointPage);
       });
+
+      if (this.graph) {
+        this.activePage = this.graph.getPages()!.get('0');
+      }
+
+      if (this.activePage) {
+        this.activePage = renderer.activeJointPage(this.activePage.getId() as string) as JointGraphPageImpl;
+      }
     } catch (e) {
       console.log(e);
     }
@@ -220,7 +222,7 @@ export default class CanvasComponent extends Mixins(BaseComponent, ModalMixin) {
     // Listening to events (TODO: later each of these event handler must be encapsulated within methods or classes)
     jointPage.getPaper().on({
       'element:pointerclick': (elementView: joint.dia.ElementView) => {
-        console.log(elementView);
+        // console.log(elementView);
       },
       'element:contextmenu': (elementView: joint.dia.ElementView) => {
         const currentElement = elementView.model;

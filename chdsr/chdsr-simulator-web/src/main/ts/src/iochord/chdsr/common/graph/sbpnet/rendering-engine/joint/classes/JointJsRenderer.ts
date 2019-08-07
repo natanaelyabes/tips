@@ -13,7 +13,6 @@ import { NODE_TYPE } from '@/iochord/chdsr/common/graph/sbpnet/rendering-engine/
 /** Joint.js */
 // Module
 import * as joint from 'jointjs';
-import { Mixins } from 'vue-property-decorator';
 
 // Utils
 import { Anchors } from './../utils/Anchors';
@@ -26,14 +25,11 @@ import { JointGraphPageImpl } from './../shapes/classes/JointGraphPageImpl';
 // Enums
 import { ARC_TYPE } from '../shapes/enums/ARC';
 
-// Mixins
-import ModalMixin from '@/iochord/chdsr/simulation/editor/mixins/modals/ModalMixin';
-
 // JQuery
 import 'jquery';
 declare const $: any;
 
-export default class JointJsRenderer extends ModalMixin {
+export default class JointJsRenderer {
   public canvasWidth?: number;
   public canvasHeight?: number;
 
@@ -44,11 +40,10 @@ export default class JointJsRenderer extends ModalMixin {
   public graph?: Graph;
 
   public activePage?: GraphPage;
-  public jointPages: JointGraphPageImpl[] = new Array<JointGraphPageImpl>();
+  public jointPages: Map<string, JointGraphPageImpl> = new Map<string, JointGraphPageImpl>();
   public currentSelectedElement?: GraphNode;
 
   constructor(graph: Graph, activePage: GraphPage, currentSelectedElement: GraphNode) {
-    super();
     this.graph = graph;
     this.activePage = activePage;
     this.currentSelectedElement = currentSelectedElement;
@@ -79,7 +74,7 @@ export default class JointJsRenderer extends ModalMixin {
         // Center the view
         this.centerGraph(jointPage);
 
-        this.jointPages.push(jointPage);
+        this.jointPages.set(jointPage.getId() as string, jointPage);
       }
     } catch (e) {
       console.error(e);
@@ -88,6 +83,10 @@ export default class JointJsRenderer extends ModalMixin {
 
   public getNodeTypes(): Set<string> {
     return this.nodeTypes;
+  }
+
+  public activeJointPage(pageId: string) {
+    return this.jointPages.get(pageId as string);
   }
 
   private setProperties(jointPage: JointGraphPageImpl, currentPage: GraphPage): void {
