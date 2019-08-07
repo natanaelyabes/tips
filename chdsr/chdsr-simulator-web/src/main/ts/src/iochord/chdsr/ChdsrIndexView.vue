@@ -83,17 +83,21 @@
 <script lang="ts">
 // Vue & Libraries
 import { Component, Vue } from 'vue-property-decorator';
+import { getModule } from 'vuex-module-decorators';
 
 // Interfaces
 import { SemanticModulesIsUsed } from '@/iochord/chdsr/common/ui/semantic-components/SemanticModulesIsUsed';
 
+// Layouts
+import IndexLayout from '@/iochord/chdsr/common/ui/layout/classes/IndexLayout';
+
 // Components
 import NavigationTopSidebarComponent from '@/iochord/chdsr/common/ui/semantic-components/navigations/components/NavigationTopSidebarComponent.vue';
-import IndexLayout from '@/iochord/chdsr/common/ui/layout/classes/IndexLayout';
-import { getModule } from 'vuex-module-decorators';
+import { Graph } from './common/graph/sbpnet/interfaces/Graph';
+
+// Vuex & Rxjs
 import GraphModule from './common/graph/sbpnet/stores/GraphModule';
 import GraphSubject from './common/graph/sbpnet/rxjs/GraphSubject';
-import { Graph } from './common/graph/sbpnet/interfaces/Graph';
 
 // JQuery Symbol Handler
 declare const $: any;

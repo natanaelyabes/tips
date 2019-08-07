@@ -2,13 +2,14 @@ import { GraphConnector } from '@/iochord/chdsr/common/graph/sbpnet/interfaces/G
 import { GraphData } from './../interfaces/GraphData';
 import { GraphConfiguration } from './../interfaces/GraphConfiguration';
 import { GraphPage } from '@/iochord/chdsr/common/graph/sbpnet/interfaces/GraphPage';
-import { VuexModule, Module, MutationAction, Mutation, Action } from 'vuex-module-decorators';
+import { VuexModule, Module, MutationAction, Mutation } from 'vuex-module-decorators';
 import { Graph } from '../interfaces/Graph';
 import { GraphControl } from '../interfaces/components/GraphControl';
 import { SbpnetModelService } from '../../../service/model/SbpnetModelService';
 
 import Vuex from 'vuex';
 import { GraphNode } from '../interfaces/GraphNode';
+import { GraphNodeImpl } from '../classes/GraphNodeImpl';
 
 interface StoreType {
   graphModule: GraphModule;
@@ -18,13 +19,20 @@ const store = new Vuex.Store<StoreType>({});
 
 @Module({ dynamic: true, store, name: 'GraphModule', namespaced: true })
 export default class GraphModule extends VuexModule {
+  // States
   public graph: Graph = {} as Graph;
+  public newItem: GraphNodeImpl | null = {} as GraphNodeImpl;
 
   // Mutations
   @MutationAction({ mutate: ['graph'] })
   public async fetchGraph(url?: string) {
     const graph: Graph = await SbpnetModelService.getInstance().getExampleModel();
     return { graph };
+  }
+
+  @Mutation
+  public setNewItem(newItem: GraphNodeImpl | null) {
+    this.newItem = newItem;
   }
 
   @Mutation
@@ -305,7 +313,6 @@ export default class GraphModule extends VuexModule {
     this.graph.setData(data);
   }
 
-  // Getters
   public get version(): string | null {
     return this.graph ? this.graph.getVersion() : null;
   }

@@ -66,7 +66,7 @@ export default class HeaderComponent extends BaseComponent {
   }
 
   private get hasBreadcrumbComponent(): boolean {
-    return !!this.$slots['header-breadcrumb'];
+    return true;
   }
 }
 </script>
