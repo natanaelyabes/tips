@@ -64,10 +64,7 @@ const graphModule = getModule(GraphModule);
 })
 export default class ToolboxPaletteComponent extends Mixins(BaseComponent, PaletteMixin) {
   public mounted(): void {
-    this.$observables.graph.subscribe((graph: Graph) => {
-      console.log(graph);
-      graphModule.setGraph(graph);
-    });
+    //
   }
 }
 </script>

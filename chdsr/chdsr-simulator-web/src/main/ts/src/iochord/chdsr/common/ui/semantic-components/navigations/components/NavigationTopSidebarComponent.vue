@@ -112,6 +112,11 @@ export default class NavigationTopSidebarComponent extends SemanticComponent {
   private menuIsOpen: boolean = false;
 
   /** @Override */
+  public mounted(): void {
+    this.closeMenu();
+  }
+
+  /** @Override */
   public declareSemanticModules(): void {
     this.declareSidebar();
   }

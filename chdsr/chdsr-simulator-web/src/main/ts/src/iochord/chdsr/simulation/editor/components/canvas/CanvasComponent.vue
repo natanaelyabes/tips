@@ -6,6 +6,7 @@
 <template>
   <div class="canvas component">
     <div class="editor canvas">
+
       <!-- TODO: Develop mouse event handler for canvas -->
       <div id="canvas"
         @keydown.esc="cancelCreateItem($event)"
@@ -101,6 +102,7 @@
 <script lang="ts">
 // Vue & Libraries
 import { Component, Prop, Mixins, Vue } from 'vue-property-decorator';
+import { getModule } from 'vuex-module-decorators';
 
 // JointJS
 import * as joint from 'jointjs';
@@ -139,8 +141,13 @@ import StopNodeModal from '@/iochord/chdsr/simulation/editor/components/modals/S
 import ModalMixin from '@/iochord/chdsr/simulation/editor/mixins/modals/ModalMixin';
 import CanvasMixin from '@/iochord/chdsr/simulation/editor/mixins/editors/CanvasMixin';
 
+
 // JQuery Handler
 declare const $: any;
+
+// Vuex Module
+import GraphModule from '@/iochord/chdsr/common/graph/sbpnet/stores/GraphModule';
+const graphModule = getModule(GraphModule);
 
 /**
  *
@@ -171,8 +178,6 @@ export default class CanvasComponent extends Mixins(BaseComponent, ModalMixin, C
       // Deserialize the model
       this.graph = this.response as Graph;
 
-      console.log(this.graph);
-
       // TODO: we can choose any rendering engine later
 
       // TODO:
@@ -193,20 +198,18 @@ export default class CanvasComponent extends Mixins(BaseComponent, ModalMixin, C
         this.whileListenToEvents(jointPage);
       });
 
+      // Set active page to the first page of the graph
       if (this.graph) {
         this.activePage = this.graph.getPages()!.get('0');
       }
 
+      // Assign Joint.js page as an active page
       if (this.activePage) {
         this.activePage = renderer.activeJointPage(this.activePage.getId() as string) as JointGraphPageImpl;
       }
     } catch (e) {
       console.log(e);
     }
-  }
-
-  private doSomething(): void {
-    // this.$emit('event-name', doSomethingAwesome())
   }
 
   private whileListenToEvents(jointPage: JointGraphPageImpl): void {
@@ -227,7 +230,7 @@ export default class CanvasComponent extends Mixins(BaseComponent, ModalMixin, C
       'element:pointerclick': (elementView: joint.dia.ElementView) => {
         // console.log(elementView);
       },
-      'element:contextmenu': (elementView: joint.dia.ElementView) => {
+      'element:pointerdblclick': (elementView: joint.dia.ElementView) => {
         const currentElement = elementView.model;
         const currentElementType = currentElement.attributes.type;
         const currentElementNodeId = currentElement.attributes.nodeId;

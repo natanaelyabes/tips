@@ -45,14 +45,6 @@
   border-top: 0;
 }
 
-.sidebar.component .navigation-bar.component .ui.menu::-webkit-scrollbar {
-  width: .2em;
-}
-
-.sidebar.component .navigation-bar.component .ui.menu::-webkit-scrollbar-thumb {
-  background: #a5b1c2;
-}
-
 .sidebar.component .navigation-bar.component .ui.menu a.ui.basic.button.item {
   margin-left: .25em;
   margin-bottom: .25em;

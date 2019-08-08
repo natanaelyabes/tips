@@ -3,9 +3,24 @@ import { GraphNode } from '@/iochord/chdsr/common/graph/sbpnet/interfaces/GraphN
 import { Graph } from '@/iochord/chdsr/common/graph/sbpnet/interfaces/Graph';
 import { GraphPage } from '@/iochord/chdsr/common/graph/sbpnet/interfaces/GraphPage';
 import { Component } from 'vue-property-decorator';
+import { getModule } from 'vuex-module-decorators';
+import GraphModule from '@/iochord/chdsr/common/graph/sbpnet/stores/GraphModule';
+import { GraphNodeImpl } from '@/iochord/chdsr/common/graph/sbpnet/classes/GraphNodeImpl';
+import { GraphStartEventNodeImpl } from '@/iochord/chdsr/common/graph/sbpnet/classes/components/GraphStartEventNodeImpl';
+import GraphSubject from '@/iochord/chdsr/common/graph/sbpnet/rxjs/GraphSubject';
 
 
-@Component
+const graphModule = getModule(GraphModule);
+
+@Component<StartNodeModalMixin>({
+  subscriptions: () => {
+    return (
+      {
+        graph: GraphSubject.toObservable(),
+      }
+    );
+  },
+})
 export default class StartNodeModalMixin extends BaseComponent {
 
   // Parent start
@@ -30,12 +45,18 @@ export default class StartNodeModalMixin extends BaseComponent {
   }
 
   /* Start updated from Child */
-  public changeStartLabelFromChild(e: any, graph: Graph, activePage: GraphPage, currentSelectedElement: GraphNode, callback: () => void) {
+  public changeStartLabelFromChild(e: any, activePage: GraphPage, currentSelectedElement: GraphNode, callback: () => void) {
     this.parentStartLabel = e;
     currentSelectedElement.setLabel(this.parentStartLabel);
-    graph.getPages()!
-      .get(activePage.getId() as string)!.getNodes()!
-      .set(currentSelectedElement.getId() as string, currentSelectedElement as GraphNode);
+
+    const node = graphModule.pageNode(activePage, currentSelectedElement.getId() as string) as GraphNode;
+    graphModule.overridePageNode({ page: activePage, node });
+
+    GraphNodeImpl.instance.set(node.getId() as string, GraphStartEventNodeImpl.deserialize(node) as GraphNode);
+
+    // Update the rxjs observable
+    GraphSubject.update(graphModule.graph);
+
     callback();
   }
 

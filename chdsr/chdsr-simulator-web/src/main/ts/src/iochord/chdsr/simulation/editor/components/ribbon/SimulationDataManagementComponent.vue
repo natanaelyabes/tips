@@ -9,9 +9,6 @@
         <a class="ui button" title="Show report"><i class="file outline alternate icon"></i></a>
       </div>
     </div>
-    <div class="item">
-      <div @click="toggleModelPane()" class="ui basic icon button" title="Open model pane"><i class="sidebar icon"></i></div>
-    </div>
 
     <!-- Upload Modals -->
     <div class="ui upload file modal">
@@ -59,16 +56,6 @@ export default class SimulationDataManagementComponent extends BaseComponent {
 
   private showUploadFileModal(): void {
     $('.ui.upload.file.modal').modal('show');
-  }
-
-  private toggleModelPane(): void {
-    if (this.modelPaneIsOpen) {
-      this.modelPaneIsOpen = false;
-      $('#canvas').width($('.editor.canvas').innerWidth() + 260);
-    } else {
-      this.modelPaneIsOpen = true;
-      $('#canvas').width($('.editor.canvas').innerWidth() - 260);
-    }
   }
 }
 </script>

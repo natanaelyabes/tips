@@ -21,7 +21,7 @@ const store = new Vuex.Store<StoreType>({});
 export default class GraphModule extends VuexModule {
   // States
   public graph: Graph = {} as Graph;
-  public newItem: GraphNodeImpl | null = {} as GraphNodeImpl;
+  public newItem: GraphNodeImpl | null = null;
 
   // Mutations
   @MutationAction({ mutate: ['graph'] })
@@ -92,7 +92,7 @@ export default class GraphModule extends VuexModule {
   }
 
   @Mutation
-  public setPageArcs(page: GraphPage, arcs: Map<string, GraphConnector>): void {
+  public setPageArcs({ page, arcs }: { page: GraphPage, arcs: Map<string, GraphConnector> }): void {
     const pages = this.graph.getPages();
 
     if (pages !== null) {
@@ -106,7 +106,7 @@ export default class GraphModule extends VuexModule {
   }
 
   @Mutation
-  public addPageArc(page: GraphPage, arc: GraphConnector) {
+  public addPageArc({ page, arc }: { page: GraphPage, arc: GraphConnector }) {
     const arcs = page.getArcs();
 
     if (arcs !== null) {
@@ -119,7 +119,7 @@ export default class GraphModule extends VuexModule {
   }
 
   @Mutation
-  public overridePageArc(page: GraphPage, arc: GraphConnector) {
+  public overridePageArc({ page, arc }: { page: GraphPage, arc: GraphConnector }) {
     const arcs = page.getArcs();
 
     if (arcs !== null) {
@@ -127,13 +127,13 @@ export default class GraphModule extends VuexModule {
       if (exists) {
         arcs.set(arc.getId() as string, arc);
       } else {
-        this.addPageArc(page, arc);
+        this.addPageArc({ page, arc });
       }
     }
   }
 
   @Mutation
-  public deletePageArc(page: GraphPage, arc: GraphConnector) {
+  public deletePageArc({ page, arc }: { page: GraphPage, arc: GraphConnector }) {
     const arcs = page.getArcs();
 
     if (arcs !== null) {
@@ -147,7 +147,7 @@ export default class GraphModule extends VuexModule {
   }
 
   @Mutation
-  public setPageData(page: GraphPage, data: Map<string, GraphData>): void {
+  public setPageData({ page, data }: { page: GraphPage, data: Map<string, GraphData> }): void {
     const pages = this.graph.getPages();
 
     if (pages !== null) {
@@ -161,7 +161,7 @@ export default class GraphModule extends VuexModule {
   }
 
   @Mutation
-  public addPageDatum(page: GraphPage, datum: GraphData): void {
+  public addPageDatum({ page, datum }: { page: GraphPage, datum: GraphData }): void {
     const data = page.getData();
 
     if (data !== null) {
@@ -174,7 +174,7 @@ export default class GraphModule extends VuexModule {
   }
 
   @Mutation
-  public overridePageDatum(page: GraphPage, datum: GraphData) {
+  public overridePageDatum({ page, datum }: { page: GraphPage, datum: GraphData }) {
     const data = page.getData();
 
     if (data !== null) {
@@ -182,13 +182,13 @@ export default class GraphModule extends VuexModule {
       if (exists) {
         data.set(datum.getId() as string, datum);
       } else {
-        this.addPageDatum(page, datum);
+        this.addPageDatum({page, datum});
       }
     }
   }
 
   @Mutation
-  public deletePageDatum(page: GraphPage, datum: GraphData) {
+  public deletePageDatum({ page, datum }: { page: GraphPage, datum: GraphData }) {
     const data = page.getData();
 
     if (data !== null) {
@@ -202,7 +202,7 @@ export default class GraphModule extends VuexModule {
   }
 
   @Mutation
-  public setPageElementType(page: GraphPage, elementType: string) {
+  public setPageElementType({ page, elementType }: { page: GraphPage, elementType: string }) {
     const pages = this.graph.getPages();
 
     if (pages !== null) {
@@ -216,7 +216,7 @@ export default class GraphModule extends VuexModule {
   }
 
   @Mutation
-  public setPageId(page: GraphPage, id: string) {
+  public setPageId({ page, id }: { page: GraphPage, id: string }) {
     const pages = this.graph.getPages();
 
     if (pages !== null) {
@@ -230,7 +230,7 @@ export default class GraphModule extends VuexModule {
   }
 
   @Mutation
-  public setPageLabel(page: GraphPage, label: string) {
+  public setPageLabel({ page, label }: { page: GraphPage, label: string }) {
     const pages = this.graph.getPages();
 
     if (pages !== null) {
@@ -244,7 +244,7 @@ export default class GraphModule extends VuexModule {
   }
 
   @Mutation
-  public setPageNodes(page: GraphPage, nodes: Map<string, GraphNode>) {
+  public setPageNodes({ page, nodes }: { page: GraphPage, nodes: Map<string, GraphNode> }) {
     const pages = this.graph.getPages();
 
     if (pages !== null) {
@@ -258,7 +258,7 @@ export default class GraphModule extends VuexModule {
   }
 
   @Mutation
-  public addPageNode({page, node}: {page: GraphPage, node: GraphNode}): void {
+  public addPageNode({ page, node }: { page: GraphPage, node: GraphNode }): void {
     const nodes = page.getNodes();
 
     if (nodes !== null) {
@@ -271,7 +271,7 @@ export default class GraphModule extends VuexModule {
   }
 
   @Mutation
-  public overridePageNode(page: GraphPage, node: GraphNode) {
+  public overridePageNode({ page, node }: { page: GraphPage, node: GraphNode }) {
     const nodes = page.getNodes();
 
     if (nodes !== null) {
@@ -285,7 +285,7 @@ export default class GraphModule extends VuexModule {
   }
 
   @Mutation
-  public deletePageNode(page: GraphPage, node: GraphNode) {
+  public deletePageNode({ page, node }: { page: GraphPage, node: GraphNode }) {
     const nodes = page.getNodes();
 
     if (nodes !== null) {

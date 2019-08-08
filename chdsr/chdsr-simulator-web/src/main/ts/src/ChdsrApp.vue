@@ -17,6 +17,15 @@
   zoom: 90%;
 }
 
+::-webkit-scrollbar {
+  width: .2em!important;
+  height: .2em!important;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #a5b1c2!important;
+}
+
 </style>
 
 

@@ -85,6 +85,10 @@ export default class JointJsRenderer {
     return this.nodeTypes;
   }
 
+  // public get node(id: string) {
+
+  // }
+
   public activeJointPage(pageId: string) {
     return this.jointPages.get(pageId as string);
   }
@@ -115,7 +119,7 @@ export default class JointJsRenderer {
         return Anchors.skipEndMagnetPerpendicularAnchor(endView, endMagnet, anchorReference, args);
       },
       defaultConnectionPoint: { name: 'boundary' },
-      defaultConnector: { name: 'rounded' },
+      defaultConnector: { name: 'smooth' },
     } as joint.dia.Paper.Options ));
   }
 

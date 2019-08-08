@@ -34,6 +34,6 @@ implements SemanticModulesIsUsed {
    * @memberof BaseLayout
    */
   public declareSemanticModules(): void {
-    console.warn('declareSemanticModules() not implemented.');
+    // console.warn('declareSemanticModules() not implemented.');
   }
 }
