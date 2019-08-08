@@ -6,7 +6,6 @@ import { GraphConnector } from '../interfaces/GraphConnector';
 import { GraphConnectorImpl } from './GraphConnectorImpl';
 import { NODE_TYPE } from '../enums/NODE';
 import { DATA_TYPE } from '../enums/DATA';
-import { stringify } from 'querystring';
 
 /**
  *

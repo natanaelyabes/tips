@@ -128,19 +128,6 @@ export default class ChdsrIndexView extends IndexLayout {
   /** @Override */
   public async mounted(): Promise<void> {
     await this.declareSemanticModules();
-
-    // Fetch graph to Vuex state
-    await graphModule.fetchGraph();
-
-    // Update rxjs subject
-    GraphSubject.update(graphModule.graph);
-
-    // Listen to changes
-    this.$observables.graph.subscribe((graph: Graph) => {
-      graphModule.setGraph(graph);
-
-      // Implementation to update the graph data to server
-    });
   }
 
   /** @Override */

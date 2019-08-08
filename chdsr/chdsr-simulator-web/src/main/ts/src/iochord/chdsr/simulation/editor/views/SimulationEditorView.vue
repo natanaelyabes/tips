@@ -210,6 +210,12 @@ export default class SimulationEditorView extends Layout01View {
   /** @Override */
   public async mounted(): Promise<void> {
     try {
+      // Fetch graph to Vuex state
+      await graphModule.fetchGraph();
+
+      // Update rxjs subject
+      GraphSubject.update(graphModule.graph);
+
       this.$observables.graph.subscribe((graph: Graph) => {
         graphModule.setGraph(graph);
       });

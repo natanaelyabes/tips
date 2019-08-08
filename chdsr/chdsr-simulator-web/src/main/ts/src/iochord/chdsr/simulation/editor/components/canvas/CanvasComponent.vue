@@ -8,6 +8,7 @@
     <div class="editor canvas">
       <!-- TODO: Develop mouse event handler for canvas -->
       <div id="canvas"
+        @keydown.esc="cancelCreateItem($event)"
         @mousedown="handleCanvasMouseDown($event)"
         @mousemove="handleCanvasMouseMove($event)"
         @mouseup="handleCanvasMouseUp($event)"></div>
@@ -169,6 +170,8 @@ export default class CanvasComponent extends Mixins(BaseComponent, ModalMixin, C
     try {
       // Deserialize the model
       this.graph = this.response as Graph;
+
+      console.log(this.graph);
 
       // TODO: we can choose any rendering engine later
 
