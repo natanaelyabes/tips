@@ -7,7 +7,7 @@ import io.iochord.dev.chdsr.simulator.engine.subject.MarkingObservable
 import io.iochord.dev.chdsr.simulator.engine.Simulator
 import java.util.Observer
 
-abstract class Simulation(val simulator:Simulator = new Simulator()) {
+abstract class Simulation(val simulator:Simulator = new Simulator(true)) {
   val cgraph = CPNGraph()
   val globtime = new GlobalTime(0)
   var stopCrit:Any => Boolean = null
@@ -44,7 +44,11 @@ abstract class Simulation(val simulator:Simulator = new Simulator()) {
   }
   
   def getCurrentTime() = {
-    globtime.getTime();
+    globtime.getTime()
+  }
+  
+  def getAvgEnTrTime() = {
+    simulator.getAvgTimeEnTr()
   }
   
   def runUntilMaxArrival(): Unit = {

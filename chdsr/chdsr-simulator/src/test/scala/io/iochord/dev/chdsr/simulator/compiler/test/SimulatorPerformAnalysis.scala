@@ -3,9 +3,12 @@ package io.iochord.dev.chdsr.simulator.compiler.test
 import io.iochord.dev.chdsr.simulator.engine.observer.MarkingObserver
 import io.iochord.dev.chdsr.model.cpn.v1.impl.Place
 import io.iochord.dev.chdsr.simulator.compiler.MemoryScalaFileCompiler
+import org.json.JSONObject
 import org.json.JSONArray
 import scala.collection.mutable.HashMap
 import scala.collection.mutable.ListBuffer
+
+import java.lang.management.ManagementFactory
 
 class SimulatorPerformAnalysis {
   
@@ -17,7 +20,7 @@ class SimulatorPerformAnalysis {
     var memorybef = HashMap[String,String]()
     var memoryaft = HashMap[String,String]()
     
-    val jarr = new JSONArray(jsonStr);
+    val job = new JSONObject(jsonStr);
     
     val mb = (1024*1024).toFloat
     
@@ -48,7 +51,7 @@ class SimulatorPerformAnalysis {
     
     //places before
 		cgraph.allPlaces.foreach(p => {
-		  val pc = JsonConverter.buildPlace(jarr,p)
+		  val pc = JsonConverter.buildPlace(job.getJSONArray("addInitToken"),p,true,job.getBoolean("showPlaces"))
 			placesbef = pc.toMap :: placesbef
 		})
 		
@@ -61,7 +64,7 @@ class SimulatorPerformAnalysis {
 		
 		//places after
 		cgraph.allPlaces.foreach(p => {
-		  val pc = JsonConverter.buildPlace(jarr,p)
+		  val pc = JsonConverter.buildPlace(job.getJSONArray("addInitToken"),p,false,job.getBoolean("showPlaces"))
 			placesaft = pc.toMap :: placesaft
 		})
 		
@@ -94,7 +97,7 @@ class SimulatorPerformAnalysis {
     var memorybef = HashMap[String,String]()
     var memoryaft = HashMap[String,String]()
     
-    val jarr = new JSONArray(jsonStr);
+    val job = new JSONObject(jsonStr);
     
     val mb = (1024*1024).toFloat
     
@@ -125,7 +128,7 @@ class SimulatorPerformAnalysis {
     
     //places before
 		cgraph.allPlaces.foreach(p => {
-		  val pc = JsonConverter.buildPlace(jarr,p)
+		  val pc = JsonConverter.buildPlace(job.getJSONArray("addInitToken"),p,true,job.getBoolean("showPlaces"))
 			placesbef = pc.toMap :: placesbef
 		})
 		
@@ -138,7 +141,7 @@ class SimulatorPerformAnalysis {
 		
 		//places after
 		cgraph.allPlaces.foreach(p => {
-		  val pc = JsonConverter.buildPlace(jarr,p)
+		  val pc = JsonConverter.buildPlace(job.getJSONArray("addInitToken"),p,false,job.getBoolean("showPlaces"))
 			placesaft = pc.toMap :: placesaft
 		})
 		
@@ -206,22 +209,28 @@ object JsonConverter {
     return s.replaceAll("\"" , "\\\\\"");
   }
   
-  def buildPlace(jarr:JSONArray, p:Place[_]):HashMap[String,Any] = {
-    val pc = HashMap[String,Any]()
-		  
-		pc += ("id" -> p.getId())
-		pc += ("origin" -> p.getOrigin().keySet.head)
-		pc += ("name" -> p.getName())
-		
+  def buildPlace(jarr:JSONArray, p:Place[_], isBefore:Boolean, isShowPlaces:Boolean):HashMap[String,Any] = {
+    if(isBefore)
 		for(i <- 0 to jarr.length()-1) {
 		  val job = jarr.getJSONObject(i)
 		  if(job.getString("id").equals(p.getId())) {
-		    val noInitToken = job.getInt("numInitToken")
+		    val noInitToken = job.getInt("addToken")
 		    for(j <- 1 to noInitToken)
 		      p.addTokenWithTime( ((j,"0-generator-1"),0L), 1 )
 		  }
 		}
 		
-		pc += ("marking" -> p.getCurrentMarking().getMap())
+    val pc = HashMap[String,Any]()
+    
+    if(isShowPlaces) {
+  		pc += ("id" -> p.getId())
+  		pc += ("origin" -> p.getOrigin().keySet.head)
+  		pc += ("name" -> p.getName())
+  		
+  		
+  		pc += ("marking" -> p.getCurrentMarking().getMap().toString())
+    }
+    
+    pc
   }
 }
