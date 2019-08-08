@@ -5,8 +5,11 @@ import java.util.Map;
 
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import io.iochord.dev.chdsr.model.converter.sbp2cpn.Sbpnet2CpnscalaBiConverter;
@@ -20,6 +23,7 @@ import io.iochord.dev.chdsr.model.sbpnet.v1.components.impl.ObjectTypeImpl;
 import io.iochord.dev.chdsr.model.sbpnet.v1.components.impl.StartImpl;
 import io.iochord.dev.chdsr.model.sbpnet.v1.components.impl.StopImpl;
 import io.iochord.dev.chdsr.model.sbpnet.v1.impl.SbpnetFactoryImpl;
+import io.iochord.dev.chdsr.model.sbpnet.v1.impl.SbpnetImpl;
 import io.iochord.dev.chdsr.util.SerializationUtil;
 
 /**
@@ -81,8 +85,10 @@ public class SbpnetModelController extends AModelController {
 		return null;
 	}
 	
-	@RequestMapping(BASE_URI + "/edit/{modelId}")
-	public Sbpnet getEdit(@PathVariable String modelId) {
+	@RequestMapping(value = BASE_URI + "/edit/{modelId}", method = RequestMethod.POST)
+	public Sbpnet postEdit(@PathVariable String modelId, 
+		@ModelAttribute SbpnetImpl graph) {
+		getWsmTemplate().convertAndSend("/res" + BASE_URI + "/edit/" + modelId, graph);
 		if (nets.containsKey(modelId)) {
 			Sbpnet net = nets.get(modelId);
 			Page page = net.getPages().values().iterator().next();
@@ -90,7 +96,7 @@ public class SbpnetModelController extends AModelController {
 			act.setLabel("Activity " + (page.getNodes().size() + 1));
 			return net;
 		}
-		return null;
+		return graph;
 	}
 	
 	@RequestMapping(value=BASE_URI + "/example",produces= {MediaType.APPLICATION_JSON_VALUE})

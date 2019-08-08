@@ -3,7 +3,7 @@
     <div class="item"><div class="header"><strong>Simulation Data Management</strong></div></div>
     <div class="item">
       <div class="ui basic icon buttons">
-        <a class="ui button" title="Save model"><i class="save icon"></i></a>
+        <a class="ui button" title="Save model" @click="doSaveModel()"><i class="save icon"></i></a>
         <a class="ui button" title="Upload model" @click="showUploadFileModal"><i class="upload icon"></i></a>
         <a class="ui button" title="Download model"><i class="download icon"></i></a>
         <a class="ui button" title="Show report"><i class="file outline alternate icon"></i></a>
@@ -46,13 +46,29 @@
 
 <script lang="ts">
 import { Component } from 'vue-property-decorator';
+import { getModule } from 'vuex-module-decorators';
 import BaseComponent from '@/iochord/chdsr/common/ui/layout/classes/BaseComponent';
+import GraphModule from '@/iochord/chdsr/common/graph/sbpnet/stores/GraphModule';
+import GraphSubject from '@/iochord/chdsr/common/graph/sbpnet/rxjs/GraphSubject';
+
+import { SbpnetModelService } from '@/iochord/chdsr/common/service/model/SbpnetModelService';
+
+const graphModule = getModule(GraphModule);
 
 declare const $: any;
 
 @Component
 export default class SimulationDataManagementComponent extends BaseComponent {
   public modelPaneIsOpen: boolean = true;
+
+  private doSaveModel(): void {
+    console.log("WS-REQUEST", graphModule.graph);
+    SbpnetModelService.getInstance().callSaveModel(graphModule.graph, (tick) => {
+      const graph = JSON.parse(tick.body);
+      console.log("WS-RESPONSE", graph);
+      alert('saved !');
+    });
+  }
 
   private showUploadFileModal(): void {
     $('.ui.upload.file.modal').modal('show');
