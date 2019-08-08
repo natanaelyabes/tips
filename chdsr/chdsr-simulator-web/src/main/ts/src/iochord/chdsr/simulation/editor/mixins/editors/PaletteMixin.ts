@@ -21,8 +21,8 @@ enum NODE {
 }
 
 import { NODE_TYPE } from '@/iochord/chdsr/common/graph/sbpnet/rendering-engine/joint/shapes/enums/NODE';
+import * as NODE_FACTORY from '@/iochord/chdsr/common/graph/sbpnet/enums/NODE';
 import { JointGraphPageImpl } from '@/iochord/chdsr/common/graph/sbpnet/rendering-engine/joint/shapes/classes/JointGraphPageImpl';
-import { GraphPage } from '@/iochord/chdsr/common/graph/sbpnet/interfaces/GraphPage';
 import { GraphNode } from '@/iochord/chdsr/common/graph/sbpnet/interfaces/GraphNode';
 import GraphSubject from '@/iochord/chdsr/common/graph/sbpnet/rxjs/GraphSubject';
 import * as NODE_ENUMS from '@/iochord/chdsr/common/graph/sbpnet/enums/NODE';
@@ -110,17 +110,36 @@ export default class PaletteMixin extends BaseComponent {
   public saveItem(e: MouseEvent, activePage: JointGraphPageImpl) {
     editorState.setDragging(false);
     if (graphModule.newItem !== null) {
+
+      /** Render newItem */
+      (graphModule.newItem as JointGraphNodeImpl).render(activePage.getGraph());
+
+      /** Construct newItem according to its type */
+      const type = graphModule.newItem.getType() as string;
+      const newItem = new (NODE_FACTORY.NODE_TYPE as any)[type]();
+      newItem.setId(`0-${type}-${GraphNodeImpl.instance.size}`);
+      newItem.setType(type);
+
+      /** No need to set label for start and stop node */
+      if (!(type.toString() === 'start' || type.toString() === 'stop')) {
+        (newItem).setLabel(`New Node ${GraphNodeImpl.instance.size}`);
+      }
+
       graphModule.addPageNode(
         {
           page: activePage,
-          node: graphModule.newItem as GraphNode,
+          node: newItem as GraphNode,
         },
       );
+      GraphNodeImpl.instance.set(newItem.getId() as string, (NODE_ENUMS.NODE_TYPE as any)[type].deserialize(newItem));
 
+      // Update the rxjs observable
       GraphSubject.update(graphModule.graph);
-      GraphNodeImpl.instance.set(graphModule.newItem!.getId() as string, (NODE_ENUMS.NODE_TYPE as any)[graphModule.newItem!.getType() as string].deserialize(graphModule.newItem));
+
+      // Set container to null
       graphModule.setNewItem(null);
 
+      // Remove event listener for cancelCreateItem
       window.removeEventListener('keydown', this.cancelCreateItem);
     }
   }

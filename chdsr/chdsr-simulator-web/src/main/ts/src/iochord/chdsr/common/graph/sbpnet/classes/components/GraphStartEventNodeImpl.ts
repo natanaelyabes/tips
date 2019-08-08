@@ -28,7 +28,7 @@ export class GraphStartEventNodeImpl extends GraphEventNodeImpl implements Graph
     return graphStartEventNode;
   }
 
-  private generator?: GraphDataGenerator | null;
+  private generator?: GraphDataGenerator | null = new GraphDataGeneratorImpl();
 
   constructor() {
     super();
