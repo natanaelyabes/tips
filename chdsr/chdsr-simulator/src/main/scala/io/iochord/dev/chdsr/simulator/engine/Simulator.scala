@@ -9,10 +9,13 @@ import io.iochord.dev.chdsr.simulator.engine.subject._
 
 import scala.collection.mutable._
 
-case class Simulator() {
+case class Simulator(calcAvgTimeEnTr:Boolean = false) {
   
   var c = 0
-    
+  
+  var stTimeEnTr = 0L
+  var avgTimeEnTr = 0L
+  
   private def enabledTransitions(transitions: List[Transition[_]],globtime:GlobalTime) = {
     transitions.filter(t => {t.isEnabled(globtime.time)})
   }
@@ -35,15 +38,23 @@ case class Simulator() {
     c
   }
   
+  def getAvgTimeEnTr() = {
+    avgTimeEnTr
+  }
+  
   def run(net: CPNGraph, stopCrit:Any => Boolean, inpStopCrit:Any, stepsRef:Int = 0, globtime:GlobalTime = new GlobalTime(0), subject:MarkingObservable = null) {
     val steps = c+stepsRef;
     
     val allTransitions = net.allTransitions
     
     var transitions:List[Transition[_]] = null
-    
+      
     breakable {
       while ((stepsRef < 0 || steps > c) && !stopCrit(inpStopCrit)) {
+        
+        if(calcAvgTimeEnTr)
+          stTimeEnTr = System.nanoTime()
+        
         transitions = enabledTransitions(allTransitions, globtime)
         if(transitions.size == 0) {
           val (reseval, transitions_tmp) = evalGlobalTime(net, globtime)
@@ -51,6 +62,8 @@ case class Simulator() {
             break
           transitions = transitions_tmp
         }
+        if(calcAvgTimeEnTr)
+          avgTimeEnTr = if(c == 0) (System.nanoTime() - stTimeEnTr) else (avgTimeEnTr + System.nanoTime() - stTimeEnTr)/2
         
         val r = new java.util.Random();
         val transition = transitions(r.nextInt(transitions.length))
@@ -67,8 +80,8 @@ case class Simulator() {
         transition.getOut().foreach(arc => { val multiset = arc.getPlace().getCurrentMarking().multiset; markafter.put(arc.getPlace().getName(),multiset) } )
         
         if(subject != null) {
-          println("================ Step: "+c+" | globtime: "+globtime.time+" ================")
-          println("Transition: "+transition.getId(),transition.getName())
+          //println("================ Step: "+c+" | globtime: "+globtime.time+" ================")
+          //println("Transition: "+transition.getId(),transition.getName())
           subject.setMarking((markbefore,markafter,transition.getId()+" - "+bindingChosen,globtime.getTime()))  
         }
         c += 1
