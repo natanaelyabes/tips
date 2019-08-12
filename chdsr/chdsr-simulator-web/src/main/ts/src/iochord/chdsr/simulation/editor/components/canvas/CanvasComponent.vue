@@ -221,9 +221,11 @@ export default class CanvasComponent extends Mixins(BaseComponent, ModalMixin, C
 
     // Helper to reset all elements
     const resetAll = (paper: joint.dia.Paper) => {
-
-      /* Reset all elements in the paper */
-      paper.findViewsInArea(jointPage.getPaper().getArea()).forEach((cell: joint.dia.ElementView) => { cell.unhighlight(); });
+      paper.findViewsInArea(
+        jointPage.getPaper().getArea()).forEach((cell: joint.dia.ElementView) => {
+          cell.unhighlight();
+        },
+      );
     };
 
     // Listening to events (TODO: later each of these event handler must be encapsulated within methods or classes)
