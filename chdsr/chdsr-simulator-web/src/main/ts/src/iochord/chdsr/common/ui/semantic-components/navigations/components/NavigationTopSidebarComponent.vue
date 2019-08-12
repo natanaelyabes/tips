@@ -71,6 +71,7 @@
 .ui.vertical.sidebar a.logo.item {
   padding: 0.3em;
   background: white;
+  height: 69px;
 }
 
 #server-info {
@@ -113,7 +114,7 @@ export default class NavigationTopSidebarComponent extends SemanticComponent {
 
   /** @Override */
   public mounted(): void {
-    this.closeMenu();
+    // this.closeMenu();
   }
 
   /** @Override */

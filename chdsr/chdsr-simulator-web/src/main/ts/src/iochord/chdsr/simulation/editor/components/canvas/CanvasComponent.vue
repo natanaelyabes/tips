@@ -12,7 +12,7 @@
         @keydown.esc="cancelCreateItem($event)"
         @mousedown="handleCanvasMouseDown($event)"
         @mousemove="handleCanvasMouseMove($event)"
-        @mouseup="handleCanvasMouseUp($event)"></div>
+        @mouseup="handleCanvasMouseUp($event)" />
     </div>
 
     <!-- Model Modals -->
@@ -23,8 +23,7 @@
           @changeStartGenerator = "changeStartGeneratorFromChild($event, graph, activePage, currentSelectedElement, loadGraph)"
           :startLabel.sync="parentStartLabel"
           :startGenerator.sync="parentStartGenerator"
-          v-bind:id="type" v-bind:key="type"
-        />
+          v-bind:id="type" v-bind:key="type" />
       </template>
 
       <template v-if="type === 'branch'">
@@ -37,8 +36,7 @@
           :selectedGate.sync = "parentBranchSelectedGate"
           :selectedType.sync = "parentBranchSelectedType"
           :selectedRule.sync = "parentBranchSelectedRule"
-          v-bind:id="type" v-bind:key="type"
-        />
+          v-bind:id="type" v-bind:key="type" />
       </template>
 
       <template v-if="type === 'activity'">
@@ -76,7 +74,7 @@
           @changeStopReport = "changeStopReportFromChild($event, graph, activePage, currentSelectedElement, loadGraph)"
           :stopLabel = "parentStopLabel"
           :stopReport = "parentStopReport"
-          v-bind:id="type" v-bind:key="type"/>
+          v-bind:id="type" v-bind:key="type" />
       </template>
     </template>
   </div>
@@ -91,7 +89,7 @@
  *
  */
 .canvas.component {
-  height: 100%;
+  height: calc(100% - 60px);
 }
 .canvas.component .editor.canvas {
   width: 100%;
@@ -107,6 +105,9 @@ import { getModule } from 'vuex-module-decorators';
 // JointJS
 import * as joint from 'jointjs';
 import '#root/node_modules/jointjs/dist/joint.css';
+
+// SVG Pan and Zoom
+import SvgPanZoom from 'svg-pan-zoom';
 
 // Classes
 import BaseComponent from '@/iochord/chdsr/common/ui/layout/classes/BaseComponent';
@@ -168,6 +169,8 @@ const graphModule = getModule(GraphModule);
 export default class CanvasComponent extends Mixins(BaseComponent, ModalMixin, CanvasMixin) {
   @Prop() public response?: Graph;
 
+  public panAndZoom?: SvgPanZoom.Instance;
+
   public mounted(): void {
     this.loadGraph();
     this.$forceUpdate();
@@ -193,6 +196,8 @@ export default class CanvasComponent extends Mixins(BaseComponent, ModalMixin, C
       // Get node types that need to be rendered in the canvas
       this.nodeTypes = renderer.getNodeTypes();
 
+      this.panAndZoom = renderer.panAndZoom;
+
       // 'Listening to events' can only be done after all components were rendered
       renderer.jointPages.forEach((jointPage: JointGraphPageImpl) => {
         this.whileListenToEvents(jointPage);
@@ -215,25 +220,38 @@ export default class CanvasComponent extends Mixins(BaseComponent, ModalMixin, C
   private whileListenToEvents(jointPage: JointGraphPageImpl): void {
 
     // Helper to reset all elements
-    const resetAll = (paper: any) => {
+    const resetAll = (paper: joint.dia.Paper) => {
 
       /* Reset all elements in the paper */
-      const elements = paper.model.getElements();
-      for (let i = 0, ii = elements.length; i < ii; i++) {
-        const currentElement = elements[i];
-        currentElement.attr('body/stroke', 'black');
-      }
+      paper.findViewsInArea(jointPage.getPaper().getArea()).forEach((cell: joint.dia.ElementView) => { cell.unhighlight(); });
     };
 
     // Listening to events (TODO: later each of these event handler must be encapsulated within methods or classes)
     jointPage.getPaper().on({
+      'blank:pointerdown': (elementView: joint.dia.ElementView) => {
+        resetAll(jointPage.getPaper());
+        (this.panAndZoom as SvgPanZoom.Instance).enablePan();
+      },
+      'element:pointerup blank:pointerup': (elementView: joint.dia.ElementView) => {
+        (this.panAndZoom as SvgPanZoom.Instance).disablePan();
+      },
+      'element:pointerdown': (elementView: joint.dia.ElementView) => {
+        resetAll(jointPage.getPaper());
+        const currentElement = elementView.model;
+        currentElement.findView(jointPage.getPaper()).highlight();
+      },
       'element:pointerclick': (elementView: joint.dia.ElementView) => {
-        // console.log(elementView);
+        resetAll(jointPage.getPaper());
+        const currentElement = elementView.model;
+        currentElement.findView(jointPage.getPaper()).highlight();
       },
       'element:pointerdblclick': (elementView: joint.dia.ElementView) => {
+        resetAll(jointPage.getPaper());
         const currentElement = elementView.model;
         const currentElementType = currentElement.attributes.type;
         const currentElementNodeId = currentElement.attributes.nodeId;
+
+        currentElement.findView(jointPage.getPaper()).highlight();
 
         if (currentElementType === 'start') {
           $('#start').modal('show');
@@ -262,6 +280,25 @@ export default class CanvasComponent extends Mixins(BaseComponent, ModalMixin, C
           this.parentStopReport = jointPage.getNodes()!.get(currentElementNodeId)!.isReportStatistics() as boolean;
           this.currentSelectedElement = jointPage.getNodes()!.get(currentElementNodeId);
         }
+      },
+      'cell:highlight': (elementView: joint.dia.ElementView) => {
+        const currentElement = elementView.model;
+        const links = jointPage.getGraph().getConnectedLinks(currentElement);
+
+        window.addEventListener('keydown', (e: KeyboardEvent) => {
+          if (e.keyCode === 46) {
+
+            // Remove node
+            jointPage.getNodes()!.delete(currentElement.attributes.nodeId);
+            currentElement.remove();
+
+            // Remove link
+            links.forEach((link) => {
+              jointPage.getArcs()!.delete(link.attributes.arcId);
+              link.remove();
+            });
+          }
+        });
       },
     });
   }

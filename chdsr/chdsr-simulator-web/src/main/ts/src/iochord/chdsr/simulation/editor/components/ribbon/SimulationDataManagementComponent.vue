@@ -62,10 +62,10 @@ export default class SimulationDataManagementComponent extends BaseComponent {
   public modelPaneIsOpen: boolean = true;
 
   private doSaveModel(): void {
-    console.log("WS-REQUEST", graphModule.graph);
-    SbpnetModelService.getInstance().callSaveModel(graphModule.graph, (tick) => {
+    console.log('WS-REQUEST', graphModule.graph);
+    SbpnetModelService.getInstance().callSaveModel(graphModule.graph, (tick: any) => {
       const graph = JSON.parse(tick.body);
-      console.log("WS-RESPONSE", graph);
+      console.log('WS-RESPONSE', graph);
       alert('saved !');
     });
   }

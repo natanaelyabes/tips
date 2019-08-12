@@ -6,24 +6,24 @@ import { GraphData } from '@/iochord/chdsr/common/graph/sbpnet/interfaces/GraphD
 import { GraphNode } from '@/iochord/chdsr/common/graph/sbpnet/interfaces/GraphNode';
 import { GraphPage } from '@/iochord/chdsr/common/graph/sbpnet/interfaces/GraphPage';
 
-// Enums
-import { NODE_TYPE } from '@/iochord/chdsr/common/graph/sbpnet/rendering-engine/joint/shapes/enums/NODE';
-
-
-/** Joint.js */
-// Module
-import * as joint from 'jointjs';
-
-// Utils
-import { Anchors } from './../utils/Anchors';
-
 // Classes
 import { JointGraphConnectorImpl } from '../shapes/classes/JointGraphConnectorImpl';
 import { JointGraphNodeImpl } from '../shapes/classes/JointGraphNodeImpl';
 import { JointGraphPageImpl } from './../shapes/classes/JointGraphPageImpl';
 
+// Utils
+import { Anchors } from './../utils/Anchors';
+
 // Enums
+import { NODE_TYPE } from '@/iochord/chdsr/common/graph/sbpnet/rendering-engine/joint/shapes/enums/NODE';
 import { ARC_TYPE } from '../shapes/enums/ARC';
+
+/** Joint.js */
+// Module
+import * as joint from 'jointjs';
+
+// SVG Pan and Zoom
+import SvgPanZoom from 'svg-pan-zoom';
 
 // JQuery
 import 'jquery';
@@ -42,6 +42,7 @@ export default class JointJsRenderer {
   public activePage?: GraphPage;
   public jointPages: Map<string, JointGraphPageImpl> = new Map<string, JointGraphPageImpl>();
   public currentSelectedElement?: GraphNode;
+  public panAndZoom?: SvgPanZoom.Instance;
 
   constructor(graph: Graph, activePage: GraphPage, currentSelectedElement: GraphNode) {
     this.graph = graph;
@@ -73,6 +74,14 @@ export default class JointJsRenderer {
 
         // Center the view
         this.centerGraph(jointPage);
+        this.centerMinimap(jointPage);
+
+        // Enable pan and zoom
+        this.panAndZoom = SvgPanZoom('#canvas svg').disablePan();
+        this.panAndZoom.enableControlIcons();
+        this.panAndZoom.disableDblClickZoom();
+        this.panAndZoom.zoom(0.8);
+
 
         this.jointPages.set(jointPage.getId() as string, jointPage);
       }
@@ -84,10 +93,6 @@ export default class JointJsRenderer {
   public getNodeTypes(): Set<string> {
     return this.nodeTypes;
   }
-
-  // public get node(id: string) {
-
-  // }
 
   public activeJointPage(pageId: string) {
     return this.jointPages.get(pageId as string);
@@ -119,7 +124,7 @@ export default class JointJsRenderer {
         return Anchors.skipEndMagnetPerpendicularAnchor(endView, endMagnet, anchorReference, args);
       },
       defaultConnectionPoint: { name: 'boundary' },
-      defaultConnector: { name: 'smooth' },
+      defaultConnector: { name: 'rounded' },
     } as joint.dia.Paper.Options ));
   }
 
@@ -136,13 +141,6 @@ export default class JointJsRenderer {
 
     // Scale down minimap
     jointPage.getMinimap().scale(0.2);
-
-    // Center the minimap
-    const MinimapViewportBBox = jointPage.getMinimap().viewport.getBBox();
-    jointPage.getMinimap().translate(
-      (jointPage.getMinimap().options.width as number / 4) - (MinimapViewportBBox.width / 2),
-      (jointPage.getMinimap().options.height as number / 2) - (MinimapViewportBBox.height / 2),
-    );
   }
 
   private renderNodes(jointPage: JointGraphPageImpl): void {
@@ -209,6 +207,17 @@ export default class JointJsRenderer {
 
   private centerGraph(jointPage: JointGraphPageImpl): void {
     const PageViewportBBox = jointPage.getPaper().viewport.getBBox();
-    jointPage.getPaper().translate((this.canvasWidth as number / 2) - (PageViewportBBox.width / 2), (this.canvasHeight as number / 2) - (PageViewportBBox.height / 2));
+    jointPage.getPaper().translate(
+      (this.canvasWidth as number / 2) - (PageViewportBBox.width / 2),
+      (this.canvasHeight as number / 2) - (PageViewportBBox.height / 2),
+    );
+  }
+
+  private centerMinimap(jointPage: JointGraphPageImpl): void {
+    const MinimapViewportBBox = jointPage.getMinimap().viewport.getBoundingClientRect();
+    jointPage.getMinimap().translate(
+      (jointPage.getMinimap().options.width as number / 2) - (MinimapViewportBBox.width / 2),
+      (jointPage.getMinimap().options.height as number / 2) - (MinimapViewportBBox.height / 2),
+    );
   }
 }
