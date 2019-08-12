@@ -27,7 +27,7 @@ export class BaseService {
     return await axios.post(BaseService.BASE_HTTP_URI + url, JSON.stringify(data), {
       headers: {
         'Accept': 'application/json',
-        'Content-Type': 'application/json' 
+        'Content-Type': 'application/json',
       },
     });
   }

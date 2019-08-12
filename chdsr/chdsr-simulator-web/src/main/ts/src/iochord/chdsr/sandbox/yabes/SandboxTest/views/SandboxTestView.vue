@@ -29,7 +29,7 @@
 import { Component, Vue } from 'vue-property-decorator';
 import BaseLayout from '@/iochord/chdsr/common/ui/layout/classes/BaseLayout';
 
-import SocketIO from 'socket.io-client';
+// import SocketIO from 'socket.io-client';
 
 
 /**
@@ -45,13 +45,13 @@ export default class SandboxTestView extends BaseLayout {
 
   /** @Override */
   public mounted(): void {
-    const socket = SocketIO('http://localhost:3001');
+    // const socket = SocketIO('http://localhost:3001');
 
-    socket.emit('sandbox test', { test: 'test payload' });
+    // socket.emit('sandbox test', { test: 'test payload' });
 
-    socket.on('sandbox test message', (data: any) => {
-      this.test = data;
-    });
+    // socket.on('sandbox test message', (data: any) => {
+    //   this.test = data;
+    // });
   }
 }
 </script>

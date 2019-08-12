@@ -23,7 +23,7 @@ export class SbpnetModelService extends ModelService {
   }
 
   private static __INSTANCE: SbpnetModelService;
-  
+
   public callSaveModel(graph: any, callback: any) {
     this.getWsClient((wsc: Client) => {
       const wsUri = SbpnetModelService.BASE_URI + '/edit/1';

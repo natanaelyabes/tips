@@ -30,7 +30,7 @@
         <SimulationPlayerComponent />
 
         <!-- Right menu item -->
-        <div class="right menu">
+        <div id="ribbon-right-menu" class="right menu">
           <SimulationDataManagementComponent />
         </div>
       </template>
@@ -104,6 +104,13 @@ i.big.icon {
 
 #minimap:hover {
   box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
+}
+
+@media screen and (max-width: 1440px) {
+  #ribbon-right-menu {
+    margin-left: 50px!important;
+    margin-right: 110px!important;
+  }
 }
 </style>
 
@@ -217,6 +224,7 @@ export default class SimulationEditorView extends Layout01View {
       GraphSubject.update(graphModule.graph);
 
       this.$observables.graph.subscribe((graph: Graph) => {
+        console.log(graph);
         graphModule.setGraph(graph);
       });
     } catch (e) {

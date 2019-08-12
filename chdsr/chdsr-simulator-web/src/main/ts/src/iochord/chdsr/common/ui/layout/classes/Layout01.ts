@@ -28,31 +28,31 @@ implements Layout01HasWrapper {
   }
 
   public setTitle(): void {
-    console.warn('Method setTitle not implemented.');
+    // console.warn('Method setTitle not implemented.');
   }
 
   public setBreadcrumb(): void {
-    console.warn('Method setBreadcrumb not implemented.');
+    // console.warn('Method setBreadcrumb not implemented.');
   }
 
   public setTitleMenubar(): void {
-    console.warn('Method setTitleMenubar not implemented.');
+    // console.warn('Method setTitleMenubar not implemented.');
   }
 
   public setLeftMenuSidebar(): void {
-    console.warn('Method setLeftMenuSidebar not implemented.');
+    // console.warn('Method setLeftMenuSidebar not implemented.');
   }
 
   public setRightMenuSidebar(): void {
-    console.warn('Method setRightMenuSidebar not implemented.');
+    // console.warn('Method setRightMenuSidebar not implemented.');
   }
 
   public setRibbonMenuItem(): void {
-    console.warn('Method setRibbonMenuItem not implemented.');
+    // console.warn('Method setRibbonMenuItem not implemented.');
   }
 
   public setContent(): void {
-    console.warn('Method setContent not implemented.');
+    // console.warn('Method setContent not implemented.');
   }
 
   public setWrapperProperties(): void {

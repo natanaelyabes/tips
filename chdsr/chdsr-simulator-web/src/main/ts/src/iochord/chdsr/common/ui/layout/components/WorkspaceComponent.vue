@@ -41,7 +41,8 @@
  */
 .workspace.component {
   height: 100%;
-  overflow: hidden;
+  overflow-x: auto;
+  overflow-y: hidden;
   max-height: 100%;
   position: relative;
   display: flex;

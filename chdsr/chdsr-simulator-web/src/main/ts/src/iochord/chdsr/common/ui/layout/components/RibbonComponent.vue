@@ -5,7 +5,7 @@
 -->
 <template>
   <div class="ribbon component">
-    <NavigationBarComponent type="secondary">
+    <NavigationBarComponent type="secondary" id="navigation-bar">
       <template slot="menu-item">
         <slot name="ribbon-menu-item"></slot>
       </template>
@@ -24,6 +24,11 @@
 .ribbon.component {
   border-bottom: 1px solid rgba(0,0,0,.2);
 }
+
+#navigation-bar {
+  overflow-x: auto;
+  overflow-y: hidden;
+}
 </style>
 
 <style>
@@ -34,6 +39,11 @@
  * @since 2019
  *
  */
+ @media screen and (max-width: 1440px) {
+  .ribbon.component .ui.menu.secondary {
+    width: max-content;
+  }
+ }
 </style>
 
 <script lang="ts">
