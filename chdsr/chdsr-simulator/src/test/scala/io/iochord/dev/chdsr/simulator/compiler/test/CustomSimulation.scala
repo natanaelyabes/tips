@@ -39,7 +39,12 @@ class CustomSimulation {
 		map += ("placebef" -> placesbef)
 		
 		val start = System.currentTimeMillis()
-		simulation.runStep(noStep)
+		
+		if(job.getBoolean("doConcurrent"))
+		  simulation.runStepWithCon(noStep)
+		else
+		  simulation.runStep(noStep)
+		  
 		val simulTime = System.currentTimeMillis() - start
 		
 		map += ("simultime" -> (simulTime + " milisec") )
