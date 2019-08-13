@@ -41,13 +41,13 @@ export default class CanvasMixin extends Mixins(BaseComponent, PaletteMixin) {
 
   public handleCanvasMouseMove(e: MouseEvent) {
     if (editorState.dragging && this.activePage) {
-      this.moveItem(e, this.activePage as JointGraphPageImpl);
+      this.moveNode(e, this.activePage as JointGraphPageImpl);
     }
   }
 
   public handleCanvasMouseUp(e: MouseEvent) {
     if (editorState.dragging && this.activePage) {
-      this.saveItem(e, this.activePage as JointGraphPageImpl);
+      this.saveNode(e, this.activePage as JointGraphPageImpl);
       editorState.setDragging(false);
     }
   }

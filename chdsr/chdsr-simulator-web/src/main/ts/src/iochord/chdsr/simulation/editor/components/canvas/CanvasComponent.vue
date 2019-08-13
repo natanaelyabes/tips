@@ -15,12 +15,12 @@
         @mouseup="handleCanvasMouseUp($event)" />
     </div>
 
-    <!-- Model Modals -->
+    <!-- Node Modals -->
     <template v-for="type in Array.from(nodeTypes)">
       <template v-if="type === 'start'">
         <StartNodeModal label="test"
-          @changeStartLabel = "changeStartLabelFromChild($event, graph, activePage, currentSelectedElement, loadGraph)"
-          @changeStartGenerator = "changeStartGeneratorFromChild($event, graph, activePage, currentSelectedElement, loadGraph)"
+          @changeStartLabel = "changeStartLabelFromChild($event, activePage, currentSelectedElement, loadGraph)"
+          @changeStartGenerator = "changeStartGeneratorFromChild($event, activePage, currentSelectedElement, loadGraph)"
           :startLabel.sync="parentStartLabel"
           :startGenerator.sync="parentStartGenerator"
           v-bind:id="type" v-bind:key="type" />
@@ -28,10 +28,10 @@
 
       <template v-if="type === 'branch'">
         <BranchNodeModal label="this is branch"
-          @changeBranchLabel = "changeBranchLabelFromChild($event, graph, activePage, currentSelectedElement, loadGraph)"
-          @changeBranchSelectedGate = "changeBranchSelectedGateFromChild($event, graph, activePage, currentSelectedElement, loadGraph)"
-          @changeBranchSelectedType = "changeBranchSelectedTypeFromChild($event, graph, activePage, currentSelectedElement, loadGraph)"
-          @changeBranchSelectedRule = "changeBranchSelectedRuleFromChild($event, graph, activePage, currentSelectedElement, loadGraph)"
+          @changeBranchLabel = "changeBranchLabelFromChild($event, activePage, currentSelectedElement, loadGraph)"
+          @changeBranchSelectedGate = "changeBranchSelectedGateFromChild($event, activePage, currentSelectedElement, loadGraph)"
+          @changeBranchSelectedType = "changeBranchSelectedTypeFromChild($event, activePage, currentSelectedElement, loadGraph)"
+          @changeBranchSelectedRule = "changeBranchSelectedRuleFromChild($event, activePage, currentSelectedElement, loadGraph)"
           :branchLabel.sync = "parentBranchLabel"
           :selectedGate.sync = "parentBranchSelectedGate"
           :selectedType.sync = "parentBranchSelectedType"
@@ -41,18 +41,18 @@
 
       <template v-if="type === 'activity'">
         <ActivityNodeModal
-          @changeActNodeSelectedActivityType = "changeActNodeSelectedActivityTypeFromChild($event, graph, activePage, currentSelectedElement, loadGraph)"
-          @changeActNodeReport = "changeActNodeReportFromChild($event, graph, activePage, currentSelectedElement, loadGraph)"
-          @changeActNodeCustomMonitor = "changeActNodeCustomMonitorFromChild($event, graph, activePage, currentSelectedElement, loadGraph)"
-          @changeActNodeProcessingTime = "changeActNodeProcessingTimeFromChild($event, graph, activePage, currentSelectedElement, loadGraph)"
-          @changeActNodeParameter1 = "changeActNodeParameter1FromChild($event, graph, activePage, currentSelectedElement, loadGraph)"
-          @changeActNodeSetupTime = "changeActNodeSetupTimeFromChild($event, graph, activePage, currentSelectedElement, loadGraph)"
-          @changeActNodeParameter2 = "changeActNodeParameter2FromChild($event, graph, activePage, currentSelectedElement, loadGraph)"
-          @changeActNodeUnit = "changeActNodeUnitFromChild($event, graph, activePage, currentSelectedElement, loadGraph)"
-          @changeActNodeQueueLabel = "changeActNodeQueueLabelFromChild($event, graph, activePage, currentSelectedElement, loadGraph)"
-          @changeActNodeInputType = "changeActNodeInputTypeFromChild($event, graph, activePage, currentSelectedElement, loadGraph)"
-          @changeActNodeOutputType = "changeActNodeOutputTypeFromChild($event, graph, activePage, currentSelectedElement, loadGraph)"
-          @changeActNodeCodeSegment = "changeActNodeCodeSegmentFromChild($event, graph, activePage, currentSelectedElement, loadGraph)"
+          @changeActNodeSelectedActivityType = "changeActNodeSelectedActivityTypeFromChild($event, activePage, currentSelectedElement, loadGraph)"
+          @changeActNodeReport = "changeActNodeReportFromChild($event, activePage, currentSelectedElement, loadGraph)"
+          @changeActNodeCustomMonitor = "changeActNodeCustomMonitorFromChild($event, activePage, currentSelectedElement, loadGraph)"
+          @changeActNodeProcessingTime = "changeActNodeProcessingTimeFromChild($event, activePage, currentSelectedElement, loadGraph)"
+          @changeActNodeParameter1 = "changeActNodeParameter1FromChild($event, activePage, currentSelectedElement, loadGraph)"
+          @changeActNodeSetupTime = "changeActNodeSetupTimeFromChild($event, activePage, currentSelectedElement, loadGraph)"
+          @changeActNodeParameter2 = "changeActNodeParameter2FromChild($event, activePage, currentSelectedElement, loadGraph)"
+          @changeActNodeUnit = "changeActNodeUnitFromChild($event, activePage, currentSelectedElement, loadGraph)"
+          @changeActNodeQueueLabel = "changeActNodeQueueLabelFromChild($event, activePage, currentSelectedElement, loadGraph)"
+          @changeActNodeInputType = "changeActNodeInputTypeFromChild($event, activePage, currentSelectedElement, loadGraph)"
+          @changeActNodeOutputType = "changeActNodeOutputTypeFromChild($event, activePage, currentSelectedElement, loadGraph)"
+          @changeActNodeCodeSegment = "changeActNodeCodeSegmentFromChild($event, activePage, currentSelectedElement, loadGraph)"
           :actNodeSelectedActivityType = "parentActNodeSelectedActivityType"
           :actNodeReport = "parentActNodeReport"
           :actNodeCustomMonitor = "parentActNodeCustomMonitor"
@@ -70,8 +70,8 @@
 
       <template v-if="type === 'stop'">
         <StopNodeModal
-          @changeStopLabel = "changeStopLabelFromChild($event, graph, activePage, currentSelectedElement, loadGraph)"
-          @changeStopReport = "changeStopReportFromChild($event, graph, activePage, currentSelectedElement, loadGraph)"
+          @changeStopLabel = "changeStopLabelFromChild($event, activePage, currentSelectedElement, loadGraph)"
+          @changeStopReport = "changeStopReportFromChild($event, activePage, currentSelectedElement, loadGraph)"
           :stopLabel = "parentStopLabel"
           :stopReport = "parentStopReport"
           v-bind:id="type" v-bind:key="type" />
@@ -213,7 +213,7 @@ export default class CanvasComponent extends Mixins(BaseComponent, ModalMixin, C
         this.activePage = renderer.activeJointPage(this.activePage.getId() as string) as JointGraphPageImpl;
       }
     } catch (e) {
-      console.log(e);
+      console.error(e);
     }
   }
 
@@ -224,8 +224,31 @@ export default class CanvasComponent extends Mixins(BaseComponent, ModalMixin, C
       paper.findViewsInArea(
         jointPage.getPaper().getArea()).forEach((cell: joint.dia.ElementView) => {
           cell.unhighlight();
+          cell.model.off('keydown', removeNode(cell.model), false);
         },
       );
+    };
+
+    const removeNode = (currentElement: joint.dia.Element) => {
+      return (e: KeyboardEvent) => {
+        const links = jointPage.getGraph().getConnectedLinks(currentElement);
+
+        if (e.keyCode === 46) {
+
+          // Remove node
+          jointPage.getNodes()!.delete(currentElement.attributes.nodeId);
+          currentElement.remove();
+
+          // Remove link
+          links.forEach((link) => {
+            jointPage.getArcs()!.delete(link.attributes.arcId);
+            link.remove();
+          });
+
+          currentElement.off('keydown', removeNode(currentElement), false);
+
+        }
+      };
     };
 
     // Listening to events (TODO: later each of these event handler must be encapsulated within methods or classes)
@@ -269,7 +292,6 @@ export default class CanvasComponent extends Mixins(BaseComponent, ModalMixin, C
 
         if (currentElementType === 'activity') {
           $('#activity').modal('show');
-          console.log(this.parentActNodeSelectedActivityType);
         }
 
         if (currentElementType === 'branch') {
@@ -285,22 +307,11 @@ export default class CanvasComponent extends Mixins(BaseComponent, ModalMixin, C
       },
       'cell:highlight': (elementView: joint.dia.ElementView) => {
         const currentElement = elementView.model;
-        const links = jointPage.getGraph().getConnectedLinks(currentElement);
-
-        window.addEventListener('keydown', (e: KeyboardEvent) => {
-          if (e.keyCode === 46) {
-
-            // Remove node
-            jointPage.getNodes()!.delete(currentElement.attributes.nodeId);
-            currentElement.remove();
-
-            // Remove link
-            links.forEach((link) => {
-              jointPage.getArcs()!.delete(link.attributes.arcId);
-              link.remove();
-            });
-          }
-        });
+        currentElement.on('keydown', removeNode(currentElement), false);
+      },
+      'cell:unhighlight': (elementView: joint.dia.ElementView) => {
+        const currentElement = elementView.model;
+        currentElement.off('keydown', removeNode(currentElement), false);
       },
     });
   }

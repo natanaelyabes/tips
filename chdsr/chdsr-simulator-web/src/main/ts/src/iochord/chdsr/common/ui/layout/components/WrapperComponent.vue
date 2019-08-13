@@ -17,7 +17,7 @@
     </HeaderComponent>
 
     <!--  Title Menu Item -->
-    <TitleMenuBarComponent v-if="hasTitleMenu">
+    <TitleMenuBarComponent v-if="hasHeader && hasTitleMenu">
       <template slot="title-menu-item">
         <slot name="title-menu-item" />
       </template>
@@ -82,7 +82,7 @@ import BaseComponent from '@/iochord/chdsr/common/ui/layout/classes/BaseComponen
 export default class WrapperComponent extends BaseComponent {
 
   private get hasHeader(): boolean {
-    return true;
+    return !!this.$slots['header-title'] || !!this.$slots['header-breadcrumb'];
   }
 
   private get hasTitleMenu(): boolean {

@@ -47,16 +47,20 @@ export default class StartNodeModalMixin extends BaseComponent {
   /* Start updated from Child */
   public changeStartLabelFromChild(e: any, activePage: GraphPage, currentSelectedElement: GraphNode, callback: () => void) {
     this.parentStartLabel = e;
+
+    // Change label of currentSelectedElement
     currentSelectedElement.setLabel(this.parentStartLabel);
 
-    const node = graphModule.pageNode(activePage, currentSelectedElement.getId() as string) as GraphNode;
-    graphModule.overridePageNode({ page: activePage, node });
+    // Directly override currentSelectedElement node
+    graphModule.overridePageNode({ page: activePage, node: currentSelectedElement });
 
-    GraphNodeImpl.instance.set(node.getId() as string, GraphStartEventNodeImpl.deserialize(node) as GraphNode);
+    // Save it in GraphNodeImpl instance
+    GraphNodeImpl.instance.set(currentSelectedElement.getId() as string, GraphStartEventNodeImpl.deserialize(currentSelectedElement) as GraphNode);
 
     // Update the rxjs observable
     GraphSubject.update(graphModule.graph);
 
+    // Call the desired callback code
     callback();
   }
 
