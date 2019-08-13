@@ -234,6 +234,8 @@ export default class SimulationEditorView extends Layout01View {
       // Update rxjs subject
       GraphSubject.update(graphModule.graph);
 
+      console.log(graphModule.graph);
+
       this.$observables.graph.subscribe((graph: Graph) => {
         console.log(graph);
         graphModule.setGraph(graph);
