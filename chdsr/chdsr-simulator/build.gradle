@@ -5,3 +5,14 @@ dependencies {
 	testCompile project(':chdsr-common')
 	testCompile project(':chdsr-model')
 }
+
+sourceSets {
+    main {
+        scala {
+            srcDirs = ['src/main/scala', 'src/main/java']
+        }
+        java {
+            srcDirs = []
+        }
+   	}
+}

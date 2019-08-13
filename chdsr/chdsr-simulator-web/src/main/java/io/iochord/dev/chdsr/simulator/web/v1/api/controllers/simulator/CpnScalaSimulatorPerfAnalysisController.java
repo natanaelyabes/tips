@@ -1,7 +1,5 @@
 package io.iochord.dev.chdsr.simulator.web.v1.api.controllers.simulator;
 
-import java.util.Map;
-
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -9,8 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import io.iochord.dev.chdsr.simulator.compiler.test.SimulatorPerformAnalysis;
-import io.iochord.dev.chdsr.simulator.compiler.test.SimulatorPerformAnalysisJava;
+import io.iochord.dev.chdsr.simulator.engine.SimulatorPerformAnalysisJava;
 
 /**
  *
