@@ -1,9 +1,11 @@
-package io.iochord.dev.chdsr.simulator.compiler.test;
+package io.iochord.dev.chdsr.simulator.engine;
 
 import java.lang.management.ManagementFactory;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import io.iochord.dev.chdsr.simulator.compiler.CustomSimulation;
 
 public class SimulatorPerformAnalysisJava {
 
@@ -12,7 +14,8 @@ public class SimulatorPerformAnalysisJava {
 		double mb = 1024*1024;
 			    
 		Runtime runtime = Runtime.getRuntime();
-		com.sun.management.OperatingSystemMXBean bean = (com.sun.management.OperatingSystemMXBean) ManagementFactory.getOperatingSystemMXBean();
+		com.sun.management.OperatingSystemMXBean bean = (com.sun.management.OperatingSystemMXBean) 
+				ManagementFactory.getOperatingSystemMXBean();
 		
 		bean.getProcessCpuLoad();
 	    bean.getSystemCpuLoad();
