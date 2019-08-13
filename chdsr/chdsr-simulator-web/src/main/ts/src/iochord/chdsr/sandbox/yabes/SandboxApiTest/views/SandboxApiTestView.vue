@@ -20,7 +20,6 @@ export default class SandboxApiTestView extends Vue {
 
   public async mounted(): Promise<void> {
     this.response = await Axios.get('http://dummy.restapiexample.com/api/v1/employees');
-    console.log(this.response);
   }
 
   public get responseStatus(): number {

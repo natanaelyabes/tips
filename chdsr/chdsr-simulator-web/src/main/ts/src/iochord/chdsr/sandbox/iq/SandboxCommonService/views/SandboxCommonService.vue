@@ -51,7 +51,6 @@ declare const $: any;
 export default class SandboxCommonService extends Vue {
   public mounted() {
     $('.ui.accordion').accordion();
-    console.log(SbpnetModelService.getInstance());
   }
 }
 </script>
