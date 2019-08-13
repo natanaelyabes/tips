@@ -15,7 +15,7 @@
         @mouseup="handleCanvasMouseUp($event)" />
     </div>
 
-    <!-- Model Modals -->
+    <!-- Node Modals -->
     <template v-for="type in Array.from(nodeTypes)">
       <template v-if="type === 'start'">
         <StartNodeModal label="test"
@@ -172,15 +172,8 @@ export default class CanvasComponent extends Mixins(BaseComponent, ModalMixin, C
   public panAndZoom?: SvgPanZoom.Instance;
 
   public mounted(): void {
-    // this.adjustCanvasHeight();
     this.loadGraph();
     this.$forceUpdate();
-  }
-
-  public adjustCanvasHeight(): void {
-    let canvasComponentHeight = ($('.canvas.component') as JQuery<HTMLElement>).height() as number;
-    canvasComponentHeight = canvasComponentHeight - 60;
-    $('.canvas.component').height(canvasComponentHeight);
   }
 
   public loadGraph(): void {
@@ -231,8 +224,31 @@ export default class CanvasComponent extends Mixins(BaseComponent, ModalMixin, C
       paper.findViewsInArea(
         jointPage.getPaper().getArea()).forEach((cell: joint.dia.ElementView) => {
           cell.unhighlight();
+          cell.model.off('keydown', removeNode(cell.model), false);
         },
       );
+    };
+
+    const removeNode = (currentElement: joint.dia.Element) => {
+      return (e: KeyboardEvent) => {
+        const links = jointPage.getGraph().getConnectedLinks(currentElement);
+
+        if (e.keyCode === 46) {
+
+          // Remove node
+          jointPage.getNodes()!.delete(currentElement.attributes.nodeId);
+          currentElement.remove();
+
+          // Remove link
+          links.forEach((link) => {
+            jointPage.getArcs()!.delete(link.attributes.arcId);
+            link.remove();
+          });
+
+          currentElement.off('keydown', removeNode(currentElement), false);
+
+        }
+      };
     };
 
     // Listening to events (TODO: later each of these event handler must be encapsulated within methods or classes)
@@ -291,22 +307,11 @@ export default class CanvasComponent extends Mixins(BaseComponent, ModalMixin, C
       },
       'cell:highlight': (elementView: joint.dia.ElementView) => {
         const currentElement = elementView.model;
-        const links = jointPage.getGraph().getConnectedLinks(currentElement);
-
-        window.addEventListener('keydown', (e: KeyboardEvent) => {
-          if (e.keyCode === 46) {
-
-            // Remove node
-            jointPage.getNodes()!.delete(currentElement.attributes.nodeId);
-            currentElement.remove();
-
-            // Remove link
-            links.forEach((link) => {
-              jointPage.getArcs()!.delete(link.attributes.arcId);
-              link.remove();
-            });
-          }
-        });
+        currentElement.on('keydown', removeNode(currentElement), false);
+      },
+      'cell:unhighlight': (elementView: joint.dia.ElementView) => {
+        const currentElement = elementView.model;
+        currentElement.off('keydown', removeNode(currentElement), false);
       },
     });
   }
