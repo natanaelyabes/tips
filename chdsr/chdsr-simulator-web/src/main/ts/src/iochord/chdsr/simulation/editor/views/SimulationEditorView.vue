@@ -215,8 +215,19 @@ export default class SimulationEditorView extends Layout01View {
   public editing: boolean = true;
 
   /** @Override */
+  public overrideBrowserProperties(): void {
+    this.setDocumentTitle('Simulation Editor: Editor');
+  }
+
+  /** @Override */
+  public setTitle(): void {
+    this.title = `Editor`;
+  }
+
+  /** @Override */
   public async mounted(): Promise<void> {
     try {
+
       // Fetch graph to Vuex state
       await graphModule.fetchGraph();
 
@@ -242,16 +253,6 @@ export default class SimulationEditorView extends Layout01View {
 
   public get graphData(): Graph | undefined {
     return graphModule.graph;
-  }
-
-  /** @Override */
-  public overrideBrowserProperties(): void {
-    this.setDocumentTitle('Simulation Editor: Editor');
-  }
-
-  /** @Override */
-  public setTitle(): void {
-    this.title = `Editor`;
   }
 }
 </script>

@@ -172,8 +172,15 @@ export default class CanvasComponent extends Mixins(BaseComponent, ModalMixin, C
   public panAndZoom?: SvgPanZoom.Instance;
 
   public mounted(): void {
+    // this.adjustCanvasHeight();
     this.loadGraph();
     this.$forceUpdate();
+  }
+
+  public adjustCanvasHeight(): void {
+    let canvasComponentHeight = ($('.canvas.component') as JQuery<HTMLElement>).height() as number;
+    canvasComponentHeight = canvasComponentHeight - 60;
+    $('.canvas.component').height(canvasComponentHeight);
   }
 
   public loadGraph(): void {

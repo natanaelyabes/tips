@@ -6,8 +6,8 @@
 <template>
   <div class="header component">
     <div class="ui basic segment">
-      <!-- <h1 v-if="hasHeaderTitle"><slot name="header-title" /></h1>
-      <div v-if="hasHeaderTitle === hasBreadcrumbComponent && hasHeaderTitle === true" class="ui divider"></div> -->
+      <h1 v-if="hasHeaderTitle"><slot name="header-title" /></h1>
+      <div v-if="hasHeaderTitle === hasBreadcrumbComponent && hasHeaderTitle === true" class="ui divider"></div>
 
       <!-- BreadcrumbComponent -->
       <BreadcrumbComponent v-if="hasBreadcrumbComponent">
@@ -66,7 +66,7 @@ export default class HeaderComponent extends BaseComponent {
   }
 
   private get hasBreadcrumbComponent(): boolean {
-    return true;
+    return !!this.$slots['header-breadcrumb'];
   }
 }
 </script>
