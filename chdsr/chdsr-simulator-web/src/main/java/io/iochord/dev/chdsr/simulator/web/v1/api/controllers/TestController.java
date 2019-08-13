@@ -18,8 +18,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import io.iochord.dev.chdsr.model.converter.sbp2cpn.Sbpnet2CpnscalaBiConverter;
-import io.iochord.dev.chdsr.model.converter.sbp2cpn.Sbpnet2CpnscalaBiConverter2;
-import io.iochord.dev.chdsr.model.converter.sbp2cpn.Sbpnet2CpnscalaModel;
 import io.iochord.dev.chdsr.model.example.SbpnetExample;
 import io.iochord.dev.chdsr.model.sbpnet.v1.Element;
 import io.iochord.dev.chdsr.model.sbpnet.v1.Sbpnet;
@@ -67,16 +65,16 @@ public class TestController extends AServiceController {
 	}
 	
 	@Getter
-	private Sbpnet2CpnscalaModel conversionResult;
+	private String conversionResult;
 
 	@RequestMapping(value=BASE_URI + "/convert",produces= {MediaType.APPLICATION_JSON_VALUE})
 	public String get02ConvertToCPNScala() {
 		if (snet == null) {
 			get01CreateExampleSimulationModel();
 		}
-		Sbpnet2CpnscalaBiConverter2 converter = new Sbpnet2CpnscalaBiConverter2();
+		Sbpnet2CpnscalaBiConverter converter = new Sbpnet2CpnscalaBiConverter();
 		conversionResult = converter.convert(snet);
-		return conversionResult.getConvertedModel();
+		return conversionResult;
 	}
 	
 	@Getter
@@ -102,7 +100,7 @@ public class TestController extends AServiceController {
 		if (conversionResult == null) {
 			get02ConvertToCPNScala();
 		}
-		MemoryScalaCompiler msfc = new MemoryScalaCompiler(conversionResult.getConvertedModel());
+		MemoryScalaCompiler msfc = new MemoryScalaCompiler(conversionResult);
 		simulationInstance = msfc.getInstance();
 		Observer obs = new Observer() {
 			
@@ -136,12 +134,12 @@ public class TestController extends AServiceController {
 			
 		};
 		simulationInstance.addObserver(obs);
-		for (Element e : conversionResult.getBasicMonitors().keySet()) {
-			Pair<String, String> ev = conversionResult.getBasicMonitors().get(e);
-			String ename = e.getId() + " --> " + ev.getFirst() + " = " + ev.getSecond();
-			reverseLookup.put(ev.getFirst(), ename);
-			basicMonitorResult.put(ename, 0);
-		}
+//		for (Element e : conversionResult.getBasicMonitors().keySet()) {
+//			Pair<String, String> ev = conversionResult.getBasicMonitors().get(e);
+//			String ename = e.getId() + " --> " + ev.getFirst() + " = " + ev.getSecond();
+//			reverseLookup.put(ev.getFirst(), ename);
+//			basicMonitorResult.put(ename, 0);
+//		}
 		return basicMonitorResult;
 	}
 	
