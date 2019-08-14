@@ -23,7 +23,7 @@ import EditorState from '../../../stores/editors/EditorState';
 
 
 // Enums
-import { NODE_TYPE } from '@/iochord/chdsr/common/graph/sbpnet/enums/NODE';
+import { NODE_TYPE } from '@/iochord/chdsr/common/graph/sbpnet/rendering-engine/joint/shapes/enums/NODE';
 import * as NODE_ENUMS from '@/iochord/chdsr/common/graph/sbpnet/enums/NODE';
 import * as NODE_FACTORY from '@/iochord/chdsr/common/graph/sbpnet/enums/NODE';
 
@@ -109,12 +109,40 @@ export default class NodeMixin extends BaseComponent {
   public cancelCreateNode(e: KeyboardEvent) {
     if (e.key === 'Escape') {
       if (editorState.dragging && (graphModule.newItem)) {
+
+        // Set dragging state to false
         editorState.setDragging(false);
+
+        // Remove node from joint.js canvas
         (graphModule.newItem as JointGraphNodeImpl).getNode().remove();
+
+        // Remove node from GraphModule temporary container
         graphModule.setNewItem(null);
+
+        // Enable the toolbar again
+        $('.sidebar.component .ui.basic.button.item').removeClass('disabled');
+
+        // Pop up toast
+        const icon = {
+          start: 'green play',
+          stop: 'red circle',
+          activity: 'blue square',
+          branch: 'blue random',
+        };
+
+        ($('body') as any).toast({
+          position: 'bottom right',
+          class: 'info',
+          className: {
+            toast: 'ui message',
+          },
+          message: `Canceling node creation.`,
+          newestOnTop: true,
+        });
       }
     }
   }
+
 
   public saveNode(e: MouseEvent, activePage: JointGraphPageImpl) {
     editorState.setDragging(false);
@@ -134,12 +162,15 @@ export default class NodeMixin extends BaseComponent {
         (newItem).setLabel(`New Node ${GraphNodeImpl.instance.size}`);
       }
 
+      // Add node to Vuex GraphModule
       graphModule.addPageNode(
         {
           page: activePage,
           node: newItem as GraphNode,
         },
       );
+
+      // Update local instance
       GraphNodeImpl.instance.set(newItem.getId() as string, (NODE_ENUMS.NODE_TYPE as any)[type].deserialize(newItem));
 
       // Update the rxjs observable
@@ -148,6 +179,7 @@ export default class NodeMixin extends BaseComponent {
       // Set container to null
       graphModule.setNewItem(null);
 
+      // Pop up toast
       const icon = {
         start: 'green play',
         stop: 'red circle',
@@ -156,11 +188,18 @@ export default class NodeMixin extends BaseComponent {
       };
 
       ($('body') as any).toast({
-        position: 'top center',
-        class: 'black',
+        position: 'bottom right',
+        class: 'success',
+        className: {
+          toast: 'ui message',
+        },
         showIcon: (icon as any)[type],
         message: `${(newItem as GraphNode).getId()} has been created.`,
+        newestOnTop: true,
       });
+
+      // Enable the toolbar again
+      $('.sidebar.component .ui.basic.button.item').removeClass('disabled');
 
       // Remove event listener for cancelCreateItem
       window.removeEventListener('keydown', this.cancelCreateNode);

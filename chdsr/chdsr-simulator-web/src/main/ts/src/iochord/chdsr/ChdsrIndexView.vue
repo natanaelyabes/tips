@@ -27,7 +27,7 @@
       <!--  -->
       <div slot="sidebar-menu">
         <router-link tag="a" class="item" to="/iochord/chdsr">Home <i class="home icon"></i></router-link>
-        <router-link tag="a" class="item" to="/iochord/chdsr/sandbox">Sandbox <i class="inbox icon"></i></router-link>
+        <!-- <router-link tag="a" class="item" to="/iochord/chdsr/sandbox">Sandbox <i class="inbox icon"></i></router-link> -->
         <div class="item">
           <div class="header" style="text-decoration:underline">Data Management</div>
           <div class="menu">
@@ -125,6 +125,7 @@ const graphModule = getModule(GraphModule);
   },
 })
 export default class ChdsrIndexView extends IndexLayout {
+
   /** @Override */
   public async mounted(): Promise<void> {
     await this.declareSemanticModules();

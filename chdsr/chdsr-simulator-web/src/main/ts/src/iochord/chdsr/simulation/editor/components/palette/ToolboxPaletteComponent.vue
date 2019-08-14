@@ -3,31 +3,31 @@
     <div class="item">
       <div class="header">Toolbox</div>
       <div class="menu">
-        <a @mousedown="createNode('start', $event)" class="ui basic button item">
+        <a title="start" @mousedown="handleToolboxMouseDown('node', $event)" class="ui basic button item">
           <div class="image-icon">
             <img draggable="false" src="@/assets/images/icons/simulation_editor_icon/toolbox/toolbox_start.png" alt="" class="ui centered image" />
           </div>
           Start
         </a>
-        <a @mousedown="createNode('stop', $event)" class="ui basic button item">
+        <a title="stop" @mousedown="handleToolboxMouseDown('node', $event)" class="ui basic button item">
           <div class="image-icon">
             <img draggable="false" src="@/assets/images/icons/simulation_editor_icon/toolbox/toolbox_stop.png" alt="" class="ui centered image" />
           </div>
           Stop
         </a>
-        <a @mousedown="createNode('activity', $event)" class="ui basic button item">
+        <a title="activity" @mousedown="handleToolboxMouseDown('node', $event)" class="ui basic button item">
           <div class="image-icon">
             <img draggable="false" src="@/assets/images/icons/simulation_editor_icon/toolbox/toolbox_activity.png" alt="" class="ui centered image" />
           </div>
           Activity
         </a>
-        <a @mousedown="createNode('branch', $event)" class="ui basic button item">
+        <a title="branch" @mousedown="handleToolboxMouseDown('node', $event)" class="ui basic button item">
           <div class="image-icon">
             <img draggable="false" src="@/assets/images/icons/simulation_editor_icon/toolbox/toolbox_branch.png" alt="" class="ui centered image" />
           </div>
           Branch
         </a>
-        <a class="ui basic button item">
+        <a title="connector" @mousedown="handleToolboxMouseDown('connector', $event)" class="ui basic button item">
           <div class="image-icon">
             <img draggable="false" src="@/assets/images/icons/simulation_editor_icon/toolbox/toolbox_connector.png" alt="" class="ui centered image" />
           </div>

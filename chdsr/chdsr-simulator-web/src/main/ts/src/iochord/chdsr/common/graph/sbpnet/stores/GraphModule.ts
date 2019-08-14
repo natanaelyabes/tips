@@ -318,6 +318,10 @@ export default class GraphModule extends VuexModule {
     this.graph.setData(data);
   }
 
+  public get getNewItem(): GraphNodeImpl | GraphConnectorImpl | null {
+    return this.newItem ? this.newItem : null;
+  }
+
   public get version(): string | null {
     return this.graph ? this.graph.getVersion() : null;
   }

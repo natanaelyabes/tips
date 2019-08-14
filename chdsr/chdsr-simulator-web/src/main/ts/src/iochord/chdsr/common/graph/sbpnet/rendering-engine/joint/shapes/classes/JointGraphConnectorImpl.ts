@@ -40,6 +40,7 @@ export class JointGraphConnectorImpl extends GraphConnectorImpl implements Joint
     this.attr = attr;
   }
 
+  // TODO: Need to be fixed (20190815)
   public render(graph: joint.dia.Graph): void {
     const elementTypeKey = 'elementType';
     const link = joint.dia.Link.define('chdsr.' + this[elementTypeKey], {
@@ -51,6 +52,7 @@ export class JointGraphConnectorImpl extends GraphConnectorImpl implements Joint
     const source = graph.getElements().find((value) => {
       return value.attributes.nodeId === (this.getSource() as JointGraphNodeImpl).getId();
     }) as joint.dia.Element;
+
     const target = graph.getElements().find((value) => {
       return value.attributes.nodeId === (this.getTarget() as JointGraphNodeImpl).getId();
     }) as joint.dia.Element;
