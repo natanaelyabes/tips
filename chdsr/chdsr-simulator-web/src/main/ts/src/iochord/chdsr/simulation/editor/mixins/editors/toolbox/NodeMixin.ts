@@ -51,6 +51,9 @@ const editorState = getModule(EditorState);
   },
 })
 export default class NodeMixin extends BaseComponent {
+
+  public newNode?: JointGraphNodeImpl;
+
   public createNode(type: NODE, e: MouseEvent) {
 
     /** Local variable initialization */
@@ -59,23 +62,23 @@ export default class NodeMixin extends BaseComponent {
     };
 
     /** Create new item */
-    const newItem = new JointGraphNodeImpl();
+    this.newNode = new JointGraphNodeImpl();
 
     /** Set properties for the newly created item */
-    newItem.setId(`0-${type}-${GraphNodeImpl.instance.size}`);
-    newItem.setType(type.toString());
-    newItem.setSize((NODE_TYPE as any)[type].size);
-    newItem.setMarkup((NODE_TYPE as any)[type].markup);
-    newItem.setAttr((NODE_TYPE as any)[type].attr);
-    newItem.setImageIcon((NODE_TYPE as any)[type].image);
+    this.newNode.setId(`0-${type}-${GraphNodeImpl.instance.size}`);
+    this.newNode.setType(type.toString());
+    this.newNode.setSize((NODE_TYPE as any)[type].size);
+    this.newNode.setMarkup((NODE_TYPE as any)[type].markup);
+    this.newNode.setAttr((NODE_TYPE as any)[type].attr);
+    this.newNode.setImageIcon((NODE_TYPE as any)[type].image);
 
     /** No need to set label for start and stop node */
     if (!(type.toString() === 'start' || type.toString() === 'stop')) {
-      (newItem as JointGraphNodeImpl).setLabel(`New Node ${GraphNodeImpl.instance.size}`);
+      (this.newNode as JointGraphNodeImpl).setLabel(`New Node ${GraphNodeImpl.instance.size}`);
     }
 
     /** Put new item in vuex store */
-    graphModule.setNewItem(newItem as JointGraphNodeImpl);
+    graphModule.setNewItem(this.newNode as JointGraphNodeImpl);
 
     /** Set dragging state to true */
     editorState.setDragging(true);
@@ -123,13 +126,6 @@ export default class NodeMixin extends BaseComponent {
         $('.sidebar.component .ui.basic.button.item').removeClass('disabled');
 
         // Pop up toast
-        const icon = {
-          start: 'green play',
-          stop: 'red circle',
-          activity: 'blue square',
-          branch: 'blue random',
-        };
-
         ($('body') as any).toast({
           position: 'bottom right',
           class: 'info',
@@ -139,6 +135,9 @@ export default class NodeMixin extends BaseComponent {
           message: `Canceling node creation.`,
           newestOnTop: true,
         });
+
+        // Remove event listener for cancelCreateItem
+        window.removeEventListener('keydown', this.cancelCreateNode);
       }
     }
   }

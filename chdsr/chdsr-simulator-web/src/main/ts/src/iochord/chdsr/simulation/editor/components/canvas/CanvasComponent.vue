@@ -317,10 +317,8 @@ export default class CanvasComponent extends Mixins(BaseComponent, ModalMixin, C
           // If source node is not set
           if (!this.source) {
             this.setSourceNode(this.activePage as JointGraphPageImpl, currentElement);
-          }
-
-          if (this.source && !this.target) {
-            this.setTargetNode(currentElement);
+          } else if (this.source && !this.target) {
+            this.setTargetNode(this.activePage as JointGraphPageImpl, currentElement);
           }
 
         } else {

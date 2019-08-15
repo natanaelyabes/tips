@@ -40,27 +40,50 @@ export class JointGraphConnectorImpl extends GraphConnectorImpl implements Joint
     this.attr = attr;
   }
 
+  public getConnector(): joint.dia.Link {
+    return this.connector;
+  }
+
+  public setConnector(connector: joint.dia.Link) {
+    this.connector = connector;
+  }
+
   // TODO: Need to be fixed (20190815)
-  public render(graph: joint.dia.Graph): void {
+  public render(graph: joint.dia.Graph, position?: joint.g.Point): void {
     const elementTypeKey = 'elementType';
-    const link = joint.dia.Link.define('chdsr.' + this[elementTypeKey], {
-      attrs: this.attr,
+
+    const exists = graph.getLinks().filter((value: joint.dia.Link) => {
+      if (value.id === this.connector.id) { return true; }
     });
 
-    this.connector = new link();
+    if (exists.length === 0) {
+      const link = joint.dia.Link.define('chdsr.' + this[elementTypeKey], {
+        attrs: this.attr,
+      });
 
-    const source = graph.getElements().find((value) => {
-      return value.attributes.nodeId === (this.getSource() as JointGraphNodeImpl).getId();
-    }) as joint.dia.Element;
+      this.connector = new link();
 
-    const target = graph.getElements().find((value) => {
-      return value.attributes.nodeId === (this.getTarget() as JointGraphNodeImpl).getId();
-    }) as joint.dia.Element;
+      const source = graph.getElements().find((value) => {
+        return value.attributes.nodeId === (this.getSource() as JointGraphNodeImpl).getId();
+      }) as joint.dia.Element;
 
-    this.connector.source(source);
-    this.connector.target(target);
+      this.connector.source(source);
+    }
+
+    let target: joint.dia.Element | joint.g.Point;
+
+    if (this.getTarget()) {
+      target = graph.getElements().find((value) => {
+        return value.attributes.nodeId === (this.getTarget() as JointGraphNodeImpl).getId();
+      }) as joint.dia.Element;
+      this.connector.target(target);
+    }
+
+    if (!this.getTarget() && position) {
+      this.connector.target(position as joint.g.Point);
+    }
+
     this.connector.attributes.arcId = this.getId();
-
     this.connector.addTo(graph);
   }
 }
