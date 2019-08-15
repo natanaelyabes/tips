@@ -225,12 +225,11 @@ export default class CanvasComponent extends Mixins(BaseComponent, ModalMixin, C
 
     // Helper to reset all elements
     const resetAll = (paper: joint.dia.Paper) => {
-      paper.findViewsInArea(
-        jointPage.getPaper().getArea()).forEach((cell: joint.dia.ElementView) => {
-          cell.unhighlight();
-          cell.model.off('keydown', removeNode(cell.model), false);
-        },
-      );
+
+      jointPage.getGraph().getElements().forEach((element: joint.dia.Element) => {
+        const elementView = paper.findViewByModel(element);
+        elementView.unhighlight();
+      });
     };
 
     // Helper to remove node
@@ -281,6 +280,7 @@ export default class CanvasComponent extends Mixins(BaseComponent, ModalMixin, C
         }
       },
       'element:pointerup blank:pointerup': (elementView: joint.dia.ElementView) => {
+        resetAll(jointPage.getPaper());
         (this.panAndZoom as SvgPanZoom.Instance).disablePan();
         if (editorState.drawing) {
           document.body.style.cursor = 'crosshair';
@@ -297,8 +297,8 @@ export default class CanvasComponent extends Mixins(BaseComponent, ModalMixin, C
       },
       'element:mouseout': (elementView: joint.dia.ElementView) => {
         if (editorState.drawing) {
-          document.body.style.cursor = 'crosshair';
           resetAll(jointPage.getPaper());
+          document.body.style.cursor = 'crosshair';
         } else {
           document.body.style.cursor = 'default';
         }

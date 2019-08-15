@@ -177,6 +177,7 @@ export default class NodeMixin extends BaseComponent {
 
       // Set container to null
       graphModule.setNewItem(null);
+      this.newNode = undefined;
 
       // Pop up toast
       const icon = {

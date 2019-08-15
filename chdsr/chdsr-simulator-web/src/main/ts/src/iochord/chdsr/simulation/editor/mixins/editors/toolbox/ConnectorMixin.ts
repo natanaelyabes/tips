@@ -128,6 +128,9 @@ export default class ConnectorMixin extends BaseComponent {
 
     // Set container to null
     graphModule.setNewItem(null);
+    this.source = undefined;
+    this.target = undefined;
+    this.newConnector = undefined;
 
     // Pop up toast
     ($('body') as any).toast({
