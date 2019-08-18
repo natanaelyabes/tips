@@ -9,7 +9,7 @@
 
       <!-- TODO: Develop mouse event handler for canvas -->
       <div id="canvas"
-        @keydown.esc="cancelCreateItem($event)"
+        @keydown.esc="handleEscapeButton($event)"
         @mousedown="handleCanvasMouseDown($event)"
         @mousemove="handleCanvasMouseMove($event)"
         @mouseup="handleCanvasMouseUp($event)" />
@@ -148,7 +148,11 @@ declare const $: any;
 
 // Vuex Module
 import GraphModule from '@/iochord/chdsr/common/graph/sbpnet/stores/GraphModule';
+import EditorState from '../../stores/editors/EditorState';
+
+
 const graphModule = getModule(GraphModule);
+const editorState = getModule(EditorState);
 
 /**
  *
@@ -221,14 +225,14 @@ export default class CanvasComponent extends Mixins(BaseComponent, ModalMixin, C
 
     // Helper to reset all elements
     const resetAll = (paper: joint.dia.Paper) => {
-      paper.findViewsInArea(
-        jointPage.getPaper().getArea()).forEach((cell: joint.dia.ElementView) => {
-          cell.unhighlight();
-          cell.model.off('keydown', removeNode(cell.model), false);
-        },
-      );
+
+      jointPage.getGraph().getElements().forEach((element: joint.dia.Element) => {
+        const elementView = paper.findViewByModel(element);
+        elementView.unhighlight();
+      });
     };
 
+    // Helper to remove node
     const removeNode = (currentElement: joint.dia.Element) => {
       return (e: KeyboardEvent) => {
         const links = jointPage.getGraph().getConnectedLinks(currentElement);
@@ -246,7 +250,6 @@ export default class CanvasComponent extends Mixins(BaseComponent, ModalMixin, C
           });
 
           currentElement.off('keydown', removeNode(currentElement), false);
-
         }
       };
     };
@@ -255,15 +258,72 @@ export default class CanvasComponent extends Mixins(BaseComponent, ModalMixin, C
     jointPage.getPaper().on({
       'blank:pointerdown': (elementView: joint.dia.ElementView) => {
         resetAll(jointPage.getPaper());
-        (this.panAndZoom as SvgPanZoom.Instance).enablePan();
+        if (editorState.drawing && this.panAndZoom) {
+          this.panAndZoom.disablePan();
+          this.panAndZoom.disableZoom();
+
+          $('body').toast({
+            position: 'bottom right',
+            class: 'error',
+            className: {
+              toast: 'ui message',
+            },
+            message: 'Select any node to draw connector.',
+            newestOnTop: true,
+          });
+
+          document.body.style.cursor = 'crosshair';
+        } else if (!editorState.drawing && this.panAndZoom) {
+          this.panAndZoom.enablePan();
+          this.panAndZoom.enableZoom();
+          document.body.style.cursor = 'grabbing';
+        }
       },
       'element:pointerup blank:pointerup': (elementView: joint.dia.ElementView) => {
+        resetAll(jointPage.getPaper());
         (this.panAndZoom as SvgPanZoom.Instance).disablePan();
+        if (editorState.drawing) {
+          document.body.style.cursor = 'crosshair';
+        } else {
+          document.body.style.cursor = 'default';
+        }
+      },
+      'element:mouseover': (elementView: joint.dia.ElementView) => {
+        if (editorState.drawing) {
+          resetAll(jointPage.getPaper());
+          const currentElement = elementView.model;
+          currentElement.findView(jointPage.getPaper()).highlight();
+        }
+      },
+      'element:mouseout': (elementView: joint.dia.ElementView) => {
+        if (editorState.drawing) {
+          resetAll(jointPage.getPaper());
+          document.body.style.cursor = 'crosshair';
+        } else {
+          document.body.style.cursor = 'default';
+        }
       },
       'element:pointerdown': (elementView: joint.dia.ElementView) => {
         resetAll(jointPage.getPaper());
         const currentElement = elementView.model;
         currentElement.findView(jointPage.getPaper()).highlight();
+
+        // When drawing a connector
+        if (editorState.drawing) {
+
+          // User cannot drag anything when drawing a connector
+          jointPage.getPaper().setInteractivity(false);
+
+          // If source node is not set
+          if (!this.source) {
+            this.setSourceNode(this.activePage as JointGraphPageImpl, currentElement);
+          } else if (this.source && !this.target) {
+            this.setTargetNode(this.activePage as JointGraphPageImpl, currentElement);
+          }
+
+        } else {
+          jointPage.getPaper().setInteractivity(true);
+        }
       },
       'element:pointerclick': (elementView: joint.dia.ElementView) => {
         resetAll(jointPage.getPaper());

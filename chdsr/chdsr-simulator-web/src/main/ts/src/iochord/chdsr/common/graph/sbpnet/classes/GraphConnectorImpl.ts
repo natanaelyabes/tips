@@ -19,6 +19,8 @@ import { GraphStartEventNodeImpl } from './components/GraphStartEventNodeImpl';
  *
  */
 export class GraphConnectorImpl extends GraphElementImpl implements GraphConnector {
+  public static instance: Map<string, GraphConnector> = new Map<string, GraphConnector>();
+
   public static deserialize(object: any): Map<string, GraphConnector> | null {
     const graphArcMap: Map<string, GraphConnector> = new Map<string, GraphConnector>();
     const graphNodeInstance: Array<Map<string, GraphNode>> = [
@@ -46,6 +48,7 @@ export class GraphConnectorImpl extends GraphElementImpl implements GraphConnect
             graphArc.setTarget(value.get(element.targetRef) as GraphNode);
           }
         });
+        GraphConnectorImpl.instance.set(key, graphArc);
         graphArcMap.set(key, graphArc);
       }
     }

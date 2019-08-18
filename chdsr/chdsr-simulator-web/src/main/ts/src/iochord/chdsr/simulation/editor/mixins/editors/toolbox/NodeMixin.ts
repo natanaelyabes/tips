@@ -23,7 +23,7 @@ import EditorState from '../../../stores/editors/EditorState';
 
 
 // Enums
-import { NODE_TYPE } from '@/iochord/chdsr/common/graph/sbpnet/enums/NODE';
+import { NODE_TYPE } from '@/iochord/chdsr/common/graph/sbpnet/rendering-engine/joint/shapes/enums/NODE';
 import * as NODE_ENUMS from '@/iochord/chdsr/common/graph/sbpnet/enums/NODE';
 import * as NODE_FACTORY from '@/iochord/chdsr/common/graph/sbpnet/enums/NODE';
 
@@ -51,6 +51,9 @@ const editorState = getModule(EditorState);
   },
 })
 export default class NodeMixin extends BaseComponent {
+
+  public newNode?: JointGraphNodeImpl;
+
   public createNode(type: NODE, e: MouseEvent) {
 
     /** Local variable initialization */
@@ -59,23 +62,23 @@ export default class NodeMixin extends BaseComponent {
     };
 
     /** Create new item */
-    const newItem = new JointGraphNodeImpl();
+    this.newNode = new JointGraphNodeImpl();
 
     /** Set properties for the newly created item */
-    newItem.setId(`0-${type}-${GraphNodeImpl.instance.size}`);
-    newItem.setType(type.toString());
-    newItem.setSize((NODE_TYPE as any)[type].size);
-    newItem.setMarkup((NODE_TYPE as any)[type].markup);
-    newItem.setAttr((NODE_TYPE as any)[type].attr);
-    newItem.setImageIcon((NODE_TYPE as any)[type].image);
+    this.newNode.setId(`0-${type}-${GraphNodeImpl.instance.size}`);
+    this.newNode.setType(type.toString());
+    this.newNode.setSize((NODE_TYPE as any)[type].size);
+    this.newNode.setMarkup((NODE_TYPE as any)[type].markup);
+    this.newNode.setAttr((NODE_TYPE as any)[type].attr);
+    this.newNode.setImageIcon((NODE_TYPE as any)[type].image);
 
     /** No need to set label for start and stop node */
     if (!(type.toString() === 'start' || type.toString() === 'stop')) {
-      (newItem as JointGraphNodeImpl).setLabel(`New Node ${GraphNodeImpl.instance.size}`);
+      (this.newNode as JointGraphNodeImpl).setLabel(`New Node ${GraphNodeImpl.instance.size}`);
     }
 
     /** Put new item in vuex store */
-    graphModule.setNewItem(newItem as JointGraphNodeImpl);
+    graphModule.setNewItem(this.newNode as JointGraphNodeImpl);
 
     /** Set dragging state to true */
     editorState.setDragging(true);
@@ -109,12 +112,36 @@ export default class NodeMixin extends BaseComponent {
   public cancelCreateNode(e: KeyboardEvent) {
     if (e.key === 'Escape') {
       if (editorState.dragging && (graphModule.newItem)) {
+
+        // Set dragging state to false
         editorState.setDragging(false);
+
+        // Remove node from joint.js canvas
         (graphModule.newItem as JointGraphNodeImpl).getNode().remove();
+
+        // Remove node from GraphModule temporary container
         graphModule.setNewItem(null);
+
+        // Enable the toolbar again
+        $('.sidebar.component .ui.basic.button.item').removeClass('disabled');
+
+        // Pop up toast
+        ($('body') as any).toast({
+          position: 'bottom right',
+          class: 'info',
+          className: {
+            toast: 'ui message',
+          },
+          message: `Canceling node creation.`,
+          newestOnTop: true,
+        });
+
+        // Remove event listener for cancelCreateItem
+        window.removeEventListener('keydown', this.cancelCreateNode);
       }
     }
   }
+
 
   public saveNode(e: MouseEvent, activePage: JointGraphPageImpl) {
     editorState.setDragging(false);
@@ -134,12 +161,15 @@ export default class NodeMixin extends BaseComponent {
         (newItem).setLabel(`New Node ${GraphNodeImpl.instance.size}`);
       }
 
+      // Add node to Vuex GraphModule
       graphModule.addPageNode(
         {
           page: activePage,
           node: newItem as GraphNode,
         },
       );
+
+      // Update local instance
       GraphNodeImpl.instance.set(newItem.getId() as string, (NODE_ENUMS.NODE_TYPE as any)[type].deserialize(newItem));
 
       // Update the rxjs observable
@@ -147,7 +177,9 @@ export default class NodeMixin extends BaseComponent {
 
       // Set container to null
       graphModule.setNewItem(null);
+      this.newNode = undefined;
 
+      // Pop up toast
       const icon = {
         start: 'green play',
         stop: 'red circle',
@@ -156,11 +188,18 @@ export default class NodeMixin extends BaseComponent {
       };
 
       ($('body') as any).toast({
-        position: 'top center',
-        class: 'black',
+        position: 'bottom right',
+        class: 'success',
+        className: {
+          toast: 'ui message',
+        },
         showIcon: (icon as any)[type],
         message: `${(newItem as GraphNode).getId()} has been created.`,
+        newestOnTop: true,
       });
+
+      // Enable the toolbar again
+      $('.sidebar.component .ui.basic.button.item').removeClass('disabled');
 
       // Remove event listener for cancelCreateItem
       window.removeEventListener('keydown', this.cancelCreateNode);
