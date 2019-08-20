@@ -6,10 +6,10 @@
         <i class="search icon"></i>
       </div>
     </div>
-    <a class="item">Oracle</a>
-    <a class="item">MSSQL Server</a>
-    <a class="item">MySQL</a>
-    <a class="item">Hadoop FS</a>
+    <a v-on:click= "chooseConnection('oracle')" class="item">Oracle</a>
+    <a v-on:click= "chooseConnection('mssql')" class="item">MSSQL Server</a>
+    <a v-on:click= "chooseConnection('mysql')" class="item">MySQL</a>
+    <a v-on:click= "chooseConnection('hadoop')" class="item">Hadoop FS</a>
   </div>
 </template>
 
@@ -24,7 +24,20 @@ import BaseComponent from '@/iochord/chdsr/common/ui/layout/classes/BaseComponen
 
 @Component
 export default class ItemConnectionComponent extends BaseComponent {
+  public currentContentComponent: string = '';
 
+  public chooseConnection(prm: string) {
+    if (prm === 'oracle') {
+      this.currentContentComponent = 'ContentOraclePropertiesComponent';
+    } else if (prm === 'mssql' ) {
+      this.currentContentComponent = 'ContentMssqlPropertiesComponent';
+    } else if (prm === 'mysql') {
+      this.currentContentComponent = 'ContentMysqlPropertiesComponent';
+    } else {
+      this.currentContentComponent = 'ContentHadoopPropertiesComponent';
+    }
+    this.$root.$emit('ebContentComponent', this.currentContentComponent);
+  }
 }
 </script>
 >
