@@ -53,8 +53,6 @@ import BaseComponent from '@/iochord/chdsr/common/ui/layout/classes/BaseComponen
 import HeaderComponent from '@/iochord/chdsr/common/ui/layout/components/HeaderComponent.vue';
 import DepthTwoLeftWorkspaceComponent from './DepthTwoLeftWorkspaceComponent.vue';
 
-
-
 @Component({
   components: {
     HeaderComponent,

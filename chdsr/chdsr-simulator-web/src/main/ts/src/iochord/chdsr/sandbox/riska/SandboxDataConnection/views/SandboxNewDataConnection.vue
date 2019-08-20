@@ -1,5 +1,5 @@
 <template>
-  <div class="sandbox data connection">
+  <div class="sandbox new data connection">
     <DepthTwoLeftWrapperComponent>
 
       <!-- Header -->
@@ -42,7 +42,7 @@
 </template>
 
 <style>
-.sandbox.data.connection {
+.sandbox.new.data.connection {
   height: 100%;
 }
 
@@ -82,7 +82,7 @@ import ItemConnectionComponent from '../components/ItemConnectionComponent.vue';
       ItemConnectionComponent,
    },
  })
-export default class SandboxDataConnection extends Layout02View {
+export default class SandboxNewDataConnection extends Layout02View {
   public title: string = '';
   public currentContentComponent: string = 'ContentOraclePropertiesComponent';
 
@@ -91,15 +91,15 @@ export default class SandboxDataConnection extends Layout02View {
       this.currentContentComponent = prm;
     });
   }
-
+  
   /** @override */
   public overrideBrowserProperties() {
-    this.setDocumentTitle('Data Management: Connection');
+    this.setDocumentTitle('Data Management: New COnnection');
   }
 
   /** @Override */
   public setTitle(): void {
-    this.title = `List Connection`;
+    this.title = `New Connection`;
   }
 }
 </script>

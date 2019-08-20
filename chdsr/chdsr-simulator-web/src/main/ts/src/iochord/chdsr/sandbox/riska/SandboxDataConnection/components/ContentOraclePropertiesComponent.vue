@@ -63,6 +63,52 @@
         </div>
       </div>
     </form>
+    <h4 class="ui dividing header">Filter Query</h4>
+    <form class="ui form">
+      <div class="sixteen wide field">
+        <textarea rows="10" cols="50"></textarea>
+      </div>
+      <div class="inline fields">
+          <div class="eight wide field"></div>
+          <div align="right" class="eight wide field">
+            <button class="ui right floated button">
+              Execute &#38; Preview
+            </button>
+          </div>
+      </div>
+    </form>
+
+    <h4 class="ui dividing header">Data Preview</h4>
+    <table class="ui celled table">
+      <thead>
+        <tr>
+          <th>Hostname</th>
+          <th>Port</th>
+          <th>Database</th>
+          <th>TNS Name</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+        <tr>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+        <tr>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+      </tbody>
+    </table>
   </div>
 </template>
 

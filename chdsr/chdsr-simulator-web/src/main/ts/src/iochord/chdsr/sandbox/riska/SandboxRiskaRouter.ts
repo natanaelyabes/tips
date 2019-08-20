@@ -19,6 +19,16 @@ export default [
     component: () => import(/* webpackChunkName: "chdsr-sandbox-data-connection-view" */ '@/iochord/chdsr/sandbox/riska/SandboxDataConnection/views/SandboxDataConnection.vue'),
   },
   {
+    path: 'sandbox-new-data-connection',
+    name: `${BaseUrlEnum.IOCHORD}-${ApplicationEnum.NAME}-sandbox-new-data-connection`,
+    component: () => import(/* webpackChunkName: "chdsr-sandbox-new-data-connection-view" */ '@/iochord/chdsr/sandbox/riska/SandboxDataConnection/views/SandboxNewDataConnection.vue'),
+  },
+  {
+    path: 'sandbox-uploadfile-data-connection',
+    name: `${BaseUrlEnum.IOCHORD}-${ApplicationEnum.NAME}-sandbox-uploadfile-data-connection`,
+    component: () => import(/* webpackChunkName: "chdsr-sandbox-uploadfile-data-connection-view" */ '@/iochord/chdsr/sandbox/riska/SandboxDataConnection/views/SandboxUploadfileDataConnection.vue'),
+  },
+  {
     path: 'sandbox-data-management',
     name: `${BaseUrlEnum.IOCHORD}-${ApplicationEnum.NAME}-sandbox-data-management`,
     component: () => import(/* webpackChunkName: "chdsr-sandbox-data-connection-view" */ '@/iochord/chdsr/sandbox/riska/SandboxDataManagement/views/SandboxDataManagement.vue'),
