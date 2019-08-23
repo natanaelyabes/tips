@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import io.iochord.dev.chdsr.simulator.compiler.test.GenGraph;
 import io.iochord.dev.chdsr.simulator.engine.SimulatorPerformAnalysisJava;
 
 /**
@@ -24,8 +25,6 @@ public class CpnScalaSimulatorPerfAnalysisController extends ASimulatorControlle
 	
 	@RequestMapping(value = BASE_URI + "/atm/perf/{noStep}", method = RequestMethod.POST)
 	public String perfATMWithSpecNumbToken(@PathVariable("noStep") int noStep, @RequestBody String jsonStr) {
-		//SimulatorPerformAnalysis spa = new SimulatorPerformAnalysis();
-		//return spa.doATMTestWithManyToken(noStep, jsonStr);
 		SimulatorPerformAnalysisJava spa = new SimulatorPerformAnalysisJava();
 		return spa.doTestWithManyToken(noStep, jsonStr, "../chdsr-simulator/simulscala.txt");
 	}
@@ -34,5 +33,17 @@ public class CpnScalaSimulatorPerfAnalysisController extends ASimulatorControlle
 	public String perfBIGWithSpecNumbToken(@PathVariable("noStep") int noStep, @RequestBody String jsonStr) {
 		SimulatorPerformAnalysisJava spa = new SimulatorPerformAnalysisJava();
 		return spa.doTestWithManyToken(noStep, jsonStr, "../chdsr-simulator/bigsimulscala.txt");
+	}
+	
+	@RequestMapping(value = BASE_URI + "/flex/perf/{noStep}", method = RequestMethod.POST)
+	public String perfFlexWithSpecNumbToken(@PathVariable("noStep") int noStep, @RequestBody String jsonStr) {
+		SimulatorPerformAnalysisJava spa = new SimulatorPerformAnalysisJava();
+		return spa.doTestWithManyToken(noStep, jsonStr, null);
+	}
+	
+	@RequestMapping(value = BASE_URI + "/flex/cgraph/{noTrans}", method = RequestMethod.GET)
+	public String perfCreateGraph(@PathVariable("noTrans") int noTrans) {
+		GenGraph gg = new GenGraph();
+		return gg.create(noTrans);
 	}
 }

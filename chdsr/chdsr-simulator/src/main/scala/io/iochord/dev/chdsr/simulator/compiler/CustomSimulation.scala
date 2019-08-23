@@ -17,9 +17,14 @@ class CustomSimulation {
     
     val job = new JSONObject(jsonStr)
     
+    var mpath = modelpath
+    
+    if(mpath == null)
+      mpath = job.getString("mpath");
+    
     val startcomp = System.currentTimeMillis()
     
-    val memoryScalaFactory = new MemoryScalaFileCompiler(modelpath)
+    val memoryScalaFactory = new MemoryScalaFileCompiler(mpath)
     val simulation = memoryScalaFactory.getInstance
     simulation.addObserver(new MarkingObserver())
     
