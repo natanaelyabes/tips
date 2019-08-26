@@ -1,4 +1,4 @@
-package io.iochord.dev.chdsr.simulator.compiler.test
+package io.iochord.dev.chdsr.simulator.compiler
 
 class GenGraph {
   
