@@ -1,5 +1,8 @@
 package io.iochord.dev.chdsr.simulator.web.v1.api.controllers.simulator;
 
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
+
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -45,5 +48,19 @@ public class CpnScalaSimulatorPerfAnalysisController extends ASimulatorControlle
 	public String perfCreateGraph(@PathVariable("noTrans") int noTrans) {
 		GenGraph gg = new GenGraph();
 		return gg.create(noTrans);
+	}
+	
+	@RequestMapping(value = BASE_URI + "/flex/cgraphperf/{noTrans}/{noStep}", method = RequestMethod.POST)
+	public String perfCreateGraphAndFlexWithSpecNumbToken(@PathVariable("noTrans") int noTrans, @PathVariable("noStep") int noStep, @RequestBody String jsonStr) throws FileNotFoundException {
+		GenGraph gg = new GenGraph();
+		
+		String fpath = "../chdsr-simulator/flex-"+System.currentTimeMillis()+".txt";
+		
+		PrintWriter out = new PrintWriter(fpath);
+		out.write(gg.create(noTrans));
+		out.close();
+		
+		SimulatorPerformAnalysisJava spa = new SimulatorPerformAnalysisJava();
+		return spa.doTestWithManyToken(noStep, jsonStr, fpath);
 	}
 }
