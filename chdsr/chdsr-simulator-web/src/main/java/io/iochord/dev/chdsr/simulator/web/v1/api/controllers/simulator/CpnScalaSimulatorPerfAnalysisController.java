@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import io.iochord.dev.chdsr.simulator.compiler.test.GenGraph;
+import io.iochord.dev.chdsr.simulator.compiler.GenGraph;
 import io.iochord.dev.chdsr.simulator.engine.SimulatorPerformAnalysisJava;
 
 /**
