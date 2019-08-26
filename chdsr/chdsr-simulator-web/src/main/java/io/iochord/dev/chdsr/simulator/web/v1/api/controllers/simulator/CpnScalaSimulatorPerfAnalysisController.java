@@ -26,7 +26,7 @@ public class CpnScalaSimulatorPerfAnalysisController extends ASimulatorControlle
 	@RequestMapping(value = BASE_URI + "/atm/perf/{noStep}", method = RequestMethod.POST)
 	public String perfATMWithSpecNumbToken(@PathVariable("noStep") int noStep, @RequestBody String jsonStr) {
 		SimulatorPerformAnalysisJava spa = new SimulatorPerformAnalysisJava();
-		return spa.doTestWithManyToken(noStep, jsonStr, "../chdsr-simulator/simulscala.txt");
+		return spa.doTestWithManyToken(noStep, jsonStr, "../chdsr-model-analysis/simulscala.txt");
 	}
 	
 	@RequestMapping(value = BASE_URI + "/big/perf/{noStep}", method = RequestMethod.POST)
