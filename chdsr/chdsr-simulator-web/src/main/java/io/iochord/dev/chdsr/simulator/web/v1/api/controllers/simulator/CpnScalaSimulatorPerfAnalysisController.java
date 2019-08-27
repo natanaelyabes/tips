@@ -26,16 +26,28 @@ import io.iochord.dev.chdsr.simulator.engine.SimulatorPerformAnalysisJava;
 public class CpnScalaSimulatorPerfAnalysisController extends ASimulatorController {
 	public static final String BASE_URI = ASimulatorController.BASE_URI + "/cpnscala";
 	
+  @RequestMapping(value = BASE_URI + "/atm/perf/generate", method = RequestMethod.POST)
+	public void test01CpnScalaCreation() throws Exception {
+		Sbpnet snet = SbpnetExample.createComplete();
+		System.out.println(SerializationUtil.encode(snet));
+		Sbpnet2CpnscalaBiConverter converter = new Sbpnet2CpnscalaBiConverter();
+		String net = converter.convert(snet);
+		
+		PrintWriter out = new PrintWriter("simulscala.txt");
+		out.write(net);
+		out.close();
+	}
+  
 	@RequestMapping(value = BASE_URI + "/atm/perf/{noStep}", method = RequestMethod.POST)
 	public String perfATMWithSpecNumbToken(@PathVariable("noStep") int noStep, @RequestBody String jsonStr) {
 		SimulatorPerformAnalysisJava spa = new SimulatorPerformAnalysisJava();
-		return spa.doTestWithManyToken(noStep, jsonStr, "../chdsr-model-analysis/simulscala.txt");
+		return spa.doTestWithManyToken(noStep, jsonStr, "simulscala.txt");
 	}
 	
 	@RequestMapping(value = BASE_URI + "/big/perf/{noStep}", method = RequestMethod.POST)
 	public String perfBIGWithSpecNumbToken(@PathVariable("noStep") int noStep, @RequestBody String jsonStr) {
 		SimulatorPerformAnalysisJava spa = new SimulatorPerformAnalysisJava();
-		return spa.doTestWithManyToken(noStep, jsonStr, "../chdsr-simulator/bigsimulscala.txt");
+		return spa.doTestWithManyToken(noStep, jsonStr, "bigsimulscala.txt");
 	}
 	
 	@RequestMapping(value = BASE_URI + "/flex/perf/{noStep}", method = RequestMethod.POST)
