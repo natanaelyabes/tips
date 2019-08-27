@@ -70,7 +70,7 @@ public class CpnScalaSimulatorPerfAnalysisController extends ASimulatorControlle
 	public String perfCreateGraphAndFlexWithSpecNumbToken(@PathVariable("noTrans") int noTrans, @PathVariable("noStep") int noStep, @RequestBody String jsonStr) throws FileNotFoundException {
 		GenGraph gg = new GenGraph();
 		
-		String fpath = "../chdsr-simulator/flex-"+System.currentTimeMillis()+".txt";
+		String fpath = "flex-"+System.currentTimeMillis()+".txt";
 		
 		PrintWriter out = new PrintWriter(fpath);
 		out.write(gg.create(noTrans));
