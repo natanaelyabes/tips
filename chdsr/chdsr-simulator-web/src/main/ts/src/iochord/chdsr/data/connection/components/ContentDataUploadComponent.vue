@@ -1,6 +1,6 @@
 <template>
   <div class="content data upload component">
-    <form class="ui form">
+    <form ref="frmUpload" class="ui form">
       <h4 class="ui dividing header">Connection Name</h4>
         <div class="fields">
           <div class="eight wide field">
@@ -10,18 +10,18 @@
         <div class="fields">
           <div class="eight wide field">
             <label>Filename</label>
-            <input type="text" name="connect[name]" placeholder="filename">
+            <input ref="file" :disabled="isUploading" type="file" @changed="" accept=".csv" name="connect[name]" placeholder="filename">
           </div>
         </div>
         <div class="inline fields">
           <div class="eight wide field">
-            <button class="ui disabled button">
+            <button type="button" class="ui disabled button">
               Use file
             </button>
-            <button class="ui primary button">
-              Import
+            <button type="button" :disabled="isUploading" class="ui primary button" @click="doImport()">
+              Import {{uploadStatus}}
             </button>
-            <button class="ui button">
+            <button type="button" class="ui button">
               Cancel
             </button>
           </div>
@@ -49,118 +49,6 @@
               <td>Initial commit</td>
               <td class="right aligned collapsing">10 hours ago</td>
             </tr>
-            <tr>
-              <td>
-                test
-              </td>
-              <td>Initial commit</td>
-              <td class="right aligned">10 hours ago</td>
-            </tr>
-            <tr>
-              <td>
-                build
-              </td>
-              <td>Initial commit</td>
-              <td class="right aligned">10 hours ago</td>
-            </tr>
-            <tr>
-              <td>
-                package.json
-              </td>
-              <td>Initial commit</td>
-              <td class="right aligned">10 hours ago</td>
-            </tr>
-            <tr>
-              <td>
-                Gruntfile.js
-              </td>
-              <td>Initial commit</td>
-              <td class="right aligned">10 hours ago</td>
-            </tr>
-            <tr>
-              <td>
-                build
-              </td>
-              <td>Initial commit</td>
-              <td class="right aligned">10 hours ago</td>
-            </tr>
-            <tr>
-              <td>
-                package.json
-              </td>
-              <td>Initial commit</td>
-              <td class="right aligned">10 hours ago</td>
-            </tr>
-            <tr>
-              <td>
-                Gruntfile.js
-              </td>
-              <td>Initial commit</td>
-              <td class="right aligned">10 hours ago</td>
-            </tr>
-            <tr>
-              <td>
-                build
-              </td>
-              <td>Initial commit</td>
-              <td class="right aligned">10 hours ago</td>
-            </tr>
-            <tr>
-              <td>
-                package.json
-              </td>
-              <td>Initial commit</td>
-              <td class="right aligned">10 hours ago</td>
-            </tr>
-            <tr>
-              <td>
-                Gruntfile.js
-              </td>
-              <td>Initial commit</td>
-              <td class="right aligned">10 hours ago</td>
-            </tr>
-            <tr>
-              <td>
-                build
-              </td>
-              <td>Initial commit</td>
-              <td class="right aligned">10 hours ago</td>
-            </tr>
-            <tr>
-              <td>
-                package.json
-              </td>
-              <td>Initial commit</td>
-              <td class="right aligned">10 hours ago</td>
-            </tr>
-            <tr>
-              <td>
-                Gruntfile.js
-              </td>
-              <td>Initial commit</td>
-              <td class="right aligned">10 hours ago</td>
-            </tr>
-            <tr>
-              <td>
-                build
-              </td>
-              <td>Initial commit</td>
-              <td class="right aligned">10 hours ago</td>
-            </tr>
-            <tr>
-              <td>
-                package.json
-              </td>
-              <td>Initial commit</td>
-              <td class="right aligned">10 hours ago</td>
-            </tr>
-            <tr>
-              <td>
-                Gruntfile.js
-              </td>
-              <td>Initial commit</td>
-              <td class="right aligned">10 hours ago</td>
-            </tr>
           </tbody>
         </table>
       </div>
@@ -174,10 +62,34 @@
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator';
 import BaseComponent from '@/iochord/chdsr/common/ui/layout/classes/BaseComponent';
+import DataConnectionService from '@/iochord/chdsr/common/service/data/DataConnectionService'; 
 
 @Component
 export default class ContentDataUploadComponent extends BaseComponent {
 
+  public isUploading: boolean = false;
+  public uploadStatus: string = '';
+
+  public doImport() {
+    const self = this;
+    const files = this.$refs['file'].files;
+    if (files != null && files.length > 0) {
+      const data = new FormData();
+      data.append('file', files[0]);
+      self.isUploading = true;
+      DataConnectionService.getInstance().importCsv(data, (res) => {
+        self.isUploading = false;
+        self.uploadStatus = '';
+        self.$refs['frmUpload'].reset();
+      }, (tick) => {
+        self.uploadStatus = tick.body;
+      });
+    }
+  }
+
+  /** @Override */
+  public async mounted(): Promise<void> {
+  }
 }
 
 </script>

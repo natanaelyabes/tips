@@ -11,10 +11,10 @@
  * See https://goo.gl/2aRDsh
  */
 
-importScripts("https://storage.googleapis.com/workbox-cdn/releases/3.4.1/workbox-sw.js");
+importScripts("https://storage.googleapis.com/workbox-cdn/releases/3.6.3/workbox-sw.js");
 
 importScripts(
-  "/precache-manifest.7fd8f6065d92cdc14e54c4fee035e337.js"
+  "/precache-manifest.91771a0220ae632070380ee3189b4fc4.js"
 );
 
 workbox.core.setCacheNameDetails({prefix: "iochord-chdsr-ui"});
