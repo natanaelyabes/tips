@@ -5,6 +5,7 @@
 -->
 <template>
   <div class="navigation-top-sidebar component">
+
     <!-- Top-bar menu -->
     <div class="ui top fixed menu">
       <div class="item">
