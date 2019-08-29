@@ -1,4 +1,4 @@
-package io.iochord.dev.chdsr.simulator.web.v1.api.controllers.user;
+package io.iochord.dev.chdsr.simulator.web.v1.api.controllers.system;
 
 import io.iochord.dev.chdsr.simulator.web.v1.api.controllers.AServiceController;
 
@@ -10,7 +10,7 @@ import io.iochord.dev.chdsr.simulator.web.v1.api.controllers.AServiceController;
  *
  *
  */
-public abstract class AnUserController extends AServiceController {
+public abstract class ASystemController extends AServiceController {
 	
 	public static final String BASE_URI = AServiceController.BASE_URI + "/user";
 

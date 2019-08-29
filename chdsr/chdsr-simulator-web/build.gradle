@@ -10,6 +10,7 @@ springBoot {
 dependencies {
 	compile 'org.springframework.boot:spring-boot-starter-web:2.1.2.RELEASE'
 	compile 'org.springframework.boot:spring-boot-starter-websocket:2.1.2.RELEASE'
+	compile group: 'com.opencsv', name: 'opencsv', version: '4.0'
 	
 	implementation project(':chdsr-common')
 	implementation project(':chdsr-model')
