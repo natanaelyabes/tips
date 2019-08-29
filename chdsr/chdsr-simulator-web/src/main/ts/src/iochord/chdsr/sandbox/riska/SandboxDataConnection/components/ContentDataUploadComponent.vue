@@ -177,8 +177,7 @@ import BaseComponent from '@/iochord/chdsr/common/ui/layout/classes/BaseComponen
 
 @Component
 export default class ContentDataUploadComponent extends BaseComponent {
-
+  //
 }
-
 </script>
 

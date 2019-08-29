@@ -10,7 +10,7 @@
         <div class="fields">
           <div class="eight wide field">
             <label>Filename</label>
-            <input ref="file" :disabled="isUploading" type="file" @changed="" accept=".csv" name="connect[name]" placeholder="filename">
+            <input ref="file" :disabled="isUploading" type="file" accept=".csv" name="connect[name]" placeholder="filename">
           </div>
         </div>
         <div class="inline fields">
@@ -62,7 +62,7 @@
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator';
 import BaseComponent from '@/iochord/chdsr/common/ui/layout/classes/BaseComponent';
-import DataConnectionService from '@/iochord/chdsr/common/service/data/DataConnectionService'; 
+import DataConnectionService from '@/iochord/chdsr/common/service/data/DataConnectionService';
 
 @Component
 export default class ContentDataUploadComponent extends BaseComponent {
@@ -72,16 +72,16 @@ export default class ContentDataUploadComponent extends BaseComponent {
 
   public doImport() {
     const self = this;
-    const files = this.$refs['file'].files;
+    const files = (this.$refs['file'] as any).files;
     if (files != null && files.length > 0) {
       const data = new FormData();
       data.append('file', files[0]);
       self.isUploading = true;
-      DataConnectionService.getInstance().importCsv(data, (res) => {
+      DataConnectionService.getInstance().importCsv(data, (res: any) => {
         self.isUploading = false;
         self.uploadStatus = '';
-        self.$refs['frmUpload'].reset();
-      }, (tick) => {
+        (self.$refs['frmUpload'] as any).reset();
+      }, (tick: any) => {
         self.uploadStatus = tick.body;
       });
     }
@@ -89,6 +89,7 @@ export default class ContentDataUploadComponent extends BaseComponent {
 
   /** @Override */
   public async mounted(): Promise<void> {
+    //
   }
 }
 

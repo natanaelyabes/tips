@@ -1,7 +1,7 @@
 import axios, { AxiosResponse } from 'axios';
 
 import SockJS from 'sockjs-client';
-import Stomp from 'webstomp-client';
+import Stomp, { Client, Subscription } from 'webstomp-client';
 
 /**
  *
@@ -32,23 +32,23 @@ export class BaseService {
     });
   }
 
-  public async webserviceGet(url: string, completeCallback: any, progressCallback: any): Promise<AxiosResponse> {
+  public async webserviceGet(url: string, completeCallback: any, progressCallback: any): Promise<void> {
     axios.get(BaseService.BASE_HTTP_URI + url).then((rawResponse) => {
       const response = rawResponse.data;
-      if (response.status.status == 'completed') {
+      if (response.status.status === 'completed') {
         completeCallback(response);
       } else {
-        this.getWsClient((client) => {
-          let subProgress = null;
-          if (completeCallback != null && progressCallback != null) {
+        this.getWsClient((client: Client) => {
+          let subProgress: Subscription | null = null;
+          if (completeCallback !== null && progressCallback !== null) {
             subProgress = client.subscribe(response.status.progressWsUri, (tick) => {
               progressCallback(tick);
             });
           }
-          if (completeCallback != null) {
+          if (completeCallback !== null) {
             const subComplete = client.subscribe(response.status.completeWsUri, (tick) => {
-              client.unsubscribe(subProgress);
-              client.unsubscribe(subComplete);
+              client.unsubscribe((subProgress as Subscription).id);
+              client.unsubscribe((subComplete as Subscription).id);
               completeCallback(tick);
             });
           }
@@ -57,7 +57,7 @@ export class BaseService {
     });
   }
 
-  public async webservicePost(url: string, data: any, completeCallback: any, progressCallback: any): Promise<AxiosResponse> {
+  public async webservicePost(url: string, data: any, completeCallback: any, progressCallback: any): Promise<void> {
     axios.post(BaseService.BASE_HTTP_URI + url, JSON.stringify(data), {
       headers: {
         'Accept': 'application/json',
@@ -65,20 +65,20 @@ export class BaseService {
       },
     }).then((rawResponse) => {
       const response = rawResponse.data;
-      if (response.status.status == 'completed') {
+      if (response.status.status === 'completed') {
         completeCallback(response);
       } else {
-        this.getWsClient((client) => {
-          let subProgress = null;
-          if (completeCallback != null && progressCallback != null) {
+        this.getWsClient((client: Client) => {
+          let subProgress: Subscription | null = null;
+          if (completeCallback !== null && progressCallback !== null) {
             subProgress = client.subscribe(response.status.progressWsUri, (tick) => {
               progressCallback(tick);
             });
           }
-          if (completeCallback != null) {
+          if (completeCallback !== null) {
             const subComplete = client.subscribe(response.status.completeWsUri, (tick) => {
-              client.unsubscribe(subProgress);
-              client.unsubscribe(subComplete);
+              client.unsubscribe((subProgress as Subscription).id);
+              client.unsubscribe((subComplete as Subscription).id);
               completeCallback(tick);
             });
           }
@@ -87,27 +87,27 @@ export class BaseService {
     });
   }
 
-  public async webserviceUpload(url: string, data: FormData, completeCallback: any, progressCallback: any): Promise<AxiosResponse> {
+  public async webserviceUpload(url: string, data: FormData, completeCallback: any, progressCallback: any): Promise<void> {
     axios.post(BaseService.BASE_HTTP_URI + url, data, {
       headers: {
         'Content-Type': 'multipart/form-data',
       },
     }).then((rawResponse) => {
       const response = rawResponse.data;
-      if (response.status.status == 'completed') {
+      if (response.status.status === 'completed') {
         completeCallback(response);
       } else {
-        this.getWsClient((client) => {
-          let subProgress = null;
-          if (completeCallback != null && progressCallback != null) {
+        this.getWsClient((client: Client) => {
+          let subProgress: Subscription | null = null;
+          if (completeCallback !== null && progressCallback !== null) {
             subProgress = client.subscribe(response.status.progressWsUri, (tick) => {
               progressCallback(tick);
             });
           }
-          if (completeCallback != null) {
+          if (completeCallback !== null) {
             const subComplete = client.subscribe(response.status.completeWsUri, (tick) => {
-              client.unsubscribe(subProgress);
-              client.unsubscribe(subComplete);
+              client.unsubscribe((subProgress as Subscription).id);
+              client.unsubscribe((subComplete as Subscription).id);
               completeCallback(tick);
             });
           }

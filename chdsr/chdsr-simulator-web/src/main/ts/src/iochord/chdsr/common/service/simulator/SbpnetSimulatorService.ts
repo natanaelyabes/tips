@@ -22,21 +22,21 @@ export class SbpnetSimulatorService extends SimulatorService {
   }
 
   private static __INSTANCE: SbpnetSimulatorService;
-  
+
   public callRunSimulation(graph: any, callback: any) {
     this.getWsClient((wsc: Client) => {
       const wsUri = '/simulation/init';
       const jsonReq = {
         id: (new Date().getTime()),
         method: wsUri,
-        params: JSON.stringify(graph)
+        params: JSON.stringify(graph),
       };
       console.log(JSON.stringify(graph));
       wsc.subscribe('/response/simulation/step', (tick: any) => {
         callback(tick);
       });
       wsc.send(wsUri, JSON.stringify(jsonReq));
-      //this.remotePost(wsUri, graph);
+      // this.remotePost(wsUri, graph);
     });
   }
 
