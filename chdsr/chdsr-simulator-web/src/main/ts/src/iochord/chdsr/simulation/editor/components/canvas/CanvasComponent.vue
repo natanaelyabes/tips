@@ -196,6 +196,7 @@ export default class CanvasComponent extends Mixins(BaseComponent, ModalMixin, C
       // Get node types that need to be rendered in the canvas
       this.nodeTypes = renderer.getNodeTypes();
 
+      // Get panAndZoom instance from renderer
       this.panAndZoom = renderer.panAndZoom;
 
       // 'Listening to events' can only be done after all components were rendered

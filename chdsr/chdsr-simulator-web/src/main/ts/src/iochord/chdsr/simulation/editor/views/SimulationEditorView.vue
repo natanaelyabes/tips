@@ -6,6 +6,7 @@
 <template>
   <div class="editor view">
 
+    <!-- WrapperComponent -->
     <WrapperComponent>
 
       <!-- Header -->
