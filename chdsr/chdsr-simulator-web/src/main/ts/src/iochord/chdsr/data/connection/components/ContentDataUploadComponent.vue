@@ -62,7 +62,7 @@
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator';
 import BaseComponent from '@/iochord/chdsr/common/ui/layout/classes/BaseComponent';
-import DataConnectionService from '@/iochord/chdsr/common/service/data/DataConnectionService'; 
+import DataConnectionService from '@/iochord/chdsr/common/service/data/DataConnectionService';
 
 @Component
 export default class ContentDataUploadComponent extends BaseComponent {
@@ -72,24 +72,26 @@ export default class ContentDataUploadComponent extends BaseComponent {
 
   public doImport() {
     const self = this;
-    const files = this.$refs['file'].files;
+    const frmUpload = self.$refs['frmUpload'] as HTMLFormElement;
+    const ele = this.$refs['file'] as HTMLInputElement;
+    const files = ele.files;
     if (files != null && files.length > 0) {
       const data = new FormData();
       data.append('file', files[0]);
       self.isUploading = true;
-      DataConnectionService.getInstance().importCsv(data, (res) => {
+      DataConnectionService.getInstance().importCsv(data, (res: any) => {
         self.isUploading = false;
         self.uploadStatus = '';
-        self.$refs['frmUpload'].reset();
-      }, (tick) => {
+        frmUpload.reset();
+      }, (tick: any) => {
         self.uploadStatus = tick.body;
       });
     }
   }
 
   /** @Override */
-  public async mounted(): Promise<void> {
-  }
+  // public async mounted(): Promise<void> {
+  // }
 }
 
 </script>
