@@ -7,8 +7,8 @@ import { BaseService } from '../BaseService';
  * @since   2019
  *
  */
-export abstract class UserService extends BaseService {
+export abstract class SystemService extends BaseService {
 
-  public static readonly BASE_URI: string = BaseService.BASE_URI + '/user';
+  public static readonly BASE_URI: string = BaseService.BASE_URI + '/system';
 
 }

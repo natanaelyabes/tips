@@ -32,8 +32,91 @@ export class BaseService {
     });
   }
 
+  public async webserviceGet(url: string, completeCallback: any, progressCallback: any): Promise<AxiosResponse> {
+    axios.get(BaseService.BASE_HTTP_URI + url).then((rawResponse) => {
+      const response = rawResponse.data;
+      if (response.status.status == 'completed') {
+        completeCallback(response);
+      } else {
+        this.getWsClient((client) => {
+          let subProgress = null;
+          if (completeCallback != null && progressCallback != null) {
+            subProgress = client.subscribe(response.status.progressWsUri, (tick) => {
+              progressCallback(tick);
+            });
+          }
+          if (completeCallback != null) {
+            const subComplete = client.subscribe(response.status.completeWsUri, (tick) => {
+              client.unsubscribe(subProgress);
+              client.unsubscribe(subComplete);
+              completeCallback(tick);
+            });
+          }
+        });
+      }
+    });
+  }
+
+  public async webservicePost(url: string, data: any, completeCallback: any, progressCallback: any): Promise<AxiosResponse> {
+    axios.post(BaseService.BASE_HTTP_URI + url, JSON.stringify(data), {
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+    }).then((rawResponse) => {
+      const response = rawResponse.data;
+      if (response.status.status == 'completed') {
+        completeCallback(response);
+      } else {
+        this.getWsClient((client) => {
+          let subProgress = null;
+          if (completeCallback != null && progressCallback != null) {
+            subProgress = client.subscribe(response.status.progressWsUri, (tick) => {
+              progressCallback(tick);
+            });
+          }
+          if (completeCallback != null) {
+            const subComplete = client.subscribe(response.status.completeWsUri, (tick) => {
+              client.unsubscribe(subProgress);
+              client.unsubscribe(subComplete);
+              completeCallback(tick);
+            });
+          }
+        });
+      }
+    });
+  }
+
+  public async webserviceUpload(url: string, data: FormData, completeCallback: any, progressCallback: any): Promise<AxiosResponse> {
+    axios.post(BaseService.BASE_HTTP_URI + url, data, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    }).then((rawResponse) => {
+      const response = rawResponse.data;
+      if (response.status.status == 'completed') {
+        completeCallback(response);
+      } else {
+        this.getWsClient((client) => {
+          let subProgress = null;
+          if (completeCallback != null && progressCallback != null) {
+            subProgress = client.subscribe(response.status.progressWsUri, (tick) => {
+              progressCallback(tick);
+            });
+          }
+          if (completeCallback != null) {
+            const subComplete = client.subscribe(response.status.completeWsUri, (tick) => {
+              client.unsubscribe(subProgress);
+              client.unsubscribe(subComplete);
+              completeCallback(tick);
+            });
+          }
+        });
+      }
+    });
+  }
+
   public getWsClient(callback: any) {
-    console.log('aaa');
     const self = this;
     if (self.wsConnected) {
       callback(self.wsClient);
