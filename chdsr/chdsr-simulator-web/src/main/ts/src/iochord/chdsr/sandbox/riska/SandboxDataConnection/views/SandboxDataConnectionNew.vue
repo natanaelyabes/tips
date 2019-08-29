@@ -14,9 +14,9 @@
       <!-- Depth One Left Sidebar Menu Item -->
       <template slot="depth-one-menu-item">
         <!-- <div class="menu"> -->
-          <a href="/#/iochord/chdsr/sandbox/sandbox-data-connection" class="item">List of connection</a>
-          <a href="/#/iochord/chdsr/sandbox/sandbox-new-data-connection" class="item">New connection</a>
-          <a href="/#/iochord/chdsr/sandbox/sandbox-uploadfile-data-connection" class="item">Upload</a>
+          <a href="/#/iochord/chdsr/sandbox/sandbox-data-connection-list" class="item">List of connection</a>
+          <a href="/#/iochord/chdsr/sandbox/sandbox-data-connection-new" class="item">New connection</a>
+          <a href="/#/iochord/chdsr/sandbox/sandbox-data-connection-upload" class="item">Import</a>
         <!-- </div> -->
       </template>
 
@@ -82,7 +82,7 @@ import ItemConnectionComponent from '../components/ItemConnectionComponent.vue';
       ItemConnectionComponent,
    },
  })
-export default class SandboxNewDataConnection extends Layout02View {
+export default class SandboxDataConnectionNew extends Layout02View {
   public title: string = '';
   public currentContentComponent: string = 'ContentOraclePropertiesComponent';
 
@@ -91,10 +91,10 @@ export default class SandboxNewDataConnection extends Layout02View {
       this.currentContentComponent = prm;
     });
   }
-  
+
   /** @override */
   public overrideBrowserProperties() {
-    this.setDocumentTitle('Data Management: New COnnection');
+    this.setDocumentTitle('Data Management: Import New Connection');
   }
 
   /** @Override */

@@ -14,15 +14,15 @@
       <!-- Depth One Left Sidebar Menu Item -->
       <template slot="depth-one-menu-item">
         <!-- <div class="menu"> -->
-          <a href="/#/iochord/chdsr/sandbox/sandbox-data-connection" class="item">List of connection</a>
-          <a href="/#/iochord/chdsr/sandbox/sandbox-new-data-connection" class="item">New connection</a>
-          <a href="/#/iochord/chdsr/sandbox/sandbox-uploadfile-data-connection" class="item">Upload</a>
+          <a href="/#/iochord/chdsr/data-connection" class="item">List of connection</a>
+          <a href="/#/iochord/chdsr/data-connection-new" class="item">New connection</a>
+          <a href="/#/iochord/chdsr/data-connection-upload" class="item">Import</a>
         <!-- </div> -->
       </template>
 
       <!-- Depth Two Left Sidebar Menu Item -->
       <template slot="depth-two-menu-item">
-        <ItemConnectionComponent></ItemConnectionComponent>
+        <ItemExistedConnectionComponent></ItemExistedConnectionComponent>
       </template>
 
       <!-- Content -->
@@ -54,8 +54,8 @@ a.section {
 
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator';
-import Layout02View from '@/iochord/chdsr/sandbox/riska/SandboxDataConnection/classes/Layout02';
-import DepthTwoLeftWrapperComponent from '../components/DepthTwoLeftWrapperComponent.vue';
+import Layout02View from '@/iochord/chdsr/common/ui/layout/classes/Layout02';
+import DepthTwoLeftWrapperComponent from '@/iochord/chdsr/common/ui/layout/components/DepthTwoLeftWrapperComponent.vue';
 import ContentOraclePropertiesComponent from '../components/ContentOraclePropertiesComponent.vue';
 import ContentMssqlPropertiesComponent from '../components/ContentMssqlPropertiesComponent.vue';
 import ContentMysqlPropertiesComponent from '../components/ContentMysqlPropertiesComponent.vue';
@@ -66,6 +66,7 @@ import ContentQueryComponent from '../components/ContentQueryComponent.vue';
 import ContentFileQueryComponent from '../components/ContentFileQueryComponent.vue';
 import ItemUploadComponent from '../components/ItemUploadComponent.vue';
 import ItemConnectionComponent from '../components/ItemConnectionComponent.vue';
+import ItemExistedConnectionComponent from '../components/ItemExistedConnectionComponent.vue';
 
 @Component({
   components: {
@@ -80,9 +81,10 @@ import ItemConnectionComponent from '../components/ItemConnectionComponent.vue';
       ContentFileQueryComponent,
       ItemUploadComponent,
       ItemConnectionComponent,
+      ItemExistedConnectionComponent,
    },
  })
-export default class SandboxDataConnection extends Layout02View {
+export default class SandboxDataConnectionList extends Layout02View {
   public title: string = '';
   public currentContentComponent: string = 'ContentOraclePropertiesComponent';
 
@@ -94,7 +96,7 @@ export default class SandboxDataConnection extends Layout02View {
 
   /** @override */
   public overrideBrowserProperties() {
-    this.setDocumentTitle('Data Management: Connection');
+    this.setDocumentTitle('Data Management: List of Connections');
   }
 
   /** @Override */

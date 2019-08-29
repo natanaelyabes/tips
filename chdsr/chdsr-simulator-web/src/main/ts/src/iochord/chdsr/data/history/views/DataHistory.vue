@@ -13,20 +13,20 @@
       <!-- Depth One Left Sidebar Menu Item -->
       <template slot="depth-one-menu-item">
         <!-- <div class="menu"> -->
-          <a class="item">File history</a>
-          <a class="item">Data filtering</a>
-          <a class="item">Data mapping</a>
+          <!-- <a href="/#/iochord/chdsr/sandbox/sandbox-data-management-history" class="item">File history</a>
+          <a href="/#/iochord/chdsr/sandbox/sandbox-data-management-filter" class="item">Data filtering</a>
+          <a href="/#/iochord/chdsr/sandbox/sandbox-data-management-mapping" class="item">Data mapping</a> -->
         <!-- </div> -->
       </template>
 
       <!-- Depth Two Left Sidebar Menu Item -->
-      <template slot="depth-two-menu-item">
+      <!-- <template slot="depth-two-menu-item">
         <ItemFilterComponent></ItemFilterComponent>
-      </template>
+      </template> -->
 
        <!-- Content -->
       <template slot="content">
-        <ContentFilterTimeComponent></ContentFilterTimeComponent>
+        <ContentHistoryComponent></ContentHistoryComponent>
       </template>
     </DepthTwoLeftWrapperComponent>
   </div>
@@ -47,29 +47,15 @@ a.section {
 import { Vue, Component } from 'vue-property-decorator';
 import Layout02View from '@/iochord/chdsr/sandbox/riska/SandboxDataConnection/classes/Layout02';
 import DepthTwoLeftWrapperComponent from '@/iochord/chdsr/sandbox/riska/SandboxDataConnection/components/DepthTwoLeftWrapperComponent.vue';
-import ItemFilterComponent from '../components/ItemFilterComponent.vue';
 import ContentHistoryComponent from '../components/ContentHistoryComponent.vue';
-import ContentMappingComponent from '../components/ContentMappingComponent.vue';
-import ContentFilterTimeComponent from '../components/ContentFilterTimeComponent.vue';
-import ContentFilterPerformanceComponent from '../components/ContentFilterPerformanceComponent.vue';
-import ContentFilterAttributesComponent from '../components/ContentFilterAttributesComponent.vue';
-import ContentFilterFollowerComponent from '../components/ContentFilterFollowerComponent.vue';
-import ContentFilterPointsComponent from '../components/ContentFilterPointsComponent.vue';
 
 @Component({
   components: {
     DepthTwoLeftWrapperComponent,
-    ItemFilterComponent,
     ContentHistoryComponent,
-    ContentMappingComponent,
-    ContentFilterTimeComponent,
-    ContentFilterPerformanceComponent,
-    ContentFilterAttributesComponent,
-    ContentFilterFollowerComponent,
-    ContentFilterPointsComponent,
   },
 })
-export default class SandboxDataManagement extends Layout02View {
+export default class SandboxDataManagementHistory extends Layout02View {
   public title: string = '';
 
 
@@ -79,12 +65,12 @@ export default class SandboxDataManagement extends Layout02View {
 
   /** @override */
   public overrideBrowserProperties() {
-    this.setDocumentTitle('Data Management: Management');
+    this.setDocumentTitle('Data Management: Data History');
   }
 
   /** @Override */
   public setTitle(): void {
-    this.title = `Management`;
+    this.title = `Data History`;
   }
 }
 </script>

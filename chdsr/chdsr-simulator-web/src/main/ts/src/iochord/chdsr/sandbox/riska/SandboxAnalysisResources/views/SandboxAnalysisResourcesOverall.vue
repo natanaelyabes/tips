@@ -1,5 +1,5 @@
 <template>
-  <div class="sandbox analysis branch">
+  <div class="sandbox analysis resources">
     <LeftBarContentWrapperComponent>
       <!-- Header -->
       <template slot="header-breadcrumb">
@@ -21,24 +21,13 @@
       <!-- Content -->
       <template slot="content">
         <ContentSettingsComponent></ContentSettingsComponent>
-        <!-- <ContentSplitComponent></ContentSplitComponent> -->
       </template>
     </LeftBarContentWrapperComponent>
   </div>
 </template>
 
-<!--<style scoped>
-
-.ui.basic.segment {
-  overflow-y: scroll;
-  display: inline-block;
-  height: 100%;
-  width: 50%;
-}
-</style>-->
-
 <style>
-.sandbox.analysis.branch {
+.sandbox.analysis.resources {
   height: 100%;
 }
 
@@ -55,19 +44,16 @@ a.section {
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator';
 import Layout04View from '../../SandboxAnalysisBranch/classes/Layout04';
-import LeftBarContentWrapperComponent from '../components/LeftBarContentWrapperComponent.vue';
-import ContentSplitComponent from '../components/ContentSplitComponent.vue';
+import LeftBarContentWrapperComponent from '../../SandboxAnalysisBranch/components/LeftBarContentWrapperComponent.vue';
 import ContentSettingsComponent from '../components/ContentSettingsComponent.vue';
 
 @Component({
   components: {
     LeftBarContentWrapperComponent,
-    ContentSplitComponent,
     ContentSettingsComponent,
   },
 })
-
-export default class SandboxAnalysisBranch extends Layout04View {
+export default class SandboxAnalysisResourcesOverall extends Layout04View {
   public title: string = '';
 
 
@@ -77,12 +63,12 @@ export default class SandboxAnalysisBranch extends Layout04View {
 
   /** @override */
   public overrideBrowserProperties() {
-    this.setDocumentTitle('Data Analysis: Branch');
+    this.setDocumentTitle('Data Analysis: Resources');
   }
 
   /** @Override */
   public setTitle(): void {
-    this.title = `Branch mining`;
+    this.title = `Resources mining`;
   }
 }
 </script>

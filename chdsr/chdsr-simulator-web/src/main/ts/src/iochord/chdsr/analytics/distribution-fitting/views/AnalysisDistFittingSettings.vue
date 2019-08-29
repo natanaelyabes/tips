@@ -1,5 +1,5 @@
 <template>
-  <div class="sandbox analysis resources">
+  <div class="sandbox analysis dist fitting">
     <LeftBarContentWrapperComponent>
       <!-- Header -->
       <template slot="header-breadcrumb">
@@ -13,8 +13,8 @@
       <!-- Left Sidebar Menu Item -->
       <template slot="left-bar-menu-item">
         <!-- <div class="menu"> -->
-          <a class="item">Settings</a>
-          <a class="item">Overall</a>
+          <a href="/#/iochord/chdsr/analysis-distribution-fitting" class="item">Settings</a>
+          <a href="/#/iochord/chdsr/analysis-distribution-fitting-overall" class="item">Overall</a>
         <!-- </div> -->
       </template>
 
@@ -27,7 +27,7 @@
 </template>
 
 <style>
-.sandbox.analysis.resources {
+.sandbox.analysis.dist.fitting {
   height: 100%;
 }
 
@@ -43,17 +43,20 @@ a.section {
 
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator';
-import Layout04View from '../../SandboxAnalysisBranch/classes/Layout04';
-import LeftBarContentWrapperComponent from '../../SandboxAnalysisBranch/components/LeftBarContentWrapperComponent.vue';
+import LeftBarContentWrapperComponent from '@/iochord/chdsr/common/ui/layout/components/LeftBarContentWrapperComponent.vue';
 import ContentSettingsComponent from '../components/ContentSettingsComponent.vue';
+import ContentSplitComponent from '../components/ContentSplitComponent.vue';
+import Layout04View from '@/iochord/chdsr/common/ui/layout/classes/Layout04';
+
 
 @Component({
   components: {
     LeftBarContentWrapperComponent,
     ContentSettingsComponent,
+    ContentSplitComponent,
   },
 })
-export default class SandboxAnalysisResources extends Layout04View {
+export default class AnalysisDistFittingSettings extends Layout04View {
   public title: string = '';
 
 
@@ -63,12 +66,12 @@ export default class SandboxAnalysisResources extends Layout04View {
 
   /** @override */
   public overrideBrowserProperties() {
-    this.setDocumentTitle('Data Analysis: Resources');
+    this.setDocumentTitle('Data Analysis: Distribution Fitting');
   }
 
   /** @Override */
   public setTitle(): void {
-    this.title = `Resources mining`;
+    this.title = `Distribution Fitting`;
   }
 }
 </script>
