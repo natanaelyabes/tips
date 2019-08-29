@@ -176,6 +176,8 @@ import SimulationDataManagementComponent from '../components/ribbon/SimulationDa
 // Vuex & rxjs
 import GraphModule from '@/iochord/chdsr/common/graph/sbpnet/stores/GraphModule';
 import GraphSubject from '@/iochord/chdsr/common/graph/sbpnet/rxjs/GraphSubject';
+import { GraphNodeImpl } from '../../../common/graph/sbpnet/classes/GraphNodeImpl';
+import { GraphConnectorImpl } from '../../../common/graph/sbpnet/classes/GraphConnectorImpl';
 
 // Async component must be lazily load
 const CanvasComponent = () => import('@/iochord/chdsr/simulation/editor/components/canvas/CanvasComponent.vue');
@@ -216,18 +218,34 @@ export default class SimulationEditorView extends Layout01View {
   public editing: boolean = true;
 
   /** @Override */
+  public overrideBrowserProperties(): void {
+    this.setDocumentTitle('Simulation Editor: Editor');
+  }
+
+  /** @Override */
+  public setTitle(): void {
+    this.title = `Editor`;
+  }
+
+  /** @Override */
   public async mounted(): Promise<void> {
     try {
+
       // Fetch graph to Vuex state
       await graphModule.fetchGraph();
 
       // Update rxjs subject
       GraphSubject.update(graphModule.graph);
 
+      console.log(graphModule.graph);
+
       this.$observables.graph.subscribe((graph: Graph) => {
         console.log(graph);
         graphModule.setGraph(graph);
       });
+
+      console.log(GraphNodeImpl.instance);
+      console.log(GraphConnectorImpl.instance);
     } catch (e) {
       console.error(e);
     }
@@ -243,16 +261,6 @@ export default class SimulationEditorView extends Layout01View {
 
   public get graphData(): Graph | undefined {
     return graphModule.graph;
-  }
-
-  /** @Override */
-  public overrideBrowserProperties(): void {
-    this.setDocumentTitle('Simulation Editor: Editor');
-  }
-
-  /** @Override */
-  public setTitle(): void {
-    this.title = `Editor`;
   }
 }
 </script>

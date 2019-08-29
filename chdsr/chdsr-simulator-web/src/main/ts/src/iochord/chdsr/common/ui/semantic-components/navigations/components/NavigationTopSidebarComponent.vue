@@ -7,8 +7,6 @@
   <div class="navigation-top-sidebar component">
     <!-- Top-bar menu -->
     <div class="ui top fixed menu">
-
-      <!-- Toogle sidebar -->
       <div class="item">
         <div v-on:click="toggleMenu()" class="ui big black icon compact toggle button" data-transition="overlay">
           <i class="sidebar icon"></i>
@@ -114,7 +112,7 @@ export default class NavigationTopSidebarComponent extends SemanticComponent {
 
   /** @Override */
   public mounted(): void {
-    // this.closeMenu();
+    this.closeMenu();
   }
 
   /** @Override */
@@ -161,7 +159,7 @@ export default class NavigationTopSidebarComponent extends SemanticComponent {
       const sidebarLogoItemHeight = $('.logo.item').css('height');
       $('.ui.top.fixed.menu').css('height', sidebarLogoItemHeight);
       $('.pusher').css('padding-top', sidebarLogoItemHeight);
-    }, 200);
+    }, 10);
   }
 
   private toggleMenu(): void {
@@ -177,7 +175,7 @@ export default class NavigationTopSidebarComponent extends SemanticComponent {
     // Close the menu after 200ms
     setTimeout(() => {
       $('.ui.left.sidebar').css('width', 0);
-    }, 200);
+    }, 10);
 
     $('.ui.left.sidebar').children().css('opacity', 0);
     $('.navigation-top-sidebar .top.fixed.menu').css('padding-left', 0);
@@ -198,7 +196,7 @@ export default class NavigationTopSidebarComponent extends SemanticComponent {
           // Display the menu after 200ms
           setTimeout(() => {
             $('.ui.left.sidebar').children().css('opacity', 1);
-          }, 200);
+          }, 10);
 
           $('.navigation-top-sidebar .top.fixed.menu').css('padding-left', 260);
           $('.pusher').css('padding-left', 260);
@@ -208,7 +206,7 @@ export default class NavigationTopSidebarComponent extends SemanticComponent {
           // Display the menu after 200ms
           setTimeout(() => {
             $('.ui.left.sidebar').children().css('opacity', 1);
-          }, 200);
+          }, 10);
 
         }
       },

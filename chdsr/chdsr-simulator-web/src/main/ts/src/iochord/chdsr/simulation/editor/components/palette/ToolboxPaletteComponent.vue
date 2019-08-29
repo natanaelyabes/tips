@@ -3,33 +3,33 @@
     <div class="item">
       <div class="header">Toolbox</div>
       <div class="menu">
-        <a @mousedown="createItem('start', $event)" class="ui basic button item">
+        <a title="start" @mousedown="handleToolboxMouseDown('node', $event)" class="ui basic button item">
           <div class="image-icon">
-            <img src="@/assets/images/icons/simulation_editor_icon/toolbox/toolbox_start.png" alt="" class="ui centered image" />
+            <img draggable="false" src="@/assets/images/icons/simulation_editor_icon/toolbox/toolbox_start.png" alt="" class="ui centered image" />
           </div>
           Start
         </a>
-        <a @mousedown="createItem('stop', $event)" class="ui basic button item">
+        <a title="stop" @mousedown="handleToolboxMouseDown('node', $event)" class="ui basic button item">
           <div class="image-icon">
-            <img src="@/assets/images/icons/simulation_editor_icon/toolbox/toolbox_stop.png" alt="" class="ui centered image" />
+            <img draggable="false" src="@/assets/images/icons/simulation_editor_icon/toolbox/toolbox_stop.png" alt="" class="ui centered image" />
           </div>
           Stop
         </a>
-        <a @mousedown="createItem('activity', $event)" class="ui basic button item">
+        <a title="activity" @mousedown="handleToolboxMouseDown('node', $event)" class="ui basic button item">
           <div class="image-icon">
-            <img src="@/assets/images/icons/simulation_editor_icon/toolbox/toolbox_activity.png" alt="" class="ui centered image" />
+            <img draggable="false" src="@/assets/images/icons/simulation_editor_icon/toolbox/toolbox_activity.png" alt="" class="ui centered image" />
           </div>
           Activity
         </a>
-        <a @mousedown="createItem('branch', $event)" class="ui basic button item">
+        <a title="branch" @mousedown="handleToolboxMouseDown('node', $event)" class="ui basic button item">
           <div class="image-icon">
-            <img src="@/assets/images/icons/simulation_editor_icon/toolbox/toolbox_branch.png" alt="" class="ui centered image" />
+            <img draggable="false" src="@/assets/images/icons/simulation_editor_icon/toolbox/toolbox_branch.png" alt="" class="ui centered image" />
           </div>
           Branch
         </a>
-        <a class="ui basic button item">
+        <a title="connector" @mousedown="handleToolboxMouseDown('connector', $event)" class="ui basic button item">
           <div class="image-icon">
-            <img src="@/assets/images/icons/simulation_editor_icon/toolbox/toolbox_connector.png" alt="" class="ui centered image" />
+            <img draggable="false" src="@/assets/images/icons/simulation_editor_icon/toolbox/toolbox_connector.png" alt="" class="ui centered image" />
           </div>
           Connector
         </a>
@@ -38,8 +38,14 @@
   </div>
 </template>
 
-<style>
-
+<style scoped>
+.image.icon img {
+  user-select: none;
+  -moz-user-select: none;
+  -webkit-user-drag: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+}
 </style>
 
 <script lang="ts">

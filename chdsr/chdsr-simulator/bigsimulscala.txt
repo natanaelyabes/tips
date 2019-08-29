@@ -1,0 +1,1228 @@
+case class Binding00000001(entity:Option[colset00000001]) extends Bind
+val Eval00000001 = (b1:Binding00000001, b2:Binding00000001) => {
+	(b1.entity == b2.entity || b1.entity == None || b2.entity == None)
+}
+val Merge00000001 = (b1:Binding00000001, b2:Binding00000001) => {
+	val entity = if(b1.entity == None) b2.entity else b1.entity;
+	Binding00000001(entity)
+}
+
+type colset00000001 = (Int,String)
+
+val map000000011 = Map[(colset00000001,Long),Int](  )
+val ms000000011 = new Multiset[colset00000001](map000000011)
+val place000000011 = new Place("place000000011","Tr1_p1",ms000000011)
+place000000011.setOrigin(Map[String,String](("Tr1","p1")))
+cgraph.addPlace(place000000011)
+
+val map000000012 = Map[(colset00000001,Long),Int](  )
+val ms000000012 = new Multiset[colset00000001](map000000012)
+val place000000012 = new Place("place000000012","Tr1_p2",ms000000012)
+place000000012.setOrigin(Map[String,String](("Tr1","p2")))
+cgraph.addPlace(place000000012)
+
+val map000000013 = Map[(colset00000001,Long),Int](  )
+val ms000000013 = new Multiset[colset00000001](map000000013)
+val place000000013 = new Place("place000000013","Tr1_p3",ms000000013)
+place000000013.setOrigin(Map[String,String](("Tr1","p3")))
+cgraph.addPlace(place000000013)
+
+val trans00000001 = new Transition[Binding00000001]("trans00000001","Transition 1",null,null)
+trans00000001.setEval(Eval00000001)
+trans00000001.setMerge(Merge00000001)
+trans00000001.setOrigin(Map[String,String](("Tr1","Transition 1")))
+cgraph.addTransition(trans00000001)
+
+val arcexp000000011 = (inp:Any) => inp match { case entity:colset00000001 => { Some(entity) } }
+val tTb000000011 = (inp:Any) => Binding00000001(inp match { case entity:colset00000001 => Some(entity); case _ => None })
+val bTt000000011 = (b:Binding00000001) => {b.entity.get}
+val arc000000011 = new Arc[colset00000001,Binding00000001]("arc000000011",place000000011,trans00000001,Direction.PtT)
+arc000000011.setIsBase(true)
+arc000000011.setArcExp(arcexp000000011)
+arc000000011.setTokenToBind(tTb000000011)
+arc000000011.setBindToToken(bTt000000011)
+arc000000011.setBindToToken(bTt000000011)
+arc000000011.setOrigin(Map[String,String](("Tr1","arc000000011")))
+cgraph.addArc(arc000000011)
+
+val arcexp000000012 = (inp:Any) => inp match { case entity:colset00000001 => { Some(entity) } }
+val tTb000000012 = (inp:Any) => Binding00000001(inp match { case entity:colset00000001 => Some(entity); case _ => None })
+val bTt000000012 = (b:Binding00000001) => {b.entity.get}
+val arc000000012 = new Arc[colset00000001,Binding00000001]("arc000000012",place000000012,trans00000001,Direction.PtT)
+arc000000012.setIsBase(true)
+arc000000012.setArcExp(arcexp000000012)
+arc000000012.setTokenToBind(tTb000000012)
+arc000000012.setBindToToken(bTt000000012)
+arc000000012.setBindToToken(bTt000000012)
+arc000000012.setOrigin(Map[String,String](("Tr1","arc000000012")))
+cgraph.addArc(arc000000012)
+
+val arcexp000000013 = (inp:Any) => inp match { case entity:colset00000001 => { Some(entity) } }
+val tTb000000013 = (inp:Any) => Binding00000001(inp match { case entity:colset00000001 => Some(entity); case _ => None })
+val bTt000000013 = (b:Binding00000001) => {b.entity.get}
+val arc000000013 = new Arc[colset00000001,Binding00000001]("arc000000013",place000000013,trans00000001,Direction.TtP)
+arc000000013.setIsBase(true)
+arc000000013.setArcExp(arcexp000000013)
+arc000000013.setTokenToBind(tTb000000013)
+arc000000013.setBindToToken(bTt000000013)
+arc000000013.setBindToToken(bTt000000013)
+arc000000013.setOrigin(Map[String,String](("Tr1","arc000000013")))
+cgraph.addArc(arc000000013)
+
+val map000000021 = Map[(colset00000001,Long),Int]( )
+val ms000000021 = new Multiset[colset00000001](map000000021)
+val place000000021 = new Place("place000000021","Tr2_p1",ms000000021)
+place000000021.setOrigin(Map[String,String](("Tr2","p1")))
+cgraph.addPlace(place000000021)
+
+val map000000022 = Map[(colset00000001,Long),Int]( )
+val ms000000022 = new Multiset[colset00000001](map000000022)
+val place000000022 = new Place("place000000022","Tr2_p2",ms000000022)
+place000000022.setOrigin(Map[String,String](("Tr2","p2")))
+cgraph.addPlace(place000000022)
+
+val map000000023 = Map[(colset00000001,Long),Int]( )
+val ms000000023 = new Multiset[colset00000001](map000000023)
+val place000000023 = new Place("place000000023","Tr2_p3",ms000000023)
+place000000023.setOrigin(Map[String,String](("Tr2","p3")))
+cgraph.addPlace(place000000023)
+
+val trans00000002 = new Transition[Binding00000001]("trans00000002","Transition 2",null,null)
+trans00000002.setEval(Eval00000001)
+trans00000002.setMerge(Merge00000001)
+trans00000002.setOrigin(Map[String,String](("Tr2","Transition 2")))
+cgraph.addTransition(trans00000002)
+
+val arcexp000000021 = (inp:Any) => inp match { case entity:colset00000001 => { Some(entity) } }
+val tTb000000021 = (inp:Any) => Binding00000001(inp match { case entity:colset00000001 => Some(entity); case _ => None })
+val bTt000000021 = (b:Binding00000001) => {b.entity.get}
+val arc000000021 = new Arc[colset00000001,Binding00000001]("arc000000021",place000000021,trans00000002,Direction.PtT)
+arc000000021.setIsBase(true)
+arc000000021.setArcExp(arcexp000000021)
+arc000000021.setTokenToBind(tTb000000021)
+arc000000021.setBindToToken(bTt000000021)
+arc000000021.setBindToToken(bTt000000021)
+arc000000021.setOrigin(Map[String,String](("Tr2","arc000000021")))
+cgraph.addArc(arc000000021)
+
+val arcexp000000022 = (inp:Any) => inp match { case entity:colset00000001 => { Some(entity) } }
+val tTb000000022 = (inp:Any) => Binding00000001(inp match { case entity:colset00000001 => Some(entity); case _ => None })
+val bTt000000022 = (b:Binding00000001) => {b.entity.get}
+val arc000000022 = new Arc[colset00000001,Binding00000001]("arc000000022",place000000022,trans00000002,Direction.PtT)
+arc000000022.setIsBase(true)
+arc000000022.setArcExp(arcexp000000022)
+arc000000022.setTokenToBind(tTb000000022)
+arc000000022.setBindToToken(bTt000000022)
+arc000000022.setBindToToken(bTt000000022)
+arc000000022.setOrigin(Map[String,String](("Tr2","arc000000022")))
+cgraph.addArc(arc000000022)
+
+val arcexp000000023 = (inp:Any) => inp match { case entity:colset00000001 => { Some(entity) } }
+val tTb000000023 = (inp:Any) => Binding00000001(inp match { case entity:colset00000001 => Some(entity); case _ => None })
+val bTt000000023 = (b:Binding00000001) => {b.entity.get}
+val arc000000023 = new Arc[colset00000001,Binding00000001]("arc000000023",place000000023,trans00000002,Direction.TtP)
+arc000000023.setIsBase(true)
+arc000000023.setArcExp(arcexp000000023)
+arc000000023.setTokenToBind(tTb000000023)
+arc000000023.setBindToToken(bTt000000023)
+arc000000023.setBindToToken(bTt000000023)
+arc000000023.setOrigin(Map[String,String](("Tr2","arc000000023")))
+cgraph.addArc(arc000000023)
+
+
+val map000000031 = Map[(colset00000001,Long),Int]( )
+val ms000000031 = new Multiset[colset00000001](map000000031)
+val place000000031 = new Place("place000000031","Tr3_p1",ms000000031)
+place000000031.setOrigin(Map[String,String](("Tr3","p1")))
+cgraph.addPlace(place000000031)
+
+val map000000032 = Map[(colset00000001,Long),Int]( )
+val ms000000032 = new Multiset[colset00000001](map000000032)
+val place000000032 = new Place("place000000032","Tr3_p2",ms000000032)
+place000000032.setOrigin(Map[String,String](("Tr3","p2")))
+cgraph.addPlace(place000000032)
+
+val map000000033 = Map[(colset00000001,Long),Int]( )
+val ms000000033 = new Multiset[colset00000001](map000000033)
+val place000000033 = new Place("place000000033","Tr3_p3",ms000000033)
+place000000033.setOrigin(Map[String,String](("Tr3","p3")))
+cgraph.addPlace(place000000033)
+
+val trans00000003 = new Transition[Binding00000001]("trans00000003","Transition 3",null,null)
+trans00000003.setEval(Eval00000001)
+trans00000003.setMerge(Merge00000001)
+trans00000003.setOrigin(Map[String,String](("Tr3","Transition 3")))
+cgraph.addTransition(trans00000003)
+
+val arcexp000000031 = (inp:Any) => inp match { case entity:colset00000001 => { Some(entity) } }
+val tTb000000031 = (inp:Any) => Binding00000001(inp match { case entity:colset00000001 => Some(entity); case _ => None })
+val bTt000000031 = (b:Binding00000001) => {b.entity.get}
+val arc000000031 = new Arc[colset00000001,Binding00000001]("arc000000031",place000000031,trans00000003,Direction.PtT)
+arc000000031.setIsBase(true)
+arc000000031.setArcExp(arcexp000000031)
+arc000000031.setTokenToBind(tTb000000031)
+arc000000031.setBindToToken(bTt000000031)
+arc000000031.setBindToToken(bTt000000031)
+arc000000031.setOrigin(Map[String,String](("Tr3","arc000000031")))
+cgraph.addArc(arc000000031)
+
+val arcexp000000032 = (inp:Any) => inp match { case entity:colset00000001 => { Some(entity) } }
+val tTb000000032 = (inp:Any) => Binding00000001(inp match { case entity:colset00000001 => Some(entity); case _ => None })
+val bTt000000032 = (b:Binding00000001) => {b.entity.get}
+val arc000000032 = new Arc[colset00000001,Binding00000001]("arc000000032",place000000032,trans00000003,Direction.PtT)
+arc000000032.setIsBase(true)
+arc000000032.setArcExp(arcexp000000032)
+arc000000032.setTokenToBind(tTb000000032)
+arc000000032.setBindToToken(bTt000000032)
+arc000000032.setBindToToken(bTt000000032)
+arc000000032.setOrigin(Map[String,String](("Tr3","arc000000032")))
+cgraph.addArc(arc000000032)
+
+val arcexp000000033 = (inp:Any) => inp match { case entity:colset00000001 => { Some(entity) } }
+val tTb000000033 = (inp:Any) => Binding00000001(inp match { case entity:colset00000001 => Some(entity); case _ => None })
+val bTt000000033 = (b:Binding00000001) => {b.entity.get}
+val arc000000033 = new Arc[colset00000001,Binding00000001]("arc000000033",place000000033,trans00000003,Direction.TtP)
+arc000000033.setIsBase(true)
+arc000000033.setArcExp(arcexp000000033)
+arc000000033.setTokenToBind(tTb000000033)
+arc000000033.setBindToToken(bTt000000033)
+arc000000033.setBindToToken(bTt000000033)
+arc000000033.setOrigin(Map[String,String](("Tr3","arc000000033")))
+cgraph.addArc(arc000000033)
+
+
+val map000000041 = Map[(colset00000001,Long),Int]( )
+val ms000000041 = new Multiset[colset00000001](map000000041)
+val place000000041 = new Place("place000000041","Tr4_p1",ms000000041)
+place000000041.setOrigin(Map[String,String](("Tr4","p1")))
+cgraph.addPlace(place000000041)
+
+val map000000042 = Map[(colset00000001,Long),Int]( )
+val ms000000042 = new Multiset[colset00000001](map000000042)
+val place000000042 = new Place("place000000042","Tr4_p2",ms000000042)
+place000000042.setOrigin(Map[String,String](("Tr4","p2")))
+cgraph.addPlace(place000000042)
+
+val map000000043 = Map[(colset00000001,Long),Int]( )
+val ms000000043 = new Multiset[colset00000001](map000000043)
+val place000000043 = new Place("place000000043","Tr4_p3",ms000000043)
+place000000043.setOrigin(Map[String,String](("Tr4","p3")))
+cgraph.addPlace(place000000043)
+
+val trans00000004 = new Transition[Binding00000001]("trans00000004","Transition 4",null,null)
+trans00000004.setEval(Eval00000001)
+trans00000004.setMerge(Merge00000001)
+trans00000004.setOrigin(Map[String,String](("Tr4","Transition 4")))
+cgraph.addTransition(trans00000004)
+
+val arcexp000000041 = (inp:Any) => inp match { case entity:colset00000001 => { Some(entity) } }
+val tTb000000041 = (inp:Any) => Binding00000001(inp match { case entity:colset00000001 => Some(entity); case _ => None })
+val bTt000000041 = (b:Binding00000001) => {b.entity.get}
+val arc000000041 = new Arc[colset00000001,Binding00000001]("arc000000041",place000000041,trans00000004,Direction.PtT)
+arc000000041.setIsBase(true)
+arc000000041.setArcExp(arcexp000000041)
+arc000000041.setTokenToBind(tTb000000041)
+arc000000041.setBindToToken(bTt000000041)
+arc000000041.setBindToToken(bTt000000041)
+arc000000041.setOrigin(Map[String,String](("Tr4","arc000000041")))
+cgraph.addArc(arc000000041)
+
+val arcexp000000042 = (inp:Any) => inp match { case entity:colset00000001 => { Some(entity) } }
+val tTb000000042 = (inp:Any) => Binding00000001(inp match { case entity:colset00000001 => Some(entity); case _ => None })
+val bTt000000042 = (b:Binding00000001) => {b.entity.get}
+val arc000000042 = new Arc[colset00000001,Binding00000001]("arc000000042",place000000042,trans00000004,Direction.PtT)
+arc000000042.setIsBase(true)
+arc000000042.setArcExp(arcexp000000042)
+arc000000042.setTokenToBind(tTb000000042)
+arc000000042.setBindToToken(bTt000000042)
+arc000000042.setBindToToken(bTt000000042)
+arc000000042.setOrigin(Map[String,String](("Tr4","arc000000042")))
+cgraph.addArc(arc000000042)
+
+val arcexp000000043 = (inp:Any) => inp match { case entity:colset00000001 => { Some(entity) } }
+val tTb000000043 = (inp:Any) => Binding00000001(inp match { case entity:colset00000001 => Some(entity); case _ => None })
+val bTt000000043 = (b:Binding00000001) => {b.entity.get}
+val arc000000043 = new Arc[colset00000001,Binding00000001]("arc000000043",place000000043,trans00000004,Direction.TtP)
+arc000000043.setIsBase(true)
+arc000000043.setArcExp(arcexp000000043)
+arc000000043.setTokenToBind(tTb000000043)
+arc000000043.setBindToToken(bTt000000043)
+arc000000043.setBindToToken(bTt000000043)
+arc000000043.setOrigin(Map[String,String](("Tr4","arc000000043")))
+cgraph.addArc(arc000000043)
+
+
+val map000000051 = Map[(colset00000001,Long),Int]( )
+val ms000000051 = new Multiset[colset00000001](map000000051)
+val place000000051 = new Place("place000000051","Tr5_p1",ms000000051)
+place000000051.setOrigin(Map[String,String](("Tr5","p1")))
+cgraph.addPlace(place000000051)
+
+val map000000052 = Map[(colset00000001,Long),Int]( )
+val ms000000052 = new Multiset[colset00000001](map000000052)
+val place000000052 = new Place("place000000052","Tr5_p2",ms000000052)
+place000000052.setOrigin(Map[String,String](("Tr5","p2")))
+cgraph.addPlace(place000000052)
+
+val map000000053 = Map[(colset00000001,Long),Int]( )
+val ms000000053 = new Multiset[colset00000001](map000000053)
+val place000000053 = new Place("place000000053","Tr5_p3",ms000000053)
+place000000053.setOrigin(Map[String,String](("Tr5","p3")))
+cgraph.addPlace(place000000053)
+
+val trans00000005 = new Transition[Binding00000001]("trans00000005","Transition 5",null,null)
+trans00000005.setEval(Eval00000001)
+trans00000005.setMerge(Merge00000001)
+trans00000005.setOrigin(Map[String,String](("Tr5","Transition 5")))
+cgraph.addTransition(trans00000005)
+
+val arcexp000000051 = (inp:Any) => inp match { case entity:colset00000001 => { Some(entity) } }
+val tTb000000051 = (inp:Any) => Binding00000001(inp match { case entity:colset00000001 => Some(entity); case _ => None })
+val bTt000000051 = (b:Binding00000001) => {b.entity.get}
+val arc000000051 = new Arc[colset00000001,Binding00000001]("arc000000051",place000000051,trans00000005,Direction.PtT)
+arc000000051.setIsBase(true)
+arc000000051.setArcExp(arcexp000000051)
+arc000000051.setTokenToBind(tTb000000051)
+arc000000051.setBindToToken(bTt000000051)
+arc000000051.setBindToToken(bTt000000051)
+arc000000051.setOrigin(Map[String,String](("Tr5","arc000000051")))
+cgraph.addArc(arc000000051)
+
+val arcexp000000052 = (inp:Any) => inp match { case entity:colset00000001 => { Some(entity) } }
+val tTb000000052 = (inp:Any) => Binding00000001(inp match { case entity:colset00000001 => Some(entity); case _ => None })
+val bTt000000052 = (b:Binding00000001) => {b.entity.get}
+val arc000000052 = new Arc[colset00000001,Binding00000001]("arc000000052",place000000052,trans00000005,Direction.PtT)
+arc000000052.setIsBase(true)
+arc000000052.setArcExp(arcexp000000052)
+arc000000052.setTokenToBind(tTb000000052)
+arc000000052.setBindToToken(bTt000000052)
+arc000000052.setBindToToken(bTt000000052)
+arc000000052.setOrigin(Map[String,String](("Tr5","arc000000052")))
+cgraph.addArc(arc000000052)
+
+val arcexp000000053 = (inp:Any) => inp match { case entity:colset00000001 => { Some(entity) } }
+val tTb000000053 = (inp:Any) => Binding00000001(inp match { case entity:colset00000001 => Some(entity); case _ => None })
+val bTt000000053 = (b:Binding00000001) => {b.entity.get}
+val arc000000053 = new Arc[colset00000001,Binding00000001]("arc000000053",place000000053,trans00000005,Direction.TtP)
+arc000000053.setIsBase(true)
+arc000000053.setArcExp(arcexp000000053)
+arc000000053.setTokenToBind(tTb000000053)
+arc000000053.setBindToToken(bTt000000053)
+arc000000053.setBindToToken(bTt000000053)
+arc000000053.setOrigin(Map[String,String](("Tr5","arc000000053")))
+cgraph.addArc(arc000000053)
+
+
+val map000000061 = Map[(colset00000001,Long),Int]( )
+val ms000000061 = new Multiset[colset00000001](map000000061)
+val place000000061 = new Place("place000000061","Tr6_p1",ms000000061)
+place000000061.setOrigin(Map[String,String](("Tr6","p1")))
+cgraph.addPlace(place000000061)
+
+val map000000062 = Map[(colset00000001,Long),Int]( )
+val ms000000062 = new Multiset[colset00000001](map000000062)
+val place000000062 = new Place("place000000062","Tr6_p2",ms000000062)
+place000000062.setOrigin(Map[String,String](("Tr6","p2")))
+cgraph.addPlace(place000000062)
+
+val map000000063 = Map[(colset00000001,Long),Int]( )
+val ms000000063 = new Multiset[colset00000001](map000000063)
+val place000000063 = new Place("place000000063","Tr6_p3",ms000000063)
+place000000063.setOrigin(Map[String,String](("Tr6","p3")))
+cgraph.addPlace(place000000063)
+
+val trans00000006 = new Transition[Binding00000001]("trans00000006","Transition 6",null,null)
+trans00000006.setEval(Eval00000001)
+trans00000006.setMerge(Merge00000001)
+trans00000006.setOrigin(Map[String,String](("Tr6","Transition 6")))
+cgraph.addTransition(trans00000006)
+
+val arcexp000000061 = (inp:Any) => inp match { case entity:colset00000001 => { Some(entity) } }
+val tTb000000061 = (inp:Any) => Binding00000001(inp match { case entity:colset00000001 => Some(entity); case _ => None })
+val bTt000000061 = (b:Binding00000001) => {b.entity.get}
+val arc000000061 = new Arc[colset00000001,Binding00000001]("arc000000061",place000000061,trans00000006,Direction.PtT)
+arc000000061.setIsBase(true)
+arc000000061.setArcExp(arcexp000000061)
+arc000000061.setTokenToBind(tTb000000061)
+arc000000061.setBindToToken(bTt000000061)
+arc000000061.setBindToToken(bTt000000061)
+arc000000061.setOrigin(Map[String,String](("Tr6","arc000000061")))
+cgraph.addArc(arc000000061)
+
+val arcexp000000062 = (inp:Any) => inp match { case entity:colset00000001 => { Some(entity) } }
+val tTb000000062 = (inp:Any) => Binding00000001(inp match { case entity:colset00000001 => Some(entity); case _ => None })
+val bTt000000062 = (b:Binding00000001) => {b.entity.get}
+val arc000000062 = new Arc[colset00000001,Binding00000001]("arc000000062",place000000062,trans00000006,Direction.PtT)
+arc000000062.setIsBase(true)
+arc000000062.setArcExp(arcexp000000062)
+arc000000062.setTokenToBind(tTb000000062)
+arc000000062.setBindToToken(bTt000000062)
+arc000000062.setBindToToken(bTt000000062)
+arc000000062.setOrigin(Map[String,String](("Tr6","arc000000062")))
+cgraph.addArc(arc000000062)
+
+val arcexp000000063 = (inp:Any) => inp match { case entity:colset00000001 => { Some(entity) } }
+val tTb000000063 = (inp:Any) => Binding00000001(inp match { case entity:colset00000001 => Some(entity); case _ => None })
+val bTt000000063 = (b:Binding00000001) => {b.entity.get}
+val arc000000063 = new Arc[colset00000001,Binding00000001]("arc000000063",place000000063,trans00000006,Direction.TtP)
+arc000000063.setIsBase(true)
+arc000000063.setArcExp(arcexp000000063)
+arc000000063.setTokenToBind(tTb000000063)
+arc000000063.setBindToToken(bTt000000063)
+arc000000063.setBindToToken(bTt000000063)
+arc000000063.setOrigin(Map[String,String](("Tr6","arc000000063")))
+cgraph.addArc(arc000000063)
+
+
+val map000000071 = Map[(colset00000001,Long),Int]( )
+val ms000000071 = new Multiset[colset00000001](map000000071)
+val place000000071 = new Place("place000000071","Tr7_p1",ms000000071)
+place000000071.setOrigin(Map[String,String](("Tr7","p1")))
+cgraph.addPlace(place000000071)
+
+val map000000072 = Map[(colset00000001,Long),Int]( )
+val ms000000072 = new Multiset[colset00000001](map000000072)
+val place000000072 = new Place("place000000072","Tr7_p2",ms000000072)
+place000000072.setOrigin(Map[String,String](("Tr7","p2")))
+cgraph.addPlace(place000000072)
+
+val map000000073 = Map[(colset00000001,Long),Int]( )
+val ms000000073 = new Multiset[colset00000001](map000000073)
+val place000000073 = new Place("place000000073","Tr7_p3",ms000000073)
+place000000073.setOrigin(Map[String,String](("Tr7","p3")))
+cgraph.addPlace(place000000073)
+
+val trans00000007 = new Transition[Binding00000001]("trans00000007","Transition 7",null,null)
+trans00000007.setEval(Eval00000001)
+trans00000007.setMerge(Merge00000001)
+trans00000007.setOrigin(Map[String,String](("Tr7","Transition 7")))
+cgraph.addTransition(trans00000007)
+
+val arcexp000000071 = (inp:Any) => inp match { case entity:colset00000001 => { Some(entity) } }
+val tTb000000071 = (inp:Any) => Binding00000001(inp match { case entity:colset00000001 => Some(entity); case _ => None })
+val bTt000000071 = (b:Binding00000001) => {b.entity.get}
+val arc000000071 = new Arc[colset00000001,Binding00000001]("arc000000071",place000000071,trans00000007,Direction.PtT)
+arc000000071.setIsBase(true)
+arc000000071.setArcExp(arcexp000000071)
+arc000000071.setTokenToBind(tTb000000071)
+arc000000071.setBindToToken(bTt000000071)
+arc000000071.setBindToToken(bTt000000071)
+arc000000071.setOrigin(Map[String,String](("Tr7","arc000000071")))
+cgraph.addArc(arc000000071)
+
+val arcexp000000072 = (inp:Any) => inp match { case entity:colset00000001 => { Some(entity) } }
+val tTb000000072 = (inp:Any) => Binding00000001(inp match { case entity:colset00000001 => Some(entity); case _ => None })
+val bTt000000072 = (b:Binding00000001) => {b.entity.get}
+val arc000000072 = new Arc[colset00000001,Binding00000001]("arc000000072",place000000072,trans00000007,Direction.PtT)
+arc000000072.setIsBase(true)
+arc000000072.setArcExp(arcexp000000072)
+arc000000072.setTokenToBind(tTb000000072)
+arc000000072.setBindToToken(bTt000000072)
+arc000000072.setBindToToken(bTt000000072)
+arc000000072.setOrigin(Map[String,String](("Tr7","arc000000072")))
+cgraph.addArc(arc000000072)
+
+val arcexp000000073 = (inp:Any) => inp match { case entity:colset00000001 => { Some(entity) } }
+val tTb000000073 = (inp:Any) => Binding00000001(inp match { case entity:colset00000001 => Some(entity); case _ => None })
+val bTt000000073 = (b:Binding00000001) => {b.entity.get}
+val arc000000073 = new Arc[colset00000001,Binding00000001]("arc000000073",place000000073,trans00000007,Direction.TtP)
+arc000000073.setIsBase(true)
+arc000000073.setArcExp(arcexp000000073)
+arc000000073.setTokenToBind(tTb000000073)
+arc000000073.setBindToToken(bTt000000073)
+arc000000073.setBindToToken(bTt000000073)
+arc000000073.setOrigin(Map[String,String](("Tr7","arc000000073")))
+cgraph.addArc(arc000000073)
+
+
+val map000000081 = Map[(colset00000001,Long),Int]( )
+val ms000000081 = new Multiset[colset00000001](map000000081)
+val place000000081 = new Place("place000000081","Tr8_p1",ms000000081)
+place000000081.setOrigin(Map[String,String](("Tr8","p1")))
+cgraph.addPlace(place000000081)
+
+val map000000082 = Map[(colset00000001,Long),Int]( )
+val ms000000082 = new Multiset[colset00000001](map000000082)
+val place000000082 = new Place("place000000082","Tr8_p2",ms000000082)
+place000000082.setOrigin(Map[String,String](("Tr8","p2")))
+cgraph.addPlace(place000000082)
+
+val map000000083 = Map[(colset00000001,Long),Int]( )
+val ms000000083 = new Multiset[colset00000001](map000000083)
+val place000000083 = new Place("place000000083","Tr8_p3",ms000000083)
+place000000083.setOrigin(Map[String,String](("Tr8","p3")))
+cgraph.addPlace(place000000083)
+
+val trans00000008 = new Transition[Binding00000001]("trans00000008","Transition 8",null,null)
+trans00000008.setEval(Eval00000001)
+trans00000008.setMerge(Merge00000001)
+trans00000008.setOrigin(Map[String,String](("Tr8","Transition 8")))
+cgraph.addTransition(trans00000008)
+
+val arcexp000000081 = (inp:Any) => inp match { case entity:colset00000001 => { Some(entity) } }
+val tTb000000081 = (inp:Any) => Binding00000001(inp match { case entity:colset00000001 => Some(entity); case _ => None })
+val bTt000000081 = (b:Binding00000001) => {b.entity.get}
+val arc000000081 = new Arc[colset00000001,Binding00000001]("arc000000081",place000000081,trans00000008,Direction.PtT)
+arc000000081.setIsBase(true)
+arc000000081.setArcExp(arcexp000000081)
+arc000000081.setTokenToBind(tTb000000081)
+arc000000081.setBindToToken(bTt000000081)
+arc000000081.setBindToToken(bTt000000081)
+arc000000081.setOrigin(Map[String,String](("Tr8","arc000000081")))
+cgraph.addArc(arc000000081)
+
+val arcexp000000082 = (inp:Any) => inp match { case entity:colset00000001 => { Some(entity) } }
+val tTb000000082 = (inp:Any) => Binding00000001(inp match { case entity:colset00000001 => Some(entity); case _ => None })
+val bTt000000082 = (b:Binding00000001) => {b.entity.get}
+val arc000000082 = new Arc[colset00000001,Binding00000001]("arc000000082",place000000082,trans00000008,Direction.PtT)
+arc000000082.setIsBase(true)
+arc000000082.setArcExp(arcexp000000082)
+arc000000082.setTokenToBind(tTb000000082)
+arc000000082.setBindToToken(bTt000000082)
+arc000000082.setBindToToken(bTt000000082)
+arc000000082.setOrigin(Map[String,String](("Tr8","arc000000082")))
+cgraph.addArc(arc000000082)
+
+val arcexp000000083 = (inp:Any) => inp match { case entity:colset00000001 => { Some(entity) } }
+val tTb000000083 = (inp:Any) => Binding00000001(inp match { case entity:colset00000001 => Some(entity); case _ => None })
+val bTt000000083 = (b:Binding00000001) => {b.entity.get}
+val arc000000083 = new Arc[colset00000001,Binding00000001]("arc000000083",place000000083,trans00000008,Direction.TtP)
+arc000000083.setIsBase(true)
+arc000000083.setArcExp(arcexp000000083)
+arc000000083.setTokenToBind(tTb000000083)
+arc000000083.setBindToToken(bTt000000083)
+arc000000083.setBindToToken(bTt000000083)
+arc000000083.setOrigin(Map[String,String](("Tr8","arc000000083")))
+cgraph.addArc(arc000000083)
+
+
+val map000000091 = Map[(colset00000001,Long),Int]( )
+val ms000000091 = new Multiset[colset00000001](map000000091)
+val place000000091 = new Place("place000000091","Tr9_p1",ms000000091)
+place000000091.setOrigin(Map[String,String](("Tr9","p1")))
+cgraph.addPlace(place000000091)
+
+val map000000092 = Map[(colset00000001,Long),Int]( )
+val ms000000092 = new Multiset[colset00000001](map000000092)
+val place000000092 = new Place("place000000092","Tr9_p2",ms000000092)
+place000000092.setOrigin(Map[String,String](("Tr9","p2")))
+cgraph.addPlace(place000000092)
+
+val map000000093 = Map[(colset00000001,Long),Int]( )
+val ms000000093 = new Multiset[colset00000001](map000000093)
+val place000000093 = new Place("place000000093","Tr9_p3",ms000000093)
+place000000093.setOrigin(Map[String,String](("Tr9","p3")))
+cgraph.addPlace(place000000093)
+
+val trans00000009 = new Transition[Binding00000001]("trans00000009","Transition 9",null,null)
+trans00000009.setEval(Eval00000001)
+trans00000009.setMerge(Merge00000001)
+trans00000009.setOrigin(Map[String,String](("Tr9","Transition 9")))
+cgraph.addTransition(trans00000009)
+
+val arcexp000000091 = (inp:Any) => inp match { case entity:colset00000001 => { Some(entity) } }
+val tTb000000091 = (inp:Any) => Binding00000001(inp match { case entity:colset00000001 => Some(entity); case _ => None })
+val bTt000000091 = (b:Binding00000001) => {b.entity.get}
+val arc000000091 = new Arc[colset00000001,Binding00000001]("arc000000091",place000000091,trans00000009,Direction.PtT)
+arc000000091.setIsBase(true)
+arc000000091.setArcExp(arcexp000000091)
+arc000000091.setTokenToBind(tTb000000091)
+arc000000091.setBindToToken(bTt000000091)
+arc000000091.setBindToToken(bTt000000091)
+arc000000091.setOrigin(Map[String,String](("Tr9","arc000000091")))
+cgraph.addArc(arc000000091)
+
+val arcexp000000092 = (inp:Any) => inp match { case entity:colset00000001 => { Some(entity) } }
+val tTb000000092 = (inp:Any) => Binding00000001(inp match { case entity:colset00000001 => Some(entity); case _ => None })
+val bTt000000092 = (b:Binding00000001) => {b.entity.get}
+val arc000000092 = new Arc[colset00000001,Binding00000001]("arc000000092",place000000092,trans00000009,Direction.PtT)
+arc000000092.setIsBase(true)
+arc000000092.setArcExp(arcexp000000092)
+arc000000092.setTokenToBind(tTb000000092)
+arc000000092.setBindToToken(bTt000000092)
+arc000000092.setBindToToken(bTt000000092)
+arc000000092.setOrigin(Map[String,String](("Tr9","arc000000092")))
+cgraph.addArc(arc000000092)
+
+val arcexp000000093 = (inp:Any) => inp match { case entity:colset00000001 => { Some(entity) } }
+val tTb000000093 = (inp:Any) => Binding00000001(inp match { case entity:colset00000001 => Some(entity); case _ => None })
+val bTt000000093 = (b:Binding00000001) => {b.entity.get}
+val arc000000093 = new Arc[colset00000001,Binding00000001]("arc000000093",place000000093,trans00000009,Direction.TtP)
+arc000000093.setIsBase(true)
+arc000000093.setArcExp(arcexp000000093)
+arc000000093.setTokenToBind(tTb000000093)
+arc000000093.setBindToToken(bTt000000093)
+arc000000093.setBindToToken(bTt000000093)
+arc000000093.setOrigin(Map[String,String](("Tr9","arc000000093")))
+cgraph.addArc(arc000000093)
+
+
+val map0000000101 = Map[(colset00000001,Long),Int]( )
+val ms0000000101 = new Multiset[colset00000001](map0000000101)
+val place0000000101 = new Place("place0000000101","Tr10_p1",ms0000000101)
+place0000000101.setOrigin(Map[String,String](("Tr10","p1")))
+cgraph.addPlace(place0000000101)
+
+val map0000000102 = Map[(colset00000001,Long),Int]( )
+val ms0000000102 = new Multiset[colset00000001](map0000000102)
+val place0000000102 = new Place("place0000000102","Tr10_p2",ms0000000102)
+place0000000102.setOrigin(Map[String,String](("Tr10","p2")))
+cgraph.addPlace(place0000000102)
+
+val map0000000103 = Map[(colset00000001,Long),Int]( )
+val ms0000000103 = new Multiset[colset00000001](map0000000103)
+val place0000000103 = new Place("place0000000103","Tr10_p3",ms0000000103)
+place0000000103.setOrigin(Map[String,String](("Tr10","p3")))
+cgraph.addPlace(place0000000103)
+
+val trans000000010 = new Transition[Binding00000001]("trans000000010","Transition 10",null,null)
+trans000000010.setEval(Eval00000001)
+trans000000010.setMerge(Merge00000001)
+trans000000010.setOrigin(Map[String,String](("Tr10","Transition 10")))
+cgraph.addTransition(trans000000010)
+
+val arcexp0000000101 = (inp:Any) => inp match { case entity:colset00000001 => { Some(entity) } }
+val tTb0000000101 = (inp:Any) => Binding00000001(inp match { case entity:colset00000001 => Some(entity); case _ => None })
+val bTt0000000101 = (b:Binding00000001) => {b.entity.get}
+val arc0000000101 = new Arc[colset00000001,Binding00000001]("arc0000000101",place0000000101,trans000000010,Direction.PtT)
+arc0000000101.setIsBase(true)
+arc0000000101.setArcExp(arcexp0000000101)
+arc0000000101.setTokenToBind(tTb0000000101)
+arc0000000101.setBindToToken(bTt0000000101)
+arc0000000101.setBindToToken(bTt0000000101)
+arc0000000101.setOrigin(Map[String,String](("Tr10","arc0000000101")))
+cgraph.addArc(arc0000000101)
+
+val arcexp0000000102 = (inp:Any) => inp match { case entity:colset00000001 => { Some(entity) } }
+val tTb0000000102 = (inp:Any) => Binding00000001(inp match { case entity:colset00000001 => Some(entity); case _ => None })
+val bTt0000000102 = (b:Binding00000001) => {b.entity.get}
+val arc0000000102 = new Arc[colset00000001,Binding00000001]("arc0000000102",place0000000102,trans000000010,Direction.PtT)
+arc0000000102.setIsBase(true)
+arc0000000102.setArcExp(arcexp0000000102)
+arc0000000102.setTokenToBind(tTb0000000102)
+arc0000000102.setBindToToken(bTt0000000102)
+arc0000000102.setBindToToken(bTt0000000102)
+arc0000000102.setOrigin(Map[String,String](("Tr10","arc0000000102")))
+cgraph.addArc(arc0000000102)
+
+val arcexp0000000103 = (inp:Any) => inp match { case entity:colset00000001 => { Some(entity) } }
+val tTb0000000103 = (inp:Any) => Binding00000001(inp match { case entity:colset00000001 => Some(entity); case _ => None })
+val bTt0000000103 = (b:Binding00000001) => {b.entity.get}
+val arc0000000103 = new Arc[colset00000001,Binding00000001]("arc0000000103",place0000000103,trans000000010,Direction.TtP)
+arc0000000103.setIsBase(true)
+arc0000000103.setArcExp(arcexp0000000103)
+arc0000000103.setTokenToBind(tTb0000000103)
+arc0000000103.setBindToToken(bTt0000000103)
+arc0000000103.setBindToToken(bTt0000000103)
+arc0000000103.setOrigin(Map[String,String](("Tr10","arc0000000103")))
+cgraph.addArc(arc0000000103)
+
+
+val map0000000111 = Map[(colset00000001,Long),Int]( )
+val ms0000000111 = new Multiset[colset00000001](map0000000111)
+val place0000000111 = new Place("place0000000111","Tr11_p1",ms0000000111)
+place0000000111.setOrigin(Map[String,String](("Tr11","p1")))
+cgraph.addPlace(place0000000111)
+
+val map0000000112 = Map[(colset00000001,Long),Int]( )
+val ms0000000112 = new Multiset[colset00000001](map0000000112)
+val place0000000112 = new Place("place0000000112","Tr11_p2",ms0000000112)
+place0000000112.setOrigin(Map[String,String](("Tr11","p2")))
+cgraph.addPlace(place0000000112)
+
+val map0000000113 = Map[(colset00000001,Long),Int]( )
+val ms0000000113 = new Multiset[colset00000001](map0000000113)
+val place0000000113 = new Place("place0000000113","Tr11_p3",ms0000000113)
+place0000000113.setOrigin(Map[String,String](("Tr11","p3")))
+cgraph.addPlace(place0000000113)
+
+val trans000000011 = new Transition[Binding00000001]("trans000000011","Transition 11",null,null)
+trans000000011.setEval(Eval00000001)
+trans000000011.setMerge(Merge00000001)
+trans000000011.setOrigin(Map[String,String](("Tr11","Transition 11")))
+cgraph.addTransition(trans000000011)
+
+val arcexp0000000111 = (inp:Any) => inp match { case entity:colset00000001 => { Some(entity) } }
+val tTb0000000111 = (inp:Any) => Binding00000001(inp match { case entity:colset00000001 => Some(entity); case _ => None })
+val bTt0000000111 = (b:Binding00000001) => {b.entity.get}
+val arc0000000111 = new Arc[colset00000001,Binding00000001]("arc0000000111",place0000000111,trans000000011,Direction.PtT)
+arc0000000111.setIsBase(true)
+arc0000000111.setArcExp(arcexp0000000111)
+arc0000000111.setTokenToBind(tTb0000000111)
+arc0000000111.setBindToToken(bTt0000000111)
+arc0000000111.setBindToToken(bTt0000000111)
+arc0000000111.setOrigin(Map[String,String](("Tr11","arc0000000111")))
+cgraph.addArc(arc0000000111)
+
+val arcexp0000000112 = (inp:Any) => inp match { case entity:colset00000001 => { Some(entity) } }
+val tTb0000000112 = (inp:Any) => Binding00000001(inp match { case entity:colset00000001 => Some(entity); case _ => None })
+val bTt0000000112 = (b:Binding00000001) => {b.entity.get}
+val arc0000000112 = new Arc[colset00000001,Binding00000001]("arc0000000112",place0000000112,trans000000011,Direction.PtT)
+arc0000000112.setIsBase(true)
+arc0000000112.setArcExp(arcexp0000000112)
+arc0000000112.setTokenToBind(tTb0000000112)
+arc0000000112.setBindToToken(bTt0000000112)
+arc0000000112.setBindToToken(bTt0000000112)
+arc0000000112.setOrigin(Map[String,String](("Tr11","arc0000000112")))
+cgraph.addArc(arc0000000112)
+
+val arcexp0000000113 = (inp:Any) => inp match { case entity:colset00000001 => { Some(entity) } }
+val tTb0000000113 = (inp:Any) => Binding00000001(inp match { case entity:colset00000001 => Some(entity); case _ => None })
+val bTt0000000113 = (b:Binding00000001) => {b.entity.get}
+val arc0000000113 = new Arc[colset00000001,Binding00000001]("arc0000000113",place0000000113,trans000000011,Direction.TtP)
+arc0000000113.setIsBase(true)
+arc0000000113.setArcExp(arcexp0000000113)
+arc0000000113.setTokenToBind(tTb0000000113)
+arc0000000113.setBindToToken(bTt0000000113)
+arc0000000113.setBindToToken(bTt0000000113)
+arc0000000113.setOrigin(Map[String,String](("Tr11","arc0000000113")))
+cgraph.addArc(arc0000000113)
+
+
+val map0000000121 = Map[(colset00000001,Long),Int]( )
+val ms0000000121 = new Multiset[colset00000001](map0000000121)
+val place0000000121 = new Place("place0000000121","Tr12_p1",ms0000000121)
+place0000000121.setOrigin(Map[String,String](("Tr12","p1")))
+cgraph.addPlace(place0000000121)
+
+val map0000000122 = Map[(colset00000001,Long),Int]( )
+val ms0000000122 = new Multiset[colset00000001](map0000000122)
+val place0000000122 = new Place("place0000000122","Tr12_p2",ms0000000122)
+place0000000122.setOrigin(Map[String,String](("Tr12","p2")))
+cgraph.addPlace(place0000000122)
+
+val map0000000123 = Map[(colset00000001,Long),Int]( )
+val ms0000000123 = new Multiset[colset00000001](map0000000123)
+val place0000000123 = new Place("place0000000123","Tr12_p3",ms0000000123)
+place0000000123.setOrigin(Map[String,String](("Tr12","p3")))
+cgraph.addPlace(place0000000123)
+
+val trans000000012 = new Transition[Binding00000001]("trans000000012","Transition 12",null,null)
+trans000000012.setEval(Eval00000001)
+trans000000012.setMerge(Merge00000001)
+trans000000012.setOrigin(Map[String,String](("Tr12","Transition 12")))
+cgraph.addTransition(trans000000012)
+
+val arcexp0000000121 = (inp:Any) => inp match { case entity:colset00000001 => { Some(entity) } }
+val tTb0000000121 = (inp:Any) => Binding00000001(inp match { case entity:colset00000001 => Some(entity); case _ => None })
+val bTt0000000121 = (b:Binding00000001) => {b.entity.get}
+val arc0000000121 = new Arc[colset00000001,Binding00000001]("arc0000000121",place0000000121,trans000000012,Direction.PtT)
+arc0000000121.setIsBase(true)
+arc0000000121.setArcExp(arcexp0000000121)
+arc0000000121.setTokenToBind(tTb0000000121)
+arc0000000121.setBindToToken(bTt0000000121)
+arc0000000121.setBindToToken(bTt0000000121)
+arc0000000121.setOrigin(Map[String,String](("Tr12","arc0000000121")))
+cgraph.addArc(arc0000000121)
+
+val arcexp0000000122 = (inp:Any) => inp match { case entity:colset00000001 => { Some(entity) } }
+val tTb0000000122 = (inp:Any) => Binding00000001(inp match { case entity:colset00000001 => Some(entity); case _ => None })
+val bTt0000000122 = (b:Binding00000001) => {b.entity.get}
+val arc0000000122 = new Arc[colset00000001,Binding00000001]("arc0000000122",place0000000122,trans000000012,Direction.PtT)
+arc0000000122.setIsBase(true)
+arc0000000122.setArcExp(arcexp0000000122)
+arc0000000122.setTokenToBind(tTb0000000122)
+arc0000000122.setBindToToken(bTt0000000122)
+arc0000000122.setBindToToken(bTt0000000122)
+arc0000000122.setOrigin(Map[String,String](("Tr12","arc0000000122")))
+cgraph.addArc(arc0000000122)
+
+val arcexp0000000123 = (inp:Any) => inp match { case entity:colset00000001 => { Some(entity) } }
+val tTb0000000123 = (inp:Any) => Binding00000001(inp match { case entity:colset00000001 => Some(entity); case _ => None })
+val bTt0000000123 = (b:Binding00000001) => {b.entity.get}
+val arc0000000123 = new Arc[colset00000001,Binding00000001]("arc0000000123",place0000000123,trans000000012,Direction.TtP)
+arc0000000123.setIsBase(true)
+arc0000000123.setArcExp(arcexp0000000123)
+arc0000000123.setTokenToBind(tTb0000000123)
+arc0000000123.setBindToToken(bTt0000000123)
+arc0000000123.setBindToToken(bTt0000000123)
+arc0000000123.setOrigin(Map[String,String](("Tr12","arc0000000123")))
+cgraph.addArc(arc0000000123)
+
+
+val map0000000131 = Map[(colset00000001,Long),Int]( )
+val ms0000000131 = new Multiset[colset00000001](map0000000131)
+val place0000000131 = new Place("place0000000131","Tr13_p1",ms0000000131)
+place0000000131.setOrigin(Map[String,String](("Tr13","p1")))
+cgraph.addPlace(place0000000131)
+
+val map0000000132 = Map[(colset00000001,Long),Int]( )
+val ms0000000132 = new Multiset[colset00000001](map0000000132)
+val place0000000132 = new Place("place0000000132","Tr13_p2",ms0000000132)
+place0000000132.setOrigin(Map[String,String](("Tr13","p2")))
+cgraph.addPlace(place0000000132)
+
+val map0000000133 = Map[(colset00000001,Long),Int]( )
+val ms0000000133 = new Multiset[colset00000001](map0000000133)
+val place0000000133 = new Place("place0000000133","Tr13_p3",ms0000000133)
+place0000000133.setOrigin(Map[String,String](("Tr13","p3")))
+cgraph.addPlace(place0000000133)
+
+val trans000000013 = new Transition[Binding00000001]("trans000000013","Transition 13",null,null)
+trans000000013.setEval(Eval00000001)
+trans000000013.setMerge(Merge00000001)
+trans000000013.setOrigin(Map[String,String](("Tr13","Transition 13")))
+cgraph.addTransition(trans000000013)
+
+val arcexp0000000131 = (inp:Any) => inp match { case entity:colset00000001 => { Some(entity) } }
+val tTb0000000131 = (inp:Any) => Binding00000001(inp match { case entity:colset00000001 => Some(entity); case _ => None })
+val bTt0000000131 = (b:Binding00000001) => {b.entity.get}
+val arc0000000131 = new Arc[colset00000001,Binding00000001]("arc0000000131",place0000000131,trans000000013,Direction.PtT)
+arc0000000131.setIsBase(true)
+arc0000000131.setArcExp(arcexp0000000131)
+arc0000000131.setTokenToBind(tTb0000000131)
+arc0000000131.setBindToToken(bTt0000000131)
+arc0000000131.setBindToToken(bTt0000000131)
+arc0000000131.setOrigin(Map[String,String](("Tr13","arc0000000131")))
+cgraph.addArc(arc0000000131)
+
+val arcexp0000000132 = (inp:Any) => inp match { case entity:colset00000001 => { Some(entity) } }
+val tTb0000000132 = (inp:Any) => Binding00000001(inp match { case entity:colset00000001 => Some(entity); case _ => None })
+val bTt0000000132 = (b:Binding00000001) => {b.entity.get}
+val arc0000000132 = new Arc[colset00000001,Binding00000001]("arc0000000132",place0000000132,trans000000013,Direction.PtT)
+arc0000000132.setIsBase(true)
+arc0000000132.setArcExp(arcexp0000000132)
+arc0000000132.setTokenToBind(tTb0000000132)
+arc0000000132.setBindToToken(bTt0000000132)
+arc0000000132.setBindToToken(bTt0000000132)
+arc0000000132.setOrigin(Map[String,String](("Tr13","arc0000000132")))
+cgraph.addArc(arc0000000132)
+
+val arcexp0000000133 = (inp:Any) => inp match { case entity:colset00000001 => { Some(entity) } }
+val tTb0000000133 = (inp:Any) => Binding00000001(inp match { case entity:colset00000001 => Some(entity); case _ => None })
+val bTt0000000133 = (b:Binding00000001) => {b.entity.get}
+val arc0000000133 = new Arc[colset00000001,Binding00000001]("arc0000000133",place0000000133,trans000000013,Direction.TtP)
+arc0000000133.setIsBase(true)
+arc0000000133.setArcExp(arcexp0000000133)
+arc0000000133.setTokenToBind(tTb0000000133)
+arc0000000133.setBindToToken(bTt0000000133)
+arc0000000133.setBindToToken(bTt0000000133)
+arc0000000133.setOrigin(Map[String,String](("Tr13","arc0000000133")))
+cgraph.addArc(arc0000000133)
+
+
+val map0000000141 = Map[(colset00000001,Long),Int]( )
+val ms0000000141 = new Multiset[colset00000001](map0000000141)
+val place0000000141 = new Place("place0000000141","Tr14_p1",ms0000000141)
+place0000000141.setOrigin(Map[String,String](("Tr14","p1")))
+cgraph.addPlace(place0000000141)
+
+val map0000000142 = Map[(colset00000001,Long),Int]( )
+val ms0000000142 = new Multiset[colset00000001](map0000000142)
+val place0000000142 = new Place("place0000000142","Tr14_p2",ms0000000142)
+place0000000142.setOrigin(Map[String,String](("Tr14","p2")))
+cgraph.addPlace(place0000000142)
+
+val map0000000143 = Map[(colset00000001,Long),Int]( )
+val ms0000000143 = new Multiset[colset00000001](map0000000143)
+val place0000000143 = new Place("place0000000143","Tr14_p3",ms0000000143)
+place0000000143.setOrigin(Map[String,String](("Tr14","p3")))
+cgraph.addPlace(place0000000143)
+
+val trans000000014 = new Transition[Binding00000001]("trans000000014","Transition 14",null,null)
+trans000000014.setEval(Eval00000001)
+trans000000014.setMerge(Merge00000001)
+trans000000014.setOrigin(Map[String,String](("Tr14","Transition 14")))
+cgraph.addTransition(trans000000014)
+
+val arcexp0000000141 = (inp:Any) => inp match { case entity:colset00000001 => { Some(entity) } }
+val tTb0000000141 = (inp:Any) => Binding00000001(inp match { case entity:colset00000001 => Some(entity); case _ => None })
+val bTt0000000141 = (b:Binding00000001) => {b.entity.get}
+val arc0000000141 = new Arc[colset00000001,Binding00000001]("arc0000000141",place0000000141,trans000000014,Direction.PtT)
+arc0000000141.setIsBase(true)
+arc0000000141.setArcExp(arcexp0000000141)
+arc0000000141.setTokenToBind(tTb0000000141)
+arc0000000141.setBindToToken(bTt0000000141)
+arc0000000141.setBindToToken(bTt0000000141)
+arc0000000141.setOrigin(Map[String,String](("Tr14","arc0000000141")))
+cgraph.addArc(arc0000000141)
+
+val arcexp0000000142 = (inp:Any) => inp match { case entity:colset00000001 => { Some(entity) } }
+val tTb0000000142 = (inp:Any) => Binding00000001(inp match { case entity:colset00000001 => Some(entity); case _ => None })
+val bTt0000000142 = (b:Binding00000001) => {b.entity.get}
+val arc0000000142 = new Arc[colset00000001,Binding00000001]("arc0000000142",place0000000142,trans000000014,Direction.PtT)
+arc0000000142.setIsBase(true)
+arc0000000142.setArcExp(arcexp0000000142)
+arc0000000142.setTokenToBind(tTb0000000142)
+arc0000000142.setBindToToken(bTt0000000142)
+arc0000000142.setBindToToken(bTt0000000142)
+arc0000000142.setOrigin(Map[String,String](("Tr14","arc0000000142")))
+cgraph.addArc(arc0000000142)
+
+val arcexp0000000143 = (inp:Any) => inp match { case entity:colset00000001 => { Some(entity) } }
+val tTb0000000143 = (inp:Any) => Binding00000001(inp match { case entity:colset00000001 => Some(entity); case _ => None })
+val bTt0000000143 = (b:Binding00000001) => {b.entity.get}
+val arc0000000143 = new Arc[colset00000001,Binding00000001]("arc0000000143",place0000000143,trans000000014,Direction.TtP)
+arc0000000143.setIsBase(true)
+arc0000000143.setArcExp(arcexp0000000143)
+arc0000000143.setTokenToBind(tTb0000000143)
+arc0000000143.setBindToToken(bTt0000000143)
+arc0000000143.setBindToToken(bTt0000000143)
+arc0000000143.setOrigin(Map[String,String](("Tr14","arc0000000143")))
+cgraph.addArc(arc0000000143)
+
+
+val map0000000151 = Map[(colset00000001,Long),Int]( )
+val ms0000000151 = new Multiset[colset00000001](map0000000151)
+val place0000000151 = new Place("place0000000151","Tr15_p1",ms0000000151)
+place0000000151.setOrigin(Map[String,String](("Tr15","p1")))
+cgraph.addPlace(place0000000151)
+
+val map0000000152 = Map[(colset00000001,Long),Int]( )
+val ms0000000152 = new Multiset[colset00000001](map0000000152)
+val place0000000152 = new Place("place0000000152","Tr15_p2",ms0000000152)
+place0000000152.setOrigin(Map[String,String](("Tr15","p2")))
+cgraph.addPlace(place0000000152)
+
+val map0000000153 = Map[(colset00000001,Long),Int]( )
+val ms0000000153 = new Multiset[colset00000001](map0000000153)
+val place0000000153 = new Place("place0000000153","Tr15_p3",ms0000000153)
+place0000000153.setOrigin(Map[String,String](("Tr15","p3")))
+cgraph.addPlace(place0000000153)
+
+val trans000000015 = new Transition[Binding00000001]("trans000000015","Transition 15",null,null)
+trans000000015.setEval(Eval00000001)
+trans000000015.setMerge(Merge00000001)
+trans000000015.setOrigin(Map[String,String](("Tr15","Transition 15")))
+cgraph.addTransition(trans000000015)
+
+val arcexp0000000151 = (inp:Any) => inp match { case entity:colset00000001 => { Some(entity) } }
+val tTb0000000151 = (inp:Any) => Binding00000001(inp match { case entity:colset00000001 => Some(entity); case _ => None })
+val bTt0000000151 = (b:Binding00000001) => {b.entity.get}
+val arc0000000151 = new Arc[colset00000001,Binding00000001]("arc0000000151",place0000000151,trans000000015,Direction.PtT)
+arc0000000151.setIsBase(true)
+arc0000000151.setArcExp(arcexp0000000151)
+arc0000000151.setTokenToBind(tTb0000000151)
+arc0000000151.setBindToToken(bTt0000000151)
+arc0000000151.setBindToToken(bTt0000000151)
+arc0000000151.setOrigin(Map[String,String](("Tr15","arc0000000151")))
+cgraph.addArc(arc0000000151)
+
+val arcexp0000000152 = (inp:Any) => inp match { case entity:colset00000001 => { Some(entity) } }
+val tTb0000000152 = (inp:Any) => Binding00000001(inp match { case entity:colset00000001 => Some(entity); case _ => None })
+val bTt0000000152 = (b:Binding00000001) => {b.entity.get}
+val arc0000000152 = new Arc[colset00000001,Binding00000001]("arc0000000152",place0000000152,trans000000015,Direction.PtT)
+arc0000000152.setIsBase(true)
+arc0000000152.setArcExp(arcexp0000000152)
+arc0000000152.setTokenToBind(tTb0000000152)
+arc0000000152.setBindToToken(bTt0000000152)
+arc0000000152.setBindToToken(bTt0000000152)
+arc0000000152.setOrigin(Map[String,String](("Tr15","arc0000000152")))
+cgraph.addArc(arc0000000152)
+
+val arcexp0000000153 = (inp:Any) => inp match { case entity:colset00000001 => { Some(entity) } }
+val tTb0000000153 = (inp:Any) => Binding00000001(inp match { case entity:colset00000001 => Some(entity); case _ => None })
+val bTt0000000153 = (b:Binding00000001) => {b.entity.get}
+val arc0000000153 = new Arc[colset00000001,Binding00000001]("arc0000000153",place0000000153,trans000000015,Direction.TtP)
+arc0000000153.setIsBase(true)
+arc0000000153.setArcExp(arcexp0000000153)
+arc0000000153.setTokenToBind(tTb0000000153)
+arc0000000153.setBindToToken(bTt0000000153)
+arc0000000153.setBindToToken(bTt0000000153)
+arc0000000153.setOrigin(Map[String,String](("Tr15","arc0000000153")))
+cgraph.addArc(arc0000000153)
+
+
+val map0000000161 = Map[(colset00000001,Long),Int]( )
+val ms0000000161 = new Multiset[colset00000001](map0000000161)
+val place0000000161 = new Place("place0000000161","Tr16_p1",ms0000000161)
+place0000000161.setOrigin(Map[String,String](("Tr16","p1")))
+cgraph.addPlace(place0000000161)
+
+val map0000000162 = Map[(colset00000001,Long),Int]( )
+val ms0000000162 = new Multiset[colset00000001](map0000000162)
+val place0000000162 = new Place("place0000000162","Tr16_p2",ms0000000162)
+place0000000162.setOrigin(Map[String,String](("Tr16","p2")))
+cgraph.addPlace(place0000000162)
+
+val map0000000163 = Map[(colset00000001,Long),Int]( )
+val ms0000000163 = new Multiset[colset00000001](map0000000163)
+val place0000000163 = new Place("place0000000163","Tr16_p3",ms0000000163)
+place0000000163.setOrigin(Map[String,String](("Tr16","p3")))
+cgraph.addPlace(place0000000163)
+
+val trans000000016 = new Transition[Binding00000001]("trans000000016","Transition 16",null,null)
+trans000000016.setEval(Eval00000001)
+trans000000016.setMerge(Merge00000001)
+trans000000016.setOrigin(Map[String,String](("Tr16","Transition 16")))
+cgraph.addTransition(trans000000016)
+
+val arcexp0000000161 = (inp:Any) => inp match { case entity:colset00000001 => { Some(entity) } }
+val tTb0000000161 = (inp:Any) => Binding00000001(inp match { case entity:colset00000001 => Some(entity); case _ => None })
+val bTt0000000161 = (b:Binding00000001) => {b.entity.get}
+val arc0000000161 = new Arc[colset00000001,Binding00000001]("arc0000000161",place0000000161,trans000000016,Direction.PtT)
+arc0000000161.setIsBase(true)
+arc0000000161.setArcExp(arcexp0000000161)
+arc0000000161.setTokenToBind(tTb0000000161)
+arc0000000161.setBindToToken(bTt0000000161)
+arc0000000161.setBindToToken(bTt0000000161)
+arc0000000161.setOrigin(Map[String,String](("Tr16","arc0000000161")))
+cgraph.addArc(arc0000000161)
+
+val arcexp0000000162 = (inp:Any) => inp match { case entity:colset00000001 => { Some(entity) } }
+val tTb0000000162 = (inp:Any) => Binding00000001(inp match { case entity:colset00000001 => Some(entity); case _ => None })
+val bTt0000000162 = (b:Binding00000001) => {b.entity.get}
+val arc0000000162 = new Arc[colset00000001,Binding00000001]("arc0000000162",place0000000162,trans000000016,Direction.PtT)
+arc0000000162.setIsBase(true)
+arc0000000162.setArcExp(arcexp0000000162)
+arc0000000162.setTokenToBind(tTb0000000162)
+arc0000000162.setBindToToken(bTt0000000162)
+arc0000000162.setBindToToken(bTt0000000162)
+arc0000000162.setOrigin(Map[String,String](("Tr16","arc0000000162")))
+cgraph.addArc(arc0000000162)
+
+val arcexp0000000163 = (inp:Any) => inp match { case entity:colset00000001 => { Some(entity) } }
+val tTb0000000163 = (inp:Any) => Binding00000001(inp match { case entity:colset00000001 => Some(entity); case _ => None })
+val bTt0000000163 = (b:Binding00000001) => {b.entity.get}
+val arc0000000163 = new Arc[colset00000001,Binding00000001]("arc0000000163",place0000000163,trans000000016,Direction.TtP)
+arc0000000163.setIsBase(true)
+arc0000000163.setArcExp(arcexp0000000163)
+arc0000000163.setTokenToBind(tTb0000000163)
+arc0000000163.setBindToToken(bTt0000000163)
+arc0000000163.setBindToToken(bTt0000000163)
+arc0000000163.setOrigin(Map[String,String](("Tr16","arc0000000163")))
+cgraph.addArc(arc0000000163)
+
+
+val map0000000171 = Map[(colset00000001,Long),Int]( )
+val ms0000000171 = new Multiset[colset00000001](map0000000171)
+val place0000000171 = new Place("place0000000171","Tr17_p1",ms0000000171)
+place0000000171.setOrigin(Map[String,String](("Tr17","p1")))
+cgraph.addPlace(place0000000171)
+
+val map0000000172 = Map[(colset00000001,Long),Int]( )
+val ms0000000172 = new Multiset[colset00000001](map0000000172)
+val place0000000172 = new Place("place0000000172","Tr17_p2",ms0000000172)
+place0000000172.setOrigin(Map[String,String](("Tr17","p2")))
+cgraph.addPlace(place0000000172)
+
+val map0000000173 = Map[(colset00000001,Long),Int]( )
+val ms0000000173 = new Multiset[colset00000001](map0000000173)
+val place0000000173 = new Place("place0000000173","Tr17_p3",ms0000000173)
+place0000000173.setOrigin(Map[String,String](("Tr17","p3")))
+cgraph.addPlace(place0000000173)
+
+val trans000000017 = new Transition[Binding00000001]("trans000000017","Transition 17",null,null)
+trans000000017.setEval(Eval00000001)
+trans000000017.setMerge(Merge00000001)
+trans000000017.setOrigin(Map[String,String](("Tr17","Transition 17")))
+cgraph.addTransition(trans000000017)
+
+val arcexp0000000171 = (inp:Any) => inp match { case entity:colset00000001 => { Some(entity) } }
+val tTb0000000171 = (inp:Any) => Binding00000001(inp match { case entity:colset00000001 => Some(entity); case _ => None })
+val bTt0000000171 = (b:Binding00000001) => {b.entity.get}
+val arc0000000171 = new Arc[colset00000001,Binding00000001]("arc0000000171",place0000000171,trans000000017,Direction.PtT)
+arc0000000171.setIsBase(true)
+arc0000000171.setArcExp(arcexp0000000171)
+arc0000000171.setTokenToBind(tTb0000000171)
+arc0000000171.setBindToToken(bTt0000000171)
+arc0000000171.setBindToToken(bTt0000000171)
+arc0000000171.setOrigin(Map[String,String](("Tr17","arc0000000171")))
+cgraph.addArc(arc0000000171)
+
+val arcexp0000000172 = (inp:Any) => inp match { case entity:colset00000001 => { Some(entity) } }
+val tTb0000000172 = (inp:Any) => Binding00000001(inp match { case entity:colset00000001 => Some(entity); case _ => None })
+val bTt0000000172 = (b:Binding00000001) => {b.entity.get}
+val arc0000000172 = new Arc[colset00000001,Binding00000001]("arc0000000172",place0000000172,trans000000017,Direction.PtT)
+arc0000000172.setIsBase(true)
+arc0000000172.setArcExp(arcexp0000000172)
+arc0000000172.setTokenToBind(tTb0000000172)
+arc0000000172.setBindToToken(bTt0000000172)
+arc0000000172.setBindToToken(bTt0000000172)
+arc0000000172.setOrigin(Map[String,String](("Tr17","arc0000000172")))
+cgraph.addArc(arc0000000172)
+
+val arcexp0000000173 = (inp:Any) => inp match { case entity:colset00000001 => { Some(entity) } }
+val tTb0000000173 = (inp:Any) => Binding00000001(inp match { case entity:colset00000001 => Some(entity); case _ => None })
+val bTt0000000173 = (b:Binding00000001) => {b.entity.get}
+val arc0000000173 = new Arc[colset00000001,Binding00000001]("arc0000000173",place0000000173,trans000000017,Direction.TtP)
+arc0000000173.setIsBase(true)
+arc0000000173.setArcExp(arcexp0000000173)
+arc0000000173.setTokenToBind(tTb0000000173)
+arc0000000173.setBindToToken(bTt0000000173)
+arc0000000173.setBindToToken(bTt0000000173)
+arc0000000173.setOrigin(Map[String,String](("Tr17","arc0000000173")))
+cgraph.addArc(arc0000000173)
+
+
+val map0000000181 = Map[(colset00000001,Long),Int]( )
+val ms0000000181 = new Multiset[colset00000001](map0000000181)
+val place0000000181 = new Place("place0000000181","Tr18_p1",ms0000000181)
+place0000000181.setOrigin(Map[String,String](("Tr18","p1")))
+cgraph.addPlace(place0000000181)
+
+val map0000000182 = Map[(colset00000001,Long),Int]( )
+val ms0000000182 = new Multiset[colset00000001](map0000000182)
+val place0000000182 = new Place("place0000000182","Tr18_p2",ms0000000182)
+place0000000182.setOrigin(Map[String,String](("Tr18","p2")))
+cgraph.addPlace(place0000000182)
+
+val map0000000183 = Map[(colset00000001,Long),Int]( )
+val ms0000000183 = new Multiset[colset00000001](map0000000183)
+val place0000000183 = new Place("place0000000183","Tr18_p3",ms0000000183)
+place0000000183.setOrigin(Map[String,String](("Tr18","p3")))
+cgraph.addPlace(place0000000183)
+
+val trans000000018 = new Transition[Binding00000001]("trans000000018","Transition 18",null,null)
+trans000000018.setEval(Eval00000001)
+trans000000018.setMerge(Merge00000001)
+trans000000018.setOrigin(Map[String,String](("Tr18","Transition 18")))
+cgraph.addTransition(trans000000018)
+
+val arcexp0000000181 = (inp:Any) => inp match { case entity:colset00000001 => { Some(entity) } }
+val tTb0000000181 = (inp:Any) => Binding00000001(inp match { case entity:colset00000001 => Some(entity); case _ => None })
+val bTt0000000181 = (b:Binding00000001) => {b.entity.get}
+val arc0000000181 = new Arc[colset00000001,Binding00000001]("arc0000000181",place0000000181,trans000000018,Direction.PtT)
+arc0000000181.setIsBase(true)
+arc0000000181.setArcExp(arcexp0000000181)
+arc0000000181.setTokenToBind(tTb0000000181)
+arc0000000181.setBindToToken(bTt0000000181)
+arc0000000181.setBindToToken(bTt0000000181)
+arc0000000181.setOrigin(Map[String,String](("Tr18","arc0000000181")))
+cgraph.addArc(arc0000000181)
+
+val arcexp0000000182 = (inp:Any) => inp match { case entity:colset00000001 => { Some(entity) } }
+val tTb0000000182 = (inp:Any) => Binding00000001(inp match { case entity:colset00000001 => Some(entity); case _ => None })
+val bTt0000000182 = (b:Binding00000001) => {b.entity.get}
+val arc0000000182 = new Arc[colset00000001,Binding00000001]("arc0000000182",place0000000182,trans000000018,Direction.PtT)
+arc0000000182.setIsBase(true)
+arc0000000182.setArcExp(arcexp0000000182)
+arc0000000182.setTokenToBind(tTb0000000182)
+arc0000000182.setBindToToken(bTt0000000182)
+arc0000000182.setBindToToken(bTt0000000182)
+arc0000000182.setOrigin(Map[String,String](("Tr18","arc0000000182")))
+cgraph.addArc(arc0000000182)
+
+val arcexp0000000183 = (inp:Any) => inp match { case entity:colset00000001 => { Some(entity) } }
+val tTb0000000183 = (inp:Any) => Binding00000001(inp match { case entity:colset00000001 => Some(entity); case _ => None })
+val bTt0000000183 = (b:Binding00000001) => {b.entity.get}
+val arc0000000183 = new Arc[colset00000001,Binding00000001]("arc0000000183",place0000000183,trans000000018,Direction.TtP)
+arc0000000183.setIsBase(true)
+arc0000000183.setArcExp(arcexp0000000183)
+arc0000000183.setTokenToBind(tTb0000000183)
+arc0000000183.setBindToToken(bTt0000000183)
+arc0000000183.setBindToToken(bTt0000000183)
+arc0000000183.setOrigin(Map[String,String](("Tr18","arc0000000183")))
+cgraph.addArc(arc0000000183)
+
+
+val map0000000191 = Map[(colset00000001,Long),Int]( )
+val ms0000000191 = new Multiset[colset00000001](map0000000191)
+val place0000000191 = new Place("place0000000191","Tr19_p1",ms0000000191)
+place0000000191.setOrigin(Map[String,String](("Tr19","p1")))
+cgraph.addPlace(place0000000191)
+
+val map0000000192 = Map[(colset00000001,Long),Int]( )
+val ms0000000192 = new Multiset[colset00000001](map0000000192)
+val place0000000192 = new Place("place0000000192","Tr19_p2",ms0000000192)
+place0000000192.setOrigin(Map[String,String](("Tr19","p2")))
+cgraph.addPlace(place0000000192)
+
+val map0000000193 = Map[(colset00000001,Long),Int]( )
+val ms0000000193 = new Multiset[colset00000001](map0000000193)
+val place0000000193 = new Place("place0000000193","Tr19_p3",ms0000000193)
+place0000000193.setOrigin(Map[String,String](("Tr19","p3")))
+cgraph.addPlace(place0000000193)
+
+val trans000000019 = new Transition[Binding00000001]("trans000000019","Transition 19",null,null)
+trans000000019.setEval(Eval00000001)
+trans000000019.setMerge(Merge00000001)
+trans000000019.setOrigin(Map[String,String](("Tr19","Transition 19")))
+cgraph.addTransition(trans000000019)
+
+val arcexp0000000191 = (inp:Any) => inp match { case entity:colset00000001 => { Some(entity) } }
+val tTb0000000191 = (inp:Any) => Binding00000001(inp match { case entity:colset00000001 => Some(entity); case _ => None })
+val bTt0000000191 = (b:Binding00000001) => {b.entity.get}
+val arc0000000191 = new Arc[colset00000001,Binding00000001]("arc0000000191",place0000000191,trans000000019,Direction.PtT)
+arc0000000191.setIsBase(true)
+arc0000000191.setArcExp(arcexp0000000191)
+arc0000000191.setTokenToBind(tTb0000000191)
+arc0000000191.setBindToToken(bTt0000000191)
+arc0000000191.setBindToToken(bTt0000000191)
+arc0000000191.setOrigin(Map[String,String](("Tr19","arc0000000191")))
+cgraph.addArc(arc0000000191)
+
+val arcexp0000000192 = (inp:Any) => inp match { case entity:colset00000001 => { Some(entity) } }
+val tTb0000000192 = (inp:Any) => Binding00000001(inp match { case entity:colset00000001 => Some(entity); case _ => None })
+val bTt0000000192 = (b:Binding00000001) => {b.entity.get}
+val arc0000000192 = new Arc[colset00000001,Binding00000001]("arc0000000192",place0000000192,trans000000019,Direction.PtT)
+arc0000000192.setIsBase(true)
+arc0000000192.setArcExp(arcexp0000000192)
+arc0000000192.setTokenToBind(tTb0000000192)
+arc0000000192.setBindToToken(bTt0000000192)
+arc0000000192.setBindToToken(bTt0000000192)
+arc0000000192.setOrigin(Map[String,String](("Tr19","arc0000000192")))
+cgraph.addArc(arc0000000192)
+
+val arcexp0000000193 = (inp:Any) => inp match { case entity:colset00000001 => { Some(entity) } }
+val tTb0000000193 = (inp:Any) => Binding00000001(inp match { case entity:colset00000001 => Some(entity); case _ => None })
+val bTt0000000193 = (b:Binding00000001) => {b.entity.get}
+val arc0000000193 = new Arc[colset00000001,Binding00000001]("arc0000000193",place0000000193,trans000000019,Direction.TtP)
+arc0000000193.setIsBase(true)
+arc0000000193.setArcExp(arcexp0000000193)
+arc0000000193.setTokenToBind(tTb0000000193)
+arc0000000193.setBindToToken(bTt0000000193)
+arc0000000193.setBindToToken(bTt0000000193)
+arc0000000193.setOrigin(Map[String,String](("Tr19","arc0000000193")))
+cgraph.addArc(arc0000000193)
+
+
+val map0000000201 = Map[(colset00000001,Long),Int]( )
+val ms0000000201 = new Multiset[colset00000001](map0000000201)
+val place0000000201 = new Place("place0000000201","Tr20_p1",ms0000000201)
+place0000000201.setOrigin(Map[String,String](("Tr20","p1")))
+cgraph.addPlace(place0000000201)
+
+val map0000000202 = Map[(colset00000001,Long),Int]( )
+val ms0000000202 = new Multiset[colset00000001](map0000000202)
+val place0000000202 = new Place("place0000000202","Tr20_p2",ms0000000202)
+place0000000202.setOrigin(Map[String,String](("Tr20","p2")))
+cgraph.addPlace(place0000000202)
+
+val map0000000203 = Map[(colset00000001,Long),Int]( )
+val ms0000000203 = new Multiset[colset00000001](map0000000203)
+val place0000000203 = new Place("place0000000203","Tr20_p3",ms0000000203)
+place0000000203.setOrigin(Map[String,String](("Tr20","p3")))
+cgraph.addPlace(place0000000203)
+
+val trans000000020 = new Transition[Binding00000001]("trans000000020","Transition 20",null,null)
+trans000000020.setEval(Eval00000001)
+trans000000020.setMerge(Merge00000001)
+trans000000020.setOrigin(Map[String,String](("Tr20","Transition 20")))
+cgraph.addTransition(trans000000020)
+
+val arcexp0000000201 = (inp:Any) => inp match { case entity:colset00000001 => { Some(entity) } }
+val tTb0000000201 = (inp:Any) => Binding00000001(inp match { case entity:colset00000001 => Some(entity); case _ => None })
+val bTt0000000201 = (b:Binding00000001) => {b.entity.get}
+val arc0000000201 = new Arc[colset00000001,Binding00000001]("arc0000000201",place0000000201,trans000000020,Direction.PtT)
+arc0000000201.setIsBase(true)
+arc0000000201.setArcExp(arcexp0000000201)
+arc0000000201.setTokenToBind(tTb0000000201)
+arc0000000201.setBindToToken(bTt0000000201)
+arc0000000201.setBindToToken(bTt0000000201)
+arc0000000201.setOrigin(Map[String,String](("Tr20","arc0000000201")))
+cgraph.addArc(arc0000000201)
+
+val arcexp0000000202 = (inp:Any) => inp match { case entity:colset00000001 => { Some(entity) } }
+val tTb0000000202 = (inp:Any) => Binding00000001(inp match { case entity:colset00000001 => Some(entity); case _ => None })
+val bTt0000000202 = (b:Binding00000001) => {b.entity.get}
+val arc0000000202 = new Arc[colset00000001,Binding00000001]("arc0000000202",place0000000202,trans000000020,Direction.PtT)
+arc0000000202.setIsBase(true)
+arc0000000202.setArcExp(arcexp0000000202)
+arc0000000202.setTokenToBind(tTb0000000202)
+arc0000000202.setBindToToken(bTt0000000202)
+arc0000000202.setBindToToken(bTt0000000202)
+arc0000000202.setOrigin(Map[String,String](("Tr20","arc0000000202")))
+cgraph.addArc(arc0000000202)
+
+val arcexp0000000203 = (inp:Any) => inp match { case entity:colset00000001 => { Some(entity) } }
+val tTb0000000203 = (inp:Any) => Binding00000001(inp match { case entity:colset00000001 => Some(entity); case _ => None })
+val bTt0000000203 = (b:Binding00000001) => {b.entity.get}
+val arc0000000203 = new Arc[colset00000001,Binding00000001]("arc0000000203",place0000000203,trans000000020,Direction.TtP)
+arc0000000203.setIsBase(true)
+arc0000000203.setArcExp(arcexp0000000203)
+arc0000000203.setTokenToBind(tTb0000000203)
+arc0000000203.setBindToToken(bTt0000000203)
+arc0000000203.setBindToToken(bTt0000000203)
+arc0000000203.setOrigin(Map[String,String](("Tr20","arc0000000203")))
+cgraph.addArc(arc0000000203)

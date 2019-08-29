@@ -29,6 +29,13 @@ abstract class Simulation(val simulator:Simulator = new Simulator(true)) {
     simulator.run(cgraph, stopCrit, inpStopCrit, n, globtime, subject)
   }
   
+  def runStepWithCon(n:Int): Unit = {
+    this.stopCrit = (stop:Any) => stop match { case stop:Boolean => stop }
+    this.inpStopCrit = false
+    
+    simulator.runWithAsync(cgraph, stopCrit, inpStopCrit, n, globtime, subject)
+  }
+  
   def runStepTime(timeUntil:Long, n:Int) = {
     this.stopCrit = (globT:Any) => globT match { case globT:GlobalTime => globT.time >= timeUntil }
     this.inpStopCrit = globtime

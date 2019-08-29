@@ -1,15 +1,20 @@
-import { GraphConnector } from '@/iochord/chdsr/common/graph/sbpnet/interfaces/GraphConnector';
-import { GraphData } from './../interfaces/GraphData';
-import { GraphConfiguration } from './../interfaces/GraphConfiguration';
-import { GraphPage } from '@/iochord/chdsr/common/graph/sbpnet/interfaces/GraphPage';
-import { VuexModule, Module, MutationAction, Mutation } from 'vuex-module-decorators';
-import { Graph } from '../interfaces/Graph';
-import { GraphControl } from '../interfaces/components/GraphControl';
-import { SbpnetModelService } from '../../../service/model/SbpnetModelService';
-
+// Vuex & Libraries
 import Vuex from 'vuex';
+import { VuexModule, Module, MutationAction, Mutation } from 'vuex-module-decorators';
+
+// Interfaces
+import { Graph } from '../interfaces/Graph';
+import { GraphConfiguration } from './../interfaces/GraphConfiguration';
+import { GraphConnector } from '@/iochord/chdsr/common/graph/sbpnet/interfaces/GraphConnector';
+import { GraphConnectorImpl } from '../classes/GraphConnectorImpl';
+import { GraphControl } from '../interfaces/components/GraphControl';
+import { GraphData } from './../interfaces/GraphData';
+import { GraphPage } from '@/iochord/chdsr/common/graph/sbpnet/interfaces/GraphPage';
 import { GraphNode } from '../interfaces/GraphNode';
 import { GraphNodeImpl } from '../classes/GraphNodeImpl';
+
+// Services
+import { SbpnetModelService } from '../../../service/model/SbpnetModelService';
 
 interface StoreType {
   graphModule: GraphModule;
@@ -21,7 +26,7 @@ const store = new Vuex.Store<StoreType>({});
 export default class GraphModule extends VuexModule {
   // States
   public graph: Graph = {} as Graph;
-  public newItem: GraphNodeImpl | null = null;
+  public newItem: GraphNodeImpl | GraphConnectorImpl | null = null;
 
   // Mutations
   @MutationAction({ mutate: ['graph'] })
@@ -31,7 +36,7 @@ export default class GraphModule extends VuexModule {
   }
 
   @Mutation
-  public setNewItem(newItem: GraphNodeImpl | null) {
+  public setNewItem(newItem: GraphNodeImpl | GraphConnectorImpl | null) {
     this.newItem = newItem;
   }
 
@@ -311,6 +316,10 @@ export default class GraphModule extends VuexModule {
   @Mutation
   public setData(data: Map<string, GraphData>): void {
     this.graph.setData(data);
+  }
+
+  public get getNewItem(): GraphNodeImpl | GraphConnectorImpl | null {
+    return this.newItem ? this.newItem : null;
   }
 
   public get version(): string | null {
