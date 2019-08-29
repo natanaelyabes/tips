@@ -142,7 +142,6 @@ import StopNodeModal from '@/iochord/chdsr/simulation/editor/components/modals/S
 import ModalMixin from '@/iochord/chdsr/simulation/editor/mixins/modals/ModalMixin';
 import CanvasMixin from '@/iochord/chdsr/simulation/editor/mixins/editors/CanvasMixin';
 
-
 // JQuery Handler
 declare const $: any;
 
@@ -150,7 +149,7 @@ declare const $: any;
 import GraphModule from '@/iochord/chdsr/common/graph/sbpnet/stores/GraphModule';
 import EditorState from '../../stores/editors/EditorState';
 
-
+// Vuex module instance
 const graphModule = getModule(GraphModule);
 const editorState = getModule(EditorState);
 
@@ -189,7 +188,7 @@ export default class CanvasComponent extends Mixins(BaseComponent, ModalMixin, C
 
       // TODO:
       // Extend the capability of the renderer.
-      // For example, we dont have to rerender the graph
+      // For example, we dont have to re-render the graph
       // every time user apply changes to the graph.
       const renderer = new JointJsRenderer(
         this.graph,
@@ -226,7 +225,6 @@ export default class CanvasComponent extends Mixins(BaseComponent, ModalMixin, C
 
     // Helper to reset all elements
     const resetAll = (paper: joint.dia.Paper) => {
-
       jointPage.getGraph().getElements().forEach((element: joint.dia.Element) => {
         const elementView = paper.findViewByModel(element);
         elementView.unhighlight();
@@ -255,14 +253,22 @@ export default class CanvasComponent extends Mixins(BaseComponent, ModalMixin, C
       };
     };
 
-    // Listening to events (TODO: later each of these event handler must be encapsulated within methods or classes)
+    // Listening to events (Refer to joint.js API docs)
+    // (TODO: later each of these event handler must be encapsulated within methods or classes)
     jointPage.getPaper().on({
       'blank:pointerdown': (elementView: joint.dia.ElementView) => {
+
+        // Reset page
         resetAll(jointPage.getPaper());
+
+        // If currently drawing arc
         if (editorState.drawing && this.panAndZoom) {
+
+          // Disable panAndZoom
           this.panAndZoom.disablePan();
           this.panAndZoom.disableZoom();
 
+          // Pop error toast to the screen
           $('body').toast({
             position: 'bottom right',
             class: 'error',
@@ -273,25 +279,46 @@ export default class CanvasComponent extends Mixins(BaseComponent, ModalMixin, C
             newestOnTop: true,
           });
 
+          // Change crosshair
           document.body.style.cursor = 'crosshair';
         } else if (!editorState.drawing && this.panAndZoom) {
+
+          // Otherwise keep panAndZoom enabled
           this.panAndZoom.enablePan();
           this.panAndZoom.enableZoom();
+
+          // and change its cursor to grabbing (pan mode)
           document.body.style.cursor = 'grabbing';
         }
       },
       'element:pointerup blank:pointerup': (elementView: joint.dia.ElementView) => {
+
+        // Reset page
         resetAll(jointPage.getPaper());
+
+        // Disable pan
         (this.panAndZoom as SvgPanZoom.Instance).disablePan();
+
+        // If currently drawing arc
         if (editorState.drawing) {
+
+          // Set the cursor to crosshair
           document.body.style.cursor = 'crosshair';
         } else {
+
+          // Otherwise to default cursor
           document.body.style.cursor = 'default';
         }
       },
       'element:mouseover': (elementView: joint.dia.ElementView) => {
+
+        // If currently drawing arc
         if (editorState.drawing) {
+
+          // Reset page
           resetAll(jointPage.getPaper());
+
+          // Highlight current element
           const currentElement = elementView.model;
           currentElement.findView(jointPage.getPaper()).highlight();
         }
@@ -332,7 +359,10 @@ export default class CanvasComponent extends Mixins(BaseComponent, ModalMixin, C
         currentElement.findView(jointPage.getPaper()).highlight();
       },
       'element:pointerdblclick': (elementView: joint.dia.ElementView) => {
+
+        // Reset page
         resetAll(jointPage.getPaper());
+
         const currentElement = elementView.model;
         const currentElementType = currentElement.attributes.type;
         const currentElementNodeId = currentElement.attributes.nodeId;
