@@ -112,7 +112,7 @@ export default class NavigationTopSidebarComponent extends SemanticComponent {
 
   /** @Override */
   public mounted(): void {
-    this.closeMenu();
+    // this.closeMenu();
   }
 
   /** @Override */
