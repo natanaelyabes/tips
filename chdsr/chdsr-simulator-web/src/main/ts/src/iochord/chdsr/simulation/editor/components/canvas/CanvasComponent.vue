@@ -194,6 +194,7 @@ export default class CanvasComponent extends Mixins(BaseComponent, ModalMixin, C
 
   public loadGraph(): void {
     try {
+
       // Deserialize the model
       this.graph = this.response as Graph;
 
@@ -460,8 +461,6 @@ export default class CanvasComponent extends Mixins(BaseComponent, ModalMixin, C
 
           // Set current clicked node as current selected element
           this.currentSelectedElement = jointPage.getNodes()!.get(currentElementNodeId);
-
-          console.log(this.currentSelectedElement);
         }
       },
       'cell:highlight': (elementView: joint.dia.ElementView) => {
