@@ -6,13 +6,8 @@
  *
  */
 export class WebServiceStatus {
-
   public errors: any = null;
-
   public status: string = '';
-
   public progressWsUri: string = '';
-
   public completeWsUri: string = '';
-
 }

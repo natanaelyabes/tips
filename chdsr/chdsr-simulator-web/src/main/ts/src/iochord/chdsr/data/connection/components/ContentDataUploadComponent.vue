@@ -10,7 +10,7 @@
         <div class="fields">
           <div class="eight wide field">
             <label>Filename</label>
-            <input ref="file" :disabled="isUploading" type="file" @changed="" accept=".csv" name="connect[name]" placeholder="filename">
+            <input ref="file" :disabled="isUploading" type="file" accept=".csv" name="connect[name]" placeholder="filename">
           </div>
         </div>
         <div class="inline fields">
@@ -72,9 +72,13 @@ export default class ContentDataUploadComponent extends BaseComponent {
 
   public doImport() {
     const self = this;
+<<<<<<< HEAD
+    const files = (this.$refs['file'] as any).files;
+=======
     const frmUpload = self.$refs['frmUpload'] as HTMLFormElement;
     const ele = this.$refs['file'] as HTMLInputElement;
     const files = ele.files;
+>>>>>>> ce7332d7deb7ba058cfe8abee5dd0329cd5a0bb2
     if (files != null && files.length > 0) {
       const data = new FormData();
       data.append('file', files[0]);
@@ -82,7 +86,11 @@ export default class ContentDataUploadComponent extends BaseComponent {
       DataConnectionService.getInstance().importCsv(data, (res: any) => {
         self.isUploading = false;
         self.uploadStatus = '';
+<<<<<<< HEAD
+        (self.$refs['frmUpload'] as any).reset();
+=======
         frmUpload.reset();
+>>>>>>> ce7332d7deb7ba058cfe8abee5dd0329cd5a0bb2
       }, (tick: any) => {
         self.uploadStatus = tick.body;
       });
@@ -90,8 +98,14 @@ export default class ContentDataUploadComponent extends BaseComponent {
   }
 
   /** @Override */
+<<<<<<< HEAD
+  public async mounted(): Promise<void> {
+    //
+  }
+=======
   // public async mounted(): Promise<void> {
   // }
+>>>>>>> ce7332d7deb7ba058cfe8abee5dd0329cd5a0bb2
 }
 
 </script>

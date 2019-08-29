@@ -49,7 +49,6 @@ export default class CanvasMixin extends Mixins(BaseComponent, PaletteMixin) {
       this.moveNode(e, this.activePage as JointGraphPageImpl);
     }
 
-
     if (!editorState.dragging && editorState.drawing && this.activePage && this.source) {
       this.moveToTargetNode(e, this.activePage as JointGraphPageImpl);
     }

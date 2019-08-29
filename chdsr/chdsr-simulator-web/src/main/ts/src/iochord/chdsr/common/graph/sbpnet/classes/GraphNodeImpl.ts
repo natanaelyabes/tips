@@ -28,7 +28,7 @@ export class GraphNodeImpl extends GraphElementImpl implements GraphNode {
   }
 
   public setGroupName(groupName: string): void {
-    this.groupName = groupName || this.groupName;
+    this.groupName = groupName ? groupName : this.groupName;
   }
 
   public isReportStatistics(): boolean | null {
@@ -36,7 +36,7 @@ export class GraphNodeImpl extends GraphElementImpl implements GraphNode {
   }
 
   public setReportStatistics(reportStatistics: boolean): void {
-    this.reportStatistics = reportStatistics || this.reportStatistics;
+    this.reportStatistics = reportStatistics !== undefined ? reportStatistics : this.reportStatistics;
   }
 
   public accept(elements: GraphElement[]): boolean | null {
@@ -48,7 +48,7 @@ export class GraphNodeImpl extends GraphElementImpl implements GraphNode {
   }
 
   public setInputTypes(inputTypes: GraphElement[]): void {
-    this.inputTypes = inputTypes || this.inputTypes;
+    this.inputTypes = inputTypes ? inputTypes : this.inputTypes;
   }
 
   public getOutputTypes(): GraphElement[] | null {
@@ -56,7 +56,7 @@ export class GraphNodeImpl extends GraphElementImpl implements GraphNode {
   }
 
   public setOutputTypes(outputTypes: GraphElement[]): void {
-    this.outputTypes = outputTypes || this.outputNodes;
+    this.outputTypes = outputTypes ? outputTypes : this.outputNodes;
   }
 
   public getInputNodes(): GraphNode[] | null {
@@ -64,7 +64,7 @@ export class GraphNodeImpl extends GraphElementImpl implements GraphNode {
   }
 
   public setInputNodes(inputNodes: GraphNode[]): void {
-    this.inputNodes = inputNodes || this.inputNodes;
+    this.inputNodes = inputNodes ? inputNodes : this.inputNodes;
   }
 
   public getOutputNodes(): GraphNode[] | null {
@@ -72,7 +72,7 @@ export class GraphNodeImpl extends GraphElementImpl implements GraphNode {
   }
 
   public setOutputNodes(outputNodes: GraphNode[]): void {
-    this.outputNodes = outputNodes || this.outputNodes;
+    this.outputNodes = outputNodes ? outputNodes : this.outputNodes;
   }
 
   /** @Override */

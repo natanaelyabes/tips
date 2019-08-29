@@ -5,6 +5,7 @@
 -->
 <template>
   <div class="navigation-top-sidebar component">
+
     <!-- Top-bar menu -->
     <div class="ui top fixed menu">
       <div class="item">
@@ -112,7 +113,7 @@ export default class NavigationTopSidebarComponent extends SemanticComponent {
 
   /** @Override */
   public mounted(): void {
-    this.closeMenu();
+    // this.closeMenu();
   }
 
   /** @Override */

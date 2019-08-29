@@ -1,7 +1,7 @@
 import axios, { AxiosResponse } from 'axios';
 
 import SockJS from 'sockjs-client';
-import Stomp from 'webstomp-client';
+import Stomp, { Client, Subscription } from 'webstomp-client';
 
 /**
  *
@@ -40,17 +40,17 @@ export class BaseService {
       if (response.status.status === 'completed') {
         completeCallback(response);
       } else {
-        self.getWsClient((client: any) => {
-          let subProgress: any = null;
-          if (completeCallback != null && progressCallback != null) {
-            subProgress = client.subscribe(response.status.progressWsUri, (tick: any) => {
+        this.getWsClient((client: Client) => {
+          let subProgress: Subscription | null = null;
+          if (completeCallback !== null && progressCallback !== null) {
+            subProgress = client.subscribe(response.status.progressWsUri, (tick) => {
               progressCallback(tick);
             });
           }
-          if (completeCallback != null) {
-            const subComplete: any = client.subscribe(response.status.completeWsUri, (tick: any) => {
-              client.unsubscribe(subProgress);
-              client.unsubscribe(subComplete);
+          if (completeCallback !== null) {
+            const subComplete = client.subscribe(response.status.completeWsUri, (tick) => {
+              client.unsubscribe((subProgress as Subscription).id);
+              client.unsubscribe((subComplete as Subscription).id);
               completeCallback(tick);
             });
           }
@@ -71,17 +71,17 @@ export class BaseService {
       if (response.status.status === 'completed') {
         completeCallback(response);
       } else {
-        self.getWsClient((client: any) => {
-          let subProgress: any = null;
-          if (completeCallback != null && progressCallback != null) {
-            subProgress = client.subscribe(response.status.progressWsUri, (tick: any) => {
+        this.getWsClient((client: Client) => {
+          let subProgress: Subscription | null = null;
+          if (completeCallback !== null && progressCallback !== null) {
+            subProgress = client.subscribe(response.status.progressWsUri, (tick) => {
               progressCallback(tick);
             });
           }
-          if (completeCallback != null) {
-            const subComplete: any = client.subscribe(response.status.completeWsUri, (tick: any) => {
-              client.unsubscribe(subProgress);
-              client.unsubscribe(subComplete);
+          if (completeCallback !== null) {
+            const subComplete = client.subscribe(response.status.completeWsUri, (tick) => {
+              client.unsubscribe((subProgress as Subscription).id);
+              client.unsubscribe((subComplete as Subscription).id);
               completeCallback(tick);
             });
           }
@@ -101,17 +101,17 @@ export class BaseService {
       if (response.status.status === 'completed') {
         completeCallback(response);
       } else {
-        self.getWsClient((client: any) => {
-          let subProgress: any = null;
-          if (completeCallback != null && progressCallback != null) {
-            subProgress = client.subscribe(response.status.progressWsUri, (tick: any) => {
+        this.getWsClient((client: Client) => {
+          let subProgress: Subscription | null = null;
+          if (completeCallback !== null && progressCallback !== null) {
+            subProgress = client.subscribe(response.status.progressWsUri, (tick) => {
               progressCallback(tick);
             });
           }
-          if (completeCallback != null) {
-            const subComplete: any = client.subscribe(response.status.completeWsUri, (tick: any) => {
-              client.unsubscribe(subProgress);
-              client.unsubscribe(subComplete);
+          if (completeCallback !== null) {
+            const subComplete = client.subscribe(response.status.completeWsUri, (tick) => {
+              client.unsubscribe((subProgress as Subscription).id);
+              client.unsubscribe((subComplete as Subscription).id);
               completeCallback(tick);
             });
           }

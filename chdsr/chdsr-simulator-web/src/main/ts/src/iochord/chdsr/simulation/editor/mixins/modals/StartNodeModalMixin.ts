@@ -64,7 +64,7 @@ export default class StartNodeModalMixin extends BaseComponent {
     callback();
   }
 
-  public changeStartGeneratorFromChild(e: any, graph: Graph, activePage: GraphPage, currentSelectedElement: GraphNode, callback: () => void) {
+  public changeStartGeneratorFromChild(e: any, activePage: GraphPage, currentSelectedElement: GraphNode, callback: () => void) {
     this.parentStartGenerator = e;
   }
 }

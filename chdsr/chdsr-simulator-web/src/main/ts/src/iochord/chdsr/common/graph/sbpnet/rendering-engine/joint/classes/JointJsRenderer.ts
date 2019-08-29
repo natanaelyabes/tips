@@ -16,7 +16,7 @@ import { Anchors } from './../utils/Anchors';
 
 // Enums
 import { NODE_TYPE } from '@/iochord/chdsr/common/graph/sbpnet/rendering-engine/joint/shapes/enums/NODE';
-import { ARC_TYPE } from '../shapes/enums/ARC';
+import { ARC_TYPE } from './../shapes/enums/ARC';
 
 /** Joint.js */
 // Module
@@ -81,7 +81,6 @@ export default class JointJsRenderer {
         this.panAndZoom.enableControlIcons();
         this.panAndZoom.disableDblClickZoom();
         this.panAndZoom.zoom(0.8);
-
 
         this.jointPages.set(jointPage.getId() as string, jointPage);
       }
