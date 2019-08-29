@@ -9,5 +9,5 @@ import { WebServiceStatus } from './WebServiceStatus';
  */
 export class WebServiceResponse {
   public data: any = null;
-  public status: WebServiceStatus | null = null;
+  public status: WebServiceStatus = new WebServiceStatus();
 }
