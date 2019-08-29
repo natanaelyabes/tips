@@ -32,21 +32,23 @@ export class BaseService {
     });
   }
 
-  public async webserviceGet(url: string, completeCallback: any, progressCallback: any): Promise<AxiosResponse> {
-    axios.get(BaseService.BASE_HTTP_URI + url).then((rawResponse) => {
+  public webserviceGet(url: string, completeCallback: any, progressCallback: any): void {
+    const self = this;
+    axios.get(BaseService.BASE_HTTP_URI + url)
+    .then((rawResponse) => {
       const response = rawResponse.data;
-      if (response.status.status == 'completed') {
+      if (response.status.status === 'completed') {
         completeCallback(response);
       } else {
-        this.getWsClient((client) => {
-          let subProgress = null;
+        self.getWsClient((client: any) => {
+          let subProgress: any = null;
           if (completeCallback != null && progressCallback != null) {
-            subProgress = client.subscribe(response.status.progressWsUri, (tick) => {
+            subProgress = client.subscribe(response.status.progressWsUri, (tick: any) => {
               progressCallback(tick);
             });
           }
           if (completeCallback != null) {
-            const subComplete = client.subscribe(response.status.completeWsUri, (tick) => {
+            const subComplete: any = client.subscribe(response.status.completeWsUri, (tick: any) => {
               client.unsubscribe(subProgress);
               client.unsubscribe(subComplete);
               completeCallback(tick);
@@ -57,7 +59,8 @@ export class BaseService {
     });
   }
 
-  public async webservicePost(url: string, data: any, completeCallback: any, progressCallback: any): Promise<AxiosResponse> {
+  public webservicePost(url: string, data: any, completeCallback: any, progressCallback: any): void {
+    const self = this;
     axios.post(BaseService.BASE_HTTP_URI + url, JSON.stringify(data), {
       headers: {
         'Accept': 'application/json',
@@ -65,18 +68,18 @@ export class BaseService {
       },
     }).then((rawResponse) => {
       const response = rawResponse.data;
-      if (response.status.status == 'completed') {
+      if (response.status.status === 'completed') {
         completeCallback(response);
       } else {
-        this.getWsClient((client) => {
-          let subProgress = null;
+        self.getWsClient((client: any) => {
+          let subProgress: any = null;
           if (completeCallback != null && progressCallback != null) {
-            subProgress = client.subscribe(response.status.progressWsUri, (tick) => {
+            subProgress = client.subscribe(response.status.progressWsUri, (tick: any) => {
               progressCallback(tick);
             });
           }
           if (completeCallback != null) {
-            const subComplete = client.subscribe(response.status.completeWsUri, (tick) => {
+            const subComplete: any = client.subscribe(response.status.completeWsUri, (tick: any) => {
               client.unsubscribe(subProgress);
               client.unsubscribe(subComplete);
               completeCallback(tick);
@@ -87,25 +90,26 @@ export class BaseService {
     });
   }
 
-  public async webserviceUpload(url: string, data: FormData, completeCallback: any, progressCallback: any): Promise<AxiosResponse> {
+  public webserviceUpload(url: string, data: FormData, completeCallback: any, progressCallback: any): void {
+    const self = this;
     axios.post(BaseService.BASE_HTTP_URI + url, data, {
       headers: {
         'Content-Type': 'multipart/form-data',
       },
     }).then((rawResponse) => {
       const response = rawResponse.data;
-      if (response.status.status == 'completed') {
+      if (response.status.status === 'completed') {
         completeCallback(response);
       } else {
-        this.getWsClient((client) => {
-          let subProgress = null;
+        self.getWsClient((client: any) => {
+          let subProgress: any = null;
           if (completeCallback != null && progressCallback != null) {
-            subProgress = client.subscribe(response.status.progressWsUri, (tick) => {
+            subProgress = client.subscribe(response.status.progressWsUri, (tick: any) => {
               progressCallback(tick);
             });
           }
           if (completeCallback != null) {
-            const subComplete = client.subscribe(response.status.completeWsUri, (tick) => {
+            const subComplete: any = client.subscribe(response.status.completeWsUri, (tick: any) => {
               client.unsubscribe(subProgress);
               client.unsubscribe(subComplete);
               completeCallback(tick);
