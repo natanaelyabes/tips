@@ -1,0 +1,183 @@
+<template>
+  <div class="content data upload component">
+    <form class="ui form">
+      <h4 class="ui dividing header">Connection Name</h4>
+        <div class="fields">
+          <div class="eight wide field">
+            <input type="text" name="connect[name]" placeholder="Upload connection name">
+          </div>
+        </div>
+        <div class="fields">
+          <div class="eight wide field">
+            <label>Filename</label>
+            <input type="text" name="connect[name]" placeholder="filename">
+          </div>
+        </div>
+        <div class="inline fields">
+          <div class="eight wide field">
+            <button class="ui disabled button">
+              Use file
+            </button>
+            <button class="ui primary button">
+              Import
+            </button>
+            <button class="ui button">
+              Cancel
+            </button>
+          </div>
+          <div class="eight wide field">
+
+          </div>
+        </div>
+    </form>
+
+    <h4 class="ui dividing header">Data Preview</h4>
+      <div style="overflow-x: hidden; overflow-y: scroll; border: 1px solid rgba(34,36,38,.15); height: 500px; width: 100%">
+        <table class="ui celled striped table">
+          <thead>
+            <tr>
+              <th>Column 1</th>
+              <th>Column 2</th>
+              <th>Column 3</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="collapsing">
+                node_modules
+              </td>
+              <td>Initial commit</td>
+              <td class="right aligned collapsing">10 hours ago</td>
+            </tr>
+            <tr>
+              <td>
+                test
+              </td>
+              <td>Initial commit</td>
+              <td class="right aligned">10 hours ago</td>
+            </tr>
+            <tr>
+              <td>
+                build
+              </td>
+              <td>Initial commit</td>
+              <td class="right aligned">10 hours ago</td>
+            </tr>
+            <tr>
+              <td>
+                package.json
+              </td>
+              <td>Initial commit</td>
+              <td class="right aligned">10 hours ago</td>
+            </tr>
+            <tr>
+              <td>
+                Gruntfile.js
+              </td>
+              <td>Initial commit</td>
+              <td class="right aligned">10 hours ago</td>
+            </tr>
+            <tr>
+              <td>
+                build
+              </td>
+              <td>Initial commit</td>
+              <td class="right aligned">10 hours ago</td>
+            </tr>
+            <tr>
+              <td>
+                package.json
+              </td>
+              <td>Initial commit</td>
+              <td class="right aligned">10 hours ago</td>
+            </tr>
+            <tr>
+              <td>
+                Gruntfile.js
+              </td>
+              <td>Initial commit</td>
+              <td class="right aligned">10 hours ago</td>
+            </tr>
+            <tr>
+              <td>
+                build
+              </td>
+              <td>Initial commit</td>
+              <td class="right aligned">10 hours ago</td>
+            </tr>
+            <tr>
+              <td>
+                package.json
+              </td>
+              <td>Initial commit</td>
+              <td class="right aligned">10 hours ago</td>
+            </tr>
+            <tr>
+              <td>
+                Gruntfile.js
+              </td>
+              <td>Initial commit</td>
+              <td class="right aligned">10 hours ago</td>
+            </tr>
+            <tr>
+              <td>
+                build
+              </td>
+              <td>Initial commit</td>
+              <td class="right aligned">10 hours ago</td>
+            </tr>
+            <tr>
+              <td>
+                package.json
+              </td>
+              <td>Initial commit</td>
+              <td class="right aligned">10 hours ago</td>
+            </tr>
+            <tr>
+              <td>
+                Gruntfile.js
+              </td>
+              <td>Initial commit</td>
+              <td class="right aligned">10 hours ago</td>
+            </tr>
+            <tr>
+              <td>
+                build
+              </td>
+              <td>Initial commit</td>
+              <td class="right aligned">10 hours ago</td>
+            </tr>
+            <tr>
+              <td>
+                package.json
+              </td>
+              <td>Initial commit</td>
+              <td class="right aligned">10 hours ago</td>
+            </tr>
+            <tr>
+              <td>
+                Gruntfile.js
+              </td>
+              <td>Initial commit</td>
+              <td class="right aligned">10 hours ago</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+  </div>
+</template>
+
+<style>
+
+</style>
+
+<script lang="ts">
+import { Vue, Component } from 'vue-property-decorator';
+import BaseComponent from '@/iochord/ips/common/ui/layout/classes/BaseComponent';
+
+@Component
+export default class ContentDataUploadComponent extends BaseComponent {
+  //
+}
+</script>
+

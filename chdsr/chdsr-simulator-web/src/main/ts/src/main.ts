@@ -2,7 +2,7 @@
 import Vue from 'vue';
 import VueRx from 'vue-rx';
 import Rx from 'rxjs/Rx';
-import ChdsrApp from './ChdsrApp.vue';
+import IpsApp from './IpsApp.vue';
 import router from '@/router';
 import store from '@/store';
 import '@/registerServiceWorker';
@@ -23,5 +23,5 @@ Vue.config.productionTip = false;
 new Vue({
   router,
   store,
-  render: (h) => h(ChdsrApp),
-}).$mount('#chdsr-app');
+  render: (h) => h(IpsApp),
+}).$mount('#ips-app');
