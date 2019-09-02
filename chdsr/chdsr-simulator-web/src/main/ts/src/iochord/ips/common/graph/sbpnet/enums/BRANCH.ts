@@ -1,0 +1,36 @@
+/**
+ *
+ * @package ips
+ * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
+ * @since 2019
+ *
+ */
+export enum BRANCH_GATE {
+  AND,
+  XOR,
+}
+
+/**
+ *
+ * @package ips
+ * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
+ * @since 2019
+ *
+ */
+export enum BRANCH_TYPE {
+  SPLIT,
+  JOIN,
+}
+
+/**
+ *
+ * @package ips
+ * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
+ * @since 2019
+ *
+ */
+export enum BRANCH_RULE {
+  PROBABILITY,
+  CONDITION,
+  DATA,
+}
