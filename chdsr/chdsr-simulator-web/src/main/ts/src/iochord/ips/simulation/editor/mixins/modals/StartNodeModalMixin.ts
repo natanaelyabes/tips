@@ -31,7 +31,7 @@ export default class StartNodeModalMixin extends BaseComponent {
     Start Node functions
     - Send changes from parent to child
     - Retrieve changes from child to parent
-  */
+   */
   public changeStartLabel(newVal: string): void {
     this.parentStartLabel = newVal;
   }

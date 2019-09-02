@@ -176,8 +176,8 @@ import SimulationDataManagementComponent from '../components/ribbon/SimulationDa
 // Vuex & rxjs
 import GraphModule from '@/iochord/ips/common/graph/ism/stores/GraphModule';
 import GraphSubject from '@/iochord/ips/common/graph/ism/rxjs/GraphSubject';
-import { GraphNodeImpl } from '../../../common/graph/ism/classes/GraphNodeImpl';
-import { GraphConnectorImpl } from '../../../common/graph/ism/classes/GraphConnectorImpl';
+import { GraphNodeImpl } from '@/iochord/ips/common/graph/ism/classes/GraphNodeImpl';
+import { GraphConnectorImpl } from '@/iochord/ips/common/graph/ism/classes/GraphConnectorImpl';
 
 // Async component must be lazily load
 const CanvasComponent = () => import('@/iochord/ips/simulation/editor/components/canvas/CanvasComponent.vue');
@@ -213,9 +213,6 @@ declare const $: any;
   },
 })
 export default class SimulationEditorView extends Layout01View {
-  public processModel: any;
-  public animation: boolean = false;
-  public editing: boolean = true;
 
   /** @Override */
   public overrideBrowserProperties(): void {
@@ -237,15 +234,17 @@ export default class SimulationEditorView extends Layout01View {
       // Update rxjs subject
       GraphSubject.update(graphModule.graph);
 
-      console.log(graphModule.graph);
-
+      // Listen to graph changes
       this.$observables.graph.subscribe((graph: Graph) => {
         console.log(graph);
         graphModule.setGraph(graph);
       });
 
+      // Logging
+      console.log(graphModule.graph);
       console.log(GraphNodeImpl.instance);
       console.log(GraphConnectorImpl.instance);
+
     } catch (e) {
       console.error(e);
     }
