@@ -11,7 +11,6 @@ import Stomp, { Client, Subscription } from 'webstomp-client';
  *
  */
 export class BaseService {
-
   public static readonly BASE_HTTP_URI: string = `${process.env.VUE_APP_BASE_URI}`;
   public static readonly BASE_URI: string = '/chdsr/api/v1';
 
@@ -33,7 +32,7 @@ export class BaseService {
   }
 
   public webserviceGet(url: string, completeCallback: any, progressCallback: any): void {
-    const self = this;
+    // const self = this;
     axios.get(BaseService.BASE_HTTP_URI + url)
     .then((rawResponse) => {
       const response = rawResponse.data;
@@ -60,7 +59,7 @@ export class BaseService {
   }
 
   public webservicePost(url: string, data: any, completeCallback: any, progressCallback: any): void {
-    const self = this;
+    // const self = this;
     axios.post(BaseService.BASE_HTTP_URI + url, JSON.stringify(data), {
       headers: {
         'Accept': 'application/json',
@@ -91,7 +90,7 @@ export class BaseService {
   }
 
   public webserviceUpload(url: string, data: FormData, completeCallback: any, progressCallback: any): void {
-    const self = this;
+    // const self = this;
     axios.post(BaseService.BASE_HTTP_URI + url, data, {
       headers: {
         'Content-Type': 'multipart/form-data',
@@ -140,5 +139,4 @@ export class BaseService {
       );
     }
   }
-
 }
