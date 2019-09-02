@@ -9,7 +9,7 @@ import { GraphDataFunction } from './components/GraphDataFunction';
 import { GraphDataGenerator } from './components/GraphDataGenerator';
 import { GraphDataTable } from './components/GraphDataTable';
 import { GraphConfiguration } from './GraphConfiguration';
-import { GraphConnector } from '@/iochord/ips/common/graph/sbpnet/interfaces/GraphConnector';
+import { GraphConnector } from '@/iochord/ips/common/graph/ism/interfaces/GraphConnector';
 import { GraphElement } from './GraphElement';
 import { GraphNode } from './GraphNode';
 import { GraphData } from './GraphData';

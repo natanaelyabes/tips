@@ -1,4 +1,4 @@
-import { GraphPageImpl } from '@/iochord/ips/common/graph/sbpnet/classes/GraphPageImpl';
+import { GraphPageImpl } from '@/iochord/ips/common/graph/ism/classes/GraphPageImpl';
 import * as joint from 'jointjs';
 
 /**

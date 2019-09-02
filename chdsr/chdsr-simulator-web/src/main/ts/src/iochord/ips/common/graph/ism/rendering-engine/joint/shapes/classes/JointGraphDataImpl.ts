@@ -1,7 +1,7 @@
 import { JointGraphElementIsPaintable } from '../interfaces/JointGraphElementIsPaintable';
 import { JointGraphElementHasSize } from '../interfaces/JointGraphElementHasSize';
 import { JointGraphElementHasMarkup } from '../interfaces/JointGraphElementHasMarkup';
-import { GraphDataImpl } from '@/iochord/ips/common/graph/sbpnet/classes/GraphDataImpl';
+import { GraphDataImpl } from '@/iochord/ips/common/graph/ism/classes/GraphDataImpl';
 import { JointGraphElementHasPosition } from '../interfaces/JointGraphElementHasPosition';
 import * as joint from 'jointjs';
 

@@ -52,9 +52,9 @@
 import { Component, Mixins } from 'vue-property-decorator';
 import BaseComponent from '@/iochord/ips/common/ui/layout/classes/BaseComponent';
 import PaletteMixin from '@/iochord/ips/simulation/editor/mixins/editors/PaletteMixin';
-import GraphSubject from '@/iochord/ips/common/graph/sbpnet/rxjs/GraphSubject';
-import { Graph } from '@/iochord/ips/common/graph/sbpnet/interfaces/Graph';
-import GraphModule from '@/iochord/ips/common/graph/sbpnet/stores/GraphModule';
+import GraphSubject from '@/iochord/ips/common/graph/ism/rxjs/GraphSubject';
+import { Graph } from '@/iochord/ips/common/graph/ism/interfaces/Graph';
+import GraphModule from '@/iochord/ips/common/graph/ism/stores/GraphModule';
 import { getModule } from 'vuex-module-decorators';
 
 const graphModule = getModule(GraphModule);

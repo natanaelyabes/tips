@@ -1,4 +1,4 @@
-import { Graph } from '@/iochord/ips/common/graph/sbpnet/interfaces/Graph';
+import { Graph } from '@/iochord/ips/common/graph/ism/interfaces/Graph';
 import { Observable, Subject } from 'rxjs';
 export default class GraphSubject {
 

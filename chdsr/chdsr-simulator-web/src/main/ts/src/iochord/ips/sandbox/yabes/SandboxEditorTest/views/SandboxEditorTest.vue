@@ -55,34 +55,34 @@ import { Component } from 'vue-property-decorator';
 import { getModule } from 'vuex-module-decorators';
 
 // Interfaces
-import { Graph } from '@/iochord/ips/common/graph/sbpnet/interfaces/Graph';
-import { GraphConnector } from '@/iochord/ips/common/graph/sbpnet/interfaces/GraphConnector';
-import { GraphData } from '@/iochord/ips/common/graph/sbpnet/interfaces/GraphData';
-import { GraphPage } from '@/iochord/ips/common/graph/sbpnet/interfaces/GraphPage';
-import { GraphNode } from '@/iochord/ips/common/graph/sbpnet/interfaces/GraphNode';
+import { Graph } from '@/iochord/ips/common/graph/ism/interfaces/Graph';
+import { GraphConnector } from '@/iochord/ips/common/graph/ism/interfaces/GraphConnector';
+import { GraphData } from '@/iochord/ips/common/graph/ism/interfaces/GraphData';
+import { GraphPage } from '@/iochord/ips/common/graph/ism/interfaces/GraphPage';
+import { GraphNode } from '@/iochord/ips/common/graph/ism/interfaces/GraphNode';
 
 // Services
-import { SbpnetModelService } from '@/iochord/ips/common/service/model/SbpnetModelService';
+import { IsmModelService } from '@/iochord/ips/common/service/model/IsmModelService';
 
 // Enums
-import { NODE_TYPE } from '@/iochord/ips/common/graph/sbpnet/rendering-engine/joint/shapes/enums/NODE';
-import { ARC_TYPE } from '@/iochord/ips/common/graph/sbpnet/rendering-engine/joint/shapes/enums/ARC';
-import * as NODE_ENUMS from '@/iochord/ips/common/graph/sbpnet/enums/NODE';
+import { NODE_TYPE } from '@/iochord/ips/common/graph/ism/rendering-engine/joint/shapes/enums/NODE';
+import { ARC_TYPE } from '@/iochord/ips/common/graph/ism/rendering-engine/joint/shapes/enums/ARC';
+import * as NODE_ENUMS from '@/iochord/ips/common/graph/ism/enums/NODE';
 
 // Classes
 import PageLayout from '@/iochord/ips/common/ui/layout/classes/PageLayout';
-import { GraphActivityNodeImpl } from '@/iochord/ips/common/graph/sbpnet/classes/components/GraphActivityNodeImpl';
-import { GraphImpl } from '@/iochord/ips/common/graph/sbpnet/classes/GraphImpl';
-import { GraphNodeImpl } from '@/iochord/ips/common/graph/sbpnet/classes/GraphNodeImpl';
-import { JointGraphConnectorImpl } from '@/iochord/ips/common/graph/sbpnet/rendering-engine/joint/shapes/classes/JointGraphConnectorImpl';
-import { JointGraphNodeImpl } from '@/iochord/ips/common/graph/sbpnet/rendering-engine/joint/shapes/classes/JointGraphNodeImpl';
-import { JointGraphPageImpl } from '@/iochord/ips/common/graph/sbpnet/rendering-engine/joint/shapes/classes/JointGraphPageImpl';
+import { GraphActivityNodeImpl } from '@/iochord/ips/common/graph/ism/classes/components/GraphActivityNodeImpl';
+import { GraphImpl } from '@/iochord/ips/common/graph/ism/classes/GraphImpl';
+import { GraphNodeImpl } from '@/iochord/ips/common/graph/ism/classes/GraphNodeImpl';
+import { JointGraphConnectorImpl } from '@/iochord/ips/common/graph/ism/rendering-engine/joint/shapes/classes/JointGraphConnectorImpl';
+import { JointGraphNodeImpl } from '@/iochord/ips/common/graph/ism/rendering-engine/joint/shapes/classes/JointGraphNodeImpl';
+import { JointGraphPageImpl } from '@/iochord/ips/common/graph/ism/rendering-engine/joint/shapes/classes/JointGraphPageImpl';
 
 // Vuex module
-import GraphModule from '@/iochord/ips/common/graph/sbpnet/stores/GraphModule';
+import GraphModule from '@/iochord/ips/common/graph/ism/stores/GraphModule';
 
 // RxJs subject
-import GraphSubject from '@/iochord/ips/common/graph/sbpnet/rxjs/GraphSubject';
+import GraphSubject from '@/iochord/ips/common/graph/ism/rxjs/GraphSubject';
 
 // JointJS
 import * as joint from 'jointjs';

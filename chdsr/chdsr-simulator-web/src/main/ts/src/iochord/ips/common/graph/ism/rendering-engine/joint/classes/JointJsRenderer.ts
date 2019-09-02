@@ -1,10 +1,10 @@
 /** Data Model */
 // Interfaces
-import { Graph } from '@/iochord/ips/common/graph/sbpnet/interfaces/Graph';
-import { GraphConnector } from '@/iochord/ips/common/graph/sbpnet/interfaces/GraphConnector';
-import { GraphData } from '@/iochord/ips/common/graph/sbpnet/interfaces/GraphData';
-import { GraphNode } from '@/iochord/ips/common/graph/sbpnet/interfaces/GraphNode';
-import { GraphPage } from '@/iochord/ips/common/graph/sbpnet/interfaces/GraphPage';
+import { Graph } from '@/iochord/ips/common/graph/ism/interfaces/Graph';
+import { GraphConnector } from '@/iochord/ips/common/graph/ism/interfaces/GraphConnector';
+import { GraphData } from '@/iochord/ips/common/graph/ism/interfaces/GraphData';
+import { GraphNode } from '@/iochord/ips/common/graph/ism/interfaces/GraphNode';
+import { GraphPage } from '@/iochord/ips/common/graph/ism/interfaces/GraphPage';
 
 // Classes
 import { JointGraphConnectorImpl } from '../shapes/classes/JointGraphConnectorImpl';
@@ -15,7 +15,7 @@ import { JointGraphPageImpl } from '../shapes/classes/JointGraphPageImpl';
 import { Anchors } from '../utils/Anchors';
 
 // Enums
-import { NODE_TYPE } from '@/iochord/ips/common/graph/sbpnet/rendering-engine/joint/shapes/enums/NODE';
+import { NODE_TYPE } from '@/iochord/ips/common/graph/ism/rendering-engine/joint/shapes/enums/NODE';
 import { ARC_TYPE } from '../shapes/enums/ARC';
 
 /** Joint.js */

@@ -1,13 +1,13 @@
 import BaseComponent from '@/iochord/ips/common/ui/layout/classes/BaseComponent';
-import { Graph } from '@/iochord/ips/common/graph/sbpnet/interfaces/Graph';
-import { GraphPage } from '@/iochord/ips/common/graph/sbpnet/interfaces/GraphPage';
-import { GraphNode } from '@/iochord/ips/common/graph/sbpnet/interfaces/GraphNode';
+import { Graph } from '@/iochord/ips/common/graph/ism/interfaces/Graph';
+import { GraphPage } from '@/iochord/ips/common/graph/ism/interfaces/GraphPage';
+import { GraphNode } from '@/iochord/ips/common/graph/ism/interfaces/GraphNode';
 import { Component } from 'vue-property-decorator';
 import { getModule } from 'vuex-module-decorators';
-import GraphModule from '@/iochord/ips/common/graph/sbpnet/stores/GraphModule';
-import GraphSubject from '@/iochord/ips/common/graph/sbpnet/rxjs/GraphSubject';
-import { GraphNodeImpl } from '@/iochord/ips/common/graph/sbpnet/classes/GraphNodeImpl';
-import { GraphStopEventNodeImpl } from '@/iochord/ips/common/graph/sbpnet/classes/components/GraphStopEventNodeImpl';
+import GraphModule from '@/iochord/ips/common/graph/ism/stores/GraphModule';
+import GraphSubject from '@/iochord/ips/common/graph/ism/rxjs/GraphSubject';
+import { GraphNodeImpl } from '@/iochord/ips/common/graph/ism/classes/GraphNodeImpl';
+import { GraphStopEventNodeImpl } from '@/iochord/ips/common/graph/ism/classes/components/GraphStopEventNodeImpl';
 
 const graphModule = getModule(GraphModule);
 

@@ -93,11 +93,11 @@ import IndexLayout from '@/iochord/ips/common/ui/layout/classes/IndexLayout';
 
 // Components
 import NavigationTopSidebarComponent from '@/iochord/ips/common/ui/semantic-components/navigations/components/NavigationTopSidebarComponent.vue';
-import { Graph } from './common/graph/sbpnet/interfaces/Graph';
+import { Graph } from './common/graph/ism/interfaces/Graph';
 
 // Vuex & Rxjs
-import GraphModule from './common/graph/sbpnet/stores/GraphModule';
-import GraphSubject from './common/graph/sbpnet/rxjs/GraphSubject';
+import GraphModule from './common/graph/ism/stores/GraphModule';
+import GraphSubject from './common/graph/ism/rxjs/GraphSubject';
 
 // JQuery Symbol Handler
 declare const $: any;

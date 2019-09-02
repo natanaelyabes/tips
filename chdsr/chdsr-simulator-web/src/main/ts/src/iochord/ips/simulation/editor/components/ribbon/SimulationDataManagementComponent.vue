@@ -48,10 +48,10 @@
 import { Component } from 'vue-property-decorator';
 import { getModule } from 'vuex-module-decorators';
 import BaseComponent from '@/iochord/ips/common/ui/layout/classes/BaseComponent';
-import GraphModule from '@/iochord/ips/common/graph/sbpnet/stores/GraphModule';
-import GraphSubject from '@/iochord/ips/common/graph/sbpnet/rxjs/GraphSubject';
+import GraphModule from '@/iochord/ips/common/graph/ism/stores/GraphModule';
+import GraphSubject from '@/iochord/ips/common/graph/ism/rxjs/GraphSubject';
 
-import { SbpnetModelService } from '@/iochord/ips/common/service/model/SbpnetModelService';
+import { IsmModelService } from '@/iochord/ips/common/service/model/IsmModelService';
 
 const graphModule = getModule(GraphModule);
 
@@ -63,7 +63,7 @@ export default class SimulationDataManagementComponent extends BaseComponent {
 
   private doSaveModel(): void {
     console.log('WS-REQUEST', graphModule.graph);
-    SbpnetModelService.getInstance().callSaveModel(graphModule.graph, (tick: any) => {
+    IsmModelService.getInstance().callSaveModel(graphModule.graph, (tick: any) => {
       const graph = JSON.parse(tick.body);
       console.log('WS-RESPONSE', graph);
       alert('saved !');

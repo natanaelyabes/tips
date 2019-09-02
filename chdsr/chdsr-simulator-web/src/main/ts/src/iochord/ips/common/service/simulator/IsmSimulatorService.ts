@@ -1,8 +1,6 @@
 import { SimulatorService } from './SimulatorService';
-import { Graph } from '@/iochord/ips/common/graph/sbpnet/interfaces/Graph';
-import { GraphImpl } from '@/iochord/ips/common/graph/sbpnet/classes/GraphImpl';
 import { Client } from 'webstomp-client';
-import { Observable } from 'rxjs';
+
 /**
  *
  * @package ips
@@ -10,18 +8,18 @@ import { Observable } from 'rxjs';
  * @since   2019
  *
  */
-export class SbpnetSimulatorService extends SimulatorService {
+export class IsmSimulatorService extends SimulatorService {
 
-  public static readonly BASE_URI: string = SimulatorService.BASE_URI + '/sbpnet';
+  public static readonly BASE_URI: string = SimulatorService.BASE_URI + '/ism';
 
-  public static getInstance(): SbpnetSimulatorService {
-    if (SbpnetSimulatorService.__INSTANCE == null) {
-      SbpnetSimulatorService.__INSTANCE = new SbpnetSimulatorService();
+  public static getInstance(): IsmSimulatorService {
+    if (IsmSimulatorService.__INSTANCE == null) {
+      IsmSimulatorService.__INSTANCE = new IsmSimulatorService();
     }
-    return SbpnetSimulatorService.__INSTANCE;
+    return IsmSimulatorService.__INSTANCE;
   }
 
-  private static __INSTANCE: SbpnetSimulatorService;
+  private static __INSTANCE: IsmSimulatorService;
 
   public callRunSimulation(graph: any, callback: any) {
     this.getWsClient((wsc: Client) => {
@@ -36,8 +34,6 @@ export class SbpnetSimulatorService extends SimulatorService {
         callback(tick);
       });
       wsc.send(wsUri, JSON.stringify(jsonReq));
-      // this.remotePost(wsUri, graph);
     });
   }
-
 }

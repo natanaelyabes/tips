@@ -151,19 +151,19 @@ import '#root/node_modules/jointjs/dist/joint.css';
 
 // Classes
 import Layout01View from '@/iochord/ips/common/ui/layout/classes/Layout01';
-import { GraphImpl } from '@/iochord/ips/common/graph/sbpnet/classes/GraphImpl';
+import { GraphImpl } from '@/iochord/ips/common/graph/ism/classes/GraphImpl';
 
 // Interfaces
 import { Layout01HasWrapper } from '@/iochord/ips/common/ui/layout/interfaces/Layout01HasWrapper';
 import { BrowserHasProperties } from '@/iochord/ips/common/browser/interfaces/BrowserHasProperties';
 import { SemanticModulesIsUsed } from '@/iochord/ips/common/ui/semantic-components/SemanticModulesIsUsed';
-import { Graph } from '@/iochord/ips/common/graph/sbpnet/interfaces/Graph';
+import { Graph } from '@/iochord/ips/common/graph/ism/interfaces/Graph';
 
 // Enums
 import { ApplicationEnum, BaseUrlEnum } from '@/iochord/ips/common/enums/index';
 
 // Services
-import { SbpnetModelService } from '@/iochord/ips/common/service/model/SbpnetModelService';
+import { IsmModelService } from '@/iochord/ips/common/service/model/IsmModelService';
 
 // Components
 import WrapperComponent from '@/iochord/ips/common/ui/layout/components/WrapperComponent.vue';
@@ -174,10 +174,10 @@ import SimulationPlayerComponent from '../components/ribbon/SimulationPlayerComp
 import SimulationDataManagementComponent from '../components/ribbon/SimulationDataManagementComponent.vue';
 
 // Vuex & rxjs
-import GraphModule from '@/iochord/ips/common/graph/sbpnet/stores/GraphModule';
-import GraphSubject from '@/iochord/ips/common/graph/sbpnet/rxjs/GraphSubject';
-import { GraphNodeImpl } from '../../../common/graph/sbpnet/classes/GraphNodeImpl';
-import { GraphConnectorImpl } from '../../../common/graph/sbpnet/classes/GraphConnectorImpl';
+import GraphModule from '@/iochord/ips/common/graph/ism/stores/GraphModule';
+import GraphSubject from '@/iochord/ips/common/graph/ism/rxjs/GraphSubject';
+import { GraphNodeImpl } from '../../../common/graph/ism/classes/GraphNodeImpl';
+import { GraphConnectorImpl } from '../../../common/graph/ism/classes/GraphConnectorImpl';
 
 // Async component must be lazily load
 const CanvasComponent = () => import('@/iochord/ips/simulation/editor/components/canvas/CanvasComponent.vue');

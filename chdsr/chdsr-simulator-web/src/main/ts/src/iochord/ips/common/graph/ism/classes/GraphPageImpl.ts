@@ -1,4 +1,4 @@
-import { GraphPage } from '@/iochord/ips/common/graph/sbpnet/interfaces/GraphPage';
+import { GraphPage } from '@/iochord/ips/common/graph/ism/interfaces/GraphPage';
 import { GraphElementImpl } from './GraphElementImpl';
 import { GraphData } from '../interfaces/GraphData';
 import { GraphNode } from '../interfaces/GraphNode';

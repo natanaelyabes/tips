@@ -40,7 +40,7 @@
 
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator';
-import { SbpnetModelService } from '@/iochord/ips/common/service/model/SbpnetModelService';
+import { IsmModelService } from '@/iochord/ips/common/service/model/IsmModelService';
 
 declare const $: any;
 

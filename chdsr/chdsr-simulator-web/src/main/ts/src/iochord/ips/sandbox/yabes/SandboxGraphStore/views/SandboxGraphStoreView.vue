@@ -14,9 +14,9 @@
 import { Component, Vue } from 'vue-property-decorator';
 import PageLayout from '@/iochord/ips/common/ui/layout/classes/PageLayout';
 import { getModule } from 'vuex-module-decorators';
-import GraphModule from '@/iochord/ips/common/graph/sbpnet/stores/GraphModule';
-import { DATA_TYPE_ENUM } from '@/iochord/ips/common/graph/sbpnet/enums/DATA';
-import { GraphPage } from '@/iochord/ips/common/graph/sbpnet/interfaces/GraphPage';
+import GraphModule from '@/iochord/ips/common/graph/ism/stores/GraphModule';
+import { DATA_TYPE_ENUM } from '@/iochord/ips/common/graph/ism/enums/DATA';
+import { GraphPage } from '@/iochord/ips/common/graph/ism/interfaces/GraphPage';
 
 const graphModule = getModule(GraphModule);
 

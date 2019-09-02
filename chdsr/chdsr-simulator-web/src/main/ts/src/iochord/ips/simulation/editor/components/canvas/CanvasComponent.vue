@@ -124,26 +124,26 @@ import SvgPanZoom from 'svg-pan-zoom';
 
 // Classes
 import BaseComponent from '@/iochord/ips/common/ui/layout/classes/BaseComponent';
-import { Graph } from '@/iochord/ips/common/graph/sbpnet/interfaces/Graph';
-import { GraphControlImpl } from '@/iochord/ips/common/graph/sbpnet/classes/components/GraphControlImpl';
-import { GraphImpl } from '@/iochord/ips/common/graph/sbpnet/classes/GraphImpl';
-import { GraphPage } from '@/iochord/ips/common/graph/sbpnet/interfaces/GraphPage';
-import { GraphPageImpl } from '@/iochord/ips/common/graph/sbpnet/classes/GraphPageImpl';
-import { JointGraphConnectorImpl } from '@/iochord/ips/common/graph/sbpnet/rendering-engine/joint/shapes/classes/JointGraphConnectorImpl';
-import { JointGraphNodeImpl } from '@/iochord/ips/common/graph/sbpnet/rendering-engine/joint/shapes/classes/JointGraphNodeImpl';
-import { JointGraphPageImpl } from '@/iochord/ips/common/graph/sbpnet/rendering-engine/joint/shapes/classes/JointGraphPageImpl';
-import JointJsRenderer from '@/iochord/ips/common/graph/sbpnet/rendering-engine/joint/classes/JointJsRenderer';
+import { Graph } from '@/iochord/ips/common/graph/ism/interfaces/Graph';
+import { GraphControlImpl } from '@/iochord/ips/common/graph/ism/classes/components/GraphControlImpl';
+import { GraphImpl } from '@/iochord/ips/common/graph/ism/classes/GraphImpl';
+import { GraphPage } from '@/iochord/ips/common/graph/ism/interfaces/GraphPage';
+import { GraphPageImpl } from '@/iochord/ips/common/graph/ism/classes/GraphPageImpl';
+import { JointGraphConnectorImpl } from '@/iochord/ips/common/graph/ism/rendering-engine/joint/shapes/classes/JointGraphConnectorImpl';
+import { JointGraphNodeImpl } from '@/iochord/ips/common/graph/ism/rendering-engine/joint/shapes/classes/JointGraphNodeImpl';
+import { JointGraphPageImpl } from '@/iochord/ips/common/graph/ism/rendering-engine/joint/shapes/classes/JointGraphPageImpl';
+import JointJsRenderer from '@/iochord/ips/common/graph/ism/rendering-engine/joint/classes/JointJsRenderer';
 
 // Interfaces
-import { GraphConnector } from '@/iochord/ips/common/graph/sbpnet/interfaces/GraphConnector';
-import { GraphData } from '@/iochord/ips/common/graph/sbpnet/interfaces/GraphData';
-import { GraphElement } from '@/iochord/ips/common/graph/sbpnet/interfaces/GraphElement';
-import { GraphNode } from '@/iochord/ips/common/graph/sbpnet/interfaces/GraphNode';
-import { GraphStartEventNode } from '@/iochord/ips/common/graph/sbpnet/interfaces/components/GraphStartEventNode';
+import { GraphConnector } from '@/iochord/ips/common/graph/ism/interfaces/GraphConnector';
+import { GraphData } from '@/iochord/ips/common/graph/ism/interfaces/GraphData';
+import { GraphElement } from '@/iochord/ips/common/graph/ism/interfaces/GraphElement';
+import { GraphNode } from '@/iochord/ips/common/graph/ism/interfaces/GraphNode';
+import { GraphStartEventNode } from '@/iochord/ips/common/graph/ism/interfaces/components/GraphStartEventNode';
 
 // Enums
-import { NODE_TYPE } from '@/iochord/ips/common/graph/sbpnet/rendering-engine/joint/shapes/enums/NODE';
-import { ARC_TYPE } from '@/iochord/ips/common/graph/sbpnet/rendering-engine/joint/shapes/enums/ARC';
+import { NODE_TYPE } from '@/iochord/ips/common/graph/ism/rendering-engine/joint/shapes/enums/NODE';
+import { ARC_TYPE } from '@/iochord/ips/common/graph/ism/rendering-engine/joint/shapes/enums/ARC';
 
 // Components
 import StartNodeModal from '@/iochord/ips/simulation/editor/components/modals/StartNodeModal.vue';
@@ -159,7 +159,7 @@ import CanvasMixin from '@/iochord/ips/simulation/editor/mixins/editors/CanvasMi
 declare const $: any;
 
 // Vuex Module
-import GraphModule from '@/iochord/ips/common/graph/sbpnet/stores/GraphModule';
+import GraphModule from '@/iochord/ips/common/graph/ism/stores/GraphModule';
 import EditorState from '../../stores/editors/EditorState';
 
 // Vuex module instance

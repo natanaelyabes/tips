@@ -5,16 +5,16 @@ import { VuexModule, Module, MutationAction, Mutation } from 'vuex-module-decora
 // Interfaces
 import { Graph } from '../interfaces/Graph';
 import { GraphConfiguration } from '../interfaces/GraphConfiguration';
-import { GraphConnector } from '@/iochord/ips/common/graph/sbpnet/interfaces/GraphConnector';
+import { GraphConnector } from '@/iochord/ips/common/graph/ism/interfaces/GraphConnector';
 import { GraphConnectorImpl } from '../classes/GraphConnectorImpl';
 import { GraphControl } from '../interfaces/components/GraphControl';
 import { GraphData } from '../interfaces/GraphData';
-import { GraphPage } from '@/iochord/ips/common/graph/sbpnet/interfaces/GraphPage';
+import { GraphPage } from '@/iochord/ips/common/graph/ism/interfaces/GraphPage';
 import { GraphNode } from '../interfaces/GraphNode';
 import { GraphNodeImpl } from '../classes/GraphNodeImpl';
 
 // Services
-import { SbpnetModelService } from '../../../service/model/SbpnetModelService';
+import { IsmModelService } from '../../../service/model/IsmModelService';
 
 interface StoreType {
   graphModule: GraphModule;
@@ -31,7 +31,7 @@ export default class GraphModule extends VuexModule {
   // Mutations
   @MutationAction({ mutate: ['graph'] })
   public async fetchGraph(url?: string) {
-    const graph: Graph = await SbpnetModelService.getInstance().getExampleModel();
+    const graph: Graph = await IsmModelService.getInstance().getExampleModel();
     return { graph };
   }
 

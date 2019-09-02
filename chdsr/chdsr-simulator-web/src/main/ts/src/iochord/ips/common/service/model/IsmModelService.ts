@@ -1,6 +1,6 @@
 import { ModelService } from './ModelService';
-import { Graph } from '@/iochord/ips/common/graph/sbpnet/interfaces/Graph';
-import { GraphImpl } from '@/iochord/ips/common/graph/sbpnet/classes/GraphImpl';
+import { Graph } from '@/iochord/ips/common/graph/ism/interfaces/Graph';
+import { GraphImpl } from '@/iochord/ips/common/graph/ism/classes/GraphImpl';
 import { Client } from 'webstomp-client';
 import { Observable } from 'rxjs';
 
@@ -11,22 +11,22 @@ import { Observable } from 'rxjs';
  * @since   2019
  *
  */
-export class SbpnetModelService extends ModelService {
+export class IsmModelService extends ModelService {
 
   public static readonly BASE_URI: string = ModelService.BASE_URI + '/sbpnet';
 
-  public static getInstance(): SbpnetModelService {
-    if (SbpnetModelService.__INSTANCE == null) {
-      SbpnetModelService.__INSTANCE = new SbpnetModelService();
+  public static getInstance(): IsmModelService {
+    if (IsmModelService.__INSTANCE == null) {
+      IsmModelService.__INSTANCE = new IsmModelService();
     }
-    return SbpnetModelService.__INSTANCE;
+    return IsmModelService.__INSTANCE;
   }
 
-  private static __INSTANCE: SbpnetModelService;
+  private static __INSTANCE: IsmModelService;
 
   public callSaveModel(graph: any, callback: any) {
     this.getWsClient((wsc: Client) => {
-      const wsUri = SbpnetModelService.BASE_URI + '/edit/1';
+      const wsUri = IsmModelService.BASE_URI + '/edit/1';
       wsc.subscribe('/res' + wsUri, (tick: any) => {
         wsc.unsubscribe('/res' + wsUri);
         callback(tick);
@@ -156,27 +156,27 @@ export class SbpnetModelService extends ModelService {
   }
 
   public async getExampleModel(): Promise<Graph> {
-    const response = await this.remoteGet(SbpnetModelService.BASE_URI + '/example');
+    const response = await this.remoteGet(IsmModelService.BASE_URI + '/example');
     return GraphImpl.deserialize(response.data) as Graph;
   }
 
   public async getCreateDefault(): Promise<Graph> {
-    const response = await this.remoteGet(SbpnetModelService.BASE_URI + '/create');
+    const response = await this.remoteGet(IsmModelService.BASE_URI + '/create');
     return GraphImpl.deserialize(response.data) as Graph;
   }
 
   public async getCreate(defaultNodes: string): Promise<Graph> {
-    const response = await this.remoteGet(SbpnetModelService.BASE_URI + '/create/' + defaultNodes);
+    const response = await this.remoteGet(IsmModelService.BASE_URI + '/create/' + defaultNodes);
     return GraphImpl.deserialize(response.data) as Graph;
   }
 
   public async getEdit(modelId: string): Promise<Graph> {
-    const response = await this.remoteGet(SbpnetModelService.BASE_URI + '/edit/' + modelId);
+    const response = await this.remoteGet(IsmModelService.BASE_URI + '/edit/' + modelId);
     return GraphImpl.deserialize(response.data) as Graph;
   }
 
   public async getView(modelId: string): Promise<Graph> {
-    const response = await this.remoteGet(SbpnetModelService.BASE_URI + '/view/' + modelId);
+    const response = await this.remoteGet(IsmModelService.BASE_URI + '/view/' + modelId);
     return GraphImpl.deserialize(response.data) as Graph;
   }
 

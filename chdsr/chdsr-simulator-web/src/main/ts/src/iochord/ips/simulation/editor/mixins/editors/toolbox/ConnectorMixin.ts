@@ -5,24 +5,24 @@ import { Component } from 'vue-property-decorator';
 import { getModule } from 'vuex-module-decorators';
 
 // Interfaces
-import { GraphConnector } from '@/iochord/ips/common/graph/sbpnet/interfaces/GraphConnector';
-import { GraphNode } from '@/iochord/ips/common/graph/sbpnet/interfaces/GraphNode';
-import { JointGraphPageImpl } from '@/iochord/ips/common/graph/sbpnet/rendering-engine/joint/shapes/classes/JointGraphPageImpl';
-import { JointGraphConnectorImpl } from '@/iochord/ips/common/graph/sbpnet/rendering-engine/joint/shapes/classes/JointGraphConnectorImpl';
+import { GraphConnector } from '@/iochord/ips/common/graph/ism/interfaces/GraphConnector';
+import { GraphNode } from '@/iochord/ips/common/graph/ism/interfaces/GraphNode';
+import { JointGraphPageImpl } from '@/iochord/ips/common/graph/ism/rendering-engine/joint/shapes/classes/JointGraphPageImpl';
+import { JointGraphConnectorImpl } from '@/iochord/ips/common/graph/ism/rendering-engine/joint/shapes/classes/JointGraphConnectorImpl';
 
 // Classes
 import BaseComponent from '@/iochord/ips/common/ui/layout/classes/BaseComponent';
-import { GraphConnectorImpl } from '@/iochord/ips/common/graph/sbpnet/classes/GraphConnectorImpl';
+import { GraphConnectorImpl } from '@/iochord/ips/common/graph/ism/classes/GraphConnectorImpl';
 
 // Vuex & Rxjs
 
 /** Graph */
-import GraphModule from '@/iochord/ips/common/graph/sbpnet/stores/GraphModule';
-import GraphSubject from '@/iochord/ips/common/graph/sbpnet/rxjs/GraphSubject';
+import GraphModule from '@/iochord/ips/common/graph/ism/stores/GraphModule';
+import GraphSubject from '@/iochord/ips/common/graph/ism/rxjs/GraphSubject';
 
 /** Graph Editor */
 import EditorState from '../../../stores/editors/EditorState';
-import { ARC_TYPE } from '@/iochord/ips/common/graph/sbpnet/rendering-engine/joint/shapes/enums/ARC';
+import { ARC_TYPE } from '@/iochord/ips/common/graph/ism/rendering-engine/joint/shapes/enums/ARC';
 
 // Fetch module from stores
 const graphModule = getModule(GraphModule);
