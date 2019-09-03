@@ -12,7 +12,7 @@ public class StompWebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
-        registry.addEndpoint("/ws-chdsr").setAllowedOrigins("*").withSockJS();
+        registry.addEndpoint("/ws-ips").setAllowedOrigins("*").withSockJS();
     }
 
     @Override
