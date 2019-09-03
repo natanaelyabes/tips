@@ -6,12 +6,12 @@ import { VuexModule, Module, MutationAction, Mutation } from 'vuex-module-decora
 import { Graph } from '../interfaces/Graph';
 import { GraphConfiguration } from '../interfaces/GraphConfiguration';
 import { GraphConnector } from '@/iochord/ips/common/graph/ism/interfaces/GraphConnector';
-import { GraphConnectorImpl } from '../classes/GraphConnectorImpl';
+import { GraphConnectorImpl } from '../class/GraphConnectorImpl';
 import { GraphControl } from '../interfaces/components/GraphControl';
 import { GraphData } from '../interfaces/GraphData';
 import { GraphPage } from '@/iochord/ips/common/graph/ism/interfaces/GraphPage';
 import { GraphNode } from '../interfaces/GraphNode';
-import { GraphNodeImpl } from '../classes/GraphNodeImpl';
+import { GraphNodeImpl } from '../class/GraphNodeImpl';
 
 // Services
 import { IsmModelService } from '../../../service/model/IsmModelService';

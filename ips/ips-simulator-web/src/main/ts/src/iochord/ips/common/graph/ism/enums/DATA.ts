@@ -1,9 +1,9 @@
-import { GraphDataTableImpl } from '../classes/components/GraphDataTableImpl';
-import { GraphDataObjectTypeImpl } from '../classes/components/GraphDataObjectTypeImpl';
-import { GraphDataGeneratorImpl } from '../classes/components/GraphDataGeneratorImpl';
-import { GraphDataFunctionImpl } from '../classes/components/GraphDataFunctionImpl';
-import { GraphDataQueueImpl } from '../classes/components/GraphDataQueueImpl';
-import { GraphDataResourceImpl } from '../classes/components/GraphDataResourceImpl';
+import { GraphDataTableImpl } from '../class/components/GraphDataTableImpl';
+import { GraphDataObjectTypeImpl } from '../class/components/GraphDataObjectTypeImpl';
+import { GraphDataGeneratorImpl } from '../class/components/GraphDataGeneratorImpl';
+import { GraphDataFunctionImpl } from '../class/components/GraphDataFunctionImpl';
+import { GraphDataQueueImpl } from '../class/components/GraphDataQueueImpl';
+import { GraphDataResourceImpl } from '../class/components/GraphDataResourceImpl';
 
 /**
  *

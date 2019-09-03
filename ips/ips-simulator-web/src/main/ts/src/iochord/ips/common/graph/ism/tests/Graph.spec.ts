@@ -2,8 +2,8 @@ import { GraphDataGenerator } from '../interfaces/components/GraphDataGenerator'
 import { GraphDataObjectType } from '../interfaces/components/GraphDataObjectType';
 import { GraphPage } from '../interfaces/GraphPage';
 import { GraphFactory } from '../interfaces/GraphFactory';
-import { GraphFactoryImpl } from '../classes/GraphFactoryImpl';
-import { GraphImpl } from '../classes/GraphImpl';
+import { GraphFactoryImpl } from '../class/GraphFactoryImpl';
+import { GraphImpl } from '../class/GraphImpl';
 
 class GraphExample {
   public static create(): void {

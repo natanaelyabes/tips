@@ -1,8 +1,8 @@
 // Classes
-import { GraphStartEventNodeImpl } from '../classes/components/GraphStartEventNodeImpl';
-import { GraphStopEventNodeImpl } from '../classes/components/GraphStopEventNodeImpl';
-import { GraphActivityNodeImpl } from '../classes/components/GraphActivityNodeImpl';
-import { GraphBranchNodeImpl } from '../classes/components/GraphBranchNodeImpl';
+import { GraphStartEventNodeImpl } from '../class/components/GraphStartEventNodeImpl';
+import { GraphStopEventNodeImpl } from '../class/components/GraphStopEventNodeImpl';
+import { GraphActivityNodeImpl } from '../class/components/GraphActivityNodeImpl';
+import { GraphBranchNodeImpl } from '../class/components/GraphBranchNodeImpl';
 
 /**
  *
