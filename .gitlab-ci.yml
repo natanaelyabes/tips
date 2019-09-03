@@ -24,7 +24,7 @@ stop:
   stage: build
   script:
     - echo Stopping current service ...
-    - kubectl scale --replicas=0 statefulset/apps-ips
+    - kubectl scale --replicas=0 statefulset/apps-ips-spring-runner
   cache:
     key: "$CI_COMMIT_REF_NAME"
     policy: pull
@@ -37,7 +37,7 @@ start:
   stage: deploy
   script:
     - echo Starting service ...
-    - kubectl scale --replicas=1 statefulset/apps-ips
+    - kubectl scale --replicas=1 statefulset/apps-ips-spring-runner
   cache:
     key: "$CI_COMMIT_REF_NAME"
     policy: pull
