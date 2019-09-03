@@ -70,13 +70,13 @@ import { ARC_TYPE } from '@/iochord/ips/common/graph/ism/rendering-engine/joint/
 import * as NODE_ENUMS from '@/iochord/ips/common/graph/ism/enums/NODE';
 
 // Classes
-import PageLayout from '@/iochord/ips/common/ui/layout/classes/PageLayout';
-import { GraphActivityNodeImpl } from '@/iochord/ips/common/graph/ism/classes/components/GraphActivityNodeImpl';
-import { GraphImpl } from '@/iochord/ips/common/graph/ism/classes/GraphImpl';
-import { GraphNodeImpl } from '@/iochord/ips/common/graph/ism/classes/GraphNodeImpl';
-import { JointGraphConnectorImpl } from '@/iochord/ips/common/graph/ism/rendering-engine/joint/shapes/classes/JointGraphConnectorImpl';
-import { JointGraphNodeImpl } from '@/iochord/ips/common/graph/ism/rendering-engine/joint/shapes/classes/JointGraphNodeImpl';
-import { JointGraphPageImpl } from '@/iochord/ips/common/graph/ism/rendering-engine/joint/shapes/classes/JointGraphPageImpl';
+import PageLayout from '@/iochord/ips/common/ui/layout/class/PageLayout';
+import { GraphActivityNodeImpl } from '@/iochord/ips/common/graph/ism/class/components/GraphActivityNodeImpl';
+import { GraphImpl } from '@/iochord/ips/common/graph/ism/class/GraphImpl';
+import { GraphNodeImpl } from '@/iochord/ips/common/graph/ism/class/GraphNodeImpl';
+import { JointGraphConnectorImpl } from '@/iochord/ips/common/graph/ism/rendering-engine/joint/shapes/class/JointGraphConnectorImpl';
+import { JointGraphNodeImpl } from '@/iochord/ips/common/graph/ism/rendering-engine/joint/shapes/class/JointGraphNodeImpl';
+import { JointGraphPageImpl } from '@/iochord/ips/common/graph/ism/rendering-engine/joint/shapes/class/JointGraphPageImpl';
 
 // Vuex module
 import GraphModule from '@/iochord/ips/common/graph/ism/stores/GraphModule';

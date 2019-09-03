@@ -51,7 +51,7 @@
 
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator';
-import BaseComponent from '@/iochord/ips/common/ui/layout/classes/BaseComponent';
+import BaseComponent from '@/iochord/ips/common/ui/layout/class/BaseComponent';
 
 @Component
 export default class ContentFileQueryComponent extends BaseComponent {

@@ -1,4 +1,4 @@
-import BaseComponent from '@/iochord/ips/common/ui/layout/classes/BaseComponent';
+import BaseComponent from '@/iochord/ips/common/ui/layout/class/BaseComponent';
 import { Graph } from '@/iochord/ips/common/graph/ism/interfaces/Graph';
 import { GraphPage } from '@/iochord/ips/common/graph/ism/interfaces/GraphPage';
 import { GraphNode } from '@/iochord/ips/common/graph/ism/interfaces/GraphNode';
@@ -6,8 +6,8 @@ import { Component } from 'vue-property-decorator';
 import { getModule } from 'vuex-module-decorators';
 import GraphModule from '@/iochord/ips/common/graph/ism/stores/GraphModule';
 import GraphSubject from '@/iochord/ips/common/graph/ism/rxjs/GraphSubject';
-import { GraphNodeImpl } from '@/iochord/ips/common/graph/ism/classes/GraphNodeImpl';
-import { GraphStopEventNodeImpl } from '@/iochord/ips/common/graph/ism/classes/components/GraphStopEventNodeImpl';
+import { GraphNodeImpl } from '@/iochord/ips/common/graph/ism/class/GraphNodeImpl';
+import { GraphStopEventNodeImpl } from '@/iochord/ips/common/graph/ism/class/components/GraphStopEventNodeImpl';
 
 const graphModule = getModule(GraphModule);
 

@@ -35,7 +35,7 @@
 
 <script lang="ts">
 import { Component, Prop, Vue, Watch } from 'vue-property-decorator';
-import BaseComponent from '@/iochord/ips/common/ui/layout/classes/BaseComponent';
+import BaseComponent from '@/iochord/ips/common/ui/layout/class/BaseComponent';
 
 
 /**

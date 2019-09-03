@@ -16,7 +16,7 @@
 
 <script lang="ts">
 import { Component } from 'vue-property-decorator';
-import PageLayout from '@/iochord/ips/common/ui/layout/classes/PageLayout';
+import PageLayout from '@/iochord/ips/common/ui/layout/class/PageLayout';
 
 // JointJS
 import * as joint from 'jointjs';

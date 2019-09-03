@@ -12,7 +12,7 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
-import PageLayout from '@/iochord/ips/common/ui/layout/classes/PageLayout';
+import PageLayout from '@/iochord/ips/common/ui/layout/class/PageLayout';
 import { getModule } from 'vuex-module-decorators';
 import GraphModule from '@/iochord/ips/common/graph/ism/stores/GraphModule';
 import { DATA_TYPE_ENUM } from '@/iochord/ips/common/graph/ism/enums/DATA';

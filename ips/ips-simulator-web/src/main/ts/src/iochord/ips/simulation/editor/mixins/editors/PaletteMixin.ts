@@ -2,7 +2,7 @@
 import { Component, Mixins } from 'vue-property-decorator';
 
 // Classes
-import BaseComponent from '@/iochord/ips/common/ui/layout/classes/BaseComponent';
+import BaseComponent from '@/iochord/ips/common/ui/layout/class/BaseComponent';
 
 // Mixins
 import NodeMixin from './toolbox/NodeMixin';

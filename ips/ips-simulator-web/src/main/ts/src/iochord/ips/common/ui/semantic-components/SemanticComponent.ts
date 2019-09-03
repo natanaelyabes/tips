@@ -1,4 +1,4 @@
-import BaseComponent from '@/iochord/ips/common/ui/layout/classes/BaseComponent';
+import BaseComponent from '@/iochord/ips/common/ui/layout/class/BaseComponent';
 import { Component } from 'vue-property-decorator';
 import { SemanticModulesIsUsed } from '@/iochord/ips/common/ui/semantic-components/SemanticModulesIsUsed';
 

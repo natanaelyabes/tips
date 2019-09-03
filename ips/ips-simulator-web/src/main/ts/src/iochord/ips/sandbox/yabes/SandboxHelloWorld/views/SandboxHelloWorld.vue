@@ -60,7 +60,7 @@
 
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator';
-import PageLayout from '@/iochord/ips/common/ui/layout/classes/PageLayout';
+import PageLayout from '@/iochord/ips/common/ui/layout/class/PageLayout';
 import DepthTwoLeftWrapperComponent from '../components/DepthTwoLeftWrapperComponent.vue';
 import NavigationBarComponent from '@/iochord/ips/common/ui/semantic-components/navigations/components/NavigationBarComponent.vue';
 

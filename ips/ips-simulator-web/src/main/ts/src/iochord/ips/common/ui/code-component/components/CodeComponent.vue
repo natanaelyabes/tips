@@ -27,7 +27,7 @@
 
 <script lang="ts">
 import { Component, Prop } from 'vue-property-decorator';
-import BaseComponent from '@/iochord/ips/common/ui/layout/classes/BaseComponent';
+import BaseComponent from '@/iochord/ips/common/ui/layout/class/BaseComponent';
 
 import '#root/node_modules/highlight.js/styles/default.css';
 import * as hljs from 'highlight.js';

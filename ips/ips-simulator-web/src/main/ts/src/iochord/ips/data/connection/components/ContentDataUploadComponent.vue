@@ -61,7 +61,7 @@
 
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator';
-import BaseComponent from '@/iochord/ips/common/ui/layout/classes/BaseComponent';
+import BaseComponent from '@/iochord/ips/common/ui/layout/class/BaseComponent';
 import DataConnectionService from '@/iochord/ips/common/service/data/DataConnectionService';
 
 @Component

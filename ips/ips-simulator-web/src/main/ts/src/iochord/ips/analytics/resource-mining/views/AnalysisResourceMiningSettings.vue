@@ -43,7 +43,7 @@ a.section {
 
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator';
-import Layout04View from '@/iochord/ips/common/ui/layout/classes/Layout04';
+import Layout04View from '@/iochord/ips/common/ui/layout/class/Layout04';
 import LeftBarContentWrapperComponent from '@/iochord/ips/common/ui/layout/components/LeftBarContentWrapperComponent.vue';
 import ContentSettingsComponent from '../components/ContentSettingsComponent.vue';
 

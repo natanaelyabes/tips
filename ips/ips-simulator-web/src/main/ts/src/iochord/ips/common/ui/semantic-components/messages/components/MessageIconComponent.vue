@@ -27,8 +27,8 @@
 
 <script lang="ts">
 import { Component, Prop } from 'vue-property-decorator';
-import BaseComponent from '@/iochord/ips/common/ui/layout/classes/BaseComponent';
-import MessageComponent from '@/iochord/ips/common/ui/semantic-components/messages/classes/MessageComponent';
+import BaseComponent from '@/iochord/ips/common/ui/layout/class/BaseComponent';
+import MessageComponent from '@/iochord/ips/common/ui/semantic-components/messages/class/MessageComponent';
 
 // JQuery Symbol Handler
 declare const $: any;

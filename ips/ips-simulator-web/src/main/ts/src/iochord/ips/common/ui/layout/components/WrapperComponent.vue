@@ -62,7 +62,7 @@ import { Component, Prop, Vue } from 'vue-property-decorator';
 import HeaderComponent from './HeaderComponent.vue';
 import TitleMenuBarComponent from './TitleMenuBarComponent.vue';
 import WorkspaceComponent from './WorkspaceComponent.vue';
-import BaseComponent from '@/iochord/ips/common/ui/layout/classes/BaseComponent';
+import BaseComponent from '@/iochord/ips/common/ui/layout/class/BaseComponent';
 
 
 /**

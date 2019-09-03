@@ -24,7 +24,7 @@
 
 <script lang="ts">
 import { Component } from 'vue-property-decorator';
-import IndexLayout from '@/iochord/ips/common/ui/layout/classes/IndexLayout';
+import IndexLayout from '@/iochord/ips/common/ui/layout/class/IndexLayout';
 
 /**
  *

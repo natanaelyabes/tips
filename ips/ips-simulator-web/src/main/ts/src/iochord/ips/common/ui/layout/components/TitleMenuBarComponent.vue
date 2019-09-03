@@ -45,7 +45,7 @@ import { Component, Vue } from 'vue-property-decorator';
 
 // Components
 import NavigationBarComponent from '@/iochord/ips/common/ui/semantic-components/navigations/components/NavigationBarComponent.vue';
-import BaseComponent from '@/iochord/ips/common/ui/layout/classes/BaseComponent';
+import BaseComponent from '@/iochord/ips/common/ui/layout/class/BaseComponent';
 
 declare const $: any;
 

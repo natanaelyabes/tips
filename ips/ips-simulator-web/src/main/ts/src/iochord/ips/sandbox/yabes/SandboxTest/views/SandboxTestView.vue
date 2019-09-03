@@ -27,7 +27,7 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
-import BaseLayout from '@/iochord/ips/common/ui/layout/classes/BaseLayout';
+import BaseLayout from '@/iochord/ips/common/ui/layout/class/BaseLayout';
 
 // import SocketIO from 'socket.io-client';
 

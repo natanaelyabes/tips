@@ -153,7 +153,7 @@ h2.ui.white.header{
 import { Component } from 'vue-property-decorator';
 import { BaseUrlEnum, ApplicationEnum } from '@/iochord/ips/common/enums';
 
-import PageView from '@/iochord/ips/common/ui/layout/classes/PageLayout';
+import PageView from '@/iochord/ips/common/ui/layout/class/PageLayout';
 
 /**
  *

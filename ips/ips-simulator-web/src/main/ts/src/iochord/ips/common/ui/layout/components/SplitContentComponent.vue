@@ -29,7 +29,7 @@
 <script lang="ts">
 // Vue & Libraries
 import { Component, Vue } from 'vue-property-decorator';
-import BaseComponent from '@/iochord/ips/common/ui/layout/classes/BaseComponent';
+import BaseComponent from '@/iochord/ips/common/ui/layout/class/BaseComponent';
 
 @Component
 export default class SplitContentComponent extends BaseComponent {

@@ -98,7 +98,7 @@
 import { Component, Vue } from 'vue-property-decorator';
 
 // Classes
-import Layout01 from '@/iochord/ips/common/ui/layout/classes/Layout01';
+import Layout01 from '@/iochord/ips/common/ui/layout/class/Layout01';
 
 // Interfaces
 import { Layout01HasWrapper } from '../../common/ui/layout/interfaces/Layout01HasWrapper';

@@ -38,7 +38,7 @@ import { Component, Vue } from 'vue-property-decorator';
 
 // Components
 import RibbonComponent from './RibbonComponent.vue';
-import BaseComponent from '@/iochord/ips/common/ui/layout/classes/BaseComponent';
+import BaseComponent from '@/iochord/ips/common/ui/layout/class/BaseComponent';
 
 
 /**

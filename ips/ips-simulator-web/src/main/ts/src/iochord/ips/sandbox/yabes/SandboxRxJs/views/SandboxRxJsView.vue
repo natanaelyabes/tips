@@ -14,8 +14,8 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
-import PageLayout from '@/iochord/ips/common/ui/layout/classes/PageLayout';
-import { DataService } from '@/iochord/ips/sandbox/yabes/SandboxRxJs/classes/DataService';
+import PageLayout from '@/iochord/ips/common/ui/layout/class/PageLayout';
+import { DataService } from '@/iochord/ips/sandbox/yabes/SandboxRxJs/class/DataService';
 
 @Component<SandboxRxJsView>({
   subscriptions: () => {

@@ -150,8 +150,8 @@ import * as joint from 'jointjs';
 import '#root/node_modules/jointjs/dist/joint.css';
 
 // Classes
-import Layout01View from '@/iochord/ips/common/ui/layout/classes/Layout01';
-import { GraphImpl } from '@/iochord/ips/common/graph/ism/classes/GraphImpl';
+import Layout01View from '@/iochord/ips/common/ui/layout/class/Layout01';
+import { GraphImpl } from '@/iochord/ips/common/graph/ism/class/GraphImpl';
 
 // Interfaces
 import { Layout01HasWrapper } from '@/iochord/ips/common/ui/layout/interfaces/Layout01HasWrapper';
@@ -176,8 +176,8 @@ import SimulationDataManagementComponent from '../components/ribbon/SimulationDa
 // Vuex & rxjs
 import GraphModule from '@/iochord/ips/common/graph/ism/stores/GraphModule';
 import GraphSubject from '@/iochord/ips/common/graph/ism/rxjs/GraphSubject';
-import { GraphNodeImpl } from '../../../common/graph/ism/classes/GraphNodeImpl';
-import { GraphConnectorImpl } from '../../../common/graph/ism/classes/GraphConnectorImpl';
+import { GraphNodeImpl } from '../../../common/graph/ism/class/GraphNodeImpl';
+import { GraphConnectorImpl } from '../../../common/graph/ism/class/GraphConnectorImpl';
 
 // Async component must be lazily load
 const CanvasComponent = () => import('@/iochord/ips/simulation/editor/components/canvas/CanvasComponent.vue');

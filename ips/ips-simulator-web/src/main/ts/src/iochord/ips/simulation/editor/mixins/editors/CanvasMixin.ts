@@ -3,7 +3,7 @@ import { Component, Mixins } from 'vue-property-decorator';
 import { getModule } from 'vuex-module-decorators';
 
 // Components
-import BaseComponent from '@/iochord/ips/common/ui/layout/classes/BaseComponent';
+import BaseComponent from '@/iochord/ips/common/ui/layout/class/BaseComponent';
 
 // Interfaces
 import { Graph } from '@/iochord/ips/common/graph/ism/interfaces/Graph';
@@ -11,7 +11,7 @@ import { GraphPage } from '@/iochord/ips/common/graph/ism/interfaces/GraphPage';
 import { GraphNode } from '@/iochord/ips/common/graph/ism/interfaces/GraphNode';
 
 // Classes
-import { JointGraphPageImpl } from '@/iochord/ips/common/graph/ism/rendering-engine/joint/shapes/classes/JointGraphPageImpl';
+import { JointGraphPageImpl } from '@/iochord/ips/common/graph/ism/rendering-engine/joint/shapes/class/JointGraphPageImpl';
 
 // Mixins
 import PaletteMixin from './PaletteMixin';

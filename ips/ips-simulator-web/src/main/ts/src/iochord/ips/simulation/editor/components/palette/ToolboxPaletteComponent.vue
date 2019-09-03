@@ -50,7 +50,7 @@
 
 <script lang="ts">
 import { Component, Mixins } from 'vue-property-decorator';
-import BaseComponent from '@/iochord/ips/common/ui/layout/classes/BaseComponent';
+import BaseComponent from '@/iochord/ips/common/ui/layout/class/BaseComponent';
 import PaletteMixin from '@/iochord/ips/simulation/editor/mixins/editors/PaletteMixin';
 import GraphSubject from '@/iochord/ips/common/graph/ism/rxjs/GraphSubject';
 import { Graph } from '@/iochord/ips/common/graph/ism/interfaces/Graph';

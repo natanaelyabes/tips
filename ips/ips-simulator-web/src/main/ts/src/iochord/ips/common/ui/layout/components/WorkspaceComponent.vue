@@ -67,7 +67,7 @@ import { Component, Vue } from 'vue-property-decorator';
 // Components
 import SidebarComponent from './SidebarComponent.vue';
 import ContentComponent from './ContentComponent.vue';
-import BaseComponent from '@/iochord/ips/common/ui/layout/classes/BaseComponent';
+import BaseComponent from '@/iochord/ips/common/ui/layout/class/BaseComponent';
 
 
 /**

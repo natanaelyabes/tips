@@ -47,7 +47,7 @@
 <script lang="ts">
 import { Component } from 'vue-property-decorator';
 import { getModule } from 'vuex-module-decorators';
-import BaseComponent from '@/iochord/ips/common/ui/layout/classes/BaseComponent';
+import BaseComponent from '@/iochord/ips/common/ui/layout/class/BaseComponent';
 import GraphModule from '@/iochord/ips/common/graph/ism/stores/GraphModule';
 import GraphSubject from '@/iochord/ips/common/graph/ism/rxjs/GraphSubject';
 

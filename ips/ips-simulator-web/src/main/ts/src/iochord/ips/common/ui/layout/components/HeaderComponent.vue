@@ -45,7 +45,7 @@ import { Component, Vue } from 'vue-property-decorator';
 
 // Components
 import BreadcrumbComponent from '@/iochord/ips/common/ui/semantic-components/breadcrumbs/components/BreadcrumbComponent.vue';
-import BaseComponent from '@/iochord/ips/common/ui/layout/classes/BaseComponent';
+import BaseComponent from '@/iochord/ips/common/ui/layout/class/BaseComponent';
 
 
 /**

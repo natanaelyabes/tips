@@ -10,7 +10,7 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
-import IndexLayout from '@/iochord/ips/common/ui/layout/classes/IndexLayout';
+import IndexLayout from '@/iochord/ips/common/ui/layout/class/IndexLayout';
 
 @Component
 export default class SandboxListVueRouterIndex extends IndexLayout {

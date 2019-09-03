@@ -7,12 +7,12 @@ import { getModule } from 'vuex-module-decorators';
 // Interfaces
 import { GraphConnector } from '@/iochord/ips/common/graph/ism/interfaces/GraphConnector';
 import { GraphNode } from '@/iochord/ips/common/graph/ism/interfaces/GraphNode';
-import { JointGraphPageImpl } from '@/iochord/ips/common/graph/ism/rendering-engine/joint/shapes/classes/JointGraphPageImpl';
-import { JointGraphConnectorImpl } from '@/iochord/ips/common/graph/ism/rendering-engine/joint/shapes/classes/JointGraphConnectorImpl';
+import { JointGraphPageImpl } from '@/iochord/ips/common/graph/ism/rendering-engine/joint/shapes/class/JointGraphPageImpl';
+import { JointGraphConnectorImpl } from '@/iochord/ips/common/graph/ism/rendering-engine/joint/shapes/class/JointGraphConnectorImpl';
 
 // Classes
-import BaseComponent from '@/iochord/ips/common/ui/layout/classes/BaseComponent';
-import { GraphConnectorImpl } from '@/iochord/ips/common/graph/ism/classes/GraphConnectorImpl';
+import BaseComponent from '@/iochord/ips/common/ui/layout/class/BaseComponent';
+import { GraphConnectorImpl } from '@/iochord/ips/common/graph/ism/class/GraphConnectorImpl';
 
 // Vuex & Rxjs
 

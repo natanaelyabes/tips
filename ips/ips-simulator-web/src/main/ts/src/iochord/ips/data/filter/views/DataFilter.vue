@@ -45,7 +45,7 @@ a.section {
 
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator';
-import Layout02View from '@/iochord/ips/common/ui/layout/classes/Layout02';
+import Layout02View from '@/iochord/ips/common/ui/layout/class/Layout02';
 import DepthTwoLeftWrapperComponent from '@/iochord/ips/common/ui/layout/components/DepthTwoLeftWrapperComponent.vue';
 import ItemFilterComponent from '../components/ItemFilterComponent.vue';
 import ContentFilterTimeComponent from '../components/ContentFilterTimeComponent.vue';

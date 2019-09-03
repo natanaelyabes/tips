@@ -34,7 +34,7 @@
 
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator';
-import Layout03View from '@/iochord/ips/common/ui/layout/classes/Layout03';
+import Layout03View from '@/iochord/ips/common/ui/layout/class/Layout03';
 import SettingsBarWrapperComponent from '@/iochord/ips/common/ui/layout/components/SettingsBarWrapperComponent.vue';
 import PMDHeuristicsRibbonComponent from '../components/PMDHeuristicsRibbonComponent.vue';
 

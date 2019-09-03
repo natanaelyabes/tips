@@ -89,7 +89,7 @@ import { getModule } from 'vuex-module-decorators';
 import { SemanticModulesIsUsed } from '@/iochord/ips/common/ui/semantic-components/SemanticModulesIsUsed';
 
 // Layouts
-import IndexLayout from '@/iochord/ips/common/ui/layout/classes/IndexLayout';
+import IndexLayout from '@/iochord/ips/common/ui/layout/class/IndexLayout';
 
 // Components
 import NavigationTopSidebarComponent from '@/iochord/ips/common/ui/semantic-components/navigations/components/NavigationTopSidebarComponent.vue';

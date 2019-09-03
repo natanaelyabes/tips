@@ -23,7 +23,7 @@
 import { Component, Vue } from 'vue-property-decorator';
 
 // Classes
-import IndexLayout from '@/iochord/ips/common/ui/layout/classes/IndexLayout';
+import IndexLayout from '@/iochord/ips/common/ui/layout/class/IndexLayout';
 
 /**
  *

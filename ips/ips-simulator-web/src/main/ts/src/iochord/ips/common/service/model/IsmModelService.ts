@@ -1,6 +1,6 @@
 import { ModelService } from './ModelService';
 import { Graph } from '@/iochord/ips/common/graph/ism/interfaces/Graph';
-import { GraphImpl } from '@/iochord/ips/common/graph/ism/classes/GraphImpl';
+import { GraphImpl } from '@/iochord/ips/common/graph/ism/class/GraphImpl';
 import { Client } from 'webstomp-client';
 import { Observable } from 'rxjs';
 
