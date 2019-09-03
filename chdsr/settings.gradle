@@ -1,7 +1,0 @@
-rootProject.name = 'chdsr'
-include 'chdsr-common'
-include 'chdsr-model'
-include 'chdsr-model-analysis'
-include 'chdsr-simulator'
-include 'chdsr-simulator-web'
-

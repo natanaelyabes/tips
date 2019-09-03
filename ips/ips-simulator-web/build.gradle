@@ -1,0 +1,42 @@
+plugins {
+	id 'org.springframework.boot' version '2.1.2.RELEASE'
+	id "com.moowork.node" version "1.3.1"
+}
+
+springBoot {
+	mainClassName = 'io.iochord.apps.ips.simulator.web.IpsWebApplication'
+}
+
+dependencies {
+	compile 'org.springframework.boot:spring-boot-starter-web:2.1.2.RELEASE'
+	compile 'org.springframework.boot:spring-boot-starter-websocket:2.1.2.RELEASE'
+	compile group: 'com.opencsv', name: 'opencsv', version: '4.0'
+	
+	implementation project(':ips-common')
+	implementation project(':ips-model')
+	implementation project(':ips-model-analysis')
+	implementation project(':ips-simulator')
+	testCompile project(':ips-common')
+	testCompile project(':ips-model')
+	testCompile project(':ips-model-analysis')
+	testCompile project(':ips-simulator')
+}
+
+node {
+    download = true
+	nodeModulesDir = file("${project.projectDir}/src/main/ts")
+}
+
+task npmBuild( type: NpmTask, dependsOn: 'npmInstall' ) {
+//    script = file( 'src/main/ts' )
+    args = ['run', 'build']
+    
+}
+
+task npmDist(type: Copy) {
+    from "${project.projectDir}/src/main/ts/dist"
+    into "${project.projectDir}/src/main/resources/static"
+}
+
+tasks.npmDist.dependsOn npmBuild
+tasks.compileJava.dependsOn npmDist

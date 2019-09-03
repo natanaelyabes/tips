@@ -1,0 +1,3232 @@
+<?xml version="1.0" encoding="ISO-8859-1" standalone="no"?>
+<workspaceElements>
+<generator format="6" tool="Access/CPN" version="1.0.0"/>
+<cpnet>
+<globbox>
+<block id="idblock0">
+<id>Parameters</id>
+</block>
+<block id="idblock1">
+<id>Types</id>
+<color id="HL00000001">
+<id>INT</id>
+<timed/>
+<int/>
+</color>
+<color id="HL00000002">
+<id>ENTITY</id>
+<timed/>
+<product>
+<id>INT</id>
+<id>INT</id>
+</product>
+</color>
+<color id="HL00000004">
+<id>Customer</id>
+<timed/>
+<int/>
+</color>
+</block>
+<block id="idblock2">
+<id>Variables</id>
+<var id="HL00000003">
+<type>
+<id>INT</id>
+</type>
+<id>i</id>
+</var>
+</block>
+<block id="idblock3">
+<id>Functions</id>
+</block>
+</globbox>
+<page id="PAGE00000001">
+<pageattr name="SBPNET"/>
+<trans id="SUBST00000001">
+<box h="40.0" w="60.0"/>
+<posattr x="0" y="0"/>
+<fillattr colour="White" filled="false" pattern="filled"/>
+<lineattr colour="Black" pattern="Solid" thick="1"/>
+<textattr bold="false" colour="Black"/>
+<text>GENERATOR Customer MU</text>
+<cond id="SUBST00000001a">
+<posattr x="-36.0" y="-24.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text/>
+</cond>
+<time id="SUBST00000001b">
+<posattr x="36.0" y="24.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text/>
+</time>
+<code id="SUBST00000001c">
+<posattr x="36.0" y="0.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text/>
+</code>
+<subst portsock="(ID00000005,ID00000001)" subpage="PAGE00000002">
+<subpageinfo id="SUBST00000001e" name="GENERATOR Customer MU">
+<posattr x="-36.0" y="-24.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text>GENERATOR Customer MU</text>
+</subpageinfo>
+</subst>
+</trans>
+<place id="ID00000001">
+<ellipse h="40.0" w="60.0"/>
+<posattr x="0" y="-100"/>
+<fillattr colour="White" filled="false" pattern="filled"/>
+<lineattr colour="Black" pattern="Solid" thick="1"/>
+<textattr bold="false" colour="Black"/>
+<text>Customer MU_dgp1</text>
+<type id="ID00000001a">
+<posattr x="36.0" y="-124.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text>INT</text>
+</type>
+<initmark id="ID00000001b">
+<posattr x="36.0" y="-76.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text/>
+</initmark>
+</place>
+<trans id="SUBST00000004">
+<box h="40.0" w="60.0"/>
+<posattr x="0" y="-2000"/>
+<fillattr colour="White" filled="false" pattern="filled"/>
+<lineattr colour="Black" pattern="Solid" thick="1"/>
+<textattr bold="false" colour="Black"/>
+<text>ACTIVITY Teller Service</text>
+<cond id="SUBST00000004a">
+<posattr x="-36.0" y="-2024.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text/>
+</cond>
+<time id="SUBST00000004b">
+<posattr x="36.0" y="-1976.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text/>
+</time>
+<code id="SUBST00000004c">
+<posattr x="36.0" y="-2000.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text/>
+</code>
+<subst portsock="(ID00000008,ID00000006)(ID00000010,ID00000007)" subpage="PAGE00000003">
+<subpageinfo id="SUBST00000004e" name="ACTIVITY Teller Service">
+<posattr x="-36.0" y="-2024.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text>ACTIVITY Teller Service</text>
+</subpageinfo>
+</subst>
+</trans>
+<place id="ID00000006">
+<ellipse h="40.0" w="60.0"/>
+<posattr x="0" y="-1900"/>
+<fillattr colour="White" filled="false" pattern="filled"/>
+<lineattr colour="Black" pattern="Solid" thick="1"/>
+<textattr bold="false" colour="Black"/>
+<text>Teller Service_nap1</text>
+<type id="ID00000006a">
+<posattr x="36.0" y="-1924.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text>INT</text>
+</type>
+<initmark id="ID00000006b">
+<posattr x="36.0" y="-1876.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text/>
+</initmark>
+</place>
+<place id="ID00000007">
+<ellipse h="40.0" w="60.0"/>
+<posattr x="0" y="-2100"/>
+<fillattr colour="White" filled="false" pattern="filled"/>
+<lineattr colour="Black" pattern="Solid" thick="1"/>
+<textattr bold="false" colour="Black"/>
+<text>Teller Service_nap3</text>
+<type id="ID00000007a">
+<posattr x="36.0" y="-2124.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text>INT</text>
+</type>
+<initmark id="ID00000007b">
+<posattr x="36.0" y="-2076.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text/>
+</initmark>
+</place>
+<trans id="SUBST00000007">
+<box h="40.0" w="60.0"/>
+<posattr x="0" y="-800"/>
+<fillattr colour="White" filled="false" pattern="filled"/>
+<lineattr colour="Black" pattern="Solid" thick="1"/>
+<textattr bold="false" colour="Black"/>
+<text>ACTIVITY ATM Service</text>
+<cond id="SUBST00000007a">
+<posattr x="-36.0" y="-824.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text/>
+</cond>
+<time id="SUBST00000007b">
+<posattr x="36.0" y="-776.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text/>
+</time>
+<code id="SUBST00000007c">
+<posattr x="36.0" y="-800.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text/>
+</code>
+<subst portsock="(ID00000013,ID00000011)(ID00000015,ID00000012)" subpage="PAGE00000004">
+<subpageinfo id="SUBST00000007e" name="ACTIVITY ATM Service">
+<posattr x="-36.0" y="-824.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text>ACTIVITY ATM Service</text>
+</subpageinfo>
+</subst>
+</trans>
+<place id="ID00000011">
+<ellipse h="40.0" w="60.0"/>
+<posattr x="100" y="-700"/>
+<fillattr colour="White" filled="false" pattern="filled"/>
+<lineattr colour="Black" pattern="Solid" thick="1"/>
+<textattr bold="false" colour="Black"/>
+<text>ATM Service_nap1</text>
+<type id="ID00000011a">
+<posattr x="136.0" y="-724.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text>INT</text>
+</type>
+<initmark id="ID00000011b">
+<posattr x="136.0" y="-676.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text/>
+</initmark>
+</place>
+<place id="ID00000012">
+<ellipse h="40.0" w="60.0"/>
+<posattr x="0" y="-900"/>
+<fillattr colour="White" filled="false" pattern="filled"/>
+<lineattr colour="Black" pattern="Solid" thick="1"/>
+<textattr bold="false" colour="Black"/>
+<text>ATM Service_nap3</text>
+<type id="ID00000012a">
+<posattr x="36.0" y="-924.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text>INT</text>
+</type>
+<initmark id="ID00000012b">
+<posattr x="36.0" y="-876.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text/>
+</initmark>
+</place>
+<place id="ID00000016">
+<ellipse h="40.0" w="60.0"/>
+<posattr x="0" y="-2700"/>
+<fillattr colour="White" filled="false" pattern="filled"/>
+<lineattr colour="Black" pattern="Solid" thick="1"/>
+<textattr bold="false" colour="Black"/>
+<text>null_nop1</text>
+<type id="ID00000016a">
+<posattr x="36.0" y="-2724.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text>INT</text>
+</type>
+<initmark id="ID00000016b">
+<posattr x="36.0" y="-2676.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text/>
+</initmark>
+</place>
+<trans id="SUBST00000010">
+<box h="40.0" w="60.0"/>
+<posattr x="0" y="-400"/>
+<fillattr colour="White" filled="false" pattern="filled"/>
+<lineattr colour="Black" pattern="Solid" thick="1"/>
+<textattr bold="false" colour="Black"/>
+<text>BRANCH XOR SPLIT 1</text>
+<cond id="SUBST00000010a">
+<posattr x="-36.0" y="-424.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text/>
+</cond>
+<time id="SUBST00000010b">
+<posattr x="36.0" y="-376.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text/>
+</time>
+<code id="SUBST00000010c">
+<posattr x="36.0" y="-400.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text/>
+</code>
+<subst portsock="(ID00000019,ID00000018)(ID00000021,ID00000020)(ID00000023,ID00000022)" subpage="PAGE00000005">
+<subpageinfo id="SUBST00000010e" name="BRANCH XOR SPLIT 1">
+<posattr x="-36.0" y="-424.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text>BRANCH XOR SPLIT 1</text>
+</subpageinfo>
+</subst>
+</trans>
+<place id="ID00000018">
+<ellipse h="40.0" w="60.0"/>
+<posattr x="0" y="-300"/>
+<fillattr colour="White" filled="false" pattern="filled"/>
+<lineattr colour="Black" pattern="Solid" thick="1"/>
+<textattr bold="false" colour="Black"/>
+<text>1_bpi0s</text>
+<type id="ID00000018a">
+<posattr x="36.0" y="-324.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text>INT</text>
+</type>
+<initmark id="ID00000018b">
+<posattr x="36.0" y="-276.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text/>
+</initmark>
+</place>
+<place id="ID00000020">
+<ellipse h="40.0" w="60.0"/>
+<posattr x="0" y="-500"/>
+<fillattr colour="White" filled="false" pattern="filled"/>
+<lineattr colour="Black" pattern="Solid" thick="1"/>
+<textattr bold="false" colour="Black"/>
+<text>1_bpo0s</text>
+<type id="ID00000020a">
+<posattr x="36.0" y="-524.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text>INT</text>
+</type>
+<initmark id="ID00000020b">
+<posattr x="36.0" y="-476.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text/>
+</initmark>
+</place>
+<place id="ID00000022">
+<ellipse h="40.0" w="60.0"/>
+<posattr x="100" y="-500"/>
+<fillattr colour="White" filled="false" pattern="filled"/>
+<lineattr colour="Black" pattern="Solid" thick="1"/>
+<textattr bold="false" colour="Black"/>
+<text>1_bpo1s</text>
+<type id="ID00000022a">
+<posattr x="136.0" y="-524.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text>INT</text>
+</type>
+<initmark id="ID00000022b">
+<posattr x="136.0" y="-476.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text/>
+</initmark>
+</place>
+<trans id="SUBST00000014">
+<box h="40.0" w="60.0"/>
+<posattr x="0" y="-1200"/>
+<fillattr colour="White" filled="false" pattern="filled"/>
+<lineattr colour="Black" pattern="Solid" thick="1"/>
+<textattr bold="false" colour="Black"/>
+<text>BRANCH XOR SPLIT 2</text>
+<cond id="SUBST00000014a">
+<posattr x="-36.0" y="-1224.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text/>
+</cond>
+<time id="SUBST00000014b">
+<posattr x="36.0" y="-1176.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text/>
+</time>
+<code id="SUBST00000014c">
+<posattr x="36.0" y="-1200.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text/>
+</code>
+<subst portsock="(ID00000026,ID00000025)(ID00000028,ID00000027)(ID00000030,ID00000029)" subpage="PAGE00000006">
+<subpageinfo id="SUBST00000014e" name="BRANCH XOR SPLIT 2">
+<posattr x="-36.0" y="-1224.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text>BRANCH XOR SPLIT 2</text>
+</subpageinfo>
+</subst>
+</trans>
+<place id="ID00000025">
+<ellipse h="40.0" w="60.0"/>
+<posattr x="0" y="-1100"/>
+<fillattr colour="White" filled="false" pattern="filled"/>
+<lineattr colour="Black" pattern="Solid" thick="1"/>
+<textattr bold="false" colour="Black"/>
+<text>2_bpi0s</text>
+<type id="ID00000025a">
+<posattr x="36.0" y="-1124.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text>INT</text>
+</type>
+<initmark id="ID00000025b">
+<posattr x="36.0" y="-1076.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text/>
+</initmark>
+</place>
+<place id="ID00000027">
+<ellipse h="40.0" w="60.0"/>
+<posattr x="0" y="-1300"/>
+<fillattr colour="White" filled="false" pattern="filled"/>
+<lineattr colour="Black" pattern="Solid" thick="1"/>
+<textattr bold="false" colour="Black"/>
+<text>2_bpo0s</text>
+<type id="ID00000027a">
+<posattr x="36.0" y="-1324.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text>INT</text>
+</type>
+<initmark id="ID00000027b">
+<posattr x="36.0" y="-1276.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text/>
+</initmark>
+</place>
+<place id="ID00000029">
+<ellipse h="40.0" w="60.0"/>
+<posattr x="100" y="-1300"/>
+<fillattr colour="White" filled="false" pattern="filled"/>
+<lineattr colour="Black" pattern="Solid" thick="1"/>
+<textattr bold="false" colour="Black"/>
+<text>2_bpo1s</text>
+<type id="ID00000029a">
+<posattr x="136.0" y="-1324.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text>INT</text>
+</type>
+<initmark id="ID00000029b">
+<posattr x="136.0" y="-1276.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text/>
+</initmark>
+</place>
+<trans id="SUBST00000018">
+<box h="40.0" w="60.0"/>
+<posattr x="0" y="-1600"/>
+<fillattr colour="White" filled="false" pattern="filled"/>
+<lineattr colour="Black" pattern="Solid" thick="1"/>
+<textattr bold="false" colour="Black"/>
+<text>BRANCH XOR JOIN 1</text>
+<cond id="SUBST00000018a">
+<posattr x="-36.0" y="-1624.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text/>
+</cond>
+<time id="SUBST00000018b">
+<posattr x="36.0" y="-1576.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text/>
+</time>
+<code id="SUBST00000018c">
+<posattr x="36.0" y="-1600.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text/>
+</code>
+<subst portsock="(ID00000033,ID00000032)(ID00000035,ID00000034)(ID00000037,ID00000036)" subpage="PAGE00000007">
+<subpageinfo id="SUBST00000018e" name="BRANCH XOR JOIN 1">
+<posattr x="-36.0" y="-1624.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text>BRANCH XOR JOIN 1</text>
+</subpageinfo>
+</subst>
+</trans>
+<place id="ID00000032">
+<ellipse h="40.0" w="60.0"/>
+<posattr x="0" y="-700"/>
+<fillattr colour="White" filled="false" pattern="filled"/>
+<lineattr colour="Black" pattern="Solid" thick="1"/>
+<textattr bold="false" colour="Black"/>
+<text>1_bpi0s</text>
+<type id="ID00000032a">
+<posattr x="36.0" y="-724.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text>INT</text>
+</type>
+<initmark id="ID00000032b">
+<posattr x="36.0" y="-676.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text/>
+</initmark>
+</place>
+<place id="ID00000034">
+<ellipse h="40.0" w="60.0"/>
+<posattr x="0" y="-1500"/>
+<fillattr colour="White" filled="false" pattern="filled"/>
+<lineattr colour="Black" pattern="Solid" thick="1"/>
+<textattr bold="false" colour="Black"/>
+<text>1_bpi1s</text>
+<type id="ID00000034a">
+<posattr x="36.0" y="-1524.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text>INT</text>
+</type>
+<initmark id="ID00000034b">
+<posattr x="36.0" y="-1476.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text/>
+</initmark>
+</place>
+<place id="ID00000036">
+<ellipse h="40.0" w="60.0"/>
+<posattr x="0" y="-1700"/>
+<fillattr colour="White" filled="false" pattern="filled"/>
+<lineattr colour="Black" pattern="Solid" thick="1"/>
+<textattr bold="false" colour="Black"/>
+<text>1_bpo0s</text>
+<type id="ID00000036a">
+<posattr x="36.0" y="-1724.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text>INT</text>
+</type>
+<initmark id="ID00000036b">
+<posattr x="36.0" y="-1676.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text/>
+</initmark>
+</place>
+<trans id="SUBST00000022">
+<box h="40.0" w="60.0"/>
+<posattr x="0" y="-2400"/>
+<fillattr colour="White" filled="false" pattern="filled"/>
+<lineattr colour="Black" pattern="Solid" thick="1"/>
+<textattr bold="false" colour="Black"/>
+<text>BRANCH XOR JOIN 2</text>
+<cond id="SUBST00000022a">
+<posattr x="-36.0" y="-2424.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text/>
+</cond>
+<time id="SUBST00000022b">
+<posattr x="36.0" y="-2376.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text/>
+</time>
+<code id="SUBST00000022c">
+<posattr x="36.0" y="-2400.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text/>
+</code>
+<subst portsock="(ID00000040,ID00000039)(ID00000042,ID00000041)(ID00000044,ID00000043)" subpage="PAGE00000008">
+<subpageinfo id="SUBST00000022e" name="BRANCH XOR JOIN 2">
+<posattr x="-36.0" y="-2424.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text>BRANCH XOR JOIN 2</text>
+</subpageinfo>
+</subst>
+</trans>
+<place id="ID00000039">
+<ellipse h="40.0" w="60.0"/>
+<posattr x="0" y="-2300"/>
+<fillattr colour="White" filled="false" pattern="filled"/>
+<lineattr colour="Black" pattern="Solid" thick="1"/>
+<textattr bold="false" colour="Black"/>
+<text>2_bpi0s</text>
+<type id="ID00000039a">
+<posattr x="36.0" y="-2324.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text>INT</text>
+</type>
+<initmark id="ID00000039b">
+<posattr x="36.0" y="-2276.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text/>
+</initmark>
+</place>
+<place id="ID00000041">
+<ellipse h="40.0" w="60.0"/>
+<posattr x="100" y="-1500"/>
+<fillattr colour="White" filled="false" pattern="filled"/>
+<lineattr colour="Black" pattern="Solid" thick="1"/>
+<textattr bold="false" colour="Black"/>
+<text>2_bpi1s</text>
+<type id="ID00000041a">
+<posattr x="136.0" y="-1524.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text>INT</text>
+</type>
+<initmark id="ID00000041b">
+<posattr x="136.0" y="-1476.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text/>
+</initmark>
+</place>
+<place id="ID00000043">
+<ellipse h="40.0" w="60.0"/>
+<posattr x="0" y="-2500"/>
+<fillattr colour="White" filled="false" pattern="filled"/>
+<lineattr colour="Black" pattern="Solid" thick="1"/>
+<textattr bold="false" colour="Black"/>
+<text>2_bpo0s</text>
+<type id="ID00000043a">
+<posattr x="36.0" y="-2524.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text>INT</text>
+</type>
+<initmark id="ID00000043b">
+<posattr x="36.0" y="-2476.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text/>
+</initmark>
+</place>
+<trans id="TRANS00000026">
+<box h="40.0" w="60.0"/>
+<posattr x="0" y="-200"/>
+<fillattr colour="White" filled="false" pattern="filled"/>
+<lineattr colour="Black" pattern="Solid" thick="1"/>
+<textattr bold="false" colour="Black"/>
+<text/>
+<cond id="TRANS00000026a">
+<posattr x="-36.0" y="-224.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text/>
+</cond>
+<time id="TRANS00000026b">
+<posattr x="36.0" y="-176.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text/>
+</time>
+<code id="TRANS00000026c">
+<posattr x="36.0" y="-200.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text/>
+</code>
+<priority id="TRANS00000026d">
+<posattr x="-36.0" y="-224.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text/>
+</priority>
+</trans>
+<trans id="TRANS00000027">
+<box h="40.0" w="60.0"/>
+<posattr x="0" y="-600"/>
+<fillattr colour="White" filled="false" pattern="filled"/>
+<lineattr colour="Black" pattern="Solid" thick="1"/>
+<textattr bold="false" colour="Black"/>
+<text/>
+<cond id="TRANS00000027a">
+<posattr x="-36.0" y="-624.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text/>
+</cond>
+<time id="TRANS00000027b">
+<posattr x="36.0" y="-576.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text/>
+</time>
+<code id="TRANS00000027c">
+<posattr x="36.0" y="-600.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text/>
+</code>
+<priority id="TRANS00000027d">
+<posattr x="-36.0" y="-624.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text/>
+</priority>
+</trans>
+<trans id="TRANS00000028">
+<box h="40.0" w="60.0"/>
+<posattr x="100" y="-600"/>
+<fillattr colour="White" filled="false" pattern="filled"/>
+<lineattr colour="Black" pattern="Solid" thick="1"/>
+<textattr bold="false" colour="Black"/>
+<text/>
+<cond id="TRANS00000028a">
+<posattr x="64.0" y="-624.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text/>
+</cond>
+<time id="TRANS00000028b">
+<posattr x="136.0" y="-576.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text/>
+</time>
+<code id="TRANS00000028c">
+<posattr x="136.0" y="-600.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text/>
+</code>
+<priority id="TRANS00000028d">
+<posattr x="64.0" y="-624.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text/>
+</priority>
+</trans>
+<trans id="TRANS00000029">
+<box h="40.0" w="60.0"/>
+<posattr x="0" y="-1000"/>
+<fillattr colour="White" filled="false" pattern="filled"/>
+<lineattr colour="Black" pattern="Solid" thick="1"/>
+<textattr bold="false" colour="Black"/>
+<text/>
+<cond id="TRANS00000029a">
+<posattr x="-36.0" y="-1024.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text/>
+</cond>
+<time id="TRANS00000029b">
+<posattr x="36.0" y="-976.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text/>
+</time>
+<code id="TRANS00000029c">
+<posattr x="36.0" y="-1000.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text/>
+</code>
+<priority id="TRANS00000029d">
+<posattr x="-36.0" y="-1024.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text/>
+</priority>
+</trans>
+<trans id="TRANS00000030">
+<box h="40.0" w="60.0"/>
+<posattr x="0" y="-1400"/>
+<fillattr colour="White" filled="false" pattern="filled"/>
+<lineattr colour="Black" pattern="Solid" thick="1"/>
+<textattr bold="false" colour="Black"/>
+<text/>
+<cond id="TRANS00000030a">
+<posattr x="-36.0" y="-1424.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text/>
+</cond>
+<time id="TRANS00000030b">
+<posattr x="36.0" y="-1376.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text/>
+</time>
+<code id="TRANS00000030c">
+<posattr x="36.0" y="-1400.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text/>
+</code>
+<priority id="TRANS00000030d">
+<posattr x="-36.0" y="-1424.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text/>
+</priority>
+</trans>
+<trans id="TRANS00000031">
+<box h="40.0" w="60.0"/>
+<posattr x="100" y="-1400"/>
+<fillattr colour="White" filled="false" pattern="filled"/>
+<lineattr colour="Black" pattern="Solid" thick="1"/>
+<textattr bold="false" colour="Black"/>
+<text/>
+<cond id="TRANS00000031a">
+<posattr x="64.0" y="-1424.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text/>
+</cond>
+<time id="TRANS00000031b">
+<posattr x="136.0" y="-1376.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text/>
+</time>
+<code id="TRANS00000031c">
+<posattr x="136.0" y="-1400.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text/>
+</code>
+<priority id="TRANS00000031d">
+<posattr x="64.0" y="-1424.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text/>
+</priority>
+</trans>
+<trans id="TRANS00000032">
+<box h="40.0" w="60.0"/>
+<posattr x="0" y="-1800"/>
+<fillattr colour="White" filled="false" pattern="filled"/>
+<lineattr colour="Black" pattern="Solid" thick="1"/>
+<textattr bold="false" colour="Black"/>
+<text/>
+<cond id="TRANS00000032a">
+<posattr x="-36.0" y="-1824.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text/>
+</cond>
+<time id="TRANS00000032b">
+<posattr x="36.0" y="-1776.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text/>
+</time>
+<code id="TRANS00000032c">
+<posattr x="36.0" y="-1800.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text/>
+</code>
+<priority id="TRANS00000032d">
+<posattr x="-36.0" y="-1824.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text/>
+</priority>
+</trans>
+<trans id="TRANS00000033">
+<box h="40.0" w="60.0"/>
+<posattr x="0" y="-2200"/>
+<fillattr colour="White" filled="false" pattern="filled"/>
+<lineattr colour="Black" pattern="Solid" thick="1"/>
+<textattr bold="false" colour="Black"/>
+<text/>
+<cond id="TRANS00000033a">
+<posattr x="-36.0" y="-2224.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text/>
+</cond>
+<time id="TRANS00000033b">
+<posattr x="36.0" y="-2176.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text/>
+</time>
+<code id="TRANS00000033c">
+<posattr x="36.0" y="-2200.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text/>
+</code>
+<priority id="TRANS00000033d">
+<posattr x="-36.0" y="-2224.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text/>
+</priority>
+</trans>
+<trans id="TRANS00000034">
+<box h="40.0" w="60.0"/>
+<posattr x="0" y="-2600"/>
+<fillattr colour="White" filled="false" pattern="filled"/>
+<lineattr colour="Black" pattern="Solid" thick="1"/>
+<textattr bold="false" colour="Black"/>
+<text/>
+<cond id="TRANS00000034a">
+<posattr x="-36.0" y="-2624.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text/>
+</cond>
+<time id="TRANS00000034b">
+<posattr x="36.0" y="-2576.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text/>
+</time>
+<code id="TRANS00000034c">
+<posattr x="36.0" y="-2600.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text/>
+</code>
+<priority id="TRANS00000034d">
+<posattr x="-36.0" y="-2624.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text/>
+</priority>
+</trans>
+<arc id="ARC00000001" order="1" orientation="TtoP">
+<transend idref="SUBST00000001"/>
+<placeend idref="ID00000001"/>
+<lineattr colour="Black" thick="1" type="Solid"/>
+<annot id="ARC00000001a">
+<posattr x="0.0" y="-50.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text>i</text>
+</annot>
+</arc>
+<arc id="ARC00000009" order="1" orientation="PtoT">
+<transend idref="SUBST00000004"/>
+<placeend idref="ID00000006"/>
+<lineattr colour="Black" thick="1" type="Solid"/>
+<annot id="ARC00000009a">
+<posattr x="0.0" y="-1950.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text>i</text>
+</annot>
+</arc>
+<arc id="ARC00000010" order="1" orientation="TtoP">
+<transend idref="SUBST00000004"/>
+<placeend idref="ID00000007"/>
+<lineattr colour="Black" thick="1" type="Solid"/>
+<annot id="ARC00000010a">
+<posattr x="0.0" y="-2050.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text>i</text>
+</annot>
+</arc>
+<arc id="ARC00000015" order="1" orientation="PtoT">
+<transend idref="SUBST00000007"/>
+<placeend idref="ID00000011"/>
+<lineattr colour="Black" thick="1" type="Solid"/>
+<annot id="ARC00000015a">
+<posattr x="50.0" y="-750.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text>i</text>
+</annot>
+</arc>
+<arc id="ARC00000016" order="1" orientation="TtoP">
+<transend idref="SUBST00000007"/>
+<placeend idref="ID00000012"/>
+<lineattr colour="Black" thick="1" type="Solid"/>
+<annot id="ARC00000016a">
+<posattr x="0.0" y="-850.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text>i</text>
+</annot>
+</arc>
+<arc id="ARC00000021" order="1" orientation="PtoT">
+<transend idref="SUBST00000010"/>
+<placeend idref="ID00000018"/>
+<lineattr colour="Black" thick="1" type="Solid"/>
+<annot id="ARC00000021a">
+<posattr x="0.0" y="-350.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text>i</text>
+</annot>
+</arc>
+<arc id="ARC00000024" order="1" orientation="TtoP">
+<transend idref="SUBST00000010"/>
+<placeend idref="ID00000020"/>
+<lineattr colour="Black" thick="1" type="Solid"/>
+<annot id="ARC00000024a">
+<posattr x="0.0" y="-450.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text>i</text>
+</annot>
+</arc>
+<arc id="ARC00000027" order="1" orientation="TtoP">
+<transend idref="SUBST00000010"/>
+<placeend idref="ID00000022"/>
+<lineattr colour="Black" thick="1" type="Solid"/>
+<annot id="ARC00000027a">
+<posattr x="50.0" y="-450.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text>i</text>
+</annot>
+</arc>
+<arc id="ARC00000030" order="1" orientation="PtoT">
+<transend idref="SUBST00000014"/>
+<placeend idref="ID00000025"/>
+<lineattr colour="Black" thick="1" type="Solid"/>
+<annot id="ARC00000030a">
+<posattr x="0.0" y="-1150.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text>i</text>
+</annot>
+</arc>
+<arc id="ARC00000033" order="1" orientation="TtoP">
+<transend idref="SUBST00000014"/>
+<placeend idref="ID00000027"/>
+<lineattr colour="Black" thick="1" type="Solid"/>
+<annot id="ARC00000033a">
+<posattr x="0.0" y="-1250.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text>i</text>
+</annot>
+</arc>
+<arc id="ARC00000036" order="1" orientation="TtoP">
+<transend idref="SUBST00000014"/>
+<placeend idref="ID00000029"/>
+<lineattr colour="Black" thick="1" type="Solid"/>
+<annot id="ARC00000036a">
+<posattr x="50.0" y="-1250.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text>i</text>
+</annot>
+</arc>
+<arc id="ARC00000039" order="1" orientation="PtoT">
+<transend idref="SUBST00000018"/>
+<placeend idref="ID00000032"/>
+<lineattr colour="Black" thick="1" type="Solid"/>
+<annot id="ARC00000039a">
+<posattr x="0.0" y="-1150.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text>i</text>
+</annot>
+</arc>
+<arc id="ARC00000042" order="1" orientation="PtoT">
+<transend idref="SUBST00000018"/>
+<placeend idref="ID00000034"/>
+<lineattr colour="Black" thick="1" type="Solid"/>
+<annot id="ARC00000042a">
+<posattr x="0.0" y="-1550.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text>i</text>
+</annot>
+</arc>
+<arc id="ARC00000045" order="1" orientation="TtoP">
+<transend idref="SUBST00000018"/>
+<placeend idref="ID00000036"/>
+<lineattr colour="Black" thick="1" type="Solid"/>
+<annot id="ARC00000045a">
+<posattr x="0.0" y="-1650.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text>i</text>
+</annot>
+</arc>
+<arc id="ARC00000048" order="1" orientation="PtoT">
+<transend idref="SUBST00000022"/>
+<placeend idref="ID00000039"/>
+<lineattr colour="Black" thick="1" type="Solid"/>
+<annot id="ARC00000048a">
+<posattr x="0.0" y="-2350.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text>i</text>
+</annot>
+</arc>
+<arc id="ARC00000051" order="1" orientation="PtoT">
+<transend idref="SUBST00000022"/>
+<placeend idref="ID00000041"/>
+<lineattr colour="Black" thick="1" type="Solid"/>
+<annot id="ARC00000051a">
+<posattr x="50.0" y="-1950.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text>i</text>
+</annot>
+</arc>
+<arc id="ARC00000054" order="1" orientation="TtoP">
+<transend idref="SUBST00000022"/>
+<placeend idref="ID00000043"/>
+<lineattr colour="Black" thick="1" type="Solid"/>
+<annot id="ARC00000054a">
+<posattr x="0.0" y="-2450.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text>i</text>
+</annot>
+</arc>
+<arc id="ARC00000057" order="1" orientation="PtoT">
+<transend idref="TRANS00000026"/>
+<placeend idref="ID00000001"/>
+<lineattr colour="Black" thick="1" type="Solid"/>
+<annot id="ARC00000057a">
+<posattr x="0.0" y="-150.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text>i</text>
+</annot>
+</arc>
+<arc id="ARC00000058" order="1" orientation="TtoP">
+<transend idref="TRANS00000026"/>
+<placeend idref="ID00000018"/>
+<lineattr colour="Black" thick="1" type="Solid"/>
+<annot id="ARC00000058a">
+<posattr x="0.0" y="-250.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text>i</text>
+</annot>
+</arc>
+<arc id="ARC00000059" order="1" orientation="PtoT">
+<transend idref="TRANS00000027"/>
+<placeend idref="ID00000020"/>
+<lineattr colour="Black" thick="1" type="Solid"/>
+<annot id="ARC00000059a">
+<posattr x="0.0" y="-550.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text>i</text>
+</annot>
+</arc>
+<arc id="ARC00000060" order="1" orientation="TtoP">
+<transend idref="TRANS00000027"/>
+<placeend idref="ID00000032"/>
+<lineattr colour="Black" thick="1" type="Solid"/>
+<annot id="ARC00000060a">
+<posattr x="0.0" y="-650.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text>i</text>
+</annot>
+</arc>
+<arc id="ARC00000061" order="1" orientation="PtoT">
+<transend idref="TRANS00000028"/>
+<placeend idref="ID00000022"/>
+<lineattr colour="Black" thick="1" type="Solid"/>
+<annot id="ARC00000061a">
+<posattr x="100.0" y="-550.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text>i</text>
+</annot>
+</arc>
+<arc id="ARC00000062" order="1" orientation="TtoP">
+<transend idref="TRANS00000028"/>
+<placeend idref="ID00000011"/>
+<lineattr colour="Black" thick="1" type="Solid"/>
+<annot id="ARC00000062a">
+<posattr x="100.0" y="-650.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text>i</text>
+</annot>
+</arc>
+<arc id="ARC00000063" order="1" orientation="PtoT">
+<transend idref="TRANS00000029"/>
+<placeend idref="ID00000012"/>
+<lineattr colour="Black" thick="1" type="Solid"/>
+<annot id="ARC00000063a">
+<posattr x="0.0" y="-950.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text>i</text>
+</annot>
+</arc>
+<arc id="ARC00000064" order="1" orientation="TtoP">
+<transend idref="TRANS00000029"/>
+<placeend idref="ID00000025"/>
+<lineattr colour="Black" thick="1" type="Solid"/>
+<annot id="ARC00000064a">
+<posattr x="0.0" y="-1050.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text>i</text>
+</annot>
+</arc>
+<arc id="ARC00000065" order="1" orientation="PtoT">
+<transend idref="TRANS00000030"/>
+<placeend idref="ID00000027"/>
+<lineattr colour="Black" thick="1" type="Solid"/>
+<annot id="ARC00000065a">
+<posattr x="0.0" y="-1350.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text>i</text>
+</annot>
+</arc>
+<arc id="ARC00000066" order="1" orientation="TtoP">
+<transend idref="TRANS00000030"/>
+<placeend idref="ID00000034"/>
+<lineattr colour="Black" thick="1" type="Solid"/>
+<annot id="ARC00000066a">
+<posattr x="0.0" y="-1450.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text>i</text>
+</annot>
+</arc>
+<arc id="ARC00000067" order="1" orientation="PtoT">
+<transend idref="TRANS00000031"/>
+<placeend idref="ID00000029"/>
+<lineattr colour="Black" thick="1" type="Solid"/>
+<annot id="ARC00000067a">
+<posattr x="100.0" y="-1350.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text>i</text>
+</annot>
+</arc>
+<arc id="ARC00000068" order="1" orientation="TtoP">
+<transend idref="TRANS00000031"/>
+<placeend idref="ID00000041"/>
+<lineattr colour="Black" thick="1" type="Solid"/>
+<annot id="ARC00000068a">
+<posattr x="100.0" y="-1450.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text>i</text>
+</annot>
+</arc>
+<arc id="ARC00000069" order="1" orientation="PtoT">
+<transend idref="TRANS00000032"/>
+<placeend idref="ID00000036"/>
+<lineattr colour="Black" thick="1" type="Solid"/>
+<annot id="ARC00000069a">
+<posattr x="0.0" y="-1750.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text>i</text>
+</annot>
+</arc>
+<arc id="ARC00000070" order="1" orientation="TtoP">
+<transend idref="TRANS00000032"/>
+<placeend idref="ID00000006"/>
+<lineattr colour="Black" thick="1" type="Solid"/>
+<annot id="ARC00000070a">
+<posattr x="0.0" y="-1850.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text>i</text>
+</annot>
+</arc>
+<arc id="ARC00000071" order="1" orientation="PtoT">
+<transend idref="TRANS00000033"/>
+<placeend idref="ID00000007"/>
+<lineattr colour="Black" thick="1" type="Solid"/>
+<annot id="ARC00000071a">
+<posattr x="0.0" y="-2150.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text>i</text>
+</annot>
+</arc>
+<arc id="ARC00000072" order="1" orientation="TtoP">
+<transend idref="TRANS00000033"/>
+<placeend idref="ID00000039"/>
+<lineattr colour="Black" thick="1" type="Solid"/>
+<annot id="ARC00000072a">
+<posattr x="0.0" y="-2250.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text>i</text>
+</annot>
+</arc>
+<arc id="ARC00000073" order="1" orientation="PtoT">
+<transend idref="TRANS00000034"/>
+<placeend idref="ID00000043"/>
+<lineattr colour="Black" thick="1" type="Solid"/>
+<annot id="ARC00000073a">
+<posattr x="0.0" y="-2550.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text>i</text>
+</annot>
+</arc>
+<arc id="ARC00000074" order="1" orientation="TtoP">
+<transend idref="TRANS00000034"/>
+<placeend idref="ID00000016"/>
+<lineattr colour="Black" thick="1" type="Solid"/>
+<annot id="ARC00000074a">
+<posattr x="0.0" y="-2650.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text>i</text>
+</annot>
+</arc>
+</page>
+<page id="PAGE00000002">
+<pageattr name="GENERATOR Customer MU"/>
+<place id="ID00000002">
+<ellipse h="40.0" w="60.0"/>
+<posattr x="439" y="81"/>
+<fillattr colour="White" filled="false" pattern="filled"/>
+<lineattr colour="Black" pattern="Solid" thick="1"/>
+<textattr bold="false" colour="Black"/>
+<text>Customer MU_dgp1</text>
+<type id="ID00000002a">
+<posattr x="475.0" y="57.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text>INT</text>
+</type>
+<initmark id="ID00000002b">
+<posattr x="475.0" y="105.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text>1`1</text>
+</initmark>
+</place>
+<place id="ID00000003">
+<ellipse h="40.0" w="60.0"/>
+<posattr x="396" y="787"/>
+<fillattr colour="White" filled="false" pattern="filled"/>
+<lineattr colour="Black" pattern="Solid" thick="1"/>
+<textattr bold="false" colour="Black"/>
+<text>Customer MU_dgp2</text>
+<type id="ID00000003a">
+<posattr x="432.0" y="763.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text>INT</text>
+</type>
+<initmark id="ID00000003b">
+<posattr x="432.0" y="811.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text>1`1</text>
+</initmark>
+</place>
+<place id="ID00000004">
+<ellipse h="40.0" w="60.0"/>
+<posattr x="618" y="262"/>
+<fillattr colour="White" filled="false" pattern="filled"/>
+<lineattr colour="Black" pattern="Solid" thick="1"/>
+<textattr bold="false" colour="Black"/>
+<text>Customer MU_dgp3</text>
+<type id="ID00000004a">
+<posattr x="654.0" y="238.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text>INT</text>
+</type>
+<initmark id="ID00000004b">
+<posattr x="654.0" y="286.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text/>
+</initmark>
+</place>
+<place id="ID00000005">
+<ellipse h="40.0" w="60.0"/>
+<posattr x="349" y="455"/>
+<fillattr colour="White" filled="false" pattern="filled"/>
+<lineattr colour="Black" pattern="Solid" thick="1"/>
+<textattr bold="false" colour="Black"/>
+<text>Customer MU_dgp4</text>
+<type id="ID00000005a">
+<posattr x="385.0" y="431.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text>INT</text>
+</type>
+<initmark id="ID00000005b">
+<posattr x="385.0" y="479.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text/>
+</initmark>
+<port type="Out">
+<posattr x="349.0" y="431.0"/>
+</port>
+</place>
+<trans id="TRANS00000002">
+<box h="40.0" w="60.0"/>
+<posattr x="152" y="766"/>
+<fillattr colour="White" filled="false" pattern="filled"/>
+<lineattr colour="Black" pattern="Solid" thick="1"/>
+<textattr bold="false" colour="Black"/>
+<text>Customer MU_dgt1</text>
+<cond id="TRANS00000002a">
+<posattr x="116.0" y="742.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text/>
+</cond>
+<time id="TRANS00000002b">
+<posattr x="188.0" y="790.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text/>
+</time>
+<code id="TRANS00000002c">
+<posattr x="188.0" y="766.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text/>
+</code>
+<priority id="TRANS00000002d">
+<posattr x="116.0" y="742.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text/>
+</priority>
+</trans>
+<trans id="TRANS00000003">
+<box h="40.0" w="60.0"/>
+<posattr x="349" y="317"/>
+<fillattr colour="White" filled="false" pattern="filled"/>
+<lineattr colour="Black" pattern="Solid" thick="1"/>
+<textattr bold="false" colour="Black"/>
+<text>Customer MU_dgt2</text>
+<cond id="TRANS00000003a">
+<posattr x="313.0" y="293.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text/>
+</cond>
+<time id="TRANS00000003b">
+<posattr x="385.0" y="341.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text/>
+</time>
+<code id="TRANS00000003c">
+<posattr x="385.0" y="317.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text/>
+</code>
+<priority id="TRANS00000003d">
+<posattr x="313.0" y="293.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text/>
+</priority>
+</trans>
+<arc id="ARC00000002" order="1" orientation="PtoT">
+<transend idref="TRANS00000002"/>
+<placeend idref="ID00000002"/>
+<lineattr colour="Black" thick="1" type="Solid"/>
+<annot id="ARC00000002a">
+<posattr x="295.5" y="423.5"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text>i</text>
+</annot>
+</arc>
+<arc id="ARC00000003" order="1" orientation="TtoP">
+<transend idref="TRANS00000002"/>
+<placeend idref="ID00000002"/>
+<lineattr colour="Black" thick="1" type="Solid"/>
+<annot id="ARC00000003a">
+<posattr x="295.5" y="423.5"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text>i</text>
+</annot>
+</arc>
+<arc id="ARC00000004" order="1" orientation="TtoP">
+<transend idref="TRANS00000002"/>
+<placeend idref="ID00000003"/>
+<lineattr colour="Black" thick="1" type="Solid"/>
+<annot id="ARC00000004a">
+<posattr x="274.0" y="776.5"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text>i</text>
+</annot>
+</arc>
+<arc id="ARC00000005" order="1" orientation="PtoT">
+<transend idref="TRANS00000003"/>
+<placeend idref="ID00000003"/>
+<lineattr colour="Black" thick="1" type="Solid"/>
+<annot id="ARC00000005a">
+<posattr x="372.5" y="552.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text>i</text>
+</annot>
+</arc>
+<arc id="ARC00000006" order="1" orientation="TtoP">
+<transend idref="TRANS00000003"/>
+<placeend idref="ID00000003"/>
+<lineattr colour="Black" thick="1" type="Solid"/>
+<annot id="ARC00000006a">
+<posattr x="372.5" y="552.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text>i</text>
+</annot>
+</arc>
+<arc id="ARC00000007" order="1" orientation="TtoP">
+<transend idref="TRANS00000003"/>
+<placeend idref="ID00000005"/>
+<lineattr colour="Black" thick="1" type="Solid"/>
+<annot id="ARC00000007a">
+<posattr x="349.0" y="386.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text>i</text>
+</annot>
+</arc>
+<arc id="ARC00000008" order="1" orientation="TtoP">
+<transend idref="TRANS00000003"/>
+<placeend idref="ID00000004"/>
+<lineattr colour="Black" thick="1" type="Solid"/>
+<annot id="ARC00000008a">
+<posattr x="483.5" y="289.5"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text>i</text>
+</annot>
+</arc>
+</page>
+<page id="PAGE00000003">
+<pageattr name="ACTIVITY Teller Service"/>
+<place id="ID00000008">
+<ellipse h="40.0" w="60.0"/>
+<posattr x="0" y="0"/>
+<fillattr colour="White" filled="false" pattern="filled"/>
+<lineattr colour="Black" pattern="Solid" thick="1"/>
+<textattr bold="false" colour="Black"/>
+<text>Teller Service_nap1</text>
+<type id="ID00000008a">
+<posattr x="36.0" y="-24.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text>INT</text>
+</type>
+<initmark id="ID00000008b">
+<posattr x="36.0" y="24.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text/>
+</initmark>
+<port type="In">
+<posattr x="0.0" y="-24.0"/>
+</port>
+</place>
+<place id="ID00000009">
+<ellipse h="40.0" w="60.0"/>
+<posattr x="0" y="-200"/>
+<fillattr colour="White" filled="false" pattern="filled"/>
+<lineattr colour="Black" pattern="Solid" thick="1"/>
+<textattr bold="false" colour="Black"/>
+<text>Teller Service_nap2</text>
+<type id="ID00000009a">
+<posattr x="36.0" y="-224.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text>INT</text>
+</type>
+<initmark id="ID00000009b">
+<posattr x="36.0" y="-176.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text/>
+</initmark>
+</place>
+<place id="ID00000010">
+<ellipse h="40.0" w="60.0"/>
+<posattr x="0" y="-400"/>
+<fillattr colour="White" filled="false" pattern="filled"/>
+<lineattr colour="Black" pattern="Solid" thick="1"/>
+<textattr bold="false" colour="Black"/>
+<text>Teller Service_nap3</text>
+<type id="ID00000010a">
+<posattr x="36.0" y="-424.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text>INT</text>
+</type>
+<initmark id="ID00000010b">
+<posattr x="36.0" y="-376.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text/>
+</initmark>
+<port type="Out">
+<posattr x="0.0" y="-424.0"/>
+</port>
+</place>
+<trans id="TRANS00000005">
+<box h="40.0" w="60.0"/>
+<posattr x="0" y="-100"/>
+<fillattr colour="White" filled="false" pattern="filled"/>
+<lineattr colour="Black" pattern="Solid" thick="1"/>
+<textattr bold="false" colour="Black"/>
+<text>Teller Service_natstart</text>
+<cond id="TRANS00000005a">
+<posattr x="-36.0" y="-124.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text/>
+</cond>
+<time id="TRANS00000005b">
+<posattr x="36.0" y="-76.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text/>
+</time>
+<code id="TRANS00000005c">
+<posattr x="36.0" y="-100.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text/>
+</code>
+<priority id="TRANS00000005d">
+<posattr x="-36.0" y="-124.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text/>
+</priority>
+</trans>
+<trans id="TRANS00000006">
+<box h="40.0" w="60.0"/>
+<posattr x="0" y="-300"/>
+<fillattr colour="White" filled="false" pattern="filled"/>
+<lineattr colour="Black" pattern="Solid" thick="1"/>
+<textattr bold="false" colour="Black"/>
+<text>Teller Service_natend</text>
+<cond id="TRANS00000006a">
+<posattr x="-36.0" y="-324.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text/>
+</cond>
+<time id="TRANS00000006b">
+<posattr x="36.0" y="-276.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text/>
+</time>
+<code id="TRANS00000006c">
+<posattr x="36.0" y="-300.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text/>
+</code>
+<priority id="TRANS00000006d">
+<posattr x="-36.0" y="-324.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text/>
+</priority>
+</trans>
+<arc id="ARC00000011" order="1" orientation="PtoT">
+<transend idref="TRANS00000005"/>
+<placeend idref="ID00000008"/>
+<lineattr colour="Black" thick="1" type="Solid"/>
+<annot id="ARC00000011a">
+<posattr x="0.0" y="-50.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text>i</text>
+</annot>
+</arc>
+<arc id="ARC00000012" order="1" orientation="TtoP">
+<transend idref="TRANS00000005"/>
+<placeend idref="ID00000009"/>
+<lineattr colour="Black" thick="1" type="Solid"/>
+<annot id="ARC00000012a">
+<posattr x="0.0" y="-150.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text>i</text>
+</annot>
+</arc>
+<arc id="ARC00000013" order="1" orientation="PtoT">
+<transend idref="TRANS00000006"/>
+<placeend idref="ID00000009"/>
+<lineattr colour="Black" thick="1" type="Solid"/>
+<annot id="ARC00000013a">
+<posattr x="0.0" y="-250.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text>i</text>
+</annot>
+</arc>
+<arc id="ARC00000014" order="1" orientation="TtoP">
+<transend idref="TRANS00000006"/>
+<placeend idref="ID00000010"/>
+<lineattr colour="Black" thick="1" type="Solid"/>
+<annot id="ARC00000014a">
+<posattr x="0.0" y="-350.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text>i</text>
+</annot>
+</arc>
+</page>
+<page id="PAGE00000004">
+<pageattr name="ACTIVITY ATM Service"/>
+<place id="ID00000013">
+<ellipse h="40.0" w="60.0"/>
+<posattr x="0" y="0"/>
+<fillattr colour="White" filled="false" pattern="filled"/>
+<lineattr colour="Black" pattern="Solid" thick="1"/>
+<textattr bold="false" colour="Black"/>
+<text>ATM Service_nap1</text>
+<type id="ID00000013a">
+<posattr x="36.0" y="-24.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text>INT</text>
+</type>
+<initmark id="ID00000013b">
+<posattr x="36.0" y="24.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text/>
+</initmark>
+<port type="In">
+<posattr x="0.0" y="-24.0"/>
+</port>
+</place>
+<place id="ID00000014">
+<ellipse h="40.0" w="60.0"/>
+<posattr x="0" y="-200"/>
+<fillattr colour="White" filled="false" pattern="filled"/>
+<lineattr colour="Black" pattern="Solid" thick="1"/>
+<textattr bold="false" colour="Black"/>
+<text>ATM Service_nap2</text>
+<type id="ID00000014a">
+<posattr x="36.0" y="-224.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text>INT</text>
+</type>
+<initmark id="ID00000014b">
+<posattr x="36.0" y="-176.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text/>
+</initmark>
+</place>
+<place id="ID00000015">
+<ellipse h="40.0" w="60.0"/>
+<posattr x="0" y="-400"/>
+<fillattr colour="White" filled="false" pattern="filled"/>
+<lineattr colour="Black" pattern="Solid" thick="1"/>
+<textattr bold="false" colour="Black"/>
+<text>ATM Service_nap3</text>
+<type id="ID00000015a">
+<posattr x="36.0" y="-424.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text>INT</text>
+</type>
+<initmark id="ID00000015b">
+<posattr x="36.0" y="-376.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text/>
+</initmark>
+<port type="Out">
+<posattr x="0.0" y="-424.0"/>
+</port>
+</place>
+<trans id="TRANS00000008">
+<box h="40.0" w="60.0"/>
+<posattr x="0" y="-100"/>
+<fillattr colour="White" filled="false" pattern="filled"/>
+<lineattr colour="Black" pattern="Solid" thick="1"/>
+<textattr bold="false" colour="Black"/>
+<text>ATM Service_natstart</text>
+<cond id="TRANS00000008a">
+<posattr x="-36.0" y="-124.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text/>
+</cond>
+<time id="TRANS00000008b">
+<posattr x="36.0" y="-76.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text/>
+</time>
+<code id="TRANS00000008c">
+<posattr x="36.0" y="-100.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text/>
+</code>
+<priority id="TRANS00000008d">
+<posattr x="-36.0" y="-124.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text/>
+</priority>
+</trans>
+<trans id="TRANS00000009">
+<box h="40.0" w="60.0"/>
+<posattr x="0" y="-300"/>
+<fillattr colour="White" filled="false" pattern="filled"/>
+<lineattr colour="Black" pattern="Solid" thick="1"/>
+<textattr bold="false" colour="Black"/>
+<text>ATM Service_natend</text>
+<cond id="TRANS00000009a">
+<posattr x="-36.0" y="-324.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text/>
+</cond>
+<time id="TRANS00000009b">
+<posattr x="36.0" y="-276.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text/>
+</time>
+<code id="TRANS00000009c">
+<posattr x="36.0" y="-300.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text/>
+</code>
+<priority id="TRANS00000009d">
+<posattr x="-36.0" y="-324.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text/>
+</priority>
+</trans>
+<arc id="ARC00000017" order="1" orientation="PtoT">
+<transend idref="TRANS00000008"/>
+<placeend idref="ID00000013"/>
+<lineattr colour="Black" thick="1" type="Solid"/>
+<annot id="ARC00000017a">
+<posattr x="0.0" y="-50.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text>i</text>
+</annot>
+</arc>
+<arc id="ARC00000018" order="1" orientation="TtoP">
+<transend idref="TRANS00000008"/>
+<placeend idref="ID00000014"/>
+<lineattr colour="Black" thick="1" type="Solid"/>
+<annot id="ARC00000018a">
+<posattr x="0.0" y="-150.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text>i</text>
+</annot>
+</arc>
+<arc id="ARC00000019" order="1" orientation="PtoT">
+<transend idref="TRANS00000009"/>
+<placeend idref="ID00000014"/>
+<lineattr colour="Black" thick="1" type="Solid"/>
+<annot id="ARC00000019a">
+<posattr x="0.0" y="-250.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text>i</text>
+</annot>
+</arc>
+<arc id="ARC00000020" order="1" orientation="TtoP">
+<transend idref="TRANS00000009"/>
+<placeend idref="ID00000015"/>
+<lineattr colour="Black" thick="1" type="Solid"/>
+<annot id="ARC00000020a">
+<posattr x="0.0" y="-350.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text>i</text>
+</annot>
+</arc>
+</page>
+<page id="PAGE00000005">
+<pageattr name="BRANCH XOR SPLIT 1"/>
+<place id="ID00000017">
+<ellipse h="40.0" w="60.0"/>
+<posattr x="0" y="-200"/>
+<fillattr colour="White" filled="false" pattern="filled"/>
+<lineattr colour="Black" pattern="Solid" thick="1"/>
+<textattr bold="false" colour="Black"/>
+<text>1_bp</text>
+<type id="ID00000017a">
+<posattr x="36.0" y="-224.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text>INT</text>
+</type>
+<initmark id="ID00000017b">
+<posattr x="36.0" y="-176.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text/>
+</initmark>
+</place>
+<place id="ID00000019">
+<ellipse h="40.0" w="60.0"/>
+<posattr x="0" y="0"/>
+<fillattr colour="White" filled="false" pattern="filled"/>
+<lineattr colour="Black" pattern="Solid" thick="1"/>
+<textattr bold="false" colour="Black"/>
+<text>1_bpi0</text>
+<type id="ID00000019a">
+<posattr x="36.0" y="-24.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text>INT</text>
+</type>
+<initmark id="ID00000019b">
+<posattr x="36.0" y="24.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text/>
+</initmark>
+<port type="In">
+<posattr x="0.0" y="-24.0"/>
+</port>
+</place>
+<trans id="TRANS00000011">
+<box h="40.0" w="60.0"/>
+<posattr x="0" y="-100"/>
+<fillattr colour="White" filled="false" pattern="filled"/>
+<lineattr colour="Black" pattern="Solid" thick="1"/>
+<textattr bold="false" colour="Black"/>
+<text>1_bti0</text>
+<cond id="TRANS00000011a">
+<posattr x="-36.0" y="-124.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text/>
+</cond>
+<time id="TRANS00000011b">
+<posattr x="36.0" y="-76.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text/>
+</time>
+<code id="TRANS00000011c">
+<posattr x="36.0" y="-100.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text/>
+</code>
+<priority id="TRANS00000011d">
+<posattr x="-36.0" y="-124.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text/>
+</priority>
+</trans>
+<place id="ID00000021">
+<ellipse h="40.0" w="60.0"/>
+<posattr x="0" y="-400"/>
+<fillattr colour="White" filled="false" pattern="filled"/>
+<lineattr colour="Black" pattern="Solid" thick="1"/>
+<textattr bold="false" colour="Black"/>
+<text>1_bpo0</text>
+<type id="ID00000021a">
+<posattr x="36.0" y="-424.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text>INT</text>
+</type>
+<initmark id="ID00000021b">
+<posattr x="36.0" y="-376.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text/>
+</initmark>
+<port type="Out">
+<posattr x="0.0" y="-424.0"/>
+</port>
+</place>
+<trans id="TRANS00000012">
+<box h="40.0" w="60.0"/>
+<posattr x="0" y="-300"/>
+<fillattr colour="White" filled="false" pattern="filled"/>
+<lineattr colour="Black" pattern="Solid" thick="1"/>
+<textattr bold="false" colour="Black"/>
+<text>1_bto0</text>
+<cond id="TRANS00000012a">
+<posattr x="-36.0" y="-324.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text/>
+</cond>
+<time id="TRANS00000012b">
+<posattr x="36.0" y="-276.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text/>
+</time>
+<code id="TRANS00000012c">
+<posattr x="36.0" y="-300.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text/>
+</code>
+<priority id="TRANS00000012d">
+<posattr x="-36.0" y="-324.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text/>
+</priority>
+</trans>
+<place id="ID00000023">
+<ellipse h="40.0" w="60.0"/>
+<posattr x="100" y="-400"/>
+<fillattr colour="White" filled="false" pattern="filled"/>
+<lineattr colour="Black" pattern="Solid" thick="1"/>
+<textattr bold="false" colour="Black"/>
+<text>1_bpo1</text>
+<type id="ID00000023a">
+<posattr x="136.0" y="-424.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text>INT</text>
+</type>
+<initmark id="ID00000023b">
+<posattr x="136.0" y="-376.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text/>
+</initmark>
+<port type="Out">
+<posattr x="100.0" y="-424.0"/>
+</port>
+</place>
+<trans id="TRANS00000013">
+<box h="40.0" w="60.0"/>
+<posattr x="100" y="-300"/>
+<fillattr colour="White" filled="false" pattern="filled"/>
+<lineattr colour="Black" pattern="Solid" thick="1"/>
+<textattr bold="false" colour="Black"/>
+<text>1_bto1</text>
+<cond id="TRANS00000013a">
+<posattr x="64.0" y="-324.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text/>
+</cond>
+<time id="TRANS00000013b">
+<posattr x="136.0" y="-276.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text/>
+</time>
+<code id="TRANS00000013c">
+<posattr x="136.0" y="-300.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text/>
+</code>
+<priority id="TRANS00000013d">
+<posattr x="64.0" y="-324.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text/>
+</priority>
+</trans>
+<arc id="ARC00000022" order="1" orientation="PtoT">
+<transend idref="TRANS00000011"/>
+<placeend idref="ID00000019"/>
+<lineattr colour="Black" thick="1" type="Solid"/>
+<annot id="ARC00000022a">
+<posattr x="0.0" y="-50.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text>i</text>
+</annot>
+</arc>
+<arc id="ARC00000023" order="1" orientation="TtoP">
+<transend idref="TRANS00000011"/>
+<placeend idref="ID00000017"/>
+<lineattr colour="Black" thick="1" type="Solid"/>
+<annot id="ARC00000023a">
+<posattr x="0.0" y="-150.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text>i</text>
+</annot>
+</arc>
+<arc id="ARC00000025" order="1" orientation="PtoT">
+<transend idref="TRANS00000012"/>
+<placeend idref="ID00000017"/>
+<lineattr colour="Black" thick="1" type="Solid"/>
+<annot id="ARC00000025a">
+<posattr x="0.0" y="-250.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text>i</text>
+</annot>
+</arc>
+<arc id="ARC00000026" order="1" orientation="TtoP">
+<transend idref="TRANS00000012"/>
+<placeend idref="ID00000021"/>
+<lineattr colour="Black" thick="1" type="Solid"/>
+<annot id="ARC00000026a">
+<posattr x="0.0" y="-350.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text>i</text>
+</annot>
+</arc>
+<arc id="ARC00000028" order="1" orientation="PtoT">
+<transend idref="TRANS00000013"/>
+<placeend idref="ID00000017"/>
+<lineattr colour="Black" thick="1" type="Solid"/>
+<annot id="ARC00000028a">
+<posattr x="50.0" y="-250.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text>i</text>
+</annot>
+</arc>
+<arc id="ARC00000029" order="1" orientation="TtoP">
+<transend idref="TRANS00000013"/>
+<placeend idref="ID00000023"/>
+<lineattr colour="Black" thick="1" type="Solid"/>
+<annot id="ARC00000029a">
+<posattr x="100.0" y="-350.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text>i</text>
+</annot>
+</arc>
+</page>
+<page id="PAGE00000006">
+<pageattr name="BRANCH XOR SPLIT 2"/>
+<place id="ID00000024">
+<ellipse h="40.0" w="60.0"/>
+<posattr x="0" y="-200"/>
+<fillattr colour="White" filled="false" pattern="filled"/>
+<lineattr colour="Black" pattern="Solid" thick="1"/>
+<textattr bold="false" colour="Black"/>
+<text>2_bp</text>
+<type id="ID00000024a">
+<posattr x="36.0" y="-224.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text>INT</text>
+</type>
+<initmark id="ID00000024b">
+<posattr x="36.0" y="-176.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text/>
+</initmark>
+</place>
+<place id="ID00000026">
+<ellipse h="40.0" w="60.0"/>
+<posattr x="0" y="0"/>
+<fillattr colour="White" filled="false" pattern="filled"/>
+<lineattr colour="Black" pattern="Solid" thick="1"/>
+<textattr bold="false" colour="Black"/>
+<text>2_bpi0</text>
+<type id="ID00000026a">
+<posattr x="36.0" y="-24.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text>INT</text>
+</type>
+<initmark id="ID00000026b">
+<posattr x="36.0" y="24.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text/>
+</initmark>
+<port type="In">
+<posattr x="0.0" y="-24.0"/>
+</port>
+</place>
+<trans id="TRANS00000015">
+<box h="40.0" w="60.0"/>
+<posattr x="0" y="-100"/>
+<fillattr colour="White" filled="false" pattern="filled"/>
+<lineattr colour="Black" pattern="Solid" thick="1"/>
+<textattr bold="false" colour="Black"/>
+<text>2_bti0</text>
+<cond id="TRANS00000015a">
+<posattr x="-36.0" y="-124.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text/>
+</cond>
+<time id="TRANS00000015b">
+<posattr x="36.0" y="-76.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text/>
+</time>
+<code id="TRANS00000015c">
+<posattr x="36.0" y="-100.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text/>
+</code>
+<priority id="TRANS00000015d">
+<posattr x="-36.0" y="-124.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text/>
+</priority>
+</trans>
+<place id="ID00000028">
+<ellipse h="40.0" w="60.0"/>
+<posattr x="0" y="-400"/>
+<fillattr colour="White" filled="false" pattern="filled"/>
+<lineattr colour="Black" pattern="Solid" thick="1"/>
+<textattr bold="false" colour="Black"/>
+<text>2_bpo0</text>
+<type id="ID00000028a">
+<posattr x="36.0" y="-424.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text>INT</text>
+</type>
+<initmark id="ID00000028b">
+<posattr x="36.0" y="-376.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text/>
+</initmark>
+<port type="Out">
+<posattr x="0.0" y="-424.0"/>
+</port>
+</place>
+<trans id="TRANS00000016">
+<box h="40.0" w="60.0"/>
+<posattr x="0" y="-300"/>
+<fillattr colour="White" filled="false" pattern="filled"/>
+<lineattr colour="Black" pattern="Solid" thick="1"/>
+<textattr bold="false" colour="Black"/>
+<text>2_bto0</text>
+<cond id="TRANS00000016a">
+<posattr x="-36.0" y="-324.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text/>
+</cond>
+<time id="TRANS00000016b">
+<posattr x="36.0" y="-276.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text/>
+</time>
+<code id="TRANS00000016c">
+<posattr x="36.0" y="-300.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text/>
+</code>
+<priority id="TRANS00000016d">
+<posattr x="-36.0" y="-324.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text/>
+</priority>
+</trans>
+<place id="ID00000030">
+<ellipse h="40.0" w="60.0"/>
+<posattr x="100" y="-400"/>
+<fillattr colour="White" filled="false" pattern="filled"/>
+<lineattr colour="Black" pattern="Solid" thick="1"/>
+<textattr bold="false" colour="Black"/>
+<text>2_bpo1</text>
+<type id="ID00000030a">
+<posattr x="136.0" y="-424.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text>INT</text>
+</type>
+<initmark id="ID00000030b">
+<posattr x="136.0" y="-376.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text/>
+</initmark>
+<port type="Out">
+<posattr x="100.0" y="-424.0"/>
+</port>
+</place>
+<trans id="TRANS00000017">
+<box h="40.0" w="60.0"/>
+<posattr x="100" y="-300"/>
+<fillattr colour="White" filled="false" pattern="filled"/>
+<lineattr colour="Black" pattern="Solid" thick="1"/>
+<textattr bold="false" colour="Black"/>
+<text>2_bto1</text>
+<cond id="TRANS00000017a">
+<posattr x="64.0" y="-324.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text/>
+</cond>
+<time id="TRANS00000017b">
+<posattr x="136.0" y="-276.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text/>
+</time>
+<code id="TRANS00000017c">
+<posattr x="136.0" y="-300.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text/>
+</code>
+<priority id="TRANS00000017d">
+<posattr x="64.0" y="-324.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text/>
+</priority>
+</trans>
+<arc id="ARC00000031" order="1" orientation="PtoT">
+<transend idref="TRANS00000015"/>
+<placeend idref="ID00000026"/>
+<lineattr colour="Black" thick="1" type="Solid"/>
+<annot id="ARC00000031a">
+<posattr x="0.0" y="-50.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text>i</text>
+</annot>
+</arc>
+<arc id="ARC00000032" order="1" orientation="TtoP">
+<transend idref="TRANS00000015"/>
+<placeend idref="ID00000024"/>
+<lineattr colour="Black" thick="1" type="Solid"/>
+<annot id="ARC00000032a">
+<posattr x="0.0" y="-150.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text>i</text>
+</annot>
+</arc>
+<arc id="ARC00000034" order="1" orientation="PtoT">
+<transend idref="TRANS00000016"/>
+<placeend idref="ID00000024"/>
+<lineattr colour="Black" thick="1" type="Solid"/>
+<annot id="ARC00000034a">
+<posattr x="0.0" y="-250.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text>i</text>
+</annot>
+</arc>
+<arc id="ARC00000035" order="1" orientation="TtoP">
+<transend idref="TRANS00000016"/>
+<placeend idref="ID00000028"/>
+<lineattr colour="Black" thick="1" type="Solid"/>
+<annot id="ARC00000035a">
+<posattr x="0.0" y="-350.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text>i</text>
+</annot>
+</arc>
+<arc id="ARC00000037" order="1" orientation="PtoT">
+<transend idref="TRANS00000017"/>
+<placeend idref="ID00000024"/>
+<lineattr colour="Black" thick="1" type="Solid"/>
+<annot id="ARC00000037a">
+<posattr x="50.0" y="-250.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text>i</text>
+</annot>
+</arc>
+<arc id="ARC00000038" order="1" orientation="TtoP">
+<transend idref="TRANS00000017"/>
+<placeend idref="ID00000030"/>
+<lineattr colour="Black" thick="1" type="Solid"/>
+<annot id="ARC00000038a">
+<posattr x="100.0" y="-350.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text>i</text>
+</annot>
+</arc>
+</page>
+<page id="PAGE00000007">
+<pageattr name="BRANCH XOR JOIN 1"/>
+<place id="ID00000031">
+<ellipse h="40.0" w="60.0"/>
+<posattr x="0" y="-200"/>
+<fillattr colour="White" filled="false" pattern="filled"/>
+<lineattr colour="Black" pattern="Solid" thick="1"/>
+<textattr bold="false" colour="Black"/>
+<text>1_bp</text>
+<type id="ID00000031a">
+<posattr x="36.0" y="-224.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text>INT</text>
+</type>
+<initmark id="ID00000031b">
+<posattr x="36.0" y="-176.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text/>
+</initmark>
+</place>
+<place id="ID00000033">
+<ellipse h="40.0" w="60.0"/>
+<posattr x="0" y="0"/>
+<fillattr colour="White" filled="false" pattern="filled"/>
+<lineattr colour="Black" pattern="Solid" thick="1"/>
+<textattr bold="false" colour="Black"/>
+<text>1_bpi0</text>
+<type id="ID00000033a">
+<posattr x="36.0" y="-24.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text>INT</text>
+</type>
+<initmark id="ID00000033b">
+<posattr x="36.0" y="24.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text/>
+</initmark>
+<port type="In">
+<posattr x="0.0" y="-24.0"/>
+</port>
+</place>
+<trans id="TRANS00000019">
+<box h="40.0" w="60.0"/>
+<posattr x="0" y="-100"/>
+<fillattr colour="White" filled="false" pattern="filled"/>
+<lineattr colour="Black" pattern="Solid" thick="1"/>
+<textattr bold="false" colour="Black"/>
+<text>1_bti0</text>
+<cond id="TRANS00000019a">
+<posattr x="-36.0" y="-124.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text/>
+</cond>
+<time id="TRANS00000019b">
+<posattr x="36.0" y="-76.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text/>
+</time>
+<code id="TRANS00000019c">
+<posattr x="36.0" y="-100.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text/>
+</code>
+<priority id="TRANS00000019d">
+<posattr x="-36.0" y="-124.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text/>
+</priority>
+</trans>
+<place id="ID00000035">
+<ellipse h="40.0" w="60.0"/>
+<posattr x="100" y="0"/>
+<fillattr colour="White" filled="false" pattern="filled"/>
+<lineattr colour="Black" pattern="Solid" thick="1"/>
+<textattr bold="false" colour="Black"/>
+<text>1_bpi1</text>
+<type id="ID00000035a">
+<posattr x="136.0" y="-24.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text>INT</text>
+</type>
+<initmark id="ID00000035b">
+<posattr x="136.0" y="24.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text/>
+</initmark>
+<port type="In">
+<posattr x="100.0" y="-24.0"/>
+</port>
+</place>
+<trans id="TRANS00000020">
+<box h="40.0" w="60.0"/>
+<posattr x="100" y="-100"/>
+<fillattr colour="White" filled="false" pattern="filled"/>
+<lineattr colour="Black" pattern="Solid" thick="1"/>
+<textattr bold="false" colour="Black"/>
+<text>1_bti1</text>
+<cond id="TRANS00000020a">
+<posattr x="64.0" y="-124.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text/>
+</cond>
+<time id="TRANS00000020b">
+<posattr x="136.0" y="-76.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text/>
+</time>
+<code id="TRANS00000020c">
+<posattr x="136.0" y="-100.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text/>
+</code>
+<priority id="TRANS00000020d">
+<posattr x="64.0" y="-124.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text/>
+</priority>
+</trans>
+<place id="ID00000037">
+<ellipse h="40.0" w="60.0"/>
+<posattr x="0" y="-400"/>
+<fillattr colour="White" filled="false" pattern="filled"/>
+<lineattr colour="Black" pattern="Solid" thick="1"/>
+<textattr bold="false" colour="Black"/>
+<text>1_bpo0</text>
+<type id="ID00000037a">
+<posattr x="36.0" y="-424.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text>INT</text>
+</type>
+<initmark id="ID00000037b">
+<posattr x="36.0" y="-376.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text/>
+</initmark>
+<port type="Out">
+<posattr x="0.0" y="-424.0"/>
+</port>
+</place>
+<trans id="TRANS00000021">
+<box h="40.0" w="60.0"/>
+<posattr x="0" y="-300"/>
+<fillattr colour="White" filled="false" pattern="filled"/>
+<lineattr colour="Black" pattern="Solid" thick="1"/>
+<textattr bold="false" colour="Black"/>
+<text>1_bto0</text>
+<cond id="TRANS00000021a">
+<posattr x="-36.0" y="-324.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text/>
+</cond>
+<time id="TRANS00000021b">
+<posattr x="36.0" y="-276.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text/>
+</time>
+<code id="TRANS00000021c">
+<posattr x="36.0" y="-300.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text/>
+</code>
+<priority id="TRANS00000021d">
+<posattr x="-36.0" y="-324.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text/>
+</priority>
+</trans>
+<arc id="ARC00000040" order="1" orientation="PtoT">
+<transend idref="TRANS00000019"/>
+<placeend idref="ID00000033"/>
+<lineattr colour="Black" thick="1" type="Solid"/>
+<annot id="ARC00000040a">
+<posattr x="0.0" y="-50.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text>i</text>
+</annot>
+</arc>
+<arc id="ARC00000041" order="1" orientation="TtoP">
+<transend idref="TRANS00000019"/>
+<placeend idref="ID00000031"/>
+<lineattr colour="Black" thick="1" type="Solid"/>
+<annot id="ARC00000041a">
+<posattr x="0.0" y="-150.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text>i</text>
+</annot>
+</arc>
+<arc id="ARC00000043" order="1" orientation="PtoT">
+<transend idref="TRANS00000020"/>
+<placeend idref="ID00000035"/>
+<lineattr colour="Black" thick="1" type="Solid"/>
+<annot id="ARC00000043a">
+<posattr x="100.0" y="-50.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text>i</text>
+</annot>
+</arc>
+<arc id="ARC00000044" order="1" orientation="TtoP">
+<transend idref="TRANS00000020"/>
+<placeend idref="ID00000031"/>
+<lineattr colour="Black" thick="1" type="Solid"/>
+<annot id="ARC00000044a">
+<posattr x="50.0" y="-150.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text>i</text>
+</annot>
+</arc>
+<arc id="ARC00000046" order="1" orientation="PtoT">
+<transend idref="TRANS00000021"/>
+<placeend idref="ID00000031"/>
+<lineattr colour="Black" thick="1" type="Solid"/>
+<annot id="ARC00000046a">
+<posattr x="0.0" y="-250.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text>i</text>
+</annot>
+</arc>
+<arc id="ARC00000047" order="1" orientation="TtoP">
+<transend idref="TRANS00000021"/>
+<placeend idref="ID00000037"/>
+<lineattr colour="Black" thick="1" type="Solid"/>
+<annot id="ARC00000047a">
+<posattr x="0.0" y="-350.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text>i</text>
+</annot>
+</arc>
+</page>
+<page id="PAGE00000008">
+<pageattr name="BRANCH XOR JOIN 2"/>
+<place id="ID00000038">
+<ellipse h="40.0" w="60.0"/>
+<posattr x="0" y="-200"/>
+<fillattr colour="White" filled="false" pattern="filled"/>
+<lineattr colour="Black" pattern="Solid" thick="1"/>
+<textattr bold="false" colour="Black"/>
+<text>2_bp</text>
+<type id="ID00000038a">
+<posattr x="36.0" y="-224.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text>INT</text>
+</type>
+<initmark id="ID00000038b">
+<posattr x="36.0" y="-176.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text/>
+</initmark>
+</place>
+<place id="ID00000040">
+<ellipse h="40.0" w="60.0"/>
+<posattr x="0" y="0"/>
+<fillattr colour="White" filled="false" pattern="filled"/>
+<lineattr colour="Black" pattern="Solid" thick="1"/>
+<textattr bold="false" colour="Black"/>
+<text>2_bpi0</text>
+<type id="ID00000040a">
+<posattr x="36.0" y="-24.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text>INT</text>
+</type>
+<initmark id="ID00000040b">
+<posattr x="36.0" y="24.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text/>
+</initmark>
+<port type="In">
+<posattr x="0.0" y="-24.0"/>
+</port>
+</place>
+<trans id="TRANS00000023">
+<box h="40.0" w="60.0"/>
+<posattr x="0" y="-100"/>
+<fillattr colour="White" filled="false" pattern="filled"/>
+<lineattr colour="Black" pattern="Solid" thick="1"/>
+<textattr bold="false" colour="Black"/>
+<text>2_bti0</text>
+<cond id="TRANS00000023a">
+<posattr x="-36.0" y="-124.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text/>
+</cond>
+<time id="TRANS00000023b">
+<posattr x="36.0" y="-76.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text/>
+</time>
+<code id="TRANS00000023c">
+<posattr x="36.0" y="-100.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text/>
+</code>
+<priority id="TRANS00000023d">
+<posattr x="-36.0" y="-124.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text/>
+</priority>
+</trans>
+<place id="ID00000042">
+<ellipse h="40.0" w="60.0"/>
+<posattr x="100" y="0"/>
+<fillattr colour="White" filled="false" pattern="filled"/>
+<lineattr colour="Black" pattern="Solid" thick="1"/>
+<textattr bold="false" colour="Black"/>
+<text>2_bpi1</text>
+<type id="ID00000042a">
+<posattr x="136.0" y="-24.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text>INT</text>
+</type>
+<initmark id="ID00000042b">
+<posattr x="136.0" y="24.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text/>
+</initmark>
+<port type="In">
+<posattr x="100.0" y="-24.0"/>
+</port>
+</place>
+<trans id="TRANS00000024">
+<box h="40.0" w="60.0"/>
+<posattr x="100" y="-100"/>
+<fillattr colour="White" filled="false" pattern="filled"/>
+<lineattr colour="Black" pattern="Solid" thick="1"/>
+<textattr bold="false" colour="Black"/>
+<text>2_bti1</text>
+<cond id="TRANS00000024a">
+<posattr x="64.0" y="-124.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text/>
+</cond>
+<time id="TRANS00000024b">
+<posattr x="136.0" y="-76.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text/>
+</time>
+<code id="TRANS00000024c">
+<posattr x="136.0" y="-100.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text/>
+</code>
+<priority id="TRANS00000024d">
+<posattr x="64.0" y="-124.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text/>
+</priority>
+</trans>
+<place id="ID00000044">
+<ellipse h="40.0" w="60.0"/>
+<posattr x="0" y="-400"/>
+<fillattr colour="White" filled="false" pattern="filled"/>
+<lineattr colour="Black" pattern="Solid" thick="1"/>
+<textattr bold="false" colour="Black"/>
+<text>2_bpo0</text>
+<type id="ID00000044a">
+<posattr x="36.0" y="-424.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text>INT</text>
+</type>
+<initmark id="ID00000044b">
+<posattr x="36.0" y="-376.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text/>
+</initmark>
+<port type="Out">
+<posattr x="0.0" y="-424.0"/>
+</port>
+</place>
+<trans id="TRANS00000025">
+<box h="40.0" w="60.0"/>
+<posattr x="0" y="-300"/>
+<fillattr colour="White" filled="false" pattern="filled"/>
+<lineattr colour="Black" pattern="Solid" thick="1"/>
+<textattr bold="false" colour="Black"/>
+<text>2_bto0</text>
+<cond id="TRANS00000025a">
+<posattr x="-36.0" y="-324.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text/>
+</cond>
+<time id="TRANS00000025b">
+<posattr x="36.0" y="-276.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text/>
+</time>
+<code id="TRANS00000025c">
+<posattr x="36.0" y="-300.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text/>
+</code>
+<priority id="TRANS00000025d">
+<posattr x="-36.0" y="-324.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text/>
+</priority>
+</trans>
+<arc id="ARC00000049" order="1" orientation="PtoT">
+<transend idref="TRANS00000023"/>
+<placeend idref="ID00000040"/>
+<lineattr colour="Black" thick="1" type="Solid"/>
+<annot id="ARC00000049a">
+<posattr x="0.0" y="-50.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text>i</text>
+</annot>
+</arc>
+<arc id="ARC00000050" order="1" orientation="TtoP">
+<transend idref="TRANS00000023"/>
+<placeend idref="ID00000038"/>
+<lineattr colour="Black" thick="1" type="Solid"/>
+<annot id="ARC00000050a">
+<posattr x="0.0" y="-150.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text>i</text>
+</annot>
+</arc>
+<arc id="ARC00000052" order="1" orientation="PtoT">
+<transend idref="TRANS00000024"/>
+<placeend idref="ID00000042"/>
+<lineattr colour="Black" thick="1" type="Solid"/>
+<annot id="ARC00000052a">
+<posattr x="100.0" y="-50.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text>i</text>
+</annot>
+</arc>
+<arc id="ARC00000053" order="1" orientation="TtoP">
+<transend idref="TRANS00000024"/>
+<placeend idref="ID00000038"/>
+<lineattr colour="Black" thick="1" type="Solid"/>
+<annot id="ARC00000053a">
+<posattr x="50.0" y="-150.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text>i</text>
+</annot>
+</arc>
+<arc id="ARC00000055" order="1" orientation="PtoT">
+<transend idref="TRANS00000025"/>
+<placeend idref="ID00000038"/>
+<lineattr colour="Black" thick="1" type="Solid"/>
+<annot id="ARC00000055a">
+<posattr x="0.0" y="-250.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text>i</text>
+</annot>
+</arc>
+<arc id="ARC00000056" order="1" orientation="TtoP">
+<transend idref="TRANS00000025"/>
+<placeend idref="ID00000044"/>
+<lineattr colour="Black" thick="1" type="Solid"/>
+<annot id="ARC00000056a">
+<posattr x="0.0" y="-350.0"/>
+<fillattr colour="White" filled="false" pattern="Solid"/>
+<lineattr colour="Black" thick="0" type="Solid"/>
+<textattr bold="false" colour="Black"/>
+<text>i</text>
+</annot>
+</arc>
+</page>
+<instances>
+<instance id="PAGE00000001itop" page="PAGE00000001">
+<instance id="SUBST00000001ia" trans="SUBST00000001"/>
+<instance id="SUBST00000004ia" trans="SUBST00000004"/>
+<instance id="SUBST00000007ia" trans="SUBST00000007"/>
+<instance id="SUBST00000010ia" trans="SUBST00000010"/>
+<instance id="SUBST00000014ia" trans="SUBST00000014"/>
+<instance id="SUBST00000018ia" trans="SUBST00000018"/>
+<instance id="SUBST00000022ia" trans="SUBST00000022"/>
+</instance>
+</instances>
+<monitorblock name="Monitors"/>
+<options>
+<option name="realtimestamp">
+<value>
+<boolean>false</boolean>
+</value>
+</option>
+</options>
+</cpnet>
+</workspaceElements>
