@@ -12,7 +12,7 @@ import Stomp, { Client, Subscription } from 'webstomp-client';
  */
 export class BaseService {
   public static readonly BASE_HTTP_URI: string = `${process.env.VUE_APP_BASE_URI}`;
-  public static readonly BASE_URI: string = '/chdsr/api/v1';
+  public static readonly BASE_URI: string = '/ips/api/v1';
 
   private wsConnected: boolean = false;
   private wsSocket: any = null;
