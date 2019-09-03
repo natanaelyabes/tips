@@ -4,7 +4,7 @@ variables:
   GRADLE_OPTS: "-Dorg.gradle.daemon=false"
 
 before_script:
-  - cd $CI_PROJECT_DIR/chdsr
+  - cd $CI_PROJECT_DIR/ips
   - export GRADLE_USER_HOME=`pwd`/.gradle
 
 build:
@@ -24,7 +24,7 @@ stop:
   stage: build
   script:
     - echo Stopping current service ...
-    - kubectl scale --replicas=0 statefulset/apps-chdsr
+    - kubectl scale --replicas=0 statefulset/apps-ips-spring-runner
   cache:
     key: "$CI_COMMIT_REF_NAME"
     policy: pull
@@ -37,7 +37,7 @@ start:
   stage: deploy
   script:
     - echo Starting service ...
-    - kubectl scale --replicas=1 statefulset/apps-chdsr
+    - kubectl scale --replicas=1 statefulset/apps-ips-spring-runner
   cache:
     key: "$CI_COMMIT_REF_NAME"
     policy: pull

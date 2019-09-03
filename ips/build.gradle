@@ -1,0 +1,102 @@
+plugins {
+	id 'com.jfrog.artifactory' version '4.9.6'
+}
+
+subprojects {
+	ext {
+		// Development mode using Scala IDE
+		// Set this to false for production build using gradle
+		devMode = false
+	}
+
+	apply plugin: 'java'
+	apply plugin: 'scala'
+	apply plugin: 'com.jfrog.artifactory'
+	apply plugin: 'maven-publish'
+	
+	repositories {
+		mavenLocal() {
+			//artifactory.apps.babcloud.com:31080
+			url 'http://artifactory.tips.iochord.co.kr:31080/artifactory/libs-release'
+			url 'http://artifactory.tips.iochord.co.kr:31080/artifactory/libs-snapshot'
+		}
+		mavenCentral()
+		flatDir {
+			dir '/opt/scalaide/plugins'
+		}
+	}   
+	
+	version = '0.0.1-SNAPSHOT'
+	group = 'io.iochord.apps.ips'
+	
+	dependencies {
+		implementation 'com.fasterxml.jackson.core:jackson-databind:2.9.8'
+		implementation('com.fasterxml.jackson.module:jackson-module-scala_2.12:2.9.8') {
+			exclude group: 'org.scala-lang', module: 'scala-library'
+		}
+		implementation 'com.fasterxml.jackson.dataformat:jackson-dataformat-xml:2.9.8'
+		if (devMode) {
+			implementation 'org.scala-lang:org.scala-lang.scala-library_2.12.3.v20170725-052526-VFINAL-6ac6da8'
+			implementation 'org.scala-lang:org.scala-lang.scala-reflect_2.12.3.v20170725-052526-VFINAL-6ac6da8'
+			implementation 'org.scala-lang:org.scala-lang.scala-compiler_2.12.3.v20170725-052526-VFINAL-6ac6da8'
+		} else {
+			implementation 'org.scala-lang:scala-library:2.12.8'
+			implementation 'org.scala-lang:scala-compiler:2.12.8'
+		}
+		compileOnly 'org.projectlombok:lombok:1.18.6'
+		implementation files('$sourceSets.main.scala.outputDir')
+		annotationProcessor 'org.projectlombok:lombok:1.18.6'
+		//testCompile 'org.scalatest:scalatest_2.12:3.2.0-SNAP10:'
+		testCompile 'junit:junit:4.12'
+		testCompile 'org.projectlombok:lombok:1.18.6'
+		testAnnotationProcessor 'org.projectlombok:lombok:1.18.6'
+	}
+	
+	compileJava {
+		sourceCompatibility = 1.8
+		targetCompatibility = 1.8
+		options.encoding = "UTF-8"
+	}
+
+	sourceSets {
+		main {
+			scala {
+				outputDir = file("$buildDir/classes/scala/main")
+			}
+			java {
+				outputDir = file("$buildDir/classes/java/main")
+			}
+		}
+	}
+
+	tasks.compileJava.dependsOn compileScala
+	tasks.compileScala.dependsOn.remove("compileJava")
+	
+	test {
+		ignoreFailures = true
+	}
+	
+	artifactory {
+    	publish {
+			//artifactory.apps.babcloud.com:31080
+        	contextUrl = 'http://artifactory.tips.iochord.co.kr:31080/artifactory'
+	        repository {
+	            repoKey = "libs-snapshot-local"
+	            username = "admin"
+	            password = "password"
+	        }
+		    defaults {
+	            publications('mavenJava')
+	        }
+		}
+    }
+
+	publishing {
+	    publications {
+	        mavenJava(MavenPublication) {
+	            from components.java
+	        }
+	    }
+	}
+
+}
