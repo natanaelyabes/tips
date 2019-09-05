@@ -9,7 +9,6 @@ import { GraphNodeImpl } from '@/iochord/ips/common/graph/ism/class/GraphNodeImp
 import { GraphStartEventNodeImpl } from '@/iochord/ips/common/graph/ism/class/components/GraphStartEventNodeImpl';
 import GraphSubject from '@/iochord/ips/common/graph/ism/rxjs/GraphSubject';
 
-
 const graphModule = getModule(GraphModule);
 
 @Component<StartNodeModalMixin>({
