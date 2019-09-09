@@ -1,9 +1,15 @@
 package io.iochord.apps.ips.simulator.web.v1.api.controllers;
 
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 
+import io.iochord.apps.ips.services.ServiceState;
 import io.iochord.apps.ips.simulator.web.v1.controllers.AController;
+import io.iochord.apps.ips.simulator.web.v1.models.WebServiceResponse;
 import io.iochord.apps.ips.simulator.web.v1.services.AllServices;
 import lombok.Getter;
 
@@ -25,5 +31,13 @@ public abstract class AServiceController extends AController {
 	@Autowired
 	@Getter
 	private SimpMessagingTemplate wsmTemplate; 
+	
+	public <T> WebServiceResponse<T> printResult(HttpHeaders headers, Future<T> future, WebServiceResponse<T> response) throws InterruptedException, ExecutionException {
+		if (!headers.containsKey("X-IOCHORD-WSA")) {
+			response.setData(future.get());
+			response.getState().setStatus(ServiceState.STATE.COMPLETED);
+		}
+		return response;
+	}
 
 }

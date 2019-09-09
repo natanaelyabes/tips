@@ -1,0 +1,4 @@
+dependencies {
+	compile 'org.springframework.boot:spring-boot-starter-web:2.1.2.RELEASE'
+	compile 'org.springframework.boot:spring-boot-starter-websocket:2.1.2.RELEASE'
+}

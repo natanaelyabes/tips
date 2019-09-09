@@ -12,3 +12,5 @@ export abstract class DataService extends BaseService {
   public static readonly BASE_URI: string = BaseService.BASE_URI + '/data';
 
 }
+
+export default DataService;

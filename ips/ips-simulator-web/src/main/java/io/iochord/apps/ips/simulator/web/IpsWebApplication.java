@@ -16,9 +16,7 @@ import org.springframework.context.annotation.Configuration;
  */
 @SpringBootApplication
 @EnableAutoConfiguration
-//	(exclude = { DataSourceAutoConfiguration.class,
-//		DataSourceTransactionManagerAutoConfiguration.class, HibernateJpaAutoConfiguration.class, MongoAutoConfiguration.class })
-@ComponentScan("io.iochord.apps.ips.simulator.web")
+@ComponentScan("io.iochord.apps.ips")
 @Configuration
 public class IpsWebApplication {
 

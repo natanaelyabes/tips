@@ -6,12 +6,12 @@
         <i class="search icon"></i>
       </div>
     </div>
-    <a class="item">Upload CSV</a>
-    <a class="item">Upload XES</a>
-    <a class="item">Upload MXML</a>
-    <a class="item">Upload Simulation Model</a>
-    <a class="item">Upload CPN</a>
-    <a class="item">Upload Process Model</a>
+    <a class="item">Import CSV</a>
+    <a class="item">Import XES</a>
+    <a class="item">Import MXML</a>
+    <a class="item">Import Simulation Model</a>
+    <a class="item">Import CPN</a>
+    <a class="item">Import Process Model</a>
   </div>
 </template>
 

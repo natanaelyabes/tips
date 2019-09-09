@@ -3,7 +3,7 @@ package io.iochord.apps.ips.model.converter.sbp2cpn;
 import org.cpntools.accesscpn.model.PetriNet;
 
 import io.iochord.apps.ips.model.converter.ConversionModel;
-import io.iochord.apps.ips.model.sbpnet.v1.Sbpnet;
+import io.iochord.apps.ips.model.ism.v1.Ism;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -15,11 +15,11 @@ import lombok.Setter;
  *
  *
  */
-public class Sbpnet2CpnmlModel implements ConversionModel<Sbpnet, PetriNet> {
+public class Sbpnet2CpnmlModel implements ConversionModel<Ism, PetriNet> {
 
 	@Getter
 	@Setter
-	private Sbpnet originalModel;
+	private Ism originalModel;
 	
 	@Getter
 	@Setter

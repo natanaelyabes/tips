@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import io.iochord.apps.ips.model.converter.sbp2cpn.Sbpnet2CpnscalaBiConverter;
 import io.iochord.apps.ips.model.example.SbpnetExample;
-import io.iochord.apps.ips.model.sbpnet.v1.Sbpnet;
+import io.iochord.apps.ips.model.ism.v1.Ism;
 import io.iochord.apps.ips.simulator.compiler.MemoryScalaCompiler;
 import io.iochord.apps.ips.simulator.compiler.Simulation;
 import io.iochord.apps.ips.simulator.web.TestService;
@@ -38,7 +38,7 @@ public class TestController extends AServiceController {
 	public static final String BASE_URI = AServiceController.BASE_URI + "/test";
 	
 	@Getter
-	private Sbpnet snet;
+	private Ism snet;
 	
 	@Autowired
 	private TestService svc;
