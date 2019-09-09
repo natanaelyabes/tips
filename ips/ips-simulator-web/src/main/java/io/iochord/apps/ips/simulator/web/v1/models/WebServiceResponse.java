@@ -1,5 +1,6 @@
 package io.iochord.apps.ips.simulator.web.v1.models;
 
+import io.iochord.apps.ips.services.ServiceState;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -19,8 +20,8 @@ public class WebServiceResponse<T> {
 
 	@Getter
 	@Setter
-	private WebServiceStatus status = WebServiceStatus.completed();
-	
+	private ServiceState state;
+
 	public WebServiceResponse() {
 		
 	}

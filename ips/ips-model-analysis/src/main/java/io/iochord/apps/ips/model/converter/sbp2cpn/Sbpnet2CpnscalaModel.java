@@ -6,8 +6,8 @@ import java.util.TreeMap;
 import org.springframework.data.util.Pair;
 
 import io.iochord.apps.ips.model.converter.ConversionModel;
-import io.iochord.apps.ips.model.sbpnet.v1.Element;
-import io.iochord.apps.ips.model.sbpnet.v1.Sbpnet;
+import io.iochord.apps.ips.model.ism.v1.Element;
+import io.iochord.apps.ips.model.ism.v1.Ism;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -19,11 +19,11 @@ import lombok.Setter;
  *
  *
  */
-public class Sbpnet2CpnscalaModel implements ConversionModel<Sbpnet, String> {
+public class Sbpnet2CpnscalaModel implements ConversionModel<Ism, String> {
 
 	@Getter
 	@Setter
-	private Sbpnet originalModel;
+	private Ism originalModel;
 	
 	@Getter
 	@Setter

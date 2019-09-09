@@ -29,22 +29,22 @@ import org.cpntools.accesscpn.model.declaration.TypeDeclaration;
 import org.cpntools.accesscpn.model.declaration.VariableDeclaration;
 
 import io.iochord.apps.ips.model.converter.Converter;
-import io.iochord.apps.ips.model.sbpnet.v1.Connector;
-import io.iochord.apps.ips.model.sbpnet.v1.Data;
-import io.iochord.apps.ips.model.sbpnet.v1.Element;
-import io.iochord.apps.ips.model.sbpnet.v1.Sbpnet;
-import io.iochord.apps.ips.model.sbpnet.v1.components.Activity;
-import io.iochord.apps.ips.model.sbpnet.v1.components.Branch;
-import io.iochord.apps.ips.model.sbpnet.v1.components.BranchGate;
-import io.iochord.apps.ips.model.sbpnet.v1.components.DataTable;
-import io.iochord.apps.ips.model.sbpnet.v1.components.Function;
-import io.iochord.apps.ips.model.sbpnet.v1.components.Generator;
-import io.iochord.apps.ips.model.sbpnet.v1.components.Monitor;
-import io.iochord.apps.ips.model.sbpnet.v1.components.ObjectType;
-import io.iochord.apps.ips.model.sbpnet.v1.components.Queue;
-import io.iochord.apps.ips.model.sbpnet.v1.components.Resource;
-import io.iochord.apps.ips.model.sbpnet.v1.components.Start;
-import io.iochord.apps.ips.model.sbpnet.v1.components.Stop;
+import io.iochord.apps.ips.model.ism.v1.Connector;
+import io.iochord.apps.ips.model.ism.v1.Data;
+import io.iochord.apps.ips.model.ism.v1.Element;
+import io.iochord.apps.ips.model.ism.v1.Ism;
+import io.iochord.apps.ips.model.ism.v1.components.Activity;
+import io.iochord.apps.ips.model.ism.v1.components.Branch;
+import io.iochord.apps.ips.model.ism.v1.components.BranchGate;
+import io.iochord.apps.ips.model.ism.v1.components.DataTable;
+import io.iochord.apps.ips.model.ism.v1.components.Function;
+import io.iochord.apps.ips.model.ism.v1.components.Generator;
+import io.iochord.apps.ips.model.ism.v1.components.Monitor;
+import io.iochord.apps.ips.model.ism.v1.components.ObjectType;
+import io.iochord.apps.ips.model.ism.v1.components.Queue;
+import io.iochord.apps.ips.model.ism.v1.components.Resource;
+import io.iochord.apps.ips.model.ism.v1.components.Start;
+import io.iochord.apps.ips.model.ism.v1.components.Stop;
 import lombok.Getter;
 
 /**
@@ -55,7 +55,7 @@ import lombok.Getter;
  *
  *
  */
-public class Sbpnet2CpnmlBiConverter implements Converter<Sbpnet, PetriNet> {
+public class Sbpnet2CpnmlBiConverter implements Converter<Ism, PetriNet> {
 	
 	@Getter
 	protected ModelFactory factory = ModelFactory.INSTANCE;
@@ -200,7 +200,7 @@ public class Sbpnet2CpnmlBiConverter implements Converter<Sbpnet, PetriNet> {
 	}
 	
 	@Override
-	public PetriNet convert(Sbpnet snet) {
+	public PetriNet convert(Ism snet) {
 		Sbpnet2CpnmlBiConverter converter = this;
 		PetriNet net = converter.createPetriNet(snet.getId());
 		Page page =  converter.addPage(net, "SBPNET"); 
@@ -215,7 +215,7 @@ public class Sbpnet2CpnmlBiConverter implements Converter<Sbpnet, PetriNet> {
 		
 		// Convert Pages
 		for (String pi : snet.getPages().keySet()) {
-			io.iochord.apps.ips.model.sbpnet.v1.Page p = snet.getPages().get(pi);
+			io.iochord.apps.ips.model.ism.v1.Page p = snet.getPages().get(pi);
 			// Convert Data Nodes
 			for (String di : p.getData().keySet()) {
 				Data d = p.getData().get(di);
@@ -271,7 +271,7 @@ public class Sbpnet2CpnmlBiConverter implements Converter<Sbpnet, PetriNet> {
 			}
 			// Convert Nodes
 			for (String ni : p.getNodes().keySet()) {
-				io.iochord.apps.ips.model.sbpnet.v1.Node n = p.getNodes().get(ni);
+				io.iochord.apps.ips.model.ism.v1.Node n = p.getNodes().get(ni);
 				if (n instanceof Start) {
 					Start na = (Start) n;
 //					Page napage =  converter.addPage(net, "START " + na.getLabel()); 
@@ -391,7 +391,7 @@ public class Sbpnet2CpnmlBiConverter implements Converter<Sbpnet, PetriNet> {
 	}
 
 	@Override
-	public Sbpnet revert(PetriNet o) {
+	public Ism revert(PetriNet o) {
 		// TODO Auto-generated method stub
 		return null;
 	}

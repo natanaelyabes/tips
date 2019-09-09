@@ -2,24 +2,24 @@ package io.iochord.apps.ips.model.example;
 
 import java.util.concurrent.TimeUnit;
 
-import io.iochord.apps.ips.model.sbpnet.v1.Sbpnet;
-import io.iochord.apps.ips.model.sbpnet.v1.SbpnetFactory;
-import io.iochord.apps.ips.model.sbpnet.v1.components.BranchGate;
-import io.iochord.apps.ips.model.sbpnet.v1.components.BranchType;
-import io.iochord.apps.ips.model.sbpnet.v1.components.DistributionType;
-import io.iochord.apps.ips.model.sbpnet.v1.components.Queue.QUEUE_TYPE;
-import io.iochord.apps.ips.model.sbpnet.v1.components.impl.ActivityImpl;
-import io.iochord.apps.ips.model.sbpnet.v1.components.impl.BranchImpl;
-import io.iochord.apps.ips.model.sbpnet.v1.components.impl.GeneratorImpl;
-import io.iochord.apps.ips.model.sbpnet.v1.components.impl.ObjectTypeImpl;
-import io.iochord.apps.ips.model.sbpnet.v1.components.impl.QueueImpl;
-import io.iochord.apps.ips.model.sbpnet.v1.components.impl.ResourceImpl;
-import io.iochord.apps.ips.model.sbpnet.v1.components.impl.StartImpl;
-import io.iochord.apps.ips.model.sbpnet.v1.components.impl.StopImpl;
-import io.iochord.apps.ips.model.sbpnet.v1.impl.ConnectorImpl;
-import io.iochord.apps.ips.model.sbpnet.v1.impl.PageImpl;
-import io.iochord.apps.ips.model.sbpnet.v1.impl.SbpnetFactoryImpl;
-import io.iochord.apps.ips.model.sbpnet.v1.impl.SbpnetImpl;
+import io.iochord.apps.ips.model.ism.v1.Ism;
+import io.iochord.apps.ips.model.ism.v1.IsmFactory;
+import io.iochord.apps.ips.model.ism.v1.components.BranchGate;
+import io.iochord.apps.ips.model.ism.v1.components.BranchType;
+import io.iochord.apps.ips.model.ism.v1.components.DistributionType;
+import io.iochord.apps.ips.model.ism.v1.components.Queue.QUEUE_TYPE;
+import io.iochord.apps.ips.model.ism.v1.components.impl.ActivityImpl;
+import io.iochord.apps.ips.model.ism.v1.components.impl.BranchImpl;
+import io.iochord.apps.ips.model.ism.v1.components.impl.GeneratorImpl;
+import io.iochord.apps.ips.model.ism.v1.components.impl.ObjectTypeImpl;
+import io.iochord.apps.ips.model.ism.v1.components.impl.QueueImpl;
+import io.iochord.apps.ips.model.ism.v1.components.impl.ResourceImpl;
+import io.iochord.apps.ips.model.ism.v1.components.impl.StartImpl;
+import io.iochord.apps.ips.model.ism.v1.components.impl.StopImpl;
+import io.iochord.apps.ips.model.ism.v1.impl.ConnectorImpl;
+import io.iochord.apps.ips.model.ism.v1.impl.PageImpl;
+import io.iochord.apps.ips.model.ism.v1.impl.IsmFactoryImpl;
+import io.iochord.apps.ips.model.ism.v1.impl.IsmImpl;
 
 /**
  *
@@ -32,9 +32,9 @@ import io.iochord.apps.ips.model.sbpnet.v1.impl.SbpnetImpl;
  *
  */
 public class SbpnetExample {
-	public static Sbpnet create() {
-		SbpnetFactory factory = SbpnetFactoryImpl.getInstance();
-		SbpnetImpl net = (SbpnetImpl) factory.create();
+	public static Ism create() {
+		IsmFactory factory = IsmFactoryImpl.getInstance();
+		IsmImpl net = (IsmImpl) factory.create();
 
 		PageImpl page = (PageImpl) net.getPages().values().iterator().next();
 		ObjectTypeImpl cust = (ObjectTypeImpl) factory.addObjectType(page);
@@ -86,9 +86,9 @@ public class SbpnetExample {
 		return net;
 	}
 	
-	public static Sbpnet createComplete() {
-		SbpnetFactory factory = SbpnetFactoryImpl.getInstance();
-		SbpnetImpl net = (SbpnetImpl) factory.create();
+	public static Ism createComplete() {
+		IsmFactory factory = IsmFactoryImpl.getInstance();
+		IsmImpl net = (IsmImpl) factory.create();
 
 		PageImpl page = (PageImpl) net.getPages().values().iterator().next();
 		ObjectTypeImpl cust = (ObjectTypeImpl) factory.addObjectType(page);

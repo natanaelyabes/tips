@@ -1,4 +1,5 @@
-import { DataService } from './DataService';
+import DataService from './DataService';
+import ImportCsvConfiguration from './models/ImportCsvConfiguration';
 
 /**
  *
@@ -7,6 +8,8 @@ import { DataService } from './DataService';
  * @since   2019
  *
  */
+export { ImportCsvConfiguration };
+
 export default class DataConnectionService extends DataService {
 
   public static readonly BASE_URI: string = DataService.BASE_URI + '';
@@ -20,11 +23,11 @@ export default class DataConnectionService extends DataService {
 
   private static __INSTANCE: DataConnectionService;
 
-  public test(completeCallback: any, progressCallback: any) {
-    this.webserviceGet(DataConnectionService.BASE_URI + '/import/test', completeCallback, progressCallback);
+  public importCsv(config: any, file: any, completeCallback: any, progressCallback: any) {
+    const req = new FormData();
+    req.append('req', JSON.stringify(config));
+    req.append('file', file);
+    return this.webserviceUpload(DataConnectionService.BASE_URI + '/import/csv', req, completeCallback, progressCallback);
   }
 
-  public importCsv(data: FormData, completeCallback: any, progressCallback: any) {
-    this.webserviceUpload(DataConnectionService.BASE_URI + '/import/csv', data, completeCallback, progressCallback);
-  }
 }

@@ -6,29 +6,29 @@ import java.util.Map;
 import org.springframework.data.util.Pair;
 
 import io.iochord.apps.ips.model.converter.Converter;
-import io.iochord.apps.ips.model.sbpnet.v1.Connector;
-import io.iochord.apps.ips.model.sbpnet.v1.Data;
-import io.iochord.apps.ips.model.sbpnet.v1.Element;
-import io.iochord.apps.ips.model.sbpnet.v1.Sbpnet;
-import io.iochord.apps.ips.model.sbpnet.v1.components.Activity;
-import io.iochord.apps.ips.model.sbpnet.v1.components.Branch;
-import io.iochord.apps.ips.model.sbpnet.v1.components.BranchGate;
-import io.iochord.apps.ips.model.sbpnet.v1.components.DataTable;
-import io.iochord.apps.ips.model.sbpnet.v1.components.Function;
-import io.iochord.apps.ips.model.sbpnet.v1.components.Generator;
-import io.iochord.apps.ips.model.sbpnet.v1.components.Monitor;
-import io.iochord.apps.ips.model.sbpnet.v1.components.ObjectType;
-import io.iochord.apps.ips.model.sbpnet.v1.components.Queue;
-import io.iochord.apps.ips.model.sbpnet.v1.components.Resource;
-import io.iochord.apps.ips.model.sbpnet.v1.components.Start;
-import io.iochord.apps.ips.model.sbpnet.v1.components.Stop;
+import io.iochord.apps.ips.model.ism.v1.Connector;
+import io.iochord.apps.ips.model.ism.v1.Data;
+import io.iochord.apps.ips.model.ism.v1.Element;
+import io.iochord.apps.ips.model.ism.v1.Ism;
+import io.iochord.apps.ips.model.ism.v1.components.Activity;
+import io.iochord.apps.ips.model.ism.v1.components.Branch;
+import io.iochord.apps.ips.model.ism.v1.components.BranchGate;
+import io.iochord.apps.ips.model.ism.v1.components.DataTable;
+import io.iochord.apps.ips.model.ism.v1.components.Function;
+import io.iochord.apps.ips.model.ism.v1.components.Generator;
+import io.iochord.apps.ips.model.ism.v1.components.Monitor;
+import io.iochord.apps.ips.model.ism.v1.components.ObjectType;
+import io.iochord.apps.ips.model.ism.v1.components.Queue;
+import io.iochord.apps.ips.model.ism.v1.components.Resource;
+import io.iochord.apps.ips.model.ism.v1.components.Start;
+import io.iochord.apps.ips.model.ism.v1.components.Stop;
 import lombok.Getter;
 
 /**
  * @author Nur Ichsan Utama <ichsan83@gmail.com>
  *
  */
-public class Sbpnet2CpnscalaBiConverter2 implements Converter<Sbpnet, Sbpnet2CpnscalaModel> {
+public class Sbpnet2CpnscalaBiConverter2 implements Converter<Ism, Sbpnet2CpnscalaModel> {
 	
 	class KeyElement {
 		final static String type = "Type";
@@ -281,11 +281,11 @@ public class Sbpnet2CpnscalaBiConverter2 implements Converter<Sbpnet, Sbpnet2Cpn
 		model.getBasicMonitors().put(originalElement, Pair.of(convertedElementId, eventId));
 	}
 	
-	public Sbpnet2CpnscalaModel convert(Sbpnet snet) {
+	public Sbpnet2CpnscalaModel convert(Ism snet) {
 		Sbpnet2CpnscalaModel result = new Sbpnet2CpnscalaModel();
 		result.setOriginalModel(snet);
 		for (String pi : snet.getPages().keySet()) {
-			io.iochord.apps.ips.model.sbpnet.v1.Page p = snet.getPages().get(pi);
+			io.iochord.apps.ips.model.ism.v1.Page p = snet.getPages().get(pi);
 			
 			String CaseData = "case class CaseData(name:String,age:Int)";
 			factory.append(CaseData+"\n");
@@ -365,7 +365,7 @@ public class Sbpnet2CpnscalaBiConverter2 implements Converter<Sbpnet, Sbpnet2Cpn
 			
 			// Convert Nodes
 			for (String ni : p.getNodes().keySet()) {
-				io.iochord.apps.ips.model.sbpnet.v1.Node n = p.getNodes().get(ni);
+				io.iochord.apps.ips.model.ism.v1.Node n = p.getNodes().get(ni);
 				if (n instanceof Start) {
 					Start na = (Start) n;
 					String p_start0 = "";
@@ -472,7 +472,7 @@ public class Sbpnet2CpnscalaBiConverter2 implements Converter<Sbpnet, Sbpnet2Cpn
 	 *
 	 */
 	@Override
-	public Sbpnet revert(Sbpnet2CpnscalaModel o) {
+	public Ism revert(Sbpnet2CpnscalaModel o) {
 		// TODO Auto-generated method stub
 		return null;
 	}

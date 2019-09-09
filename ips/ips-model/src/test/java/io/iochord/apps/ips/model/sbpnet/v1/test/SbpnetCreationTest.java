@@ -9,38 +9,38 @@ import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runners.MethodSorters;
 
-import io.iochord.apps.ips.model.sbpnet.v1.Connector;
-import io.iochord.apps.ips.model.sbpnet.v1.SbpnetFactory;
-import io.iochord.apps.ips.model.sbpnet.v1.components.Activity;
-import io.iochord.apps.ips.model.sbpnet.v1.components.Branch;
-import io.iochord.apps.ips.model.sbpnet.v1.components.BranchGate;
-import io.iochord.apps.ips.model.sbpnet.v1.components.BranchRule;
-import io.iochord.apps.ips.model.sbpnet.v1.components.BranchType;
-import io.iochord.apps.ips.model.sbpnet.v1.components.DataTable;
-import io.iochord.apps.ips.model.sbpnet.v1.components.Function;
-import io.iochord.apps.ips.model.sbpnet.v1.components.Generator;
-import io.iochord.apps.ips.model.sbpnet.v1.components.Monitor;
-import io.iochord.apps.ips.model.sbpnet.v1.components.ObjectType;
-import io.iochord.apps.ips.model.sbpnet.v1.components.Queue;
-import io.iochord.apps.ips.model.sbpnet.v1.components.Resource;
-import io.iochord.apps.ips.model.sbpnet.v1.components.Start;
-import io.iochord.apps.ips.model.sbpnet.v1.components.Stop;
-import io.iochord.apps.ips.model.sbpnet.v1.components.VariableType;
-import io.iochord.apps.ips.model.sbpnet.v1.components.Queue.QUEUE_TYPE;
-import io.iochord.apps.ips.model.sbpnet.v1.components.impl.ActivityImpl;
-import io.iochord.apps.ips.model.sbpnet.v1.components.impl.BranchImpl;
-import io.iochord.apps.ips.model.sbpnet.v1.components.impl.DataTableImpl;
-import io.iochord.apps.ips.model.sbpnet.v1.components.impl.FunctionImpl;
-import io.iochord.apps.ips.model.sbpnet.v1.components.impl.GeneratorImpl;
-import io.iochord.apps.ips.model.sbpnet.v1.components.impl.MonitorImpl;
-import io.iochord.apps.ips.model.sbpnet.v1.components.impl.ObjectTypeImpl;
-import io.iochord.apps.ips.model.sbpnet.v1.components.impl.QueueImpl;
-import io.iochord.apps.ips.model.sbpnet.v1.components.impl.ResourceImpl;
-import io.iochord.apps.ips.model.sbpnet.v1.components.impl.StartImpl;
-import io.iochord.apps.ips.model.sbpnet.v1.components.impl.StopImpl;
-import io.iochord.apps.ips.model.sbpnet.v1.impl.ConnectorImpl;
-import io.iochord.apps.ips.model.sbpnet.v1.impl.SbpnetFactoryImpl;
-import io.iochord.apps.ips.model.sbpnet.v1.impl.SbpnetImpl;
+import io.iochord.apps.ips.model.ism.v1.Connector;
+import io.iochord.apps.ips.model.ism.v1.IsmFactory;
+import io.iochord.apps.ips.model.ism.v1.components.Activity;
+import io.iochord.apps.ips.model.ism.v1.components.Branch;
+import io.iochord.apps.ips.model.ism.v1.components.BranchGate;
+import io.iochord.apps.ips.model.ism.v1.components.BranchRule;
+import io.iochord.apps.ips.model.ism.v1.components.BranchType;
+import io.iochord.apps.ips.model.ism.v1.components.DataTable;
+import io.iochord.apps.ips.model.ism.v1.components.Function;
+import io.iochord.apps.ips.model.ism.v1.components.Generator;
+import io.iochord.apps.ips.model.ism.v1.components.Monitor;
+import io.iochord.apps.ips.model.ism.v1.components.ObjectType;
+import io.iochord.apps.ips.model.ism.v1.components.Queue;
+import io.iochord.apps.ips.model.ism.v1.components.Resource;
+import io.iochord.apps.ips.model.ism.v1.components.Start;
+import io.iochord.apps.ips.model.ism.v1.components.Stop;
+import io.iochord.apps.ips.model.ism.v1.components.VariableType;
+import io.iochord.apps.ips.model.ism.v1.components.Queue.QUEUE_TYPE;
+import io.iochord.apps.ips.model.ism.v1.components.impl.ActivityImpl;
+import io.iochord.apps.ips.model.ism.v1.components.impl.BranchImpl;
+import io.iochord.apps.ips.model.ism.v1.components.impl.DataTableImpl;
+import io.iochord.apps.ips.model.ism.v1.components.impl.FunctionImpl;
+import io.iochord.apps.ips.model.ism.v1.components.impl.GeneratorImpl;
+import io.iochord.apps.ips.model.ism.v1.components.impl.MonitorImpl;
+import io.iochord.apps.ips.model.ism.v1.components.impl.ObjectTypeImpl;
+import io.iochord.apps.ips.model.ism.v1.components.impl.QueueImpl;
+import io.iochord.apps.ips.model.ism.v1.components.impl.ResourceImpl;
+import io.iochord.apps.ips.model.ism.v1.components.impl.StartImpl;
+import io.iochord.apps.ips.model.ism.v1.components.impl.StopImpl;
+import io.iochord.apps.ips.model.ism.v1.impl.ConnectorImpl;
+import io.iochord.apps.ips.model.ism.v1.impl.IsmFactoryImpl;
+import io.iochord.apps.ips.model.ism.v1.impl.IsmImpl;
 import io.iochord.apps.ips.util.SerializationUtil;
 
 /**
@@ -54,17 +54,17 @@ import io.iochord.apps.ips.util.SerializationUtil;
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class SbpnetCreationTest {
 
-	public static final SbpnetFactory factory = SbpnetFactoryImpl.getInstance();
+	public static final IsmFactory factory = IsmFactoryImpl.getInstance();
 	
-	public static final SbpnetFactory getFactory() {
+	public static final IsmFactory getFactory() {
 		return factory;
 	}
 
-	public static SbpnetImpl net;
+	public static IsmImpl net;
 	
-	public static SbpnetImpl getNet() {
+	public static IsmImpl getNet() {
 		if (net == null) {
-			net = (SbpnetImpl) getFactory().create();
+			net = (IsmImpl) getFactory().create();
 		}
 		return net;
 	}

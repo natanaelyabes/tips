@@ -19,7 +19,12 @@ export class BaseService {
   private wsClient: any = null;
 
   public async remoteGet(url: string): Promise<AxiosResponse> {
-    return await axios.get(BaseService.BASE_HTTP_URI + url);
+    return await axios.get(BaseService.BASE_HTTP_URI + url, {
+      headers: {
+        'Accept': 'application/json',
+        'X-IOCHORD-WSA': 'true',
+      },
+    });
   }
 
   public async remotePost(url: string, data: any): Promise<AxiosResponse> {
@@ -31,12 +36,17 @@ export class BaseService {
     });
   }
 
-  public webserviceGet(url: string, completeCallback: any, progressCallback: any): void {
+  public webserviceGet(url: string, completeCallback: (tick: any) => void, progressCallback: (tick: any) => void): void {
     // const self = this;
-    axios.get(BaseService.BASE_HTTP_URI + url)
+    axios.get(BaseService.BASE_HTTP_URI + url, {
+      headers: {
+        'Accept': 'application/json',
+        'X-IOCHORD-WSA': 'true',
+      },
+    })
     .then((rawResponse) => {
       const response = rawResponse.data;
-      if (response.status.status === 'completed') {
+      if (response.state.state === 'completed') {
         completeCallback(response);
       } else {
         this.getWsClient((client: Client) => {
@@ -58,16 +68,17 @@ export class BaseService {
     });
   }
 
-  public webservicePost(url: string, data: any, completeCallback: any, progressCallback: any): void {
+  public webservicePost(url: string, data: any, completeCallback: (tick: any) => void, progressCallback: (tick: any) => void): void {
     // const self = this;
     axios.post(BaseService.BASE_HTTP_URI + url, JSON.stringify(data), {
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json',
+        'X-IOCHORD-WSA': 'true',
       },
     }).then((rawResponse) => {
       const response = rawResponse.data;
-      if (response.status.status === 'completed') {
+      if (response.state.state === 'completed') {
         completeCallback(response);
       } else {
         this.getWsClient((client: Client) => {
@@ -89,26 +100,28 @@ export class BaseService {
     });
   }
 
-  public webserviceUpload(url: string, data: FormData, completeCallback: any, progressCallback: any): void {
+  public webserviceUpload(url: string, data: FormData, completeCallback: (tick: any) => void, progressCallback: (tick: any) => void): void {
     // const self = this;
     axios.post(BaseService.BASE_HTTP_URI + url, data, {
       headers: {
+        'Accept': 'application/json',
         'Content-Type': 'multipart/form-data',
+        'X-IOCHORD-WSA': 'true',
       },
     }).then((rawResponse) => {
       const response = rawResponse.data;
-      if (response.status.status === 'completed') {
+      if (response.state.state === 'completed') {
         completeCallback(response);
       } else {
         this.getWsClient((client: Client) => {
           let subProgress: Subscription | null = null;
           if (completeCallback !== null && progressCallback !== null) {
-            subProgress = client.subscribe(response.status.progressWsUri, (tick) => {
+            subProgress = client.subscribe(response.state.progressWsUri, (tick) => {
               progressCallback(tick);
             });
           }
           if (completeCallback !== null) {
-            const subComplete = client.subscribe(response.status.completeWsUri, (tick) => {
+            const subComplete = client.subscribe(response.state.completeWsUri, (tick) => {
               client.unsubscribe((subProgress as Subscription).id);
               client.unsubscribe((subComplete as Subscription).id);
               completeCallback(tick);

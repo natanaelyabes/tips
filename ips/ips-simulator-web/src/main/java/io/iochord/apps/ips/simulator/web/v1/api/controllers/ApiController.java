@@ -38,9 +38,9 @@ public class ApiController extends AServiceController {
 		for (RequestMappingInfo info : handlerMapping.getHandlerMethods().keySet()) {
 			routes.add(info.getPatternsCondition().toString());
 		}
-		result.put("version", 3);
+		result.put("version", 1);
 		result.put("routes", routes);
 		return result;
 	}
-	
+
 }
