@@ -62,4 +62,9 @@ export default [
     name: `${BaseUrlEnum.IOCHORD}-${ApplicationEnum.NAME}-api-test`,
     component: () => import(/* webpackChunkName: "ips-sandbox-api-test" */ '@/iochord/ips/sandbox/yabes/SandboxApiTest/views/SandboxApiTestView.vue'),
   },
+  {
+    path: 'canvas-component-test',
+    name: `${BaseUrlEnum.IOCHORD}-${ApplicationEnum.NAME}-canvas-component-test`,
+    component: () => import(/* webpackChunkName: "ips-canvas-component-test" */ '@/iochord/ips/sandbox/yabes/SandboxEditorTest/views/SandboxCanvasComponentDemo.vue'),
+  },
 ] as RouteConfig[];

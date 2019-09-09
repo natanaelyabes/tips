@@ -24,12 +24,13 @@
             <div class="three wide column">
               Generator
             </div>
-            <div class="ten wide column">
-              <input type="text" @change="handleChangedGenerator()" v-model="tempGenerator" id="start_txtgen" />
-            </div>
-            <div class="three wide column">
-              <button class="ui button">...</button>
-            </div>
+            <template v-if="reloaded">
+              <div class="ten wide column">
+                <select @change="handleChangedGenerator($event)" v-model="tempGenerator" id="start_txtgen" class="ui search dropdown">
+                  <option v-for="nodeDatum in nodeData" :selected="nodeDatum[0] === tempGenerator" :key="nodeDatum[0]" :value="nodeDatum[0]">{{nodeDatum[0]}}</option>
+                </select>
+              </div>
+            </template>
           </div>
         </div>
       </div>
@@ -52,9 +53,20 @@
 </style>
 
 <script lang="ts">
+// Vue & Libraries
 import { Component, Prop, Vue, Watch } from 'vue-property-decorator';
 import SemanticComponent from '@/iochord/ips/common/ui/semantic-components/SemanticComponent';
+import GraphModule from '@/iochord/ips/common/graph/ism/stores/GraphModule';
+import { getModule } from 'vuex-module-decorators';
+import { GraphPageImpl } from '@/iochord/ips/common/graph/ism/class/GraphPageImpl';
+import { GraphPage } from '@/iochord/ips/common/graph/ism/interfaces/GraphPage';
+import { GraphData } from '@/iochord/ips/common/graph/ism/interfaces/GraphData';
+
+// JQuery
 declare const $: any;
+
+// Vuex
+const graphModule = getModule(GraphModule);
 
 /**
  *
@@ -70,6 +82,8 @@ export default class StartNodeModal extends SemanticComponent {
 
   private tempStartLabel: string = '';
   private tempGenerator: string = '';
+
+  private reloaded: boolean = false;
 
   @Watch('startLabel')
   public onChangeStartLabel(newVal: string): void {
@@ -90,10 +104,23 @@ export default class StartNodeModal extends SemanticComponent {
   }
 
   public mounted(): void {
-    this.$nextTick(() => {
-      this.tempStartLabel = this.startLabel;
-      this.tempGenerator = this.startGenerator;
-    });
+    this.tempStartLabel = this.startLabel;
+    this.tempGenerator = this.startGenerator;
+  }
+
+  public updated(): void {
+    if (!this.reloaded) {
+      this.reloaded = true;
+    }
+
+    // Only for dropdown values
+    this.tempGenerator = this.startGenerator;
+  }
+
+  public get nodeData(): /* Map<string, GraphData> | null */ any {
+    const pages = graphModule.graph.getPages() as Map<string, GraphPage>;
+    const nodeData = (pages.get('0') as GraphPage).getData() as Map<string, GraphData>;
+    return nodeData;
   }
 }
 </script>

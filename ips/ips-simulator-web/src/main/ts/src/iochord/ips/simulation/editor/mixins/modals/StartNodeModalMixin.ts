@@ -1,6 +1,5 @@
 import BaseComponent from '@/iochord/ips/common/ui/layout/class/BaseComponent';
 import { GraphNode } from '@/iochord/ips/common/graph/ism/interfaces/GraphNode';
-import { Graph } from '@/iochord/ips/common/graph/ism/interfaces/Graph';
 import { GraphPage } from '@/iochord/ips/common/graph/ism/interfaces/GraphPage';
 import { Component } from 'vue-property-decorator';
 import { getModule } from 'vuex-module-decorators';
@@ -8,6 +7,8 @@ import GraphModule from '@/iochord/ips/common/graph/ism/stores/GraphModule';
 import { GraphNodeImpl } from '@/iochord/ips/common/graph/ism/class/GraphNodeImpl';
 import { GraphStartEventNodeImpl } from '@/iochord/ips/common/graph/ism/class/components/GraphStartEventNodeImpl';
 import GraphSubject from '@/iochord/ips/common/graph/ism/rxjs/GraphSubject';
+import { GraphDataGenerator } from '@/iochord/ips/common/graph/ism/interfaces/components/GraphDataGenerator';
+import { GraphData } from '@/iochord/ips/common/graph/ism/interfaces/GraphData';
 
 const graphModule = getModule(GraphModule);
 
@@ -44,7 +45,7 @@ export default class StartNodeModalMixin extends BaseComponent {
   }
 
   /* Start updated from Child */
-  public changeStartLabelFromChild(e: any, activePage: GraphPage, currentSelectedElement: GraphNode, callback: () => void) {
+  public changeStartLabelFromChild(e: string, activePage: GraphPage, currentSelectedElement: GraphNode, callback: () => void) {
     this.parentStartLabel = e;
 
     // Change label of currentSelectedElement
@@ -63,7 +64,26 @@ export default class StartNodeModalMixin extends BaseComponent {
     callback();
   }
 
-  public changeStartGeneratorFromChild(e: any, activePage: GraphPage, currentSelectedElement: GraphNode, callback: () => void) {
+  public changeStartGeneratorFromChild(e: string, activePage: GraphPage, currentSelectedElement: GraphNode, callback: () => void) {
     this.parentStartGenerator = e;
+
+    // Get data based on selection value e
+    const data = (activePage.getData() as Map<string, GraphData>).get(this.parentStartGenerator);
+
+    // Set generator for the start node
+    const startNode = (currentSelectedElement as GraphStartEventNodeImpl);
+    startNode.setGenerator(data as GraphDataGenerator);
+
+    // Directly override currentSelectedElement node
+    graphModule.overridePageNode({ page: activePage, node: startNode });
+
+    // Save it in GraphNodeImpl instance
+    GraphNodeImpl.instance.set(startNode.getId() as string, GraphStartEventNodeImpl.deserialize(startNode) as GraphNode);
+
+    // Update the rxjs observable
+    GraphSubject.update(graphModule.graph);
+
+    // Call the desired callback code
+    callback();
   }
 }

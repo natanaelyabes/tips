@@ -12,7 +12,7 @@
         @keydown.esc="handleEscapeButton($event)"
         @mousedown="handleCanvasMouseDown($event)"
         @mousemove="handleCanvasMouseMove($event)"
-        @mouseup="handleCanvasMouseUp($event)" />
+        @mouseup="handleCanvasMouseUp($event)"/>
     </div>
 
     <!-- Node Modals -->
@@ -27,7 +27,7 @@
           @changeStartGenerator="changeStartGeneratorFromChild($event, activePage, currentSelectedElement, loadGraph)"
           :startLabel.sync="parentStartLabel"
           :startGenerator.sync="parentStartGenerator"
-          v-bind:id="type" v-bind:key="type" />
+          v-bind:id="type" v-bind:key="type"/>
       </template>
 
       <!-- If branch node was clicked -->
@@ -43,7 +43,7 @@
           :selectedGate.sync="parentBranchSelectedGate"
           :selectedType.sync="parentBranchSelectedType"
           :selectedRule.sync="parentBranchSelectedRule"
-          v-bind:id="type" v-bind:key="type" />
+          v-bind:id="type" v-bind:key="type"/>
       </template>
 
       <!-- If activity node was clicked -->
@@ -87,7 +87,7 @@
           @changeStopReport="changeStopReportFromChild($event, activePage, currentSelectedElement, loadGraph)"
           :stopLabel="parentStopLabel"
           :stopReport="parentStopReport"
-          v-bind:id="type" v-bind:key="type" />
+          v-bind:id="type" v-bind:key="type"/>
       </template>
     </template>
   </div>
@@ -423,12 +423,10 @@ export default class CanvasComponent extends Mixins(BaseComponent, ModalMixin, C
 
           // Populate node properties to the modal
           this.parentStartLabel = jointPage.getNodes()!.get(currentElementNodeId)!.getLabel() as string;
-          this.parentStartGenerator =
-            (jointPage.getNodes()!.get(currentElementNodeId)! as GraphStartEventNode)
-              .getGenerator()!.getLabel() as string +
-              ' - ' +
-            (jointPage.getNodes()!.get(currentElementNodeId)! as GraphStartEventNode)
-              .getGenerator()!.getDistributionType() as string;
+          this.parentStartGenerator = (jointPage.getNodes()!.get(currentElementNodeId)! as GraphStartEventNode)
+            .getGenerator()!.getId() as string;
+
+
 
           // Set current clicked node as current selected element
           this.currentSelectedElement = jointPage.getNodes()!.get(currentElementNodeId);

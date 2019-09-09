@@ -152,6 +152,9 @@ import '#root/node_modules/jointjs/dist/joint.css';
 // Classes
 import Layout01View from '@/iochord/ips/common/ui/layout/class/Layout01';
 import { GraphImpl } from '@/iochord/ips/common/graph/ism/class/GraphImpl';
+import { GraphNodeImpl } from '@/iochord/ips/common/graph/ism/class/GraphNodeImpl';
+import { GraphConnectorImpl } from '@/iochord/ips/common/graph/ism/class/GraphConnectorImpl';
+import { GraphPageImpl } from '@/iochord/ips/common/graph/ism/class/GraphPageImpl';
 
 // Interfaces
 import { Layout01HasWrapper } from '@/iochord/ips/common/ui/layout/interfaces/Layout01HasWrapper';
@@ -176,8 +179,6 @@ import SimulationDataManagementComponent from '../components/ribbon/SimulationDa
 // Vuex & rxjs
 import GraphModule from '@/iochord/ips/common/graph/ism/stores/GraphModule';
 import GraphSubject from '@/iochord/ips/common/graph/ism/rxjs/GraphSubject';
-import { GraphNodeImpl } from '../../../common/graph/ism/class/GraphNodeImpl';
-import { GraphConnectorImpl } from '../../../common/graph/ism/class/GraphConnectorImpl';
 
 // Async component must be lazily load
 const CanvasComponent = () => import('@/iochord/ips/simulation/editor/components/canvas/CanvasComponent.vue');
@@ -213,9 +214,6 @@ declare const $: any;
   },
 })
 export default class SimulationEditorView extends Layout01View {
-  public processModel: any;
-  public animation: boolean = false;
-  public editing: boolean = true;
 
   /** @Override */
   public overrideBrowserProperties(): void {
