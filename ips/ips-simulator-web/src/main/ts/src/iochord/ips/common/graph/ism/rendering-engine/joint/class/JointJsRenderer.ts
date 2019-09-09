@@ -42,7 +42,9 @@ export default class JointJsRenderer {
   public activePage?: GraphPage;
   public jointPages: Map<string, JointGraphPageImpl> = new Map<string, JointGraphPageImpl>();
   public currentSelectedElement?: GraphNode;
-  public panAndZoom?: SvgPanZoom.Instance;
+
+  public canvasPanAndZoom?: SvgPanZoom.Instance;
+  public minimapPanAndZoom?: SvgPanZoom.Instance;
 
   constructor(graph: Graph, activePage: GraphPage, currentSelectedElement: GraphNode) {
     this.graph = graph;
@@ -77,10 +79,7 @@ export default class JointJsRenderer {
         this.centerMinimap(jointPage);
 
         // Enable pan and zoom
-        this.panAndZoom = SvgPanZoom('#canvas svg').disablePan();
-        this.panAndZoom.enableControlIcons();
-        this.panAndZoom.disableDblClickZoom();
-        this.panAndZoom.zoom(0.8);
+        this.enableZoomAndPanning(jointPage);
 
         this.jointPages.set(jointPage.getId() as string, jointPage);
       }
@@ -218,5 +217,41 @@ export default class JointJsRenderer {
       (jointPage.getMinimap().options.width as number / 2) - (MinimapViewportBBox.width / 2),
       (jointPage.getMinimap().options.height as number / 2) - (MinimapViewportBBox.height / 2),
     );
+  }
+
+  private enableZoomAndPanning(jointPage: JointGraphPageImpl): void {
+    // Enable pan and zoom for canvas
+    this.canvasPanAndZoom = SvgPanZoom('#canvas svg').disablePan();
+    this.canvasPanAndZoom.enableControlIcons();
+    this.canvasPanAndZoom.disableDblClickZoom();
+    this.canvasPanAndZoom.setMinZoom(0);
+    this.canvasPanAndZoom.setMaxZoom(100);
+    this.canvasPanAndZoom.zoom(0.8);
+
+    // Enable pan and zoom for minimap
+    setTimeout(() => {
+      this.minimapPanAndZoom = SvgPanZoom('#minimap svg').disablePan();
+      this.minimapPanAndZoom.disableDblClickZoom();
+      this.minimapPanAndZoom.setMinZoom(0);
+      this.minimapPanAndZoom.setMaxZoom(100);
+      this.minimapPanAndZoom.zoom(0.8);
+      this.minimapPanAndZoom.setBeforePan((oldPoint: SvgPanZoom.Point, newPoint: SvgPanZoom.Point) => {
+        return { x: false, y: false };
+      });
+    }, 10);
+
+    // While canvas is zoomed
+    this.canvasPanAndZoom.setOnZoom((scale) => {
+      if (this.minimapPanAndZoom) {
+        this.minimapPanAndZoom.zoom(scale);
+      }
+    });
+
+    // While canvas is panned
+    this.canvasPanAndZoom.setOnPan((point: SvgPanZoom.Point) => {
+      if (this.minimapPanAndZoom) {
+        this.minimapPanAndZoom.pan(point);
+      }
+    });
   }
 }
