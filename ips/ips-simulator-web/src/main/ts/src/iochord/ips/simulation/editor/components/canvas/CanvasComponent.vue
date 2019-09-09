@@ -12,7 +12,7 @@
         @keydown.esc="handleEscapeButton($event)"
         @mousedown="handleCanvasMouseDown($event)"
         @mousemove="handleCanvasMouseMove($event)"
-        @mouseup="handleCanvasMouseUp($event)" />
+        @mouseup="handleCanvasMouseUp($event)"/>
     </div>
 
     <!-- Node Modals -->
@@ -27,7 +27,7 @@
           @changeStartGenerator="changeStartGeneratorFromChild($event, activePage, currentSelectedElement, loadGraph)"
           :startLabel.sync="parentStartLabel"
           :startGenerator.sync="parentStartGenerator"
-          v-bind:id="type" v-bind:key="type" />
+          v-bind:id="type" v-bind:key="type"/>
       </template>
 
       <!-- If branch node was clicked -->
@@ -43,7 +43,7 @@
           :selectedGate.sync="parentBranchSelectedGate"
           :selectedType.sync="parentBranchSelectedType"
           :selectedRule.sync="parentBranchSelectedRule"
-          v-bind:id="type" v-bind:key="type" />
+          v-bind:id="type" v-bind:key="type"/>
       </template>
 
       <!-- If activity node was clicked -->
@@ -87,7 +87,7 @@
           @changeStopReport="changeStopReportFromChild($event, activePage, currentSelectedElement, loadGraph)"
           :stopLabel="parentStopLabel"
           :stopReport="parentStopReport"
-          v-bind:id="type" v-bind:key="type" />
+          v-bind:id="type" v-bind:key="type"/>
       </template>
     </template>
   </div>
@@ -185,7 +185,8 @@ const editorState = getModule(EditorState);
 export default class CanvasComponent extends Mixins(BaseComponent, ModalMixin, CanvasMixin) {
   @Prop() public response?: Graph;
 
-  public panAndZoom?: SvgPanZoom.Instance;
+  public canvasPanAndZoom?: SvgPanZoom.Instance;
+  public minimapPanAndZoom?: SvgPanZoom.Instance;
 
   public mounted(): void {
     this.loadGraph();
@@ -213,8 +214,8 @@ export default class CanvasComponent extends Mixins(BaseComponent, ModalMixin, C
       // Get node types that need to be rendered in the canvas
       this.nodeTypes = renderer.getNodeTypes();
 
-      // Get panAndZoom instance from renderer
-      this.panAndZoom = renderer.panAndZoom;
+      // Get canvasPanAndZoom instance from renderer
+      this.canvasPanAndZoom = renderer.canvasPanAndZoom;
 
       // 'Listening to events' can only be done after all components were rendered
       renderer.jointPages.forEach((jointPage: JointGraphPageImpl) => {
@@ -286,30 +287,28 @@ export default class CanvasComponent extends Mixins(BaseComponent, ModalMixin, C
         resetAll(jointPage.getPaper());
 
         // If currently drawing arc
-        if (editorState.drawing && this.panAndZoom) {
+        if (editorState.drawing && this.canvasPanAndZoom) {
 
-          // Disable panAndZoom
-          this.panAndZoom.disablePan();
-          this.panAndZoom.disableZoom();
+          // Disable canvasPanAndZoom
+          this.canvasPanAndZoom.disablePan();
+          this.canvasPanAndZoom.disableZoom();
 
           // Pop error toast to the screen
           $('body').toast({
             position: 'bottom right',
             class: 'error',
-            className: {
-              toast: 'ui message',
-            },
+            className: { toast: 'ui message' },
             message: 'Select any node to draw connector.',
             newestOnTop: true,
           });
 
           // Change crosshair
           document.body.style.cursor = 'crosshair';
-        } else if (!editorState.drawing && this.panAndZoom) {
+        } else if (!editorState.drawing && this.canvasPanAndZoom) {
 
-          // Otherwise keep panAndZoom enabled
-          this.panAndZoom.enablePan();
-          this.panAndZoom.enableZoom();
+          // Otherwise keep canvasPanAndZoom enabled
+          this.canvasPanAndZoom.enablePan();
+          this.canvasPanAndZoom.enableZoom();
 
           // And change its cursor to grabbing (pan mode)
           document.body.style.cursor = 'grabbing';
@@ -321,7 +320,7 @@ export default class CanvasComponent extends Mixins(BaseComponent, ModalMixin, C
         resetAll(jointPage.getPaper());
 
         // Disable pan
-        (this.panAndZoom as SvgPanZoom.Instance).disablePan();
+        (this.canvasPanAndZoom as SvgPanZoom.Instance).disablePan();
 
         // If currently drawing arc
         if (editorState.drawing) {
@@ -424,12 +423,10 @@ export default class CanvasComponent extends Mixins(BaseComponent, ModalMixin, C
 
           // Populate node properties to the modal
           this.parentStartLabel = jointPage.getNodes()!.get(currentElementNodeId)!.getLabel() as string;
-          this.parentStartGenerator =
-            (jointPage.getNodes()!.get(currentElementNodeId)! as GraphStartEventNode)
-              .getGenerator()!.getLabel() as string +
-              ' - ' +
-            (jointPage.getNodes()!.get(currentElementNodeId)! as GraphStartEventNode)
-              .getGenerator()!.getDistributionType() as string;
+          this.parentStartGenerator = (jointPage.getNodes()!.get(currentElementNodeId)! as GraphStartEventNode)
+            .getGenerator()!.getId() as string;
+
+
 
           // Set current clicked node as current selected element
           this.currentSelectedElement = jointPage.getNodes()!.get(currentElementNodeId);

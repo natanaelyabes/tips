@@ -24,7 +24,6 @@
           <img id="app-logo" class="ui centered small image" src="@/assets/images/logos/iochord_logo_transparent_color.png" alt="main logo">
         </router-link>
       </div>
-      <!--  -->
       <div slot="sidebar-menu">
         <router-link tag="a" class="item" to="/iochord/ips">Home <i class="home icon"></i></router-link>
         <!-- <router-link tag="a" class="item" to="/iochord/ips/sandbox">Sandbox <i class="inbox icon"></i></router-link> -->
