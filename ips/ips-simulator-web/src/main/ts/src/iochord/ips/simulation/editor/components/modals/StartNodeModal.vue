@@ -25,7 +25,7 @@
               Generator
             </div>
             <template v-if="reloaded">
-              <div class="ten wide column">
+              <div class="thirteen wide column">
                 <select @change="handleChangedGenerator($event)" v-model="tempGenerator" id="start_txtgen" class="ui search dropdown">
                   <option v-for="nodeDatum in nodeData" :selected="nodeDatum[0] === tempGenerator" :key="nodeDatum[0]" :value="nodeDatum[0]">{{nodeDatum[0]}}</option>
                 </select>

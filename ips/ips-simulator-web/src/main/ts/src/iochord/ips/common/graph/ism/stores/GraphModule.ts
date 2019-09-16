@@ -10,11 +10,11 @@ import { GraphConnectorImpl } from '../class/GraphConnectorImpl';
 import { GraphControl } from '../interfaces/components/GraphControl';
 import { GraphData } from '../interfaces/GraphData';
 import { GraphPage } from '@/iochord/ips/common/graph/ism/interfaces/GraphPage';
-import { GraphNode } from '../interfaces/GraphNode';
-import { GraphNodeImpl } from '../class/GraphNodeImpl';
+import { GraphNode } from '@/iochord/ips/common/graph/ism/interfaces/GraphNode';
+import { GraphNodeImpl } from '@/iochord/ips/common/graph/ism/class/GraphNodeImpl';
 
 // Services
-import { IsmModelService } from '../../../service/model/IsmModelService';
+import { IsmModelService } from '@/iochord/ips/common/service/model/IsmModelService';
 
 interface StoreType {
   graphModule: GraphModule;
@@ -30,10 +30,13 @@ export default class GraphModule extends VuexModule {
 
   // Mutations
   @MutationAction({ mutate: ['graph'] })
+  // TODO: change to loadGraph
   public async fetchGraph(url?: string) {
     const graph: Graph = await IsmModelService.getInstance().getExampleModel();
     return { graph };
   }
+
+  // TODO: implement saveGraph
 
   @Mutation
   public setNewItem(newItem: GraphNodeImpl | GraphConnectorImpl | null) {

@@ -1,10 +1,13 @@
 import { Component } from 'vue-property-decorator';
 import BaseComponent from '@/iochord/ips/common/ui/layout/class/BaseComponent';
+import { GraphPage } from '@/iochord/ips/common/graph/ism/interfaces/GraphPage';
+import { GraphNode } from '@/iochord/ips/common/graph/ism/interfaces/GraphNode';
 
 @Component
 export default class ActivityNodeModalMixin extends BaseComponent {
 
   // Parent activity
+  public parentActLabel: string = '';
   public parentActNodeSelectedActivityType: string = '';
   public parentActNodeReport: boolean = false;
   public parentActNodeCustomMonitor: string = '';
@@ -23,6 +26,10 @@ export default class ActivityNodeModalMixin extends BaseComponent {
     - Send changes from parent to child
     - Retrieve changes from child to parent
   */
+  public changeActLabel(newVal: string): void {
+    this.parentActLabel = newVal;
+  }
+
   public changeActNodeSelectedActivityType(newVal: string): void {
     this.parentActNodeSelectedActivityType = newVal;
   }
@@ -72,6 +79,11 @@ export default class ActivityNodeModalMixin extends BaseComponent {
   }
 
   /* From Child */
+  public changeActLabelFromChild(e: string, activePage: GraphPage, currentSelectedElement: GraphNode, callback: () => void) {
+    this.parentActLabel = e;
+    console.log(this.parentActLabel);
+  }
+
   public changeActNodeSelectedActivityTypeFromChild(e: any) {
     this.parentActNodeSelectedActivityType = e;
   }
@@ -111,9 +123,11 @@ export default class ActivityNodeModalMixin extends BaseComponent {
   public changeActNodeInputTypeFromChild(e: any) {
     this.parentActNodeInputType = e;
   }
+
   public changeActNodeOutputTypeFromChild(e: any) {
     this.parentActNodeOutputType = e;
   }
+
   public changeActNodeCodeSegmentFromChild(e: any) {
     this.parentActNodeCodeSegment = e;
   }

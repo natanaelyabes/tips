@@ -15,17 +15,20 @@
           <div class="row">
             <div class="three wide column">Label</div>
             <div class="thirteen wide column">
-              <input type="text" id="activity_txt_label">
+              <input type="text" @change="handleChangedLabel()" v-model="tempActLabel" id="activity_txt_label">
             </div>
           </div>
           <div class="row">
             <div class="sixteen wide column">
+
+              <!-- Tab menu -->
               <div class="ui top attached tabular menu">
                 <a class="active item" data-tab="basic">Basic</a>
                 <a class="item" data-tab="processing">Processing</a>
                 <a class="item" data-tab="advanced">Advanced</a>
               </div>
-              <!-- basic tab -->
+
+              <!-- Basic tab -->
               <div class="ui bottom attached active tab segment" data-tab="basic">
                 <div class="ui grid">
                   <div class="row">
@@ -63,7 +66,8 @@
                   </div>
                 </div>
               </div>
-              <!-- processing tab -->
+
+              <!-- Processing tab -->
               <div class="ui bottom attached tab segment" data-tab="processing">
                 <div class="ui grid">
                   <div class="row">
@@ -107,7 +111,8 @@
                   </div>
                 </div>
               </div>
-              <!-- advanced tab -->
+
+              <!-- Advanced tab -->
               <div class="ui bottom attached tab segment" data-tab="advanced">
                 <div class="ui grid">
                   <div class="row">
@@ -160,6 +165,7 @@ declare const $: any;
 
 @Component
 export default class ActivityNodeModal extends SemanticComponent {
+  @Prop() private actLabel !: string;
   @Prop() private actNodeSelectedActivityType !: string;
   @Prop() private actNodeReport !: boolean;
   @Prop() private actNodeCustomMonitor !: string;
@@ -173,6 +179,7 @@ export default class ActivityNodeModal extends SemanticComponent {
   @Prop() private actNodeOutputType !: string;
   @Prop() private actNodeCodeSegment !: string;
 
+  private tempActLabel: string = '';
   private tempSelectedActivityType: string = '';
   private tempReport: boolean = false;
   private tempCustomMonitor: string = '';
@@ -194,6 +201,11 @@ export default class ActivityNodeModal extends SemanticComponent {
   private basicSplitSM2 !: string;
   private basicSplitSM3 !: string;
   private basicSplitSM4 !: string;
+
+  @Watch('actLabel')
+  public onChangeActLabel(newVal: string): void {
+    this.tempActLabel = newVal;
+  }
 
   @Watch('actNodeSelectedActivityType')
   public onChangeSelectedActivityType(newVal: string): void {
@@ -253,6 +265,10 @@ export default class ActivityNodeModal extends SemanticComponent {
   @Watch('actNodeCodeSegment')
   public onChangeCodeSegment(newVal: string): void {
     this.tempCodeSegment = newVal;
+  }
+
+  public handleChangedLabel(): void {
+    this.$emit('changeActLabel', this.tempActLabel);
   }
 
   public handleSelectedActivityType(): void {

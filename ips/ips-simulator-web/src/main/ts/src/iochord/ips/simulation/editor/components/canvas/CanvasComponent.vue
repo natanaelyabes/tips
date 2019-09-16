@@ -51,6 +51,7 @@
 
         <!-- Show activity modal -->
         <ActivityNodeModal
+          @changeActLabel="changeActLabelFromChild($event, activePage, currentSelectedElement, loadGraph)"
           @changeActNodeSelectedActivityType="changeActNodeSelectedActivityTypeFromChild($event, activePage, currentSelectedElement, loadGraph)"
           @changeActNodeReport="changeActNodeReportFromChild($event, activePage, currentSelectedElement, loadGraph)"
           @changeActNodeCustomMonitor="changeActNodeCustomMonitorFromChild($event, activePage, currentSelectedElement, loadGraph)"
@@ -63,6 +64,7 @@
           @changeActNodeInputType="changeActNodeInputTypeFromChild($event, activePage, currentSelectedElement, loadGraph)"
           @changeActNodeOutputType="changeActNodeOutputTypeFromChild($event, activePage, currentSelectedElement, loadGraph)"
           @changeActNodeCodeSegment="changeActNodeCodeSegmentFromChild($event, activePage, currentSelectedElement, loadGraph)"
+          :actLabel="parentActLabel"
           :actNodeSelectedActivityType="parentActNodeSelectedActivityType"
           :actNodeReport="parentActNodeReport"
           :actNodeCustomMonitor="parentActNodeCustomMonitor"
