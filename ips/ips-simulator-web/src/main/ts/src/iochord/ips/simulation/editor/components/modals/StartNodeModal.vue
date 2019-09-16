@@ -21,9 +21,7 @@
             </div>
           </div>
           <div class="row">
-            <div class="three wide column">
-              Generator
-            </div>
+            <div class="three wide column">Generator</div>
             <template v-if="reloaded">
               <div class="thirteen wide column">
                 <select @change="handleChangedGenerator($event)" v-model="tempGenerator" id="start_txtgen" class="ui search dropdown">

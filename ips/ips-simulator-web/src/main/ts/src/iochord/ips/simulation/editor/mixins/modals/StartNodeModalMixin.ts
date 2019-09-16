@@ -40,10 +40,6 @@ export default class StartNodeModalMixin extends BaseComponent {
     this.parentStartGenerator = newVal;
   }
 
-  public getParentStartLabel(): string {
-    return this.parentStartLabel;
-  }
-
   /* Start updated from Child */
   public changeStartLabelFromChild(e: string, activePage: GraphPage, currentSelectedElement: GraphNode, callback: () => void) {
     this.parentStartLabel = e;

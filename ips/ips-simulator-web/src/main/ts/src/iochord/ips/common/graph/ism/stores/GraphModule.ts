@@ -3,12 +3,12 @@ import Vuex from 'vuex';
 import { VuexModule, Module, MutationAction, Mutation } from 'vuex-module-decorators';
 
 // Interfaces
-import { Graph } from '../interfaces/Graph';
-import { GraphConfiguration } from '../interfaces/GraphConfiguration';
+import { Graph } from '@/iochord/ips/common/graph/ism/interfaces/Graph';
+import { GraphConfiguration } from '@/iochord/ips/common/graph/ism/interfaces/GraphConfiguration';
 import { GraphConnector } from '@/iochord/ips/common/graph/ism/interfaces/GraphConnector';
-import { GraphConnectorImpl } from '../class/GraphConnectorImpl';
-import { GraphControl } from '../interfaces/components/GraphControl';
-import { GraphData } from '../interfaces/GraphData';
+import { GraphConnectorImpl } from '@/iochord/ips/common/graph/ism/class/GraphConnectorImpl';
+import { GraphControl } from '@/iochord/ips/common/graph/ism/interfaces/components/GraphControl';
+import { GraphData } from '@/iochord/ips/common/graph/ism/interfaces/GraphData';
 import { GraphPage } from '@/iochord/ips/common/graph/ism/interfaces/GraphPage';
 import { GraphNode } from '@/iochord/ips/common/graph/ism/interfaces/GraphNode';
 import { GraphNodeImpl } from '@/iochord/ips/common/graph/ism/class/GraphNodeImpl';
@@ -16,14 +16,24 @@ import { GraphNodeImpl } from '@/iochord/ips/common/graph/ism/class/GraphNodeImp
 // Services
 import { IsmModelService } from '@/iochord/ips/common/service/model/IsmModelService';
 
+// Store type
 interface StoreType {
   graphModule: GraphModule;
 }
 
+// Dynamic store
 const store = new Vuex.Store<StoreType>({});
 
+/**
+ *
+ * @package ips
+ * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
+ * @since 2019
+ *
+ */
 @Module({ dynamic: true, store, name: 'GraphModule', namespaced: true })
 export default class GraphModule extends VuexModule {
+
   // States
   public graph: Graph = {} as Graph;
   public newItem: GraphNodeImpl | GraphConnectorImpl | null = null;
@@ -61,7 +71,6 @@ export default class GraphModule extends VuexModule {
   @Mutation
   public addPage(page: GraphPage): void {
     const pages = this.graph.getPages();
-
     if (pages !== null) {
       const exists = pages.get(page.getId() as string);
       if (exists) {
@@ -74,7 +83,6 @@ export default class GraphModule extends VuexModule {
   @Mutation
   public overridePage(page: GraphPage): void {
     const pages = this.graph.getPages();
-
     if (pages !== null) {
       const exists = pages.get(page.getId() as string);
       if (exists) {
@@ -88,7 +96,6 @@ export default class GraphModule extends VuexModule {
   @Mutation
   public deletePage(page: GraphPage): void {
     const pages = this.graph.getPages();
-
     if (pages !== null) {
       const exists = pages.get(page.getId() as string);
       if (exists) {
@@ -102,7 +109,6 @@ export default class GraphModule extends VuexModule {
   @Mutation
   public setPageArcs({ page, arcs }: { page: GraphPage, arcs: Map<string, GraphConnector> }): void {
     const pages = this.graph.getPages();
-
     if (pages !== null) {
       const exists = pages.get(page.getId() as string);
       if (exists) {
@@ -116,7 +122,6 @@ export default class GraphModule extends VuexModule {
   @Mutation
   public addPageArc({ page, arc }: { page: GraphPage, arc: GraphConnector }) {
     const arcs = page.getArcs();
-
     if (arcs !== null) {
       const exists = arcs.get(arc.getId() as string);
       if (exists) {
@@ -129,7 +134,6 @@ export default class GraphModule extends VuexModule {
   @Mutation
   public overridePageArc({ page, arc }: { page: GraphPage, arc: GraphConnector }) {
     const arcs = page.getArcs();
-
     if (arcs !== null) {
       const exists = arcs.get(arc.getId() as string);
       if (exists) {
@@ -143,7 +147,6 @@ export default class GraphModule extends VuexModule {
   @Mutation
   public deletePageArc({ page, arc }: { page: GraphPage, arc: GraphConnector }) {
     const arcs = page.getArcs();
-
     if (arcs !== null) {
       const exists = arcs.get(arc.getId() as string);
       if (exists) {
@@ -157,7 +160,6 @@ export default class GraphModule extends VuexModule {
   @Mutation
   public setPageData({ page, data }: { page: GraphPage, data: Map<string, GraphData> }): void {
     const pages = this.graph.getPages();
-
     if (pages !== null) {
       const exists = pages.get(page.getId() as string);
       if (exists) {
@@ -171,7 +173,6 @@ export default class GraphModule extends VuexModule {
   @Mutation
   public addPageDatum({ page, datum }: { page: GraphPage, datum: GraphData }): void {
     const data = page.getData();
-
     if (data !== null) {
       const exists = data.get(datum.getId() as string);
       if (exists) {
@@ -184,7 +185,6 @@ export default class GraphModule extends VuexModule {
   @Mutation
   public overridePageDatum({ page, datum }: { page: GraphPage, datum: GraphData }) {
     const data = page.getData();
-
     if (data !== null) {
       const exists = data.get(datum.getId() as string);
       if (exists) {
@@ -198,7 +198,6 @@ export default class GraphModule extends VuexModule {
   @Mutation
   public deletePageDatum({ page, datum }: { page: GraphPage, datum: GraphData }) {
     const data = page.getData();
-
     if (data !== null) {
       const exists = data.get(datum.getId() as string);
       if (exists) {
@@ -212,7 +211,6 @@ export default class GraphModule extends VuexModule {
   @Mutation
   public setPageElementType({ page, elementType }: { page: GraphPage, elementType: string }) {
     const pages = this.graph.getPages();
-
     if (pages !== null) {
       const exists = pages.get(page.getId() as string);
       if (exists) {
@@ -226,7 +224,6 @@ export default class GraphModule extends VuexModule {
   @Mutation
   public setPageId({ page, id }: { page: GraphPage, id: string }) {
     const pages = this.graph.getPages();
-
     if (pages !== null) {
       const exists = pages.get(page.getId() as string);
       if (exists) {
@@ -240,7 +237,6 @@ export default class GraphModule extends VuexModule {
   @Mutation
   public setPageLabel({ page, label }: { page: GraphPage, label: string }) {
     const pages = this.graph.getPages();
-
     if (pages !== null) {
       const exists = pages.get(page.getId() as string);
       if (exists) {
@@ -254,7 +250,6 @@ export default class GraphModule extends VuexModule {
   @Mutation
   public setPageNodes({ page, nodes }: { page: GraphPage, nodes: Map<string, GraphNode> }) {
     const pages = this.graph.getPages();
-
     if (pages !== null) {
       const exists = pages.get(page.getId() as string);
       if (exists) {
@@ -268,7 +263,6 @@ export default class GraphModule extends VuexModule {
   @Mutation
   public addPageNode({ page, node }: { page: GraphPage, node: GraphNode }): void {
     const nodes = page.getNodes();
-
     if (nodes !== null) {
       const exists = nodes.get(node.getId() as string);
       if (exists) {
@@ -281,7 +275,6 @@ export default class GraphModule extends VuexModule {
   @Mutation
   public overridePageNode({ page, node }: { page: GraphPage, node: GraphNode }) {
     const nodes = page.getNodes();
-
     if (nodes !== null) {
       const exists = nodes.get(node.getId() as string);
       if (exists) {
@@ -295,7 +288,6 @@ export default class GraphModule extends VuexModule {
   @Mutation
   public deletePageNode({ page, node }: { page: GraphPage, node: GraphNode }) {
     const nodes = page.getNodes();
-
     if (nodes !== null) {
       const exists = nodes.get(node.getId() as string);
       if (exists) {
@@ -369,7 +361,6 @@ export default class GraphModule extends VuexModule {
         while (res && !res.done) {
           const elType = res.value.split('-')[1];
           const dId = res.value.split('-')[2];
-
           const id = `${page.getId()}-${elType}-${dId}`;
 
           if (elType === elementType) {
@@ -378,7 +369,6 @@ export default class GraphModule extends VuexModule {
 
           res = keys ? keys.next() : null;
         }
-
       } else {
         result = data !== null ? data : null;
       }
@@ -401,7 +391,6 @@ export default class GraphModule extends VuexModule {
           if (dId === datumId) {
             return [elType, dId];
           }
-
           result = keys.next();
         }
       };

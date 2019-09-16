@@ -57,7 +57,7 @@ export default class JointJsRenderer {
     try {
 
       // Loop all model pages
-      for (const [id, page] of graph.getPages() as Map<string, GraphPage>) {
+      for (const [id, page] of this.graph.getPages() as Map<string, GraphPage>) {
         const jointPage: JointGraphPageImpl = new JointGraphPageImpl();
 
         // Set properties of the graph page
@@ -84,7 +84,7 @@ export default class JointJsRenderer {
         this.jointPages.set(jointPage.getId() as string, jointPage);
       }
     } catch (e) {
-      console.error(e);
+      // console.error(e);
     }
   }
 
@@ -135,6 +135,11 @@ export default class JointJsRenderer {
       width: $('#minimap').parent().width(),
       height: 150,
       gridSize: 1,
+      interactive: false,
+      defaultRouter: { name: 'normal' },
+      defaultAnchor: (endView: joint.dia.ElementView, endMagnet: SVGElement, anchorReference: joint.g.Point, args: { [key: string]: any; }) => {
+        return Anchors.skipEndMagnetPerpendicularAnchor(endView, endMagnet, anchorReference, args);
+      },
     } as joint.dia.Paper.Options));
 
     // Scale down minimap
@@ -199,7 +204,6 @@ export default class JointJsRenderer {
       edgeSep: 300,
       nodeSep: 200,
       rankSep: 80,
-      // align: 'UL',
     } as joint.layout.DirectedGraph.LayoutOptions);
   }
 
@@ -220,6 +224,7 @@ export default class JointJsRenderer {
   }
 
   private enableZoomAndPanning(jointPage: JointGraphPageImpl): void {
+
     // Enable pan and zoom for canvas
     this.canvasPanAndZoom = SvgPanZoom('#canvas svg').disablePan();
     this.canvasPanAndZoom.enableControlIcons();

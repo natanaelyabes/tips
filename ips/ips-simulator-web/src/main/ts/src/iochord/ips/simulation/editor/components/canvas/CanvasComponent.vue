@@ -53,12 +53,13 @@
         <ActivityNodeModal
           @changeActLabel="changeActLabelFromChild($event, activePage, currentSelectedElement, loadGraph)"
           @changeActNodeSelectedActivityType="changeActNodeSelectedActivityTypeFromChild($event, activePage, currentSelectedElement, loadGraph)"
+          @changeActNodeResource="changeActNodeResourceFromChild($event, activePage, currentSelectedElement, loadGraph)"
           @changeActNodeReport="changeActNodeReportFromChild($event, activePage, currentSelectedElement, loadGraph)"
           @changeActNodeCustomMonitor="changeActNodeCustomMonitorFromChild($event, activePage, currentSelectedElement, loadGraph)"
           @changeActNodeProcessingTime="changeActNodeProcessingTimeFromChild($event, activePage, currentSelectedElement, loadGraph)"
-          @changeActNodeParameter1="changeActNodeParameter1FromChild($event, activePage, currentSelectedElement, loadGraph)"
+          @changeActNodeProcessingTimeParameter="changeActNodeProcessingTimeParameterFromChild($event, activePage, currentSelectedElement, loadGraph)"
           @changeActNodeSetupTime="changeActNodeSetupTimeFromChild($event, activePage, currentSelectedElement, loadGraph)"
-          @changeActNodeParameter2="changeActNodeParameter2FromChild($event, activePage, currentSelectedElement, loadGraph)"
+          @changeActNodeSetupTimeParameter="changeActNodeSetupTimeParameterFromChild($event, activePage, currentSelectedElement, loadGraph)"
           @changeActNodeUnit="changeActNodeUnitFromChild($event, activePage, currentSelectedElement, loadGraph)"
           @changeActNodeQueueLabel="changeActNodeQueueLabelFromChild($event, activePage, currentSelectedElement, loadGraph)"
           @changeActNodeInputType="changeActNodeInputTypeFromChild($event, activePage, currentSelectedElement, loadGraph)"
@@ -66,12 +67,13 @@
           @changeActNodeCodeSegment="changeActNodeCodeSegmentFromChild($event, activePage, currentSelectedElement, loadGraph)"
           :actLabel="parentActLabel"
           :actNodeSelectedActivityType="parentActNodeSelectedActivityType"
+          :actNodeResource="parentActNodeResource"
           :actNodeReport="parentActNodeReport"
           :actNodeCustomMonitor="parentActNodeCustomMonitor"
           :actNodeProcessingTime="parentActNodeProcessingTime"
-          :actNodeParameter1="parentActNodeParameter1"
+          :actNodeProcessingTimeParameter="parentActNodeProcessingTimeParameter"
           :actNodeSetupTime="parentActNodeSetupTime"
-          :actNodeParameter2="parentActNodeParameter2"
+          :actNodeSetupTimeParameter="parentActNodeSetupTimeParameter"
           :actNodeUnit="parentActNodeUnit"
           :actNodeQueueLabel="parentActNodeQueueLabel"
           :actNodeInputType="parentActNodeInputType"
@@ -163,6 +165,10 @@ declare const $: any;
 // Vuex Module
 import GraphModule from '@/iochord/ips/common/graph/ism/stores/GraphModule';
 import EditorState from '../../stores/editors/EditorState';
+import { GraphActivityNode } from '@/iochord/ips/common/graph/ism/interfaces/components/GraphActivityNode';
+import { ACTIVITY_TYPE } from '@/iochord/ips/common/graph/ism/enums/ACTIVITY';
+import { GraphDataResource } from '@/iochord/ips/common/graph/ism/interfaces/components/GraphDataResource';
+import { DISTRIBUTION_TYPE } from '../../../../common/graph/ism/enums/DISTRIBUTION';
 
 // Vuex module instance
 const graphModule = getModule(GraphModule);
@@ -234,7 +240,7 @@ export default class CanvasComponent extends Mixins(BaseComponent, ModalMixin, C
         this.activePage = renderer.activeJointPage(this.activePage.getId() as string) as JointGraphPageImpl;
       }
     } catch (e) {
-      console.error(e);
+      // console.error(e);
     }
   }
 
@@ -428,8 +434,6 @@ export default class CanvasComponent extends Mixins(BaseComponent, ModalMixin, C
           this.parentStartGenerator = (jointPage.getNodes()!.get(currentElementNodeId)! as GraphStartEventNode)
             .getGenerator()!.getId() as string;
 
-
-
           // Set current clicked node as current selected element
           this.currentSelectedElement = jointPage.getNodes()!.get(currentElementNodeId);
         }
@@ -439,6 +443,19 @@ export default class CanvasComponent extends Mixins(BaseComponent, ModalMixin, C
 
           // Show activity modal
           $('#activity').modal('show');
+
+          // Activity node
+          const actNode = (jointPage.getNodes()!.get(currentElementNodeId)! as GraphActivityNode);
+
+          // Populate node properties to the modal
+          this.parentActLabel = actNode.getLabel() as string;
+          this.parentActNodeSelectedActivityType = actNode.getActivityType() as ACTIVITY_TYPE;
+          this.parentActNodeResource = actNode.getResource()!.getId() as string;
+          this.parentActNodeReport = actNode.isReportStatistics() as boolean;
+          this.parentActNodeProcessingTime = actNode.getProcessingTime() as DISTRIBUTION_TYPE;
+
+          // Set current clicked node as current selected element
+          this.currentSelectedElement = jointPage.getNodes()!.get(currentElementNodeId);
         }
 
         // If current clicked element is a branch node
