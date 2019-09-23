@@ -233,7 +233,7 @@ export default class SimulationEditorView extends Layout01View {
       if (graphModule.graph.getVersion === undefined) {
 
         // Fetch graph to Vuex state
-        await graphModule.fetchGraph();
+        await graphModule.loadGraph();
         console.log(graphModule.graph);
       }
 

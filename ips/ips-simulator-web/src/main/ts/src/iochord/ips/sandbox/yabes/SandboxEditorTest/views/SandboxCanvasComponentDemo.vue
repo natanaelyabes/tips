@@ -41,7 +41,7 @@ export default class SandboxCanvasComponentDemo extends BaseLayout {
     try {
 
       // Fetch graph to Vuex state
-      await graphModule.fetchGraph();
+      await graphModule.loadGraph();
 
       // Update rxjs subject
       GraphSubject.update(graphModule.graph);

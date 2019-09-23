@@ -40,8 +40,7 @@ export default class GraphModule extends VuexModule {
 
   // Mutations
   @MutationAction({ mutate: ['graph'] })
-  // TODO: change to loadGraph
-  public async fetchGraph(url?: string) {
+  public async loadGraph(url?: string) {
     const graph: Graph = await IsmModelService.getInstance().getExampleModel();
     return { graph };
   }

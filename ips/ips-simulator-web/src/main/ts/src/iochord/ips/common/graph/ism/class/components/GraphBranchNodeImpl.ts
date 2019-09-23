@@ -21,8 +21,9 @@ export class GraphBranchNodeImpl extends GraphNodeImpl implements GraphBranchNod
     graphBranchNode.setAttributes(object.attributes as Map<string, string>);
     graphBranchNode.setGroupName(object.groupName);
     graphBranchNode.setReportStatistics(object.reportStatistics);
-    graphBranchNode.setRule(BRANCH_RULE[object.rule] as unknown as BRANCH_RULE);
-    graphBranchNode.setBranchType(BRANCH_TYPE[object.type] as unknown as BRANCH_TYPE);
+    graphBranchNode.setRule(object.rule);
+    graphBranchNode.setGate(object.gate);
+    graphBranchNode.setBranchType(object.type);
     GraphBranchNodeImpl.instance.set(graphBranchNode.getId() as string, graphBranchNode);
     return graphBranchNode;
   }

@@ -1,4 +1,5 @@
 import { ObjectSerializable } from '../../../object/ObjectSerializable';
+import { BRANCH_TYPE } from '../enums/BRANCH';
 
 /**
  *

@@ -109,8 +109,8 @@
 
                   <div class="sixteen wide column">
                     <div class="inline field">
-                      <input type="checkbox" @change="handleChangedReport()" v-model="tempReport" class="hidden">
-                      <label>Report statistics</label>
+                      <input id="report-statistics" type="checkbox" @change="handleChangedReport()" v-model="tempReport" class="hidden">
+                      <label for="report-statistics">Report statistics</label>
                     </div>
                   </div>
 
@@ -130,14 +130,19 @@
                 <div class="ui divider"></div>
                 <div class="ui grid">
                   <div class="row">
-                    <div class="three wide column">Processing Time</div>
-                    <div class="thirteen wide column">
-                      <input type="text" @change="handleChangedProcessingTime()" v-model="tempProcessingTime">
+                    <div class="four wide column">Processing Time</div>
+                    <div class="twelve wide column">
+                      <template v-if="reloaded">
+                        <select class="ui dropdown" @change="handleChangedProcessingTime($event)" v-model="tempProcessingTime">
+                          <option value="RANDOM">Random</option>
+                          <option value="CONSTANT">Constant</option>
+                        </select>
+                      </template>
                     </div>
                   </div>
                   <div class="row">
-                    <div class="three wide column">Parameter</div>
-                    <div class="thirteen wide column">
+                    <div class="four wide column">Parameter</div>
+                    <div class="twelve wide column">
                       <input type="text" @change="handleChangedProcessingTimeParameter()" v-model="tempProcessingTimeParameter">
                     </div>
                   </div>
@@ -147,35 +152,47 @@
                 <div class="ui divider"></div>
                 <div class="ui grid">
                   <div class="row">
-                    <div class="three wide column">Setup Time</div>
-                    <div class="thirteen wide column">
-                      <input type="text" @change="handleChangedSetupTime()" v-model="tempSetupTime">
+                    <div class="four wide column">Setup Time</div>
+                    <div class="twelve wide column">
+                      <template v-if="reloaded">
+                        <select class="ui dropdown" @change="handleChangedSetupTime($event)" v-model="tempSetupTime">
+                          <option value="RANDOM">Random</option>
+                          <option value="CONSTANT">Constant</option>
+                        </select>
+                      </template>
                     </div>
                   </div>
                   <div class="row">
-                    <div class="three wide column">Parameter</div>
-                    <div class="thirteen wide column">
+                    <div class="four wide column">Parameter</div>
+                    <div class="twelve wide column">
                       <input type="text" @change="handleChangedSetupTimeParameter()" v-model="tempSetupTimeParameter">
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="four wide column">Unit</div>
+                    <div class="twelve wide column">
+                      <template v-if="reloaded">
+                        <select class="ui dropdown" @change="handleChangedUnit($event)" v-model="tempUnit">
+                          <option value="HOURS">Hours</option>
+                          <option value="MINUTES">Minutes</option>
+                          <option value="SECONDS">Seconds</option>
+                        </select>
+                      </template>
                     </div>
                   </div>
                 </div>
 
-                <h4>Other Settings</h4>
+                <h4>Queue</h4>
                 <div class="ui divider"></div>
                 <div class="ui grid">
                   <div class="row">
-                    <div class="three wide column">Unit</div>
-                    <div class="thirteen wide column">
-                      <input type="text" @change="handleChangedUnit()" v-model="tempUnit">
-                    </div>
-                  </div>
-                  <div class="row">
                     <div class="four wide column">Queue label</div>
-                    <div class="nine wide column">
-                      <input type="text" @change="handleChangedQueueLabel()" v-model="tempQueueLabel">
-                    </div>
-                    <div class="three wide column">
-                      <button class="ui button">...</button>
+                    <div class="twelve wide column">
+                      <template v-if="reloaded">
+                        <select @change="handleChangedQueueLabel($event)" v-model="tempQueueLabel" id="act_txtqueuelabel" class="ui search dropdown">
+                          <option v-for="nodeDatum in nodeData" :selected="nodeDatum[0] === tempQueueLabel" :key="nodeDatum[0]" :value="nodeDatum[0]">{{ nodeDatum[0] }}</option>
+                        </select>
+                      </template>
                     </div>
                   </div>
                 </div>
@@ -186,20 +203,14 @@
                 <div class="ui grid">
                   <div class="row">
                     <div class="four wide column">Input Type</div>
-                    <div class="nine wide column">
+                    <div class="twelve wide column">
                       <input type="text" @change="handleChangedInputType()" v-model="tempInputType">
-                    </div>
-                    <div class="three wide column">
-                      <button class="ui button">...</button>
                     </div>
                   </div>
                   <div class="row">
                     <div class="four wide column">Output Type</div>
-                    <div class="nine wide column">
+                    <div class="twelve wide column">
                       <input type="text" @change="handleChangedOutputType()" v-model="tempOutputType">
-                    </div>
-                    <div class="three wide column">
-                      <button class="ui button">...</button>
                     </div>
                   </div>
                   <div class="row">
@@ -218,12 +229,17 @@
       </div>
     </div>
     <div class="actions">
-      <div class="ui save button">Save</div>
-      <div class="ui cancel button">Cancel</div>
+      <p><em>Node properties are automatically saved</em></p>
     </div>
   </div>
 </template>
-<style>
+
+<style scoped>
+.four.wide.column {
+  font-weight: bold;
+  padding-top: 8px;
+  padding-bottom: 8px;
+}
 </style>
 
 <script lang="ts">
@@ -427,7 +443,7 @@ export default class ActivityNodeModal extends SemanticComponent {
     // Only for dropdown values
     this.tempSelectedActivityType = this.actNodeSelectedActivityType;
     this.tempResource = this.actNodeResource;
-
+    this.tempProcessingTime = this.actNodeProcessingTime;
   }
 
   public get nodeData(): /* Map<string, GraphData> | null */ any {

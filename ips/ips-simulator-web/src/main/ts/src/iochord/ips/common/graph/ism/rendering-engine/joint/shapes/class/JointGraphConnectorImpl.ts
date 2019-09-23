@@ -48,7 +48,6 @@ export class JointGraphConnectorImpl extends GraphConnectorImpl implements Joint
     this.connector = connector;
   }
 
-  // TODO: Need to be fixed (20190815)
   public render(graph: joint.dia.Graph, position?: joint.g.Point): void {
     const elementTypeKey = 'elementType';
 

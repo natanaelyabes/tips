@@ -164,11 +164,15 @@ declare const $: any;
 
 // Vuex Module
 import GraphModule from '@/iochord/ips/common/graph/ism/stores/GraphModule';
-import EditorState from '../../stores/editors/EditorState';
+import EditorState from '@/iochord/ips/simulation/editor/stores/editors/EditorState';
 import { GraphActivityNode } from '@/iochord/ips/common/graph/ism/interfaces/components/GraphActivityNode';
 import { ACTIVITY_TYPE } from '@/iochord/ips/common/graph/ism/enums/ACTIVITY';
 import { GraphDataResource } from '@/iochord/ips/common/graph/ism/interfaces/components/GraphDataResource';
-import { DISTRIBUTION_TYPE } from '../../../../common/graph/ism/enums/DISTRIBUTION';
+import { DISTRIBUTION_TYPE } from '@/iochord/ips/common/graph/ism/enums/DISTRIBUTION';
+import { TIME_UNIT } from '@/iochord/ips/common/graph/ism/enums/TIME_UNIT';
+import { GraphDataQueue } from '@/iochord/ips/common/graph/ism/interfaces/components/GraphDataQueue';
+import { GraphBranchNode } from '@/iochord/ips/common/graph/ism/interfaces/components/GraphBranchNode';
+import { BRANCH_GATE, BRANCH_TYPE, BRANCH_RULE } from '@/iochord/ips/common/graph/ism/enums/BRANCH';
 
 // Vuex module instance
 const graphModule = getModule(GraphModule);
@@ -431,7 +435,7 @@ export default class CanvasComponent extends Mixins(BaseComponent, ModalMixin, C
 
           // Populate node properties to the modal
           this.parentStartLabel = jointPage.getNodes()!.get(currentElementNodeId)!.getLabel() as string;
-          this.parentStartGenerator = (jointPage.getNodes()!.get(currentElementNodeId)! as GraphStartEventNode)
+          this.parentStartGenerator = (jointPage.getNodes()!.get(currentElementNodeId) as GraphStartEventNode)
             .getGenerator()!.getId() as string;
 
           // Set current clicked node as current selected element
@@ -445,14 +449,19 @@ export default class CanvasComponent extends Mixins(BaseComponent, ModalMixin, C
           $('#activity').modal('show');
 
           // Activity node
-          const actNode = (jointPage.getNodes()!.get(currentElementNodeId)! as GraphActivityNode);
+          const actNode = (jointPage.getNodes()!.get(currentElementNodeId) as GraphActivityNode);
 
           // Populate node properties to the modal
           this.parentActLabel = actNode.getLabel() as string;
           this.parentActNodeSelectedActivityType = actNode.getActivityType() as ACTIVITY_TYPE;
-          this.parentActNodeResource = actNode.getResource()!.getId() as string;
+          this.parentActNodeResource = (actNode.getResource() as GraphDataResource).getId() as string;
           this.parentActNodeReport = actNode.isReportStatistics() as boolean;
           this.parentActNodeProcessingTime = actNode.getProcessingTime() as DISTRIBUTION_TYPE;
+          this.parentActNodeProcessingTimeParameter = actNode.getProcessingTimeParameter() as string;
+          this.parentActNodeSetupTime = actNode.getSetupTime() as DISTRIBUTION_TYPE;
+          this.parentActNodeSetupTimeParameter = actNode.getSetupTimeParameter() as string;
+          this.parentActNodeUnit = actNode.getUnit() as TIME_UNIT;
+          this.parentActNodeQueueLabel = (actNode.getQueue() as GraphDataQueue).getId() as string;
 
           // Set current clicked node as current selected element
           this.currentSelectedElement = jointPage.getNodes()!.get(currentElementNodeId);
@@ -462,7 +471,18 @@ export default class CanvasComponent extends Mixins(BaseComponent, ModalMixin, C
         if (currentElementType === 'branch') {
 
           // Show branch modal
-          ($('#branch') as any).modal('show');
+          $('#branch').modal('show');
+
+          // Branch node
+          const branchNode = (jointPage.getNodes()!.get(currentElementNodeId) as GraphBranchNode);
+
+          // Populate node properties to the modal
+          this.parentBranchLabel = branchNode.getLabel() as string;
+          this.parentBranchSelectedGate = branchNode.getGate() as BRANCH_GATE;
+          this.parentBranchSelectedType = branchNode.getBranchType() as BRANCH_TYPE;
+          this.parentBranchSelectedRule = branchNode.getRule() as BRANCH_RULE;
+
+          this.currentSelectedElement = jointPage.getNodes()!.get(currentElementNodeId);
         }
 
         // If current clicked element is a stop node
