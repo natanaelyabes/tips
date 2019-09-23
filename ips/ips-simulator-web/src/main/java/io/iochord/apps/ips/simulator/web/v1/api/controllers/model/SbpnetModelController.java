@@ -36,7 +36,7 @@ import io.iochord.apps.ips.util.SerializationUtil;
 @RestController
 @CrossOrigin
 public class SbpnetModelController extends AModelController {
-	public static final String BASE_URI = AModelController.BASE_URI + "/sbpnet";
+	public static final String BASE_URI = AModelController.BASE_URI + "/ism";
 	
 	@RequestMapping(BASE_URI + "")
 	public String getIndex() {
@@ -100,13 +100,13 @@ public class SbpnetModelController extends AModelController {
 	
 	@RequestMapping(value=BASE_URI + "/example",produces= {MediaType.APPLICATION_JSON_VALUE})
 	public String getCreateExampleSimulationModel() {
-		Ism snet = SbpnetExample.create();
+		Ism snet = SbpnetExample.createComplete();
 		return SerializationUtil.encode(snet);
 	}	
 	
 	@RequestMapping(value=BASE_URI + "/examplecpn",produces= {MediaType.APPLICATION_JSON_VALUE})
 	public String getConvertExampleSimulationModel() {
-		Ism snet = SbpnetExample.create();
+		Ism snet = SbpnetExample.createComplete();
 		Sbpnet2CpnscalaBiConverter converter = new Sbpnet2CpnscalaBiConverter();
 		String cnet = converter.convert(snet);
 		return cnet;
