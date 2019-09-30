@@ -15,6 +15,7 @@ class Transition[B <:Bind] (
   private var mapBBuf:Map[Int,Option[B]] = null
   private var mapIBuf:Map[Int,Int] = null
   private var mapMB:Map[Int,Map[B,Int]] = null
+  private var mapLB:Map[Int,List[B]] = null
   
   private var eval:(B,B) => Boolean = null
   private var merge:(B,B) => B = null
@@ -136,6 +137,7 @@ class Transition[B <:Bind] (
     mapBBuf = Map[Int,Option[B]]()
     mapIBuf = Map[Int,Int]()
     mapMB = Map[Int,Map[B,Int]]()
+    mapLB = Map[Int,List[B]]()
     
     var lbe = List[B]()
     
@@ -236,19 +238,23 @@ class Transition[B <:Bind] (
     val tokensBefGlobTime = arc.getPlace().getCurrentMarking().multiset.filter(tokenWT => tokenWT._1._2 <= globtime)
     
     var mapListBinding:Map[B,Int] = null
-    var listBinding = List[B]()
+    var listBinding:List[B] = null
     
     if(mapMB.get(seq) == None) {
       mapListBinding = Map[B,Int]()
-    
+      listBinding = List[B]()
+      
       tokensBefGlobTime.foreach(tokenWT => tokenWT match { 
         case ((colset:arc.coltype, _:Long),num:Int) => { val optToken:Option[arc.coltype] = if(arc.getIsBase()) arc.computeArcExp(colset) else Some(colset); if(optToken != None) { val bind = arc.computeTokenToBind(optToken.get).asInstanceOf[B]; mapListBinding += (bind -> (mapListBinding.getOrElse(bind, 0)+num)) } }
       } )
       mapMB(seq) = mapListBinding
+      mapLB(seq) = listBinding
     }
-    else
+    else {
       mapListBinding = mapMB(seq)
-      
+      listBinding = mapLB(seq)
+    }
+    
     if(arc.getIsBase())
       listBinding = mapListBinding.filter(bindingWN => bindingWN._2 >= arc.getNoTokArcExp()).map(_._1).toList
     else
