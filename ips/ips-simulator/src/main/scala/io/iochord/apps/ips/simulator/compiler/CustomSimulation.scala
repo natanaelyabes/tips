@@ -26,7 +26,7 @@ class CustomSimulation {
     
     val memoryScalaFactory = new MemoryScalaFileCompiler(mpath)
     val simulation = memoryScalaFactory.getInstance
-    simulation.addObserver(new MarkingObserver())
+    //simulation.addObserver(new MarkingObserver())
     
     val compTime = System.currentTimeMillis() - startcomp
 		map += ("compiletime" -> (compTime + " milisec") )
