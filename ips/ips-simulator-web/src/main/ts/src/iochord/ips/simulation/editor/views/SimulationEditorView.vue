@@ -234,6 +234,8 @@ export default class SimulationEditorView extends Layout01View {
 
         // Fetch graph to Vuex state
         await graphModule.loadGraph();
+
+        // Print to stdout
         console.log(graphModule.graph);
       }
 
@@ -245,7 +247,9 @@ export default class SimulationEditorView extends Layout01View {
 
         // Update its Vuex state
         graphModule.setGraph(graph);
-        console.log(graph);
+
+        // Print to stdout
+        console.log(JSON.stringify(graph));
       });
     } catch (e) {
       console.error(e);

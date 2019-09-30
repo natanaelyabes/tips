@@ -5,6 +5,7 @@ import { GraphDataImpl } from '../GraphDataImpl';
 import { GraphDataResource } from '../../interfaces/components/GraphDataResource';
 import { GraphDataTable } from '../../interfaces/components/GraphDataTable';
 import { RESOURCE_CRITERIA } from '../../enums/RESOURCE';
+import { TSMap } from 'typescript-map';
 
 /**
  *
@@ -15,7 +16,7 @@ import { RESOURCE_CRITERIA } from '../../enums/RESOURCE';
  */
 export class GraphDataResourceImpl extends GraphDataImpl implements GraphDataResource {
   public static TYPE: string = 'resource';
-  public static instance: Map<string, GraphDataResource> = new Map<string, GraphDataResource>();
+  public static instance: TSMap<string, GraphDataResource> = new TSMap<string, GraphDataResource>();
 
   /** @Override */
   public static deserialize(object: any): GraphDataResource | null {
@@ -23,7 +24,7 @@ export class GraphDataResourceImpl extends GraphDataImpl implements GraphDataRes
     graphDataResource.setId(object.id);
     graphDataResource.setLabel(object.label);
     graphDataResource.setType(object.elementType);
-    graphDataResource.setAttributes(object.attributes as Map<string, string>);
+    graphDataResource.setAttributes(object.attributes as TSMap<string, string>);
     graphDataResource.setGroupId(object.groupId);
     graphDataResource.setData(object.data);
     graphDataResource.setSetupTime(object.setupTime);

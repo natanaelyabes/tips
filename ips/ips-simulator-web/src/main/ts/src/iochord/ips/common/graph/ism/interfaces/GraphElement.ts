@@ -1,5 +1,6 @@
 import { ObjectSerializable } from '../../../object/ObjectSerializable';
 import { BRANCH_TYPE } from '../enums/BRANCH';
+import { TSMap } from 'typescript-map';
 
 /**
  *
@@ -15,6 +16,6 @@ export interface GraphElement extends ObjectSerializable {
   setLabel(label: string): void;
   getType(): string | null;
   setType(type: string): void;
-  getAttributes(): Map<string, string> | null;
-  setAttributes(attributes: Map<string, string>): void;
+  getAttributes(): TSMap<string, string> | null;
+  setAttributes(attributes: TSMap<string, string>): void;
 }

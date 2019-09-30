@@ -17,6 +17,9 @@ import { GraphDataQueue } from '@/iochord/ips/common/graph/ism/interfaces/compon
 
 const graphModule = getModule(GraphModule);
 
+import { TSMap } from 'typescript-map';
+
+
 @Component<ActivityNodeModalMixin>({
   subscriptions: () => {
     return (
@@ -149,7 +152,7 @@ export default class ActivityNodeModalMixin extends BaseComponent {
     this.parentActNodeResource = e;
 
     // Get data based on selection value e
-    const data = (activePage.getData() as Map<string, GraphData>).get(this.parentActNodeResource);
+    const data = (activePage.getData() as TSMap<string, GraphData>).get(this.parentActNodeResource);
 
     // Set resource for the activity node
     const actNode = (currentSelectedElement as GraphActivityNode);
@@ -295,7 +298,7 @@ export default class ActivityNodeModalMixin extends BaseComponent {
     this.parentActNodeQueueLabel = e;
 
     // Get data based on selection value e
-    const data = (activePage.getData() as Map<string, GraphData>).get(this.parentActNodeQueueLabel);
+    const data = (activePage.getData() as TSMap<string, GraphData>).get(this.parentActNodeQueueLabel);
 
     // Set queue for the activity node
     const actNode = (currentSelectedElement as GraphActivityNode);

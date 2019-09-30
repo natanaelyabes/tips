@@ -35,6 +35,7 @@ import { GraphActivityNodeImpl } from './components/GraphActivityNodeImpl';
 import { GraphBranchNodeImpl } from './components/GraphBranchNodeImpl';
 import { GraphMonitorNodeImpl } from './components/GraphMonitorNodeImpl';
 import { GraphStopEventNode } from '../interfaces/components/GraphStopEventNode';
+import { TSMap } from 'typescript-map';
 
 /**
  *
@@ -76,10 +77,10 @@ export class GraphFactoryImpl implements GraphFactory {
   public addPage(net: Graph): GraphPage | null {
     let page: GraphPage | null = new GraphPageImpl();
     if (net !== null) {
-      const netPage: Map<string, GraphPage> | null = net.getPages();
-      const size: number = (netPage as Map<string, GraphPage>).size;
+      const netPage: TSMap<string, GraphPage> | null = net.getPages();
+      const size: number = (netPage as TSMap<string, GraphPage>).size();
       page.setId(size.toString());
-      (netPage as Map<string, GraphPage>).set(net.getId() as string, page);
+      (netPage as TSMap<string, GraphPage>).set(net.getId() as string, page);
     } else {
       page = null;
     }
@@ -91,8 +92,8 @@ export class GraphFactoryImpl implements GraphFactory {
     let data: GraphData | null = new (DATA_TYPE as any)[dt]();
     if (page !== null) {
       try {
-        (data as GraphData).setId(`${page.getId()}-${(page.getData() as Map<string, GraphData>).size.toString()}`);
-        (page.getData() as Map<string, GraphData>).set((data as GraphData).getId() as string, (data as GraphData));
+        (data as GraphData).setId(`${page.getId()}-${(page.getData() as TSMap<string, GraphData>).size.toString()}`);
+        (page.getData() as TSMap<string, GraphData>).set((data as GraphData).getId() as string, (data as GraphData));
       } catch (e) {
         throw new Error(e);
       }
@@ -107,8 +108,8 @@ export class GraphFactoryImpl implements GraphFactory {
     let node: GraphNode | null = new (NODE_TYPE as any)[nt]();
     if (page !== null) {
       try {
-        (node as GraphNode).setId(`${page.getId()}-${(page.getNodes() as Map<string, GraphData>).size.toString()}`);
-        (page.getNodes() as Map<string, GraphData>).set((node as GraphNode).getId() as string, (node as GraphNode));
+        (node as GraphNode).setId(`${page.getId()}-${(page.getNodes() as TSMap<string, GraphData>).size.toString()}`);
+        (page.getNodes() as TSMap<string, GraphData>).set((node as GraphNode).getId() as string, (node as GraphNode));
       } catch (e) {
         throw new Error(e);
       }
@@ -121,10 +122,10 @@ export class GraphFactoryImpl implements GraphFactory {
   public addConnector(page: GraphPage, source: GraphElement, target: GraphElement): GraphConnector | null {
     let arc: GraphConnector | null = new GraphConnectorImpl();
     if (page !== null) {
-      arc.setId(`${page.getId()}-${(page.getArcs() as Map<string, GraphConnector>).size.toString()}`);
+      arc.setId(`${page.getId()}-${(page.getArcs() as TSMap<string, GraphConnector>).size.toString()}`);
       arc.setSource(source);
       arc.setTarget(target);
-      (page.getArcs() as Map<string, GraphConnector>).set(arc.getId() as string, arc);
+      (page.getArcs() as TSMap<string, GraphConnector>).set(arc.getId() as string, arc);
     } else {
       arc = null;
     }
@@ -134,8 +135,8 @@ export class GraphFactoryImpl implements GraphFactory {
   public addConfiguration(net: Graph): GraphConfiguration | null {
     let config: GraphConfiguration | null = new GraphConfigurationImpl();
     if (net !== null) {
-      const netConfig: Map<string, GraphConfiguration> | null = net.getConfigurations();
-      const size: number = netConfig!.size;
+      const netConfig: TSMap<string, GraphConfiguration> | null = net.getConfigurations();
+      const size: number = netConfig!.size();
       config.setId(size.toString());
       netConfig!.set(config.getId() as string, config);
     } else {

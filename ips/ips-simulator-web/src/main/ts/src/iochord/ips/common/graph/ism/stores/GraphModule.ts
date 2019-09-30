@@ -1,6 +1,7 @@
 // Vuex & Libraries
 import Vuex from 'vuex';
 import { VuexModule, Module, MutationAction, Mutation } from 'vuex-module-decorators';
+import { TSMap } from 'typescript-map';
 
 // Interfaces
 import { Graph } from '@/iochord/ips/common/graph/ism/interfaces/Graph';
@@ -58,7 +59,7 @@ export default class GraphModule extends VuexModule {
   }
 
   @Mutation
-  public setPages(pages: Map<string, GraphPage>): void {
+  public setPages(pages: TSMap<string, GraphPage>): void {
     this.graph.setPages(pages);
   }
 
@@ -106,7 +107,7 @@ export default class GraphModule extends VuexModule {
   }
 
   @Mutation
-  public setPageArcs({ page, arcs }: { page: GraphPage, arcs: Map<string, GraphConnector> }): void {
+  public setPageArcs({ page, arcs }: { page: GraphPage, arcs: TSMap<string, GraphConnector> }): void {
     const pages = this.graph.getPages();
     if (pages !== null) {
       const exists = pages.get(page.getId() as string);
@@ -157,7 +158,7 @@ export default class GraphModule extends VuexModule {
   }
 
   @Mutation
-  public setPageData({ page, data }: { page: GraphPage, data: Map<string, GraphData> }): void {
+  public setPageData({ page, data }: { page: GraphPage, data: TSMap<string, GraphData> }): void {
     const pages = this.graph.getPages();
     if (pages !== null) {
       const exists = pages.get(page.getId() as string);
@@ -247,7 +248,7 @@ export default class GraphModule extends VuexModule {
   }
 
   @Mutation
-  public setPageNodes({ page, nodes }: { page: GraphPage, nodes: Map<string, GraphNode> }) {
+  public setPageNodes({ page, nodes }: { page: GraphPage, nodes: TSMap<string, GraphNode> }) {
     const pages = this.graph.getPages();
     if (pages !== null) {
       const exists = pages.get(page.getId() as string);
@@ -298,7 +299,7 @@ export default class GraphModule extends VuexModule {
   }
 
   @Mutation
-  public setConfigurations(configurations: Map<string, GraphConfiguration>): void {
+  public setConfigurations(configurations: TSMap<string, GraphConfiguration>): void {
     this.graph.setConfigurations(configurations);
   }
 
@@ -308,7 +309,7 @@ export default class GraphModule extends VuexModule {
   }
 
   @Mutation
-  public setData(data: Map<string, GraphData>): void {
+  public setData(data: TSMap<string, GraphData>): void {
     this.graph.setData(data);
   }
 
@@ -320,20 +321,20 @@ export default class GraphModule extends VuexModule {
     return this.graph ? this.graph.getVersion() : null;
   }
 
-  public get pages(): Map<string, GraphPage> | null {
+  public get pages(): TSMap<string, GraphPage> | null {
     return this.graph ? this.graph.getPages() : null;
   }
 
   public get defaultPage(): GraphPage | null {
-    return this.graph ? (this.graph.getPages() as Map<string, GraphPage>).get('0') as GraphPage : null;
+    return this.graph ? (this.graph.getPages() as TSMap<string, GraphPage>).get('0') as GraphPage : null;
   }
 
   public get page(): (pageId: string) => GraphPage | null {
-    const pages = this.graph ? this.graph.getPages() as Map<string, GraphPage> : null;
+    const pages = this.graph ? this.graph.getPages() as TSMap<string, GraphPage> : null;
     return (pageId: string) => pages !== null ? pages.get(pageId) as GraphPage : null;
   }
 
-  public get pageArcs(): (page: GraphPage) => Map<string, GraphConnector> | null {
+  public get pageArcs(): (page: GraphPage) => TSMap<string, GraphConnector> | null {
     return (page: GraphPage) => {
       const arcs = page.getArcs();
       return arcs !== null ? arcs : null;
@@ -343,31 +344,29 @@ export default class GraphModule extends VuexModule {
   public get pageArc(): (page: GraphPage, arcId: string) => GraphConnector | null {
     return (page: GraphPage, arcId: string) => {
       const arcs = this.pageArcs(page) !== null ? this.pageArcs(page) : null;
-      const arc = (arcs as Map<string, GraphConnector>).get(`${page.getId()}-${arcId}`);
+      const arc = (arcs as TSMap<string, GraphConnector>).get(`${page.getId()}-${arcId}`);
       return arc !== null || arc !== undefined ? arc as GraphConnector : null;
     };
   }
 
-  public get pageData(): (page: GraphPage, elementType?: string) => Map<string, GraphData> | null {
+  public get pageData(): (page: GraphPage, elementType?: string) => TSMap<string, GraphData> | null {
     return (page: GraphPage, elementType?: string) => {
-      let result: Map<string, GraphData> | null = new Map<string, GraphData>();
+      let result: TSMap<string, GraphData> | null = new TSMap<string, GraphData>();
       const data = page.getData() ? page.getData() : null;
 
       if (elementType) {
         const keys = data ? data.keys() : null;
-        let res = keys ? keys.next() : null;
+        // let res = keys ? keys.next() : null;
 
-        while (res && !res.done) {
-          const elType = res.value.split('-')[1];
-          const dId = res.value.split('-')[2];
+        (keys as string[]).forEach((key) => {
+          const elType = key.split('-')[1];
+          const dId = key.split('-')[2];
           const id = `${page.getId()}-${elType}-${dId}`;
 
           if (elType === elementType) {
-            result.set(id, data!.get(id) as GraphData);
+            (result as TSMap<string, GraphData>).set(id, data!.get(id) as GraphData);
           }
-
-          res = keys ? keys.next() : null;
-        }
+        });
       } else {
         result = data !== null ? data : null;
       }
@@ -378,26 +377,27 @@ export default class GraphModule extends VuexModule {
   public get pageDatum(): (page: GraphPage, datumId: string) => GraphData | null {
     return (page: GraphPage, datumId: string) => {
       const data = this.pageData(page) !== null ? this.pageData(page) : null;
-      const keys = (data as Map<string, GraphData>).keys();
+      const keys = (data as TSMap<string, GraphData>).keys();
 
-      const findKeyId: (keys: IterableIterator<string>) => string[] | undefined = () => {
-        let result = keys.next();
+      const findKeyId: (keys: string[]) => string[] | undefined = () => {
+        let results = keys;
 
-        while (!result.done) {
-          const elType = result.value.split('-')[1];
-          const dId = result.value.split('-')[2];
+        results.forEach((result) => {
+          const elType = result.split('-')[1];
+          const dId = result.split('-')[2];
 
           if (dId === datumId) {
-            return [elType, dId];
+            results = [elType, dId];
           }
-          result = keys.next();
-        }
+        });
+
+        return results;
       };
 
       const keyId = findKeyId(keys);
 
       if (keyId) {
-        const datum = (data as Map<string, GraphData>).get(`${page.getId()}-${keyId[0]}-${keyId[1]}`);
+        const datum = (data as TSMap<string, GraphData>).get(`${page.getId()}-${keyId[0]}-${keyId[1]}`);
         return datum !== null || datum !== undefined ? datum as GraphData : null;
       } else {
         return null;
@@ -407,44 +407,40 @@ export default class GraphModule extends VuexModule {
 
   public get pageElementType(): (page: GraphPage) => string | null {
     return (page: GraphPage) => {
-      return ((this.graph.getPages() as Map<string, GraphPage>).get(page.getId() as string) as GraphPage).getType() as string;
+      return ((this.graph.getPages() as TSMap<string, GraphPage>).get(page.getId() as string) as GraphPage).getType() as string;
     };
   }
 
   public get pageId(): (page: GraphPage) => string | null {
     return (page: GraphPage) => {
-      return ((this.graph.getPages() as Map<string, GraphPage>).get(page.getId() as string) as GraphPage).getId() as string;
+      return ((this.graph.getPages() as TSMap<string, GraphPage>).get(page.getId() as string) as GraphPage).getId() as string;
     };
   }
 
   public get pageLabel(): (page: GraphPage) => string | null {
     return (page: GraphPage) => {
-      return ((this.graph.getPages() as Map<string, GraphPage>).get(page.getId() as string) as GraphPage).getLabel() as string;
+      return ((this.graph.getPages() as TSMap<string, GraphPage>).get(page.getId() as string) as GraphPage).getLabel() as string;
     };
   }
 
-  public get pageNodes(): (page: GraphPage, elementType?: string) => Map<string, GraphData> | null {
+  public get pageNodes(): (page: GraphPage, elementType?: string) => TSMap<string, GraphData> | null {
     return (page: GraphPage, elementType?: string) => {
-      let result: Map<string, GraphNode> | null = new Map<string, GraphNode>();
+      let result: TSMap<string, GraphNode> | null = new TSMap<string, GraphNode>();
       const nodes = page.getNodes() ? page.getNodes() : null;
 
       if (elementType) {
         const keys = nodes ? nodes.keys() : null;
-        let res = keys ? keys.next() : null;
 
-        while (res && !res.done) {
-          const elType = res.value.split('-')[1];
-          const nId = res.value.split('-')[2];
+        (keys as string[]).forEach((key) => {
+          const elType = key.split('-')[1];
+          const nId = key.split('-')[2];
 
           const id = `${page.getId()}-${elType}-${nId}`;
 
           if (elType === elementType) {
-            result.set(id, nodes!.get(id) as GraphNode);
+            (result as TSMap<string, GraphNode>).set(id, nodes!.get(id) as GraphNode);
           }
-
-          res = keys ? keys.next() : null;
-        }
-
+        });
       } else {
         result = nodes !== null ? nodes : null;
       }
@@ -455,27 +451,27 @@ export default class GraphModule extends VuexModule {
   public get pageNode(): (page: GraphPage, nodeId: string) => GraphNode | null {
     return (page: GraphPage, nodeId: string) => {
       const nodes = this.pageNodes(page) !== null ? this.pageNodes(page) : null;
-      const keys = (nodes as Map<string, GraphNode>).keys();
+      const keys = (nodes as TSMap<string, GraphNode>).keys();
 
-      const findKeyId: (keys: IterableIterator<string>) => string[] | undefined = () => {
-        let result = keys.next();
+      const findKeyId: (keys: string[]) => string[] | undefined = () => {
+        let results = keys;
 
-        while (!result.done) {
-          const elType = result.value.split('-')[1];
-          const nId = result.value.split('-')[2];
+        results.forEach((result) => {
+          const elType = result.split('-')[1];
+          const nId = result.split('-')[2];
 
           if (nId === nodeId) {
-            return [elType, nId];
+            results = [elType, nId];
           }
+        });
 
-          result = keys.next();
-        }
+        return results;
       };
 
       const keyId = findKeyId(keys);
 
       if (keyId) {
-        const node = (nodes as Map<string, GraphNode>).get(`${page.getId()}-${keyId[0]}-${keyId[1]}`);
+        const node = (nodes as TSMap<string, GraphNode>).get(`${page.getId()}-${keyId[0]}-${keyId[1]}`);
         return node !== null || node !== undefined ? node as GraphNode : null;
       } else {
         return null;
@@ -483,7 +479,7 @@ export default class GraphModule extends VuexModule {
     };
   }
 
-  public get configurations(): Map<string, GraphConfiguration> | null {
+  public get configurations(): TSMap<string, GraphConfiguration> | null {
     return this.graph ? this.graph.getConfigurations() : null;
   }
 
@@ -491,7 +487,7 @@ export default class GraphModule extends VuexModule {
     return this.graph ? this.graph.getControl() : null;
   }
 
-  public get data(): Map<string, GraphData> | null {
+  public get data(): TSMap<string, GraphData> | null {
     return this.graph ? this.graph.getData() : null;
   }
 }

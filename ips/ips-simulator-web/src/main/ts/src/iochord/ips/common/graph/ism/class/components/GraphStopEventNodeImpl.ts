@@ -1,5 +1,6 @@
 import { GraphEventNodeImpl } from './GraphEventNodeImpl';
 import { GraphStopEventNode } from '../../interfaces/components/GraphStopEventNode';
+import { TSMap } from 'typescript-map';
 
 /**
  *
@@ -16,7 +17,7 @@ export class GraphStopEventNodeImpl extends GraphEventNodeImpl implements GraphS
     graphStopEventNode.setId(object.id);
     graphStopEventNode.setLabel(object.label);
     graphStopEventNode.setType(object.elementType);
-    graphStopEventNode.setAttributes(object.attributes as Map<string, string>);
+    graphStopEventNode.setAttributes(object.attributes as TSMap<string, string>);
     graphStopEventNode.setGroupName(object.groupName);
     graphStopEventNode.setReportStatistics(object.reportStatistics);
     GraphStopEventNodeImpl.instance.set(graphStopEventNode.getId() as string, graphStopEventNode);

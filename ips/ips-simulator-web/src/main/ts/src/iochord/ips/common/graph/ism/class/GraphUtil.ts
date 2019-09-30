@@ -1,4 +1,5 @@
 import { GraphElement } from '../interfaces/GraphElement';
+import { TSMap } from 'typescript-map';
 
 /**
  *
@@ -15,8 +16,8 @@ export class GraphUtil {
     return null;
   }
 
-  public static generateRefs<T extends GraphElement>(map: Map<string, T> | null): Map<string, string | null> | null {
-    const refs: Map<string, string | null> = new Map<string, string | null>();
+  public static generateRefs<T extends GraphElement>(map: TSMap<string, T> | null): TSMap<string, string | null> | null {
+    const refs: TSMap<string, string | null> = new TSMap<string, string | null>();
     if (map !== null) {
       for (const k in map) {
         if (map.hasOwnProperty(k)) {

@@ -1,4 +1,5 @@
 import { GraphElement } from '../interfaces/GraphElement';
+import { TSMap } from 'typescript-map';
 
 /**
  *
@@ -11,7 +12,7 @@ export class GraphElementImpl implements GraphElement {
   private id?: string | null;
   private label?: string | null;
   private elementType?: string | null;
-  private attributes?: Map<string, string> | null = new Map<string, string>();
+  private attributes?: TSMap<string, string> | null = new TSMap<string, string>();
 
   constructor() {
     //
@@ -41,11 +42,11 @@ export class GraphElementImpl implements GraphElement {
     this.elementType = type || this.elementType;
   }
 
-  public getAttributes(): Map<string, string> | null {
-    return this.attributes as Map<string, string> | null;
+  public getAttributes(): TSMap<string, string> | null {
+    return this.attributes as TSMap<string, string> | null;
   }
 
-  public setAttributes(attributes: Map<string, string>) {
+  public setAttributes(attributes: TSMap<string, string>) {
     this.attributes = attributes || this.attributes;
   }
 

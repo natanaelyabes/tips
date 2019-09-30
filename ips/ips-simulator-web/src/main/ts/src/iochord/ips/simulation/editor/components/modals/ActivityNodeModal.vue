@@ -252,6 +252,9 @@ import { GraphPage } from '@/iochord/ips/common/graph/ism/interfaces/GraphPage';
 
 declare const $: any;
 
+import { TSMap } from 'typescript-map';
+
+
 const graphModule = getModule(GraphModule);
 
 @Component
@@ -446,10 +449,10 @@ export default class ActivityNodeModal extends SemanticComponent {
     this.tempProcessingTime = this.actNodeProcessingTime;
   }
 
-  public get nodeData(): /* Map<string, GraphData> | null */ any {
-    const pages = graphModule.graph.getPages() as Map<string, GraphPage>;
-    const nodeData = (pages.get('0') as GraphPage).getData() as Map<string, GraphData>;
-    return nodeData;
+  public get nodeData(): /* TSMap<string, GraphData> | null */ any {
+    const pages = graphModule.graph.getPages() as TSMap<string, GraphPage>;
+    const nodeData = (pages.get('0') as GraphPage).getData() as TSMap<string, GraphData>;
+    return nodeData.entries();
   }
 }
 </script>

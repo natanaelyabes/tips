@@ -3,6 +3,7 @@ import { GraphPage } from './GraphPage';
 import { GraphConfiguration } from './GraphConfiguration';
 import { GraphData } from './GraphData';
 import { GraphControl } from './components/GraphControl';
+import { TSMap } from 'typescript-map';
 
 /**
  *
@@ -13,14 +14,14 @@ import { GraphControl } from './components/GraphControl';
  */
 export interface Graph extends GraphElement {
   getVersion(): string | null;
-  getPages(): Map<string, GraphPage> | null;
-  setPages(pages: Map<string, GraphPage>): void;
+  getPages(): TSMap<string, GraphPage> | null;
+  setPages(pages: TSMap<string, GraphPage>): void;
   getDefaultPage(): GraphPage | null;
   setDefaultPage(page: GraphPage): void;
-  getConfigurations(): Map<string, GraphConfiguration> | null;
-  setConfigurations(configurations: Map<string, GraphConfiguration>): void;
+  getConfigurations(): TSMap<string, GraphConfiguration> | null;
+  setConfigurations(configurations: TSMap<string, GraphConfiguration>): void;
   getControl(): GraphControl | null;
   setControl(control: GraphControl): void;
-  getData(): Map<string, GraphData> | null;
-  setData(data: Map<string, GraphData>): void;
+  getData(): TSMap<string, GraphData> | null;
+  setData(data: TSMap<string, GraphData>): void;
 }

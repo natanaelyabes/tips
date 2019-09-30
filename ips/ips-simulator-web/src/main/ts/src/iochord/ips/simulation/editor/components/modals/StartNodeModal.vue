@@ -62,6 +62,9 @@ import { GraphData } from '@/iochord/ips/common/graph/ism/interfaces/GraphData';
 // JQuery
 declare const $: any;
 
+import { TSMap } from 'typescript-map';
+
+
 // Vuex
 const graphModule = getModule(GraphModule);
 
@@ -114,10 +117,10 @@ export default class StartNodeModal extends SemanticComponent {
     this.tempGenerator = this.startGenerator;
   }
 
-  public get nodeData(): /* Map<string, GraphData> | null */ any {
-    const pages = graphModule.graph.getPages() as Map<string, GraphPage>;
-    const nodeData = (pages.get('0') as GraphPage).getData() as Map<string, GraphData>;
-    return nodeData;
+  public get nodeData(): /* TSMap<string, GraphData> | null */ any {
+    const pages = graphModule.graph.getPages() as TSMap<string, GraphPage>;
+    const nodeData = (pages.get('0') as GraphPage).getData() as TSMap<string, GraphData>;
+    return nodeData.entries();
   }
 }
 </script>

@@ -430,8 +430,13 @@ export default class CanvasComponent extends Mixins(BaseComponent, ModalMixin, C
         // If current clicked element is a start node
         if (currentElementType === 'start') {
 
+          this.parentStartLabel = '';
+          this.parentStartGenerator = '';
+
           // Show start modal
-          $('#start').modal('show');
+          $('#start')
+            .modal('setting', 'transition', 'fade up')
+            .modal('show');
 
           // Populate node properties to the modal
           this.parentStartLabel = jointPage.getNodes()!.get(currentElementNodeId)!.getLabel() as string;
@@ -445,33 +450,55 @@ export default class CanvasComponent extends Mixins(BaseComponent, ModalMixin, C
         // If current clicked element is an activity node
         if (currentElementType === 'activity') {
 
-          // Show activity modal
-          $('#activity').modal('show');
+          this.parentActLabel = '';
+          this.parentActNodeSelectedActivityType = ACTIVITY_TYPE.STANDARD;
+          this.parentActNodeResource = '';
+          this.parentActNodeReport = false;
+          this.parentActNodeProcessingTime = DISTRIBUTION_TYPE.CONSTANT;
+          this.parentActNodeProcessingTimeParameter = '';
+          this.parentActNodeSetupTime = DISTRIBUTION_TYPE.CONSTANT;
+          this.parentActNodeSetupTimeParameter = '';
+          this.parentActNodeUnit = TIME_UNIT.MINUTES;
+          this.parentActNodeQueueLabel = '';
 
+          // Show activity modal
+          $('#activity')
+            .modal('setting', 'transition', 'fade up')
+            .modal('show');
+
+          console.log(currentElementNodeId);
           // Activity node
           const actNode = (jointPage.getNodes()!.get(currentElementNodeId) as GraphActivityNode);
 
           // Populate node properties to the modal
           this.parentActLabel = actNode.getLabel() as string;
           this.parentActNodeSelectedActivityType = actNode.getActivityType() as ACTIVITY_TYPE;
-          this.parentActNodeResource = (actNode.getResource() as GraphDataResource).getId() as string;
+          this.parentActNodeResource = actNode.getResource() !== undefined ? (actNode.getResource() as GraphDataResource).getId() as string : '';
           this.parentActNodeReport = actNode.isReportStatistics() as boolean;
           this.parentActNodeProcessingTime = actNode.getProcessingTime() as DISTRIBUTION_TYPE;
           this.parentActNodeProcessingTimeParameter = actNode.getProcessingTimeParameter() as string;
           this.parentActNodeSetupTime = actNode.getSetupTime() as DISTRIBUTION_TYPE;
           this.parentActNodeSetupTimeParameter = actNode.getSetupTimeParameter() as string;
           this.parentActNodeUnit = actNode.getUnit() as TIME_UNIT;
-          this.parentActNodeQueueLabel = (actNode.getQueue() as GraphDataQueue).getId() as string;
+          this.parentActNodeQueueLabel = actNode.getResource() !== undefined ? (actNode.getQueue() as GraphDataQueue).getId() as string : '';
 
           // Set current clicked node as current selected element
           this.currentSelectedElement = jointPage.getNodes()!.get(currentElementNodeId);
+
         }
 
         // If current clicked element is a branch node
         if (currentElementType === 'branch') {
 
+          this.parentBranchLabel = '';
+          this.parentBranchSelectedGate = BRANCH_GATE.AND;
+          this.parentBranchSelectedType = BRANCH_TYPE.SPLIT;
+          this.parentBranchSelectedRule = BRANCH_RULE.PROBABILITY;
+
           // Show branch modal
-          $('#branch').modal('show');
+          $('#branch')
+            .modal('setting', 'transition', 'fade up')
+            .modal('show');
 
           // Branch node
           const branchNode = (jointPage.getNodes()!.get(currentElementNodeId) as GraphBranchNode);
@@ -488,8 +515,13 @@ export default class CanvasComponent extends Mixins(BaseComponent, ModalMixin, C
         // If current clicked element is a stop node
         if (currentElementType === 'stop') {
 
+          this.parentStopLabel = '';
+          this.parentStopReport = false;
+
           // Show stop modal
-          $('#stop').modal('show');
+          $('#stop')
+            .modal('setting', 'transition', 'fade up')
+            .modal('show');
 
           // Populate node properties to the modal
           this.parentStopLabel = jointPage.getNodes()!.get(currentElementNodeId)!.getLabel() as string;

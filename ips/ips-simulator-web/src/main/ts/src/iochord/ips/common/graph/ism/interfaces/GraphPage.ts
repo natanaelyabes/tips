@@ -2,6 +2,7 @@ import { GraphElement } from './GraphElement';
 import { GraphNode } from './GraphNode';
 import { GraphConnector } from './GraphConnector';
 import { GraphData } from './GraphData';
+import { TSMap } from 'typescript-map';
 
 /**
  *
@@ -11,10 +12,10 @@ import { GraphData } from './GraphData';
  *
  */
 export interface GraphPage extends GraphElement {
-  getData(): Map<string, GraphData> | null;
-  setData(data: Map<string, GraphData>): void;
-  getNodes(): Map<string, GraphNode> | null;
-  setNodes(nodes: Map<string, GraphNode>): void;
-  getArcs(): Map<string, GraphConnector> | null;
-  setArcs(arcs: Map<string, GraphConnector>): void;
+  getData(): TSMap<string, GraphData> | null;
+  setData(data: TSMap<string, GraphData>): void;
+  getNodes(): TSMap<string, GraphNode> | null;
+  setNodes(nodes: TSMap<string, GraphNode>): void;
+  getArcs(): TSMap<string, GraphConnector> | null;
+  setArcs(arcs: TSMap<string, GraphConnector>): void;
 }
