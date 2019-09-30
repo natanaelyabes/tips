@@ -117,16 +117,19 @@ case class Simulator(calcAvgTimeEnTr:Boolean = false) {
         
         transition.getIn().foreach(arc => { val multiset = arc.getPlace().getCurrentMarking().multiset; markbefore.put(arc.getPlace().getName(),multiset) } )
         transition.getOut().foreach(arc => { val multiset = arc.getPlace().getCurrentMarking().multiset; markbefore.put(arc.getPlace().getName(),multiset) } )
+        //println(markbefore)
+        //println(transition.getName())
         
         val bindingChosen = transition.execute(globtime.time)
         
         transition.getIn().foreach(arc => { val multiset = arc.getPlace().getCurrentMarking().multiset; markafter.put(arc.getPlace().getName(),multiset) } )
         transition.getOut().foreach(arc => { val multiset = arc.getPlace().getCurrentMarking().multiset; markafter.put(arc.getPlace().getName(),multiset) } )
+        //println(markafter)
         
         if(subject != null) {
+          //subject.setMarking((markbefore,markafter,transition.getId()+" - "+bindingChosen,globtime.getTime())) 
           //println("================ Step: "+c+" | globtime: "+globtime.time+" ================")
-          //println("Transition: "+transition.getId(),transition.getName())
-          subject.setMarking((markbefore,markafter,transition.getId()+" - "+bindingChosen,globtime.getTime()))  
+          //println("Transition: "+transition.getId(),transition.getName()) 
         }
         c += 1
       }
@@ -189,7 +192,7 @@ case class Simulator(calcAvgTimeEnTr:Boolean = false) {
         if(subject != null) {
           //println("================ Step: "+c+" | globtime: "+globtime.time+" ================")
           //println("Transition: "+transition.getId(),transition.getName())
-          subject.setMarking((markbefore,markafter,transition.getId()+" - "+bindingChosen,globtime.getTime()))  
+          //subject.setMarking((markbefore,markafter,transition.getId()+" - "+bindingChosen,globtime.getTime()))  
         }
         c += 1
       }
