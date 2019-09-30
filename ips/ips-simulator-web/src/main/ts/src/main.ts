@@ -16,7 +16,6 @@ import * as $ from 'jquery';
 import '../public/semantic/dist/semantic.min.css';
 import '../public/semantic/dist/semantic.min.js';
 
-
 Vue.use(VueRx, Rx);
 Vue.config.productionTip = false;
 

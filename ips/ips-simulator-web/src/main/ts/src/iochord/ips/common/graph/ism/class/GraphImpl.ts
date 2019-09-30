@@ -8,6 +8,7 @@ import { GraphPageImpl } from './GraphPageImpl';
 import { GraphConfigurationImpl } from './GraphConfigurationImpl';
 import { GraphControlImpl } from './components/GraphControlImpl';
 import { GraphDataImpl } from './GraphDataImpl';
+import { TSMap } from 'typescript-map';
 
 /**
  *
@@ -24,19 +25,19 @@ export class GraphImpl extends GraphElementImpl implements Graph {
     graph.setId(object.id);
     graph.setLabel(object.label);
     graph.setType(object.elementType);
-    graph.setAttributes(object.attributes as Map<string, string>);
+    graph.setAttributes(object.attributes as TSMap<string, string>);
     graph.setControl(GraphControlImpl.deserialize(object.control) as GraphControl);
-    graph.setConfigurations(GraphConfigurationImpl.deserialize(object.configurations) as Map<string, GraphConfiguration>);
-    graph.setData(GraphDataImpl.deserialize(object.data) as Map<string, GraphData>);
-    graph.setPages(GraphPageImpl.deserialize(object.pages) as Map<string, GraphPage>);
+    graph.setConfigurations(GraphConfigurationImpl.deserialize(object.configurations) as TSMap<string, GraphConfiguration>);
+    graph.setData(GraphDataImpl.deserialize(object.data) as TSMap<string, GraphData>);
+    graph.setPages(GraphPageImpl.deserialize(object.pages) as TSMap<string, GraphPage>);
     return graph;
   }
 
   private readonly version: string = '1.0';
-  private pages?: Map<string, GraphPage> | null = new Map<string, GraphPage>();
-  private configurations?: Map<string, GraphConfiguration> = new Map<string, GraphConfiguration>();
+  private pages?: TSMap<string, GraphPage> | null = new TSMap<string, GraphPage>();
+  private configurations?: TSMap<string, GraphConfiguration> = new TSMap<string, GraphConfiguration>();
   private control?: GraphControl | null;
-  private data?: Map<string, GraphData> | null = new Map<string, GraphData>();
+  private data?: TSMap<string, GraphData> | null = new TSMap<string, GraphData>();
   private defaultPage?: GraphPage | null;
 
   constructor() {
@@ -47,11 +48,11 @@ export class GraphImpl extends GraphElementImpl implements Graph {
     return this.version;
   }
 
-  public getPages(): Map<string, GraphPage> | null {
-    return this.pages as Map<string, GraphPage> | null;
+  public getPages(): TSMap<string, GraphPage> | null {
+    return this.pages as TSMap<string, GraphPage> | null;
   }
 
-  public setPages(pages: Map<string, GraphPage>): void {
+  public setPages(pages: TSMap<string, GraphPage>): void {
     this.pages = pages || this.pages;
   }
 
@@ -63,11 +64,11 @@ export class GraphImpl extends GraphElementImpl implements Graph {
     this.defaultPage = page || this.defaultPage;
   }
 
-  public getConfigurations(): Map<string, GraphConfiguration> | null {
-    return this.configurations as Map<string, GraphConfiguration> | null;
+  public getConfigurations(): TSMap<string, GraphConfiguration> | null {
+    return this.configurations as TSMap<string, GraphConfiguration> | null;
   }
 
-  public setConfigurations(configurations: Map<string, GraphConfiguration>): void {
+  public setConfigurations(configurations: TSMap<string, GraphConfiguration>): void {
     this.configurations = configurations || this.configurations;
   }
 
@@ -79,11 +80,11 @@ export class GraphImpl extends GraphElementImpl implements Graph {
     this.control = control || this.control;
   }
 
-  public getData(): Map<string, GraphData> | null {
-    return this.data as Map<string, GraphData> | null;
+  public getData(): TSMap<string, GraphData> | null {
+    return this.data as TSMap<string, GraphData> | null;
   }
 
-  public setData(data: Map<string, GraphData>): void {
+  public setData(data: TSMap<string, GraphData>): void {
     this.data = data || this.data;
   }
 

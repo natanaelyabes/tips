@@ -1,5 +1,6 @@
 import { QUEUE_TYPE } from '../../enums/QUEUE';
 import { GraphData } from '../GraphData';
+import { TSMap } from 'typescript-map';
 
 /**
  *
@@ -17,6 +18,6 @@ export interface GraphDataQueue extends GraphData {
   setSingle(single: boolean): void;
   getSize(): number | null;
   setSize(size: number): void;
-  getSizes(): Map<string, number> | null;
-  setSizes(sizes: Map<string, number>): void;
+  getSizes(): TSMap<string, number> | null;
+  setSizes(sizes: TSMap<string, number>): void;
 }

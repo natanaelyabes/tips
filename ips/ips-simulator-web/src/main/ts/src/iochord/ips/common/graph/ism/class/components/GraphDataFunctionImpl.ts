@@ -2,6 +2,7 @@ import { GraphDataFunction } from '../../interfaces/components/GraphDataFunction
 import { GraphDataImpl } from '../GraphDataImpl';
 import { GraphDataObjectType } from '../../interfaces/components/GraphDataObjectType';
 import { GraphUtil } from '../GraphUtil';
+import { TSMap } from 'typescript-map';
 
 /**
  *
@@ -19,31 +20,31 @@ export class GraphDataFunctionImpl extends GraphDataImpl implements GraphDataFun
     graphData.setId(object.id);
     graphData.setLabel(object.label);
     graphData.setType(object.elementType);
-    graphData.setAttributes(object.attributes as Map<string, string>);
-    graphData.setInputParameters(object.inputParameters as Map<string, GraphDataObjectType>);
+    graphData.setAttributes(object.attributes as TSMap<string, string>);
+    graphData.setInputParameters(object.inputParameters as TSMap<string, GraphDataObjectType>);
     graphData.setCode(object.code);
-    graphData.setOutputVariables(object.outputVariables as Map<string, GraphDataObjectType>);
+    graphData.setOutputVariables(object.outputVariables as TSMap<string, GraphDataObjectType>);
     GraphDataFunctionImpl.instance.set(graphData.getId() as string, graphData);
     return graphData;
   }
 
-  private inputParameters?: Map<string, GraphDataObjectType> | null = new Map<string, GraphDataObjectType>();
+  private inputParameters?: TSMap<string, GraphDataObjectType> | null = new TSMap<string, GraphDataObjectType>();
   private code?: string | null;
-  private outputVariables?: Map<string, GraphDataObjectType> | null = new Map<string, GraphDataObjectType>();
+  private outputVariables?: TSMap<string, GraphDataObjectType> | null = new TSMap<string, GraphDataObjectType>();
 
   constructor() {
     super();
   }
 
-  public getInputParameters(): Map<string, GraphDataObjectType> | null {
-    return this.inputParameters as Map<string, GraphDataObjectType> | null;
+  public getInputParameters(): TSMap<string, GraphDataObjectType> | null {
+    return this.inputParameters as TSMap<string, GraphDataObjectType> | null;
   }
 
-  public setInputParameters(inputParameters: Map<string, GraphDataObjectType>): void {
+  public setInputParameters(inputParameters: TSMap<string, GraphDataObjectType>): void {
     this.inputParameters = inputParameters || this.inputParameters;
   }
 
-  public getInputParametersRefs(): Map<string, string | null> | null {
+  public getInputParametersRefs(): TSMap<string, string | null> | null {
     return GraphUtil.generateRefs(this.getInputParameters());
   }
 
@@ -55,15 +56,15 @@ export class GraphDataFunctionImpl extends GraphDataImpl implements GraphDataFun
     this.code = code || this.code;
   }
 
-  public getOutputVariables(): Map<string, GraphDataObjectType> | null {
-    return this.outputVariables as Map<string, GraphDataObjectType> | null;
+  public getOutputVariables(): TSMap<string, GraphDataObjectType> | null {
+    return this.outputVariables as TSMap<string, GraphDataObjectType> | null;
   }
 
-  public setOutputVariables(outputVariables: Map<string, GraphDataObjectType>): void {
+  public setOutputVariables(outputVariables: TSMap<string, GraphDataObjectType>): void {
     this.outputVariables = outputVariables || this.outputVariables;
   }
 
-  public getOutputVariablesRefs(): Map<string, string | null> | null {
+  public getOutputVariablesRefs(): TSMap<string, string | null> | null {
     return GraphUtil.generateRefs(this.getOutputVariables());
   }
 

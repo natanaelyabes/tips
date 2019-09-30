@@ -13,7 +13,7 @@ import { Observable } from 'rxjs';
  */
 export class IsmModelService extends ModelService {
 
-  public static readonly BASE_URI: string = ModelService.BASE_URI + '/sbpnet';
+  public static readonly BASE_URI: string = ModelService.BASE_URI + '/ism';
 
   public static getInstance(): IsmModelService {
     if (IsmModelService.__INSTANCE == null) {

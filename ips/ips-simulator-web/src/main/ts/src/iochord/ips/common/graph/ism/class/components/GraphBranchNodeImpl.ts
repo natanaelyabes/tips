@@ -2,6 +2,7 @@ import { BRANCH_GATE } from '../../enums/BRANCH';
 import { GraphNodeImpl } from '../GraphNodeImpl';
 import { GraphBranchNode } from '../../interfaces/components/GraphBranchNode';
 import { BRANCH_TYPE, BRANCH_RULE } from '../../enums/BRANCH';
+import { TSMap } from 'typescript-map';
 
 /**
  *
@@ -18,11 +19,12 @@ export class GraphBranchNodeImpl extends GraphNodeImpl implements GraphBranchNod
     graphBranchNode.setId(object.id);
     graphBranchNode.setLabel(object.label);
     graphBranchNode.setType(object.elementType);
-    graphBranchNode.setAttributes(object.attributes as Map<string, string>);
+    graphBranchNode.setAttributes(object.attributes as TSMap<string, string>);
     graphBranchNode.setGroupName(object.groupName);
     graphBranchNode.setReportStatistics(object.reportStatistics);
-    graphBranchNode.setRule(BRANCH_RULE[object.rule] as unknown as BRANCH_RULE);
-    graphBranchNode.setBranchType(BRANCH_TYPE[object.type] as unknown as BRANCH_TYPE);
+    graphBranchNode.setRule(object.rule);
+    graphBranchNode.setGate(object.gate);
+    graphBranchNode.setBranchType(object.type);
     GraphBranchNodeImpl.instance.set(graphBranchNode.getId() as string, graphBranchNode);
     return graphBranchNode;
   }
@@ -30,7 +32,7 @@ export class GraphBranchNodeImpl extends GraphNodeImpl implements GraphBranchNod
   private gate?: BRANCH_GATE | null = BRANCH_GATE.XOR;
   private type?: BRANCH_TYPE | null = BRANCH_TYPE.SPLIT;
   private rule?: BRANCH_RULE | null = BRANCH_RULE.PROBABILITY;
-  private conditions?: Map<string, string> | null = new Map<string, string>();
+  private conditions?: TSMap<string, string> | null = new TSMap<string, string>();
 
   constructor() {
     super();
@@ -60,11 +62,11 @@ export class GraphBranchNodeImpl extends GraphNodeImpl implements GraphBranchNod
     this.rule = rule || this.rule;
   }
 
-  public getConditions(): Map<string, string> | null {
-    return this.conditions as Map<string, string> | null;
+  public getConditions(): TSMap<string, string> | null {
+    return this.conditions as TSMap<string, string> | null;
   }
 
-  public setConditions(conditions: Map<string, string>): void {
+  public setConditions(conditions: TSMap<string, string>): void {
     this.conditions = conditions || this.conditions;
   }
 

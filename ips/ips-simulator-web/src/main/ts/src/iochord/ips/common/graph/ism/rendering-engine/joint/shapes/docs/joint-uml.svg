@@ -133,7 +133,7 @@
 <polyline fill='none' filter='url(#shadow)' points='1357,-211 1587,-211 ' stroke='black' style='fill: black; stroke: none; fill-opacity:0.2'/><polyline fill='none' points='1357,-211 1587,-211 ' stroke='black' style='fill:url(#none);stroke:black;'/>
 <text style='font-size:10px; font-family:Verdana;' text-anchor='middle' transform='translate(0,-2)' x='1472' y='-199.8'>graph</text>
 <text style='font-size:10px; font-family:Verdana;' text-anchor='middle' transform='translate(0,-2)' x='1472' y='-184.8'>paper</text>
-<text style='font-size:10px; font-family:Verdana;' text-anchor='middle' transform='translate(0,-2)' x='1472' y='-169.8'>minimap</text>
+<text style='font-size:10px; font-family:Verdana;' text-anchor='middle' transform='translate(0,-2)' x='1472' y='-169.8'>miniTSMap</text>
 <polyline fill='none' filter='url(#shadow)' points='1357,-166 1587,-166 ' stroke='black' style='fill: black; stroke: none; fill-opacity:0.2'/><polyline fill='none' points='1357,-166 1587,-166 ' stroke='black' style='fill:url(#none);stroke:black;'/>
 <text style='font-size:10px; font-family:Verdana;' text-anchor='middle' transform='translate(0,-2)' x='1472' y='-154.8'>fn_joint_graph_page_get_graph()</text>
 <text style='font-size:10px; font-family:Verdana;' text-anchor='middle' transform='translate(0,-2)' x='1472' y='-139.8'>fn_joint_graph_page_set_graph()</text>
@@ -169,7 +169,7 @@
 <text style='font-size:10px; font-family:Verdana;' text-anchor='middle' transform='translate(0,-2)' x='1633' y='-501.3'>page</text>
 <text style='font-size:10px; font-family:Verdana;' text-anchor='middle' transform='translate(0,-2)' x='1633' y='-486.3'>graph</text>
 <text style='font-size:10px; font-family:Verdana;' text-anchor='middle' transform='translate(0,-2)' x='1633' y='-471.3'>options</text>
-<text style='font-size:10px; font-family:Verdana;' text-anchor='middle' transform='translate(0,-2)' x='1633' y='-456.3'>hasMinimap</text>
+<text style='font-size:10px; font-family:Verdana;' text-anchor='middle' transform='translate(0,-2)' x='1633' y='-456.3'>hasMiniTSMap</text>
 <polyline fill='none' filter='url(#shadow)' points='1548,-452.5 1718,-452.5 ' stroke='black' style='fill: black; stroke: none; fill-opacity:0.2'/><polyline fill='none' points='1548,-452.5 1718,-452.5 ' stroke='black' style='fill:url(#none);stroke:black;'/>
 <text style='font-size:10px; font-family:Verdana;' text-anchor='middle' transform='translate(0,-2)' x='1633' y='-441.3'>fn_canvas_set_page()</text>
 <text style='font-size:10px; font-family:Verdana;' text-anchor='middle' transform='translate(0,-2)' x='1633' y='-426.3'>fn_canvas_set_graph()</text>

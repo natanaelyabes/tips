@@ -21,11 +21,9 @@
             </div>
           </div>
           <div class="row">
-            <div class="three wide column">
-              Generator
-            </div>
+            <div class="three wide column">Generator</div>
             <template v-if="reloaded">
-              <div class="ten wide column">
+              <div class="thirteen wide column">
                 <select @change="handleChangedGenerator($event)" v-model="tempGenerator" id="start_txtgen" class="ui search dropdown">
                   <option v-for="nodeDatum in nodeData" :selected="nodeDatum[0] === tempGenerator" :key="nodeDatum[0]" :value="nodeDatum[0]">{{nodeDatum[0]}}</option>
                 </select>
@@ -36,8 +34,7 @@
       </div>
     </div>
     <div class="actions">
-      <div class="ui save button">Save</div>
-      <div class="ui cancel button">Cancel</div>
+      <p><em>Node properties are automatically saved</em></p>
     </div>
   </div>
 </template>
@@ -64,6 +61,9 @@ import { GraphData } from '@/iochord/ips/common/graph/ism/interfaces/GraphData';
 
 // JQuery
 declare const $: any;
+
+import { TSMap } from 'typescript-map';
+
 
 // Vuex
 const graphModule = getModule(GraphModule);
@@ -117,10 +117,10 @@ export default class StartNodeModal extends SemanticComponent {
     this.tempGenerator = this.startGenerator;
   }
 
-  public get nodeData(): /* Map<string, GraphData> | null */ any {
-    const pages = graphModule.graph.getPages() as Map<string, GraphPage>;
-    const nodeData = (pages.get('0') as GraphPage).getData() as Map<string, GraphData>;
-    return nodeData;
+  public get nodeData(): /* TSMap<string, GraphData> | null */ any {
+    const pages = graphModule.graph.getPages() as TSMap<string, GraphPage>;
+    const nodeData = (pages.get('0') as GraphPage).getData() as TSMap<string, GraphData>;
+    return nodeData.entries();
   }
 }
 </script>

@@ -1,6 +1,7 @@
 import { GraphNode } from '../interfaces/GraphNode';
 import { GraphElementImpl } from './GraphElementImpl';
 import { GraphElement } from '../interfaces/GraphElement';
+import { TSMap } from 'typescript-map';
 
 /**
  *
@@ -10,7 +11,7 @@ import { GraphElement } from '../interfaces/GraphElement';
  *
  */
 export class GraphNodeImpl extends GraphElementImpl implements GraphNode {
-  public static instance: Map<string, GraphNode> = new Map<string, GraphNode>();
+  public static instance: TSMap<string, GraphNode> = new TSMap<string, GraphNode>();
 
   private groupName?: string | null;
   private reportStatistics?: boolean | null = false;

@@ -30,7 +30,7 @@ export default class SandboxGraphStoreView extends PageLayout {
 
   /** @Override */
   public async mounted(): Promise<void> {
-    await graphModule.fetchGraph();
+    await graphModule.loadGraph();
     const page = graphModule.page('0') as GraphPage;
     console.log('Graph: ', graphModule.graph);
     console.log('Page 0: ', page);

@@ -2,6 +2,7 @@ import { GraphDataObjectType } from '../../interfaces/components/GraphDataObject
 import { GraphDataImpl } from '../GraphDataImpl';
 import { GraphDataTable } from '../../interfaces/components/GraphDataTable';
 import { GraphUtil } from '../GraphUtil';
+import { TSMap } from 'typescript-map';
 
 /**
  *
@@ -13,7 +14,7 @@ import { GraphUtil } from '../GraphUtil';
 export class GraphDataObjectTypeImpl extends GraphDataImpl implements GraphDataObjectType {
   public static TYPE: string = 'objecttype';
 
-  public static instance: Map<string, GraphDataObjectType> = new Map<string, GraphDataObjectType>();
+  public static instance: TSMap<string, GraphDataObjectType> = new TSMap<string, GraphDataObjectType>();
 
   /** @Override */
   public static deserialize(object: any): GraphDataObjectType | null {
@@ -27,21 +28,21 @@ export class GraphDataObjectTypeImpl extends GraphDataImpl implements GraphDataO
     return graphDataObjectType;
   }
 
-  private types?: Map<string, GraphDataTable> | null = new Map<string, GraphDataTable>();
+  private types?: TSMap<string, GraphDataTable> | null = new TSMap<string, GraphDataTable>();
 
   constructor() {
     super();
   }
 
-  public getTypes(): Map<string, GraphDataTable> | null {
-    return this.types as Map<string, GraphDataTable> | null;
+  public getTypes(): TSMap<string, GraphDataTable> | null {
+    return this.types as TSMap<string, GraphDataTable> | null;
   }
 
-  public setTypes(types: Map<string, GraphDataTable>): void {
+  public setTypes(types: TSMap<string, GraphDataTable>): void {
     this.types = types || this.types;
   }
 
-  public getTypeRefs(): Map<string, string | null> | null {
+  public getTypeRefs(): TSMap<string, string | null> | null {
     return GraphUtil.generateRefs(this.getTypes());
   }
 

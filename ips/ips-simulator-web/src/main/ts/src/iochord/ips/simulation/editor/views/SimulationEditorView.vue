@@ -42,7 +42,7 @@
       </template>
 
       <template slot="right-sidebar-menu-item">
-        <!-- TODO: Minimap component --->
+        <!-- TODO: Minimap component -->
         <div class="ui basic segment" style="width: 260px">
           <h2>Model Pane</h2>
           <div id="minimap"></div>
@@ -229,21 +229,28 @@ export default class SimulationEditorView extends Layout01View {
   public async mounted(): Promise<void> {
     try {
 
-      // Fetch graph to Vuex state
-      await graphModule.fetchGraph();
+      // TODO: Refractor to singleton pattern
+      if (graphModule.graph.getVersion === undefined) {
+
+        // Fetch graph to Vuex state
+        await graphModule.loadGraph();
+
+        // Print to stdout
+        console.log(graphModule.graph);
+      }
 
       // Update rxjs subject
       GraphSubject.update(graphModule.graph);
 
-      console.log(graphModule.graph);
-
+      // When graph is updated
       this.$observables.graph.subscribe((graph: Graph) => {
-        console.log(graph);
-        graphModule.setGraph(graph);
-      });
 
-      console.log(GraphNodeImpl.instance);
-      console.log(GraphConnectorImpl.instance);
+        // Update its Vuex state
+        graphModule.setGraph(graph);
+
+        // Print to stdout
+        console.log(JSON.stringify(graph));
+      });
     } catch (e) {
       console.error(e);
     }

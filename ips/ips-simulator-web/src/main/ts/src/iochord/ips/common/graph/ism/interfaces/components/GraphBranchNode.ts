@@ -1,5 +1,6 @@
 import { BRANCH_TYPE, BRANCH_RULE, BRANCH_GATE } from '../../enums/BRANCH';
 import { GraphNode } from '../GraphNode';
+import { TSMap } from 'typescript-map';
 
 /**
  *
@@ -15,6 +16,6 @@ export interface GraphBranchNode extends GraphNode {
   setBranchType(type: BRANCH_TYPE): void;
   getRule(): BRANCH_RULE | null;
   setRule(rule: BRANCH_RULE): void;
-  getConditions(): Map<string, string> | null;
-  setConditions(conditions: Map<string, string>): void;
+  getConditions(): TSMap<string, string> | null;
+  setConditions(conditions: TSMap<string, string>): void;
 }
