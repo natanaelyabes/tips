@@ -16,6 +16,7 @@ import { Anchors } from '../utils/Anchors';
 
 // Enums
 import { NODE_TYPE } from '@/iochord/ips/common/graph/ism/rendering-engine/joint/shapes/enums/NODE';
+import { DATA_TYPE } from '@/iochord/ips/common/graph/ism/rendering-engine/joint/shapes/enums/DATA';
 import { ARC_TYPE } from '../shapes/enums/ARC';
 
 /** Joint.js */
@@ -29,6 +30,10 @@ import SvgPanZoom from 'svg-pan-zoom';
 import 'jquery';
 declare const $: any;
 
+import { TSMap } from 'typescript-map';
+import { JointGraphDataImpl } from '../shapes/class/JointGraphDataImpl';
+
+
 export default class JointJsRenderer {
   public canvasWidth?: number;
   public canvasHeight?: number;
@@ -40,7 +45,7 @@ export default class JointJsRenderer {
   public graph?: Graph;
 
   public activePage?: GraphPage;
-  public jointPages: Map<string, JointGraphPageImpl> = new Map<string, JointGraphPageImpl>();
+  public jointPages: TSMap<string, JointGraphPageImpl> = new TSMap<string, JointGraphPageImpl>();
   public currentSelectedElement?: GraphNode;
 
   public canvasPanAndZoom?: SvgPanZoom.Instance;
@@ -57,7 +62,7 @@ export default class JointJsRenderer {
     try {
 
       // Loop all model pages
-      for (const [id, page] of graph.getPages() as Map<string, GraphPage>) {
+      (this.graph.getPages() as TSMap<string, GraphPage>).forEach((page: GraphPage) => {
         const jointPage: JointGraphPageImpl = new JointGraphPageImpl();
 
         // Set properties of the graph page
@@ -71,6 +76,8 @@ export default class JointJsRenderer {
         this.renderNodes(jointPage);
         this.renderArcs(jointPage);
 
+        this.renderData(jointPage);
+
         // Automatic layout
         this.autoLayoutGraph(jointPage);
 
@@ -82,9 +89,9 @@ export default class JointJsRenderer {
         this.enableZoomAndPanning(jointPage);
 
         this.jointPages.set(jointPage.getId() as string, jointPage);
-      }
+      });
     } catch (e) {
-      console.error(e);
+      // console.error(e);
     }
   }
 
@@ -100,11 +107,11 @@ export default class JointJsRenderer {
     jointPage.setId(currentPage.getId() as string);
     jointPage.setLabel(currentPage.getLabel() as string);
     jointPage.setType(currentPage.getType() as string);
-    jointPage.setAttributes(currentPage.getAttributes() as Map<string, string>);
+    jointPage.setAttributes(currentPage.getAttributes() as TSMap<string, string>);
     jointPage.setGraph(new joint.dia.Graph());
-    jointPage.setNodes(currentPage.getNodes() as Map<string, GraphNode>);
-    jointPage.setArcs(currentPage.getArcs() as Map<string, GraphConnector>);
-    jointPage.setData(currentPage.getData() as Map<string, GraphData>);
+    jointPage.setNodes(currentPage.getNodes() as TSMap<string, GraphNode>);
+    jointPage.setArcs(currentPage.getArcs() as TSMap<string, GraphConnector>);
+    jointPage.setData(currentPage.getData() as TSMap<string, GraphData>);
   }
 
   private renderPage(jointPage: JointGraphPageImpl): void {
@@ -135,6 +142,11 @@ export default class JointJsRenderer {
       width: $('#minimap').parent().width(),
       height: 150,
       gridSize: 1,
+      interactive: false,
+      defaultRouter: { name: 'normal' },
+      defaultAnchor: (endView: joint.dia.ElementView, endMagnet: SVGElement, anchorReference: joint.g.Point, args: { [key: string]: any; }) => {
+        return Anchors.skipEndMagnetPerpendicularAnchor(endView, endMagnet, anchorReference, args);
+      },
     } as joint.dia.Paper.Options));
 
     // Scale down minimap
@@ -145,13 +157,13 @@ export default class JointJsRenderer {
     const keys: any = { elementType: 'elementType' };
 
     // for all nodes
-    for (const [nodeKey, nodeValue] of jointPage.getNodes() as Map<string, GraphNode>) {
+    (jointPage.getNodes() as TSMap<string, GraphNode>).forEach((nodeValue) => {
       const node = new JointGraphNodeImpl();
 
       node.setId(nodeValue.getId() as string);
       node.setLabel(nodeValue.getLabel() as string);
       node.setType((nodeValue as any)[keys.elementType] as string);
-      node.setAttributes(nodeValue.getAttributes() as Map<string, string>);
+      node.setAttributes(nodeValue.getAttributes() as TSMap<string, string>);
       node.setPosition({ x: 300, y: 250 });
       node.setSize((NODE_TYPE as any)[(nodeValue as any)[keys.elementType]].size);
       node.setMarkup((NODE_TYPE as any)[(nodeValue as any)[keys.elementType]].markup);
@@ -170,26 +182,59 @@ export default class JointJsRenderer {
 
       // Add node type to nodeTypes set
       this.nodeTypes.add(node.getType() as string);
-    }
+    });
+  }
+
+  private renderData(jointPage: JointGraphPageImpl): void {
+    const keys: any = { elementType: 'elementType' };
+
+    // for all nodes
+    (jointPage.getData() as TSMap<string, GraphData>).forEach((nodeValue) => {
+
+      const node = new JointGraphDataImpl();
+
+      node.setId(nodeValue.getId() as string);
+      node.setLabel(nodeValue.getLabel() as string);
+      node.setType((nodeValue as any)[keys.elementType] as string);
+      node.setAttributes(nodeValue.getAttributes() as TSMap<string, string>);
+      node.setPosition({ x: 300, y: 250 });
+      node.setSize((DATA_TYPE as any)[(nodeValue as any)[keys.elementType]].size);
+      node.setMarkup((DATA_TYPE as any)[(nodeValue as any)[keys.elementType]].markup);
+      node.setAttr((DATA_TYPE as any)[(nodeValue as any)[keys.elementType]].attr);
+      node.setImageIcon((DATA_TYPE as any)[(nodeValue as any)[keys.elementType]].image);
+
+      // Demonstrate the use of custom icon
+      // if (nodeValue.getLabel() === 'ATM Service') {
+      //   node.setImageIcon(require('@/assets/images/icons/atm-png.png'));
+      // } else if (nodeValue.getLabel() === 'Teller Service') {
+      //   node.setImageIcon(require('@/assets/images/icons/business-customer-icon.png'));
+      // }
+
+      // render node
+      node.render(jointPage.getGraph());
+
+      // Add node type to nodeTypes set
+      this.nodeTypes.add(node.getType() as string);
+    });
   }
 
   private renderArcs(jointPage: JointGraphPageImpl): void {
     const keys: any = { elementType: 'elementType' };
 
     // for all connectors
-    for (const [arcKey, arcValue] of jointPage.getArcs() as Map<string, GraphConnector>) {
+    (jointPage.getArcs() as TSMap<string, GraphConnector>).forEach((arcValue) => {
       const arc = new JointGraphConnectorImpl();
       arc.setId(arcValue.getId() as string);
       arc.setLabel(arcValue.getLabel() as string);
       arc.setType((arcValue as any)[keys.elementType] as string);
-      arc.setAttributes(arcValue.getAttributes() as Map<string, string>);
+      arc.setAttributes(arcValue.getAttributes() as TSMap<string, string>);
       arc.setSource(arcValue.getSource() as JointGraphNodeImpl);
       arc.setTarget(arcValue.getTarget() as JointGraphNodeImpl);
       arc.setAttr(ARC_TYPE.connector.attr);
 
       // render connector
       arc.render(jointPage.getGraph());
-    }
+    });
   }
 
   private autoLayoutGraph(jointPage: JointGraphPageImpl): void {
@@ -199,7 +244,6 @@ export default class JointJsRenderer {
       edgeSep: 300,
       nodeSep: 200,
       rankSep: 80,
-      // align: 'UL',
     } as joint.layout.DirectedGraph.LayoutOptions);
   }
 
@@ -220,6 +264,7 @@ export default class JointJsRenderer {
   }
 
   private enableZoomAndPanning(jointPage: JointGraphPageImpl): void {
+
     // Enable pan and zoom for canvas
     this.canvasPanAndZoom = SvgPanZoom('#canvas svg').disablePan();
     this.canvasPanAndZoom.enableControlIcons();

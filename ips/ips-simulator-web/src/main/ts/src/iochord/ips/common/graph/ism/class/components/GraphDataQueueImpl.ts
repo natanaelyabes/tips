@@ -1,6 +1,7 @@
 import { GraphDataQueue } from '../../interfaces/components/GraphDataQueue';
 import { GraphDataImpl } from '../GraphDataImpl';
 import { QUEUE_TYPE } from '../../enums/QUEUE';
+import { TSMap } from 'typescript-map';
 
 /**
  *
@@ -11,7 +12,7 @@ import { QUEUE_TYPE } from '../../enums/QUEUE';
  */
 export class GraphDataQueueImpl extends GraphDataImpl implements GraphDataQueue {
   public static TYPE: string = 'queue';
-  public static instance: Map<string, GraphDataQueue> = new Map<string, GraphDataQueue>();
+  public static instance: TSMap<string, GraphDataQueue> = new TSMap<string, GraphDataQueue>();
 
   /** @Override */
   public static deserialize(object: any): GraphDataQueue | null {
@@ -19,7 +20,7 @@ export class GraphDataQueueImpl extends GraphDataImpl implements GraphDataQueue 
     graphDataQueue.setId(object.id);
     graphDataQueue.setLabel(object.label);
     graphDataQueue.setType(object.elementType);
-    graphDataQueue.setAttributes(object.attributes as Map<string, string>);
+    graphDataQueue.setAttributes(object.attributes as TSMap<string, string>);
     graphDataQueue.setQueueType(object.type);
     graphDataQueue.setShared(object.shared);
     graphDataQueue.setSingle(object.single);
@@ -35,7 +36,7 @@ export class GraphDataQueueImpl extends GraphDataImpl implements GraphDataQueue 
   private shared?: boolean | null = false;
   private single?: boolean | null = true;
   private size?: number | null = -1;
-  private sizes?: Map<string, number> | null = new Map<string, number>() || null;
+  private sizes?: TSMap<string, number> | null = new TSMap<string, number>() || null;
 
   constructor() {
     super();
@@ -73,11 +74,11 @@ export class GraphDataQueueImpl extends GraphDataImpl implements GraphDataQueue 
     this.size = size || this.size;
   }
 
-  public getSizes(): Map<string, number> | null {
-    return this.sizes as Map<string, number> | null;
+  public getSizes(): TSMap<string, number> | null {
+    return this.sizes as TSMap<string, number> | null;
   }
 
-  public setSizes(sizes: Map<string, number>): void {
+  public setSizes(sizes: TSMap<string, number>): void {
     this.sizes = sizes || this.sizes;
   }
 

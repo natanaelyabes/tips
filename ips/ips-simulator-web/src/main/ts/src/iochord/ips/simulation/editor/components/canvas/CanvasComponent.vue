@@ -51,25 +51,29 @@
 
         <!-- Show activity modal -->
         <ActivityNodeModal
+          @changeActLabel="changeActLabelFromChild($event, activePage, currentSelectedElement, loadGraph)"
           @changeActNodeSelectedActivityType="changeActNodeSelectedActivityTypeFromChild($event, activePage, currentSelectedElement, loadGraph)"
+          @changeActNodeResource="changeActNodeResourceFromChild($event, activePage, currentSelectedElement, loadGraph)"
           @changeActNodeReport="changeActNodeReportFromChild($event, activePage, currentSelectedElement, loadGraph)"
           @changeActNodeCustomMonitor="changeActNodeCustomMonitorFromChild($event, activePage, currentSelectedElement, loadGraph)"
           @changeActNodeProcessingTime="changeActNodeProcessingTimeFromChild($event, activePage, currentSelectedElement, loadGraph)"
-          @changeActNodeParameter1="changeActNodeParameter1FromChild($event, activePage, currentSelectedElement, loadGraph)"
+          @changeActNodeProcessingTimeParameter="changeActNodeProcessingTimeParameterFromChild($event, activePage, currentSelectedElement, loadGraph)"
           @changeActNodeSetupTime="changeActNodeSetupTimeFromChild($event, activePage, currentSelectedElement, loadGraph)"
-          @changeActNodeParameter2="changeActNodeParameter2FromChild($event, activePage, currentSelectedElement, loadGraph)"
+          @changeActNodeSetupTimeParameter="changeActNodeSetupTimeParameterFromChild($event, activePage, currentSelectedElement, loadGraph)"
           @changeActNodeUnit="changeActNodeUnitFromChild($event, activePage, currentSelectedElement, loadGraph)"
           @changeActNodeQueueLabel="changeActNodeQueueLabelFromChild($event, activePage, currentSelectedElement, loadGraph)"
           @changeActNodeInputType="changeActNodeInputTypeFromChild($event, activePage, currentSelectedElement, loadGraph)"
           @changeActNodeOutputType="changeActNodeOutputTypeFromChild($event, activePage, currentSelectedElement, loadGraph)"
           @changeActNodeCodeSegment="changeActNodeCodeSegmentFromChild($event, activePage, currentSelectedElement, loadGraph)"
+          :actLabel="parentActLabel"
           :actNodeSelectedActivityType="parentActNodeSelectedActivityType"
+          :actNodeResource="parentActNodeResource"
           :actNodeReport="parentActNodeReport"
           :actNodeCustomMonitor="parentActNodeCustomMonitor"
           :actNodeProcessingTime="parentActNodeProcessingTime"
-          :actNodeParameter1="parentActNodeParameter1"
+          :actNodeProcessingTimeParameter="parentActNodeProcessingTimeParameter"
           :actNodeSetupTime="parentActNodeSetupTime"
-          :actNodeParameter2="parentActNodeParameter2"
+          :actNodeSetupTimeParameter="parentActNodeSetupTimeParameter"
           :actNodeUnit="parentActNodeUnit"
           :actNodeQueueLabel="parentActNodeQueueLabel"
           :actNodeInputType="parentActNodeInputType"
@@ -160,7 +164,15 @@ declare const $: any;
 
 // Vuex Module
 import GraphModule from '@/iochord/ips/common/graph/ism/stores/GraphModule';
-import EditorState from '../../stores/editors/EditorState';
+import EditorState from '@/iochord/ips/simulation/editor/stores/editors/EditorState';
+import { GraphActivityNode } from '@/iochord/ips/common/graph/ism/interfaces/components/GraphActivityNode';
+import { ACTIVITY_TYPE } from '@/iochord/ips/common/graph/ism/enums/ACTIVITY';
+import { GraphDataResource } from '@/iochord/ips/common/graph/ism/interfaces/components/GraphDataResource';
+import { DISTRIBUTION_TYPE } from '@/iochord/ips/common/graph/ism/enums/DISTRIBUTION';
+import { TIME_UNIT } from '@/iochord/ips/common/graph/ism/enums/TIME_UNIT';
+import { GraphDataQueue } from '@/iochord/ips/common/graph/ism/interfaces/components/GraphDataQueue';
+import { GraphBranchNode } from '@/iochord/ips/common/graph/ism/interfaces/components/GraphBranchNode';
+import { BRANCH_GATE, BRANCH_TYPE, BRANCH_RULE } from '@/iochord/ips/common/graph/ism/enums/BRANCH';
 
 // Vuex module instance
 const graphModule = getModule(GraphModule);
@@ -232,7 +244,7 @@ export default class CanvasComponent extends Mixins(BaseComponent, ModalMixin, C
         this.activePage = renderer.activeJointPage(this.activePage.getId() as string) as JointGraphPageImpl;
       }
     } catch (e) {
-      console.error(e);
+      // console.error(e);
     }
   }
 
@@ -418,15 +430,18 @@ export default class CanvasComponent extends Mixins(BaseComponent, ModalMixin, C
         // If current clicked element is a start node
         if (currentElementType === 'start') {
 
+          this.parentStartLabel = '';
+          this.parentStartGenerator = '';
+
           // Show start modal
-          $('#start').modal('show');
+          $('#start')
+            .modal('setting', 'transition', 'fade up')
+            .modal('show');
 
           // Populate node properties to the modal
           this.parentStartLabel = jointPage.getNodes()!.get(currentElementNodeId)!.getLabel() as string;
-          this.parentStartGenerator = (jointPage.getNodes()!.get(currentElementNodeId)! as GraphStartEventNode)
+          this.parentStartGenerator = (jointPage.getNodes()!.get(currentElementNodeId) as GraphStartEventNode)
             .getGenerator()!.getId() as string;
-
-
 
           // Set current clicked node as current selected element
           this.currentSelectedElement = jointPage.getNodes()!.get(currentElementNodeId);
@@ -435,22 +450,77 @@ export default class CanvasComponent extends Mixins(BaseComponent, ModalMixin, C
         // If current clicked element is an activity node
         if (currentElementType === 'activity') {
 
+          this.parentActLabel = '';
+          this.parentActNodeSelectedActivityType = ACTIVITY_TYPE.STANDARD;
+          this.parentActNodeResource = '';
+          this.parentActNodeReport = false;
+          this.parentActNodeProcessingTime = DISTRIBUTION_TYPE.CONSTANT;
+          this.parentActNodeProcessingTimeParameter = '';
+          this.parentActNodeSetupTime = DISTRIBUTION_TYPE.CONSTANT;
+          this.parentActNodeSetupTimeParameter = '';
+          this.parentActNodeUnit = TIME_UNIT.MINUTES;
+          this.parentActNodeQueueLabel = '';
+
           // Show activity modal
-          $('#activity').modal('show');
+          $('#activity')
+            .modal('setting', 'transition', 'fade up')
+            .modal('show');
+
+          // Activity node
+          const actNode = (jointPage.getNodes()!.get(currentElementNodeId) as GraphActivityNode);
+
+          // Populate node properties to the modal
+          this.parentActLabel = actNode.getLabel() as string;
+          this.parentActNodeSelectedActivityType = actNode.getActivityType() as ACTIVITY_TYPE;
+          this.parentActNodeResource = actNode.getResource() !== undefined ? (actNode.getResource() as GraphDataResource).getId() as string : '';
+          this.parentActNodeReport = actNode.isReportStatistics() as boolean;
+          this.parentActNodeProcessingTime = actNode.getProcessingTime() as DISTRIBUTION_TYPE;
+          this.parentActNodeProcessingTimeParameter = actNode.getProcessingTimeParameter() as string;
+          this.parentActNodeSetupTime = actNode.getSetupTime() as DISTRIBUTION_TYPE;
+          this.parentActNodeSetupTimeParameter = actNode.getSetupTimeParameter() as string;
+          this.parentActNodeUnit = actNode.getUnit() as TIME_UNIT;
+          this.parentActNodeQueueLabel = actNode.getResource() !== undefined ? (actNode.getQueue() as GraphDataQueue).getId() as string : '';
+
+          // Set current clicked node as current selected element
+          this.currentSelectedElement = jointPage.getNodes()!.get(currentElementNodeId);
+
         }
 
         // If current clicked element is a branch node
         if (currentElementType === 'branch') {
 
+          this.parentBranchLabel = '';
+          this.parentBranchSelectedGate = BRANCH_GATE.AND;
+          this.parentBranchSelectedType = BRANCH_TYPE.SPLIT;
+          this.parentBranchSelectedRule = BRANCH_RULE.PROBABILITY;
+
           // Show branch modal
-          ($('#branch') as any).modal('show');
+          $('#branch')
+            .modal('setting', 'transition', 'fade up')
+            .modal('show');
+
+          // Branch node
+          const branchNode = (jointPage.getNodes()!.get(currentElementNodeId) as GraphBranchNode);
+
+          // Populate node properties to the modal
+          this.parentBranchLabel = branchNode.getLabel() as string;
+          this.parentBranchSelectedGate = branchNode.getGate() as BRANCH_GATE;
+          this.parentBranchSelectedType = branchNode.getBranchType() as BRANCH_TYPE;
+          this.parentBranchSelectedRule = branchNode.getRule() as BRANCH_RULE;
+
+          this.currentSelectedElement = jointPage.getNodes()!.get(currentElementNodeId);
         }
 
         // If current clicked element is a stop node
         if (currentElementType === 'stop') {
 
+          this.parentStopLabel = '';
+          this.parentStopReport = false;
+
           // Show stop modal
-          $('#stop').modal('show');
+          $('#stop')
+            .modal('setting', 'transition', 'fade up')
+            .modal('show');
 
           // Populate node properties to the modal
           this.parentStopLabel = jointPage.getNodes()!.get(currentElementNodeId)!.getLabel() as string;

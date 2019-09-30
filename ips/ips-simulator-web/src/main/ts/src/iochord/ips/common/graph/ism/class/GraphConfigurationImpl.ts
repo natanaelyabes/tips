@@ -1,5 +1,6 @@
 import { GraphConfiguration } from '../interfaces/GraphConfiguration';
 import { GraphElementImpl } from './GraphElementImpl';
+import { TSMap } from 'typescript-map';
 
 /**
  *
@@ -9,16 +10,16 @@ import { GraphElementImpl } from './GraphElementImpl';
  *
  */
 export class GraphConfigurationImpl extends GraphElementImpl implements GraphConfiguration {
-  public static instance: Map<string, GraphConfiguration> = new Map<string, GraphConfiguration>();
+  public static instance: TSMap<string, GraphConfiguration> = new TSMap<string, GraphConfiguration>();
 
-  public static deserialize(object: any): Map<string, GraphConfiguration> | null {
+  public static deserialize(object: any): TSMap<string, GraphConfiguration> | null {
     const graphConfiguration: GraphConfiguration = new GraphConfigurationImpl();
     graphConfiguration.setId(object.id);
     graphConfiguration.setLabel(object.label);
-    graphConfiguration.setAttributes(object.attributes as Map<string, string>);
+    graphConfiguration.setAttributes(object.attributes as TSMap<string, string>);
     graphConfiguration.setType(object.elementType);
     GraphConfigurationImpl.instance.set(graphConfiguration.getId() as string, graphConfiguration);
-    return new Map<string, GraphConfiguration>();
+    return new TSMap<string, GraphConfiguration>();
   }
 
   constructor() {

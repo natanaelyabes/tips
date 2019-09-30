@@ -12,6 +12,7 @@ import { RESOURCE_SELECTION } from '../../enums/RESOURCE';
 import { DISTRIBUTION_TYPE } from '../../enums/DISTRIBUTION';
 import { VARIABLE_TYPE } from '../../enums/VARIABLE';
 import { GraphUtil } from '../GraphUtil';
+import { TSMap } from 'typescript-map';
 
 /**
  *
@@ -28,7 +29,7 @@ export class GraphActivityNodeImpl extends GraphNodeImpl implements GraphActivit
     graphActivityNode.setId(object.id);
     graphActivityNode.setLabel(object.label);
     graphActivityNode.setType(object.elementType);
-    graphActivityNode.setAttributes(object.attributes as Map<string, string>);
+    graphActivityNode.setAttributes(object.attributes as TSMap<string, string>);
     graphActivityNode.setGroupName(object.groupName);
     graphActivityNode.setReportStatistics(object.reportStatistics);
     graphActivityNode.setActivityType(object.type);

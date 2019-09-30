@@ -10,6 +10,8 @@ import GraphSubject from '@/iochord/ips/common/graph/ism/rxjs/GraphSubject';
 import { GraphDataGenerator } from '@/iochord/ips/common/graph/ism/interfaces/components/GraphDataGenerator';
 import { GraphData } from '@/iochord/ips/common/graph/ism/interfaces/GraphData';
 
+import { TSMap } from 'typescript-map';
+
 const graphModule = getModule(GraphModule);
 
 @Component<StartNodeModalMixin>({
@@ -40,10 +42,6 @@ export default class StartNodeModalMixin extends BaseComponent {
     this.parentStartGenerator = newVal;
   }
 
-  public getParentStartLabel(): string {
-    return this.parentStartLabel;
-  }
-
   /* Start updated from Child */
   public changeStartLabelFromChild(e: string, activePage: GraphPage, currentSelectedElement: GraphNode, callback: () => void) {
     this.parentStartLabel = e;
@@ -68,7 +66,7 @@ export default class StartNodeModalMixin extends BaseComponent {
     this.parentStartGenerator = e;
 
     // Get data based on selection value e
-    const data = (activePage.getData() as Map<string, GraphData>).get(this.parentStartGenerator);
+    const data = (activePage.getData() as TSMap<string, GraphData>).get(this.parentStartGenerator);
 
     // Set generator for the start node
     const startNode = (currentSelectedElement as GraphStartEventNodeImpl);

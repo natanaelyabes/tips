@@ -5,6 +5,7 @@ import { GraphUtil } from '../GraphUtil';
 import { TIME_UNIT } from '../../enums/TIME_UNIT';
 import { GraphDataImpl } from '../GraphDataImpl';
 import { DISTRIBUTION_TYPE } from '../../enums/DISTRIBUTION';
+import { TSMap } from 'typescript-map';
 
 /**
  *
@@ -15,7 +16,7 @@ import { DISTRIBUTION_TYPE } from '../../enums/DISTRIBUTION';
  */
 export class GraphDataGeneratorImpl extends GraphDataImpl implements GraphDataGenerator {
   public static TYPE: string = 'generator';
-  public static instance: Map<string, GraphDataGenerator> = new Map<string, GraphDataGenerator>();
+  public static instance: TSMap<string, GraphDataGenerator> = new TSMap<string, GraphDataGenerator>();
 
   /** @Override */
   public static deserialize(object: any): GraphDataGenerator | null {
@@ -23,7 +24,7 @@ export class GraphDataGeneratorImpl extends GraphDataImpl implements GraphDataGe
     graphDataGenerator.setId(object.id);
     graphDataGenerator.setLabel(object.label);
     graphDataGenerator.setType(object.elementType);
-    graphDataGenerator.setAttributes(object.attributes as Map<string, string>);
+    graphDataGenerator.setAttributes(object.attributes as TSMap<string, string>);
     graphDataGenerator.setDistributionType(object.distributionType);
     graphDataGenerator.setExpression(object.expression);
     graphDataGenerator.setUnit(object.unit);

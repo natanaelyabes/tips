@@ -18,6 +18,7 @@ export class JointGraphDataImpl extends GraphDataImpl implements JointGraphEleme
   private position: { x: number, y: number } | null;
   private size: { width: number, height: number } | null;
   private data: joint.shapes.basic.Generic = new joint.shapes.basic.Generic();
+  private imageIcon: string = '';
 
   constructor();
   constructor(markup: string, attr: joint.dia.Cell.Selectors, position: { x: number, y: number }, size: { width: number, height: number });
@@ -61,10 +62,38 @@ export class JointGraphDataImpl extends GraphDataImpl implements JointGraphEleme
     this.size = size;
   }
 
+  public getImageIcon(): string {
+    return this.imageIcon;
+  }
+
+  public setImageIcon(imageIcon: string): void {
+    this.imageIcon = imageIcon;
+  }
+
   public render(graph: joint.dia.Graph): void {
-    this.data.attr(this.attr as joint.dia.Cell.Selectors);
+
+    if (!graph.getCell(this.data.id)) {
+      this.data = new joint.shapes.standard.BorderedImage();
+      this.data.attr({
+        label: {
+          text: this.getLabel() !== undefined || null ? this.getLabel() as string : '',
+        },
+        image: {
+          xlinkHref: this.imageIcon,
+        },
+        border: {
+          strokeWidth: 0,
+          rx: 5,
+        },
+      });
+
+      this.data.attr({...this.getAttr()});
+      this.data.attributes.dataId = this.getId();
+      this.data.attributes.type = this.getType();
+      this.data.addTo(graph);
+    }
+
     this.data.resize(this.size!.width, this.size!.height);
     this.data.position(this.position!.x, this.position!.y);
-    this.data.addTo(graph);
   }
 }

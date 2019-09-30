@@ -30,8 +30,7 @@
       </div>
     </div>
     <div class="actions">
-      <div class="ui save button">Save</div>
-      <div class="ui cancel button">Cancel</div>
+      <p><em>Node properties are automatically saved</em></p>
     </div>
   </div>
 </template>
@@ -74,7 +73,6 @@ export default class StopNodeModal extends SemanticComponent {
   }
 
   public handleChangedReport(): void {
-    console.log(this.tempReport);
     this.$emit('changeStopReport', this.tempReport);
   }
 

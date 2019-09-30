@@ -23,11 +23,11 @@ export default [
     name: `${BaseUrlEnum.IOCHORD}-${ApplicationEnum.NAME}-sandbox-parent-child-view`,
     component: () => import(/* webpackChunkName: "ips-parent-child-sandbox-view" */ '@/iochord/ips/sandbox/yabes/SandboxParentChild/views/SandboxParentChildView.vue'),
   },
-  {
-    path: 'sandbox-editor-test',
-    name: `${BaseUrlEnum.IOCHORD}-${ApplicationEnum.NAME}-sandbox-editor-test`,
-    component: () => import(/* webpackChunkName: "ips-sandbox-editor-test-view" */ '@/iochord/ips/sandbox/yabes/SandboxEditorTest/views/SandboxEditorTest.vue'),
-  },
+  // {
+  //   path: 'sandbox-editor-test',
+  //   name: `${BaseUrlEnum.IOCHORD}-${ApplicationEnum.NAME}-sandbox-editor-test`,
+  //   component: () => import(/* webpackChunkName: "ips-sandbox-editor-test-view" */ '@/iochord/ips/sandbox/yabes/SandboxEditorTest/views/SandboxEditorTest.vue'),
+  // },
   {
     path: 'hello-world',
     name: `${BaseUrlEnum.IOCHORD}-${ApplicationEnum.NAME}-hello-world`,

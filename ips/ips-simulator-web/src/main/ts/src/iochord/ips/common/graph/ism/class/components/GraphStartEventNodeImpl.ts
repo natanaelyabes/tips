@@ -4,6 +4,7 @@ import { GraphUtil } from '../GraphUtil';
 import { GraphEventNodeImpl } from './GraphEventNodeImpl';
 import { GraphDataGenerator } from '../../interfaces/components/GraphDataGenerator';
 import { GraphDataGeneratorImpl } from './GraphDataGeneratorImpl';
+import { TSMap } from 'typescript-map';
 
 /**
  *
@@ -20,7 +21,7 @@ export class GraphStartEventNodeImpl extends GraphEventNodeImpl implements Graph
     graphStartEventNode.setId(object.id);
     graphStartEventNode.setLabel(object.label);
     graphStartEventNode.setType(object.elementType);
-    graphStartEventNode.setAttributes(object.attributes as Map<string, string>);
+    graphStartEventNode.setAttributes(object.attributes as TSMap<string, string>);
     graphStartEventNode.setGroupName(object.groupName);
     graphStartEventNode.setReportStatistics(object.reportStatistics);
     graphStartEventNode.setGenerator(GraphDataGeneratorImpl.instance.get(object.generatorRef) as GraphDataGenerator);

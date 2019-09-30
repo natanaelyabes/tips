@@ -6,6 +6,7 @@ import { GraphConnector } from '../interfaces/GraphConnector';
 import { GraphConnectorImpl } from './GraphConnectorImpl';
 import { NODE_TYPE } from '../enums/NODE';
 import { DATA_TYPE } from '../enums/DATA';
+import { TSMap } from 'typescript-map';
 
 /**
  *
@@ -15,15 +16,15 @@ import { DATA_TYPE } from '../enums/DATA';
  *
  */
 export class GraphPageImpl extends GraphElementImpl implements GraphPage {
-  public static deserialize(object: any): Map<string, GraphPage> | null {
-    const graphMap: Map<string, GraphPage> = new Map<string, GraphPage>();
+  public static deserialize(object: any): TSMap<string, GraphPage> | null {
+    const graphMap: TSMap<string, GraphPage> = new TSMap<string, GraphPage>();
     for (const key in object) {
       if (object.hasOwnProperty(key)) {
         const element = object[key];
         const graphPage: GraphPage = new GraphPageImpl();
-        const graphNodeMap: Map<string, GraphNode> = new Map<string, GraphNode>();
-        const graphDataMap: Map<string, GraphData> = new Map<string, GraphData>();
-        const graphConnectorMap: Map<string, GraphConnector> = new Map<string, GraphConnector>();
+        const graphNodeMap: TSMap<string, GraphNode> = new TSMap<string, GraphNode>();
+        const graphDataMap: TSMap<string, GraphData> = new TSMap<string, GraphData>();
+        const graphConnectorMap: TSMap<string, GraphConnector> = new TSMap<string, GraphConnector>();
 
         for (const dataKey in element.data) {
           if (element.data.hasOwnProperty(dataKey)) {
@@ -43,7 +44,7 @@ export class GraphPageImpl extends GraphElementImpl implements GraphPage {
         graphPage.setLabel(element.label);
         graphPage.setType(element.elementType);
         graphPage.setAttributes(element.attributes);
-        graphPage.setArcs(GraphConnectorImpl.deserialize(element.connectors) as Map<string, GraphConnector>);
+        graphPage.setArcs(GraphConnectorImpl.deserialize(element.connectors) as TSMap<string, GraphConnector>);
         graphPage.setNodes(graphNodeMap);
         graphPage.setData(graphDataMap);
         graphMap.set(key, graphPage);
@@ -52,35 +53,35 @@ export class GraphPageImpl extends GraphElementImpl implements GraphPage {
     return graphMap;
   }
 
-  private data?: Map<string, GraphData> | null = new Map<string, GraphData>();
-  private nodes?: Map<string, GraphNode> | null = new Map<string, GraphNode>();
-  private arcs?: Map<string, GraphConnector> | null = new Map<string, GraphConnector>();
+  private data?: TSMap<string, GraphData> | null = new TSMap<string, GraphData>();
+  private nodes?: TSMap<string, GraphNode> | null = new TSMap<string, GraphNode>();
+  private arcs?: TSMap<string, GraphConnector> | null = new TSMap<string, GraphConnector>();
 
   constructor() {
     super();
   }
 
-  public getData(): Map<string, GraphData> | null {
-    return this.data as Map<string, GraphData> | null;
+  public getData(): TSMap<string, GraphData> | null {
+    return this.data as TSMap<string, GraphData> | null;
   }
 
-  public setData(data: Map<string, GraphData>): void {
+  public setData(data: TSMap<string, GraphData>): void {
     this.data = data || this.data;
   }
 
-  public getNodes(): Map<string, GraphNode> | null {
-    return this.nodes as Map<string, GraphNode> | null;
+  public getNodes(): TSMap<string, GraphNode> | null {
+    return this.nodes as TSMap<string, GraphNode> | null;
   }
 
-  public setNodes(nodes: Map<string, GraphNode>): void {
+  public setNodes(nodes: TSMap<string, GraphNode>): void {
     this.nodes = nodes || this.nodes;
   }
 
-  public getArcs(): Map<string, GraphConnector> | null {
-    return this.arcs as Map<string, GraphConnector> | null;
+  public getArcs(): TSMap<string, GraphConnector> | null {
+    return this.arcs as TSMap<string, GraphConnector> | null;
   }
 
-  public setArcs(arcs: Map<string, GraphConnector>): void {
+  public setArcs(arcs: TSMap<string, GraphConnector>): void {
     this.arcs = arcs || this.arcs;
   }
 

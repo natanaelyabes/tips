@@ -44,8 +44,7 @@
       </div>
     </div>
     <div class="actions">
-      <div class="ui save button">Save</div>
-      <div class="ui cancel button">Cancel</div>
+      <p><em>Node properties are automatically saved</em></p>
     </div>
   </div>
 </template>

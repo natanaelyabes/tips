@@ -6,8 +6,8 @@
  *
  */
 export enum BRANCH_GATE {
-  AND,
-  XOR,
+  AND = 'AND',
+  XOR = 'XOR',
 }
 
 /**
@@ -18,8 +18,8 @@ export enum BRANCH_GATE {
  *
  */
 export enum BRANCH_TYPE {
-  SPLIT,
-  JOIN,
+  SPLIT = 'SPLIT',
+  JOIN = 'JOIN',
 }
 
 /**
@@ -30,7 +30,7 @@ export enum BRANCH_TYPE {
  *
  */
 export enum BRANCH_RULE {
-  PROBABILITY,
-  CONDITION,
-  DATA,
+  PROBABILITY = 'PROBABILITY',
+  CONDITION = 'CONDITION',
+  DATA = 'DATA',
 }

@@ -10,6 +10,7 @@ import { GraphElement } from '../interfaces/GraphElement';
 import { NODE_TYPE } from '../enums/NODE';
 import { GraphActivityNodeImpl } from './components/GraphActivityNodeImpl';
 import { GraphStartEventNodeImpl } from './components/GraphStartEventNodeImpl';
+import { TSMap } from 'typescript-map';
 
 /**
  *
@@ -19,11 +20,11 @@ import { GraphStartEventNodeImpl } from './components/GraphStartEventNodeImpl';
  *
  */
 export class GraphConnectorImpl extends GraphElementImpl implements GraphConnector {
-  public static instance: Map<string, GraphConnector> = new Map<string, GraphConnector>();
+  public static instance: TSMap<string, GraphConnector> = new TSMap<string, GraphConnector>();
 
-  public static deserialize(object: any): Map<string, GraphConnector> | null {
-    const graphArcMap: Map<string, GraphConnector> = new Map<string, GraphConnector>();
-    const graphNodeInstance: Array<Map<string, GraphNode>> = [
+  public static deserialize(object: any): TSMap<string, GraphConnector> | null {
+    const graphArcMap: TSMap<string, GraphConnector> = new TSMap<string, GraphConnector>();
+    const graphNodeInstance: Array<TSMap<string, GraphNode>> = [
       GraphActivityNodeImpl.instance,
       GraphBranchNodeImpl.instance,
       GraphStartEventNodeImpl.instance,
@@ -38,12 +39,12 @@ export class GraphConnectorImpl extends GraphElementImpl implements GraphConnect
         graphArc.setLabel(element.label);
         graphArc.setType(element.elementType);
         graphArc.setAttributes(element.attributes);
-        graphNodeInstance.forEach((value: Map<string, GraphNode>) => {
+        graphNodeInstance.forEach((value: TSMap<string, GraphNode>) => {
           if (value.get(element.sourceRef)) {
             graphArc.setSource(value.get(element.sourceRef) as GraphNode);
           }
         });
-        graphNodeInstance.forEach((value: Map<string, GraphNode>) => {
+        graphNodeInstance.forEach((value: TSMap<string, GraphNode>) => {
           if (value.get(element.targetRef)) {
             graphArc.setTarget(value.get(element.targetRef) as GraphNode);
           }
