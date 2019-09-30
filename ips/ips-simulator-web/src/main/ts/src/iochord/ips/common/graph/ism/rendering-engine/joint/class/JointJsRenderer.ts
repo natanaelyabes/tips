@@ -16,6 +16,7 @@ import { Anchors } from '../utils/Anchors';
 
 // Enums
 import { NODE_TYPE } from '@/iochord/ips/common/graph/ism/rendering-engine/joint/shapes/enums/NODE';
+import { DATA_TYPE } from '@/iochord/ips/common/graph/ism/rendering-engine/joint/shapes/enums/DATA';
 import { ARC_TYPE } from '../shapes/enums/ARC';
 
 /** Joint.js */
@@ -30,6 +31,7 @@ import 'jquery';
 declare const $: any;
 
 import { TSMap } from 'typescript-map';
+import { JointGraphDataImpl } from '../shapes/class/JointGraphDataImpl';
 
 
 export default class JointJsRenderer {
@@ -73,6 +75,8 @@ export default class JointJsRenderer {
         // Render elements and links
         this.renderNodes(jointPage);
         this.renderArcs(jointPage);
+
+        this.renderData(jointPage);
 
         // Automatic layout
         this.autoLayoutGraph(jointPage);
@@ -172,6 +176,39 @@ export default class JointJsRenderer {
       } else if (nodeValue.getLabel() === 'Teller Service') {
         node.setImageIcon(require('@/assets/images/icons/business-customer-icon.png'));
       }
+
+      // render node
+      node.render(jointPage.getGraph());
+
+      // Add node type to nodeTypes set
+      this.nodeTypes.add(node.getType() as string);
+    });
+  }
+
+  private renderData(jointPage: JointGraphPageImpl): void {
+    const keys: any = { elementType: 'elementType' };
+
+    // for all nodes
+    (jointPage.getData() as TSMap<string, GraphData>).forEach((nodeValue) => {
+
+      const node = new JointGraphDataImpl();
+
+      node.setId(nodeValue.getId() as string);
+      node.setLabel(nodeValue.getLabel() as string);
+      node.setType((nodeValue as any)[keys.elementType] as string);
+      node.setAttributes(nodeValue.getAttributes() as TSMap<string, string>);
+      node.setPosition({ x: 300, y: 250 });
+      node.setSize((DATA_TYPE as any)[(nodeValue as any)[keys.elementType]].size);
+      node.setMarkup((DATA_TYPE as any)[(nodeValue as any)[keys.elementType]].markup);
+      node.setAttr((DATA_TYPE as any)[(nodeValue as any)[keys.elementType]].attr);
+      node.setImageIcon((DATA_TYPE as any)[(nodeValue as any)[keys.elementType]].image);
+
+      // Demonstrate the use of custom icon
+      // if (nodeValue.getLabel() === 'ATM Service') {
+      //   node.setImageIcon(require('@/assets/images/icons/atm-png.png'));
+      // } else if (nodeValue.getLabel() === 'Teller Service') {
+      //   node.setImageIcon(require('@/assets/images/icons/business-customer-icon.png'));
+      // }
 
       // render node
       node.render(jointPage.getGraph());

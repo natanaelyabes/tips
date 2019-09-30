@@ -466,7 +466,6 @@ export default class CanvasComponent extends Mixins(BaseComponent, ModalMixin, C
             .modal('setting', 'transition', 'fade up')
             .modal('show');
 
-          console.log(currentElementNodeId);
           // Activity node
           const actNode = (jointPage.getNodes()!.get(currentElementNodeId) as GraphActivityNode);
 

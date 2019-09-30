@@ -42,7 +42,7 @@
       </template>
 
       <template slot="right-sidebar-menu-item">
-        <!-- TODO: Minimap component --->
+        <!-- TODO: Minimap component -->
         <div class="ui basic segment" style="width: 260px">
           <h2>Model Pane</h2>
           <div id="minimap"></div>
