@@ -2,7 +2,7 @@ package io.iochord.apps.ips.model.example;
 
 import java.util.concurrent.TimeUnit;
 
-import io.iochord.apps.ips.model.ism.v1.Ism;
+import io.iochord.apps.ips.model.ism.v1.IsmGraph;
 import io.iochord.apps.ips.model.ism.v1.IsmFactory;
 import io.iochord.apps.ips.model.ism.v1.components.BranchGate;
 import io.iochord.apps.ips.model.ism.v1.components.BranchType;
@@ -32,7 +32,7 @@ import io.iochord.apps.ips.model.ism.v1.impl.IsmImpl;
  *
  */
 public class SbpnetExample {
-	public static Ism create() {
+	public static IsmGraph create() {
 		IsmFactory factory = IsmFactoryImpl.getInstance();
 		IsmImpl net = (IsmImpl) factory.create();
 
@@ -86,7 +86,7 @@ public class SbpnetExample {
 		return net;
 	}
 	
-	public static Ism createComplete() {
+	public static IsmGraph createComplete() {
 		IsmFactory factory = IsmFactoryImpl.getInstance();
 		IsmImpl net = (IsmImpl) factory.create();
 
@@ -171,7 +171,7 @@ public class SbpnetExample {
 		arc4.setTargetIndex(1);
 
 		factory.addConnector(page, xorJoin1, actTeller);
-		ConnectorImpl arc5 = (ConnectorImpl) factory.addConnector(page, actTeller, xorJoin2);
+//		ConnectorImpl arc5 = (ConnectorImpl) factory.addConnector(page, actTeller, xorJoin2);
 //		arc5.setTargetIndex(1);
 		factory.addConnector(page, xorJoin2, end);
 

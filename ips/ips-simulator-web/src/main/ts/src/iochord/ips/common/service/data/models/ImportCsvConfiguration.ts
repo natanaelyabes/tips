@@ -1,5 +1,5 @@
 export default class ImportCsvConfiguration {
-  public title: string = '';
+  public name: string = '';
 
   public delimeter: string = ';';
 

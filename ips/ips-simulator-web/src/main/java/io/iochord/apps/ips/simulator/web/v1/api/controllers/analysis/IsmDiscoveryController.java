@@ -1,7 +1,6 @@
 package io.iochord.apps.ips.simulator.web.v1.api.controllers.analysis;
 
 import java.util.Optional;
-import java.util.concurrent.Future;
 
 import org.springframework.http.HttpHeaders;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -12,9 +11,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import io.iochord.apps.ips.model.analysis.services.models.IsmDiscoveryConfiguration;
-import io.iochord.apps.ips.model.ism.v1.Ism;
-import io.iochord.apps.ips.simulator.web.v1.models.WebServiceResponse;
+import io.iochord.apps.ips.core.services.ServiceContext;
+import io.iochord.apps.ips.model.analysis.services.ism.IsmDiscoveryConfiguration;
+import io.iochord.apps.ips.model.analysis.services.ism.IsmDiscoveryService;
+import io.iochord.apps.ips.model.ism.v1.IsmGraph;
 
 /**
  *
@@ -31,7 +31,7 @@ public class IsmDiscoveryController extends AnAnalysisController {
 	public static final String BASE_URI = AnAnalysisController.BASE_URI + "/discover";
 
 	@RequestMapping(value = { BASE_URI + "/ism", BASE_URI + "/ism/{datasetId}" }, method = { RequestMethod.GET, RequestMethod.POST })
-	public WebServiceResponse<Ism> getPostDiscoverIsm(
+	public ServiceContext getPostDiscoverIsm(
 			@PathVariable Optional<String> datasetId,
 			@RequestBody(required = false) IsmDiscoveryConfiguration config,
 			@RequestHeader HttpHeaders headers
@@ -40,9 +40,8 @@ public class IsmDiscoveryController extends AnAnalysisController {
 			config = new IsmDiscoveryConfiguration();
 			config.setDatasetId(datasetId.get());
 		}
-		WebServiceResponse<Ism> response = getServices().createResponse(Ism.class);
-		Future<Ism> future = getServices().getModelIsmDiscoveryService().discoverIsm(config, response.getState());
-		return printResult(headers, future, response);
+		ServiceContext result = run(new IsmDiscoveryService(), config, IsmGraph.class, headers);
+		return result;
 	}
 	
 }

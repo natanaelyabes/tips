@@ -1,43 +1,28 @@
-package io.iochord.apps.ips.data.services;
+package io.iochord.apps.ips.model.services.data.im.csv;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.util.concurrent.CompletableFuture;
-
-import org.springframework.scheduling.annotation.Async;
-import org.springframework.stereotype.Service;
 
 import com.opencsv.CSVParserBuilder;
 import com.opencsv.CSVReader;
 import com.opencsv.CSVReaderBuilder;
 
-import io.iochord.apps.ips.data.services.models.ImportCsvConfiguration;
-import io.iochord.apps.ips.data.services.models.ImportCsvResult;
-import io.iochord.apps.ips.services.AService;
-import io.iochord.apps.ips.services.ServiceExecutor;
-import io.iochord.apps.ips.services.ServiceState;
-import io.iochord.apps.ips.util.SerializationUtil;
+import io.iochord.apps.ips.common.models.Dataset;
+import io.iochord.apps.ips.common.util.SerializationUtil;
+import io.iochord.apps.ips.core.services.AnIpsAsyncService;
+import io.iochord.apps.ips.core.services.ServiceContext;
 
-/**
- *
- * @package chdsr-simulator-web
- * @author  Iq Reviessay Pulshashi <pulshashi@ideas.web.id>
- * @since   2019
- *
- *
- */
-@Service
-public class DataConnectionService extends AService {
+public class CsvDataImportService extends AnIpsAsyncService<CsvDataImportConfiguration, CsvDataImportResult> {
 	
-	@Async(ServiceExecutor.NAME)
-	public CompletableFuture<ImportCsvResult> importCsv(ImportCsvConfiguration config, ServiceState state) {
-		String name = "dataset_" + state.getSessionId();
-		ImportCsvResult result = new ImportCsvResult();
+	@Override
+	public CsvDataImportResult run(ServiceContext context, CsvDataImportConfiguration config) throws Exception {
+		String name = Dataset.TABLE_PREFIX + context.getIdentifier();
+		CsvDataImportResult result = new CsvDataImportResult();
 		result.setConfig(config);
 		result.setName(name);
 		try {
-			Connection conn = getDataSource().getConnection();
+			Connection conn = context.getDataSource().getConnection();
 			CSVReader csvReader = new CSVReaderBuilder(config.getReader())
 				.withCSVParser(
 					new CSVParserBuilder()
@@ -83,7 +68,7 @@ public class DataConnectionService extends AService {
 					}
 					st.addBatch();
 					if (brows % 1000 == 0) {
-						getWsmTemplate().convertAndSend(state.getProgressWsUri(), rows + " / ");
+						context.updateProgress(rows);
 						st.executeBatch();
 						st.close();
 						st = conn.prepareStatement(isql.toString());
@@ -100,12 +85,10 @@ public class DataConnectionService extends AService {
 			}
 			csvReader.close();
 			conn.close();
-			state.setStatus(ServiceState.STATE.COMPLETED);
-			getWsmTemplate().convertAndSend(state.getCompleteWsUri(), result);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return CompletableFuture.completedFuture(result);
+		return result;
 	}
-
+	
 }

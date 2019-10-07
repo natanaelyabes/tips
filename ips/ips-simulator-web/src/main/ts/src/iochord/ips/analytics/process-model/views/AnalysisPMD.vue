@@ -9,6 +9,12 @@
         <div class="section">Data Analysis</div>
         <i class="right angle icon divider"></i>
         <div class="active section">{{this.title}}</div>
+        <i class="right angle icon divider"></i>
+        <select ref="datasetSelector" @change="mine">
+          <option value="---">---</option>
+          <option v-for="(ds, i) in datasets" :key="i" class="item" :value="i">{{ds.name}} ({{i}})</option>
+        </select>
+        {{progressMessage}}
       </template>
 
       <!-- Setting Bar Ribbon -->
@@ -19,7 +25,7 @@
 
       <!-- Content -->
       <template slot="content">
-
+        {{graphJson}}
       </template>
 
     </SettingsBarWrapperComponent>
@@ -37,6 +43,8 @@ import { Vue, Component } from 'vue-property-decorator';
 import Layout03View from '@/iochord/ips/common/ui/layout/class/Layout03';
 import SettingsBarWrapperComponent from '@/iochord/ips/common/ui/layout/components/SettingsBarWrapperComponent.vue';
 import PMDHeuristicsRibbonComponent from '../components/PMDHeuristicsRibbonComponent.vue';
+import DataConnectionService from '@/iochord/ips/common/service/data/DataConnectionService';
+import IsmDiscoveryService, { IsmDiscoveryConfiguration } from '@/iochord/ips/common/service/analysis/IsmDiscoveryService';
 
 @Component({
   components: {
@@ -45,11 +53,51 @@ import PMDHeuristicsRibbonComponent from '../components/PMDHeuristicsRibbonCompo
   },
 })
 export default class AnalysisPMD extends Layout03View {
- public title: string = '';
+  public title: string = '';
 
+  public datasets = {};
+
+  public graphJson: string = '';
+  
+  public progressMessage: string = '';
+
+  public mine() {
+    const self = this;
+    const selectedDatasetId = this.$refs["datasetSelector"].value;
+    if (selectedDatasetId != '---') {
+      const config: IsmDiscoveryConfiguration = new IsmDiscoveryConfiguration();
+      config.datasetId = selectedDatasetId;
+      IsmDiscoveryService.getInstance().discoverIsmGraph(config, (res: any) => {
+        const graph = JSON.parse(res.body);
+        let n = 0;
+        for (var i in graph.data.pages["0"].nodes) {
+          n++;
+        }
+        let c = 0;
+        for (var i in graph.data.pages["0"].connectors) {
+          c++;
+        }
+        self.graphJson = 'This graph has ' + n + ' nodes and ' + c + ' connectors';
+        self.progressMessage = '';
+      }, (tick: any) => {
+        self.progressMessage = tick.progressData;
+      });
+      
+      
+    } else {
+      self.graphJson = '';
+      self.progressMessage = '';
+    }
+  }
 
   public mounted(): void { // implement business logic
-   // alert('ding! DD ppang juwa');
+    const self = this;
+    DataConnectionService.getInstance().getDataConnections((res: any) => {
+      self.datasets = res.data;
+    }, (tick: any) => {
+    });
+
+
   }
 
   /** @override */

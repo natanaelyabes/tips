@@ -1,4 +1,4 @@
-package io.iochord.apps.ips.model.analysis.services.models;
+package io.iochord.apps.ips.model.analysis.services.ism;
 
 import lombok.Getter;
 import lombok.Setter;

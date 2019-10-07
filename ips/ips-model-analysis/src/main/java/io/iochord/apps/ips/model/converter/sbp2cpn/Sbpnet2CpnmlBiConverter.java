@@ -32,7 +32,7 @@ import io.iochord.apps.ips.model.converter.Converter;
 import io.iochord.apps.ips.model.ism.v1.Connector;
 import io.iochord.apps.ips.model.ism.v1.Data;
 import io.iochord.apps.ips.model.ism.v1.Element;
-import io.iochord.apps.ips.model.ism.v1.Ism;
+import io.iochord.apps.ips.model.ism.v1.IsmGraph;
 import io.iochord.apps.ips.model.ism.v1.components.Activity;
 import io.iochord.apps.ips.model.ism.v1.components.Branch;
 import io.iochord.apps.ips.model.ism.v1.components.BranchGate;
@@ -55,7 +55,7 @@ import lombok.Getter;
  *
  *
  */
-public class Sbpnet2CpnmlBiConverter implements Converter<Ism, PetriNet> {
+public class Sbpnet2CpnmlBiConverter implements Converter<IsmGraph, PetriNet> {
 	
 	@Getter
 	protected ModelFactory factory = ModelFactory.INSTANCE;
@@ -200,7 +200,7 @@ public class Sbpnet2CpnmlBiConverter implements Converter<Ism, PetriNet> {
 	}
 	
 	@Override
-	public PetriNet convert(Ism snet) {
+	public PetriNet convert(IsmGraph snet) {
 		Sbpnet2CpnmlBiConverter converter = this;
 		PetriNet net = converter.createPetriNet(snet.getId());
 		Page page =  converter.addPage(net, "SBPNET"); 
@@ -391,7 +391,7 @@ public class Sbpnet2CpnmlBiConverter implements Converter<Ism, PetriNet> {
 	}
 
 	@Override
-	public Ism revert(PetriNet o) {
+	public IsmGraph revert(PetriNet o) {
 		// TODO Auto-generated method stub
 		return null;
 	}

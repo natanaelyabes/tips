@@ -9,6 +9,7 @@ import io.iochord.apps.ips.simulator.compiler.CustomSimulation;
 
 public class SimulatorPerformAnalysisJava {
 
+	@SuppressWarnings("restriction")
 	public String doTestWithManyToken(int noStep, String jsonStr, String modelpath) {
 
 		double mb = 1024*1024;

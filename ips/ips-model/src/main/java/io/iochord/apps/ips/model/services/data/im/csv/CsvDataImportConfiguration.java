@@ -1,4 +1,4 @@
-package io.iochord.apps.ips.data.services.models;
+package io.iochord.apps.ips.model.services.data.im.csv;
 
 import java.io.InputStreamReader;
 
@@ -15,11 +15,11 @@ import lombok.Setter;
  *
  *
  */
-public class ImportCsvConfiguration {
+public class CsvDataImportConfiguration {
 	
 	@Getter
 	@Setter
-	private String title = "";
+	private String name = "";
 	
 	@Getter
 	@Setter

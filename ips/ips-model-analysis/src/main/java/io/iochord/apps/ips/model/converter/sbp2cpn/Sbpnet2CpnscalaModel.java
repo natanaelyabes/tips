@@ -7,7 +7,7 @@ import org.springframework.data.util.Pair;
 
 import io.iochord.apps.ips.model.converter.ConversionModel;
 import io.iochord.apps.ips.model.ism.v1.Element;
-import io.iochord.apps.ips.model.ism.v1.Ism;
+import io.iochord.apps.ips.model.ism.v1.IsmGraph;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -19,11 +19,11 @@ import lombok.Setter;
  *
  *
  */
-public class Sbpnet2CpnscalaModel implements ConversionModel<Ism, String> {
+public class Sbpnet2CpnscalaModel implements ConversionModel<IsmGraph, String> {
 
 	@Getter
 	@Setter
-	private Ism originalModel;
+	private IsmGraph originalModel;
 	
 	@Getter
 	@Setter

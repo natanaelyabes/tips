@@ -1,4 +1,4 @@
-package io.iochord.apps.ips.util;
+package io.iochord.apps.ips.common.util;
 
 /**
  * Data Codec class for serialize / deserialize object
