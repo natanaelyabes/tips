@@ -6,7 +6,7 @@ import org.junit.Test;
 
 import io.iochord.apps.ips.model.converter.sbp2cpn.Sbpnet2CpnmlBiConverter;
 import io.iochord.apps.ips.model.example.SbpnetExample;
-import io.iochord.apps.ips.model.ism.v1.Ism;
+import io.iochord.apps.ips.model.ism.v1.IsmGraph;
 
 public class Sbpnet2CpnmlBiConverterTest {
 	
@@ -24,7 +24,7 @@ public class Sbpnet2CpnmlBiConverterTest {
 //		converter.addArc(page, p1, t, "i");
 //		converter.addArc(page, t, p2, "i");
 		
-		Ism snet = SbpnetExample.createComplete();
+		IsmGraph snet = SbpnetExample.createComplete();
 		Sbpnet2CpnmlBiConverter converter = new Sbpnet2CpnmlBiConverter();
 		PetriNet net = converter.convert(snet);
 		

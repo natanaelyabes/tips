@@ -1,4 +1,4 @@
-package io.iochord.apps.ips.util;
+package io.iochord.apps.ips.common.util;
 
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.databind.DeserializationFeature;

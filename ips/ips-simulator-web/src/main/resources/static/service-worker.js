@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/3.6.3/workbox-sw.js");
 
 importScripts(
-  "/precache-manifest.e761430130db26d6bda27fa9fa7e250e.js"
+  "/precache-manifest.dc47d38a9d8a914c8fc64dc05b3bcf2d.js"
 );
 
 workbox.core.setCacheNameDetails({prefix: "iochord-ips-ui"});

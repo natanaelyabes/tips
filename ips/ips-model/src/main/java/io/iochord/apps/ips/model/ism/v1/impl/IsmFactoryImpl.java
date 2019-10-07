@@ -9,7 +9,7 @@ import io.iochord.apps.ips.model.ism.v1.Data;
 import io.iochord.apps.ips.model.ism.v1.Element;
 import io.iochord.apps.ips.model.ism.v1.Node;
 import io.iochord.apps.ips.model.ism.v1.Page;
-import io.iochord.apps.ips.model.ism.v1.Ism;
+import io.iochord.apps.ips.model.ism.v1.IsmGraph;
 import io.iochord.apps.ips.model.ism.v1.IsmFactory;
 import io.iochord.apps.ips.model.ism.v1.components.Activity;
 import io.iochord.apps.ips.model.ism.v1.components.Branch;
@@ -75,12 +75,12 @@ public class IsmFactoryImpl implements IsmFactory {
 	}
 
 	@Override
-	public Ism create() {
+	public IsmGraph create() {
 		return create(null);
 	}
 
 	@Override
-	public Ism create(Ism ref) {
+	public IsmGraph create(IsmGraph ref) {
 		IsmImpl net = new IsmImpl();
 		net.setId("MODEL-" + netCounter);
 		addPage(net);
@@ -90,7 +90,7 @@ public class IsmFactoryImpl implements IsmFactory {
 	}
 
 	@Override
-	public Page addPage(Ism net) {
+	public Page addPage(IsmGraph net) {
 		if (net != null) {
 			PageImpl page = new PageImpl();
 			page.setId(String.valueOf(net.getPages().size()));
@@ -150,7 +150,7 @@ public class IsmFactoryImpl implements IsmFactory {
 	}
 
 	@Override
-	public Configuration addConfiguration(Ism net) {
+	public Configuration addConfiguration(IsmGraph net) {
 		if (net != null) {
 			ConfigurationImpl config = new ConfigurationImpl();
 			config.setId(String.valueOf(net.getConfigurations().size()));

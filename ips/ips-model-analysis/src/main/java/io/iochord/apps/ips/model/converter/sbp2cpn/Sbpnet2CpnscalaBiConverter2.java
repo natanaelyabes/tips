@@ -9,7 +9,7 @@ import io.iochord.apps.ips.model.converter.Converter;
 import io.iochord.apps.ips.model.ism.v1.Connector;
 import io.iochord.apps.ips.model.ism.v1.Data;
 import io.iochord.apps.ips.model.ism.v1.Element;
-import io.iochord.apps.ips.model.ism.v1.Ism;
+import io.iochord.apps.ips.model.ism.v1.IsmGraph;
 import io.iochord.apps.ips.model.ism.v1.components.Activity;
 import io.iochord.apps.ips.model.ism.v1.components.Branch;
 import io.iochord.apps.ips.model.ism.v1.components.BranchGate;
@@ -28,7 +28,7 @@ import lombok.Getter;
  * @author Nur Ichsan Utama <ichsan83@gmail.com>
  *
  */
-public class Sbpnet2CpnscalaBiConverter2 implements Converter<Ism, Sbpnet2CpnscalaModel> {
+public class Sbpnet2CpnscalaBiConverter2 implements Converter<IsmGraph, Sbpnet2CpnscalaModel> {
 	
 	class KeyElement {
 		final static String type = "Type";
@@ -281,7 +281,7 @@ public class Sbpnet2CpnscalaBiConverter2 implements Converter<Ism, Sbpnet2Cpnsca
 		model.getBasicMonitors().put(originalElement, Pair.of(convertedElementId, eventId));
 	}
 	
-	public Sbpnet2CpnscalaModel convert(Ism snet) {
+	public Sbpnet2CpnscalaModel convert(IsmGraph snet) {
 		Sbpnet2CpnscalaModel result = new Sbpnet2CpnscalaModel();
 		result.setOriginalModel(snet);
 		for (String pi : snet.getPages().keySet()) {
@@ -472,7 +472,7 @@ public class Sbpnet2CpnscalaBiConverter2 implements Converter<Ism, Sbpnet2Cpnsca
 	 *
 	 */
 	@Override
-	public Ism revert(Sbpnet2CpnscalaModel o) {
+	public IsmGraph revert(Sbpnet2CpnscalaModel o) {
 		// TODO Auto-generated method stub
 		return null;
 	}

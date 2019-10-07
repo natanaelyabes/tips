@@ -6,7 +6,7 @@ import java.util.Map;
 import io.iochord.apps.ips.model.ism.v1.Configuration;
 import io.iochord.apps.ips.model.ism.v1.Data;
 import io.iochord.apps.ips.model.ism.v1.Page;
-import io.iochord.apps.ips.model.ism.v1.Ism;
+import io.iochord.apps.ips.model.ism.v1.IsmGraph;
 import io.iochord.apps.ips.model.ism.v1.components.Control;
 import lombok.Getter;
 import lombok.Setter;
@@ -19,12 +19,12 @@ import lombok.Setter;
  *
  *
  */
-public class IsmImpl extends ElementImpl implements Ism {
+public class IsmImpl extends ElementImpl implements IsmGraph {
 	@Getter
 	private final String version = "1.0";
 
 	@Getter
-	private final String elementType = Ism.TYPE;
+	private final String elementType = IsmGraph.TYPE;
 
 	@Getter
 	@Setter

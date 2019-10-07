@@ -1,16 +1,18 @@
 package io.iochord.apps.ips.simulator.web.v1.api.controllers;
 
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.Future;
+import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 
-import io.iochord.apps.ips.services.ServiceState;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import io.iochord.apps.ips.core.services.AnIpsService;
+import io.iochord.apps.ips.core.services.ServiceContext;
+import io.iochord.apps.ips.core.services.ServiceContext.State;
+import io.iochord.apps.ips.core.services.ServiceExecutor;
 import io.iochord.apps.ips.simulator.web.v1.controllers.AController;
-import io.iochord.apps.ips.simulator.web.v1.models.WebServiceResponse;
-import io.iochord.apps.ips.simulator.web.v1.services.AllServices;
 import lombok.Getter;
 
 /**
@@ -26,18 +28,56 @@ public abstract class AServiceController extends AController {
 	
 	@Autowired
 	@Getter
-	private AllServices services;
-	
+	@JsonIgnore
+	private DataSource dataSource;
+
 	@Autowired
 	@Getter
+	@JsonIgnore
 	private SimpMessagingTemplate wsmTemplate; 
+
+	@Autowired
+	@Getter
+	private ServiceExecutor executor;
+
+	public ServiceContext getServiceContext() {
+		ServiceContext context =  new ServiceContext();
+		context.setDataSource(getDataSource());
+		context.setWsmTemplate(getWsmTemplate());
+		return context;
+	}
 	
-	public <T> WebServiceResponse<T> printResult(HttpHeaders headers, Future<T> future, WebServiceResponse<T> response) throws InterruptedException, ExecutionException {
-		if (!headers.containsKey("X-IOCHORD-WSA")) {
-			response.setData(future.get());
-			response.getState().setStatus(ServiceState.STATE.COMPLETED);
+	public ServiceContext getServiceContext(Object data) {
+		ServiceContext context = getServiceContext();
+		context.setData(data);
+		context.getInfo().setState(State.COMPLETED);
+		return context;
+	}
+	
+	public <C, R> ServiceContext run(AnIpsService<C, R> service, String jsonConfig, Class<C> configClass, Class<R> resultClass, HttpHeaders headers) {
+		ServiceContext context = getServiceContext();
+		if (context != null) {
+			boolean runAsync = headers.containsKey("X-IOCHORD-WSA") && service.isAsync();
+			if (runAsync) {
+				getExecutor().runAsync(context, service, jsonConfig, configClass, resultClass);
+			} else {
+				context = getExecutor().run(context, service, jsonConfig, configClass, resultClass);
+			}
 		}
-		return response;
+		return context;
+	}
+	
+	public <C, R> ServiceContext run(AnIpsService<C, R> service, C config, Class<R> resultClass, HttpHeaders headers) {
+		ServiceContext context = getServiceContext();
+		if (context != null) {
+			boolean runAsync = headers.containsKey("X-IOCHORD-WSA") && service.isAsync();
+			if (runAsync) {
+				getExecutor().runAsync(context, service, config, resultClass);
+			} else {
+				context = getExecutor().run(context, service, config, resultClass);
+			}
+		}
+		return context;
 	}
 
 }

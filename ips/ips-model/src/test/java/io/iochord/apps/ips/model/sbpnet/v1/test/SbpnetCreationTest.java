@@ -9,6 +9,7 @@ import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runners.MethodSorters;
 
+import io.iochord.apps.ips.common.util.SerializationUtil;
 import io.iochord.apps.ips.model.ism.v1.Connector;
 import io.iochord.apps.ips.model.ism.v1.IsmFactory;
 import io.iochord.apps.ips.model.ism.v1.components.Activity;
@@ -41,7 +42,6 @@ import io.iochord.apps.ips.model.ism.v1.components.impl.StopImpl;
 import io.iochord.apps.ips.model.ism.v1.impl.ConnectorImpl;
 import io.iochord.apps.ips.model.ism.v1.impl.IsmFactoryImpl;
 import io.iochord.apps.ips.model.ism.v1.impl.IsmImpl;
-import io.iochord.apps.ips.util.SerializationUtil;
 
 /**
  *

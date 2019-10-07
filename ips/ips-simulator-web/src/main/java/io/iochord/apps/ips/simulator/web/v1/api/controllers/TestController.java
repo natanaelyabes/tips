@@ -12,13 +12,13 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import io.iochord.apps.ips.common.util.SerializationUtil;
 import io.iochord.apps.ips.model.converter.sbp2cpn.Sbpnet2CpnscalaBiConverter;
 import io.iochord.apps.ips.model.example.SbpnetExample;
-import io.iochord.apps.ips.model.ism.v1.Ism;
+import io.iochord.apps.ips.model.ism.v1.IsmGraph;
 import io.iochord.apps.ips.simulator.compiler.MemoryScalaCompiler;
 import io.iochord.apps.ips.simulator.compiler.Simulation;
 import io.iochord.apps.ips.simulator.web.TestService;
-import io.iochord.apps.ips.util.SerializationUtil;
 import lombok.Getter;
 import scala.Tuple3;
 import scala.collection.Iterator;
@@ -38,7 +38,7 @@ public class TestController extends AServiceController {
 	public static final String BASE_URI = AServiceController.BASE_URI + "/test";
 	
 	@Getter
-	private Ism snet;
+	private IsmGraph snet;
 	
 	@Autowired
 	private TestService svc;

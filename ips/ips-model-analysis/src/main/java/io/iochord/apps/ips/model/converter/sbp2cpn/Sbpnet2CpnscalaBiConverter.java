@@ -6,7 +6,7 @@ import java.util.Map;
 import io.iochord.apps.ips.model.converter.Converter;
 import io.iochord.apps.ips.model.ism.v1.Connector;
 import io.iochord.apps.ips.model.ism.v1.Data;
-import io.iochord.apps.ips.model.ism.v1.Ism;
+import io.iochord.apps.ips.model.ism.v1.IsmGraph;
 import io.iochord.apps.ips.model.ism.v1.components.Activity;
 import io.iochord.apps.ips.model.ism.v1.components.Branch;
 import io.iochord.apps.ips.model.ism.v1.components.BranchGate;
@@ -24,7 +24,7 @@ import io.iochord.apps.ips.model.ism.v1.components.Stop;
  * @author Nur Ichsan Utama <ichsan83@gmail.com>
  *
  */
-public class Sbpnet2CpnscalaBiConverter implements Converter<Ism, String> {
+public class Sbpnet2CpnscalaBiConverter implements Converter<IsmGraph, String> {
 	
 	class KeyElement {
 		final static String type = "Type";
@@ -276,7 +276,7 @@ public class Sbpnet2CpnscalaBiConverter implements Converter<Ism, String> {
 		return addTimeid;
 	}
 	
-	public String convert(Ism snet) {
+	public String convert(IsmGraph snet) {
 		for (String pi : snet.getPages().keySet()) {
 			io.iochord.apps.ips.model.ism.v1.Page p = snet.getPages().get(pi);
 			
@@ -454,7 +454,7 @@ public class Sbpnet2CpnscalaBiConverter implements Converter<Ism, String> {
 		return factory.toString();
 	}
 	
-	public Ism revert(String cgraph) {
+	public IsmGraph revert(String cgraph) {
 		return null;
 	}
 	

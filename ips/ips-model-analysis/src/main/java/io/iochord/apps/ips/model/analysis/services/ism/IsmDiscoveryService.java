@@ -1,41 +1,29 @@
-package io.iochord.apps.ips.model.analysis.services;
+package io.iochord.apps.ips.model.analysis.services.ism;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.LinkedHashMap;
 import java.util.Map;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.Future;
 
-import org.jboss.logging.Logger;
-import org.springframework.scheduling.annotation.Async;
-import org.springframework.stereotype.Service;
-
-import io.iochord.apps.ips.model.analysis.services.models.IsmDiscoveryConfiguration;
-import io.iochord.apps.ips.model.ism.v1.Ism;
+import io.iochord.apps.ips.core.services.AnIpsAsyncService;
+import io.iochord.apps.ips.core.services.ServiceContext;
+import io.iochord.apps.ips.model.ism.v1.IsmGraph;
 import io.iochord.apps.ips.model.ism.v1.IsmFactory;
 import io.iochord.apps.ips.model.ism.v1.Page;
 import io.iochord.apps.ips.model.ism.v1.components.Activity;
 import io.iochord.apps.ips.model.ism.v1.components.impl.ActivityImpl;
 import io.iochord.apps.ips.model.ism.v1.impl.ConnectorImpl;
 import io.iochord.apps.ips.model.ism.v1.impl.IsmFactoryImpl;
-import io.iochord.apps.ips.services.AService;
-import io.iochord.apps.ips.services.ServiceExecutor;
-import io.iochord.apps.ips.services.ServiceState;
-import lombok.Getter;
 
-@Service
-public class IsmDiscoveryService extends AService {
+public class IsmDiscoveryService extends AnIpsAsyncService<IsmDiscoveryConfiguration, IsmGraph> {
 
-	@Getter
-	private static Logger logger = Logger.getLogger(IsmDiscoveryService.class);
-
-	@Async(ServiceExecutor.NAME)
-	public Future<Ism> discoverIsm(IsmDiscoveryConfiguration config, ServiceState state) {
+	@Override
+	public IsmGraph run(ServiceContext context, IsmDiscoveryConfiguration config) throws Exception {
 		IsmFactory factory = IsmFactoryImpl.getInstance();
-		Ism result = factory.create();
-		Map<String, Map<String, Long>> dfMatrix = discoverDfMatrix(config.getDatasetId(), config.getColCaseId(), config.getColEventActivity(), config.getColEventTimestamp(), config.getSkipRows());
+		IsmGraph result = factory.create();
+		context.updateProgress(25, "Discovering DF matrix.");
+		Map<String, Map<String, Long>> dfMatrix = discoverDfMatrix(context, config.getDatasetId(), config.getColCaseId(), config.getColEventActivity(), config.getColEventTimestamp(), config.getSkipRows());
 		Map<String, Activity> nodes = new LinkedHashMap<String, Activity>();
 		for (String fa : dfMatrix.keySet()) {
 			nodes.put(fa, null);
@@ -43,28 +31,38 @@ public class IsmDiscoveryService extends AService {
 				nodes.put(ta, null);
 			}
 		}
+		Thread.sleep(500);
 		Page p = result.getPages().values().iterator().next();
+		int ni = 0;
 		for (String ea : nodes.keySet()) {
 			ActivityImpl a = (ActivityImpl) factory.addActivity(p);
 			a.setLabel(ea);
 			nodes.put(ea, a);
+			if (++ni % 10 == 0) {
+				context.updateProgress(50, ni + " nodes found.");
+				Thread.sleep(50);
+			}
 		}
+		int ci = 0;
 		for (String fa : dfMatrix.keySet()) {
 			for (String ta : dfMatrix.get(fa).keySet()) {
 				ConnectorImpl c = (ConnectorImpl) factory.addConnector(p, nodes.get(fa), nodes.get(ta));
 				c.setLabel(String.valueOf(dfMatrix.get(fa).get(ta)));
+				if (++ci % 100 == 0) {
+					context.updateProgress(75, ci + " connector found.");
+					Thread.sleep(50);
+				}
 			}
 		}
-		return CompletableFuture.completedFuture(result);
+		return result;
 	}
 
-	public Map<String, Map<String, Long>> discoverDfMatrix(String tabName, String colCaseId, String colActivity, String colTs,  int skip) {
- 		getLogger().info("Mining Directly-follow Matrix " + tabName + " ( " + colCaseId + ", " + colActivity + ", " + colTs
-				+ ") Started ... ");
-		long started = System.currentTimeMillis();
+	public Map<String, Map<String, Long>> discoverDfMatrix(ServiceContext context, String tabName, String colCaseId, String colActivity, String colTs,  int skip) {
+// 		getLogger().info("Mining Directly-follow Matrix " + tabName + " ( " + colCaseId + ", " + colActivity + ", " + colTs
+//				+ ") Started ... ");
 		Map<String, Map<String, Long>> dfMatrix = new LinkedHashMap<>();
 		try {
-			Connection conn = getDataSource().getConnection();
+			Connection conn = context.getDataSource().getConnection();
 			StringBuilder sql = new StringBuilder();
 			sql.append("SELECT ")
 				.append("	CASE  ")
@@ -95,7 +93,7 @@ public class IsmDiscoveryService extends AService {
 				.append(") AS ne ")
 				.append("ON ne.ri = ce.ri + 1 ")
 				.append("GROUP BY af, at");
-			getLogger().debug(sql.toString());
+//			getLogger().debug(sql.toString());
 			PreparedStatement st = conn.prepareStatement(sql.toString());
 			ResultSet rs = st.executeQuery();
 			while (rs.next()) {
@@ -106,7 +104,7 @@ public class IsmDiscoveryService extends AService {
 					dfMatrix.put(actFrom, new LinkedHashMap<>());
 				}
 				dfMatrix.get(actFrom).put(actTo, actFrequency);
-				getLogger().debug(actFrom + " --> " + actTo + " : "  + actFrequency);
+//				getLogger().debug(actFrom + " --> " + actTo + " : "  + actFrequency);
 			}
 			rs.close();
 			st.close();
@@ -114,8 +112,8 @@ public class IsmDiscoveryService extends AService {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		getLogger().info("Mining Directly-follow Matrix " + tabName + " ( " + colCaseId + ", " + colActivity + ", " + colTs
-				+ ") Finished ... " + (System.currentTimeMillis() - started) + " ms.");
+//		getLogger().info("Mining Directly-follow Matrix " + tabName + " ( " + colCaseId + ", " + colActivity + ", " + colTs
+//				+ ") Finished ... " + (System.currentTimeMillis() - started) + " ms.");
 		return dfMatrix;
 	}
 }
