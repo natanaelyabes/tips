@@ -13,14 +13,12 @@ import Stomp, { Client, Subscription } from 'webstomp-client';
 export class BaseService {
   public static readonly BASE_HTTP_URI: string = `${process.env.VUE_APP_BASE_URI}`;
   public static readonly BASE_URI: string = '/ips/api/v1';
-  
-  
-	public static readonly WS_ENDPOINT: string = '/ws-ipr';
-	public static readonly WS_REQUEST_URI: string = '/q';
-	public static readonly WS_RESPONSE_URI: string = '/r';
-	public static readonly WS_RESPONSE_PROGRESS_URI: string = BaseService.WS_RESPONSE_URI + '/p';
-	public static readonly WS_RESPONSE_COMPLETED_URI: string = BaseService.WS_RESPONSE_URI + '/c';
-  
+  public static readonly WS_ENDPOINT: string = '/ws-ipr';
+  public static readonly WS_REQUEST_URI: string = '/q';
+  public static readonly WS_RESPONSE_URI: string = '/r';
+  public static readonly WS_RESPONSE_PROGRESS_URI: string = BaseService.WS_RESPONSE_URI + '/p';
+  public static readonly WS_RESPONSE_COMPLETED_URI: string = BaseService.WS_RESPONSE_URI + '/c';
+
   private wsConnected: boolean = false;
   private wsSocket: any = null;
   private wsClient: any = null;

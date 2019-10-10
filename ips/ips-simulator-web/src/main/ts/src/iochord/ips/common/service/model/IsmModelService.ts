@@ -157,6 +157,7 @@ export class IsmModelService extends ModelService {
 
   public async getExampleModel(): Promise<Graph> {
     const response = await this.remoteGet(IsmModelService.BASE_URI + '/example');
+    console.log(response);
     return GraphImpl.deserialize(response.data) as Graph;
   }
 

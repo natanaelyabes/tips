@@ -95,7 +95,7 @@ export default class ContentDataUploadComponent extends BaseComponent {
     const files = ele.files;
     if (files != null && files.length > 0) {
       self.isUploading = true;
-      DataConnectionService.getInstance().importCsv(this.config, files[0], 
+      DataConnectionService.getInstance().importCsv(this.config, files[0],
       (res: any) => {
         self.isUploading = false;
         self.uploadStatus = '';
