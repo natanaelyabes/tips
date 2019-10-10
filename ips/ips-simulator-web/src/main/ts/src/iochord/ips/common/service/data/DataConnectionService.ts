@@ -22,7 +22,7 @@ export default class DataConnectionService extends DataService {
   }
 
   private static __INSTANCE: DataConnectionService;
-  
+
   public getDataConnections(completeCallback: any, progressCallback: any) {
     return this.webserviceGet(DataConnectionService.BASE_URI + '/connection/list', completeCallback, progressCallback);
   }
