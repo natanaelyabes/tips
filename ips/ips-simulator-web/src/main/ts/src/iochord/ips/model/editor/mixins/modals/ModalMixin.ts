@@ -3,9 +3,9 @@ import ActivityNodeModalMixin from './ActivityNodeModalMixin';
 import StartNodeModalMixin from './StartNodeModalMixin';
 import StopNodeModalMixin from './StopNodeModalMixin';
 import BranchNodeModalMixin from './BranchNodeModalMixin';
-import FunctionDataModalMixin from './FunctionDataModalMixin';
-import GeneratorDataModalMixin from './GeneratorDataModalMixin';
-import ObjectTypeDataModalMixin from './ObjectTypeDataModalMixin';
+// import FunctionDataModalMixin from './FunctionDataModalMixin';
+// import GeneratorDataModalMixin from './GeneratorDataModalMixin';
+// import ObjectTypeDataModalMixin from './ObjectTypeDataModalMixin';
 // import QueueDataModalMixin from './QueueDataModalMixin';
 // import ResourceDataModalMixin from './ResourceDataModalMixin';
 
@@ -15,7 +15,7 @@ export default class ModalMixin extends Mixins(
   BranchNodeModalMixin,
   StartNodeModalMixin,
   StopNodeModalMixin,
-  FunctionDataModalMixin,
+  // FunctionDataModalMixin,
   // GeneratorDataModalMixin,
   // ObjectTypeDataModalMixin,
   // QueueDataModalMixin,

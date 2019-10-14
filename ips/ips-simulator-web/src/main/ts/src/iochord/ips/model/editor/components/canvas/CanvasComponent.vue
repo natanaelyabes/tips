@@ -202,17 +202,17 @@ import { NODE_TYPE } from '@/iochord/ips/common/graph/ism/rendering-engine/joint
 import { ARC_TYPE } from '@/iochord/ips/common/graph/ism/rendering-engine/joint/shapes/enums/ARC';
 
 // Components
-import StartNodeModal from '@/iochord/ips/simulation/editor/components/modals/StartNodeModal.vue';
-import ActivityNodeModal from '@/iochord/ips/simulation/editor/components/modals/ActivityNodeModal.vue';
-import BranchNodeModal from '@/iochord/ips/simulation/editor/components/modals/BranchNodeModal.vue';
-import StopNodeModal from '@/iochord/ips/simulation/editor/components/modals/StopNodeModal.vue';
-import ObjectTypeDataModal from '@/iochord/ips/simulation/editor/components/modals/ObjectTypeDataModal.vue';
-import ConfigurationModal from '@/iochord/ips/simulation/editor/components/modals/ConfigurationModal.vue';
-import ControlModal from '@/iochord/ips/simulation/editor/components/modals/ControlModal.vue';
-import FunctionDataModal from '@/iochord/ips/simulation/editor/components/modals/FunctionDataModal.vue';
-import GeneratorDataModal from '@/iochord/ips/simulation/editor/components/modals/GeneratorDataModal.vue';
-import QueueDataModal from '@/iochord/ips/simulation/editor/components/modals/QueueDataModal.vue';
-import ResourceDataModal from '@/iochord/ips/simulation/editor/components/modals/ResourceDataModal.vue';
+import StartNodeModal from '@/iochord/ips/model/editor/components/modals/StartNodeModal.vue';
+import ActivityNodeModal from '@/iochord/ips/model/editor/components/modals/ActivityNodeModal.vue';
+import BranchNodeModal from '@/iochord/ips/model/editor/components/modals/BranchNodeModal.vue';
+import StopNodeModal from '@/iochord/ips/model/editor/components/modals/StopNodeModal.vue';
+import ObjectTypeDataModal from '@/iochord/ips/model/editor/components/modals/ObjectTypeDataModal.vue';
+import ConfigurationModal from '@/iochord/ips/model/editor/components/modals/ConfigurationModal.vue';
+import ControlModal from '@/iochord/ips/model/editor/components/modals/ControlModal.vue';
+import FunctionDataModal from '@/iochord/ips/model/editor/components/modals/FunctionDataModal.vue';
+import GeneratorDataModal from '@/iochord/ips/model/editor/components/modals/GeneratorDataModal.vue';
+import QueueDataModal from '@/iochord/ips/model/editor/components/modals/QueueDataModal.vue';
+import ResourceDataModal from '@/iochord/ips/model/editor/components/modals/ResourceDataModal.vue';
 
 // Mixins
 import ModalMixin from '../../mixins/modals/ModalMixin';
