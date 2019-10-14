@@ -14,6 +14,7 @@ export interface GraphDataGenerator extends GraphData {
   getObjectType(): GraphDataObjectType | null;
   setObjectType(objectType: GraphDataObjectType): void;
   getObjectTypeRef(): string | null;
+  setObjectTypeRef(objectType: string | null): void;
   getDistributionType(): DISTRIBUTION_TYPE | null;
   setDistributionType(distributionType: DISTRIBUTION_TYPE): void;
   getExpression(): string | null;

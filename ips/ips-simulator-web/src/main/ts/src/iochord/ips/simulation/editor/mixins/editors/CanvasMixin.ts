@@ -37,6 +37,7 @@ export default class CanvasMixin extends Mixins(BaseComponent, PaletteMixin) {
 
   // Types of node identified within loaded graph
   public nodeTypes: Set<string> = new Set<string>();
+  public dataTypes: Set<string> = new Set<string>();
 
   public handleCanvasMouseDown(e: MouseEvent) {
     if (!editorState.dragging && !editorState.drawing) {

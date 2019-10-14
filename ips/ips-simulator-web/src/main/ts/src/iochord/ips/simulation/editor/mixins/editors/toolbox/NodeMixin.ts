@@ -65,7 +65,7 @@ export default class NodeMixin extends BaseComponent {
     this.newNode = new JointGraphNodeImpl();
 
     /** Set properties for the newly created item */
-    this.newNode.setId(`0-${type}-${GraphNodeImpl.instance.size}`);
+    this.newNode.setId(`0-${type}-${GraphNodeImpl.instance.size()}`);
     this.newNode.setType(type.toString());
     this.newNode.setSize((NODE_TYPE as any)[type].size);
     this.newNode.setMarkup((NODE_TYPE as any)[type].markup);
@@ -74,7 +74,7 @@ export default class NodeMixin extends BaseComponent {
 
     /** No need to set label for start and stop node */
     if (!(type.toString() === 'start' || type.toString() === 'stop')) {
-      (this.newNode as JointGraphNodeImpl).setLabel(`New Node ${GraphNodeImpl.instance.size}`);
+      (this.newNode as JointGraphNodeImpl).setLabel(`New Node ${GraphNodeImpl.instance.size()}`);
     }
 
     /** Put new item in vuex store */
@@ -153,12 +153,12 @@ export default class NodeMixin extends BaseComponent {
       /** Construct newItem according to its type */
       const type = graphModule.newItem.getType() as string;
       const newItem = new (NODE_FACTORY.NODE_TYPE as any)[type]();
-      newItem.setId(`0-${type}-${GraphNodeImpl.instance.size}`);
+      newItem.setId(`0-${type}-${GraphNodeImpl.instance.size()}`);
       newItem.setType(type);
 
       /** No need to set label for start and stop node */
       if (!(type.toString() === 'start' || type.toString() === 'stop')) {
-        (newItem).setLabel(`New Node ${GraphNodeImpl.instance.size}`);
+        (newItem).setLabel(`New Node ${GraphNodeImpl.instance.size()}`);
       }
 
       // Add node to Vuex GraphModule

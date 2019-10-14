@@ -1,9 +1,6 @@
 import { GraphStartEventNode } from '../../interfaces/components/GraphStartEventNode';
-import { GraphDataImpl } from '../GraphDataImpl';
-import { GraphUtil } from '../GraphUtil';
 import { GraphEventNodeImpl } from './GraphEventNodeImpl';
 import { GraphDataGenerator } from '../../interfaces/components/GraphDataGenerator';
-import { GraphDataGeneratorImpl } from './GraphDataGeneratorImpl';
 import { TSMap } from 'typescript-map';
 
 /**
@@ -24,12 +21,14 @@ export class GraphStartEventNodeImpl extends GraphEventNodeImpl implements Graph
     graphStartEventNode.setAttributes(object.attributes as TSMap<string, string>);
     graphStartEventNode.setGroupName(object.groupName);
     graphStartEventNode.setReportStatistics(object.reportStatistics);
-    graphStartEventNode.setGenerator(GraphDataGeneratorImpl.instance.get(object.generatorRef) as GraphDataGenerator);
+    graphStartEventNode.setGeneratorRef(object.generatorRef);
     GraphStartEventNodeImpl.instance.set(graphStartEventNode.getId() as string, graphStartEventNode);
+
     return graphStartEventNode;
   }
 
-  private generator?: GraphDataGenerator | null = new GraphDataGeneratorImpl();
+  private generator?: GraphDataGenerator | null;
+  private generatorRef?: string | null;
 
   constructor() {
     super();
@@ -44,7 +43,11 @@ export class GraphStartEventNodeImpl extends GraphEventNodeImpl implements Graph
   }
 
   public getGeneratorRef(): string | null {
-    return GraphUtil.generateRef(this.getGenerator());
+    return this.generatorRef as string;
+  }
+
+  public setGeneratorRef(generator: string): void {
+    this.generatorRef = generator;
   }
 
   /** @Override */

@@ -15,6 +15,58 @@
         @mouseup="handleCanvasMouseUp($event)"/>
     </div>
 
+    <!-- Data Modals -->
+    <template v-for="type in Array.from(dataTypes)">
+
+      <!-- If object type node was clicked -->
+      <template v-if="type === 'objecttype'">
+
+        <!-- Show object type modal -->
+        <ObjectTypeDataModal
+          @changeObjectTypeDataLabel="changeObjectTypeDataLabelFromChild($event, activePage, currentSelectedElement, loadGraph)"
+          :objectTypeDataLabel.sync="parentObjectTypeDataLabel"
+          v-bind:id="type" v-bind:key="type" />
+      </template>
+
+      <!-- If function node was clicked -->
+      <template v-if="type === 'function'">
+
+        <!-- Show function modal -->
+        <FunctionDataModal
+          @changeFunctionDataLabel="changeFunctionDataLabelFromChild($event, activePage, currentSelectedElement, loadGraph)"
+          :functionDataLabel.sync="parentFunctionDataLabel"
+          v-bind:id="type" v-bind:key="type" />
+      </template>
+
+      <!-- If generator node was clicked -->
+      <template v-if="type === 'generator'">
+
+        <!-- Show generator modal -->
+        <GeneratorDataModal
+          @changeGeneratorDataLabel="changeGeneratorDataLabelFromChild($event, activePage, currentSelectedElement, loadGraph)"
+          :generatorDataLabel.sync="parentGeneratorDataLabel"
+          v-bind:id="type" v-bind:key="type" />
+      </template>
+
+      <!-- If queue node was clicked -->
+      <template v-if="type === 'queue'">
+
+        <!-- Show queue modal -->
+        <QueueDataModal
+          
+          v-bind:id="type" v-bind:key="type" />
+      </template>
+
+      <!-- If resource node was clicked -->
+      <template v-if="type === 'resource'">
+
+        <!-- Show resource modal -->
+        <ResourceDataModal
+
+          v-bind:id="type" v-bind:key="type" />
+      </template>
+    </template>
+
     <!-- Node Modals -->
     <template v-for="type in Array.from(nodeTypes)">
 
@@ -154,6 +206,13 @@ import StartNodeModal from '@/iochord/ips/simulation/editor/components/modals/St
 import ActivityNodeModal from '@/iochord/ips/simulation/editor/components/modals/ActivityNodeModal.vue';
 import BranchNodeModal from '@/iochord/ips/simulation/editor/components/modals/BranchNodeModal.vue';
 import StopNodeModal from '@/iochord/ips/simulation/editor/components/modals/StopNodeModal.vue';
+import ObjectTypeDataModal from '@/iochord/ips/simulation/editor/components/modals/ObjectTypeDataModal.vue';
+import ConfigurationModal from '@/iochord/ips/simulation/editor/components/modals/ConfigurationModal.vue';
+import ControlModal from '@/iochord/ips/simulation/editor/components/modals/ControlModal.vue';
+import FunctionDataModal from '@/iochord/ips/simulation/editor/components/modals/FunctionDataModal.vue';
+import GeneratorDataModal from '@/iochord/ips/simulation/editor/components/modals/GeneratorDataModal.vue';
+import QueueDataModal from '@/iochord/ips/simulation/editor/components/modals/QueueDataModal.vue';
+import ResourceDataModal from '@/iochord/ips/simulation/editor/components/modals/ResourceDataModal.vue';
 
 // Mixins
 import ModalMixin from '@/iochord/ips/simulation/editor/mixins/modals/ModalMixin';
@@ -192,6 +251,13 @@ const editorState = getModule(EditorState);
     CanvasComponent,
     StartNodeModal,
     StopNodeModal,
+    ObjectTypeDataModal,
+    ConfigurationModal,
+    ControlModal,
+    FunctionDataModal,
+    GeneratorDataModal,
+    QueueDataModal,
+    ResourceDataModal,
   },
 })
 export default class CanvasComponent extends Mixins(BaseComponent, ModalMixin, CanvasMixin) {
@@ -225,6 +291,7 @@ export default class CanvasComponent extends Mixins(BaseComponent, ModalMixin, C
 
       // Get node types that need to be rendered in the canvas
       this.nodeTypes = renderer.getNodeTypes();
+      this.dataTypes = renderer.getDataTypes();
 
       // Get canvasPanAndZoom instance from renderer
       this.canvasPanAndZoom = renderer.canvasPanAndZoom;
@@ -427,6 +494,37 @@ export default class CanvasComponent extends Mixins(BaseComponent, ModalMixin, C
         // Highlight current element
         currentElement.findView(jointPage.getPaper()).highlight();
 
+        // If current clicked element is a object type node
+        if (currentElementType === 'objecttype') {
+          $('#objecttype').modal('setting', 'transition', 'fade up').modal('show');
+
+          this.currentSelectedElement = jointPage.getNodes()!.get(currentElementNodeId);
+        }
+
+        if (currentElementType === 'function') {
+          $('#function').modal('setting', 'transition', 'fade up').modal('show');
+
+          this.currentSelectedElement = jointPage.getNodes()!.get(currentElementNodeId);
+        }
+
+        if (currentElementType === 'generator') {
+          $('#generator').modal('setting', 'transition', 'fade up').modal('show');
+
+          this.currentSelectedElement = jointPage.getNodes()!.get(currentElementNodeId);
+        }
+
+        if (currentElementType === 'queue') {
+          $('#queue').modal('setting', 'transition', 'fade up').modal('show');
+
+          this.currentSelectedElement = jointPage.getNodes()!.get(currentElementNodeId);
+        }
+
+        if (currentElementType === 'resource') {
+          $('#resource').modal('setting', 'transition', 'fade up').modal('show');
+
+          this.currentSelectedElement = jointPage.getNodes()!.get(currentElementNodeId);
+        }
+
         // If current clicked element is a start node
         if (currentElementType === 'start') {
 
@@ -434,14 +532,12 @@ export default class CanvasComponent extends Mixins(BaseComponent, ModalMixin, C
           this.parentStartGenerator = '';
 
           // Show start modal
-          $('#start')
-            .modal('setting', 'transition', 'fade up')
-            .modal('show');
+          $('#start').modal('setting', 'transition', 'fade up').modal('show');
 
           // Populate node properties to the modal
           this.parentStartLabel = jointPage.getNodes()!.get(currentElementNodeId)!.getLabel() as string;
           this.parentStartGenerator = (jointPage.getNodes()!.get(currentElementNodeId) as GraphStartEventNode)
-            .getGenerator()!.getId() as string;
+            .getGeneratorRef() as string;
 
           // Set current clicked node as current selected element
           this.currentSelectedElement = jointPage.getNodes()!.get(currentElementNodeId);
@@ -472,14 +568,14 @@ export default class CanvasComponent extends Mixins(BaseComponent, ModalMixin, C
           // Populate node properties to the modal
           this.parentActLabel = actNode.getLabel() as string;
           this.parentActNodeSelectedActivityType = actNode.getActivityType() as ACTIVITY_TYPE;
-          this.parentActNodeResource = actNode.getResource() !== undefined ? (actNode.getResource() as GraphDataResource).getId() as string : '';
+          this.parentActNodeResource = actNode.getResourceRef() !== undefined ? actNode.getResourceRef() as string : '';
           this.parentActNodeReport = actNode.isReportStatistics() as boolean;
           this.parentActNodeProcessingTime = actNode.getProcessingTime() as DISTRIBUTION_TYPE;
           this.parentActNodeProcessingTimeParameter = actNode.getProcessingTimeParameter() as string;
           this.parentActNodeSetupTime = actNode.getSetupTime() as DISTRIBUTION_TYPE;
           this.parentActNodeSetupTimeParameter = actNode.getSetupTimeParameter() as string;
           this.parentActNodeUnit = actNode.getUnit() as TIME_UNIT;
-          this.parentActNodeQueueLabel = actNode.getResource() !== undefined ? (actNode.getQueue() as GraphDataQueue).getId() as string : '';
+          this.parentActNodeQueueLabel = actNode.getQueueRef() !== undefined ? actNode.getQueueRef() as string : '';
 
           // Set current clicked node as current selected element
           this.currentSelectedElement = jointPage.getNodes()!.get(currentElementNodeId);
@@ -518,9 +614,7 @@ export default class CanvasComponent extends Mixins(BaseComponent, ModalMixin, C
           this.parentStopReport = false;
 
           // Show stop modal
-          $('#stop')
-            .modal('setting', 'transition', 'fade up')
-            .modal('show');
+          $('#stop').modal('setting', 'transition', 'fade up').modal('show');
 
           // Populate node properties to the modal
           this.parentStopLabel = jointPage.getNodes()!.get(currentElementNodeId)!.getLabel() as string;

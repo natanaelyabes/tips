@@ -26,7 +26,7 @@ export class GraphDataResourceImpl extends GraphDataImpl implements GraphDataRes
     graphDataResource.setType(object.elementType);
     graphDataResource.setAttributes(object.attributes as TSMap<string, string>);
     graphDataResource.setGroupId(object.groupId);
-    graphDataResource.setData(object.data);
+    graphDataResource.setDataRef(object.dataRef);
     graphDataResource.setSetupTime(object.setupTime);
     graphDataResource.setExpression(object.expression);
     graphDataResource.setTimeUnit(object.timeUnit);
@@ -42,6 +42,7 @@ export class GraphDataResourceImpl extends GraphDataImpl implements GraphDataRes
 
   private groupId?: string | null;
   private data?: GraphDataTable | null;
+  private dataRef?: string | null;
   private setupTime?: DISTRIBUTION_TYPE | null = DISTRIBUTION_TYPE.RANDOM;
   private expression?: string | null = '';
   private timeUnit?: TIME_UNIT | null = TIME_UNIT.HOURS;
@@ -72,7 +73,11 @@ export class GraphDataResourceImpl extends GraphDataImpl implements GraphDataRes
   }
 
   public getDataRef(): string | null {
-    return GraphUtil.generateRef(this.getData());
+    return this.dataRef as string;
+  }
+
+  public setDataRef(data: string): void {
+    this.dataRef = data;
   }
 
   public getSetupTime(): DISTRIBUTION_TYPE | null {

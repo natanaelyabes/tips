@@ -1,13 +1,9 @@
 import { GraphStopEventNodeImpl } from './components/GraphStopEventNodeImpl';
-import { GraphMonitorNodeImpl } from './components/GraphMonitorNodeImpl';
-import { GraphConfigurationImpl } from './GraphConfigurationImpl';
 import { GraphBranchNodeImpl } from './components/GraphBranchNodeImpl';
 import { GraphNode } from '../interfaces/GraphNode';
-import { GraphUtil } from './GraphUtil';
 import { GraphConnector } from '../interfaces/GraphConnector';
 import { GraphElementImpl } from './GraphElementImpl';
 import { GraphElement } from '../interfaces/GraphElement';
-import { NODE_TYPE } from '../enums/NODE';
 import { GraphActivityNodeImpl } from './components/GraphActivityNodeImpl';
 import { GraphStartEventNodeImpl } from './components/GraphStartEventNodeImpl';
 import { TSMap } from 'typescript-map';
@@ -41,24 +37,27 @@ export class GraphConnectorImpl extends GraphElementImpl implements GraphConnect
         graphArc.setAttributes(element.attributes);
         graphNodeInstance.forEach((value: TSMap<string, GraphNode>) => {
           if (value.get(element.sourceRef)) {
-            graphArc.setSource(value.get(element.sourceRef) as GraphNode);
+            graphArc.setSourceRef(element.sourceRef);
           }
         });
         graphNodeInstance.forEach((value: TSMap<string, GraphNode>) => {
           if (value.get(element.targetRef)) {
-            graphArc.setTarget(value.get(element.targetRef) as GraphNode);
+            graphArc.setTargetRef(element.targetRef);
           }
         });
         GraphConnectorImpl.instance.set(key, graphArc);
         graphArcMap.set(key, graphArc);
       }
     }
+
     return graphArcMap;
   }
 
   private source?: GraphElement | null;
+  private sourceRef?: string | null;
   private sourceIndex?: number | null = 0;
   private target?: GraphElement | null;
+  private targetRef?: string | null;
   private targetIndex?: number | null = 0;
 
   constructor() {
@@ -82,7 +81,11 @@ export class GraphConnectorImpl extends GraphElementImpl implements GraphConnect
   }
 
   public getSourceRef(): string | null {
-    return GraphUtil.generateRef(this.getSource());
+    return this.sourceRef as string;
+  }
+
+  public setSourceRef(source: string): void {
+    this.sourceRef = source;
   }
 
   public getTarget(): GraphElement | null {
@@ -102,7 +105,11 @@ export class GraphConnectorImpl extends GraphElementImpl implements GraphConnect
   }
 
   public getTargetRef(): string | null {
-    return GraphUtil.generateRef(this.getTarget());
+    return this.targetRef as string;
+  }
+
+  public setTargetRef(target: string): void {
+    this.targetRef = target;
   }
 
   /** @Override */

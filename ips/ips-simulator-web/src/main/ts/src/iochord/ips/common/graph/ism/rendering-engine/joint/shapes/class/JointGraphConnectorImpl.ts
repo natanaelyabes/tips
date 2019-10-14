@@ -1,4 +1,3 @@
-import { JointGraphNodeImpl } from './JointGraphNodeImpl';
 import { JointGraphElementIsPaintable } from '@/iochord/ips/common/graph/ism/rendering-engine/joint/shapes/interfaces/JointGraphElementIsPaintable';
 import { GraphConnectorImpl } from '@/iochord/ips/common/graph/ism/class/GraphConnectorImpl';
 import { JointGraphElementHasMarkup } from '@/iochord/ips/common/graph/ism/rendering-engine/joint/shapes/interfaces/JointGraphElementHasMarkup';
@@ -63,7 +62,7 @@ export class JointGraphConnectorImpl extends GraphConnectorImpl implements Joint
       this.connector = new link();
 
       const source = graph.getElements().find((value) => {
-        return value.attributes.nodeId === (this.getSource() as JointGraphNodeImpl).getId();
+        return value.attributes.nodeId === this.getSourceRef();
       }) as joint.dia.Element;
 
       this.connector.source(source);
@@ -71,14 +70,14 @@ export class JointGraphConnectorImpl extends GraphConnectorImpl implements Joint
 
     let target: joint.dia.Element | joint.g.Point;
 
-    if (this.getTarget()) {
+    if (this.getTargetRef()) {
       target = graph.getElements().find((value) => {
-        return value.attributes.nodeId === (this.getTarget() as JointGraphNodeImpl).getId();
+        return value.attributes.nodeId === this.getTargetRef();
       }) as joint.dia.Element;
       this.connector.target(target);
     }
 
-    if (!this.getTarget() && position) {
+    if (!this.getTargetRef() && position) {
       this.connector.target(position as joint.g.Point);
     }
 

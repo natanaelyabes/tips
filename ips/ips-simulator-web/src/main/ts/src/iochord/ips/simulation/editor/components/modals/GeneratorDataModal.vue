@@ -15,7 +15,7 @@
           <div class="row">
             <div class="three wide column">Label</div>
             <div class="thirteen wide column">
-              <input type="text" id="generator_txt_label">
+              <input @change="handleChangedLabel($event)" type="text" id="generator_txt_label">
             </div>
           </div>
           <div class="row">
@@ -93,7 +93,7 @@
 </style>
 
 <script lang="ts">
-import { Component, Prop, Vue } from 'vue-property-decorator';
+import { Component, Prop, Watch, Vue } from 'vue-property-decorator';
 import SemanticComponent from '@/iochord/ips/common/ui/semantic-components/SemanticComponent';
 
 declare const $: any;
@@ -107,5 +107,22 @@ declare const $: any;
  *
  */
 @Component
-export default class GeneratorDataModal extends SemanticComponent {}
+export default class GeneratorDataModal extends SemanticComponent {
+  @Prop() private generatorDataLabel!: string;
+
+  private tempGeneratorDataLabel: string = '';
+
+  @Watch('generatorDataLabel')
+  public onChangeGeneratorDataLabel(newVal: string): void {
+    this.tempGeneratorDataLabel = newVal;
+  }
+
+  public handleChangedLabel(): void {
+    this.$emit('changeGeneratorDataLabel', this.tempGeneratorDataLabel);
+  }
+
+  public mounted(): void {
+    this.tempGeneratorDataLabel = this.generatorDataLabel;
+  }
+}
 </script>
