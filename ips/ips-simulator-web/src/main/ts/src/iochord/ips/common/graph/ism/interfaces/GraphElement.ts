@@ -1,4 +1,4 @@
-import { ObjectSerializable } from '../../../object/ObjectSerializable';
+import { ObjectSerializable } from '../../../interfaces/ObjectSerializable';
 import { BRANCH_TYPE } from '../enums/BRANCH';
 import { TSMap } from 'typescript-map';
 

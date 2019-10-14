@@ -21,11 +21,11 @@ import io.iochord.apps.ips.model.ism.v1.components.Stop;
  *
  */
 public interface IsmFactory {
-	Ism create();
+	IsmGraph create();
 
-	Ism create(Ism ref);
+	IsmGraph create(IsmGraph ref);
 
-	Page addPage(Ism net);
+	Page addPage(IsmGraph net);
 
 	Data addData(Page page, String dataType);
 
@@ -33,7 +33,7 @@ public interface IsmFactory {
 
 	Connector addConnector(Page page, Element source, Element target);
 
-	Configuration addConfiguration(Ism net);
+	Configuration addConfiguration(IsmGraph net);
 
 	DataTable addDataTable(Page page);
 

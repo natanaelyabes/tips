@@ -6,18 +6,20 @@ import org.springframework.web.socket.config.annotation.EnableWebSocketMessageBr
 import org.springframework.web.socket.config.annotation.StompEndpointRegistry;
 import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerConfigurer;
 
+import io.iochord.apps.ips.core.services.ServiceContext;
+
 @EnableWebSocketMessageBroker
 @Configuration
 public class StompWebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
-        registry.addEndpoint("/ws-ips").setAllowedOrigins("*").withSockJS();
+        registry.addEndpoint(ServiceContext.WS_ENDPOINT).setAllowedOrigins("*").withSockJS();
     }
 
     @Override
     public void configureMessageBroker(MessageBrokerRegistry registry) {
-        registry.setApplicationDestinationPrefixes("/req");
-        registry.enableSimpleBroker("/res");
+        registry.setApplicationDestinationPrefixes(ServiceContext.WS_REQUEST_URI);
+        registry.enableSimpleBroker(ServiceContext.WS_RESPONSE_URI);
     }
 }

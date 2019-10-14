@@ -5,7 +5,7 @@
         <div class="fields">
           <div class="eight wide field">
             <label>Dataset Name </label>
-            <input type="text" v-model="config.title" placeholder="Dataset name">
+            <input type="text" v-model="config.name" placeholder="Dataset name">
           </div>
         </div>
         <div class="fields">
@@ -95,12 +95,14 @@ export default class ContentDataUploadComponent extends BaseComponent {
     const files = ele.files;
     if (files != null && files.length > 0) {
       self.isUploading = true;
-      DataConnectionService.getInstance().importCsv(this.config, files[0], (res: any) => {
+      DataConnectionService.getInstance().importCsv(this.config, files[0],
+      (res: any) => {
         self.isUploading = false;
         self.uploadStatus = '';
         frmUpload.reset();
+        self.$router.push('/iochord/ips/data-connection');
       }, (tick: any) => {
-        self.uploadStatus = tick.body;
+        self.uploadStatus = tick.progress;
       });
     }
   }

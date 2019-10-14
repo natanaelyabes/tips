@@ -23,9 +23,13 @@ export default class DataConnectionService extends DataService {
 
   private static __INSTANCE: DataConnectionService;
 
-  public importCsv(config: any, file: any, completeCallback: any, progressCallback: any) {
+  public getDataConnections(completeCallback: any, progressCallback: any) {
+    return this.webserviceGet(DataConnectionService.BASE_URI + '/connection/list', completeCallback, progressCallback);
+  }
+
+  public importCsv(config: ImportCsvConfiguration, file: any, completeCallback: any, progressCallback: any) {
     const req = new FormData();
-    req.append('req', JSON.stringify(config));
+    req.append('config', JSON.stringify(config));
     req.append('file', file);
     return this.webserviceUpload(DataConnectionService.BASE_URI + '/import/csv', req, completeCallback, progressCallback);
   }

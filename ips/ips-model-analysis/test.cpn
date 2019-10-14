@@ -1453,20 +1453,20 @@
 <pageattr name="GENERATOR Customer MU"/>
 <place id="ID00000002">
 <ellipse h="40.0" w="60.0"/>
-<posattr x="439" y="81"/>
+<posattr x="394" y="190"/>
 <fillattr colour="White" filled="false" pattern="filled"/>
 <lineattr colour="Black" pattern="Solid" thick="1"/>
 <textattr bold="false" colour="Black"/>
 <text>Customer MU_dgp1</text>
 <type id="ID00000002a">
-<posattr x="475.0" y="57.0"/>
+<posattr x="430.0" y="166.0"/>
 <fillattr colour="White" filled="false" pattern="Solid"/>
 <lineattr colour="Black" thick="0" type="Solid"/>
 <textattr bold="false" colour="Black"/>
 <text>INT</text>
 </type>
 <initmark id="ID00000002b">
-<posattr x="475.0" y="105.0"/>
+<posattr x="430.0" y="214.0"/>
 <fillattr colour="White" filled="false" pattern="Solid"/>
 <lineattr colour="Black" thick="0" type="Solid"/>
 <textattr bold="false" colour="Black"/>
@@ -1475,20 +1475,20 @@
 </place>
 <place id="ID00000003">
 <ellipse h="40.0" w="60.0"/>
-<posattr x="396" y="787"/>
+<posattr x="680" y="289"/>
 <fillattr colour="White" filled="false" pattern="filled"/>
 <lineattr colour="Black" pattern="Solid" thick="1"/>
 <textattr bold="false" colour="Black"/>
 <text>Customer MU_dgp2</text>
 <type id="ID00000003a">
-<posattr x="432.0" y="763.0"/>
+<posattr x="716.0" y="265.0"/>
 <fillattr colour="White" filled="false" pattern="Solid"/>
 <lineattr colour="Black" thick="0" type="Solid"/>
 <textattr bold="false" colour="Black"/>
 <text>INT</text>
 </type>
 <initmark id="ID00000003b">
-<posattr x="432.0" y="811.0"/>
+<posattr x="716.0" y="313.0"/>
 <fillattr colour="White" filled="false" pattern="Solid"/>
 <lineattr colour="Black" thick="0" type="Solid"/>
 <textattr bold="false" colour="Black"/>
@@ -1497,20 +1497,20 @@
 </place>
 <place id="ID00000004">
 <ellipse h="40.0" w="60.0"/>
-<posattr x="618" y="262"/>
+<posattr x="825" y="484"/>
 <fillattr colour="White" filled="false" pattern="filled"/>
 <lineattr colour="Black" pattern="Solid" thick="1"/>
 <textattr bold="false" colour="Black"/>
 <text>Customer MU_dgp3</text>
 <type id="ID00000004a">
-<posattr x="654.0" y="238.0"/>
+<posattr x="861.0" y="460.0"/>
 <fillattr colour="White" filled="false" pattern="Solid"/>
 <lineattr colour="Black" thick="0" type="Solid"/>
 <textattr bold="false" colour="Black"/>
 <text>INT</text>
 </type>
 <initmark id="ID00000004b">
-<posattr x="654.0" y="286.0"/>
+<posattr x="861.0" y="508.0"/>
 <fillattr colour="White" filled="false" pattern="Solid"/>
 <lineattr colour="Black" thick="0" type="Solid"/>
 <textattr bold="false" colour="Black"/>
@@ -1519,59 +1519,59 @@
 </place>
 <place id="ID00000005">
 <ellipse h="40.0" w="60.0"/>
-<posattr x="349" y="455"/>
+<posattr x="119" y="711"/>
 <fillattr colour="White" filled="false" pattern="filled"/>
 <lineattr colour="Black" pattern="Solid" thick="1"/>
 <textattr bold="false" colour="Black"/>
 <text>Customer MU_dgp4</text>
 <type id="ID00000005a">
-<posattr x="385.0" y="431.0"/>
+<posattr x="155.0" y="687.0"/>
 <fillattr colour="White" filled="false" pattern="Solid"/>
 <lineattr colour="Black" thick="0" type="Solid"/>
 <textattr bold="false" colour="Black"/>
 <text>INT</text>
 </type>
 <initmark id="ID00000005b">
-<posattr x="385.0" y="479.0"/>
+<posattr x="155.0" y="735.0"/>
 <fillattr colour="White" filled="false" pattern="Solid"/>
 <lineattr colour="Black" thick="0" type="Solid"/>
 <textattr bold="false" colour="Black"/>
 <text/>
 </initmark>
 <port type="Out">
-<posattr x="349.0" y="431.0"/>
+<posattr x="119.0" y="687.0"/>
 </port>
 </place>
 <trans id="TRANS00000002">
 <box h="40.0" w="60.0"/>
-<posattr x="152" y="766"/>
+<posattr x="494" y="656"/>
 <fillattr colour="White" filled="false" pattern="filled"/>
 <lineattr colour="Black" pattern="Solid" thick="1"/>
 <textattr bold="false" colour="Black"/>
 <text>Customer MU_dgt1</text>
 <cond id="TRANS00000002a">
-<posattr x="116.0" y="742.0"/>
+<posattr x="458.0" y="632.0"/>
 <fillattr colour="White" filled="false" pattern="Solid"/>
 <lineattr colour="Black" thick="0" type="Solid"/>
 <textattr bold="false" colour="Black"/>
 <text/>
 </cond>
 <time id="TRANS00000002b">
-<posattr x="188.0" y="790.0"/>
+<posattr x="530.0" y="680.0"/>
 <fillattr colour="White" filled="false" pattern="Solid"/>
 <lineattr colour="Black" thick="0" type="Solid"/>
 <textattr bold="false" colour="Black"/>
 <text/>
 </time>
 <code id="TRANS00000002c">
-<posattr x="188.0" y="766.0"/>
+<posattr x="530.0" y="656.0"/>
 <fillattr colour="White" filled="false" pattern="Solid"/>
 <lineattr colour="Black" thick="0" type="Solid"/>
 <textattr bold="false" colour="Black"/>
 <text/>
 </code>
 <priority id="TRANS00000002d">
-<posattr x="116.0" y="742.0"/>
+<posattr x="458.0" y="632.0"/>
 <fillattr colour="White" filled="false" pattern="Solid"/>
 <lineattr colour="Black" thick="0" type="Solid"/>
 <textattr bold="false" colour="Black"/>
@@ -1580,34 +1580,34 @@
 </trans>
 <trans id="TRANS00000003">
 <box h="40.0" w="60.0"/>
-<posattr x="349" y="317"/>
+<posattr x="313" y="524"/>
 <fillattr colour="White" filled="false" pattern="filled"/>
 <lineattr colour="Black" pattern="Solid" thick="1"/>
 <textattr bold="false" colour="Black"/>
 <text>Customer MU_dgt2</text>
 <cond id="TRANS00000003a">
-<posattr x="313.0" y="293.0"/>
+<posattr x="277.0" y="500.0"/>
 <fillattr colour="White" filled="false" pattern="Solid"/>
 <lineattr colour="Black" thick="0" type="Solid"/>
 <textattr bold="false" colour="Black"/>
 <text/>
 </cond>
 <time id="TRANS00000003b">
-<posattr x="385.0" y="341.0"/>
+<posattr x="349.0" y="548.0"/>
 <fillattr colour="White" filled="false" pattern="Solid"/>
 <lineattr colour="Black" thick="0" type="Solid"/>
 <textattr bold="false" colour="Black"/>
 <text/>
 </time>
 <code id="TRANS00000003c">
-<posattr x="385.0" y="317.0"/>
+<posattr x="349.0" y="524.0"/>
 <fillattr colour="White" filled="false" pattern="Solid"/>
 <lineattr colour="Black" thick="0" type="Solid"/>
 <textattr bold="false" colour="Black"/>
 <text/>
 </code>
 <priority id="TRANS00000003d">
-<posattr x="313.0" y="293.0"/>
+<posattr x="277.0" y="500.0"/>
 <fillattr colour="White" filled="false" pattern="Solid"/>
 <lineattr colour="Black" thick="0" type="Solid"/>
 <textattr bold="false" colour="Black"/>
@@ -1619,7 +1619,7 @@
 <placeend idref="ID00000002"/>
 <lineattr colour="Black" thick="1" type="Solid"/>
 <annot id="ARC00000002a">
-<posattr x="295.5" y="423.5"/>
+<posattr x="444.0" y="423.0"/>
 <fillattr colour="White" filled="false" pattern="Solid"/>
 <lineattr colour="Black" thick="0" type="Solid"/>
 <textattr bold="false" colour="Black"/>
@@ -1631,7 +1631,7 @@
 <placeend idref="ID00000002"/>
 <lineattr colour="Black" thick="1" type="Solid"/>
 <annot id="ARC00000003a">
-<posattr x="295.5" y="423.5"/>
+<posattr x="444.0" y="423.0"/>
 <fillattr colour="White" filled="false" pattern="Solid"/>
 <lineattr colour="Black" thick="0" type="Solid"/>
 <textattr bold="false" colour="Black"/>
@@ -1643,7 +1643,7 @@
 <placeend idref="ID00000003"/>
 <lineattr colour="Black" thick="1" type="Solid"/>
 <annot id="ARC00000004a">
-<posattr x="274.0" y="776.5"/>
+<posattr x="587.0" y="472.5"/>
 <fillattr colour="White" filled="false" pattern="Solid"/>
 <lineattr colour="Black" thick="0" type="Solid"/>
 <textattr bold="false" colour="Black"/>
@@ -1655,7 +1655,7 @@
 <placeend idref="ID00000003"/>
 <lineattr colour="Black" thick="1" type="Solid"/>
 <annot id="ARC00000005a">
-<posattr x="372.5" y="552.0"/>
+<posattr x="496.5" y="406.5"/>
 <fillattr colour="White" filled="false" pattern="Solid"/>
 <lineattr colour="Black" thick="0" type="Solid"/>
 <textattr bold="false" colour="Black"/>
@@ -1667,7 +1667,7 @@
 <placeend idref="ID00000003"/>
 <lineattr colour="Black" thick="1" type="Solid"/>
 <annot id="ARC00000006a">
-<posattr x="372.5" y="552.0"/>
+<posattr x="496.5" y="406.5"/>
 <fillattr colour="White" filled="false" pattern="Solid"/>
 <lineattr colour="Black" thick="0" type="Solid"/>
 <textattr bold="false" colour="Black"/>
@@ -1679,7 +1679,7 @@
 <placeend idref="ID00000005"/>
 <lineattr colour="Black" thick="1" type="Solid"/>
 <annot id="ARC00000007a">
-<posattr x="349.0" y="386.0"/>
+<posattr x="216.0" y="617.5"/>
 <fillattr colour="White" filled="false" pattern="Solid"/>
 <lineattr colour="Black" thick="0" type="Solid"/>
 <textattr bold="false" colour="Black"/>
@@ -1691,7 +1691,7 @@
 <placeend idref="ID00000004"/>
 <lineattr colour="Black" thick="1" type="Solid"/>
 <annot id="ARC00000008a">
-<posattr x="483.5" y="289.5"/>
+<posattr x="569.0" y="504.0"/>
 <fillattr colour="White" filled="false" pattern="Solid"/>
 <lineattr colour="Black" thick="0" type="Solid"/>
 <textattr bold="false" colour="Black"/>
