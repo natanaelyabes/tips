@@ -5,13 +5,9 @@ import { ACTIVITY_TYPE } from '../../enums/ACTIVITY';
 import { GraphDataResource } from '../../interfaces/components/GraphDataResource';
 import { GraphDataQueue } from '../../interfaces/components/GraphDataQueue';
 import { GraphDataFunction } from '../../interfaces/components/GraphDataFunction';
-import { GraphDataFunctionImpl } from './GraphDataFunctionImpl';
-import { GraphDataQueueImpl } from './GraphDataQueueImpl';
-import { GraphDataResourceImpl } from './GraphDataResourceImpl';
 import { RESOURCE_SELECTION } from '../../enums/RESOURCE';
 import { DISTRIBUTION_TYPE } from '../../enums/DISTRIBUTION';
 import { VARIABLE_TYPE } from '../../enums/VARIABLE';
-import { GraphUtil } from '../GraphUtil';
 import { TSMap } from 'typescript-map';
 
 /**
@@ -41,15 +37,16 @@ export class GraphActivityNodeImpl extends GraphNodeImpl implements GraphActivit
     graphActivityNode.setUnit(object.unit);
     graphActivityNode.setCost(object.cost);
     graphActivityNode.setReportScrap(object.reportScrap);
-    graphActivityNode.setFunction(GraphDataFunctionImpl.instance.get(object.functionRef) as GraphDataFunction);
-    graphActivityNode.setQueue(GraphDataQueueImpl.instance.get(object.queueRef) as GraphDataQueue);
-    graphActivityNode.setResource(GraphDataResourceImpl.instance.get(object.resourceRef) as GraphDataResource);
+    graphActivityNode.setFunctionRef(object.functionRef);
+    graphActivityNode.setQueueRef(object.queueRef);
+    graphActivityNode.setResourceRef(object.resourceRef);
     GraphActivityNodeImpl.instance.set(graphActivityNode.getId() as string, graphActivityNode);
     return graphActivityNode;
   }
 
   private type?: ACTIVITY_TYPE | null = ACTIVITY_TYPE.STANDARD;
   private resource?: GraphDataResource | null;
+  private resourceRef?: string | null;
   private resourceSelectionMethod?: RESOURCE_SELECTION | null = RESOURCE_SELECTION.RANDOM;
   private processingTime?: DISTRIBUTION_TYPE | null = DISTRIBUTION_TYPE.CONSTANT;
   private processingTimeParameter?: string | null = '0';
@@ -59,7 +56,9 @@ export class GraphActivityNodeImpl extends GraphNodeImpl implements GraphActivit
   private cost?: number | null = 0;
   private reportScrap?: boolean | null = false;
   private queue?: GraphDataQueue | null;
+  private queueRef?: string | null;
   private function?: GraphDataFunction | null;
+  private functionRef?: string | null;
   private unit?: TIME_UNIT | null;
 
   constructor() {
@@ -83,7 +82,11 @@ export class GraphActivityNodeImpl extends GraphNodeImpl implements GraphActivit
   }
 
   public getResourceRef(): string | null {
-    return GraphUtil.generateRef(this.getResource() as GraphDataResource);
+    return this.resourceRef as string;
+  }
+
+  public setResourceRef(resource: string): void {
+    this.resourceRef = resource;
   }
 
   public getResourceSelectionMethod(): RESOURCE_SELECTION | null {
@@ -159,11 +162,19 @@ export class GraphActivityNodeImpl extends GraphNodeImpl implements GraphActivit
   }
 
   public getQueueRef(): string | null {
-    return GraphUtil.generateRef(this.getQueue() as GraphDataQueue);
+    return this.queueRef as string;
+  }
+
+  public setQueueRef(queue: string): void {
+    this.queueRef = queue;
   }
 
   public getFunction(): GraphDataFunction | null {
     return this.function as GraphDataFunction | null;
+  }
+
+  public setFunctionRef(func: string): void {
+    this.functionRef = func;
   }
 
   public setFunction(func: GraphDataFunction): void {
@@ -171,7 +182,7 @@ export class GraphActivityNodeImpl extends GraphNodeImpl implements GraphActivit
   }
 
   public getFunctionRef(): string | null {
-    return GraphUtil.generateRef(this.getFunction() as GraphDataFunction);
+    return this.functionRef as string;
   }
 
   public getUnit(): TIME_UNIT | null {

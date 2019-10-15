@@ -20,6 +20,7 @@ export interface GraphActivityNode extends GraphNode {
   setActivityType(type: ACTIVITY_TYPE): void;
   getResource(): GraphDataResource | null;
   setResource(resource: GraphDataResource): void;
+  setResourceRef(resource: string): void;
   getResourceRef(): string | null;
   getResourceSelectionMethod(): RESOURCE_SELECTION | null;
   setResourceSelectionMethod(method: RESOURCE_SELECTION): void;
@@ -38,9 +39,11 @@ export interface GraphActivityNode extends GraphNode {
   getQueue(): GraphDataQueue | null;
   setQueue(queue: GraphDataQueue): void;
   getQueueRef(): string | null;
+  setQueueRef(queue: string): void;
   getFunction(): GraphDataFunction | null;
   setFunction(func: GraphDataFunction): void;
   getFunctionRef(): string | null;
+  setFunctionRef(func: string): void;
   getUnit(): TIME_UNIT | null;
   setUnit(unit: TIME_UNIT): void;
   getCost(): number | null;

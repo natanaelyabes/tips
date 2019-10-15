@@ -11,5 +11,6 @@ import { GraphEventNode } from './GraphEventNode';
 export interface GraphStartEventNode extends GraphEventNode {
   getGenerator(): GraphDataGenerator | null;
   setGenerator(generator: GraphDataGenerator): void;
+  setGeneratorRef(generator: string): void;
   getGeneratorRef(): string | null;
 }

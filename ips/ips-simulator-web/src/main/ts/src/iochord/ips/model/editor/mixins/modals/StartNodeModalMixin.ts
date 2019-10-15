@@ -65,12 +65,9 @@ export default class StartNodeModalMixin extends BaseComponent {
   public changeStartGeneratorFromChild(e: string, activePage: GraphPage, currentSelectedElement: GraphNode, callback: () => void) {
     this.parentStartGenerator = e;
 
-    // Get data based on selection value e
-    const data = (activePage.getData() as TSMap<string, GraphData>).get(this.parentStartGenerator);
-
     // Set generator for the start node
     const startNode = (currentSelectedElement as GraphStartEventNodeImpl);
-    startNode.setGenerator(data as GraphDataGenerator);
+    startNode.setGeneratorRef(this.parentStartGenerator);
 
     // Directly override currentSelectedElement node
     graphModule.overridePageNode({ page: activePage, node: startNode });

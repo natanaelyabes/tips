@@ -31,12 +31,13 @@ export class GraphDataGeneratorImpl extends GraphDataImpl implements GraphDataGe
     graphDataGenerator.setEntitiesPerArrival(object.entitiesPerArrival);
     graphDataGenerator.setMaxArrival(object.maxArrival);
     graphDataGenerator.setFirstCreation(object.firstCreation);
-    graphDataGenerator.setObjectType(GraphDataObjectTypeImpl.instance.get(object.objectTypeRef) as GraphDataObjectType);
+    graphDataGenerator.setObjectTypeRef(object.objectTypeRef);
     GraphDataGeneratorImpl.instance.set(graphDataGenerator.getId() as string, graphDataGenerator);
     return graphDataGenerator;
   }
 
   private objectType?: GraphDataObjectType | null;
+  private objectTypeRef?: string | null;
   private distributionType?: DISTRIBUTION_TYPE | null = DISTRIBUTION_TYPE.RANDOM;
   private expression?: string | null = '';
   private unit?: TIME_UNIT | null;
@@ -57,7 +58,11 @@ export class GraphDataGeneratorImpl extends GraphDataImpl implements GraphDataGe
   }
 
   public getObjectTypeRef(): string | null {
-    return GraphUtil.generateRef(this.getObjectType());
+    return this.objectTypeRef as string;
+  }
+
+  public setObjectTypeRef(objectType: string | null): void {
+    this.objectTypeRef = objectType;
   }
 
   public getDistributionType(): DISTRIBUTION_TYPE | null {

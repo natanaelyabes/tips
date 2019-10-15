@@ -15,7 +15,7 @@
           <div class="row">
             <div class="three wide column">Name</div>
             <div class="thirteen wide column">
-              <input type="text" id="object_type_txt_label">
+              <input type="text" @change="handleChangedLabel($event)" v-model="tempObjectTypeDataLabel" id="object_type_txt_label">
             </div>
           </div>
           <div class="row">
@@ -69,7 +69,7 @@
 </style>
 
 <script lang="ts">
-import { Component, Prop, Vue } from 'vue-property-decorator';
+import { Component, Prop, Watch, Vue } from 'vue-property-decorator';
 import SemanticComponent from '@/iochord/ips/common/ui/semantic-components/SemanticComponent';
 
 declare const $: any;
@@ -83,5 +83,22 @@ declare const $: any;
  *
  */
 @Component
-export default class ObjectTypeDataModal extends SemanticComponent {}
+export default class ObjectTypeDataModal extends SemanticComponent {
+  @Prop() private objectTypeDataLabel!: string;
+
+  private tempObjectTypeDataLabel: string = '';
+
+  @Watch('objectTypeDataLabel')
+  public onChangeObjectTypeDataLabel(newVal: string): void {
+    this.tempObjectTypeDataLabel = newVal;
+  }
+
+  public handleChangedLabel(): void {
+    this.$emit('changeObjectTypeDataLabel', this.tempObjectTypeDataLabel);
+  }
+
+  public mounted(): void {
+    this.tempObjectTypeDataLabel = this.objectTypeDataLabel;
+  }
+}
 </script>

@@ -249,7 +249,7 @@ export default class SimulationEditorView extends Layout01View {
         graphModule.setGraph(graph);
 
         // Print to stdout
-        console.log(JSON.stringify(graph));
+        console.log(graph);
       });
     } catch (e) {
       console.error(e);

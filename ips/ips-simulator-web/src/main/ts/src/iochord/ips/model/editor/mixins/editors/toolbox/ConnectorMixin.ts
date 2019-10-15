@@ -49,7 +49,7 @@ export default class ConnectorMixin extends BaseComponent {
     this.newConnector = new JointGraphConnectorImpl();
 
     // Set properties for the newly created item
-    this.newConnector.setId(`0-${GraphConnectorImpl.instance.size}`);
+    this.newConnector.setId(`0-${GraphConnectorImpl.instance.size()}`);
     this.newConnector.setType('connector');
     this.newConnector.setAttr(ARC_TYPE.connector.attr);
 
@@ -68,6 +68,9 @@ export default class ConnectorMixin extends BaseComponent {
 
   public setSourceNode(activePage: JointGraphPageImpl, node: joint.dia.Element) {
     const nodeId = (node.attributes.nodeId as string).split('-')[2];
+
+    console.log(node.attributes);
+
     this.source = graphModule.pageNode(activePage, nodeId) as GraphNode;
 
     (graphModule.newItem as JointGraphConnectorImpl).setSource(this.source);

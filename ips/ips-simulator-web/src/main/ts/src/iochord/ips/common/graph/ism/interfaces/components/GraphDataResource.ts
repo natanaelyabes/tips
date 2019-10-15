@@ -17,6 +17,7 @@ export interface GraphDataResource extends GraphData {
   getData(): GraphDataTable | null;
   setData(data: GraphDataTable): void;
   getDataRef(): string | null;
+  setDataRef(data: string): void;
   getSetupTime(): DISTRIBUTION_TYPE | null;
   setSetupTime(setupTime: DISTRIBUTION_TYPE): void;
   getExpression(): string | null;

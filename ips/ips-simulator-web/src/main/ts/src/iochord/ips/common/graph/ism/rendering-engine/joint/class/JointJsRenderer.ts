@@ -40,6 +40,7 @@ export default class JointJsRenderer {
 
   // Find all node types in the graph
   public nodeTypes: Set<string> = new Set<string>();
+  public dataTypes: Set<string> = new Set<string>();
 
   // Graph data
   public graph?: Graph;
@@ -97,6 +98,10 @@ export default class JointJsRenderer {
 
   public getNodeTypes(): Set<string> {
     return this.nodeTypes;
+  }
+
+  public getDataTypes(): Set<string> {
+    return this.dataTypes;
   }
 
   public activeJointPage(pageId: string) {
@@ -189,32 +194,25 @@ export default class JointJsRenderer {
     const keys: any = { elementType: 'elementType' };
 
     // for all nodes
-    (jointPage.getData() as TSMap<string, GraphData>).forEach((nodeValue) => {
+    (jointPage.getData() as TSMap<string, GraphData>).forEach((dataValue) => {
 
-      const node = new JointGraphDataImpl();
+      const data = new JointGraphDataImpl();
 
-      node.setId(nodeValue.getId() as string);
-      node.setLabel(nodeValue.getLabel() as string);
-      node.setType((nodeValue as any)[keys.elementType] as string);
-      node.setAttributes(nodeValue.getAttributes() as TSMap<string, string>);
-      node.setPosition({ x: 300, y: 250 });
-      node.setSize((DATA_TYPE as any)[(nodeValue as any)[keys.elementType]].size);
-      node.setMarkup((DATA_TYPE as any)[(nodeValue as any)[keys.elementType]].markup);
-      node.setAttr((DATA_TYPE as any)[(nodeValue as any)[keys.elementType]].attr);
-      node.setImageIcon((DATA_TYPE as any)[(nodeValue as any)[keys.elementType]].image);
+      data.setId(dataValue.getId() as string);
+      data.setLabel(dataValue.getLabel() as string);
+      data.setType((dataValue as any)[keys.elementType] as string);
+      data.setAttributes(dataValue.getAttributes() as TSMap<string, string>);
+      data.setPosition({ x: 300, y: 250 });
+      data.setSize((DATA_TYPE as any)[(dataValue as any)[keys.elementType]].size);
+      data.setMarkup((DATA_TYPE as any)[(dataValue as any)[keys.elementType]].markup);
+      data.setAttr((DATA_TYPE as any)[(dataValue as any)[keys.elementType]].attr);
+      data.setImageIcon((DATA_TYPE as any)[(dataValue as any)[keys.elementType]].image);
 
-      // Demonstrate the use of custom icon
-      // if (nodeValue.getLabel() === 'ATM Service') {
-      //   node.setImageIcon(require('@/assets/images/icons/atm-png.png'));
-      // } else if (nodeValue.getLabel() === 'Teller Service') {
-      //   node.setImageIcon(require('@/assets/images/icons/business-customer-icon.png'));
-      // }
+      // render data
+      data.render(jointPage.getGraph());
 
-      // render node
-      node.render(jointPage.getGraph());
-
-      // Add node type to nodeTypes set
-      this.nodeTypes.add(node.getType() as string);
+      // Add data type to dataTypes set
+      this.dataTypes.add(data.getType() as string);
     });
   }
 
@@ -228,8 +226,8 @@ export default class JointJsRenderer {
       arc.setLabel(arcValue.getLabel() as string);
       arc.setType((arcValue as any)[keys.elementType] as string);
       arc.setAttributes(arcValue.getAttributes() as TSMap<string, string>);
-      arc.setSource(arcValue.getSource() as JointGraphNodeImpl);
-      arc.setTarget(arcValue.getTarget() as JointGraphNodeImpl);
+      arc.setSourceRef(arcValue.getSourceRef() as string);
+      arc.setTargetRef(arcValue.getTargetRef() as string);
       arc.setAttr(ARC_TYPE.connector.attr);
 
       // render connector

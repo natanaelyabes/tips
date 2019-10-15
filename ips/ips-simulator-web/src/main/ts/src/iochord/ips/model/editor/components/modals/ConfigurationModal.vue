@@ -13,7 +13,7 @@
       <div class="ui form">
         <div class="ui grid">
           <div class="row">
-            <div class="six wide column">Run simultanious configuration</div>
+            <div class="six wide column">Run simultaneous configuration</div>
             <div class="six wide column">
               <input type="text" id="rsc_txt">
             </div>
