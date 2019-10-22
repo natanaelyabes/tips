@@ -117,14 +117,14 @@ export default class ObjectTypeDataModal extends SemanticComponent implements Mo
   }
 
   public saveProperties(page: JointGraphPageImpl, object: GraphDataObjectTypeImpl) {
-    const nodePageId = (object.getId() as string).split('-')[0];
-    const nodePage = (graphModule.graph.getPages() as TSMap<string, GraphPage>).get(nodePageId);
-    const node: GraphDataObjectTypeImpl = (page.getData() as TSMap<string, GraphData>).get(object.getId() as string) as GraphDataObjectTypeImpl;
+    const dataPageId = (object.getId() as string).split('-')[0];
+    const dataPage = (graphModule.graph.getPages() as TSMap<string, GraphPage>).get(dataPageId);
+    const data: GraphDataObjectTypeImpl = (page.getData() as TSMap<string, GraphData>).get(object.getId() as string) as GraphDataObjectTypeImpl;
 
     // Save properties
-    node.setLabel(this.label);
+    data.setLabel(this.label);
 
-    // Change label of the renderer node
+    // Change label of the renderer data
     page.getGraph().getCells().map((cell: joint.dia.Cell) => {
       if (cell.attributes.dataId === object.getId()) {
         cell.attr({

@@ -15,19 +15,22 @@
           <div class="row">
             <div class="four wide column">Label</div>
             <div class="twelve wide column">
-              <input type="text" id="x_txt_label">
+              <input type="text" v-model="label" id="x_txt_label">
             </div>
           </div>
           <div class="row">
             <div class="four wide column">Queue Type</div>
             <div class="twelve wide column">
-              <input type="text" id="x_txt_label">
+              <select id="x_txt_type" class="ui search dropdown" v-model="type">
+                <option value="FIFO">FIFO</option>
+                <option value="LIFO">LIFO</option>
+              </select>
             </div>
           </div>
           <div class="row">
             <div class="four wide column">
               <div class="ui checkbox">
-                <input type="checkbox" class="hidden">
+                <input type="checkbox" v-model="shared" class="hidden">
                 <label>Shared buffer</label>
               </div>
             </div>
@@ -40,27 +43,17 @@
           </div>
           <div class="row">
             <div class="four wide column">
-              <div class="ui radio checkbox">
-                <input type="radio" name="xrb" checked class="hidden">
+              <div class="ui checkbox">
+                <input type="checkbox" v-model="single" class="hidden">
                 <label>Single</label>
               </div>
             </div>
             <div class="twelve wide column"></div>
           </div>
           <div class="row">
-            <div class="four wide column">
-              <div class="ui radio checkbox">Queue Size</div>
-            </div>
+            <div class="four wide column">Queue Size</div>
             <div class="twelve wide column">
-              <input type="text" id="x_txt_label">
-            </div>
-          </div>
-          <div class="row">
-            <div class="sixteen wide column">
-              <div class="ui radio checkbox">
-                <input type="radio" name="xrb" checked class="hidden">
-                <label>Dedicated queue to resources</label>
-              </div>
+              <input type="text" v-model="size" id="x_txt_label">
             </div>
           </div>
           <div class="row">
@@ -93,7 +86,8 @@
       </div>
     </div>
     <div class="actions">
-      <p><em>Node properties are automatically saved</em></p>
+      <div @click="saveProperties(page, properties)" class="ui positive button">Save</div>
+      <div class="ui cancel button">Cancel</div>
     </div>
   </div>
 </template>
@@ -111,9 +105,19 @@
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
 import SemanticComponent from '@/iochord/ips/common/ui/semantic-components/SemanticComponent';
+import { TSMap } from 'typescript-map';
+import { GraphPage } from '@/iochord/ips/common/graph/ism/interfaces/GraphPage';
+import GraphModule from '@/iochord/ips/common/graph/ism/stores/GraphModule';
+import { getModule } from 'vuex-module-decorators';
+import { Modal } from '../../interfaces/Modal';
+import { GraphDataQueueImpl } from '@/iochord/ips/common/graph/ism/class/components/GraphDataQueueImpl';
+import { JointGraphPageImpl } from '@/iochord/ips/common/graph/ism/rendering-engine/joint/shapes/class/JointGraphPageImpl';
+import { GraphData } from '@/iochord/ips/common/graph/ism/interfaces/GraphData';
+import { QUEUE_TYPE } from '@/iochord/ips/common/graph/ism/enums/QUEUE';
+
+const graphModule = getModule(GraphModule);
 
 declare const $: any;
-
 
 /**
  *
@@ -123,9 +127,68 @@ declare const $: any;
  *
  */
 @Component
-export default class QueueDataModal extends SemanticComponent {
-  public log(): void {
-    console.log('Test');
+export default class QueueDataModal extends SemanticComponent implements Modal<JointGraphPageImpl, GraphDataQueueImpl> {
+
+  // Whole object properties
+  private properties!: GraphDataQueueImpl;
+
+  // Page renderer
+  private page!: JointGraphPageImpl;
+
+  // Component properties
+  private label: string = '';
+  private type: QUEUE_TYPE = QUEUE_TYPE.FIFO;
+  private shared: boolean = false;
+  private single: boolean = true;
+  private size: number = 0;
+
+  public populateProperties(page: JointGraphPageImpl, object: GraphDataQueueImpl) {
+
+    // Whole object properties
+    this.properties = object;
+
+    // Page renderer
+    this.page = page;
+
+    // Component properties
+    this.label = object.getLabel() as string;
+    this.type = object.getQueueType() as QUEUE_TYPE;
+    this.shared = object.isShared() as boolean;
+    this.single = object.isSingle() as boolean;
+    this.size = object.getSize() as number;
+
+    $('#x_txt_type')
+      .dropdown('set selected', this.type)
+      .dropdown({
+        onChange: (val: QUEUE_TYPE) => {
+          this.type = val;
+        },
+      })
+    ;
+  }
+
+  public saveProperties(page: JointGraphPageImpl, object: GraphDataQueueImpl) {
+    const dataPageId = (object.getId() as string).split('-')[0];
+    const dataPage = (graphModule.graph.getPages() as TSMap<string, GraphPage>).get(dataPageId);
+    const data: GraphDataQueueImpl = (page.getData() as TSMap<string, GraphData>).get(object.getId() as string) as GraphDataQueueImpl;
+
+    // Save properties
+    data.setLabel(this.label);
+    data.setQueueType(this.type);
+    data.setShared(this.shared);
+    data.setSingle(this.single);
+    data.setSize(this.size);
+
+    // Change label of the renderer data
+    page.getGraph().getCells().map((cell: joint.dia.Cell) => {
+      if (cell.attributes.dataId === object.getId()) {
+        cell.attr({
+          label: {
+            text: this.label,
+          },
+        });
+      }
+    });
   }
 }
 </script>
