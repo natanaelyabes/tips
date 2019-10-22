@@ -81,7 +81,7 @@ case class Simulator(calcAvgTimeEnTr:Boolean = false) {
     avgTimeEnTr
   }
   
-  def run(net: CPNGraph, stopCrit:Any => Boolean, inpStopCrit:Any, stepsRef:Int = 0, globtime:GlobalTime = new GlobalTime(0), subject:MarkingObservable = null) {
+  def run(net: CPNGraph, stopCrit:Any => Boolean, inpStopCrit:Any, stepsRef:Int = 0, globtime:GlobalTime = new GlobalTime(0), subject:MarkingObservable = null, monitors:Map[(String,String),Int], objMonitors:Map[(String,String,Int),Double], resMonitors:Map[(String,String,Int),Double]) {
     val steps = c+stepsRef;
     
     val allTransitions = net.allTransitions
@@ -112,24 +112,24 @@ case class Simulator(calcAvgTimeEnTr:Boolean = false) {
         val r = new java.util.Random();
         val transition = transitions(r.nextInt(transitions.length))
         
-        val markbefore = Map[String,Any]()
-        val markafter = Map[String,Any]()
+        val markbefore = Map[(Boolean,Boolean,Map[String,String]),Any]()
+        val markafter = Map[(Boolean,Boolean,Map[String,String]),Any]()
         
-        transition.getIn().foreach(arc => { val multiset = arc.getPlace().getCurrentMarking().multiset; markbefore.put(arc.getPlace().getName(),multiset) } )
-        transition.getOut().foreach(arc => { val multiset = arc.getPlace().getCurrentMarking().multiset; markbefore.put(arc.getPlace().getName(),multiset) } )
+        transition.getIn().foreach(arc => { val multiset = arc.getPlace().getCurrentMarking().multiset; markbefore.put((arc.getPlace().getIsStart(),arc.getPlace().getIsEnd(),arc.getPlace().getOrigin()),multiset) } )
+        transition.getOut().foreach(arc => { val multiset = arc.getPlace().getCurrentMarking().multiset; markbefore.put((arc.getPlace().getIsStart(),arc.getPlace().getIsEnd(),arc.getPlace().getOrigin()),multiset) } )
         //println(markbefore)
         //println(transition.getName())
         
         val bindingChosen = transition.execute(globtime.time)
         
-        transition.getIn().foreach(arc => { val multiset = arc.getPlace().getCurrentMarking().multiset; markafter.put(arc.getPlace().getName(),multiset) } )
-        transition.getOut().foreach(arc => { val multiset = arc.getPlace().getCurrentMarking().multiset; markafter.put(arc.getPlace().getName(),multiset) } )
+        transition.getIn().foreach(arc => { val multiset = arc.getPlace().getCurrentMarking().multiset; markafter.put((arc.getPlace().getIsStart(),arc.getPlace().getIsEnd(),arc.getPlace().getOrigin()),multiset) } )
+        transition.getOut().foreach(arc => { val multiset = arc.getPlace().getCurrentMarking().multiset; markafter.put((arc.getPlace().getIsStart(),arc.getPlace().getIsEnd(),arc.getPlace().getOrigin()),multiset) } )
         //println(markafter)
         
         if(subject != null) {
-          //subject.setMarking((markbefore,markafter,transition.getId()+" - "+bindingChosen,globtime.getTime())) 
           //println("================ Step: "+c+" | globtime: "+globtime.time+" ================")
-          //println("Transition: "+transition.getId(),transition.getName()) 
+          //println("Transition: "+transition.getId(),transition.getName())
+          subject.setMarking((markbefore,markafter,transition.getId(),monitors,objMonitors,resMonitors,globtime.getTime())) 
         }
         c += 1
       }
@@ -138,10 +138,10 @@ case class Simulator(calcAvgTimeEnTr:Boolean = false) {
     if (stopCrit(inpStopCrit))
       println("stop criteria meet in step : "+c)
     else
-      println("stop - no more enabled transitions")
+      println("stop - at step "+c)
   }
   
-  def runWithAsync(net: CPNGraph, stopCrit:Any => Boolean, inpStopCrit:Any, stepsRef:Int = 0, globtime:GlobalTime = new GlobalTime(0), subject:MarkingObservable = null) {
+  def runWithAsync(net: CPNGraph, stopCrit:Any => Boolean, inpStopCrit:Any, stepsRef:Int = 0, globtime:GlobalTime = new GlobalTime(0), subject:MarkingObservable = null, monitors:Map[(String,String),Int], objMonitors:Map[(String,String,Int),Double], resMonitors:Map[(String,String,Int),Double]) {
     val steps = c+stepsRef;
     
     val allTransitions = net.allTransitions
@@ -178,21 +178,21 @@ case class Simulator(calcAvgTimeEnTr:Boolean = false) {
         val r = new java.util.Random()
         val transition = transitions(r.nextInt(transitions.length))
         
-        val markbefore = Map[String,Any]()
-        val markafter = Map[String,Any]()
+        val markbefore = Map[(Boolean,Boolean,Map[String,String]),Any]()
+        val markafter = Map[(Boolean,Boolean,Map[String,String]),Any]()
         
-        transition.getIn().foreach(arc => { val multiset = arc.getPlace().getCurrentMarking().multiset; markbefore.put(arc.getPlace().getName(),multiset) } )
-        transition.getOut().foreach(arc => { val multiset = arc.getPlace().getCurrentMarking().multiset; markbefore.put(arc.getPlace().getName(),multiset) } )
+        transition.getIn().foreach(arc => { val multiset = arc.getPlace().getCurrentMarking().multiset; markbefore.put((arc.getPlace().getIsStart(),arc.getPlace().getIsEnd(),arc.getPlace().getOrigin()),multiset) } )
+        transition.getOut().foreach(arc => { val multiset = arc.getPlace().getCurrentMarking().multiset; markbefore.put((arc.getPlace().getIsStart(),arc.getPlace().getIsEnd(),arc.getPlace().getOrigin()),multiset) } )
         
         val bindingChosen = transition.execute(globtime.time)
         
-        transition.getIn().foreach(arc => { val multiset = arc.getPlace().getCurrentMarking().multiset; markafter.put(arc.getPlace().getName(),multiset) } )
-        transition.getOut().foreach(arc => { val multiset = arc.getPlace().getCurrentMarking().multiset; markafter.put(arc.getPlace().getName(),multiset) } )
+        transition.getIn().foreach(arc => { val multiset = arc.getPlace().getCurrentMarking().multiset; markafter.put((arc.getPlace().getIsStart(),arc.getPlace().getIsEnd(),arc.getPlace().getOrigin()),multiset) } )
+        transition.getOut().foreach(arc => { val multiset = arc.getPlace().getCurrentMarking().multiset; markafter.put((arc.getPlace().getIsStart(),arc.getPlace().getIsEnd(),arc.getPlace().getOrigin()),multiset) } )
         
         if(subject != null) {
           //println("================ Step: "+c+" | globtime: "+globtime.time+" ================")
           //println("Transition: "+transition.getId(),transition.getName())
-          //subject.setMarking((markbefore,markafter,transition.getId()+" - "+bindingChosen,globtime.getTime()))  
+          subject.setMarking((markbefore,markafter,transition.getId(),monitors,objMonitors,resMonitors,globtime.getTime()))  
         }
         c += 1
       }
@@ -201,6 +201,6 @@ case class Simulator(calcAvgTimeEnTr:Boolean = false) {
     if (stopCrit(inpStopCrit))
       println("stop criteria meet in step : "+c)
     else
-      println("stop - no more enabled transitions")
+      println("stop - at step "+c)
   }
 }
