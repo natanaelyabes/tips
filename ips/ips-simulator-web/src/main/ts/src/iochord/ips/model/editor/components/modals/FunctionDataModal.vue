@@ -90,5 +90,9 @@ export default class FunctionDataModal extends SemanticComponent {
   public mounted(): void {
     this.tempFunctionDataLabel = this.functionDataLabel;
   }
+
+  public log(): void {
+    console.log('Test');
+  }
 }
 </script>

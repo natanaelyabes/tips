@@ -100,5 +100,9 @@ export default class ConfigurationModal extends SemanticComponent {
       $('#sim_config_tbl').html(gen_tbl);
     });
   }
+
+  public log(): void {
+    console.log('Test');
+  }
 }
 </script>

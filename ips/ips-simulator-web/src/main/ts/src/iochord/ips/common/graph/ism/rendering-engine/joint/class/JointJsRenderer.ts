@@ -71,7 +71,7 @@ export default class JointJsRenderer {
 
         // Render joint.js paper
         this.renderPage(jointPage);
-        this.renderMinimap(jointPage);
+        // this.renderMinimap(jointPage);
 
         // Render elements and links
         this.renderNodes(jointPage);
@@ -129,6 +129,7 @@ export default class JointJsRenderer {
       height: this.canvasHeight,
       gridSize: 10,
       drawGrid: true,
+      interactive: true,
       defaultRouter: { name: 'normal' },
       defaultAnchor: (endView: joint.dia.ElementView, endMagnet: SVGElement, anchorReference: joint.g.Point, args: { [key: string]: any; }) => {
         return Anchors.skipEndMagnetPerpendicularAnchor(endView, endMagnet, anchorReference, args);
@@ -163,8 +164,8 @@ export default class JointJsRenderer {
 
     // for all nodes
     (jointPage.getNodes() as TSMap<string, GraphNode>).forEach((nodeValue) => {
-      const node = new JointGraphNodeImpl();
 
+      const node = new JointGraphNodeImpl();
       node.setId(nodeValue.getId() as string);
       node.setLabel(nodeValue.getLabel() as string);
       node.setType((nodeValue as any)[keys.elementType] as string);
@@ -197,7 +198,6 @@ export default class JointJsRenderer {
     (jointPage.getData() as TSMap<string, GraphData>).forEach((dataValue) => {
 
       const data = new JointGraphDataImpl();
-
       data.setId(dataValue.getId() as string);
       data.setLabel(dataValue.getLabel() as string);
       data.setType((dataValue as any)[keys.elementType] as string);
@@ -270,31 +270,5 @@ export default class JointJsRenderer {
     this.canvasPanAndZoom.setMinZoom(0);
     this.canvasPanAndZoom.setMaxZoom(100);
     this.canvasPanAndZoom.zoom(0.8);
-
-    // Enable pan and zoom for minimap
-    setTimeout(() => {
-      this.minimapPanAndZoom = SvgPanZoom('#minimap svg').disablePan();
-      this.minimapPanAndZoom.disableDblClickZoom();
-      this.minimapPanAndZoom.setMinZoom(0);
-      this.minimapPanAndZoom.setMaxZoom(100);
-      this.minimapPanAndZoom.zoom(0.8);
-      this.minimapPanAndZoom.setBeforePan((oldPoint: SvgPanZoom.Point, newPoint: SvgPanZoom.Point) => {
-        return { x: false, y: false };
-      });
-    }, 10);
-
-    // While canvas is zoomed
-    this.canvasPanAndZoom.setOnZoom((scale) => {
-      if (this.minimapPanAndZoom) {
-        this.minimapPanAndZoom.zoom(scale);
-      }
-    });
-
-    // While canvas is panned
-    this.canvasPanAndZoom.setOnPan((point: SvgPanZoom.Point) => {
-      if (this.minimapPanAndZoom) {
-        this.minimapPanAndZoom.pan(point);
-      }
-    });
   }
 }

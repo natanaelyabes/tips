@@ -123,5 +123,9 @@ declare const $: any;
  *
  */
 @Component
-export default class QueueDataModal extends SemanticComponent {}
+export default class QueueDataModal extends SemanticComponent {
+  public log(): void {
+    console.log('Test');
+  }
+}
 </script>

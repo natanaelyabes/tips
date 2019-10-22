@@ -16,10 +16,7 @@ export const NODE_TYPE = {
       '.root' : {
         refWidth: '100%',
         refHeight: '100%',
-        // stroke: 'black',
-        // fill: 'white',
         strokeWidth: 2,
-        transform: 'translate(-25, 0)',
       },
       '.label' : {
         ref: '.root',
@@ -42,7 +39,6 @@ export const NODE_TYPE = {
         stroke: 'black',
         fill: 'white',
         strokeWidth: 2,
-        transform: 'translate(0, 0); rotate(45)',
       },
       '.label' : {
         ref: '.root',
@@ -62,7 +58,6 @@ export const NODE_TYPE = {
       '.root': {
         r: 10,
         strokeWidth: 2,
-        transform: 'translate(0, 20)',
         stroke: '#21ba45',
         fill: 'white',
       },
@@ -86,7 +81,6 @@ export const NODE_TYPE = {
         strokeWidth: 2,
         stroke: '#db2828',
         fill: '#db2828',
-        transform: 'translate(0, 20)',
       },
       '.label': {
         ref: '.root',

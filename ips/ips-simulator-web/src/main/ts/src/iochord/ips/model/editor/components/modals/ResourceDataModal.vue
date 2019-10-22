@@ -88,5 +88,9 @@ declare const $: any;
  *
  */
 @Component
-export default class ResourceDataModal extends SemanticComponent {}
+export default class ResourceDataModal extends SemanticComponent {
+  public log(): void {
+    console.log('Test');
+  }
+}
 </script>
