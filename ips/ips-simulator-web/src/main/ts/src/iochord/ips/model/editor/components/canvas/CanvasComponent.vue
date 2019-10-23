@@ -146,7 +146,6 @@ export default class CanvasComponent extends Mixins(BaseComponent, CanvasMixin) 
 
   // Pan and zoom
   public canvasPanAndZoom?: SvgPanZoom.Instance;
-  public minimapPanAndZoom?: SvgPanZoom.Instance;
 
   public mounted(): void {
     this.loadGraph();

@@ -71,7 +71,7 @@ export default class JointJsRenderer {
 
         // Render joint.js paper
         this.renderPage(jointPage);
-        // this.renderMinimap(jointPage);
+        this.renderMinimap(jointPage);
 
         // Render elements and links
         this.renderNodes(jointPage);
@@ -108,7 +108,7 @@ export default class JointJsRenderer {
     return this.jointPages.get(pageId as string);
   }
 
-  private setProperties(jointPage: JointGraphPageImpl, currentPage: GraphPage): void {
+  public setProperties(jointPage: JointGraphPageImpl, currentPage: GraphPage): void {
     jointPage.setId(currentPage.getId() as string);
     jointPage.setLabel(currentPage.getLabel() as string);
     jointPage.setType(currentPage.getType() as string);
@@ -119,7 +119,7 @@ export default class JointJsRenderer {
     jointPage.setData(currentPage.getData() as TSMap<string, GraphData>);
   }
 
-  private renderPage(jointPage: JointGraphPageImpl): void {
+  public renderPage(jointPage: JointGraphPageImpl): void {
 
     // Set the paper as the graph container
     jointPage.setPaper(new joint.dia.Paper({
@@ -139,7 +139,7 @@ export default class JointJsRenderer {
     } as joint.dia.Paper.Options ));
   }
 
-  private renderMinimap(jointPage: JointGraphPageImpl): void {
+  public renderMinimap(jointPage: JointGraphPageImpl): void {
 
     // Set the minimap for each page
     jointPage.setMinimap(new joint.dia.Paper({
@@ -156,10 +156,10 @@ export default class JointJsRenderer {
     } as joint.dia.Paper.Options));
 
     // Scale down minimap
-    jointPage.getMinimap().scale(0.2);
+    jointPage.getMinimap().scale(0.065);
   }
 
-  private renderNodes(jointPage: JointGraphPageImpl): void {
+  public renderNodes(jointPage: JointGraphPageImpl): void {
     const keys: any = { elementType: 'elementType' };
 
     // for all nodes
@@ -191,7 +191,7 @@ export default class JointJsRenderer {
     });
   }
 
-  private renderData(jointPage: JointGraphPageImpl): void {
+  public renderData(jointPage: JointGraphPageImpl): void {
     const keys: any = { elementType: 'elementType' };
 
     // for all nodes
@@ -216,7 +216,7 @@ export default class JointJsRenderer {
     });
   }
 
-  private renderArcs(jointPage: JointGraphPageImpl): void {
+  public renderArcs(jointPage: JointGraphPageImpl): void {
     const keys: any = { elementType: 'elementType' };
 
     // for all connectors
@@ -235,7 +235,7 @@ export default class JointJsRenderer {
     });
   }
 
-  private autoLayoutGraph(jointPage: JointGraphPageImpl): void {
+  public autoLayoutGraph(jointPage: JointGraphPageImpl): void {
     joint.layout.DirectedGraph.layout(jointPage.getGraph(), {
       ranker: 'network-simplex',
       rankDir: 'LR',
@@ -245,7 +245,7 @@ export default class JointJsRenderer {
     } as joint.layout.DirectedGraph.LayoutOptions);
   }
 
-  private centerGraph(jointPage: JointGraphPageImpl): void {
+  public centerGraph(jointPage: JointGraphPageImpl): void {
     const PageViewportBBox = jointPage.getPaper().viewport.getBBox();
     jointPage.getPaper().translate(
       (this.canvasWidth as number / 2) - (PageViewportBBox.width / 2),
@@ -253,7 +253,7 @@ export default class JointJsRenderer {
     );
   }
 
-  private centerMinimap(jointPage: JointGraphPageImpl): void {
+  public centerMinimap(jointPage: JointGraphPageImpl): void {
     const MinimapViewportBBox = jointPage.getMinimap().viewport.getBoundingClientRect();
     jointPage.getMinimap().translate(
       (jointPage.getMinimap().options.width as number / 2) - (MinimapViewportBBox.width / 2),
@@ -261,7 +261,7 @@ export default class JointJsRenderer {
     );
   }
 
-  private enableZoomAndPanning(jointPage: JointGraphPageImpl): void {
+  public enableZoomAndPanning(jointPage: JointGraphPageImpl): void {
 
     // Enable pan and zoom for canvas
     this.canvasPanAndZoom = SvgPanZoom('#canvas svg').disablePan();
