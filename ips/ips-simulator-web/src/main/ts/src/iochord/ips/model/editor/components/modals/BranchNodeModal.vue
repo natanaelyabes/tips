@@ -193,6 +193,15 @@ export default class BranchNodeModal extends SemanticComponent implements Modal<
         });
       }
     });
+
+    // Pop up toast
+    ($('body') as any).toast({
+      position: 'bottom right',
+      class: 'info',
+      className: { toast: 'ui message' },
+      message: `${object.getId()} properties have been saved`,
+      newestOnTop: true,
+    });
   }
 }
 </script>

@@ -28,13 +28,12 @@
             </div>
           </div>
           <div class="row">
-            <div class="four wide column">
+            <div class="sixteen wide column">
               <div class="ui checkbox">
-                <input type="checkbox" v-model="shared" class="hidden">
-                <label>Shared buffer</label>
+                <input id="x_txt_shared" type="checkbox" v-model="shared">
+                <label for="x_txt_shared">Shared buffer</label>
               </div>
             </div>
-            <div class="twelve wide column"></div>
           </div>
           <div class="row">
             <div class="sixteen wide column">
@@ -42,13 +41,12 @@
             </div>
           </div>
           <div class="row">
-            <div class="four wide column">
+            <div class="sixteen wide column">
               <div class="ui checkbox">
-                <input type="checkbox" v-model="single" class="hidden">
-                <label>Single</label>
+                <input id="x_txt_single" type="checkbox" v-model="single">
+                <label for="x_txt_single">Single</label>
               </div>
             </div>
-            <div class="twelve wide column"></div>
           </div>
           <div class="row">
             <div class="four wide column">Queue Size</div>
@@ -105,15 +103,15 @@
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
 import SemanticComponent from '@/iochord/ips/common/ui/semantic-components/SemanticComponent';
-import { TSMap } from 'typescript-map';
+import { QUEUE_TYPE } from '@/iochord/ips/common/graph/ism/enums/QUEUE';
 import { GraphPage } from '@/iochord/ips/common/graph/ism/interfaces/GraphPage';
 import GraphModule from '@/iochord/ips/common/graph/ism/stores/GraphModule';
+import { TSMap } from 'typescript-map';
 import { getModule } from 'vuex-module-decorators';
+import { JointGraphPageImpl } from '@/iochord/ips/common/graph/ism/rendering-engine/joint/shapes/class/JointGraphPageImpl';
 import { Modal } from '../../interfaces/Modal';
 import { GraphDataQueueImpl } from '@/iochord/ips/common/graph/ism/class/components/GraphDataQueueImpl';
-import { JointGraphPageImpl } from '@/iochord/ips/common/graph/ism/rendering-engine/joint/shapes/class/JointGraphPageImpl';
 import { GraphData } from '@/iochord/ips/common/graph/ism/interfaces/GraphData';
-import { QUEUE_TYPE } from '@/iochord/ips/common/graph/ism/enums/QUEUE';
 
 const graphModule = getModule(GraphModule);
 
@@ -188,6 +186,15 @@ export default class QueueDataModal extends SemanticComponent implements Modal<J
           },
         });
       }
+    });
+
+    // Pop up toast
+    ($('body') as any).toast({
+      position: 'bottom right',
+      class: 'info',
+      className: { toast: 'ui message' },
+      message: `${object.getId()} properties have been saved`,
+      newestOnTop: true,
     });
   }
 }
