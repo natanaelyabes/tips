@@ -6,6 +6,6 @@
  *
  */
 export enum QUEUE_TYPE {
-  LIFO,
-  FIFO,
+  LIFO = 'LIFO',
+  FIFO = 'FIFO',
 }

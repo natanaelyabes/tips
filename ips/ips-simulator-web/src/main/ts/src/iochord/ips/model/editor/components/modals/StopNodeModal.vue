@@ -15,13 +15,13 @@
           <div class="row">
             <div class="three wide column">Label</div>
             <div class="thirteen wide column">
-              <input type="text" @change="handleChangedLabel()" v-model="tempStopLabel" id="stop_txt_label">
+              <input type="text" v-model="label" id="stop_txt_label">
             </div>
           </div>
           <div class="row">
             <div class="sixteen wide column">
               <div class="inline field">
-                <input type="checkbox" @change="handleChangedReport()" v-model="tempReport" class="hidden">
+                <input type="checkbox" v-model="report" class="hidden">
                 <label>Report statistics</label>
               </div>
             </div>
@@ -30,18 +30,28 @@
       </div>
     </div>
     <div class="actions">
-      <p><em>Node properties are automatically saved</em></p>
+      <div @click="saveProperties(page, properties)" class="ui positive button">Save</div>
+      <div class="ui cancel button">Cancel</div>
     </div>
   </div>
 </template>
 
-<style>
-</style>
-
 <script lang="ts">
 import { Component, Prop, Vue, Watch } from 'vue-property-decorator';
 import SemanticComponent from '@/iochord/ips/common/ui/semantic-components/SemanticComponent';
+import { Modal } from '../../interfaces/Modal';
+import { GraphStopEventNodeImpl } from '@/iochord/ips/common/graph/ism/class/components/GraphStopEventNodeImpl';
+import { JointGraphPageImpl } from '@/iochord/ips/common/graph/ism/rendering-engine/joint/shapes/class/JointGraphPageImpl';
+import GraphModule from '@/iochord/ips/common/graph/ism/stores/GraphModule';
+import { getModule } from 'vuex-module-decorators';
+import { TSMap } from 'typescript-map';
+import { GraphPage } from '@/iochord/ips/common/graph/ism/interfaces/GraphPage';
+import { GraphNode } from '@/iochord/ips/common/graph/ism/interfaces/GraphNode';
+
 declare const $: any;
+
+// Vuex
+const graphModule = getModule(GraphModule);
 
 /**
  *
@@ -51,35 +61,49 @@ declare const $: any;
  *
  */
 @Component
-export default class StopNodeModal extends SemanticComponent {
-  @Prop() private stopLabel!: string;
-  @Prop() private stopReport!: boolean;
+export default class StopNodeModal extends SemanticComponent implements Modal<JointGraphPageImpl, GraphStopEventNodeImpl> {
 
-  private tempStopLabel: string = '';
-  private tempReport: boolean = false;
+  // Whole object properties
+  private properties!: GraphStopEventNodeImpl;
 
-  @Watch('stopLabel')
-  public onChangeStopLabel(newVal: string): void {
-    this.tempStopLabel = newVal;
+  // Page renderer
+  private page!: JointGraphPageImpl;
+
+  // Component properties
+  private label: string = '';
+  private report: boolean = false;
+
+  public populateProperties(page: JointGraphPageImpl, object: GraphStopEventNodeImpl): void {
+
+    // Whole object properties
+    this.properties = object;
+
+    // Page renderer
+    this.page = page;
+
+    // Component properties
+    this.label = object.getLabel() as string;
+    this.report = object.isReportStatistics() as boolean;
   }
 
-  @Watch('stopReport')
-  public onChangeReport(newVal: boolean): void {
-    this.tempReport = newVal;
-  }
+  public saveProperties(page: JointGraphPageImpl, object: GraphStopEventNodeImpl): void {
+    const nodePageId = (object.getId() as string).split('-')[0];
+    const nodePage = (graphModule.graph.getPages() as TSMap<string, GraphPage>).get(nodePageId);
+    const node: GraphStopEventNodeImpl = (page.getNodes() as TSMap<string, GraphNode>).get(object.getId() as string) as GraphStopEventNodeImpl;
 
-  public handleChangedLabel(): void {
-    this.$emit('changeStopLabel', this.tempStopLabel);
-  }
+    // Save properties
+    node.setLabel(this.label);
+    node.setReportStatistics(this.report);
 
-  public handleChangedReport(): void {
-    this.$emit('changeStopReport', this.tempReport);
-  }
-
-  public mounted(): void {
-    this.$nextTick(() => {
-      this.tempStopLabel = this.stopLabel;
-      this.tempReport = this.stopReport;
+    // Change label of the renderer node
+    page.getGraph().getCells().map((cell: joint.dia.Cell) => {
+      if (cell.attributes.nodeId === object.getId()) {
+        cell.attr({
+          label: {
+            text: this.label,
+          },
+        });
+      }
     });
   }
 }

@@ -16,136 +16,16 @@
     </div>
 
     <!-- Data Modals -->
-    <template v-for="type in Array.from(dataTypes)">
+    <ObjectTypeDataModal ref="objecttype" id="objecttype"/>
+    <FunctionDataModal ref="function" id="function"/>
+    <GeneratorDataModal ref="generator" id="generator"/>
+    <QueueDataModal ref="queue" id="queue"/>
+    <ResourceDataModal ref="resource" id="resource"/>
+    <StartNodeModal ref="start" id="start"/>
+    <BranchNodeModal ref="branch" id="branch"/>
+    <ActivityNodeModal ref="activity" id="activity"/>
+    <StopNodeModal ref="stop" id="stop"/>
 
-      <!-- If object type node was clicked -->
-      <template v-if="type === 'objecttype'">
-
-        <!-- Show object type modal -->
-        <ObjectTypeDataModal
-          @changeObjectTypeDataLabel="changeObjectTypeDataLabelFromChild($event, activePage, currentSelectedElement, loadGraph)"
-          :objectTypeDataLabel.sync="parentObjectTypeDataLabel"
-          v-bind:id="type" v-bind:key="type" />
-      </template>
-
-      <!-- If function node was clicked -->
-      <template v-if="type === 'function'">
-
-        <!-- Show function modal -->
-        <FunctionDataModal
-          @changeFunctionDataLabel="changeFunctionDataLabelFromChild($event, activePage, currentSelectedElement, loadGraph)"
-          :functionDataLabel.sync="parentFunctionDataLabel"
-          v-bind:id="type" v-bind:key="type" />
-      </template>
-
-      <!-- If generator node was clicked -->
-      <template v-if="type === 'generator'">
-
-        <!-- Show generator modal -->
-        <GeneratorDataModal
-          @changeGeneratorDataLabel="changeGeneratorDataLabelFromChild($event, activePage, currentSelectedElement, loadGraph)"
-          :generatorDataLabel.sync="parentGeneratorDataLabel"
-          v-bind:id="type" v-bind:key="type" />
-      </template>
-
-      <!-- If queue node was clicked -->
-      <template v-if="type === 'queue'">
-
-        <!-- Show queue modal -->
-        <QueueDataModal
-          
-          v-bind:id="type" v-bind:key="type" />
-      </template>
-
-      <!-- If resource node was clicked -->
-      <template v-if="type === 'resource'">
-
-        <!-- Show resource modal -->
-        <ResourceDataModal
-
-          v-bind:id="type" v-bind:key="type" />
-      </template>
-    </template>
-
-    <!-- Node Modals -->
-    <template v-for="type in Array.from(nodeTypes)">
-
-      <!-- If start node was clicked -->
-      <template v-if="type === 'start'">
-
-        <!-- Show start modal -->
-        <StartNodeModal label="test"
-          @changeStartLabel="changeStartLabelFromChild($event, activePage, currentSelectedElement, loadGraph)"
-          @changeStartGenerator="changeStartGeneratorFromChild($event, activePage, currentSelectedElement, loadGraph)"
-          :startLabel.sync="parentStartLabel"
-          :startGenerator.sync="parentStartGenerator"
-          v-bind:id="type" v-bind:key="type"/>
-      </template>
-
-      <!-- If branch node was clicked -->
-      <template v-if="type === 'branch'">
-
-        <!-- Show branch modal -->
-        <BranchNodeModal label="this is branch"
-          @changeBranchLabel="changeBranchLabelFromChild($event, activePage, currentSelectedElement, loadGraph)"
-          @changeBranchSelectedGate="changeBranchSelectedGateFromChild($event, activePage, currentSelectedElement, loadGraph)"
-          @changeBranchSelectedType="changeBranchSelectedTypeFromChild($event, activePage, currentSelectedElement, loadGraph)"
-          @changeBranchSelectedRule="changeBranchSelectedRuleFromChild($event, activePage, currentSelectedElement, loadGraph)"
-          :branchLabel.sync="parentBranchLabel"
-          :selectedGate.sync="parentBranchSelectedGate"
-          :selectedType.sync="parentBranchSelectedType"
-          :selectedRule.sync="parentBranchSelectedRule"
-          v-bind:id="type" v-bind:key="type"/>
-      </template>
-
-      <!-- If activity node was clicked -->
-      <template v-if="type === 'activity'">
-
-        <!-- Show activity modal -->
-        <ActivityNodeModal
-          @changeActLabel="changeActLabelFromChild($event, activePage, currentSelectedElement, loadGraph)"
-          @changeActNodeSelectedActivityType="changeActNodeSelectedActivityTypeFromChild($event, activePage, currentSelectedElement, loadGraph)"
-          @changeActNodeResource="changeActNodeResourceFromChild($event, activePage, currentSelectedElement, loadGraph)"
-          @changeActNodeReport="changeActNodeReportFromChild($event, activePage, currentSelectedElement, loadGraph)"
-          @changeActNodeCustomMonitor="changeActNodeCustomMonitorFromChild($event, activePage, currentSelectedElement, loadGraph)"
-          @changeActNodeProcessingTime="changeActNodeProcessingTimeFromChild($event, activePage, currentSelectedElement, loadGraph)"
-          @changeActNodeProcessingTimeParameter="changeActNodeProcessingTimeParameterFromChild($event, activePage, currentSelectedElement, loadGraph)"
-          @changeActNodeSetupTime="changeActNodeSetupTimeFromChild($event, activePage, currentSelectedElement, loadGraph)"
-          @changeActNodeSetupTimeParameter="changeActNodeSetupTimeParameterFromChild($event, activePage, currentSelectedElement, loadGraph)"
-          @changeActNodeUnit="changeActNodeUnitFromChild($event, activePage, currentSelectedElement, loadGraph)"
-          @changeActNodeQueueLabel="changeActNodeQueueLabelFromChild($event, activePage, currentSelectedElement, loadGraph)"
-          @changeActNodeInputType="changeActNodeInputTypeFromChild($event, activePage, currentSelectedElement, loadGraph)"
-          @changeActNodeOutputType="changeActNodeOutputTypeFromChild($event, activePage, currentSelectedElement, loadGraph)"
-          @changeActNodeCodeSegment="changeActNodeCodeSegmentFromChild($event, activePage, currentSelectedElement, loadGraph)"
-          :actLabel="parentActLabel"
-          :actNodeSelectedActivityType="parentActNodeSelectedActivityType"
-          :actNodeResource="parentActNodeResource"
-          :actNodeReport="parentActNodeReport"
-          :actNodeCustomMonitor="parentActNodeCustomMonitor"
-          :actNodeProcessingTime="parentActNodeProcessingTime"
-          :actNodeProcessingTimeParameter="parentActNodeProcessingTimeParameter"
-          :actNodeSetupTime="parentActNodeSetupTime"
-          :actNodeSetupTimeParameter="parentActNodeSetupTimeParameter"
-          :actNodeUnit="parentActNodeUnit"
-          :actNodeQueueLabel="parentActNodeQueueLabel"
-          :actNodeInputType="parentActNodeInputType"
-          :actNodeOutputType="parentActNodeOutputType"
-          :actNodeCodeSegment="parentActNodeCodeSegment"
-          v-bind:id="type" v-bind:key="type"/>
-      </template>
-
-      <!-- If stop node was clicked -->
-      <template v-if="type === 'stop'">
-
-        <!-- Show stop modal -->
-        <StopNodeModal
-          @changeStopLabel="changeStopLabelFromChild($event, activePage, currentSelectedElement, loadGraph)"
-          @changeStopReport="changeStopReportFromChild($event, activePage, currentSelectedElement, loadGraph)"
-          :stopLabel="parentStopLabel"
-          :stopReport="parentStopReport"
-          v-bind:id="type" v-bind:key="type"/>
-      </template>
-    </template>
   </div>
 </template>
 
@@ -196,10 +76,12 @@ import { GraphData } from '@/iochord/ips/common/graph/ism/interfaces/GraphData';
 import { GraphElement } from '@/iochord/ips/common/graph/ism/interfaces/GraphElement';
 import { GraphNode } from '@/iochord/ips/common/graph/ism/interfaces/GraphNode';
 import { GraphStartEventNode } from '@/iochord/ips/common/graph/ism/interfaces/components/GraphStartEventNode';
+import { Modal } from '@/iochord/ips/model/editor/interfaces/Modal';
 
 // Enums
 import { NODE_TYPE } from '@/iochord/ips/common/graph/ism/rendering-engine/joint/shapes/enums/NODE';
 import { ARC_TYPE } from '@/iochord/ips/common/graph/ism/rendering-engine/joint/shapes/enums/ARC';
+import { MODAL_TYPE } from '../../enums/MODAL';
 
 // Components
 import StartNodeModal from '@/iochord/ips/model/editor/components/modals/StartNodeModal.vue';
@@ -215,7 +97,6 @@ import QueueDataModal from '@/iochord/ips/model/editor/components/modals/QueueDa
 import ResourceDataModal from '@/iochord/ips/model/editor/components/modals/ResourceDataModal.vue';
 
 // Mixins
-import ModalMixin from '../../mixins/modals/ModalMixin';
 import CanvasMixin from '../../mixins/editors/CanvasMixin';
 
 // JQuery Handler
@@ -260,9 +141,10 @@ const editorState = getModule(EditorState);
     ResourceDataModal,
   },
 })
-export default class CanvasComponent extends Mixins(BaseComponent, ModalMixin, CanvasMixin) {
+export default class CanvasComponent extends Mixins(BaseComponent, CanvasMixin) {
   @Prop() public response?: Graph;
 
+  // Pan and zoom
   public canvasPanAndZoom?: SvgPanZoom.Instance;
   public minimapPanAndZoom?: SvgPanZoom.Instance;
 
@@ -279,19 +161,14 @@ export default class CanvasComponent extends Mixins(BaseComponent, ModalMixin, C
 
       // TODO: we can choose any rendering engine later
 
-      // TODO:
-      // Extend the capability of the renderer.
-      // For example, we dont have to re-render the graph
-      // every time user apply changes to the graph.
+      // TODO: Extend the capability of the renderer.
+      //       For example, we dont have to re-render the graph
+      //       every time user apply changes to the graph.
       const renderer = new JointJsRenderer(
         this.graph,
         this.activePage as GraphPage,
         this.currentSelectedElement as GraphNode,
       );
-
-      // Get node types that need to be rendered in the canvas
-      this.nodeTypes = renderer.getNodeTypes();
-      this.dataTypes = renderer.getDataTypes();
 
       // Get canvasPanAndZoom instance from renderer
       this.canvasPanAndZoom = renderer.canvasPanAndZoom;
@@ -488,141 +365,30 @@ export default class CanvasComponent extends Mixins(BaseComponent, ModalMixin, C
 
         // Get current element and its properties
         const currentElement = elementView.model;
-        const currentElementType = currentElement.attributes.type;
-        const currentElementNodeId = currentElement.attributes.nodeId;
+        const currentElementType: string = currentElement.attributes.type;
+        const currentElementCategory: string = currentElement.attributes.category;
+
+        // Get node property
+        let property;
+        let currentElementId: string;
+
+        // Get element properties
+        if (currentElementCategory === 'node') {
+          currentElementId = currentElement.attributes.nodeId.split('-')[2];
+          property = graphModule.pageNode(jointPage, currentElementId);
+        } else if (currentElementCategory === 'data') {
+          currentElementId = currentElement.attributes.dataId.split('-')[2];
+          property = graphModule.pageDatum(jointPage, currentElementId);
+        }
+
+        // Populate modal with element properties
+        (this.$refs[currentElementType] as Modal<JointGraphPageImpl, typeof property>).populateProperties(jointPage, property);
+
+        // Show modal
+        $(`#${currentElementType}`).modal('setting', 'transition', 'fade up').modal('show');
 
         // Highlight current element
         currentElement.findView(jointPage.getPaper()).highlight();
-
-        // If current clicked element is a object type node
-        if (currentElementType === 'objecttype') {
-          $('#objecttype').modal('setting', 'transition', 'fade up').modal('show');
-
-          this.currentSelectedElement = jointPage.getNodes()!.get(currentElementNodeId);
-        }
-
-        if (currentElementType === 'function') {
-          $('#function').modal('setting', 'transition', 'fade up').modal('show');
-
-          this.currentSelectedElement = jointPage.getNodes()!.get(currentElementNodeId);
-        }
-
-        if (currentElementType === 'generator') {
-          $('#generator').modal('setting', 'transition', 'fade up').modal('show');
-
-          this.currentSelectedElement = jointPage.getNodes()!.get(currentElementNodeId);
-        }
-
-        if (currentElementType === 'queue') {
-          $('#queue').modal('setting', 'transition', 'fade up').modal('show');
-
-          this.currentSelectedElement = jointPage.getNodes()!.get(currentElementNodeId);
-        }
-
-        if (currentElementType === 'resource') {
-          $('#resource').modal('setting', 'transition', 'fade up').modal('show');
-
-          this.currentSelectedElement = jointPage.getNodes()!.get(currentElementNodeId);
-        }
-
-        // If current clicked element is a start node
-        if (currentElementType === 'start') {
-
-          this.parentStartLabel = '';
-          this.parentStartGenerator = '';
-
-          // Show start modal
-          $('#start').modal('setting', 'transition', 'fade up').modal('show');
-
-          // Populate node properties to the modal
-          this.parentStartLabel = jointPage.getNodes()!.get(currentElementNodeId)!.getLabel() as string;
-          this.parentStartGenerator = (jointPage.getNodes()!.get(currentElementNodeId) as GraphStartEventNode)
-            .getGeneratorRef() as string;
-
-          // Set current clicked node as current selected element
-          this.currentSelectedElement = jointPage.getNodes()!.get(currentElementNodeId);
-        }
-
-        // If current clicked element is an activity node
-        if (currentElementType === 'activity') {
-
-          this.parentActLabel = '';
-          this.parentActNodeSelectedActivityType = ACTIVITY_TYPE.STANDARD;
-          this.parentActNodeResource = '';
-          this.parentActNodeReport = false;
-          this.parentActNodeProcessingTime = DISTRIBUTION_TYPE.CONSTANT;
-          this.parentActNodeProcessingTimeParameter = '';
-          this.parentActNodeSetupTime = DISTRIBUTION_TYPE.CONSTANT;
-          this.parentActNodeSetupTimeParameter = '';
-          this.parentActNodeUnit = TIME_UNIT.MINUTES;
-          this.parentActNodeQueueLabel = '';
-
-          // Show activity modal
-          $('#activity')
-            .modal('setting', 'transition', 'fade up')
-            .modal('show');
-
-          // Activity node
-          const actNode = (jointPage.getNodes()!.get(currentElementNodeId) as GraphActivityNode);
-
-          // Populate node properties to the modal
-          this.parentActLabel = actNode.getLabel() as string;
-          this.parentActNodeSelectedActivityType = actNode.getActivityType() as ACTIVITY_TYPE;
-          this.parentActNodeResource = actNode.getResourceRef() !== undefined ? actNode.getResourceRef() as string : '';
-          this.parentActNodeReport = actNode.isReportStatistics() as boolean;
-          this.parentActNodeProcessingTime = actNode.getProcessingTime() as DISTRIBUTION_TYPE;
-          this.parentActNodeProcessingTimeParameter = actNode.getProcessingTimeParameter() as string;
-          this.parentActNodeSetupTime = actNode.getSetupTime() as DISTRIBUTION_TYPE;
-          this.parentActNodeSetupTimeParameter = actNode.getSetupTimeParameter() as string;
-          this.parentActNodeUnit = actNode.getUnit() as TIME_UNIT;
-          this.parentActNodeQueueLabel = actNode.getQueueRef() !== undefined ? actNode.getQueueRef() as string : '';
-
-          // Set current clicked node as current selected element
-          this.currentSelectedElement = jointPage.getNodes()!.get(currentElementNodeId);
-
-        }
-
-        // If current clicked element is a branch node
-        if (currentElementType === 'branch') {
-
-          this.parentBranchLabel = '';
-          this.parentBranchSelectedGate = BRANCH_GATE.AND;
-          this.parentBranchSelectedType = BRANCH_TYPE.SPLIT;
-          this.parentBranchSelectedRule = BRANCH_RULE.PROBABILITY;
-
-          // Show branch modal
-          $('#branch')
-            .modal('setting', 'transition', 'fade up')
-            .modal('show');
-
-          // Branch node
-          const branchNode = (jointPage.getNodes()!.get(currentElementNodeId) as GraphBranchNode);
-
-          // Populate node properties to the modal
-          this.parentBranchLabel = branchNode.getLabel() as string;
-          this.parentBranchSelectedGate = branchNode.getGate() as BRANCH_GATE;
-          this.parentBranchSelectedType = branchNode.getBranchType() as BRANCH_TYPE;
-          this.parentBranchSelectedRule = branchNode.getRule() as BRANCH_RULE;
-
-          this.currentSelectedElement = jointPage.getNodes()!.get(currentElementNodeId);
-        }
-
-        // If current clicked element is a stop node
-        if (currentElementType === 'stop') {
-
-          this.parentStopLabel = '';
-          this.parentStopReport = false;
-
-          // Show stop modal
-          $('#stop').modal('setting', 'transition', 'fade up').modal('show');
-
-          // Populate node properties to the modal
-          this.parentStopLabel = jointPage.getNodes()!.get(currentElementNodeId)!.getLabel() as string;
-          this.parentStopReport = jointPage.getNodes()!.get(currentElementNodeId)!.isReportStatistics() as boolean;
-
-          // Set current clicked node as current selected element
-          this.currentSelectedElement = jointPage.getNodes()!.get(currentElementNodeId);
-        }
       },
       'cell:highlight': (elementView: joint.dia.ElementView) => {
 

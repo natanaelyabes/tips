@@ -15,43 +15,37 @@
           <div class="row">
             <div class="four wide column">Label</div>
             <div class="twelve wide column">
-              <input type="text" @change="handleChangedLabel()" v-model="tempBranchLabel">
+              <input type="text" v-model="label">
             </div>
           </div>
           <div class="row">
             <div class="four wide column">Gate</div>
             <div class="twelve wide column">
-              <template v-if="reloaded">
-                <select class="ui dropdown" @change="handleSelectedGate()" v-model="tempSelectedGate">
-                  <option value="AND">AND</option>
-                  <option value="XOR">XOR</option>
-                </select>
-              </template>
+              <select id="branch_txtgate" class="ui search dropdown" v-model="selectedGate">
+                <option value="AND">AND</option>
+                <option value="XOR">XOR</option>
+              </select>
             </div>
           </div>
           <div class="row">
             <div class="four wide column">Type</div>
             <div class="twelve wide column">
-              <template v-if="reloaded">
-                <select class="ui dropdown" @change="handleSelectedType()" v-model="tempSelectedType">
-                  <option value="SPLIT">Split</option>
-                  <option value="JOIN">Join</option>
-                </select>
-              </template>
+              <select id="branch_txttype" class="ui search dropdown" v-model="selectedType">
+                <option value="SPLIT">Split</option>
+                <option value="JOIN">Join</option>
+              </select>
             </div>
           </div>
 
-          <template v-if="tempSelectedGate !== '' && tempSelectedType !== ''">
+          <template v-if="selectedGate !== '' && selectedType !== ''">
             <!-- Conditions & Rules -->
             <div id="row_branches_rule" class="row">
               <div class="four wide column">Rule</div>
               <div class="twelve wide column">
-                <template v-if="reloaded">
-                  <select class="ui dropdown" @change="handleSelectedRule()" v-model="tempSelectedRule">
-                    <option value="DATA">Data</option>
-                    <option value="PROBABILITY">Probability</option>
-                  </select>
-                </template>
+                <select id="branch_txtrule" class="ui search dropdown" v-model="selectedRule">
+                  <option value="DATA">Data</option>
+                  <option value="PROBABILITY">Probability</option>
+                </select>
               </div>
             </div>
 
@@ -89,18 +83,26 @@
       </div>
     </div>
     <div class="actions">
-      <p><em>Node properties are automatically saved</em></p>
+      <div @click="saveProperties(page, properties)" class="ui positive button">Save</div>
+      <div class="ui cancel button">Cancel</div>
     </div>
   </div>
 </template>
 
-<style>
-
-</style>
-
 <script lang="ts">
 import { Component, Prop, Vue, Watch } from 'vue-property-decorator';
 import SemanticComponent from '@/iochord/ips/common/ui/semantic-components/SemanticComponent';
+import { Modal } from '../../interfaces/Modal';
+import { JointGraphPageImpl } from '@/iochord/ips/common/graph/ism/rendering-engine/joint/shapes/class/JointGraphPageImpl';
+import { GraphBranchNodeImpl } from '@/iochord/ips/common/graph/ism/class/components/GraphBranchNodeImpl';
+import GraphModule from '@/iochord/ips/common/graph/ism/stores/GraphModule';
+import { getModule } from 'vuex-module-decorators';
+import { BRANCH_GATE, BRANCH_TYPE, BRANCH_RULE } from '@/iochord/ips/common/graph/ism/enums/BRANCH';
+import { GraphNode } from '@/iochord/ips/common/graph/ism/interfaces/GraphNode';
+import { TSMap } from 'typescript-map';
+import { GraphPage } from '@/iochord/ips/common/graph/ism/interfaces/GraphPage';
+
+const graphModule = getModule(GraphModule);
 
 declare const $: any;
 
@@ -113,86 +115,84 @@ declare const $: any;
  *
  */
 @Component
-export default class BranchNodeModal extends SemanticComponent {
-  @Prop() private branchLabel!: string;
-  @Prop() private selectedGate!: string;
-  @Prop() private selectedType!: string;
-  @Prop() private selectedRule!: string;
+export default class BranchNodeModal extends SemanticComponent implements Modal<JointGraphPageImpl, GraphBranchNodeImpl> {
 
-  private tempBranchLabel: string = '';
-  private tempSelectedGate: string = '';
-  private tempSelectedType: string = '';
-  private tempSelectedRule: string = '';
+  // Whole object properties
+  private properties!: GraphBranchNodeImpl;
 
-  private rowBranchesRuleContent: string = '';
-  private rowBranchesIfContent: string = '';
-  private rowBranchesTblContent: string = '';
+  // Renderer page
+  private page!: JointGraphPageImpl;
 
-  private reloaded: boolean = false;
+  // Component properties
+  private label: string = '';
+  private selectedGate: BRANCH_GATE = BRANCH_GATE.AND;
+  private selectedType: BRANCH_TYPE = BRANCH_TYPE.SPLIT;
+  private selectedRule: BRANCH_RULE = BRANCH_RULE.PROBABILITY;
 
-  @Watch('branchLabel')
-  public onChangeBranchLabel(newVal: string): void {
-    this.tempBranchLabel = this.branchLabel;
+  public populateProperties(page: JointGraphPageImpl, object: GraphBranchNodeImpl): void {
+
+    // Whole object properties
+    this.properties = object;
+
+    // Page renderer
+    this.page = page;
+
+    // Component properties
+    this.label = object.getLabel() as string;
+    this.selectedGate = object.getGate() as BRANCH_GATE;
+    this.selectedRule = object.getRule() as BRANCH_RULE;
+    this.selectedType = object.getBranchType() as BRANCH_TYPE;
+
+    // Initialize dropdown with default value
+    $('#branch_txtgate')
+      .dropdown('set selected', this.selectedGate)
+      .dropdown({
+        onChange: (val: BRANCH_GATE) => {
+          this.selectedGate = val;
+        },
+      })
+    ;
+
+    $('#branch_txttype')
+      .dropdown('set selected', this.selectedType)
+      .dropdown({
+        onChange: (val: BRANCH_TYPE) => {
+          this.selectedType = val;
+        },
+      })
+    ;
+
+    $('#branch_txtrule')
+      .dropdown('set selected', this.selectedRule)
+      .dropdown({
+        onChange: (val: BRANCH_RULE) => {
+          this.selectedRule = val;
+        },
+      })
+    ;
   }
 
-  @Watch('selectedGate')
-  public onChangeSelectedGate(newVal: string): void {
-    this.tempSelectedGate = this.selectedGate;
-  }
+  public saveProperties(page: JointGraphPageImpl, object: GraphBranchNodeImpl): void {
+    const nodePageId = (object.getId() as string).split('-')[0];
+    const nodePage = (graphModule.graph.getPages() as TSMap<string, GraphPage>).get(nodePageId);
+    const node: GraphBranchNodeImpl = (page.getNodes() as TSMap<string, GraphNode>).get(object.getId() as string) as GraphBranchNodeImpl;
 
-  @Watch('selectedType')
-  public onChangeSelectedType(newVal: string): void {
-    this.tempSelectedType = this.selectedType;
-  }
+    // Save properties
+    node.setLabel(this.label);
+    node.setGate(this.selectedGate);
+    node.setBranchType(this.selectedType);
+    node.setRule(this.selectedRule);
 
-  @Watch('selectedRule')
-  public onChangeSelectedRule(newVal: string): void {
-    this.tempSelectedRule = this.selectedRule;
-  }
-
-  public handleChangedLabel(): void {
-    this.$emit('changeBranchLabel', this.tempBranchLabel);
-  }
-
-  public handleSelectedGate(): void {
-    this.$emit('changeBranchSelectedGate', this.tempSelectedGate);
-  }
-
-  public handleSelectedType(): void {
-    this.$emit('changeBranchSelectedType', this.tempSelectedType);
-  }
-
-  public handleSelectedRule(): void {
-    this.$emit('changeBranchSelectedRule', this.tempSelectedRule);
-  }
-
-  public beforeMount(): void {
-    this.rowBranchesRuleContent = '';
-    this.rowBranchesIfContent = '';
-    this.rowBranchesTblContent = '';
-  }
-
-  public declareSemanticModules(): void {
-    $('.ui.dropdown').dropdown();
-    $('.tabular.menu .item').tab();
-  }
-
-  public mounted(): void {
-    this.tempBranchLabel = this.branchLabel;
-    this.tempSelectedGate = this.selectedGate;
-    this.tempSelectedType = this.selectedType;
-    this.tempSelectedRule = this.selectedRule;
-  }
-
-  public updated(): void {
-    if (!this.reloaded) {
-      this.reloaded = true;
-    }
-
-    // Only for dropdown values
-    this.tempSelectedGate = this.selectedGate;
-    this.tempSelectedType = this.selectedType;
-    this.tempSelectedRule = this.selectedRule;
+    // Change label of the renderer node
+    page.getGraph().getCells().map((cell: joint.dia.Cell) => {
+      if (cell.attributes.nodeId === object.getId()) {
+        cell.attr({
+          label: {
+            text: this.label,
+          },
+        });
+      }
+    });
   }
 }
 </script>

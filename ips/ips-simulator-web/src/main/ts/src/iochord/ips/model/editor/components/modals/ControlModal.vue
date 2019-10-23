@@ -76,5 +76,9 @@ declare const $: any;
  *
  */
 @Component
-export default class ControlModal extends SemanticComponent {}
+export default class ControlModal extends SemanticComponent {
+  public log(): void {
+    console.log('Test');
+  }
+}
 </script>

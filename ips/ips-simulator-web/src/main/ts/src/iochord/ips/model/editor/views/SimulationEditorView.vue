@@ -41,13 +41,12 @@
         <CanvasComponent :key="reRenderKey" v-bind:response="graphData" />
       </template>
 
-      <template slot="right-sidebar-menu-item">
-        <!-- TODO: Minimap component -->
+      <!-- <template slot="right-sidebar-menu-item">
         <div class="ui basic segment" style="width: 260px">
           <h2>Model Pane</h2>
           <div id="minimap"></div>
         </div>
-      </template>
+      </template> -->
     </WrapperComponent>
   </div>
 </template>

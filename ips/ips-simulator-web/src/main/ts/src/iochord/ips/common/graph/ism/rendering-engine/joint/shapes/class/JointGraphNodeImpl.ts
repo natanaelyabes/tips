@@ -98,6 +98,7 @@ export class JointGraphNodeImpl extends GraphNodeImpl implements JointGraphEleme
       this.node.attr({...this.getAttr()});
       this.node.attributes.nodeId = this.getId();
       this.node.attributes.type = this.getType();
+      this.node.attributes.category = 'node';
       this.node.addTo(graph);
     }
 

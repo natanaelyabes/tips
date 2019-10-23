@@ -26,7 +26,7 @@ export default [
   // {
   //   path: 'sandbox-editor-test',
   //   name: `${BaseUrlEnum.IOCHORD}-${ApplicationEnum.NAME}-sandbox-editor-test`,
-  //   component: () => import(/* webpackChunkName: "ips-sandbox-editor-test-view" */ '@/iochord/ips/sandbox/yabes/SandboxEditorTest/views/SandboxEditorTest.vue'),
+  //   component: () => import(/* webpackChunkName: "ips-sandbox-editor-test-view" */ '@/iochord/ips/sandbox/yabes/SandboxEditorTest/views/SandboxCanvasComponentDemo.vue'),
   // },
   {
     path: 'hello-world',

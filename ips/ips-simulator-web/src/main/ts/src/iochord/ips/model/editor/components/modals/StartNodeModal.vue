@@ -17,24 +17,23 @@
               Label
             </div>
             <div class="thirteen wide column">
-              <input type="text" @change="handleChangedLabel()" v-model="tempStartLabel" id="start_txt_label" />
+              <input type="text" v-model="label" id="start_txt_label" />
             </div>
           </div>
           <div class="row">
             <div class="three wide column">Generator</div>
-            <template v-if="reloaded">
-              <div class="thirteen wide column">
-                <select @change="handleChangedGenerator($event)" v-model="tempGenerator" id="start_txtgen" class="ui search dropdown">
-                  <option v-for="nodeDatum in nodeData" :selected="nodeDatum[0] === tempGenerator" :key="nodeDatum[0]" :value="nodeDatum[0]">{{nodeDatum[0]}}</option>
-                </select>
-              </div>
-            </template>
+            <div class="thirteen wide column">
+              <select v-model="generator" id="start_txtgen" class="ui search dropdown">
+                <option v-for="nodeDatum in nodeData" :key="nodeDatum[0]" :value="nodeDatum[0]">{{nodeDatum[0]}}</option>
+              </select>
+            </div>
           </div>
         </div>
       </div>
     </div>
     <div class="actions">
-      <p><em>Node properties are automatically saved</em></p>
+      <div @click="saveProperties(page, properties)" class="ui positive button">Save</div>
+      <div class="ui cancel button">Cancel</div>
     </div>
   </div>
 </template>
@@ -58,11 +57,15 @@ import { getModule } from 'vuex-module-decorators';
 import { GraphPageImpl } from '@/iochord/ips/common/graph/ism/class/GraphPageImpl';
 import { GraphPage } from '@/iochord/ips/common/graph/ism/interfaces/GraphPage';
 import { GraphData } from '@/iochord/ips/common/graph/ism/interfaces/GraphData';
+import { Modal } from '../../interfaces/Modal';
+import { GraphStartEventNodeImpl } from '@/iochord/ips/common/graph/ism/class/components/GraphStartEventNodeImpl';
 
 // JQuery
 declare const $: any;
 
 import { TSMap } from 'typescript-map';
+import { GraphNode } from '../../../../common/graph/ism/interfaces/GraphNode';
+import { JointGraphPageImpl } from '@/iochord/ips/common/graph/ism/rendering-engine/joint/shapes/class/JointGraphPageImpl';
 
 
 // Vuex
@@ -76,48 +79,63 @@ const graphModule = getModule(GraphModule);
  *
  */
 @Component
-export default class StartNodeModal extends SemanticComponent {
-  @Prop() private startLabel!: string;
-  @Prop() private startGenerator!: string;
+export default class StartNodeModal extends SemanticComponent implements Modal<JointGraphPageImpl, GraphStartEventNodeImpl> {
 
-  private tempStartLabel: string = '';
-  private tempGenerator: string = '';
+  // Whole object properties
+  private properties!: GraphStartEventNodeImpl;
 
-  private reloaded: boolean = false;
+  // Renderer page
+  private page!: JointGraphPageImpl;
 
-  @Watch('startLabel')
-  public onChangeStartLabel(newVal: string): void {
-    this.tempStartLabel = newVal;
+  // Component properties
+  private label = '';
+  private generator = '';
+
+  public populateProperties(page: JointGraphPageImpl, object: GraphStartEventNodeImpl): void {
+
+    // Whole object properties
+    this.properties = object;
+
+    // Page Renderer
+    this.page = page;
+
+    // Component properties
+    this.label = object.getLabel() as string;
+    this.generator = object.getGeneratorRef() as string;
+
+    // Initialize dropdown with default value
+    $('#start_txtgen')
+      .dropdown('set selected', this.generator)
+      .dropdown({
+        onChange: (val: string) => {
+          this.generator = val;
+        },
+      })
+    ;
   }
 
-  @Watch('startGenerator')
-  public onChangeGenerator(newVal: string): void {
-    this.tempGenerator = newVal;
+  public saveProperties(page: JointGraphPageImpl, object: GraphStartEventNodeImpl): void {
+    const nodePageId = (object.getId() as string).split('-')[0];
+    const nodePage = (graphModule.graph.getPages() as TSMap<string, GraphPage>).get(nodePageId);
+    const node: GraphStartEventNodeImpl = (page.getNodes() as TSMap<string, GraphNode>).get(object.getId() as string) as GraphStartEventNodeImpl;
+
+    // Save properties
+    node.setLabel(this.label);
+    node.setGeneratorRef(this.generator);
+
+    // Change label of the renderer node
+    page.getGraph().getCells().map((cell: joint.dia.Cell) => {
+      if (cell.attributes.nodeId === object.getId()) {
+        cell.attr({
+          label: {
+            text: this.label,
+          },
+        });
+      }
+    });
   }
 
-  public handleChangedLabel(): void {
-    this.$emit('changeStartLabel', this.tempStartLabel);
-  }
-
-  public handleChangedGenerator(): void {
-    this.$emit('changeStartGenerator', this.tempGenerator);
-  }
-
-  public mounted(): void {
-    this.tempStartLabel = this.startLabel;
-    this.tempGenerator = this.startGenerator;
-  }
-
-  public updated(): void {
-    if (!this.reloaded) {
-      this.reloaded = true;
-    }
-
-    // Only for dropdown values
-    this.tempGenerator = this.startGenerator;
-  }
-
-  public get nodeData(): /* TSMap<string, GraphData> | null */ any {
+  public get nodeData(): any {
     const pages = graphModule.graph.getPages() as TSMap<string, GraphPage>;
     const nodeData = (pages.get('0') as GraphPage).getData() as TSMap<string, GraphData>;
     return nodeData.entries();

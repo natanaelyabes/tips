@@ -124,5 +124,9 @@ export default class GeneratorDataModal extends SemanticComponent {
   public mounted(): void {
     this.tempGeneratorDataLabel = this.generatorDataLabel;
   }
+
+  public log(): void {
+    console.log('Test');
+  }
 }
 </script>

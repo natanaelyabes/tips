@@ -15,7 +15,7 @@
           <div class="row">
             <div class="three wide column">Label</div>
             <div class="thirteen wide column">
-              <input type="text" @change="handleChangedLabel()" v-model="tempActLabel" id="activity_txt_label">
+              <input type="text" v-model="label" id="activity_txt_label">
             </div>
           </div>
           <div class="row">
@@ -33,29 +33,27 @@
                 <div class="ui grid">
                   <div class="row">
                     <div class="four wide column">Activity Type</div>
-                    <template v-if="reloaded">
-                      <div class="twelve wide column">
-                        <select class="ui dropdown" @change="handleSelectedActivityType($event)" v-model="tempSelectedActivityType">
-                          <option value="STANDARD">Standard</option>
-                          <option value="CONCURRENT_BATCH">Concurrent Batch Process</option>
-                          <option value="SPLIT_MODULE">Split Module Process</option>
-                        </select>
-                      </div>
-                    </template>
+                    <div class="twelve wide column">
+                      <select id="act_txttype" class="ui search dropdown" v-model="activityType">
+                        <option value="STANDARD">Standard</option>
+                        <option value="CONCURRENT_BATCH">Concurrent Batch Process</option>
+                        <option value="SPLIT_MODULE">Split Module Process</option>
+                      </select>
+                    </div>
                   </div>
 
-                  <template v-if="tempSelectedActivityType === 'STANDARD'">
+                  <template v-if="activityType === 'STANDARD'">
                     <div id="basic-standard-sm-1" class="row">
                       <div class="four wide column">Resources</div>
                       <div class="twelve wide column">
-                        <select @change="handleChangedResource($event)" v-model="tempResource" id="act_txtresource" class="ui search dropdown">
-                          <option v-for="nodeDatum in nodeData" :selected="nodeDatum[0] === tempResource" :key="nodeDatum[0]" :value="nodeDatum[0]">{{ nodeDatum[0] }}</option>
+                        <select v-model="resource" id="act_txtresource" class="ui search dropdown">
+                          <option v-for="nodeDatum in nodeData" :key="nodeDatum[0]" :value="nodeDatum[0]">{{ nodeDatum[0] }}</option>
                         </select>
                       </div>
                     </div>
                   </template>
 
-                  <template v-if="tempSelectedActivityType === 'CONCURRENT_BATCH'">
+                  <template v-if="activityType === 'CONCURRENT_BATCH'">
                     <div id="basic-cbp-sm-1" class="row">
                       <div class="four wide column">Process Criteria</div>
                       <div class="twelve wide column">
@@ -65,8 +63,8 @@
                     <div id="basic-cbp-sm-2" class="row">
                       <div class="four wide column">Resources</div>
                       <div class="twelve wide column">
-                        <select @change="handleChangedResource($event)" v-model="tempResource" id="act_txtresource" class="ui search dropdown">
-                          <option v-for="nodeDatum in nodeData" :selected="nodeDatum[0] === tempResource" :key="nodeDatum[0]" :value="nodeDatum[0]">{{ nodeDatum[0] }}</option>
+                        <select v-model="resource" id="act_txtresource" class="ui search dropdown">
+                          <option v-for="nodeDatum in nodeData" :key="nodeDatum[0]" :value="nodeDatum[0]">{{ nodeDatum[0] }}</option>
                         </select>
                       </div>
                     </div>
@@ -78,7 +76,7 @@
                     </div>
                   </template>
 
-                  <template v-if="tempSelectedActivityType === 'SPLIT_MODULE'">
+                  <template v-if="activityType === 'SPLIT_MODULE'">
                     <div id="basic-split-sm-1" class="row">
                       <div class="four wide column">Split Criteria</div>
                       <div class="twelve wide column">
@@ -94,8 +92,8 @@
                     <div id="basic-split-sm-3" class="row">
                       <div class="four wide column">Resources</div>
                       <div class="twelve wide column">
-                        <select @change="handleChangedResource($event)" v-model="tempResource" id="act_txtresource" class="ui search dropdown">
-                          <option v-for="nodeDatum in nodeData" :selected="nodeDatum[0] === tempResource" :key="nodeDatum[0]" :value="nodeDatum[0]">{{ nodeDatum[0] }}</option>
+                        <select v-model="resource" id="act_txtresource" class="ui search dropdown">
+                          <option v-for="nodeDatum in nodeData" :key="nodeDatum[0]" :value="nodeDatum[0]">{{ nodeDatum[0] }}</option>
                         </select>
                       </div>
                     </div>
@@ -109,7 +107,7 @@
 
                   <div class="sixteen wide column">
                     <div class="inline field">
-                      <input id="report-statistics" type="checkbox" @change="handleChangedReport()" v-model="tempReport" class="hidden">
+                      <input id="report-statistics" type="checkbox" v-model="report">
                       <label for="report-statistics">Report statistics</label>
                     </div>
                   </div>
@@ -117,7 +115,7 @@
                   <div class="row">
                     <div class="four wide column">Custom Monitor</div>
                     <div class="twelve wide column">
-                      <input disabled type="text" @change="handleChangedCustomMonitor()" v-model="tempCustomMonitor">
+                      <input disabled type="text" v-model="customMonitor">
                     </div>
                   </div>
                 </div>
@@ -132,18 +130,16 @@
                   <div class="row">
                     <div class="four wide column">Processing Time</div>
                     <div class="twelve wide column">
-                      <template v-if="reloaded">
-                        <select class="ui dropdown" @change="handleChangedProcessingTime($event)" v-model="tempProcessingTime">
-                          <option value="RANDOM">Random</option>
-                          <option value="CONSTANT">Constant</option>
-                        </select>
-                      </template>
+                      <select id="act_txtprocessing" class="ui dropdown" v-model="processingTime">
+                        <option value="RANDOM">Random</option>
+                        <option value="CONSTANT">Constant</option>
+                      </select>
                     </div>
                   </div>
                   <div class="row">
-                    <div class="four wide column">Parameter</div>
+                    <div class="four wide column">Processing Time Parameter</div>
                     <div class="twelve wide column">
-                      <input type="text" @change="handleChangedProcessingTimeParameter()" v-model="tempProcessingTimeParameter">
+                      <input type="text" v-model="processingTimeParameter">
                     </div>
                   </div>
                 </div>
@@ -154,30 +150,26 @@
                   <div class="row">
                     <div class="four wide column">Setup Time</div>
                     <div class="twelve wide column">
-                      <template v-if="reloaded">
-                        <select class="ui dropdown" @change="handleChangedSetupTime($event)" v-model="tempSetupTime">
-                          <option value="RANDOM">Random</option>
-                          <option value="CONSTANT">Constant</option>
-                        </select>
-                      </template>
+                      <select id="act_txtsetup" class="ui search dropdown" v-model="setupTime">
+                        <option value="RANDOM">Random</option>
+                        <option value="CONSTANT">Constant</option>
+                      </select>
                     </div>
                   </div>
                   <div class="row">
-                    <div class="four wide column">Parameter</div>
+                    <div class="four wide column">Setup Time Parameter</div>
                     <div class="twelve wide column">
-                      <input type="text" @change="handleChangedSetupTimeParameter()" v-model="tempSetupTimeParameter">
+                      <input type="text" v-model="setupTimeParameter">
                     </div>
                   </div>
                   <div class="row">
                     <div class="four wide column">Unit</div>
                     <div class="twelve wide column">
-                      <template v-if="reloaded">
-                        <select class="ui dropdown" @change="handleChangedUnit($event)" v-model="tempUnit">
-                          <option value="HOURS">Hours</option>
-                          <option value="MINUTES">Minutes</option>
-                          <option value="SECONDS">Seconds</option>
-                        </select>
-                      </template>
+                      <select id="act_txtunit" class="ui search dropdown" v-model="unit">
+                        <option value="HOURS">Hours</option>
+                        <option value="MINUTES">Minutes</option>
+                        <option value="SECONDS">Seconds</option>
+                      </select>
                     </div>
                   </div>
                 </div>
@@ -188,11 +180,9 @@
                   <div class="row">
                     <div class="four wide column">Queue label</div>
                     <div class="twelve wide column">
-                      <template v-if="reloaded">
-                        <select @change="handleChangedQueueLabel($event)" v-model="tempQueueLabel" id="act_txtqueuelabel" class="ui search dropdown">
-                          <option v-for="nodeDatum in nodeData" :selected="nodeDatum[0] === tempQueueLabel" :key="nodeDatum[0]" :value="nodeDatum[0]">{{ nodeDatum[0] }}</option>
-                        </select>
-                      </template>
+                      <select v-model="queue" id="act_txtqueuelabel" class="ui search dropdown">
+                        <option v-for="nodeDatum in nodeData" :key="nodeDatum[0]" :value="nodeDatum[0]">{{ nodeDatum[0] }}</option>
+                      </select>
                     </div>
                   </div>
                 </div>
@@ -204,20 +194,20 @@
                   <div class="row">
                     <div class="four wide column">Input Type</div>
                     <div class="twelve wide column">
-                      <input type="text" @change="handleChangedInputType()" v-model="tempInputType">
+                      <input type="text" v-model="inputType">
                     </div>
                   </div>
                   <div class="row">
                     <div class="four wide column">Output Type</div>
                     <div class="twelve wide column">
-                      <input type="text" @change="handleChangedOutputType()" v-model="tempOutputType">
+                      <input type="text" v-model="outputType">
                     </div>
                   </div>
                   <div class="row">
                     <div class="sixteen wide column">
                       <div class="field">
                         <label>Code Segment</label>
-                        <textarea id="code_segment" @change="handleChangedCodeSegment()" v-model="tempCodeSegment"></textarea>
+                        <textarea id="code_segment" v-model="codeSegment"></textarea>
                       </div>
                     </div>
                   </div>
@@ -229,7 +219,8 @@
       </div>
     </div>
     <div class="actions">
-      <p><em>Node properties are automatically saved</em></p>
+      <div @click="saveProperties(page, properties)" class="ui positive button">Save</div>
+      <div class="ui cancel button">Cancel</div>
     </div>
   </div>
 </template>
@@ -249,204 +240,154 @@ import GraphModule from '@/iochord/ips/common/graph/ism/stores/GraphModule';
 import { getModule } from 'vuex-module-decorators';
 import { GraphData } from '@/iochord/ips/common/graph/ism/interfaces/GraphData';
 import { GraphPage } from '@/iochord/ips/common/graph/ism/interfaces/GraphPage';
+import { GraphStopEventNodeImpl } from '@/iochord/ips/common/graph/ism/class/components/GraphStopEventNodeImpl';
+import { JointGraphPageImpl } from '@/iochord/ips/common/graph/ism/rendering-engine/joint/shapes/class/JointGraphPageImpl';
+import { Modal } from '../../interfaces/Modal';
 
 declare const $: any;
 
 import { TSMap } from 'typescript-map';
-
+import { GraphActivityNodeImpl } from '@/iochord/ips/common/graph/ism/class/components/GraphActivityNodeImpl';
+import { GraphNode } from '@/iochord/ips/common/graph/ism/interfaces/GraphNode';
+import { ACTIVITY_TYPE } from '../../../../common/graph/ism/enums/ACTIVITY';
+import { DISTRIBUTION_TYPE } from '../../../../common/graph/ism/enums/DISTRIBUTION';
+import { TIME_UNIT } from '../../../../common/graph/ism/enums/TIME_UNIT';
+import { GraphElement } from '../../../../common/graph/ism/interfaces/GraphElement';
 
 const graphModule = getModule(GraphModule);
 
 @Component
-export default class ActivityNodeModal extends SemanticComponent {
-  @Prop() private actLabel!: string;
-  @Prop() private actNodeSelectedActivityType!: string;
-  @Prop() private actNodeResource!: string;
-  @Prop() private actNodeReport!: boolean;
-  @Prop() private actNodeCustomMonitor!: string;
-  @Prop() private actNodeProcessingTime!: string;
-  @Prop() private actNodeProcessingTimeParameter!: string;
-  @Prop() private actNodeSetupTime!: string;
-  @Prop() private actNodeSetupTimeParameter!: string;
-  @Prop() private actNodeUnit!: string;
-  @Prop() private actNodeQueueLabel!: string;
-  @Prop() private actNodeInputType!: string;
-  @Prop() private actNodeOutputType!: string;
-  @Prop() private actNodeCodeSegment!: string;
+export default class ActivityNodeModal extends SemanticComponent implements Modal<JointGraphPageImpl, GraphActivityNodeImpl> {
 
-  private tempActLabel: string = '';
-  private tempSelectedActivityType: string = '';
-  private tempResource: string = '';
-  private tempReport: boolean = false;
-  private tempCustomMonitor: string = '';
-  private tempProcessingTime: string = '';
-  private tempProcessingTimeParameter: string = '';
-  private tempSetupTime: string = '';
-  private tempSetupTimeParameter: string = '';
-  private tempUnit: string = '';
-  private tempQueueLabel: string = '';
-  private tempInputType: string = '';
-  private tempOutputType: string = '';
-  private tempCodeSegment: string = '';
+  // Whole object properties
+  private properties!: GraphActivityNodeImpl;
 
-  private reloaded: boolean = false;
+  // Renderer page
+  private page!: JointGraphPageImpl;
 
-  @Watch('actLabel')
-  public onChangeActLabel(newVal: string): void {
-    this.tempActLabel = newVal;
+  // Component properties
+  private label: string = '';
+  private activityType: ACTIVITY_TYPE = ACTIVITY_TYPE.STANDARD;
+  private resource: string = '';
+  private report: boolean = false;
+  private customMonitor: string = '';
+  private processingTime: DISTRIBUTION_TYPE = DISTRIBUTION_TYPE.RANDOM;
+  private processingTimeParameter: string = '';
+  private setupTime: DISTRIBUTION_TYPE = DISTRIBUTION_TYPE.RANDOM;
+  private setupTimeParameter: string = '';
+  private unit: TIME_UNIT = TIME_UNIT.MINUTES;
+  private queue: string = '';
+  private inputType: string = '';
+  private outputType: string = '';
+  private codeSegment: string = '';
+
+  public populateProperties(page: JointGraphPageImpl, object: GraphActivityNodeImpl): void {
+
+    // Whole object properties
+    this.properties = object;
+
+    // Page Renderer
+    this.page = page;
+
+    // Component properties
+    this.label = object.getLabel() as string;
+    this.activityType = object.getActivityType() as ACTIVITY_TYPE;
+    this.resource = object.getResourceRef() as string;
+    this.report = object.isReportStatistics() as boolean;
+    this.processingTime = object.getProcessingTime() as DISTRIBUTION_TYPE;
+    this.processingTimeParameter = object.getProcessingTimeParameter() as string;
+    this.setupTime = object.getSetupTime() as DISTRIBUTION_TYPE;
+    this.setupTimeParameter = object.getSetupTimeParameter() as string;
+    this.unit = object.getUnit() as TIME_UNIT;
+    this.queue = object.getQueueRef() as string;
+
+    // Initialize dropdown with default value
+    $('#act_txttype')
+      .dropdown('set selected', this.activityType)
+      .dropdown({
+        onChange: (val: ACTIVITY_TYPE) => {
+          this.activityType = val;
+        },
+      })
+    ;
+
+    $('#act_txtresource')
+      .dropdown('set selected', this.resource)
+      .dropdown({
+        onChange: (val: string) => {
+          this.resource = val;
+        },
+      })
+    ;
+
+    $('#act_txtprocessing')
+      .dropdown('set selected', this.processingTime)
+      .dropdown({
+        onChange: (val: DISTRIBUTION_TYPE) => {
+          this.processingTime = val;
+        },
+      })
+    ;
+
+    $('#act_txtsetup')
+      .dropdown('set selected', this.setupTime)
+      .dropdown({
+        onChange: (val: DISTRIBUTION_TYPE) => {
+          this.setupTime = val;
+        },
+      })
+    ;
+
+    $('#act_txtunit')
+      .dropdown('set selected', this.unit)
+      .dropdown({
+        onChange: (val: TIME_UNIT) => {
+          this.unit = val;
+        },
+      })
+    ;
+
+    $('#act_txtqueuelabel')
+      .dropdown('set selected', this.queue)
+      .dropdown({
+        onChange: (val: string) => {
+          this.queue = val;
+        },
+      })
+    ;
   }
 
-  @Watch('actNodeSelectedActivityType')
-  public onChangeSelectedActivityType(newVal: string): void {
-    this.tempSelectedActivityType = newVal;
+  public saveProperties(page: JointGraphPageImpl, object: GraphActivityNodeImpl): void {
+    const nodePageId = (object.getId() as string).split('-')[0];
+    const nodePage = (graphModule.graph.getPages() as TSMap<string, GraphPage>).get(nodePageId);
+    const node: GraphActivityNodeImpl = (page.getNodes() as TSMap<string, GraphNode>).get(object.getId() as string) as GraphActivityNodeImpl;
+
+    // Save properties
+    node.setLabel(this.label);
+    node.setActivityType(this.activityType as ACTIVITY_TYPE);
+    node.setResourceRef(this.resource);
+    node.setReportStatistics(this.report);
+    node.setProcessingTime(this.processingTime);
+    node.setProcessingTimeParameter(this.processingTimeParameter);
+    node.setSetupTime(this.setupTime);
+    node.setSetupTimeParameter(this.setupTimeParameter);
+    node.setUnit(this.unit);
+    node.setQueueRef(this.queue);
+
+    // Change label of the renderer node
+    page.getGraph().getCells().map((cell: joint.dia.Cell) => {
+      if (cell.attributes.nodeId === object.getId()) {
+        cell.attr({
+          label: {
+            text: this.label,
+          },
+        });
+      }
+    });
   }
 
-  @Watch('actNodeResource')
-  public onChangeActResource(newVal: string): void {
-    this.tempResource = newVal;
-  }
-
-  @Watch('actNodeReport')
-  public onChangeReport(newVal: boolean): void {
-    this.tempReport = newVal;
-  }
-
-  @Watch('actNodeCustomMonitor')
-  public onChangeCustomMonitor(newVal: string): void {
-    this.tempCustomMonitor = newVal;
-  }
-
-  @Watch('actNodeProcessingTime')
-  public onChangeProcessingTime(newVal: string): void {
-    this.tempProcessingTime = newVal;
-  }
-
-  @Watch('actNodeProcessingTimeParameter')
-  public onChangeProcessingTimeParameter(newVal: string): void {
-    this.tempProcessingTimeParameter = newVal;
-  }
-
-  @Watch('actNodeSetupTime')
-  public onChangeSetupTime(newVal: string): void {
-    this.tempSetupTime = newVal;
-  }
-
-  @Watch('actNodeSetupTimeParameter')
-  public onChangeSetupTimeParameter(newVal: string): void {
-    this.tempSetupTimeParameter = newVal;
-  }
-
-  @Watch('actNodeUnit')
-  public onChangeUnit(newVal: string): void {
-    this.tempUnit = newVal;
-  }
-
-  @Watch('actNodeQueueLabel')
-  public onChangeQueueLabel(newVal: string): void {
-    this.tempQueueLabel = newVal;
-  }
-
-  @Watch('actNodeInputType')
-  public onChangeInputType(newVal: string): void {
-    this.tempInputType = newVal;
-  }
-
-  @Watch('actNodeOutputType')
-  public onChangeOutputType(newVal: string): void {
-    this.tempOutputType = newVal;
-  }
-
-  @Watch('actNodeCodeSegment')
-  public onChangeCodeSegment(newVal: string): void {
-    this.tempCodeSegment = newVal;
-  }
-
-  public handleChangedLabel(): void {
-    this.$emit('changeActLabel', this.tempActLabel);
-  }
-
-  public handleSelectedActivityType(): void {
-    this.$emit('changeActNodeSelectedActivityType', this.tempSelectedActivityType);
-  }
-
-  public handleChangedResource(): void {
-    this.$emit('changeActNodeResource', this.tempResource);
-  }
-
-  public handleChangedReport(): void {
-    this.$emit('changeActNodeReport', this.tempReport);
-  }
-
-  public handleChangedCustomMonitor(): void {
-    this.$emit('changeActNodeCustomMonitor', this.tempCustomMonitor);
-  }
-
-  public handleChangedProcessingTime(): void {
-    this.$emit('changeActNodeProcessingTime', this.tempProcessingTime);
-  }
-
-  public handleChangedProcessingTimeParameter(): void {
-    this.$emit('changeActNodeProcessingTimeParameter', this.tempProcessingTimeParameter);
-  }
-
-  public handleChangedSetupTime(): void {
-    this.$emit('changeActNodeSetupTime', this.tempSetupTime);
-  }
-
-  public handleChangedSetupTimeParameter(): void {
-    this.$emit('changeActNodeSetupTimeParameter', this.tempSetupTimeParameter);
-  }
-
-  public handleChangedUnit(): void {
-    this.$emit('changeActNodeUnit', this.tempUnit);
-  }
-
-  public handleChangedQueueLabel(): void {
-    this.$emit('changeActNodeQueueLabel', this.tempQueueLabel);
-  }
-
-  public handleChangedInputType(): void {
-    this.$emit('changeActNodeInputType', this.tempInputType);
-  }
-
-  public handleChangedOutputType(): void {
-    this.$emit('changeActNodeOutputType', this.tempOutputType);
-  }
-
-  public handleChangedCodeSegment(): void {
-    this.$emit('changeActNodeCodeSegment', this.tempCodeSegment);
-  }
-
-  public declareSemanticModules() {
-    $('.ui.dropdown').dropdown();
-    $('.tabular.menu .item').tab();
-  }
-
-  public mounted(): void {
-    this.tempSelectedActivityType = this.actNodeSelectedActivityType;
-    this.tempResource = this.actNodeResource;
-    this.tempReport = this.actNodeReport;
-    this.tempCustomMonitor = this.actNodeCustomMonitor;
-    this.tempProcessingTime = this.actNodeProcessingTime;
-    this.tempProcessingTimeParameter = this.actNodeProcessingTimeParameter;
-    this.tempSetupTime = this.actNodeSetupTime;
-    this.tempSetupTimeParameter = this.actNodeSetupTimeParameter;
-    this.tempUnit = this.actNodeUnit;
-    this.tempQueueLabel = this.actNodeQueueLabel;
-    this.tempInputType = this.actNodeInputType;
-    this.tempOutputType = this.actNodeOutputType;
-    this.tempCodeSegment = this.actNodeCodeSegment;
-  }
-
-  public updated(): void {
-    if (!this.reloaded) {
-      this.reloaded = true;
-    }
-
-    // Only for dropdown values
-    this.tempSelectedActivityType = this.actNodeSelectedActivityType;
-    this.tempResource = this.actNodeResource;
-    this.tempProcessingTime = this.actNodeProcessingTime;
+  public declareSemanticModules(): void {
+    $('.menu .item').tab();
   }
 
   public get nodeData(): /* TSMap<string, GraphData> | null */ any {

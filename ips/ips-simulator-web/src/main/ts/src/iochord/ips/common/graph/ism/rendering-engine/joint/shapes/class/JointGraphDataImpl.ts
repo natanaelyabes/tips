@@ -90,6 +90,8 @@ export class JointGraphDataImpl extends GraphDataImpl implements JointGraphEleme
       this.data.attr({...this.getAttr()});
       this.data.attributes.dataId = this.getId();
       this.data.attributes.type = this.getType();
+      this.data.attributes.category = 'data';
+
       this.data.addTo(graph);
     }
 
