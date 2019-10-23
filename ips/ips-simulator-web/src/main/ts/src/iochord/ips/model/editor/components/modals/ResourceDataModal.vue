@@ -15,14 +15,14 @@
           <div class="row">
             <div class="four wide column">Group ID</div>
             <div class="twelve wide column">
-              <input type="text" id="x_txt_label">
+              <input type="text" v-model="id" id="x_txt_label">
             </div>
           </div>
           <div class="row">
             <div class="six wide column">
               <div class="ui checkbox">
-                <input type="checkbox" class="hidden">
-                <label>Import from table</label>
+                <input type="checkbox" v-model="importTable" id="x_txt_import">
+                <label for="x_txt_import">Import from table</label>
               </div>
             </div>
             <div class="ten wide column">
@@ -58,7 +58,8 @@
       </div>
     </div>
     <div class="actions">
-      <p><em>Node properties are automatically saved</em></p>
+      <div @click="saveProperties(page, properties)" class="ui positive button">Save</div>
+      <div class="ui cancel button">Cancel</div>
     </div>
   </div>
 </template>
@@ -76,6 +77,16 @@
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
 import SemanticComponent from '@/iochord/ips/common/ui/semantic-components/SemanticComponent';
+import { Modal } from '../../interfaces/Modal';
+import { GraphPage } from '@/iochord/ips/common/graph/ism/interfaces/GraphPage';
+import GraphModule from '@/iochord/ips/common/graph/ism/stores/GraphModule';
+import { TSMap } from 'typescript-map';
+import { getModule } from 'vuex-module-decorators';
+import { JointGraphPageImpl } from '@/iochord/ips/common/graph/ism/rendering-engine/joint/shapes/class/JointGraphPageImpl';
+import { GraphData } from '@/iochord/ips/common/graph/ism/interfaces/GraphData';
+import { GraphDataResourceImpl } from '@/iochord/ips/common/graph/ism/class/components/GraphDataResourceImpl';
+
+const graphModule = getModule(GraphModule);
 
 declare const $: any;
 
@@ -88,9 +99,59 @@ declare const $: any;
  *
  */
 @Component
-export default class ResourceDataModal extends SemanticComponent {
-  public log(): void {
-    console.log('Test');
+export default class ResourceDataModal extends SemanticComponent implements Modal<JointGraphPageImpl, GraphDataResourceImpl> {
+
+  // Whole object properties
+  private properties!: GraphDataResourceImpl;
+
+  // Page renderer
+  private page!: JointGraphPageImpl;
+
+  // Component properties
+  private id: string = '';
+  private importTable: boolean = false;
+
+  public populateProperties(page: JointGraphPageImpl, object: GraphDataResourceImpl) {
+
+    // Whole object properties
+    this.properties = object;
+
+    // Page renderer
+    this.page = page;
+
+    // Component properties
+    this.id = object.getGroupId() as string;
+    this.importTable = object.isImported() as boolean;
+  }
+
+  public saveProperties(page: JointGraphPageImpl, object: GraphDataResourceImpl) {
+    const dataPageId = (object.getId() as string).split('-')[0];
+    const dataPage = (graphModule.graph.getPages() as TSMap<string, GraphPage>).get(dataPageId);
+    const data: GraphDataResourceImpl = (page.getData() as TSMap<string, GraphData>).get(object.getId() as string) as GraphDataResourceImpl;
+
+    // Save properties
+    data.setGroupId(this.id);
+    data.setImported(this.importTable);
+
+    // Change label of the renderer data
+    page.getGraph().getCells().map((cell: joint.dia.Cell) => {
+      if (cell.attributes.dataId === object.getId()) {
+        cell.attr({
+          label: {
+            text: this.id,
+          },
+        });
+      }
+    });
+
+    // Pop up toast
+    ($('body') as any).toast({
+      position: 'bottom right',
+      class: 'info',
+      className: { toast: 'ui message' },
+      message: `${object.getId()} properties have been saved`,
+      newestOnTop: true,
+    });
   }
 }
 </script>

@@ -15,13 +15,13 @@
           <div class="row">
             <div class="four wide column">Name</div>
             <div class="twelve wide column">
-              <input @change="handleChangedLabel($event)" type="text" id="x_txt_label">
+              <input v-model="label" type="text" id="x_txt_label">
             </div>
           </div>
           <div class="row">
             <div class="four wide column">Input Parameter</div>
             <div class="twelve wide column">
-              <input type="text" id="x_txt_label">
+              <input v-model="input" type="text" id="x_txt_label">
             </div>
           </div>
           <div class="row">
@@ -31,20 +31,21 @@
           </div>
           <div class="row">
             <div class="sixteen wide column">
-              <textarea></textarea>
+              <textarea v-model="code"></textarea>
             </div>
           </div>
           <div class="row">
             <div class="four wide column">Return Parameter</div>
             <div class="twelve wide column">
-              <input type="text" id="x_txt_label">
+              <input v-model="parameter" type="text" id="x_txt_label">
             </div>
           </div>
         </div>
       </div>
     </div>
     <div class="actions">
-      <p><em>Node properties are automatically saved</em></p>
+      <div @click="saveProperties(page, properties)" class="ui positive button">Save</div>
+      <div class="ui cancel button">Cancel</div>
     </div>
   </div>
 </template>
@@ -62,8 +63,18 @@
 <script lang="ts">
 import { Component, Prop, Watch, Vue } from 'vue-property-decorator';
 import SemanticComponent from '@/iochord/ips/common/ui/semantic-components/SemanticComponent';
-declare const $: any;
+import { Modal } from '../../interfaces/Modal';
+import { GraphPage } from '@/iochord/ips/common/graph/ism/interfaces/GraphPage';
+import GraphModule from '@/iochord/ips/common/graph/ism/stores/GraphModule';
+import { TSMap } from 'typescript-map';
+import { getModule } from 'vuex-module-decorators';
+import { JointGraphPageImpl } from '@/iochord/ips/common/graph/ism/rendering-engine/joint/shapes/class/JointGraphPageImpl';
+import { GraphData } from '@/iochord/ips/common/graph/ism/interfaces/GraphData';
+import { GraphDataFunctionImpl } from '@/iochord/ips/common/graph/ism/class/components/GraphDataFunctionImpl';
 
+const graphModule = getModule(GraphModule);
+
+declare const $: any;
 
 /**
  *
@@ -73,26 +84,60 @@ declare const $: any;
  *
  */
 @Component
-export default class FunctionDataModal extends SemanticComponent {
-  @Prop() private functionDataLabel!: string;
+export default class FunctionDataModal extends SemanticComponent implements Modal<JointGraphPageImpl, GraphDataFunctionImpl> {
 
-  private tempFunctionDataLabel: string = '';
+  // Whole object properties
+  private properties!: GraphDataFunctionImpl;
 
-  @Watch('functionDataLabel')
-  public onChangeFunctionDataLabel(newVal: string): void {
-    this.tempFunctionDataLabel = newVal;
+  // Page renderer
+  private page!: JointGraphPageImpl;
+
+  // Component properties
+  private label: string = '';
+  private input: string = '';
+  private code: string = '';
+  private parameter: string = '';
+
+  public populateProperties(page: JointGraphPageImpl, object: GraphDataFunctionImpl) {
+
+    // Whole object properties
+    this.properties = object;
+
+    // Page renderer
+    this.page = page;
+
+    // Component properties
+    this.label = object.getLabel() as string;
+    this.code = object.getCode() as string;
   }
+  public saveProperties(page: JointGraphPageImpl, object: GraphDataFunctionImpl) {
+    const dataPageId = (object.getId() as string).split('-')[0];
+    const dataPage = (graphModule.graph.getPages() as TSMap<string, GraphPage>).get(dataPageId);
+    const data: GraphDataFunctionImpl = (page.getData() as TSMap<string, GraphData>).get(object.getId() as string) as GraphDataFunctionImpl;
 
-  public handleChangedLabel(): void {
-    this.$emit('changeFunctionDataLabel', this.tempFunctionDataLabel);
-  }
+    // Save properties
+    data.setLabel(this.label);
+    data.setCode(this.code);
 
-  public mounted(): void {
-    this.tempFunctionDataLabel = this.functionDataLabel;
-  }
+    // Change label of the renderer data
+    page.getGraph().getCells().map((cell: joint.dia.Cell) => {
+      if (cell.attributes.dataId === object.getId()) {
+        cell.attr({
+          label: {
+            text: this.label,
+          },
+        });
+      }
+    });
 
-  public log(): void {
-    console.log('Test');
+    // Pop up toast
+    ($('body') as any).toast({
+      position: 'bottom right',
+      class: 'info',
+      className: { toast: 'ui message' },
+      message: `${object.getId()} properties have been saved`,
+      newestOnTop: true,
+    });
   }
 }
 </script>

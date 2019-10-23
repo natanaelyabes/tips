@@ -134,6 +134,15 @@ export default class ObjectTypeDataModal extends SemanticComponent implements Mo
         });
       }
     });
+
+    // Pop up toast
+    ($('body') as any).toast({
+      position: 'bottom right',
+      class: 'info',
+      className: { toast: 'ui message' },
+      message: `${object.getId()} properties have been saved`,
+      newestOnTop: true,
+    });
   }
 }
 </script>

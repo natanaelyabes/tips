@@ -133,12 +133,25 @@ export default class StartNodeModal extends SemanticComponent implements Modal<J
         });
       }
     });
+
+    // Pop up toast
+    ($('body') as any).toast({
+      position: 'bottom right',
+      class: 'info',
+      className: { toast: 'ui message' },
+      message: `${object.getId()} properties have been saved`,
+      newestOnTop: true,
+    });
   }
 
   public get nodeData(): any {
-    const pages = graphModule.graph.getPages() as TSMap<string, GraphPage>;
-    const nodeData = (pages.get('0') as GraphPage).getData() as TSMap<string, GraphData>;
-    return nodeData.entries();
+    try {
+      const pages = graphModule.graph.getPages() as TSMap<string, GraphPage>;
+      const nodeData = (pages.get('0') as GraphPage).getData() as TSMap<string, GraphData>;
+      return nodeData.entries();
+    } catch (e) {
+      //
+    }
   }
 }
 </script>

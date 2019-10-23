@@ -84,7 +84,7 @@
                       </div>
                     </div>
                     <div id="basic-split-sm-2" class="sixteen wide column">
-                      <div class="inline field">
+                      <div class="ui checkbox">
                         <input type="checkbox" class="hidden">
                         <label>Report scrap</label>
                       </div>
@@ -106,7 +106,7 @@
                   </template>
 
                   <div class="sixteen wide column">
-                    <div class="inline field">
+                    <div class="ui checkbox">
                       <input id="report-statistics" type="checkbox" v-model="report">
                       <label for="report-statistics">Report statistics</label>
                     </div>
@@ -384,6 +384,15 @@ export default class ActivityNodeModal extends SemanticComponent implements Moda
         });
       }
     });
+
+    // Pop up toast
+    ($('body') as any).toast({
+      position: 'bottom right',
+      class: 'info',
+      className: { toast: 'ui message' },
+      message: `${object.getId()} properties have been saved`,
+      newestOnTop: true,
+    });
   }
 
   public declareSemanticModules(): void {
@@ -391,9 +400,13 @@ export default class ActivityNodeModal extends SemanticComponent implements Moda
   }
 
   public get nodeData(): /* TSMap<string, GraphData> | null */ any {
-    const pages = graphModule.graph.getPages() as TSMap<string, GraphPage>;
-    const nodeData = (pages.get('0') as GraphPage).getData() as TSMap<string, GraphData>;
-    return nodeData.entries();
+    try {
+      const pages = graphModule.graph.getPages() as TSMap<string, GraphPage>;
+      const nodeData = (pages.get('0') as GraphPage).getData() as TSMap<string, GraphData>;
+      return nodeData.entries();
+    } catch (e) {
+      //
+    }
   }
 }
 </script>

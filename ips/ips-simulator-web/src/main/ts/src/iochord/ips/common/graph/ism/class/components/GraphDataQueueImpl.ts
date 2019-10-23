@@ -47,7 +47,7 @@ export class GraphDataQueueImpl extends GraphDataImpl implements GraphDataQueue 
   }
 
   public setQueueType(type: QUEUE_TYPE): void {
-    this.type = type || this.type;
+    this.type = type as QUEUE_TYPE;
   }
 
   public isShared(): boolean | null {
@@ -55,7 +55,7 @@ export class GraphDataQueueImpl extends GraphDataImpl implements GraphDataQueue 
   }
 
   public setShared(shared: boolean): void {
-    this.shared = shared || this.shared;
+    this.shared = shared as boolean;
   }
 
   public isSingle(): boolean | null {
@@ -63,7 +63,7 @@ export class GraphDataQueueImpl extends GraphDataImpl implements GraphDataQueue 
   }
 
   public setSingle(single: boolean): void {
-    this.single = single || this.single;
+    this.single = single as boolean;
   }
 
   public getSize(): number | null {

@@ -20,7 +20,7 @@
           </div>
           <div class="row">
             <div class="sixteen wide column">
-              <div class="inline field">
+              <div class="ui checkbox">
                 <input type="checkbox" v-model="report" class="hidden">
                 <label>Report statistics</label>
               </div>
@@ -104,6 +104,15 @@ export default class StopNodeModal extends SemanticComponent implements Modal<Jo
           },
         });
       }
+    });
+
+    // Pop up toast
+    ($('body') as any).toast({
+      position: 'bottom right',
+      class: 'info',
+      className: { toast: 'ui message' },
+      message: `${object.getId()} properties have been saved`,
+      newestOnTop: true,
     });
   }
 }
