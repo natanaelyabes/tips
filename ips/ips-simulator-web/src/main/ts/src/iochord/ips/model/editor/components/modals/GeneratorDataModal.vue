@@ -106,6 +106,8 @@ import { GraphDataGeneratorImpl } from '@/iochord/ips/common/graph/ism/class/com
 import { GraphData } from '@/iochord/ips/common/graph/ism/interfaces/GraphData';
 import { DISTRIBUTION_TYPE } from '@/iochord/ips/common/graph/ism/enums/DISTRIBUTION';
 import { TIME_UNIT } from '@/iochord/ips/common/graph/ism/enums/TIME_UNIT';
+import { GraphDataImpl } from '@/iochord/ips/common/graph/ism/class/GraphDataImpl';
+import GraphSubject from '@/iochord/ips/common/graph/ism/rxjs/GraphSubject';
 
 const graphModule = getModule(GraphModule);
 
@@ -180,6 +182,12 @@ export default class GeneratorDataModal extends SemanticComponent implements Mod
         });
       }
     });
+
+    // Update local instance
+    GraphDataImpl.instance.set(data.getId() as string, GraphDataGeneratorImpl.deserialize(data) as GraphData);
+
+    // Update the rxjs observable
+    GraphSubject.update(graphModule.graph);
 
     // Pop up toast
     ($('body') as any).toast({

@@ -15,10 +15,10 @@ export class GraphNodeImpl extends GraphElementImpl implements GraphNode {
 
   private groupName?: string | null;
   private reportStatistics?: boolean | null = false;
-  private inputTypes?: GraphElement[] | null = new Array<GraphElement>();
-  private outputTypes?: GraphElement[] | null = new Array<GraphElement>();
-  private inputNodes?: GraphNode[] | null = new Array<GraphNode>();
-  private outputNodes?: GraphNode[] | null = new Array<GraphNode>();
+  private inputTypes?: GraphElement[] | null;
+  private outputTypes?: GraphElement[] | null;
+  private inputNodes?: GraphNode[] | null;
+  private outputNodes?: GraphNode[] | null;
 
   constructor() {
     super();

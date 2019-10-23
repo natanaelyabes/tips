@@ -112,6 +112,8 @@ import { JointGraphPageImpl } from '@/iochord/ips/common/graph/ism/rendering-eng
 import { Modal } from '../../interfaces/Modal';
 import { GraphDataQueueImpl } from '@/iochord/ips/common/graph/ism/class/components/GraphDataQueueImpl';
 import { GraphData } from '@/iochord/ips/common/graph/ism/interfaces/GraphData';
+import { GraphDataImpl } from '@/iochord/ips/common/graph/ism/class/GraphDataImpl';
+import GraphSubject from '@/iochord/ips/common/graph/ism/rxjs/GraphSubject';
 
 const graphModule = getModule(GraphModule);
 
@@ -187,6 +189,12 @@ export default class QueueDataModal extends SemanticComponent implements Modal<J
         });
       }
     });
+
+    // Update local instance
+    GraphDataImpl.instance.set(data.getId() as string, GraphDataQueueImpl.deserialize(data) as GraphData);
+
+    // Update the rxjs observable
+    GraphSubject.update(graphModule.graph);
 
     // Pop up toast
     ($('body') as any).toast({

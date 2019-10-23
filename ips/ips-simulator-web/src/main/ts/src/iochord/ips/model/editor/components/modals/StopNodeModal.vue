@@ -47,6 +47,8 @@ import { getModule } from 'vuex-module-decorators';
 import { TSMap } from 'typescript-map';
 import { GraphPage } from '@/iochord/ips/common/graph/ism/interfaces/GraphPage';
 import { GraphNode } from '@/iochord/ips/common/graph/ism/interfaces/GraphNode';
+import { GraphNodeImpl } from '@/iochord/ips/common/graph/ism/class/GraphNodeImpl';
+import GraphSubject from '@/iochord/ips/common/graph/ism/rxjs/GraphSubject';
 
 declare const $: any;
 
@@ -105,6 +107,12 @@ export default class StopNodeModal extends SemanticComponent implements Modal<Jo
         });
       }
     });
+
+    // Update local instance
+    GraphNodeImpl.instance.set(node.getId() as string, GraphStopEventNodeImpl.deserialize(node) as GraphNode);
+
+    // Update the rxjs observable
+    GraphSubject.update(graphModule.graph);
 
     // Pop up toast
     ($('body') as any).toast({
