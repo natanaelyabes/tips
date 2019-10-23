@@ -73,7 +73,7 @@ export default class ConnectorMixin extends BaseComponent {
 
     this.source = graphModule.pageNode(activePage, nodeId) as GraphNode;
 
-    (graphModule.newItem as JointGraphConnectorImpl).setSource(this.source);
+    (graphModule.newItem as JointGraphConnectorImpl).setSourceRef(this.source.getId() as string);
     const blankPointTarget = new joint.g.Point(node.position().x, node.position().y);
 
     (graphModule.newItem as JointGraphConnectorImpl).render(activePage.getGraph(), blankPointTarget);
@@ -103,7 +103,7 @@ export default class ConnectorMixin extends BaseComponent {
     const nodeId = (node.attributes.nodeId as string).split('-')[2];
     this.target = graphModule.pageNode(activePage, nodeId) as GraphNode;
 
-    (graphModule.newItem as JointGraphConnectorImpl).setTarget(this.target);
+    (graphModule.newItem as JointGraphConnectorImpl).setTargetRef(this.target.getId() as string);
 
     // Render newItem
     (graphModule.newItem as JointGraphConnectorImpl).render(activePage.getGraph());
@@ -112,8 +112,8 @@ export default class ConnectorMixin extends BaseComponent {
     const newItem = new GraphConnectorImpl();
     newItem.setId((graphModule.newItem as JointGraphConnectorImpl).getId() as string);
     newItem.setType((graphModule.newItem as JointGraphConnectorImpl).getType() as string);
-    newItem.setSource(this.source as GraphNode);
-    newItem.setTarget(this.target as GraphNode);
+    newItem.setSourceRef(this.source!.getId() as string);
+    newItem.setTargetRef(this.target!.getId() as string);
 
     // Add node to Vuex GraphModule
     graphModule.addPageArc(

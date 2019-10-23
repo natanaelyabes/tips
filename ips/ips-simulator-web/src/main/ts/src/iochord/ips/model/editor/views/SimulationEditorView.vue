@@ -41,12 +41,9 @@
         <CanvasComponent :key="reRenderKey" v-bind:response="graphData" />
       </template>
 
-      <!-- <template slot="right-sidebar-menu-item">
-        <div class="ui basic segment" style="width: 260px">
-          <h2>Model Pane</h2>
-          <div id="minimap"></div>
-        </div>
-      </template> -->
+      <template slot="right-sidebar-menu-item">
+        <MinimapComponent v-bind:response="graphData" />
+      </template>
     </WrapperComponent>
   </div>
 </template>
@@ -66,44 +63,6 @@
 
 i.big.icon {
   margin-bottom: .25em!important;
-}
-
-.corner.area {
-  position: absolute;
-  bottom: 0;
-  right: 0;
-  margin: 20px;
-}
-
-.corner.area .zoom.tool {
-  margin-bottom: 2em;
-}
-
-.corner.area .slider-wrapper {
-  height: 200px;
-  position: relative;
-  right: 0;
-  margin-bottom: 14em;
-}
-
-.corner.area .slider-wrapper .ui.vertical.slider {
-  clear: both;
-  padding: 2em 0;
-  margin-left: auto;
-  right: 11px;
-}
-
-#minimap {
-  cursor: pointer;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
-  border: 1px solid black;
-  transition: all 0.3s cubic-bezier(.25,.8,.25,1);
-  width: 100%;
-  height: 100%;
-}
-
-#minimap:hover {
-  box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
 }
 
 @media screen and (max-width: 1440px) {
@@ -174,13 +133,12 @@ import ToolboxPaletteComponent from '../components/palette/ToolboxPaletteCompone
 import DataPaletteComponent from '../components/palette/DataPaletteComponent.vue';
 import SimulationPlayerComponent from '../components/ribbon/SimulationPlayerComponent.vue';
 import SimulationDataManagementComponent from '../components/ribbon/SimulationDataManagementComponent.vue';
+import CanvasComponent from '../components/canvas/CanvasComponent.vue';
+import MinimapComponent from '../components/minimap/MinimapComponent.vue';
 
 // Vuex & rxjs
 import GraphModule from '@/iochord/ips/common/graph/ism/stores/GraphModule';
 import GraphSubject from '@/iochord/ips/common/graph/ism/rxjs/GraphSubject';
-
-// Async component must be lazily load
-const CanvasComponent = () => import('../components/canvas/CanvasComponent.vue');
 
 // Vuex module
 const graphModule = getModule(GraphModule);
@@ -198,6 +156,7 @@ declare const $: any;
   components: {
     WrapperComponent,
     CanvasComponent,
+    MinimapComponent,
     ControlPaletteComponent,
     ToolboxPaletteComponent,
     DataPaletteComponent,
