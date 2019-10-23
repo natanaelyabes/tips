@@ -28,6 +28,11 @@ object SimpleTest {
     val subject = new MarkingObservable()
     subject.addObserver(new MarkingObserver())
     
+    val monitors:Map[(String,String),Int] = Map[(String,String),Int]() //startAct,endAct,flag
+    val objMonitors:Map[(String,String,Int),Double] = Map[(String,String,Int),Double]() //(tokenId,startAct,flag),startValue
+    val resMonitors:Map[(String,String,Int),Double] = Map[(String,String,Int),Double]() //(startAct,endAct,flag),AggregateValue
+  
+  
     case class BindTransInit(x:Option[Int]) extends Bind
     
     val cgraph = CPNGraph()
@@ -110,7 +115,7 @@ object SimpleTest {
     val stopCrit = (stop:Any) => stop match { case stop:Boolean => stop }
     val inpStopCrit = false
     
-    new Simulator().run(cgraph, stopCrit, inpStopCrit, 4, globtime, subject)
+    new Simulator().run(cgraph, stopCrit, inpStopCrit, 4, globtime, subject, monitors, objMonitors, resMonitors)
     
   }
 }
