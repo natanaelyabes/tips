@@ -1,9 +1,9 @@
 package io.iochord.apps.ips.core.services;
 
-import io.iochord.apps.ips.common.models.Identifiable;
+import io.iochord.apps.ips.common.models.IdentifiableImpl;
 import lombok.Getter;
 
-public abstract class AnIpsService<C, R> extends Identifiable {
+public abstract class AnIpsService<C, R> extends IdentifiableImpl {
 	
 	@Getter
 	private final boolean async;

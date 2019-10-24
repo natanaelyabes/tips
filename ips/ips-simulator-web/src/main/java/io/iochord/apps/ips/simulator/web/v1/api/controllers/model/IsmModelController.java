@@ -5,25 +5,26 @@ import java.util.Map;
 
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import io.iochord.apps.ips.common.models.Referenceable;
 import io.iochord.apps.ips.common.util.SerializationUtil;
 import io.iochord.apps.ips.model.converter.sbp2cpn.Sbpnet2CpnscalaBiConverter;
 import io.iochord.apps.ips.model.example.SbpnetExample;
 import io.iochord.apps.ips.model.ism.v1.Page;
 import io.iochord.apps.ips.model.ism.v1.IsmGraph;
 import io.iochord.apps.ips.model.ism.v1.IsmFactory;
-import io.iochord.apps.ips.model.ism.v1.components.impl.ActivityImpl;
-import io.iochord.apps.ips.model.ism.v1.components.impl.GeneratorImpl;
-import io.iochord.apps.ips.model.ism.v1.components.impl.ObjectTypeImpl;
-import io.iochord.apps.ips.model.ism.v1.components.impl.StartImpl;
-import io.iochord.apps.ips.model.ism.v1.components.impl.StopImpl;
 import io.iochord.apps.ips.model.ism.v1.impl.IsmFactoryImpl;
-import io.iochord.apps.ips.model.ism.v1.impl.IsmImpl;
+import io.iochord.apps.ips.model.ism.v1.impl.IsmGraphImpl;
+import io.iochord.apps.ips.model.ism.v1.nodes.impl.ActivityImpl;
+import io.iochord.apps.ips.model.ism.v1.data.impl.GeneratorImpl;
+import io.iochord.apps.ips.model.ism.v1.data.impl.ObjectTypeImpl;
+import io.iochord.apps.ips.model.ism.v1.nodes.impl.StartImpl;
+import io.iochord.apps.ips.model.ism.v1.nodes.impl.StopImpl;
 
 /**
  *
@@ -61,10 +62,10 @@ public class IsmModelController extends AModelController {
 			objType.setLabel("UNIT");
 			GeneratorImpl generator = (GeneratorImpl) factory.addGenerator(page);
 			generator.setLabel("UNIT GENERATOR");
-			generator.setObjectType(objType);
+			generator.setObjectType(new Referenceable<>(objType));
 			StartImpl start = (StartImpl) factory.addStart(page);
 			start.setLabel("START");
-			start.setGenerator(generator);
+			start.setGenerator(new Referenceable<>(generator));
 			ActivityImpl act = (ActivityImpl) factory.addActivity(page);
 			act.setLabel("ACTIVITY");
 			StopImpl stop = (StopImpl) factory.addStop(page);
@@ -86,7 +87,7 @@ public class IsmModelController extends AModelController {
 	
 	@RequestMapping(value = BASE_URI + "/edit/{modelId}", method = RequestMethod.POST)
 	public IsmGraph postEdit(@PathVariable String modelId, 
-		@ModelAttribute IsmImpl graph) {
+		@RequestBody IsmGraphImpl graph) {
 		if (nets.containsKey(modelId)) {
 			IsmGraph net = nets.get(modelId);
 			Page page = net.getPages().values().iterator().next();

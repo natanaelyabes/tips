@@ -6,7 +6,7 @@
         <i class="search icon"></i>
       </div>
     </div>
-    <router-link class="item" v-for="(ds, i) in datasets" :key="i" tag="a" to="/iochord/ips/analysis-process-model">{{ds.name}} ({{i}})</router-link>
+    <router-link class="item" v-for="(ds, i) in datasets" :key="i" tag="a" :to="'/iochord/ips/analytics/process/discovery/' + i">{{ds.name}} ({{i}})</router-link>
     <!-- <template slot="existed-connection">
     </template> -->
   </div>

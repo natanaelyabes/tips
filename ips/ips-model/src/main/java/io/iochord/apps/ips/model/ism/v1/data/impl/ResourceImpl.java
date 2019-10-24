@@ -1,0 +1,69 @@
+package io.iochord.apps.ips.model.ism.v1.data.impl;
+
+import java.util.concurrent.TimeUnit;
+
+import com.fasterxml.jackson.annotation.JsonTypeName;
+
+import io.iochord.apps.ips.common.models.Referenceable;
+import io.iochord.apps.ips.model.ism.v1.data.DataTable;
+import io.iochord.apps.ips.model.ism.v1.data.Resource;
+import io.iochord.apps.ips.model.ism.v1.impl.DataImpl;
+import io.iochord.apps.ips.model.ism.v1.nodes.enums.DistributionType;
+import io.iochord.apps.ips.model.ism.v1.nodes.enums.ResourceCriteria;
+import lombok.Getter;
+import lombok.Setter;
+
+/**
+ *
+ * @package chdsr-model
+ * @author  Iq Reviessay Pulshashi <pulshashi@ideas.web.id>
+ * @since   2019
+ *
+ *
+ */
+@JsonTypeName(Resource.TYPE)
+public class ResourceImpl extends DataImpl implements Resource {
+	@Getter
+	private final String elementType = Resource.TYPE;
+	
+	@Getter
+	@Setter
+	private String groupId;
+
+	@Getter
+	@Setter
+	private Referenceable<DataTable> data;
+
+	@Getter
+	@Setter
+	private DistributionType setupTime = DistributionType.RANDOM;
+
+	@Getter
+	@Setter
+	private String expression = "";
+
+	@Getter
+	@Setter
+	private TimeUnit timeUnit = TimeUnit.HOURS;
+	
+	@Getter
+	@Setter
+	private ResourceCriteria criteria;
+
+	@Getter
+	@Setter
+	private double hourlyIdleCost; 
+	
+	@Getter
+	@Setter
+	private double hourlyBusyCost; 
+	
+	@Getter
+	@Setter
+	private boolean imported = false; 
+	
+	@Getter
+	@Setter
+	private Referenceable<DataTable> dataTable; 
+
+}

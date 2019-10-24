@@ -22,7 +22,7 @@ import io.iochord.apps.ips.model.services.data.im.csv.CsvDataImportService;
 
 /**
  *
- * @package chdsr-simulator-web
+ * @package ips-simulator-web
  * @author Iq Reviessay Pulshashi <pulshashi@ideas.web.id>
  * @since 2019
  *

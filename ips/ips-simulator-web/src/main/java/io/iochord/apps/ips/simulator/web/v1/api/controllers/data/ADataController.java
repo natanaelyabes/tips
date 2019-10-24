@@ -4,7 +4,7 @@ import io.iochord.apps.ips.simulator.web.v1.api.controllers.AServiceController;
 
 /**
  *
- * @package chdsr-simulator-web
+ * @package ips-simulator-web
  * @author Iq Reviessay Pulshashi <pulshashi@ideas.web.id>
  * @since 2019
  *
