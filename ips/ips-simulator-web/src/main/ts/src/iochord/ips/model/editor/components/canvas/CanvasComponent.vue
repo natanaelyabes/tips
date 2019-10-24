@@ -13,7 +13,7 @@
         @mousedown="handleCanvasMouseDown($event)"
         @mousemove="handleCanvasMouseMove($event)"
         @mouseup="handleCanvasMouseUp($event)"/>
-    </div>
+      </div>
 
     <!-- Data Modals -->
     <ObjectTypeDataModal ref="objecttype" id="objecttype"/>
@@ -143,6 +143,11 @@ const editorState = getModule(EditorState);
 })
 export default class CanvasComponent extends Mixins(BaseComponent, CanvasMixin) {
   @Prop() public response?: Graph;
+
+  @Prop({
+    default: false,
+  })
+  public isDisabled?: boolean;
 
   // Pan and zoom
   public canvasPanAndZoom?: SvgPanZoom.Instance;
@@ -358,6 +363,10 @@ export default class CanvasComponent extends Mixins(BaseComponent, CanvasMixin) 
         currentElement.findView(jointPage.getPaper()).highlight();
       },
       'element:pointerdblclick': (elementView: joint.dia.ElementView) => {
+
+        if (this.isDisabled) {
+          return;
+        }
 
         // Reset page
         resetAll(jointPage.getPaper());

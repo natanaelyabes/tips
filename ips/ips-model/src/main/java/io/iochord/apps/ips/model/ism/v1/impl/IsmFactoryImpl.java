@@ -86,7 +86,7 @@ public class IsmFactoryImpl implements IsmFactory {
 		net.setId("MODEL-" + netCounter);
 		addPage(net);
 		addConfiguration(net);
-		net.setControl(new ControlImpl());
+//		net.setControl(new ControlImpl());
 		return net;
 	}
 

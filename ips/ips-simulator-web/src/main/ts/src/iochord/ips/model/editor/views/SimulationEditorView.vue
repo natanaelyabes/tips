@@ -20,25 +20,27 @@
 
       <!--  Left Sidebar Menu Item -->
       <template slot="left-sidebar-menu-item">
-        <ControlPaletteComponent />
-        <ToolboxPaletteComponent />
-        <DataPaletteComponent />
+        <ControlPaletteComponent :isDisabled="isDisabled" />
+        <ToolboxPaletteComponent :isDisabled="isDisabled" />
+        <DataPaletteComponent :isDisabled="isDisabled" />
       </template>
 
       <!--  Ribbon Menu Item -->
       <template slot="ribbon-menu-item">
-        <!-- Left menu item -->
-        <SimulationPlayerComponent />
-
-        <!-- Right menu item -->
-        <div id="ribbon-right-menu" class="right menu">
-          <SimulationDataManagementComponent />
-        </div>
+        <SimulationDataManagementComponent
+          :isDisabled="isDisabled"
+          @create="modelCreate()"
+          @example="modelLoadExample()"
+          />
+        <SimulationPlayerComponent
+          :isPlaying="isDisabled"
+          @play="isDisabled = true; loadNPlay();" 
+          @stop="isDisabled = false" />
       </template>
 
       <!-- Content -->
       <template slot="content">
-        <CanvasComponent :key="reRenderKey" v-bind:response="graphData" />
+        <CanvasComponent :isDisabled="isDisabled" :key="reRenderKey" v-bind:response="graphData" />
       </template>
 
       <template slot="right-sidebar-menu-item">
@@ -140,6 +142,8 @@ import MinimapComponent from '../components/minimap/MinimapComponent.vue';
 import GraphModule from '@/iochord/ips/common/graph/ism/stores/GraphModule';
 import GraphSubject from '@/iochord/ips/common/graph/ism/rxjs/GraphSubject';
 
+import { IsmSimulatorService } from '@/iochord/ips/common/service/simulator/IsmSimulatorService';
+
 // Vuex module
 const graphModule = getModule(GraphModule);
 
@@ -173,6 +177,8 @@ declare const $: any;
 })
 export default class SimulationEditorView extends Layout01View {
 
+  public isDisabled: boolean = false;
+
   /** @Override */
   public overrideBrowserProperties(): void {
     this.setDocumentTitle('Simulation Editor: Editor');
@@ -191,7 +197,7 @@ export default class SimulationEditorView extends Layout01View {
       if (graphModule.graph.getVersion === undefined) {
 
         // Fetch graph to Vuex state
-        await graphModule.loadGraph();
+        await this.modelCreate();
 
         // Print to stdout
         console.log(graphModule.graph);
@@ -220,6 +226,20 @@ export default class SimulationEditorView extends Layout01View {
     window.addEventListener('resize', () => {
       this.forceReRender();
     });
+  }
+
+  public async loadNPlay() {
+    const cpnscala = IsmSimulatorService.getInstance().postLoadNPlay(graphModule.graph);
+  }
+
+  public async modelCreate() {
+    await graphModule.newGraph();
+    this.forceReRender();
+  }
+
+  public async modelLoadExample() {
+    await graphModule.loadExampleGraph();
+    this.forceReRender();
   }
 
   public get graphData(): Graph | undefined {
