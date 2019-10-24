@@ -20,7 +20,7 @@ export class GraphControlImpl extends GraphConfigurationImpl implements GraphCon
 
   constructor() {
     super();
-    setType('control');
+    this.setType('control');
   }
 
   /** @Override */
