@@ -249,22 +249,22 @@ public class Sbpnet2CpnmlBiConverter implements Converter<IsmGraph, PetriNet> {
 					eOutputSets.put(d, Arrays.asList(new Node[] { dgp4s }));
 				}
 				if (d instanceof Function) {
-					Function f = (Function) d;
+//					Function f = (Function) d;
 					//Page fpage =  converter.addPage(net, "FUNCTION " + f.getLabel()); 
 					// TODO:
 				}
 				if (d instanceof Queue) {
-					Queue q = (Queue) d;
+//					Queue q = (Queue) d;
 					//Page qpage =  converter.addPage(net, "QUEUE " + q.getLabel()); 
 					// TODO:
 				}
 				if (d instanceof Resource) {
-					Resource r = (Resource) d;
+//					Resource r = (Resource) d;
 					//Page rpage =  converter.addPage(net, "RESOURCE " + r.getLabel()); 
 					// TODO:
 				}
 				if (d instanceof DataTable) {
-					DataTable dt = (DataTable) d;
+//					DataTable dt = (DataTable) d;
 					//Page dtpage =  converter.addPage(net, "DATATABLE " + dt.getLabel()); 
 					// TODO:
 				}
@@ -280,7 +280,7 @@ public class Sbpnet2CpnmlBiConverter implements Converter<IsmGraph, PetriNet> {
 						Place nap = converter.addPlace(page, na.getLabel() + "_nap1", "INT", "");
 						eOutputSets.put(n, Arrays.asList(new Node[] { nap }));
 					} else {
-						List<Node> nap = eOutputSets.get(na.getGenerator());
+						List<Node> nap = eOutputSets.get(na.getGenerator().getValue());
 						if (nap != null && nap.size() > 0) {
 							eOutputSets.put(n, Arrays.asList(new Node[] { nap.get(0) }));
 						}
@@ -370,7 +370,7 @@ public class Sbpnet2CpnmlBiConverter implements Converter<IsmGraph, PetriNet> {
 					// Temporary use activity definition
 				}
 				if (n instanceof Monitor) {
-					Monitor m = (Monitor) n;
+//					Monitor m = (Monitor) n;
 					//Page mpage =  converter.addPage(net, "MONITOR " + m.getLabel()); 
 					// TODO:
 				}
@@ -378,8 +378,8 @@ public class Sbpnet2CpnmlBiConverter implements Converter<IsmGraph, PetriNet> {
 			// Convert Arcs
 			for (String s : p.getConnectors().keySet()) {
 				Connector c = p.getConnectors().get(s);
-				List<Node> sourcePlaces = eOutputSets.get(c.getSource());
-				List<Node> targetPlaces = eInputSets.get(c.getTarget());
+				List<Node> sourcePlaces = eOutputSets.get(c.getSource().getValue());
+				List<Node> targetPlaces = eInputSets.get(c.getTarget().getValue());
 				if (sourcePlaces != null && targetPlaces != null) {
 					Transition silent = converter.addTransition(page, "");
 					converter.addArc(page, sourcePlaces.get(c.getSourceIndex()), silent, "i");

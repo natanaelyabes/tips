@@ -76,10 +76,10 @@ export default class AnalysisPMD extends Layout03View {
 
   public mine(): void {
     const self = this;
-    const selectedDatasetId = this.$refs['datasetSelector'].value;
+    const selectedDatasetId = (this.$refs['datasetSelector'] as any).value;
     self.runMine(selectedDatasetId);
   }
-  
+
   public runMine(selectedDatasetId: string): void {
     const self = this;
     if (selectedDatasetId !== '---') {
@@ -88,23 +88,18 @@ export default class AnalysisPMD extends Layout03View {
       IsmDiscoveryService.getInstance().discoverIsmGraph(config, (res: any) => {
         const graph = JSON.parse(res.body);
         let n = 0;
-        if (graph.data.pages['0'].nodes) {
-          for (const i in graph.data.pages['0'].nodes) {
-            n++;
-          }
+        for (const i of Object.keys(graph.data.pages['0'].nodes)) {
+          n++;
         }
         let c = 0;
-        if (graph.data.pages['0'].connectors) {
-          for (const i in graph.data.pages['0'].connectors) {
-            c++;
-          }
+        for (const i of Object.keys(graph.data.pages['0'].connectors)) {
+          c++;
         }
         console.log(graph.data);
         const g: Graph = GraphImpl.deserialize(graph.data) as Graph;
-        
         graphModule.setGraph(g);
-        //GraphSubject.update(graphModule.graph);
-        
+        // GraphSubject.update(graphModule.graph);
+
         console.log(g);
         self.graphJson = 'This graph has ' + n + ' nodes and ' + c + ' connectors';
         self.progressMessage = '';
