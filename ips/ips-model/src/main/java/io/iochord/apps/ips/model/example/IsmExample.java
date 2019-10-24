@@ -32,7 +32,7 @@ import io.iochord.apps.ips.model.ism.v1.impl.IsmGraphImpl;
  *
  *
  */
-public class SbpnetExample {
+public class IsmExample {
 	public static IsmGraph create() {
 		IsmFactory factory = IsmFactoryImpl.getInstance();
 		IsmGraphImpl net = (IsmGraphImpl) factory.create();
@@ -136,22 +136,22 @@ public class SbpnetExample {
 		StopImpl end = (StopImpl) factory.addStop(page);
 
 		BranchImpl xorSplit1 = (BranchImpl) factory.addBranch(page);
-		xorSplit1.setLabel("1");
+		xorSplit1.setLabel("XOR Split 1");
 		xorSplit1.setGate(BranchGate.XOR);
 		xorSplit1.setType(BranchType.SPLIT);
 
 		BranchImpl xorSplit2 = (BranchImpl) factory.addBranch(page);
-		xorSplit2.setLabel("2");
+		xorSplit2.setLabel("XOR Split 2");
 		xorSplit2.setGate(BranchGate.XOR);
 		xorSplit2.setType(BranchType.SPLIT);
 
 		BranchImpl xorJoin1 = (BranchImpl) factory.addBranch(page);
-		xorJoin1.setLabel("1");
+		xorJoin1.setLabel("XOR Join 1");
 		xorJoin1.setGate(BranchGate.XOR);
 		xorJoin1.setType(BranchType.JOIN);
 
 		BranchImpl xorJoin2 = (BranchImpl) factory.addBranch(page);
-		xorJoin2.setLabel("2");
+		xorJoin2.setLabel("XOR Join 2");
 		xorJoin2.setGate(BranchGate.XOR);
 		xorJoin2.setType(BranchType.JOIN);
 
@@ -172,8 +172,8 @@ public class SbpnetExample {
 		arc4.setTargetIndex(1);
 
 		factory.addConnector(page, xorJoin1, actTeller);
-//		ConnectorImpl arc5 = (ConnectorImpl) factory.addConnector(page, actTeller, xorJoin2);
-//		arc5.setTargetIndex(1);
+		ConnectorImpl arc5 = (ConnectorImpl) factory.addConnector(page, actTeller, xorJoin2);
+		arc5.setTargetIndex(1);
 		factory.addConnector(page, xorJoin2, end);
 
 		return net;

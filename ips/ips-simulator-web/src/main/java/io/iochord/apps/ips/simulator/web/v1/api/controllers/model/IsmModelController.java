@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import io.iochord.apps.ips.common.models.Referenceable;
 import io.iochord.apps.ips.common.util.SerializationUtil;
 import io.iochord.apps.ips.model.converter.sbp2cpn.Sbpnet2CpnscalaBiConverter;
-import io.iochord.apps.ips.model.example.SbpnetExample;
+import io.iochord.apps.ips.model.example.IsmExample;
 import io.iochord.apps.ips.model.ism.v1.Page;
 import io.iochord.apps.ips.model.ism.v1.IsmGraph;
 import io.iochord.apps.ips.model.ism.v1.IsmFactory;
@@ -100,13 +100,13 @@ public class IsmModelController extends AModelController {
 	
 	@RequestMapping(value=BASE_URI + "/example",produces= {MediaType.APPLICATION_JSON_VALUE})
 	public String getCreateExampleSimulationModel() {
-		IsmGraph snet = SbpnetExample.createComplete();
+		IsmGraph snet = IsmExample.createComplete();
 		return SerializationUtil.encode(snet);
 	}	
 	
 	@RequestMapping(value=BASE_URI + "/examplecpn",produces= {MediaType.APPLICATION_JSON_VALUE})
 	public String getConvertExampleSimulationModel() {
-		IsmGraph snet = SbpnetExample.createComplete();
+		IsmGraph snet = IsmExample.createComplete();
 		Sbpnet2CpnscalaBiConverter converter = new Sbpnet2CpnscalaBiConverter();
 		String cnet = converter.convert(snet);
 		return cnet;

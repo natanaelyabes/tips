@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import io.iochord.apps.ips.common.util.SerializationUtil;
 import io.iochord.apps.ips.model.converter.sbp2cpn.Sbpnet2CpnscalaBiConverter;
-import io.iochord.apps.ips.model.example.SbpnetExample;
+import io.iochord.apps.ips.model.example.IsmExample;
 import io.iochord.apps.ips.model.ism.v1.IsmGraph;
 import io.iochord.apps.ips.simulator.compiler.MemoryScalaCompiler;
 import io.iochord.apps.ips.simulator.compiler.Simulation;
@@ -51,7 +51,7 @@ public class TestController extends AServiceController {
 
 	@RequestMapping(value=BASE_URI + "/model",produces= {MediaType.APPLICATION_JSON_VALUE})
 	public String get01CreateExampleSimulationModel() {
-		snet = SbpnetExample.createComplete();
+		snet = IsmExample.createComplete();
 		return SerializationUtil.encode(snet);
 	}
 	
@@ -100,27 +100,27 @@ public class TestController extends AServiceController {
 			public void update(Observable o, Object arg) {
 				System.out.println("JAVAOBS: " + o);
 				System.out.println(arg);
-				Tuple3<?, ?, ?> t = (Tuple3<?, ?, ?>) arg;
-				HashMap<?, ?> prev = (HashMap<?, ?>) t._1();
-				HashMap<Object, Object> next = (HashMap<Object, Object>) t._2();
-				Iterator<Object> i = next.keysIterator();
-				while (i.hasNext()) {
-					Object k = i.next();
-					HashMap<Object, Integer> v = (HashMap<Object, Integer>) next.get(k).get();
-					String ks = k.toString();
-					if (reverseLookup.containsKey(ks)) {
-						String ename = reverseLookup.get(ks);
-						int vit = 0;
-						if (v != null) {
-							Iterator<Integer> vi = v.valuesIterator(); 
-							while (vi.hasNext()) {
-								vit += vi.next();
-							}
-						}
-						basicMonitorResult.put(ename, vit);
-					}
-				}
-				outputMessage.add(o.toString() + ": " +  arg.toString());
+//				Tuple3<?, ?, ?> t = (Tuple3<?, ?, ?>) arg;
+//				HashMap<?, ?> prev = (HashMap<?, ?>) t._1();
+//				HashMap<Object, Object> next = (HashMap<Object, Object>) t._2();
+//				Iterator<Object> i = next.keysIterator();
+//				while (i.hasNext()) {
+//					Object k = i.next();
+//					HashMap<Object, Integer> v = (HashMap<Object, Integer>) next.get(k).get();
+//					String ks = k.toString();
+//					if (reverseLookup.containsKey(ks)) {
+//						String ename = reverseLookup.get(ks);
+//						int vit = 0;
+//						if (v != null) {
+//							Iterator<Integer> vi = v.valuesIterator(); 
+//							while (vi.hasNext()) {
+//								vit += vi.next();
+//							}
+//						}
+//						basicMonitorResult.put(ename, vit);
+//					}
+//				}
+//				outputMessage.add(o.toString() + ": " +  arg.toString());
 			}
 			
 		};

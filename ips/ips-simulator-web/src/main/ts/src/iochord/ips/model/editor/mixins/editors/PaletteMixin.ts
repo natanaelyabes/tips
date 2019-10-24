@@ -19,6 +19,10 @@ enum TOOLBOX {
 export default class PaletteMixin extends Mixins(BaseComponent, NodeMixin, ConnectorMixin) {
   public handleToolboxMouseDown(type: TOOLBOX, e: MouseEvent): void {
 
+    if ((this as any).isDisabled) {
+      return;
+    }
+
     $('.sidebar.component .ui.basic.button.item').addClass('disabled');
 
     switch (type) {

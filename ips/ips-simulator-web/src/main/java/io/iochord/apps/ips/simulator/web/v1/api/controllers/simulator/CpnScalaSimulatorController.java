@@ -1,11 +1,22 @@
 package io.iochord.apps.ips.simulator.web.v1.api.controllers.simulator;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Observable;
+import java.util.Observer;
+
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import io.iochord.apps.ips.model.converter.sbp2cpn.Sbpnet2CpnscalaBiConverter;
+import io.iochord.apps.ips.model.ism.v1.impl.IsmGraphImpl;
 import io.iochord.apps.ips.simulator.compiler.MemoryScalaCompiler;
 import io.iochord.apps.ips.simulator.compiler.Simulation;
+import lombok.Getter;
 
 /**
  *
@@ -19,6 +30,38 @@ import io.iochord.apps.ips.simulator.compiler.Simulation;
 @CrossOrigin
 public class CpnScalaSimulatorController extends ASimulatorController {
 	public static final String BASE_URI = ASimulatorController.BASE_URI + "/cpnscala";
+
+	@Getter
+	private List<Simulation> simulationInstances = new ArrayList<>();
+
+	@Getter
+	private List<Observer> simulationObservers = new ArrayList<>();
+	
+	@RequestMapping(value = BASE_URI + "/loadnplay", method = RequestMethod.POST)
+	public String postLoadNPlay(@RequestBody IsmGraphImpl graph) {
+		Sbpnet2CpnscalaBiConverter converter = new Sbpnet2CpnscalaBiConverter();
+		String conversionResult = converter.convert(graph);
+//		try {
+//			MemoryScalaCompiler msfc = new MemoryScalaCompiler(conversionResult);
+//			Simulation simulationInstance = msfc.getInstance();
+//			Observer obs = new Observer() {
+//				
+//				@Override
+//				public void update(Observable o, Object arg) {
+//					System.out.println("JAVAOBS: " + o);
+//					System.out.println(arg);
+//				}
+//				
+//			};
+//			simulationInstance.addObserver(obs);
+//			simulationInstances.add(simulationInstance);
+//			simulationObservers.add(obs);
+//		} catch (Exception ex) {
+//			System.out.println(conversionResult);
+//			ex.printStackTrace();
+//		}
+		return conversionResult;
+	}
 
 	@RequestMapping(BASE_URI + "")
 	public String getIndex() {

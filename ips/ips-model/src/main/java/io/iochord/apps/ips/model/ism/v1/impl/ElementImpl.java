@@ -28,7 +28,7 @@ public class ElementImpl implements Element {
 
 	@Getter
 	@Setter
-	private String label;
+	private String label = "";
 
 	@Getter
 	@Setter

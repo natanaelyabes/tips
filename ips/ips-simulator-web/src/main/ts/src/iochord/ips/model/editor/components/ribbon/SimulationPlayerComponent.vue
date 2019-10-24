@@ -1,15 +1,11 @@
 <template>
-  <div class="simulation player component" style="display:flex">
-    <div class="item"><div class="header"><strong>Simulation Player</strong></div></div>
-    <div class="item">
-      <div class="ui basic icon buttons">
-        <a class="ui button"><i class="step backward icon"></i></a>
-        <a class="ui button"><i class="backward icon"></i></a>
-        <a class="ui button"><i class="play icon"></i></a>
-        <a class="ui button"><i class="stop icon"></i></a>
-        <a class="ui button"><i class="forward icon"></i></a>
-        <a class="ui button"><i class="step forward icon"></i></a>
-      </div>
+  <div class="simulation player component item" style="display:flex">
+    <div class="ui basic icon buttons">
+      <button :class="'ui button ' + (isPlaying ? '' : 'disabled')" :disabled="!isPlaying"><i class="step backward icon"></i></button>
+      <button :class="'ui button ' + (isPlaying ? '' : 'disabled')" :disabled="!isPlaying"><i class="backward icon"></i></button>
+      <button :class="'ui button ' + (isPlaying ? 'primary' : '')" @click="$emit(isPlaying ? 'stop' : 'play')"><i :class="(isPlaying ? 'stop' : 'play') + ' icon'"></i></button>
+      <button :class="'ui button ' + (isPlaying ? '' : 'disabled')" :disabled="!isPlaying"><i class="forward icon"></i></button>
+      <button :class="'ui button ' + (isPlaying ? '' : 'disabled')" :disabled="!isPlaying"><i class="step forward icon"></i></button>
     </div>
   </div>
 </template>
@@ -19,11 +15,16 @@
 </style>
 
 <script lang="ts">
-import { Component } from 'vue-property-decorator';
+import { Prop, Component } from 'vue-property-decorator';
 import BaseComponent from '@/iochord/ips/common/ui/layout/class/BaseComponent';
 
 @Component
 export default class SimulationPlayerComponent extends BaseComponent {
   //
+  @Prop({
+    default: false,
+  })
+  public isPlaying?: boolean;
+
 }
 </script>
