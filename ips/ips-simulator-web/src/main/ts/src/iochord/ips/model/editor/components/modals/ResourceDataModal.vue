@@ -85,6 +85,8 @@ import { getModule } from 'vuex-module-decorators';
 import { JointGraphPageImpl } from '@/iochord/ips/common/graph/ism/rendering-engine/joint/shapes/class/JointGraphPageImpl';
 import { GraphData } from '@/iochord/ips/common/graph/ism/interfaces/GraphData';
 import { GraphDataResourceImpl } from '@/iochord/ips/common/graph/ism/class/components/GraphDataResourceImpl';
+import { GraphDataImpl } from '@/iochord/ips/common/graph/ism/class/GraphDataImpl';
+import GraphSubject from '@/iochord/ips/common/graph/ism/rxjs/GraphSubject';
 
 const graphModule = getModule(GraphModule);
 
@@ -143,6 +145,12 @@ export default class ResourceDataModal extends SemanticComponent implements Moda
         });
       }
     });
+
+    // Update local instance
+    GraphDataImpl.instance.set(data.getId() as string, GraphDataResourceImpl.deserialize(data) as GraphData);
+
+    // Update the rxjs observable
+    GraphSubject.update(graphModule.graph);
 
     // Pop up toast
     ($('body') as any).toast({

@@ -243,6 +243,7 @@ import { GraphPage } from '@/iochord/ips/common/graph/ism/interfaces/GraphPage';
 import { GraphStopEventNodeImpl } from '@/iochord/ips/common/graph/ism/class/components/GraphStopEventNodeImpl';
 import { JointGraphPageImpl } from '@/iochord/ips/common/graph/ism/rendering-engine/joint/shapes/class/JointGraphPageImpl';
 import { Modal } from '../../interfaces/Modal';
+import { GraphNodeImpl } from '@/iochord/ips/common/graph/ism/class/GraphNodeImpl';
 
 declare const $: any;
 
@@ -253,6 +254,7 @@ import { ACTIVITY_TYPE } from '../../../../common/graph/ism/enums/ACTIVITY';
 import { DISTRIBUTION_TYPE } from '../../../../common/graph/ism/enums/DISTRIBUTION';
 import { TIME_UNIT } from '../../../../common/graph/ism/enums/TIME_UNIT';
 import { GraphElement } from '../../../../common/graph/ism/interfaces/GraphElement';
+import GraphSubject from '@/iochord/ips/common/graph/ism/rxjs/GraphSubject';
 
 const graphModule = getModule(GraphModule);
 
@@ -384,6 +386,12 @@ export default class ActivityNodeModal extends SemanticComponent implements Moda
         });
       }
     });
+
+    // Update local instance
+    GraphNodeImpl.instance.set(node.getId() as string, GraphActivityNodeImpl.deserialize(node) as GraphNode);
+
+    // Update the rxjs observable
+    GraphSubject.update(graphModule.graph);
 
     // Pop up toast
     ($('body') as any).toast({

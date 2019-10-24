@@ -50,6 +50,7 @@ import { getModule } from 'vuex-module-decorators';
 import BaseComponent from '@/iochord/ips/common/ui/layout/class/BaseComponent';
 import GraphModule from '@/iochord/ips/common/graph/ism/stores/GraphModule';
 import GraphSubject from '@/iochord/ips/common/graph/ism/rxjs/GraphSubject';
+import axios, { AxiosResponse } from 'axios';
 
 import { IsmModelService } from '@/iochord/ips/common/service/model/IsmModelService';
 
@@ -61,7 +62,7 @@ declare const $: any;
 export default class SimulationDataManagementComponent extends BaseComponent {
   public modelPaneIsOpen: boolean = true;
 
-  private doSaveModel(): void {
+  private async doSaveModel(): Promise<void> {
     // console.log('WS-REQUEST', graphModule.graph);
     // IsmModelService.getInstance().callSaveModel(graphModule.graph, (tick: any) => {
     //   const graph = JSON.parse(tick.body);
@@ -69,7 +70,19 @@ export default class SimulationDataManagementComponent extends BaseComponent {
     //   alert('saved !');
     // });
 
-    console.log(graphModule.serializedGraph);
+    console.log('BEFORE: ' + JSON.stringify(graphModule.graph));
+
+    const result = await axios.post('http://ips-api.tips.iochord.co.kr/ips/api/v1/model/ism/edit/MODEL', JSON.stringify(graphModule.graph), {
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+    });
+
+    console.log(result.data);
+
+    console.log('AFTER: ' + JSON.stringify(result.data));
+
   }
 
   private showUploadFileModal(): void {

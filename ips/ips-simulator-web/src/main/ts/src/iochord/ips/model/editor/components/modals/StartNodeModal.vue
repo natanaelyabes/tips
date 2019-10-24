@@ -59,6 +59,7 @@ import { GraphPage } from '@/iochord/ips/common/graph/ism/interfaces/GraphPage';
 import { GraphData } from '@/iochord/ips/common/graph/ism/interfaces/GraphData';
 import { Modal } from '../../interfaces/Modal';
 import { GraphStartEventNodeImpl } from '@/iochord/ips/common/graph/ism/class/components/GraphStartEventNodeImpl';
+import { GraphNodeImpl } from '@/iochord/ips/common/graph/ism/class/GraphNodeImpl';
 
 // JQuery
 declare const $: any;
@@ -66,6 +67,7 @@ declare const $: any;
 import { TSMap } from 'typescript-map';
 import { GraphNode } from '../../../../common/graph/ism/interfaces/GraphNode';
 import { JointGraphPageImpl } from '@/iochord/ips/common/graph/ism/rendering-engine/joint/shapes/class/JointGraphPageImpl';
+import GraphSubject from '@/iochord/ips/common/graph/ism/rxjs/GraphSubject';
 
 
 // Vuex
@@ -133,6 +135,12 @@ export default class StartNodeModal extends SemanticComponent implements Modal<J
         });
       }
     });
+
+    // Update local instance
+    GraphNodeImpl.instance.set(node.getId() as string, GraphStartEventNodeImpl.deserialize(node) as GraphNode);
+
+    // Update the rxjs observable
+    GraphSubject.update(graphModule.graph);
 
     // Pop up toast
     ($('body') as any).toast({

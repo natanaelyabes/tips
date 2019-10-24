@@ -80,6 +80,8 @@ import { TSMap } from 'typescript-map';
 import { GraphPage } from '@/iochord/ips/common/graph/ism/interfaces/GraphPage';
 import GraphModule from '@/iochord/ips/common/graph/ism/stores/GraphModule';
 import { getModule } from 'vuex-module-decorators';
+import { GraphDataImpl } from '@/iochord/ips/common/graph/ism/class/GraphDataImpl';
+import GraphSubject from '@/iochord/ips/common/graph/ism/rxjs/GraphSubject';
 
 declare const $: any;
 
@@ -134,6 +136,12 @@ export default class ObjectTypeDataModal extends SemanticComponent implements Mo
         });
       }
     });
+
+    // Update local instance
+    GraphDataImpl.instance.set(data.getId() as string, GraphDataObjectTypeImpl.deserialize(data) as GraphData);
+
+    // Update the rxjs observable
+    GraphSubject.update(graphModule.graph);
 
     // Pop up toast
     ($('body') as any).toast({

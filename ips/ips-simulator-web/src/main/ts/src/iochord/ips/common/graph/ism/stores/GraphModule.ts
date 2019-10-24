@@ -46,17 +46,6 @@ export default class GraphModule extends VuexModule {
     return { graph };
   }
 
-  // TODO: implement saveGraph
-  public get serializedGraph() {
-    // TODO: serialization here
-    this.graph.getPages()!.map((page: GraphPage) => {
-      page.getNodes()!.map((node: GraphNode) => {
-        console.log(node.getType());
-      });
-    });
-    return this.graph;
-  }
-
   @Mutation
   public setNewItem(newItem: GraphNodeImpl | GraphConnectorImpl | null) {
     this.newItem = newItem;

@@ -101,6 +101,8 @@ import { BRANCH_GATE, BRANCH_TYPE, BRANCH_RULE } from '@/iochord/ips/common/grap
 import { GraphNode } from '@/iochord/ips/common/graph/ism/interfaces/GraphNode';
 import { TSMap } from 'typescript-map';
 import { GraphPage } from '@/iochord/ips/common/graph/ism/interfaces/GraphPage';
+import { GraphNodeImpl } from '@/iochord/ips/common/graph/ism/class/GraphNodeImpl';
+import GraphSubject from '@/iochord/ips/common/graph/ism/rxjs/GraphSubject';
 
 const graphModule = getModule(GraphModule);
 
@@ -193,6 +195,12 @@ export default class BranchNodeModal extends SemanticComponent implements Modal<
         });
       }
     });
+
+    // Update local instance
+    GraphNodeImpl.instance.set(node.getId() as string, GraphBranchNodeImpl.deserialize(node) as GraphNode);
+
+    // Update the rxjs observable
+    GraphSubject.update(graphModule.graph);
 
     // Pop up toast
     ($('body') as any).toast({
