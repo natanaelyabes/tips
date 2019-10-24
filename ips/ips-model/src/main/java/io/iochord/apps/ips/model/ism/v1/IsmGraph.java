@@ -3,10 +3,11 @@ package io.iochord.apps.ips.model.ism.v1;
 import java.util.Map;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
-import io.iochord.apps.ips.model.ism.v1.components.Control;
-import io.iochord.apps.ips.model.ism.v1.impl.IsmImpl;
+import io.iochord.apps.ips.model.ism.v1.impl.IsmGraphImpl;
+import io.iochord.apps.ips.model.ism.v1.nodes.Control;
 
 /**
  *
@@ -16,7 +17,8 @@ import io.iochord.apps.ips.model.ism.v1.impl.IsmImpl;
  *
  *
  */
-@JsonDeserialize(as = IsmImpl.class)
+@JsonDeserialize(as = IsmGraphImpl.class)
+@JsonTypeName(IsmGraph.TYPE)
 public interface IsmGraph extends Element {
 	public static final String TYPE = "net";
 

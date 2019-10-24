@@ -3,23 +3,24 @@ package io.iochord.apps.ips.model.example;
 import java.util.concurrent.TimeUnit;
 
 import io.iochord.apps.ips.model.ism.v1.IsmGraph;
+import io.iochord.apps.ips.model.ism.v1.data.Queue.QUEUE_TYPE;
+import io.iochord.apps.ips.model.ism.v1.data.impl.GeneratorImpl;
+import io.iochord.apps.ips.model.ism.v1.data.impl.ObjectTypeImpl;
+import io.iochord.apps.ips.model.ism.v1.data.impl.QueueImpl;
+import io.iochord.apps.ips.model.ism.v1.data.impl.ResourceImpl;
+import io.iochord.apps.ips.common.models.Referenceable;
 import io.iochord.apps.ips.model.ism.v1.IsmFactory;
-import io.iochord.apps.ips.model.ism.v1.components.BranchGate;
-import io.iochord.apps.ips.model.ism.v1.components.BranchType;
-import io.iochord.apps.ips.model.ism.v1.components.DistributionType;
-import io.iochord.apps.ips.model.ism.v1.components.Queue.QUEUE_TYPE;
-import io.iochord.apps.ips.model.ism.v1.components.impl.ActivityImpl;
-import io.iochord.apps.ips.model.ism.v1.components.impl.BranchImpl;
-import io.iochord.apps.ips.model.ism.v1.components.impl.GeneratorImpl;
-import io.iochord.apps.ips.model.ism.v1.components.impl.ObjectTypeImpl;
-import io.iochord.apps.ips.model.ism.v1.components.impl.QueueImpl;
-import io.iochord.apps.ips.model.ism.v1.components.impl.ResourceImpl;
-import io.iochord.apps.ips.model.ism.v1.components.impl.StartImpl;
-import io.iochord.apps.ips.model.ism.v1.components.impl.StopImpl;
 import io.iochord.apps.ips.model.ism.v1.impl.ConnectorImpl;
 import io.iochord.apps.ips.model.ism.v1.impl.PageImpl;
+import io.iochord.apps.ips.model.ism.v1.nodes.enums.BranchGate;
+import io.iochord.apps.ips.model.ism.v1.nodes.enums.BranchType;
+import io.iochord.apps.ips.model.ism.v1.nodes.enums.DistributionType;
+import io.iochord.apps.ips.model.ism.v1.nodes.impl.ActivityImpl;
+import io.iochord.apps.ips.model.ism.v1.nodes.impl.BranchImpl;
+import io.iochord.apps.ips.model.ism.v1.nodes.impl.StartImpl;
+import io.iochord.apps.ips.model.ism.v1.nodes.impl.StopImpl;
 import io.iochord.apps.ips.model.ism.v1.impl.IsmFactoryImpl;
-import io.iochord.apps.ips.model.ism.v1.impl.IsmImpl;
+import io.iochord.apps.ips.model.ism.v1.impl.IsmGraphImpl;
 
 /**
  *
@@ -34,7 +35,7 @@ import io.iochord.apps.ips.model.ism.v1.impl.IsmImpl;
 public class SbpnetExample {
 	public static IsmGraph create() {
 		IsmFactory factory = IsmFactoryImpl.getInstance();
-		IsmImpl net = (IsmImpl) factory.create();
+		IsmGraphImpl net = (IsmGraphImpl) factory.create();
 
 		PageImpl page = (PageImpl) net.getPages().values().iterator().next();
 		ObjectTypeImpl cust = (ObjectTypeImpl) factory.addObjectType(page);
@@ -42,13 +43,13 @@ public class SbpnetExample {
 
 		GeneratorImpl custMu = (GeneratorImpl) factory.addGenerator(page);
 		custMu.setLabel(cust.getLabel() + " MU");
-		custMu.setObjectType(cust);
+		custMu.setObjectType(new Referenceable<>(cust));
 		custMu.setExpression("Math.round(Gaussian(100,10).draw())");
 		custMu.setUnit(TimeUnit.MINUTES);
 		custMu.setMaxArrival(100);
 
 		StartImpl start = (StartImpl) factory.addStart(page);
-		start.setGenerator(custMu);
+		start.setGenerator(new Referenceable<>(custMu));
 
 		QueueImpl qTeller = (QueueImpl) factory.addQueue(page);
 		qTeller.setLabel("Teller Queue");
@@ -58,8 +59,8 @@ public class SbpnetExample {
 		resTeller.setLabel("Teller Resource");
 		ActivityImpl actTeller = (ActivityImpl) factory.addActivity(page);
 		actTeller.setLabel("Teller Service");
-		actTeller.setQueue(qTeller);
-		actTeller.setResource(resTeller);
+		actTeller.setQueue(new Referenceable<>(qTeller));
+		actTeller.setResource(new Referenceable<>(resTeller));
 		actTeller.setProcessingTime(DistributionType.CONSTANT);
 		actTeller.setProcessingTimeParameter("Math.round(Gaussian(400, 70).draw())");
 		actTeller.setUnit(TimeUnit.MINUTES);
@@ -72,8 +73,8 @@ public class SbpnetExample {
 		resATM.setLabel("ATM Resource");
 		ActivityImpl actATM = (ActivityImpl) factory.addActivity(page);
 		actATM.setLabel("ATM Service");
-		actATM.setQueue(qATM);
-		actATM.setResource(resATM);
+		actATM.setQueue(new Referenceable<>(qATM));
+		actATM.setResource(new Referenceable<>(resATM));
 		actATM.setProcessingTime(DistributionType.CONSTANT);
 		actATM.setProcessingTimeParameter("Math.round(Gaussian(300, 30).draw())");
 		actATM.setUnit(TimeUnit.MINUTES);
@@ -88,7 +89,7 @@ public class SbpnetExample {
 	
 	public static IsmGraph createComplete() {
 		IsmFactory factory = IsmFactoryImpl.getInstance();
-		IsmImpl net = (IsmImpl) factory.create();
+		IsmGraphImpl net = (IsmGraphImpl) factory.create();
 
 		PageImpl page = (PageImpl) net.getPages().values().iterator().next();
 		ObjectTypeImpl cust = (ObjectTypeImpl) factory.addObjectType(page);
@@ -96,13 +97,13 @@ public class SbpnetExample {
 
 		GeneratorImpl custMu = (GeneratorImpl) factory.addGenerator(page);
 		custMu.setLabel(cust.getLabel() + " MU");
-		custMu.setObjectType(cust);
+		custMu.setObjectType(new Referenceable<>(cust));
 		custMu.setExpression("Math.round(Gaussian(100,10).draw())");
 		custMu.setUnit(TimeUnit.MINUTES);
 		custMu.setMaxArrival(100);
 
 		StartImpl start = (StartImpl) factory.addStart(page);
-		start.setGenerator(custMu);
+		start.setGenerator(new Referenceable<>(custMu));
 
 		QueueImpl qTeller = (QueueImpl) factory.addQueue(page);
 		qTeller.setLabel("Teller Queue");
@@ -112,8 +113,8 @@ public class SbpnetExample {
 		resTeller.setLabel("Teller Resource");
 		ActivityImpl actTeller = (ActivityImpl) factory.addActivity(page);
 		actTeller.setLabel("Teller Service");
-		actTeller.setQueue(qTeller);
-		actTeller.setResource(resTeller);
+		actTeller.setQueue(new Referenceable<>(qTeller));
+		actTeller.setResource(new Referenceable<>(resTeller));
 		actTeller.setProcessingTime(DistributionType.CONSTANT);
 		actTeller.setProcessingTimeParameter("Math.round(Gaussian(400, 70).draw())");
 		actTeller.setUnit(TimeUnit.MINUTES);
@@ -126,8 +127,8 @@ public class SbpnetExample {
 		resATM.setLabel("ATM Resource");
 		ActivityImpl actATM = (ActivityImpl) factory.addActivity(page);
 		actATM.setLabel("ATM Service");
-		actATM.setQueue(qATM);
-		actATM.setResource(resATM);
+		actATM.setQueue(new Referenceable<>(qATM));
+		actATM.setResource(new Referenceable<>(resATM));
 		actATM.setProcessingTime(DistributionType.CONSTANT);
 		actATM.setProcessingTimeParameter("Math.round(Gaussian(300, 30).draw())");
 		actATM.setUnit(TimeUnit.MINUTES);

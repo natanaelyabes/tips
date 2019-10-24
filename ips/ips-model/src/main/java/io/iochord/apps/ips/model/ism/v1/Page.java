@@ -2,6 +2,7 @@ package io.iochord.apps.ips.model.ism.v1;
 
 import java.util.Map;
 
+import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 import io.iochord.apps.ips.model.ism.v1.impl.PageImpl;
@@ -15,6 +16,7 @@ import io.iochord.apps.ips.model.ism.v1.impl.PageImpl;
  *
  */
 @JsonDeserialize(as = PageImpl.class)
+@JsonTypeName(Page.TYPE)
 public interface Page extends Element {
 	public static final String TYPE = "page";
 

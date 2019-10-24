@@ -17,7 +17,7 @@ public class CsvDataImportService extends AnIpsAsyncService<CsvDataImportConfigu
 	
 	@Override
 	public CsvDataImportResult run(ServiceContext context, CsvDataImportConfiguration config) throws Exception {
-		String name = Dataset.TABLE_PREFIX + context.getIdentifier();
+		String name = Dataset.TABLE_PREFIX + context.getId();
 		CsvDataImportResult result = new CsvDataImportResult();
 		result.setConfig(config);
 		result.setName(name);

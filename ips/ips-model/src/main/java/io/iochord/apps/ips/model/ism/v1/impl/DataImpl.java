@@ -1,5 +1,7 @@
 package io.iochord.apps.ips.model.ism.v1.impl;
 
+import com.fasterxml.jackson.annotation.JsonTypeName;
+
 import io.iochord.apps.ips.model.ism.v1.Data;
 import lombok.Getter;
 
@@ -11,7 +13,10 @@ import lombok.Getter;
  *
  *
  */
+@JsonTypeName(Data.TYPE)
 public class DataImpl extends ElementImpl implements Data {
+
 	@Getter
 	private final String elementType = Data.TYPE;
+
 }

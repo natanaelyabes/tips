@@ -10,19 +10,18 @@ import io.iochord.apps.ips.model.ism.v1.Connector;
 import io.iochord.apps.ips.model.ism.v1.Data;
 import io.iochord.apps.ips.model.ism.v1.Element;
 import io.iochord.apps.ips.model.ism.v1.IsmGraph;
-import io.iochord.apps.ips.model.ism.v1.components.Activity;
-import io.iochord.apps.ips.model.ism.v1.components.Branch;
-import io.iochord.apps.ips.model.ism.v1.components.BranchGate;
-import io.iochord.apps.ips.model.ism.v1.components.DataTable;
-import io.iochord.apps.ips.model.ism.v1.components.Function;
-import io.iochord.apps.ips.model.ism.v1.components.Generator;
-import io.iochord.apps.ips.model.ism.v1.components.Monitor;
-import io.iochord.apps.ips.model.ism.v1.components.ObjectType;
-import io.iochord.apps.ips.model.ism.v1.components.Queue;
-import io.iochord.apps.ips.model.ism.v1.components.Resource;
-import io.iochord.apps.ips.model.ism.v1.components.Start;
-import io.iochord.apps.ips.model.ism.v1.components.Stop;
-import lombok.Getter;
+import io.iochord.apps.ips.model.ism.v1.nodes.Activity;
+import io.iochord.apps.ips.model.ism.v1.nodes.Branch;
+import io.iochord.apps.ips.model.ism.v1.nodes.enums.BranchGate;
+import io.iochord.apps.ips.model.ism.v1.data.DataTable;
+import io.iochord.apps.ips.model.ism.v1.data.Function;
+import io.iochord.apps.ips.model.ism.v1.data.Generator;
+import io.iochord.apps.ips.model.ism.v1.nodes.Monitor;
+import io.iochord.apps.ips.model.ism.v1.data.ObjectType;
+import io.iochord.apps.ips.model.ism.v1.data.Queue;
+import io.iochord.apps.ips.model.ism.v1.data.Resource;
+import io.iochord.apps.ips.model.ism.v1.nodes.Start;
+import io.iochord.apps.ips.model.ism.v1.nodes.Stop;
 
 /**
  * @author Nur Ichsan Utama <ichsan83@gmail.com>

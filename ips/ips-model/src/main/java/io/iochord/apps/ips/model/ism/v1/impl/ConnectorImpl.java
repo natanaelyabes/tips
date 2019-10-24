@@ -1,7 +1,8 @@
 package io.iochord.apps.ips.model.ism.v1.impl;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonTypeName;
 
+import io.iochord.apps.ips.common.models.Referenceable;
 import io.iochord.apps.ips.model.ism.v1.Connector;
 import io.iochord.apps.ips.model.ism.v1.Element;
 import lombok.Getter;
@@ -15,18 +16,28 @@ import lombok.Setter;
  *
  *
  */
+@JsonTypeName(Connector.TYPE)
 public class ConnectorImpl extends ElementImpl implements Connector {
 	@Getter
 	private final String elementType = Connector.TYPE;
 
 	@Getter
 	@Setter
-	@JsonIgnore
-	private Element source;
-	
-	public String getSourceRef() {
-		return IsmUtil.generateRef(getSource());
-	}
+	private Referenceable<Element> source;
+//	
+//	private String sourceRef;
+//	
+//	public String getSourceRef() {
+//		if (source != null) {
+//			return IsmUtil.generateRef(getSource());
+//		} else {
+//			return sourceRef;
+//		}
+//	}
+//	
+//	public void setSourceRef(String ref) {
+//		sourceRef = ref;
+//	}
 
 	@Getter
 	@Setter
@@ -34,12 +45,22 @@ public class ConnectorImpl extends ElementImpl implements Connector {
 
 	@Getter
 	@Setter
-	@JsonIgnore
-	private Element target;
-
-	public String getTargetRef() {
-		return IsmUtil.generateRef(getTarget());
-	}
+	private Referenceable<Element> target;
+	
+//	
+//	private String targetRef;
+//
+//	public String getTargetRef() {
+//		if (target != null) {
+//			return IsmUtil.generateRef(getTarget());
+//		} else {
+//			return targetRef;
+//		}
+//	}
+//
+//	public void setTargetRef(String ref) {
+//		targetRef = ref;
+//	}
 
 	@Getter
 	@Setter
