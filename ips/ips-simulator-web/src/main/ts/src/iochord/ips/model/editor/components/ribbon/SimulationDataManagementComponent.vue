@@ -4,7 +4,7 @@
     <div class="item">
       <div class="ui basic icon buttons">
         <a class="ui button" title="Save model" @click="doSaveModel()"><i class="save icon"></i></a>
-        <a class="ui button" title="Upload model" @click="showUploadFileModal"><i class="upload icon"></i></a>
+        <a class="ui button" title="Upload model" @click="showUploadFileModal()"><i class="upload icon"></i></a>
         <a class="ui button" title="Download model"><i class="download icon"></i></a>
         <a class="ui button" title="Show report"><i class="file outline alternate icon"></i></a>
       </div>
@@ -63,13 +63,6 @@ export default class SimulationDataManagementComponent extends BaseComponent {
   public modelPaneIsOpen: boolean = true;
 
   private async doSaveModel(): Promise<void> {
-    // console.log('WS-REQUEST', graphModule.graph);
-    // IsmModelService.getInstance().callSaveModel(graphModule.graph, (tick: any) => {
-    //   const graph = JSON.parse(tick.body);
-    //   console.log('WS-RESPONSE', graph);
-    //   alert('saved !');
-    // });
-
     console.log('BEFORE: ' + JSON.stringify(graphModule.graph));
 
     const result = await axios.post('http://ips-api.tips.iochord.co.kr/ips/api/v1/model/ism/edit/MODEL', JSON.stringify(graphModule.graph), {
@@ -79,10 +72,7 @@ export default class SimulationDataManagementComponent extends BaseComponent {
       },
     });
 
-    console.log(result.data);
-
     console.log('AFTER: ' + JSON.stringify(result.data));
-
   }
 
   private showUploadFileModal(): void {
