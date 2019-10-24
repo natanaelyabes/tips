@@ -3,37 +3,38 @@ package io.iochord.apps.ips.model.ism.v1.impl;
 import java.util.Map;
 import java.util.TreeMap;
 
+import io.iochord.apps.ips.common.models.Referenceable;
 import io.iochord.apps.ips.model.ism.v1.Configuration;
 import io.iochord.apps.ips.model.ism.v1.Connector;
 import io.iochord.apps.ips.model.ism.v1.Data;
 import io.iochord.apps.ips.model.ism.v1.Element;
 import io.iochord.apps.ips.model.ism.v1.Node;
 import io.iochord.apps.ips.model.ism.v1.Page;
+import io.iochord.apps.ips.model.ism.v1.data.DataTable;
+import io.iochord.apps.ips.model.ism.v1.data.Function;
+import io.iochord.apps.ips.model.ism.v1.data.Generator;
+import io.iochord.apps.ips.model.ism.v1.data.ObjectType;
+import io.iochord.apps.ips.model.ism.v1.data.Queue;
+import io.iochord.apps.ips.model.ism.v1.data.Resource;
+import io.iochord.apps.ips.model.ism.v1.data.impl.DataTableImpl;
+import io.iochord.apps.ips.model.ism.v1.data.impl.FunctionImpl;
+import io.iochord.apps.ips.model.ism.v1.data.impl.GeneratorImpl;
+import io.iochord.apps.ips.model.ism.v1.data.impl.ObjectTypeImpl;
+import io.iochord.apps.ips.model.ism.v1.data.impl.QueueImpl;
+import io.iochord.apps.ips.model.ism.v1.data.impl.ResourceImpl;
 import io.iochord.apps.ips.model.ism.v1.IsmGraph;
 import io.iochord.apps.ips.model.ism.v1.IsmFactory;
-import io.iochord.apps.ips.model.ism.v1.components.Activity;
-import io.iochord.apps.ips.model.ism.v1.components.Branch;
-import io.iochord.apps.ips.model.ism.v1.components.DataTable;
-import io.iochord.apps.ips.model.ism.v1.components.Function;
-import io.iochord.apps.ips.model.ism.v1.components.Generator;
-import io.iochord.apps.ips.model.ism.v1.components.Monitor;
-import io.iochord.apps.ips.model.ism.v1.components.ObjectType;
-import io.iochord.apps.ips.model.ism.v1.components.Queue;
-import io.iochord.apps.ips.model.ism.v1.components.Resource;
-import io.iochord.apps.ips.model.ism.v1.components.Start;
-import io.iochord.apps.ips.model.ism.v1.components.Stop;
-import io.iochord.apps.ips.model.ism.v1.components.impl.ActivityImpl;
-import io.iochord.apps.ips.model.ism.v1.components.impl.BranchImpl;
-import io.iochord.apps.ips.model.ism.v1.components.impl.ControlImpl;
-import io.iochord.apps.ips.model.ism.v1.components.impl.DataTableImpl;
-import io.iochord.apps.ips.model.ism.v1.components.impl.FunctionImpl;
-import io.iochord.apps.ips.model.ism.v1.components.impl.GeneratorImpl;
-import io.iochord.apps.ips.model.ism.v1.components.impl.MonitorImpl;
-import io.iochord.apps.ips.model.ism.v1.components.impl.ObjectTypeImpl;
-import io.iochord.apps.ips.model.ism.v1.components.impl.QueueImpl;
-import io.iochord.apps.ips.model.ism.v1.components.impl.ResourceImpl;
-import io.iochord.apps.ips.model.ism.v1.components.impl.StartImpl;
-import io.iochord.apps.ips.model.ism.v1.components.impl.StopImpl;
+import io.iochord.apps.ips.model.ism.v1.nodes.Activity;
+import io.iochord.apps.ips.model.ism.v1.nodes.Branch;
+import io.iochord.apps.ips.model.ism.v1.nodes.Monitor;
+import io.iochord.apps.ips.model.ism.v1.nodes.Start;
+import io.iochord.apps.ips.model.ism.v1.nodes.Stop;
+import io.iochord.apps.ips.model.ism.v1.nodes.impl.ActivityImpl;
+import io.iochord.apps.ips.model.ism.v1.nodes.impl.BranchImpl;
+import io.iochord.apps.ips.model.ism.v1.nodes.impl.ControlImpl;
+import io.iochord.apps.ips.model.ism.v1.nodes.impl.MonitorImpl;
+import io.iochord.apps.ips.model.ism.v1.nodes.impl.StartImpl;
+import io.iochord.apps.ips.model.ism.v1.nodes.impl.StopImpl;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -81,11 +82,11 @@ public class IsmFactoryImpl implements IsmFactory {
 
 	@Override
 	public IsmGraph create(IsmGraph ref) {
-		IsmImpl net = new IsmImpl();
+		IsmGraphImpl net = new IsmGraphImpl();
 		net.setId("MODEL-" + netCounter);
 		addPage(net);
 		addConfiguration(net);
-		net.setControl(new ControlImpl());
+//		net.setControl(new ControlImpl());
 		return net;
 	}
 
@@ -141,8 +142,8 @@ public class IsmFactoryImpl implements IsmFactory {
 		if (page != null) {
 			ConnectorImpl arc = new ConnectorImpl();
 			arc.setId(page.getId() + "-" + String.valueOf(page.getConnectors().size()));
-			arc.setSource(source);
-			arc.setTarget(target);
+			arc.setSource(new Referenceable<Element>(source));
+			arc.setTarget(new Referenceable<Element>(target));
 			page.getConnectors().put(arc.getId(), arc);
 			return arc;
 		}

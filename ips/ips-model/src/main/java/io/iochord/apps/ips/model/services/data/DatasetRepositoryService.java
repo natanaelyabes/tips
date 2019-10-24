@@ -27,8 +27,8 @@ public class DatasetRepositoryService extends AnIpsService<String, Map<String, D
 			String tablename = rs.getString("tablename");
 			String tableJson = rs.getString("json");
 			Dataset ds = JsonDataCodec.getDeserializer().readValue(tableJson, Dataset.class);
-			ds.setIdentifier(tablename);
-			datasets.put(ds.getIdentifier(), ds);
+			ds.setId(tablename);
+			datasets.put(ds.getId(), ds);
 		}
 		st.close();
 		conn.close();

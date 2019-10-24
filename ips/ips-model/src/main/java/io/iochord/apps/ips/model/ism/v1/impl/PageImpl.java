@@ -3,6 +3,8 @@ package io.iochord.apps.ips.model.ism.v1.impl;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import com.fasterxml.jackson.annotation.JsonTypeName;
+
 import io.iochord.apps.ips.model.ism.v1.Connector;
 import io.iochord.apps.ips.model.ism.v1.Data;
 import io.iochord.apps.ips.model.ism.v1.Node;
@@ -18,10 +20,11 @@ import lombok.Setter;
  *
  *
  */
+@JsonTypeName(Page.TYPE)
 public class PageImpl extends ElementImpl implements Page {
 	@Getter
 	private final String elementType = Page.TYPE;
-
+	
 	@Getter
 	@Setter
 	private Map<String, Data> data = new LinkedHashMap<>();

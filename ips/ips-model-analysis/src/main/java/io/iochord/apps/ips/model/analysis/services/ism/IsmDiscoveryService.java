@@ -11,10 +11,10 @@ import io.iochord.apps.ips.core.services.ServiceContext;
 import io.iochord.apps.ips.model.ism.v1.IsmGraph;
 import io.iochord.apps.ips.model.ism.v1.IsmFactory;
 import io.iochord.apps.ips.model.ism.v1.Page;
-import io.iochord.apps.ips.model.ism.v1.components.Activity;
-import io.iochord.apps.ips.model.ism.v1.components.impl.ActivityImpl;
 import io.iochord.apps.ips.model.ism.v1.impl.ConnectorImpl;
 import io.iochord.apps.ips.model.ism.v1.impl.IsmFactoryImpl;
+import io.iochord.apps.ips.model.ism.v1.nodes.Activity;
+import io.iochord.apps.ips.model.ism.v1.nodes.impl.ActivityImpl;
 
 public class IsmDiscoveryService extends AnIpsAsyncService<IsmDiscoveryConfiguration, IsmGraph> {
 
@@ -31,26 +31,29 @@ public class IsmDiscoveryService extends AnIpsAsyncService<IsmDiscoveryConfigura
 				nodes.put(ta, null);
 			}
 		}
-		Thread.sleep(500);
 		Page p = result.getPages().values().iterator().next();
 		int ni = 0;
 		for (String ea : nodes.keySet()) {
 			ActivityImpl a = (ActivityImpl) factory.addActivity(p);
 			a.setLabel(ea);
+			a.setId("ACTIVITY" + ni);
 			nodes.put(ea, a);
 			if (++ni % 10 == 0) {
 				context.updateProgress(50, ni + " nodes found.");
-				Thread.sleep(50);
 			}
+			if (ni > 10) break;
 		}
 		int ci = 0;
 		for (String fa : dfMatrix.keySet()) {
 			for (String ta : dfMatrix.get(fa).keySet()) {
-				ConnectorImpl c = (ConnectorImpl) factory.addConnector(p, nodes.get(fa), nodes.get(ta));
-				c.setLabel(String.valueOf(dfMatrix.get(fa).get(ta)));
-				if (++ci % 100 == 0) {
-					context.updateProgress(75, ci + " connector found.");
-					Thread.sleep(50);
+				if (nodes.containsKey(fa) && nodes.containsKey(ta)) {
+					ConnectorImpl c = (ConnectorImpl) factory.addConnector(p, nodes.get(fa), nodes.get(ta));
+					c.setId("CONNECTOR" + ni);
+					c.setLabel(String.valueOf(dfMatrix.get(fa).get(ta)));
+					if (++ci % 100 == 0) {
+						context.updateProgress(75, ci + " connector found.");
+					}
+		//			if (ci > 10) break;
 				}
 			}
 		}

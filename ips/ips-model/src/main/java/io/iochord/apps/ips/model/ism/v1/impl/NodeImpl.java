@@ -2,6 +2,8 @@ package io.iochord.apps.ips.model.ism.v1.impl;
 
 import java.util.Collection;
 
+import com.fasterxml.jackson.annotation.JsonTypeName;
+
 import io.iochord.apps.ips.model.ism.v1.Element;
 import io.iochord.apps.ips.model.ism.v1.Node;
 import lombok.Getter;
@@ -15,6 +17,7 @@ import lombok.Setter;
  *
  *
  */
+@JsonTypeName(Node.TYPE)
 public class NodeImpl extends ElementImpl implements Node {
 	@Getter
 	private final String elementType = Node.TYPE;

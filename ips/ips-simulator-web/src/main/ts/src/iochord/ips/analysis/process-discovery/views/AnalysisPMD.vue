@@ -12,7 +12,7 @@
         <i class="right angle icon divider"></i>
         <select ref="datasetSelector" @change="mine">
           <option value="---">---</option>
-          <option v-for="(ds, i) in datasets" :key="i" class="item" :value="i">{{ds.name}} ({{i}})</option>
+          <option :selected="datasetId == i" v-for="(ds, i) in datasets" :key="i" class="item" :value="i">{{ds.name}} ({{i}})</option>
         </select>
         {{progressMessage}}
       </template>
@@ -40,7 +40,7 @@
 </style>
 
 <script lang="ts">
-import { Vue, Component } from 'vue-property-decorator';
+import { Vue, Component, Prop } from 'vue-property-decorator';
 import { getModule } from 'vuex-module-decorators';
 import Layout03View from '@/iochord/ips/common/ui/layout/class/Layout03';
 import SettingsBarWrapperComponent from '@/iochord/ips/common/ui/layout/components/SettingsBarWrapperComponent.vue';
@@ -65,39 +65,42 @@ const graphModule = getModule(GraphModule);
 export default class AnalysisPMD extends Layout03View {
   public title: string = '';
 
+  @Prop({default: ''})
+  public datasetId!: any;
+
   public datasets = {};
 
   public graphJson: string = '';
 
   public progressMessage: string = '';
 
-  public mine() {
+  public mine(): void {
     const self = this;
     const selectedDatasetId = (this.$refs['datasetSelector'] as any).value;
+    self.runMine(selectedDatasetId);
+  }
+
+  public runMine(selectedDatasetId: string): void {
+    const self = this;
     if (selectedDatasetId !== '---') {
       const config: IsmDiscoveryConfiguration = new IsmDiscoveryConfiguration();
       config.datasetId = selectedDatasetId;
       IsmDiscoveryService.getInstance().discoverIsmGraph(config, (res: any) => {
         const graph = JSON.parse(res.body);
         let n = 0;
-        if (graph.data.pages['0'].nodes) {
-          for (const i of graph.data.pages['0'].nodes) {
-            n++;
-          }
+        for (const i of Object.keys(graph.data.pages['0'].nodes)) {
+          n++;
         }
         let c = 0;
-        if (graph.data.pages['0'].connectors) {
-          for (const i of graph.data.pages['0'].connectors) {
-            c++;
-          }
+        for (const i of Object.keys(graph.data.pages['0'].connectors)) {
+          c++;
         }
         console.log(graph.data);
         const g: Graph = GraphImpl.deserialize(graph.data) as Graph;
-
         graphModule.setGraph(g);
         // GraphSubject.update(graphModule.graph);
 
-        // console.log(g);
+        console.log(g);
         self.graphJson = 'This graph has ' + n + ' nodes and ' + c + ' connectors';
         self.progressMessage = '';
       }, (tick: any) => {
@@ -113,6 +116,9 @@ export default class AnalysisPMD extends Layout03View {
     const self = this;
     DataConnectionService.getInstance().getDataConnections((res: any) => {
       self.datasets = res.data;
+      if (self.datasetId !== '') {
+        self.runMine(self.datasetId);
+      }
     }, (tick: any) => {
       // self.datasets = tick;
     });

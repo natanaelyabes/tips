@@ -16,6 +16,11 @@ export default [
         path: `discovery`,
         component: () => import(/* webpackChunkName: "ips-model-analysis-analytics-process-discovery" */ './views/AnalysisPMD.vue'),
       },
+      {
+        path: `discovery/:datasetId`,
+        component: () => import(/* webpackChunkName: "ips-model-analysis-analytics-process-discovery" */ './views/AnalysisPMD.vue'),
+        props: true,
+      },
     ],
   },
 ] as RouteConfig[];

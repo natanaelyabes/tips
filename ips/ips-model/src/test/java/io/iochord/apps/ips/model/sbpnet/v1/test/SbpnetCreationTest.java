@@ -9,39 +9,41 @@ import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runners.MethodSorters;
 
+import io.iochord.apps.ips.common.models.Referenceable;
 import io.iochord.apps.ips.common.util.SerializationUtil;
 import io.iochord.apps.ips.model.ism.v1.Connector;
 import io.iochord.apps.ips.model.ism.v1.IsmFactory;
-import io.iochord.apps.ips.model.ism.v1.components.Activity;
-import io.iochord.apps.ips.model.ism.v1.components.Branch;
-import io.iochord.apps.ips.model.ism.v1.components.BranchGate;
-import io.iochord.apps.ips.model.ism.v1.components.BranchRule;
-import io.iochord.apps.ips.model.ism.v1.components.BranchType;
-import io.iochord.apps.ips.model.ism.v1.components.DataTable;
-import io.iochord.apps.ips.model.ism.v1.components.Function;
-import io.iochord.apps.ips.model.ism.v1.components.Generator;
-import io.iochord.apps.ips.model.ism.v1.components.Monitor;
-import io.iochord.apps.ips.model.ism.v1.components.ObjectType;
-import io.iochord.apps.ips.model.ism.v1.components.Queue;
-import io.iochord.apps.ips.model.ism.v1.components.Resource;
-import io.iochord.apps.ips.model.ism.v1.components.Start;
-import io.iochord.apps.ips.model.ism.v1.components.Stop;
-import io.iochord.apps.ips.model.ism.v1.components.VariableType;
-import io.iochord.apps.ips.model.ism.v1.components.Queue.QUEUE_TYPE;
-import io.iochord.apps.ips.model.ism.v1.components.impl.ActivityImpl;
-import io.iochord.apps.ips.model.ism.v1.components.impl.BranchImpl;
-import io.iochord.apps.ips.model.ism.v1.components.impl.DataTableImpl;
-import io.iochord.apps.ips.model.ism.v1.components.impl.FunctionImpl;
-import io.iochord.apps.ips.model.ism.v1.components.impl.GeneratorImpl;
-import io.iochord.apps.ips.model.ism.v1.components.impl.MonitorImpl;
-import io.iochord.apps.ips.model.ism.v1.components.impl.ObjectTypeImpl;
-import io.iochord.apps.ips.model.ism.v1.components.impl.QueueImpl;
-import io.iochord.apps.ips.model.ism.v1.components.impl.ResourceImpl;
-import io.iochord.apps.ips.model.ism.v1.components.impl.StartImpl;
-import io.iochord.apps.ips.model.ism.v1.components.impl.StopImpl;
+import io.iochord.apps.ips.model.ism.v1.IsmGraph;
+import io.iochord.apps.ips.model.ism.v1.data.DataTable;
+import io.iochord.apps.ips.model.ism.v1.data.Function;
+import io.iochord.apps.ips.model.ism.v1.data.Generator;
+import io.iochord.apps.ips.model.ism.v1.data.ObjectType;
+import io.iochord.apps.ips.model.ism.v1.data.Queue;
+import io.iochord.apps.ips.model.ism.v1.data.Resource;
+import io.iochord.apps.ips.model.ism.v1.data.Queue.QUEUE_TYPE;
+import io.iochord.apps.ips.model.ism.v1.data.impl.DataTableImpl;
+import io.iochord.apps.ips.model.ism.v1.data.impl.FunctionImpl;
+import io.iochord.apps.ips.model.ism.v1.data.impl.GeneratorImpl;
+import io.iochord.apps.ips.model.ism.v1.data.impl.ObjectTypeImpl;
+import io.iochord.apps.ips.model.ism.v1.data.impl.QueueImpl;
+import io.iochord.apps.ips.model.ism.v1.data.impl.ResourceImpl;
 import io.iochord.apps.ips.model.ism.v1.impl.ConnectorImpl;
 import io.iochord.apps.ips.model.ism.v1.impl.IsmFactoryImpl;
-import io.iochord.apps.ips.model.ism.v1.impl.IsmImpl;
+import io.iochord.apps.ips.model.ism.v1.impl.IsmGraphImpl;
+import io.iochord.apps.ips.model.ism.v1.nodes.Activity;
+import io.iochord.apps.ips.model.ism.v1.nodes.Branch;
+import io.iochord.apps.ips.model.ism.v1.nodes.Monitor;
+import io.iochord.apps.ips.model.ism.v1.nodes.Start;
+import io.iochord.apps.ips.model.ism.v1.nodes.Stop;
+import io.iochord.apps.ips.model.ism.v1.nodes.enums.BranchGate;
+import io.iochord.apps.ips.model.ism.v1.nodes.enums.BranchRule;
+import io.iochord.apps.ips.model.ism.v1.nodes.enums.BranchType;
+import io.iochord.apps.ips.model.ism.v1.nodes.enums.VariableType;
+import io.iochord.apps.ips.model.ism.v1.nodes.impl.ActivityImpl;
+import io.iochord.apps.ips.model.ism.v1.nodes.impl.BranchImpl;
+import io.iochord.apps.ips.model.ism.v1.nodes.impl.MonitorImpl;
+import io.iochord.apps.ips.model.ism.v1.nodes.impl.StartImpl;
+import io.iochord.apps.ips.model.ism.v1.nodes.impl.StopImpl;
 
 /**
  *
@@ -60,11 +62,11 @@ public class SbpnetCreationTest {
 		return factory;
 	}
 
-	public static IsmImpl net;
+	public static IsmGraphImpl net;
 	
-	public static IsmImpl getNet() {
+	public static IsmGraphImpl getNet() {
 		if (net == null) {
-			net = (IsmImpl) getFactory().create();
+			net = (IsmGraphImpl) getFactory().create();
 		}
 		return net;
 	}
@@ -112,9 +114,9 @@ public class SbpnetCreationTest {
 	public void test02CreateObjectTypeComponent() throws Exception {
 		ObjectTypeImpl e = (ObjectTypeImpl) getFactory().addObjectType(getNet().getDefaultPage());
 		e.setLabel("CAR_DEC");
-		e.getTypes().put(dt.getLabel(), dt);
-		e.getTypes().put(dt2.getLabel(), dt2);
-		e.getTypes().put(dt3.getLabel(), dt3);
+		e.getTypes().put(dt.getLabel(), new Referenceable<>(dt));
+		e.getTypes().put(dt2.getLabel(), new Referenceable<>(dt2));
+		e.getTypes().put(dt3.getLabel(), new Referenceable<>(dt3));
 		testSerializeDeserialize(e, ObjectType.class);
 		ot = e;
 	}
@@ -125,7 +127,7 @@ public class SbpnetCreationTest {
 	public void test03CreateGeneratorComponent() throws Exception {
 		GeneratorImpl e = (GeneratorImpl) getFactory().addGenerator(getNet().getDefaultPage());
 		e.setLabel("Product Generator");
-		e.setObjectType(ot);
+		e.setObjectType(new Referenceable<>(ot));
 		e.setExpression("1");
 		e.setMaxArrival(100);
 		testSerializeDeserialize(e, Generator.class);
@@ -138,9 +140,9 @@ public class SbpnetCreationTest {
 	public void test04CreateFunctionComponent() throws Exception {
 		FunctionImpl e = (FunctionImpl) getFactory().addFunction(getNet().getDefaultPage());
 		e.setLabel("CAR_FUNC");
-		e.getInputParameters().put(ot.getId(), ot);
+		e.getInputParameters().put(ot.getId(), new Referenceable<>(ot));
 		e.setCode("somecode here");
-		e.getOutputVariables().put(ot.getId(), ot);
+		e.getOutputVariables().put(ot.getId(), new Referenceable<>(ot));
 		testSerializeDeserialize(e, Function.class);
 		fn = e;
 	}
@@ -152,7 +154,7 @@ public class SbpnetCreationTest {
 		ResourceImpl e = (ResourceImpl) getFactory().addResource(getNet().getDefaultPage());
 		e.setLabel("resourceA");
 		e.setGroupId("resourceA");
-		e.setData(dt4);
+		e.setData(new Referenceable<>(dt4));
 		testSerializeDeserialize(e, Resource.class);
 		res = e;
 	}
@@ -176,7 +178,7 @@ public class SbpnetCreationTest {
 	public void test07CreateStartComponent() throws Exception {
 		StartImpl e = (StartImpl) getFactory().addStart(getNet().getDefaultPage());
 		e.setLabel("Initiate Process");
-		e.setGenerator(gen);
+		e.setGenerator(new Referenceable<>(gen));
 		testSerializeDeserialize(e, Start.class);
 		st = e;
 	}
@@ -194,9 +196,9 @@ public class SbpnetCreationTest {
 	public void test09CreateActivityComponent() throws Exception {
 		ActivityImpl e = (ActivityImpl) getFactory().addActivity(getNet().getDefaultPage());
 		e.setLabel("Activity A");
-		e.setQueue(q);
-		e.setFunction(fn);
-		e.setResource(res);
+		e.setQueue(new Referenceable<>(q));
+		e.setFunction(new Referenceable<>(fn));
+		e.setResource(new Referenceable<>(res));
 		e.setVariable(VariableType.NONE);
 		testSerializeDeserialize(e, Activity.class);
 		act = e;
@@ -224,10 +226,10 @@ public class SbpnetCreationTest {
 		ConnectorImpl e = (ConnectorImpl) getFactory().addConnector(getNet().getDefaultPage(), st, act);
 		testSerializeDeserialize(e, Connector.class);
 	}
-//	
-//	@Test
-//	public void test13Sbpnet() throws Exception {
-//		testSerializeDeserialize(getNet(), Sbpnet.class);
-//	}	
+	
+	@Test
+	public void test13Sbpnet() throws Exception {
+		testSerializeDeserialize(getNet(), IsmGraph.class);
+	}	
 	
 }

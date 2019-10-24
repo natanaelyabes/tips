@@ -7,18 +7,18 @@ import io.iochord.apps.ips.model.converter.Converter;
 import io.iochord.apps.ips.model.ism.v1.Connector;
 import io.iochord.apps.ips.model.ism.v1.Data;
 import io.iochord.apps.ips.model.ism.v1.IsmGraph;
-import io.iochord.apps.ips.model.ism.v1.components.Activity;
-import io.iochord.apps.ips.model.ism.v1.components.Branch;
-import io.iochord.apps.ips.model.ism.v1.components.BranchGate;
-import io.iochord.apps.ips.model.ism.v1.components.DataTable;
-import io.iochord.apps.ips.model.ism.v1.components.Function;
-import io.iochord.apps.ips.model.ism.v1.components.Generator;
-import io.iochord.apps.ips.model.ism.v1.components.Monitor;
-import io.iochord.apps.ips.model.ism.v1.components.ObjectType;
-import io.iochord.apps.ips.model.ism.v1.components.Queue;
-import io.iochord.apps.ips.model.ism.v1.components.Resource;
-import io.iochord.apps.ips.model.ism.v1.components.Start;
-import io.iochord.apps.ips.model.ism.v1.components.Stop;
+import io.iochord.apps.ips.model.ism.v1.nodes.Activity;
+import io.iochord.apps.ips.model.ism.v1.nodes.Branch;
+import io.iochord.apps.ips.model.ism.v1.nodes.enums.BranchGate;
+import io.iochord.apps.ips.model.ism.v1.data.DataTable;
+import io.iochord.apps.ips.model.ism.v1.data.Function;
+import io.iochord.apps.ips.model.ism.v1.data.Generator;
+import io.iochord.apps.ips.model.ism.v1.nodes.Monitor;
+import io.iochord.apps.ips.model.ism.v1.data.ObjectType;
+import io.iochord.apps.ips.model.ism.v1.data.Queue;
+import io.iochord.apps.ips.model.ism.v1.data.Resource;
+import io.iochord.apps.ips.model.ism.v1.nodes.Start;
+import io.iochord.apps.ips.model.ism.v1.nodes.Stop;
 
 /**
  * @author Nur Ichsan Utama <ichsan83@gmail.com>
@@ -48,9 +48,9 @@ public class Sbpnet2CpnscalaBiConverter implements Converter<IsmGraph, String> {
 	StringBuilder factory = new StringBuilder();
 	
 	private Map<String, String> objecttypes = new LinkedHashMap<>();
-	private Map<String, String> generators = new LinkedHashMap<>();
-	private Map<String, String> resources = new LinkedHashMap<>();
-	private Map<String, String> queues = new LinkedHashMap<>();
+//	private Map<String, String> generators = new LinkedHashMap<>();
+//	private Map<String, String> resources = new LinkedHashMap<>();
+//	private Map<String, String> queues = new LinkedHashMap<>();
 	private Map<String, String> placeshub = new LinkedHashMap<>();
 	
 	private Map<String, Integer> counters = new LinkedHashMap<>();
@@ -335,22 +335,22 @@ public class Sbpnet2CpnscalaBiConverter implements Converter<IsmGraph, String> {
 					addArc(p_dgpData, t_dgt1, "TtP", dataTypeId, b_dgt1, addArcExp("case (tid:"+typeId+",gid:String,data:CaseData) => { Some(tid,gid,data) }"), addTtB(b_dgt1,"inp match { case (tid:"+typeId+",gid:Any,data:Any) => Some(tid); case _ => None }, inp match { case (tid:Any,gid:String,data:Any) => Some(gid); case _ => None }, inp match { case (tid:Any,gid:Any,data:CaseData) => Some(data); case _ => None }"), addBtT(b_dgt1,"(b.tid.get,b.gid.get,b.data.get)"), null, null, false, dg.getId());
 				}
 				if (d instanceof Function) {
-					Function f = (Function) d;
+//					Function f = (Function) d;
 					//Page fpage =  converter.addPage(net, "FUNCTION " + f.getLabel()); 
 					// TODO:
 				}
 				if (d instanceof Queue) {
-					Queue q = (Queue) d;
+//					Queue q = (Queue) d;
 					//Page qpage =  converter.addPage(net, "QUEUE " + q.getLabel()); 
 					// TODO:
 				}
 				if (d instanceof Resource) {
-					Resource r = (Resource) d;
+//					Resource r = (Resource) d;
 					//Page rpage =  converter.addPage(net, "RESOURCE " + r.getLabel()); 
 					// TODO:
 				}
 				if (d instanceof DataTable) {
-					DataTable dt = (DataTable) d;
+//					DataTable dt = (DataTable) d;
 					//Page dtpage =  converter.addPage(net, "DATATABLE " + dt.getLabel()); 
 					// TODO:
 				}
@@ -433,7 +433,7 @@ public class Sbpnet2CpnscalaBiConverter implements Converter<IsmGraph, String> {
 					}
 				}
 				if (n instanceof Monitor) {
-					Monitor m = (Monitor) n;
+//					Monitor m = (Monitor) n;
 					//Page mpage =  converter.addPage(net, "MONITOR " + m.getLabel()); 
 					// TODO:
 				}

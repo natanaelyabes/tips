@@ -4,7 +4,6 @@ import { ApplicationEnum, BaseUrlEnum } from '@/iochord/ips/common/enums/index';
 import DataRouter from './data/DataRouter';
 import ModelRouter from './model/ModelRouter';
 import AnalysisRouter from './analysis/AnalysisRouter';
-import SimulatorRouter from './simulator/SimulatorRouter';
 import WebRouter from './web/WebRouter';
 
 
@@ -25,7 +24,6 @@ export default [
 
       ...DataRouter as RouteConfig[],
       ...ModelRouter as RouteConfig[],
-      ...SimulatorRouter as RouteConfig[],
       ...AnalysisRouter as RouteConfig[],
       ...WebRouter as RouteConfig[],
 

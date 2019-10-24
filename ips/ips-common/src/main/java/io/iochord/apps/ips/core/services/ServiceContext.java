@@ -13,7 +13,7 @@ import org.springframework.messaging.simp.SimpMessagingTemplate;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import io.iochord.apps.ips.common.models.Resource;
-import io.iochord.apps.ips.common.models.Identifiable;
+import io.iochord.apps.ips.common.models.IdentifiableImpl;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -25,7 +25,7 @@ import lombok.Setter;
  *
  *
  */
-public class ServiceContext extends Identifiable {
+public class ServiceContext extends IdentifiableImpl {
 	
 	@Getter
 	private static final Logger logger = LoggerFactory.getLogger(ServiceContext.class);
@@ -68,7 +68,7 @@ public class ServiceContext extends Identifiable {
 	private Object data;
 	
 	public ServiceContext() {
-		setIdentifier(String.valueOf(getInfo().getCreated()));
+		setId(String.valueOf(getInfo().getCreated()));
 	}
 	
 	public void start() {
@@ -82,8 +82,8 @@ public class ServiceContext extends Identifiable {
 		if (getWsmTemplate() == null) {
 			return;
 		}
-		logger.info("updateProgress " +  WS_RESPONSE_PROGRESS_URI + "/" + getIdentifier(), getInfo());
-		getWsmTemplate().convertAndSend(WS_RESPONSE_PROGRESS_URI + "/" + getIdentifier(), getInfo());
+		logger.info("updateProgress " +  WS_RESPONSE_PROGRESS_URI + "/" + getId(), getInfo());
+		getWsmTemplate().convertAndSend(WS_RESPONSE_PROGRESS_URI + "/" + getId(), getInfo());
 	}
 
 	public <T> T completeAndDestroy(State state, int code, T data) {
@@ -93,8 +93,8 @@ public class ServiceContext extends Identifiable {
 		if (getWsmTemplate() == null) {
 			return null;
 		}
-		logger.info("completeAndDestroy " + WS_RESPONSE_COMPLETED_URI + "/" + getIdentifier(), this);
-		getWsmTemplate().convertAndSend(WS_RESPONSE_COMPLETED_URI + "/" + getIdentifier(), this);
+		logger.info("completeAndDestroy " + WS_RESPONSE_COMPLETED_URI + "/" + getId(), this);
+		getWsmTemplate().convertAndSend(WS_RESPONSE_COMPLETED_URI + "/" + getId(), this);
 		return data;
 	}
 	

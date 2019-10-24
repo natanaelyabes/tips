@@ -3,13 +3,13 @@
     <div class="item">
       <div class="header">Control</div>
       <div class="menu">
-        <a class="ui basic button item">
+        <a :class="'ui basic button item' + (isDisabled ? ' disabled' : '')" :disabled="isDisabled">
           <div class="image-icon">
             <img src="@/assets/images/icons/simulation_editor_icon/control/control.png" alt="" class="ui centered image" />
           </div>
           Control
         </a>
-        <a class="ui basic button item">
+        <a :class="'ui basic button item' + (isDisabled ? ' disabled' : '')" :disabled="isDisabled">
           <div class="image-icon">
             <img src="@/assets/images/icons/simulation_editor_icon/control/configuration.png" alt="" class="ui centered image" />
           </div>
@@ -25,11 +25,17 @@
 </style>
 
 <script lang="ts">
-import { Component } from 'vue-property-decorator';
+import { Prop, Component } from 'vue-property-decorator';
 import BaseComponent from '@/iochord/ips/common/ui/layout/class/BaseComponent';
 
 @Component
 export default class ControlPaletteComponent extends BaseComponent {
   //
+
+  @Prop({
+    default: false,
+  })
+  public isDisabled?: boolean;
+
 }
 </script>

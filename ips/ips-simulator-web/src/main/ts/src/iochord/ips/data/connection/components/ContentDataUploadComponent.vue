@@ -100,7 +100,7 @@ export default class ContentDataUploadComponent extends BaseComponent {
         self.isUploading = false;
         self.uploadStatus = '';
         frmUpload.reset();
-        self.$router.push('/iochord/ips/data-connection');
+        self.$router.push('/iochord/ips/data/connection');
       }, (tick: any) => {
         self.uploadStatus = tick.progress;
       });

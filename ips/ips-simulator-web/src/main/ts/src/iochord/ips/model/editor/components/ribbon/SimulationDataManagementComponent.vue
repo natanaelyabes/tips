@@ -1,13 +1,12 @@
 <template>
-  <div class="simulation data management component" style="display:flex">
-    <div class="item"><div class="header"><strong>Simulation Data Management</strong></div></div>
-    <div class="item">
-      <div class="ui basic icon buttons">
-        <a class="ui button" title="Save model" @click="doSaveModel()"><i class="save icon"></i></a>
-        <a class="ui button" title="Upload model" @click="showUploadFileModal()"><i class="upload icon"></i></a>
-        <a class="ui button" title="Download model"><i class="download icon"></i></a>
-        <a class="ui button" title="Show report"><i class="file outline alternate icon"></i></a>
-      </div>
+  <div class="simulation data management component item" style="display:flex">
+    <div class="ui basic icon buttons">
+      <button :class="'ui button' + (isDisabled ? ' disabled' : '')" title="Create new model" :disabled="isDisabled" @click="$emit('create')"><i class="file icon"></i></button>
+      <button :class="'ui button' + (isDisabled ? ' disabled' : '')" title="Save model" :disabled="isDisabled" @click="$emit('save')"><i class="save icon"></i></button>
+      <button :class="'ui button' + (isDisabled ? ' disabled' : '')" title="Load example model" :disabled="isDisabled" @click="$emit('example')"><i class="upload icon"></i></button>
+      <button :class="'ui button' + (isDisabled ? ' disabled' : '')" title="Upload model" :disabled="isDisabled" @click="showUploadFileModal()"><i class="upload icon"></i></button>
+      <button :class="'ui button' + (isDisabled ? ' disabled' : '')" title="Download model" :disabled="isDisabled" @click="$emit('download')"><i class="download icon"></i></button>
+      <button :class="'ui button' + (isDisabled ? ' disabled' : '')" title="Show report" :disabled="isDisabled" @click="$emit('report')"><i class="file outline alternate icon"></i></button>
     </div>
 
     <!-- Upload Modals -->
@@ -45,7 +44,7 @@
 </style>
 
 <script lang="ts">
-import { Component } from 'vue-property-decorator';
+import { Prop, Component } from 'vue-property-decorator';
 import { getModule } from 'vuex-module-decorators';
 import BaseComponent from '@/iochord/ips/common/ui/layout/class/BaseComponent';
 import GraphModule from '@/iochord/ips/common/graph/ism/stores/GraphModule';
@@ -61,6 +60,11 @@ declare const $: any;
 @Component
 export default class SimulationDataManagementComponent extends BaseComponent {
   public modelPaneIsOpen: boolean = true;
+
+  @Prop({
+    default: false,
+  })
+  public isDisabled?: boolean;
 
   private async doSaveModel(): Promise<void> {
     console.log('BEFORE: ' + JSON.stringify(graphModule.graph));

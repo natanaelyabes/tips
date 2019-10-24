@@ -5,11 +5,7 @@ import java.util.Date;
 import lombok.Getter;
 import lombok.Setter;
 
-public class Resource extends Identifiable {
-
-	@Getter
-	@Setter
-	private Long id;
+public class Resource extends IdentifiableImpl {
 
 	@Getter
 	@Setter
