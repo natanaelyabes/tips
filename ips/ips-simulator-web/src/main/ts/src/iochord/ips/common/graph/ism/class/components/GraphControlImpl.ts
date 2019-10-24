@@ -18,7 +18,10 @@ export class GraphControlImpl extends GraphConfigurationImpl implements GraphCon
     return graphControl;
   }
 
-  private elementType: string = 'control';
+  constructor() {
+    super();
+    setType('control');
+  }
 
   /** @Override */
   public serialize(): string | null {
