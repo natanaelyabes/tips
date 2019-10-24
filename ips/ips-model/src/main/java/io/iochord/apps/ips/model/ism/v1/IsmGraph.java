@@ -34,4 +34,6 @@ public interface IsmGraph extends Element {
 	Control getControl();
 
 	Map<String, Data> getData();
+	
+	void loadReferences();
 }

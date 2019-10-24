@@ -39,27 +39,28 @@ public class CpnScalaSimulatorController extends ASimulatorController {
 	
 	@RequestMapping(value = BASE_URI + "/loadnplay", method = RequestMethod.POST)
 	public String postLoadNPlay(@RequestBody IsmGraphImpl graph) {
+		graph.loadReferences();
 		Sbpnet2CpnscalaBiConverter converter = new Sbpnet2CpnscalaBiConverter();
 		String conversionResult = converter.convert(graph);
-//		try {
-//			MemoryScalaCompiler msfc = new MemoryScalaCompiler(conversionResult);
-//			Simulation simulationInstance = msfc.getInstance();
-//			Observer obs = new Observer() {
-//				
-//				@Override
-//				public void update(Observable o, Object arg) {
-//					System.out.println("JAVAOBS: " + o);
-//					System.out.println(arg);
-//				}
-//				
-//			};
-//			simulationInstance.addObserver(obs);
-//			simulationInstances.add(simulationInstance);
-//			simulationObservers.add(obs);
-//		} catch (Exception ex) {
-//			System.out.println(conversionResult);
-//			ex.printStackTrace();
-//		}
+		System.out.println(conversionResult);
+		try {
+			MemoryScalaCompiler msfc = new MemoryScalaCompiler(conversionResult);
+			Simulation simulationInstance = msfc.getInstance();
+			Observer obs = new Observer() {
+				
+				@Override
+				public void update(Observable o, Object arg) {
+					System.out.println("JAVAOBS: " + o);
+					System.out.println(arg);
+				}
+				
+			};
+			simulationInstance.addObserver(obs);
+			simulationInstances.add(simulationInstance);
+			simulationObservers.add(obs);
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
 		return conversionResult;
 	}
 

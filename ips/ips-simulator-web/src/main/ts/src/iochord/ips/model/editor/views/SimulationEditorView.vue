@@ -229,7 +229,8 @@ export default class SimulationEditorView extends Layout01View {
   }
 
   public async loadNPlay() {
-    const cpnscala = IsmSimulatorService.getInstance().postLoadNPlay(graphModule.graph);
+    const cpnscala = await IsmSimulatorService.getInstance().postLoadNPlay(graphModule.graph);
+    console.log("SIMULATION WORKS !", cpnscala);
   }
 
   public async modelCreate() {

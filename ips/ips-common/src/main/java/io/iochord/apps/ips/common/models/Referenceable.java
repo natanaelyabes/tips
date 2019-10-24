@@ -37,9 +37,16 @@ public class Referenceable<V extends Identifiable> extends IdentifiableImpl {
 	
 	private String valueRef;
 	
+	public String getId() {
+		if (getValue() != null) {
+			return getValue().getId();
+		}
+		return super.getId();
+	}
+	
 	@Getter
 	@Setter
-	private Map<String, Identifiable> valueRepository;
+	private Map<String, ? extends Identifiable> valueRepository;
 	
 	@Setter
 	private V value;

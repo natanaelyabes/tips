@@ -53,26 +53,14 @@ public class IsmModelController extends AModelController {
 
 	@RequestMapping(BASE_URI + "/create/{defaultNodes}")
 	public IsmGraph getCreate(@PathVariable int defaultNodes) {
-		IsmFactory factory = IsmFactoryImpl.getInstance();
-		IsmGraph net = factory.create();
-		nets.put(net.getId(), net);
+		IsmGraph net;
 		if (defaultNodes > 0) {
-			Page page = net.getPages().values().iterator().next();
-			ObjectTypeImpl objType = (ObjectTypeImpl) factory.addObjectType(page);
-			objType.setLabel("UNIT");
-			GeneratorImpl generator = (GeneratorImpl) factory.addGenerator(page);
-			generator.setLabel("UNIT GENERATOR");
-			generator.setObjectType(new Referenceable<>(objType));
-			StartImpl start = (StartImpl) factory.addStart(page);
-			start.setLabel("START");
-			start.setGenerator(new Referenceable<>(generator));
-			ActivityImpl act = (ActivityImpl) factory.addActivity(page);
-			act.setLabel("ACTIVITY");
-			StopImpl stop = (StopImpl) factory.addStop(page);
-			stop.setLabel("STOP");
-			factory.addConnector(page, start, act);
-			factory.addConnector(page, act, stop);
+			net = IsmExample.createDefault();
+		} else {
+			IsmFactory factory = IsmFactoryImpl.getInstance();
+			net = factory.create();
 		}
+		nets.put(net.getId(), net);
 		return net;
 	}
 	
