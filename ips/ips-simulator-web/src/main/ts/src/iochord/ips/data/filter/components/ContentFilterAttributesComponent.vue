@@ -22,19 +22,19 @@
             <div class="grouped fields">
               <div class="field">
                 <div class="ui radio checkbox">
-                  <input type="radio" name="preserve-selected" tabindex="0" class="hidden">
+                  <input type="radio" name="preserve" checked="checked">
                   <label>Preserve selected</label>
                 </div>
               </div>
               <div class="field">
                 <div class="ui radio checkbox">
-                  <input type="radio" name="mandatory" tabindex="0" class="hidden">
+                  <input type="radio" name="preserve">
                   <label>Mandatory</label>
                 </div>
               </div>
               <div class="field">
                 <div class="ui radio checkbox">
-                  <input type="radio" name="forbidden" tabindex="0" class="hidden">
+                  <input type="radio" name="preserve">
                   <label>Forbidden</label>
                 </div>
               </div>
@@ -53,14 +53,14 @@
         <div class="ui hidden divider"></div>
         <div class="inline fields">
           <div class="field">
-            <a class="ui basic button item">
+            <a class="ui basic button item" v-on:click="selectAll">
               <div class="image-icon">
                 <img src="@/assets/images/icons/data_management_filter/check.png" alt="" class="ui image" />
               </div>
             </a>
           </div>
           <div class="field">
-            <a class="ui basic button item">
+            <a class="ui basic button item" v-on:click="deselectAll">
               <div class="image-icon">
                 <img src="@/assets/images/icons/data_management_filter/cancel.png" alt="" class="ui image" />
               </div>
@@ -159,5 +159,15 @@ import BaseComponent from '@/iochord/ips/common/ui/layout/class/BaseComponent';
 @Component
 export default class ContentFilterAttributesComponent extends BaseComponent {
 
+public selected: any = [];
+public selectAllFlag: boolean = false;
+
+  public selectAll(): void {
+    console.log('select all');
+  }
+
+  public deselectAll(): void {
+    console.log('deselect all');
+  }
 }
 </script>

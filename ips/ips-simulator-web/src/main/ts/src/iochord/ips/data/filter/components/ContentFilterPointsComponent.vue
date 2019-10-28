@@ -20,19 +20,19 @@
             <div class="grouped fields">
               <div class="field">
                 <div class="ui radio checkbox">
-                  <input type="radio" name="preserve-case" tabindex="0" class="hidden">
+                  <input type="radio" name="preserve-case" checked="checked">
                   <label>discard case</label>
                 </div>
               </div>
               <div class="field">
                 <div class="ui radio checkbox">
-                  <input type="radio" name="preserve-case" tabindex="0" class="hidden">
+                  <input type="radio" name="preserve-case">
                   <label>trim longest</label>
                 </div>
               </div>
               <div class="field">
                 <div class="ui radio checkbox">
-                  <input type="radio" name="preserve-case" tabindex="0" class="hidden">
+                  <input type="radio" name="preserve-case">
                   <label>trim first</label>
                 </div>
               </div>
