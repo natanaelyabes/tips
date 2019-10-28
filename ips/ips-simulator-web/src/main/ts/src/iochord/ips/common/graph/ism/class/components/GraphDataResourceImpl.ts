@@ -16,7 +16,6 @@ import { TSMap } from 'typescript-map';
  */
 export class GraphDataResourceImpl extends GraphDataImpl implements GraphDataResource {
   public static TYPE: string = 'resource';
-  public static instance: TSMap<string, GraphDataResource> = new TSMap<string, GraphDataResource>();
 
   /** @Override */
   public static deserialize(object: any): GraphDataResource | null {

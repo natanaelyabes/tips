@@ -1,5 +1,6 @@
 <template>
   <div class="simulation data management component item" style="display:flex">
+    <!-- <div class="item"><div class="header"><strong>Data Management</strong></div></div> -->
     <div class="ui basic icon buttons">
       <button :class="'ui button' + (isDisabled ? ' disabled' : '')" title="Create new model" :disabled="isDisabled" @click="$emit('create')"><i class="file icon"></i></button>
       <button :class="'ui button' + (isDisabled ? ' disabled' : '')" title="Save model" :disabled="isDisabled" @click="$emit('save')"><i class="save icon"></i></button>
@@ -59,12 +60,10 @@ declare const $: any;
 
 @Component
 export default class SimulationDataManagementComponent extends BaseComponent {
-  public modelPaneIsOpen: boolean = true;
-
-  @Prop({
-    default: false,
-  })
+  @Prop({ default: false })
   public isDisabled?: boolean;
+
+  public modelPaneIsOpen: boolean = true;
 
   private async doSaveModel(): Promise<void> {
     console.log('BEFORE: ' + JSON.stringify(graphModule.graph));

@@ -30,11 +30,11 @@ import * as NODE_FACTORY from '@/iochord/ips/common/graph/ism/enums/NODE';
 
 // Enums of NODE
 enum NODE {
-  activity,
-  start,
-  stop,
-  branch,
-  monitor,
+  activity = 'activity',
+  start = 'start',
+  stop = 'stop',
+  branch = 'branch',
+  monitor = 'monitor',
 }
 
 // Fetch module from stores

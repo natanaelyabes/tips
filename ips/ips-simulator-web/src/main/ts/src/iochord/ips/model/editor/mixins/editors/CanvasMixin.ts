@@ -47,7 +47,13 @@ export default class CanvasMixin extends Mixins(BaseComponent, PaletteMixin) {
 
   public handleCanvasMouseMove(e: MouseEvent) {
     if (editorState.dragging && !editorState.drawing && this.activePage) {
-      this.moveNode(e, this.activePage as JointGraphPageImpl);
+      if (editorState.drawingMode === 'node') {
+        this.moveNode(e, this.activePage as JointGraphPageImpl);
+      }
+
+      if (editorState.drawingMode === 'data') {
+        this.moveData(e, this.activePage as JointGraphPageImpl);
+      }
     }
 
     if (!editorState.dragging && editorState.drawing && this.activePage && this.source) {
@@ -57,7 +63,14 @@ export default class CanvasMixin extends Mixins(BaseComponent, PaletteMixin) {
 
   public handleCanvasMouseUp(e: MouseEvent) {
     if (editorState.dragging && !editorState.drawing && this.activePage) {
-      this.saveNode(e, this.activePage as JointGraphPageImpl);
+      if (editorState.drawingMode === 'node') {
+        this.saveNode(e, this.activePage as JointGraphPageImpl);
+      }
+
+      if (editorState.drawingMode === 'data') {
+        this.saveData(e, this.activePage as JointGraphPageImpl);
+      }
+
       editorState.setDragging(false);
     }
   }
@@ -65,7 +78,13 @@ export default class CanvasMixin extends Mixins(BaseComponent, PaletteMixin) {
   // TODO: Probably useless
   public handleEscapeButton(e: KeyboardEvent) {
     if (editorState.dragging && !editorState.drawing) {
-      this.cancelCreateNode(e);
+      if (editorState.drawingMode === 'node') {
+        this.cancelCreateNode(e);
+      }
+
+      if (editorState.drawingMode === 'data') {
+        this.cancelCreateData(e);
+      }
     }
 
     if (editorState.drawing && !editorState.dragging) {

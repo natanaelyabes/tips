@@ -75,7 +75,7 @@ export default class JointJsRenderer {
 
         // Render elements and links
         this.renderNodes(jointPage);
-        this.renderArcs(jointPage);
+        this.renderConnectors(jointPage);
 
         this.renderData(jointPage);
 
@@ -115,7 +115,7 @@ export default class JointJsRenderer {
     jointPage.setAttributes(currentPage.getAttributes() as TSMap<string, string>);
     jointPage.setGraph(new joint.dia.Graph());
     jointPage.setNodes(currentPage.getNodes() as TSMap<string, GraphNode>);
-    jointPage.setArcs(currentPage.getArcs() as TSMap<string, GraphConnector>);
+    jointPage.setConnectors(currentPage.getConnectors() as TSMap<string, GraphConnector>);
     jointPage.setData(currentPage.getData() as TSMap<string, GraphData>);
   }
 
@@ -216,11 +216,11 @@ export default class JointJsRenderer {
     });
   }
 
-  public renderArcs(jointPage: JointGraphPageImpl): void {
+  public renderConnectors(jointPage: JointGraphPageImpl): void {
     const keys: any = { elementType: 'elementType' };
 
     // for all connectors
-    (jointPage.getArcs() as TSMap<string, GraphConnector>).forEach((arcValue) => {
+    (jointPage.getConnectors() as TSMap<string, GraphConnector>).forEach((arcValue) => {
       const arc = new JointGraphConnectorImpl();
       arc.setId(arcValue.getId() as string);
       arc.setLabel(arcValue.getLabel() as string);

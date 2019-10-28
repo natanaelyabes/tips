@@ -41,8 +41,7 @@ export class IsmSimulatorService extends SimulatorService {
 
   public async postLoadNPlay(graph: Graph|GraphImpl): Promise<string> {
     const page = (graph as any).pages.get('0');
-    (page as any).connectors = page.arcs;
-    console.log(graph);
+    (page as any).connectors = page.connectors;
     const response = await this.remotePost(IsmSimulatorService.BASE_URI + '/loadnplay', graph);
     return response.data;
   }

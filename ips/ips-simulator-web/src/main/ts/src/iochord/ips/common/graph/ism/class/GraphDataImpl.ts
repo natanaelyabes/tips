@@ -12,11 +12,6 @@ import { TSMap } from 'typescript-map';
 export class GraphDataImpl extends GraphElementImpl implements GraphData {
   public static instance: TSMap<string, GraphData> = new TSMap<string, GraphData>();
 
-  public static deserialize(object: any): any | null {
-    const graphData: TSMap<string, GraphData> = new TSMap<string, GraphData>();
-    return graphData;
-  }
-
   constructor() {
     super();
   }

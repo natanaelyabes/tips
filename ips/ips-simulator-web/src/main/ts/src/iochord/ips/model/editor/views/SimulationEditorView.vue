@@ -27,15 +27,20 @@
 
       <!--  Ribbon Menu Item -->
       <template slot="ribbon-menu-item">
+
+        <!-- Left menu item -->
         <SimulationDataManagementComponent
           :isDisabled="isDisabled"
-          @create="modelCreate()"
-          @example="modelLoadExample()"
-          />
-        <SimulationPlayerComponent
-          :isPlaying="isDisabled"
-          @play="isDisabled = true; loadNPlay();" 
-          @stop="isDisabled = false" />
+          @create="modelCreate"
+          @example="modelLoadExample" />
+
+        <!-- Right menu item -->
+        <div id="ribbon-right-menu" class="right menu">
+          <SimulationPlayerComponent
+            :isPlaying="isDisabled"
+            @play="isDisabled = true; loadNPlay();"
+            @stop="isDisabled = false" />
+        </div>
       </template>
 
       <!-- Content -->
@@ -229,7 +234,7 @@ export default class SimulationEditorView extends Layout01View {
   }
 
   public async loadNPlay() {
-    const cpnscala = IsmSimulatorService.getInstance().postLoadNPlay(graphModule.graph);
+    const cpnscala = await IsmSimulatorService.getInstance().postLoadNPlay(graphModule.graph);
   }
 
   public async modelCreate() {

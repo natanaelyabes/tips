@@ -228,7 +228,7 @@ export default class CanvasComponent extends Mixins(BaseComponent, CanvasMixin) 
 
           // Remove links that connected to the node as well
           links.forEach((link) => {
-            jointPage.getArcs()!.delete(link.attributes.arcId);
+            jointPage.getConnectors()!.delete(link.attributes.arcId);
             link.remove();
           });
 

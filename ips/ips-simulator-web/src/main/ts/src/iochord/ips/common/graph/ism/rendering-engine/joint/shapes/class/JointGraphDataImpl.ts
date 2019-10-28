@@ -62,6 +62,14 @@ export class JointGraphDataImpl extends GraphDataImpl implements JointGraphEleme
     this.size = size;
   }
 
+  public getData(): joint.shapes.standard.BorderedImage {
+    return this.data;
+  }
+
+  public setData(data: joint.shapes.standard.BorderedImage) {
+    this.data = data;
+  }
+
   public getImageIcon(): string {
     return this.imageIcon;
   }
