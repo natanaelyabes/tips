@@ -53,6 +53,7 @@ import ContentFilterPerformanceComponent from '../components/ContentFilterPerfor
 import ContentFilterAttributesComponent from '../components/ContentFilterAttributesComponent.vue';
 import ContentFilterFollowerComponent from '../components/ContentFilterFollowerComponent.vue';
 import ContentFilterPointsComponent from '../components/ContentFilterPointsComponent.vue';
+import ContentFilterMissingImputationComponent from '../components/ContentFilterMissingImputationComponent.vue';
 
 @Component({
   components: {
@@ -63,6 +64,7 @@ import ContentFilterPointsComponent from '../components/ContentFilterPointsCompo
     ContentFilterAttributesComponent,
     ContentFilterFollowerComponent,
     ContentFilterPointsComponent,
+    ContentFilterMissingImputationComponent,
   },
 })
 export default class DataFilter extends Layout02View {
