@@ -1,6 +1,5 @@
 <template>
   <div class="simulation player component item" style="display:flex">
-    <!-- <div class="item"><div class="header"><strong>Player</strong></div></div> -->
     <div class="ui basic icon buttons">
       <button title="Step Backward" :class="'ui button ' + (isPlaying ? '' : 'disabled')" :disabled="!isPlaying"><i class="step backward icon"></i></button>
       <button title="Rewind" :class="'ui button ' + (isPlaying ? '' : 'disabled')" :disabled="!isPlaying"><i class="backward icon"></i></button>
@@ -12,7 +11,9 @@
 </template>
 
 <style>
-
+.ui.basic.icon.button {
+  margin-left: 2em;
+}
 </style>
 
 <script lang="ts">

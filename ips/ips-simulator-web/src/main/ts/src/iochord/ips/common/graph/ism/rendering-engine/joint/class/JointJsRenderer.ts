@@ -49,8 +49,7 @@ export default class JointJsRenderer {
   public jointPages: TSMap<string, JointGraphPageImpl> = new TSMap<string, JointGraphPageImpl>();
   public currentSelectedElement?: GraphNode;
 
-  public canvasPanAndZoom?: SvgPanZoom.Instance;
-  public minimapPanAndZoom?: SvgPanZoom.Instance;
+  public panAndZoom?: SvgPanZoom.Instance;
 
   constructor(graph: Graph, activePage: GraphPage, currentSelectedElement: GraphNode) {
     this.graph = graph;
@@ -156,7 +155,7 @@ export default class JointJsRenderer {
     } as joint.dia.Paper.Options));
 
     // Scale down minimap
-    jointPage.getMinimap().scale(0.065);
+    jointPage.getMinimap().scale(0.1);
   }
 
   public renderNodes(jointPage: JointGraphPageImpl): void {
@@ -263,12 +262,19 @@ export default class JointJsRenderer {
 
   public enableZoomAndPanning(jointPage: JointGraphPageImpl): void {
 
+    // Enable pan and zoom for minimap
+    this.panAndZoom = SvgPanZoom('#minimap svg').disablePan();
+    this.panAndZoom.disableDblClickZoom();
+    this.panAndZoom.setMinZoom(0);
+    this.panAndZoom.setMaxZoom(100);
+    this.panAndZoom.zoom(0.8);
+
     // Enable pan and zoom for canvas
-    this.canvasPanAndZoom = SvgPanZoom('#canvas svg').disablePan();
-    this.canvasPanAndZoom.enableControlIcons();
-    this.canvasPanAndZoom.disableDblClickZoom();
-    this.canvasPanAndZoom.setMinZoom(0);
-    this.canvasPanAndZoom.setMaxZoom(100);
-    this.canvasPanAndZoom.zoom(0.8);
+    this.panAndZoom = SvgPanZoom('#canvas svg').disablePan();
+    this.panAndZoom.enableControlIcons();
+    this.panAndZoom.disableDblClickZoom();
+    this.panAndZoom.setMinZoom(0);
+    this.panAndZoom.setMaxZoom(100);
+    this.panAndZoom.zoom(0.8);
   }
 }
