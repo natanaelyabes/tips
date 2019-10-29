@@ -35,7 +35,7 @@ export default class SandboxGraphStoreView extends PageLayout {
     console.log('Graph: ', graphModule.graph);
     console.log('Page 0: ', page);
     console.log('Default page: ', graphModule.defaultPage as GraphPage);
-    console.log('Page 0 Arcs: ', graphModule.pageArcs(page));
+    console.log('Page 0 Connectors: ', graphModule.pageConnectors(page));
     console.log('Page 0 Arc 0', graphModule.pageArc(page, '0'));
     console.log('Page 0 Data', graphModule.pageData(page));
     console.log('Page 0 Data 0', graphModule.pageDatum(page, '0'));

@@ -28,7 +28,7 @@ export class GraphImpl extends GraphElementImpl implements Graph {
     graph.setAttributes(object.attributes as TSMap<string, string>);
     graph.setControl(GraphControlImpl.deserialize(object.control) as GraphControl);
     graph.setConfigurations(GraphConfigurationImpl.deserialize(object.configurations) as TSMap<string, GraphConfiguration>);
-    graph.setData(GraphDataImpl.deserialize(object.data) as TSMap<string, GraphData>);
+    // graph.setData(GraphDataImpl.deserialize(object.data) as TSMap<string, GraphData>);
     graph.setPages(GraphPageImpl.deserialize(object.pages) as TSMap<string, GraphPage>);
     return graph;
   }

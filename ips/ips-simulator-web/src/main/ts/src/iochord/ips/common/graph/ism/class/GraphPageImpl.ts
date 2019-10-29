@@ -44,7 +44,7 @@ export class GraphPageImpl extends GraphElementImpl implements GraphPage {
         graphPage.setLabel(element.label);
         graphPage.setType(element.elementType);
         graphPage.setAttributes(element.attributes);
-        graphPage.setArcs(GraphConnectorImpl.deserialize(element.connectors) as TSMap<string, GraphConnector>);
+        graphPage.setConnectors(GraphConnectorImpl.deserialize(element.connectors) as TSMap<string, GraphConnector>);
         graphPage.setNodes(graphNodeMap);
         graphPage.setData(graphDataMap);
         graphMap.set(key, graphPage);
@@ -55,7 +55,7 @@ export class GraphPageImpl extends GraphElementImpl implements GraphPage {
 
   private data?: TSMap<string, GraphData> | null = new TSMap<string, GraphData>();
   private nodes?: TSMap<string, GraphNode> | null = new TSMap<string, GraphNode>();
-  private arcs?: TSMap<string, GraphConnector> | null = new TSMap<string, GraphConnector>();
+  private connectors?: TSMap<string, GraphConnector> | null = new TSMap<string, GraphConnector>();
 
   constructor() {
     super();
@@ -77,12 +77,12 @@ export class GraphPageImpl extends GraphElementImpl implements GraphPage {
     this.nodes = nodes || this.nodes;
   }
 
-  public getArcs(): TSMap<string, GraphConnector> | null {
-    return this.arcs as TSMap<string, GraphConnector> | null;
+  public getConnectors(): TSMap<string, GraphConnector> | null {
+    return this.connectors as TSMap<string, GraphConnector> | null;
   }
 
-  public setArcs(arcs: TSMap<string, GraphConnector>): void {
-    this.arcs = arcs || this.arcs;
+  public setConnectors(connectors: TSMap<string, GraphConnector>): void {
+    this.connectors = connectors || this.connectors;
   }
 
   /** @Override */

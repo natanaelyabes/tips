@@ -12,7 +12,6 @@ import { TSMap } from 'typescript-map';
  */
 export class GraphDataQueueImpl extends GraphDataImpl implements GraphDataQueue {
   public static TYPE: string = 'queue';
-  public static instance: TSMap<string, GraphDataQueue> = new TSMap<string, GraphDataQueue>();
 
   /** @Override */
   public static deserialize(object: any): GraphDataQueue | null {

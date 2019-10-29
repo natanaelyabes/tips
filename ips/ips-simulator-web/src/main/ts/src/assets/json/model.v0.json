@@ -239,7 +239,7 @@
           "inputTypes": null
         }
       },
-      "arcs": {
+      "connectors": {
         "0-0": {
           "id": "0-0",
           "label": null,

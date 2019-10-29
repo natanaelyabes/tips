@@ -122,10 +122,10 @@ export class GraphFactoryImpl implements GraphFactory {
   public addConnector(page: GraphPage, source: GraphElement, target: GraphElement): GraphConnector | null {
     let arc: GraphConnector | null = new GraphConnectorImpl();
     if (page !== null) {
-      arc.setId(`${page.getId()}-${(page.getArcs() as TSMap<string, GraphConnector>).size.toString()}`);
+      arc.setId(`${page.getId()}-${(page.getConnectors() as TSMap<string, GraphConnector>).size.toString()}`);
       arc.setSource(source);
       arc.setTarget(target);
-      (page.getArcs() as TSMap<string, GraphConnector>).set(arc.getId() as string, arc);
+      (page.getConnectors() as TSMap<string, GraphConnector>).set(arc.getId() as string, arc);
     } else {
       arc = null;
     }

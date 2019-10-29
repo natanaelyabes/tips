@@ -14,8 +14,6 @@ import { TSMap } from 'typescript-map';
 export class GraphDataObjectTypeImpl extends GraphDataImpl implements GraphDataObjectType {
   public static TYPE: string = 'objecttype';
 
-  public static instance: TSMap<string, GraphDataObjectType> = new TSMap<string, GraphDataObjectType>();
-
   /** @Override */
   public static deserialize(object: any): GraphDataObjectType | null {
     const graphDataObjectType: GraphDataObjectType = new GraphDataObjectTypeImpl();

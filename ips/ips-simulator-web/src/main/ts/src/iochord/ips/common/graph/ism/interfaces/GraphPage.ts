@@ -16,6 +16,6 @@ export interface GraphPage extends GraphElement {
   setData(data: TSMap<string, GraphData>): void;
   getNodes(): TSMap<string, GraphNode> | null;
   setNodes(nodes: TSMap<string, GraphNode>): void;
-  getArcs(): TSMap<string, GraphConnector> | null;
-  setArcs(arcs: TSMap<string, GraphConnector>): void;
+  getConnectors(): TSMap<string, GraphConnector> | null;
+  setConnectors(connectors: TSMap<string, GraphConnector>): void;
 }

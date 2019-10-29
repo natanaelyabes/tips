@@ -12,15 +12,12 @@ import { TSMap } from 'typescript-map';
 export class GraphDataTableImpl extends GraphDataImpl implements GraphDataTable {
   public static TYPE: string = 'datatable';
 
-  // public static instance: TSMap<number, TSMap<string, GraphDataTable>> = new TSMap<number, TSMap<string, GraphDataTable>>();
-
   /** @Override */
-  public static deserialize(object: any): TSMap<string, GraphDataTable> | null {
-    const graphDataTableMap: TSMap<string, GraphDataTable> = new TSMap<string, GraphDataTable>();
-    // GraphDataTableImpl.instance.set(GraphDataTableImpl.instance.size, graphDataTableMap);
-    return graphDataTableMap;
+  public static deserialize(object: any): GraphDataTable | null {
+    const graphDataTable: GraphDataTable = new GraphDataTableImpl();
+    GraphDataTableImpl.instance.set(graphDataTable.getId() as string, graphDataTable);
+    return graphDataTable;
   }
-
 
   private fields?: TSMap<string, string> | null;
   private data?: TSMap<string, TSMap<string, object>> | null;
