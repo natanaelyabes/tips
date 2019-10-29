@@ -35,11 +35,17 @@
           @example="modelLoadExample" />
 
         <!-- Right menu item -->
-        <div id="ribbon-right-menu" class="right menu">
+        <div id="ribbon-player-menu" class="right menu">
           <SimulationPlayerComponent
             :isPlaying="isDisabled"
             @play="isDisabled = true; loadNPlay();"
             @stop="isDisabled = false" />
+        </div>
+
+        <div id="ribbon-layout-menu" class="right menu">
+          <SimulationLayoutComponent
+            @autolayout="modelAutoLayout"
+            :isDisabled="isDisabled" />
         </div>
       </template>
 
@@ -73,7 +79,7 @@ i.big.icon {
 }
 
 @media screen and (max-width: 1440px) {
-  #ribbon-right-menu {
+  #ribbon-player-menu {
     margin-left: 50px!important;
     margin-right: 110px!important;
   }
@@ -139,6 +145,7 @@ import ControlPaletteComponent from '../components/palette/ControlPaletteCompone
 import ToolboxPaletteComponent from '../components/palette/ToolboxPaletteComponent.vue';
 import DataPaletteComponent from '../components/palette/DataPaletteComponent.vue';
 import SimulationPlayerComponent from '../components/ribbon/SimulationPlayerComponent.vue';
+import SimulationLayoutComponent from '../components/ribbon/SimulationLayoutComponent.vue';
 import SimulationDataManagementComponent from '../components/ribbon/SimulationDataManagementComponent.vue';
 import CanvasComponent from '../components/canvas/CanvasComponent.vue';
 import MinimapComponent from '../components/minimap/MinimapComponent.vue';
@@ -170,6 +177,7 @@ declare const $: any;
     ToolboxPaletteComponent,
     DataPaletteComponent,
     SimulationPlayerComponent,
+    SimulationLayoutComponent,
     SimulationDataManagementComponent,
   },
   subscriptions: () => {
@@ -244,6 +252,10 @@ export default class SimulationEditorView extends Layout01View {
 
   public async modelLoadExample() {
     await graphModule.loadExampleGraph();
+    this.forceReRender();
+  }
+
+  public modelAutoLayout() {
     this.forceReRender();
   }
 
