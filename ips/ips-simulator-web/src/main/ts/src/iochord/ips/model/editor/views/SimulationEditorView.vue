@@ -11,7 +11,7 @@
 
       <!-- Header -->
       <template slot="header-breadcrumb">
-        <router-link to="/iochord/ips" tag="a" class="section">Home</router-link>
+        <router-link to="/iochord/ips/home" tag="a" class="section">Home</router-link>
         <i class="right angle icon divider"></i>
         <div class="section">Simulation Editor</div>
         <i class="right angle icon divider"></i>
@@ -21,7 +21,7 @@
       <!--  Left Sidebar Menu Item -->
       <template slot="left-sidebar-menu-item">
         <ControlPaletteComponent :isDisabled="isDisabled" />
-        <ToolboxPaletteComponent :isDisabled="isDisabled" />
+        <NodePaletteComponent :isDisabled="isDisabled" />
         <DataPaletteComponent :isDisabled="isDisabled" />
       </template>
 
@@ -142,7 +142,7 @@ import { IsmModelService } from '@/iochord/ips/common/service/model/IsmModelServ
 // Components
 import WrapperComponent from '@/iochord/ips/common/ui/layout/components/WrapperComponent.vue';
 import ControlPaletteComponent from '../components/palette/ControlPaletteComponent.vue';
-import ToolboxPaletteComponent from '../components/palette/ToolboxPaletteComponent.vue';
+import NodePaletteComponent from '../components/palette/NodePaletteComponent.vue';
 import DataPaletteComponent from '../components/palette/DataPaletteComponent.vue';
 import SimulationPlayerComponent from '../components/ribbon/SimulationPlayerComponent.vue';
 import SimulationLayoutComponent from '../components/ribbon/SimulationLayoutComponent.vue';
@@ -174,7 +174,7 @@ declare const $: any;
     CanvasComponent,
     MinimapComponent,
     ControlPaletteComponent,
-    ToolboxPaletteComponent,
+    NodePaletteComponent,
     DataPaletteComponent,
     SimulationPlayerComponent,
     SimulationLayoutComponent,

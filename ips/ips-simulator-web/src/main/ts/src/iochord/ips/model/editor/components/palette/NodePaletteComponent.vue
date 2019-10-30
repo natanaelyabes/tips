@@ -1,7 +1,7 @@
 <template>
   <div class="toolbox palette component">
     <div class="item">
-      <div class="header">Toolbox</div>
+      <div class="header">Node Toolbox</div>
       <div class="menu">
         <a title="start" :disabled="isDisabled" @mousedown="handleToolboxMouseDown(NODE, $event)" :class="'ui basic button item' + (isDisabled ? ' disabled' : '')">
           <div class="image-icon">
@@ -59,7 +59,7 @@ import { getModule } from 'vuex-module-decorators';
 
 const graphModule = getModule(GraphModule);
 
-@Component<ToolboxPaletteComponent>({
+@Component<NodePaletteComponent>({
   subscriptions: () => {
     return(
       {
@@ -68,7 +68,7 @@ const graphModule = getModule(GraphModule);
     );
   },
 })
-export default class ToolboxPaletteComponent extends Mixins(BaseComponent, PaletteMixin) {
+export default class NodePaletteComponent extends Mixins(BaseComponent, PaletteMixin) {
   @Prop({ default: false })
   public isDisabled?: boolean;
 

@@ -113,6 +113,7 @@ import { TIME_UNIT } from '@/iochord/ips/common/graph/ism/enums/TIME_UNIT';
 import { GraphDataQueue } from '@/iochord/ips/common/graph/ism/interfaces/components/GraphDataQueue';
 import { GraphBranchNode } from '@/iochord/ips/common/graph/ism/interfaces/components/GraphBranchNode';
 import { BRANCH_GATE, BRANCH_TYPE, BRANCH_RULE } from '@/iochord/ips/common/graph/ism/enums/BRANCH';
+import { GraphConnectorImpl } from '../../../../common/graph/ism/class/GraphConnectorImpl';
 
 // Vuex module instance
 const graphModule = getModule(GraphModule);
@@ -240,6 +241,14 @@ export default class CanvasComponent extends Mixins(BaseComponent, CanvasMixin) 
 
     // Listening to events (Refer to joint.js API docs)
     // (TODO: later each of these event handler must be encapsulated within methods or classes)
+    jointPage.getGraph().on({
+      remove: (cell: joint.dia.Element) => {
+        this.deleteConnector(this.activePage as JointGraphPageImpl, cell);
+        this.source = undefined;
+        this.target = undefined;
+      },
+    });
+
     jointPage.getPaper().on({
       'blank:pointerdown': (elementView: joint.dia.ElementView) => {
 
@@ -332,7 +341,7 @@ export default class CanvasComponent extends Mixins(BaseComponent, CanvasMixin) 
         currentElement.findView(jointPage.getPaper()).highlight();
 
         // When drawing a connector
-        if (editorState.drawing) {
+        while (editorState.drawing) {
 
           // User cannot drag anything
           jointPage.getPaper().setInteractivity(false);
@@ -342,16 +351,21 @@ export default class CanvasComponent extends Mixins(BaseComponent, CanvasMixin) 
 
             // Set source node
             this.setSourceNode(this.activePage as JointGraphPageImpl, currentElement);
-          } else if (this.source && !this.target) {
+            break;
+          }
+
+          if (this.source && !this.target) {
 
             // Otherwise set it as target node
             this.setTargetNode(this.activePage as JointGraphPageImpl, currentElement);
+            break;
           }
-        } else {
 
-          // Otherwise set paper interactivity to true (user can drag everything)
-          jointPage.getPaper().setInteractivity(true);
+          break;
         }
+
+        // Otherwise set paper interactivity to true (user can drag everything)
+        jointPage.getPaper().setInteractivity(true);
       },
       'element:pointerclick': (elementView: joint.dia.ElementView) => {
 

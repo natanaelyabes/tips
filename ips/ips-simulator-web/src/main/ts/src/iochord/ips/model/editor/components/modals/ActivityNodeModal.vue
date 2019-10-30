@@ -34,7 +34,7 @@
                   <div class="row">
                     <div class="four wide column">Activity Type</div>
                     <div class="twelve wide column">
-                      <select id="act_txttype" class="ui search dropdown" v-model="activityType">
+                      <select id="act_txttype" class="ui fluid search dropdown" v-model="activityType">
                         <option value="STANDARD">Standard</option>
                         <option value="CONCURRENT_BATCH">Concurrent Batch Process</option>
                         <option value="SPLIT_MODULE">Split Module Process</option>
@@ -46,8 +46,8 @@
                     <div id="basic-standard-sm-1" class="row">
                       <div class="four wide column">Resources</div>
                       <div class="twelve wide column">
-                        <select v-model="resource" id="act_txtresource" class="ui search dropdown">
-                          <option v-for="nodeDatum in nodeData" :key="nodeDatum[0]" :value="nodeDatum[0]">{{ nodeDatum[0] }}</option>
+                        <select v-model="resource" id="act_txtresource" class="ui fluid search dropdown">
+                          <option v-for="resource in resources" :key="resource.id" :value="resource.id">{{resource.label}} ({{resource.id}})</option>
                         </select>
                       </div>
                     </div>
@@ -63,8 +63,8 @@
                     <div id="basic-cbp-sm-2" class="row">
                       <div class="four wide column">Resources</div>
                       <div class="twelve wide column">
-                        <select v-model="resource" id="act_txtresource" class="ui search dropdown">
-                          <option v-for="nodeDatum in nodeData" :key="nodeDatum[0]" :value="nodeDatum[0]">{{ nodeDatum[0] }}</option>
+                        <select v-model="resource" id="act_txtresource" class="ui fluid search dropdown">
+                          <option v-for="resource in resources" :key="resource.id" :value="resource.id">{{resource.label}} ({{resource.id}})</option>
                         </select>
                       </div>
                     </div>
@@ -92,8 +92,8 @@
                     <div id="basic-split-sm-3" class="row">
                       <div class="four wide column">Resources</div>
                       <div class="twelve wide column">
-                        <select v-model="resource" id="act_txtresource" class="ui search dropdown">
-                          <option v-for="nodeDatum in nodeData" :key="nodeDatum[0]" :value="nodeDatum[0]">{{ nodeDatum[0] }}</option>
+                        <select v-model="resource" id="act_txtresource" class="ui fluid search dropdown">
+                          <option v-for="resource in resources" :key="resource.id" :value="resource.id">{{resource.label}} ({{resource.id}})</option>
                         </select>
                       </div>
                     </div>
@@ -130,7 +130,7 @@
                   <div class="row">
                     <div class="four wide column">Processing Time</div>
                     <div class="twelve wide column">
-                      <select id="act_txtprocessing" class="ui dropdown" v-model="processingTime">
+                      <select id="act_txtprocessing" class="ui fluid search dropdown" v-model="processingTime">
                         <option value="RANDOM">Random</option>
                         <option value="CONSTANT">Constant</option>
                       </select>
@@ -150,7 +150,7 @@
                   <div class="row">
                     <div class="four wide column">Setup Time</div>
                     <div class="twelve wide column">
-                      <select id="act_txtsetup" class="ui search dropdown" v-model="setupTime">
+                      <select id="act_txtsetup" class="ui fluid search dropdown" v-model="setupTime">
                         <option value="RANDOM">Random</option>
                         <option value="CONSTANT">Constant</option>
                       </select>
@@ -165,7 +165,7 @@
                   <div class="row">
                     <div class="four wide column">Unit</div>
                     <div class="twelve wide column">
-                      <select id="act_txtunit" class="ui search dropdown" v-model="unit">
+                      <select id="act_txtunit" class="ui fluid search dropdown" v-model="unit">
                         <option value="HOURS">Hours</option>
                         <option value="MINUTES">Minutes</option>
                         <option value="SECONDS">Seconds</option>
@@ -180,8 +180,8 @@
                   <div class="row">
                     <div class="four wide column">Queue label</div>
                     <div class="twelve wide column">
-                      <select v-model="queue" id="act_txtqueuelabel" class="ui search dropdown">
-                        <option v-for="nodeDatum in nodeData" :key="nodeDatum[0]" :value="nodeDatum[0]">{{ nodeDatum[0] }}</option>
+                      <select v-model="queue" id="act_txtqueuelabel" class="ui fluid search dropdown">
+                        <option v-for="queue in queues" :key="queue.id" :value="queue.id">{{queue.label}} ({{queue.id}})</option>
                       </select>
                     </div>
                   </div>
@@ -204,11 +204,11 @@
                     </div>
                   </div>
                   <div class="row">
-                    <div class="sixteen wide column">
-                      <div class="field">
-                        <label>Code Segment</label>
-                        <textarea id="code_segment" v-model="codeSegment"></textarea>
-                      </div>
+                    <div class="four wide column">Function</div>
+                    <div class="twelve wide column">
+                      <select v-model="this.function" id="act_txtfunction" class="ui fluid search dropdown">
+                        <option v-for="fx in functions" :key="fx.id" :value="fx.id">{{fx.label}} ({{fx.id}})</option>
+                      </select>
                     </div>
                   </div>
                 </div>
@@ -281,7 +281,7 @@ export default class ActivityNodeModal extends SemanticComponent implements Moda
   private queue: string = '';
   private inputType: string = '';
   private outputType: string = '';
-  private codeSegment: string = '';
+  private function: string = '';
 
   public populateProperties(page: JointGraphPageImpl, object: GraphActivityNodeImpl): void {
 
@@ -302,6 +302,7 @@ export default class ActivityNodeModal extends SemanticComponent implements Moda
     this.setupTimeParameter = object.getSetupTimeParameter() as string;
     this.unit = object.getUnit() as TIME_UNIT;
     this.queue = object.getQueueRef() as string;
+    this.function = object.getFunctionRef() as string;
 
     // Initialize dropdown with default value
     $('#act_txttype')
@@ -357,6 +358,15 @@ export default class ActivityNodeModal extends SemanticComponent implements Moda
         },
       })
     ;
+
+    $('#act_txtfunction')
+      .dropdown('set selected', this.function)
+      .dropdown({
+        onChange: (val: string) => {
+          this.function = val;
+        },
+      })
+    ;
   }
 
   public saveProperties(page: JointGraphPageImpl, object: GraphActivityNodeImpl): void {
@@ -375,6 +385,7 @@ export default class ActivityNodeModal extends SemanticComponent implements Moda
     node.setSetupTimeParameter(this.setupTimeParameter);
     node.setUnit(this.unit);
     node.setQueueRef(this.queue);
+    node.setFunctionRef(this.function);
 
     // Change label of the renderer node
     page.getGraph().getCells().map((cell: joint.dia.Cell) => {
@@ -407,14 +418,40 @@ export default class ActivityNodeModal extends SemanticComponent implements Moda
     $('.menu .item').tab();
   }
 
-  public get nodeData(): /* TSMap<string, GraphData> | null */ any {
+  public get resources(): GraphData[] {
+    let resources;
     try {
       const pages = graphModule.graph.getPages() as TSMap<string, GraphPage>;
       const nodeData = (pages.get('0') as GraphPage).getData() as TSMap<string, GraphData>;
-      return nodeData.entries();
+      resources = nodeData.values().filter((value: GraphData) => value.getType() === 'resource');
     } catch (e) {
-      //
+      resources = e;
     }
+    return resources;
+  }
+
+  public get queues(): GraphData[] {
+    let queues;
+    try {
+      const pages = graphModule.graph.getPages() as TSMap<string, GraphPage>;
+      const nodeData = (pages.get('0') as GraphPage).getData() as TSMap<string, GraphData>;
+      queues = nodeData.values().filter((value: GraphData) => value.getType() === 'queue');
+    } catch (e) {
+      queues = e;
+    }
+    return queues;
+  }
+
+  public get functions(): GraphData[] {
+    let functions;
+    try {
+      const pages = graphModule.graph.getPages() as TSMap<string, GraphPage>;
+      const nodeData = (pages.get('0') as GraphPage).getData() as TSMap<string, GraphData>;
+      functions = nodeData.values().filter((value: GraphData) => value.getType() === 'function');
+    } catch (e) {
+      functions = e;
+    }
+    return functions;
   }
 }
 </script>

@@ -57,16 +57,14 @@
                   <thead>
                     <tr>
                       <th>Condition</th>
-                      <th>
-                        <button id="btn_add_rule" class="ui positive basic button">
-                          <i class="plus icon"></i>
-                        </button>
-                      </th>
+                      <th>Then go to</th>
+                      <th>Action</th>
                     </tr>
                   </thead>
                   <tbody id="tb_add_row">
-                    <tr>
+                    <tr v-for="condition in conditions" :key="condition[0]">
                       <td>Case.loan > 5000 and case.bank = "A"</td>
+                      <td>0-activity-1</td>
                       <td>
                         <button id="btn_del_rule" class="ui negative basic button">
                           <i class="close icon"></i>
@@ -210,6 +208,10 @@ export default class BranchNodeModal extends SemanticComponent implements Modal<
       message: `${object.getId()} properties have been saved`,
       newestOnTop: true,
     });
+  }
+
+  public conditions(object: GraphBranchNodeImpl): TSMap<string, string> {
+    return object.getConditions() as TSMap<string, string>;
   }
 }
 </script>

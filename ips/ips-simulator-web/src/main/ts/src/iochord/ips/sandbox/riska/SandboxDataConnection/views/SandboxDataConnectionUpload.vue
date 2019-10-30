@@ -3,7 +3,7 @@
         <DepthTwoLeftWrapperComponent>
           <!-- Header -->
           <template slot="header-breadcrumb">
-            <router-link to="/iochord/ips" tag="a" class="section">Home</router-link>
+            <router-link to="/iochord/ips/home" tag="a" class="section">Home</router-link>
             <i class="right angle icon divider"></i>
             <div class="section">Data Management</div>
             <i class="right angle icon divider"></i>
