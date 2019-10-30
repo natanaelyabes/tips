@@ -357,7 +357,7 @@ export default class GraphModule extends VuexModule {
   public get pageArc(): (page: GraphPage, arcId: string) => GraphConnector | null {
     return (page: GraphPage, arcId: string) => {
       const connectors = this.pageConnectors(page) !== null ? this.pageConnectors(page) : null;
-      const arc = (connectors as TSMap<string, GraphConnector>).get(`${page.getId()}-${arcId}`);
+      const arc = (connectors as TSMap<string, GraphConnector>).get(arcId);
       return arc !== null || arc !== undefined ? arc as GraphConnector : null;
     };
   }

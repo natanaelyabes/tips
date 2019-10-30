@@ -24,12 +24,11 @@
             </div>
           </div>
           <div class="row">
-            <div class="four wide column">Data</div>
-            <div class="nine wide column">
-              <input type="text" v-model="data" id="x_txt_label">
-            </div>
-            <div class="three wide column">
-              <button class="ui button">...</button>
+            <div class="four wide column">Type</div>
+            <div class="twelve wide column">
+              <select v-model="type" id="generator_txt_type" class="ui fluid search dropdown">
+                <option v-for="objectType in objectTypes" :key="objectType.id" :value="objectType.id">{{objectType.label}} ({{objectType.id}})</option>
+              </select>
             </div>
           </div>
           <div class="row">
@@ -132,7 +131,7 @@ export default class GeneratorDataModal extends SemanticComponent implements Mod
 
   // Component properties
   private label: string = '';
-  private data: string = '';
+  private type: string = '';
   private distributionType: DISTRIBUTION_TYPE = DISTRIBUTION_TYPE.RANDOM;
   private expression: string = '';
   private unit: TIME_UNIT = TIME_UNIT.MINUTES;
@@ -150,12 +149,22 @@ export default class GeneratorDataModal extends SemanticComponent implements Mod
 
     // Component properties
     this.label = object.getLabel() as string;
+    this.type = object.getObjectTypeRef() as string;
     this.distributionType = object.getDistributionType() as DISTRIBUTION_TYPE;
     this.expression = object.getExpression() as string;
     this.unit = object.getUnit() as TIME_UNIT;
     this.entities = object.getEntitiesPerArrival() as number;
     this.maxArrival = object.getMaxArrival() as number;
     this.firstCreation = object.getFirstCreation() as number;
+
+    $('#generator_txt_type')
+      .dropdown('set selected', this.type)
+      .dropdown({
+        onChange: (val: string) => {
+          this.type = val;
+        },
+      })
+    ;
   }
 
   public saveProperties(page: JointGraphPageImpl, object: GraphDataGeneratorImpl) {
@@ -165,6 +174,7 @@ export default class GeneratorDataModal extends SemanticComponent implements Mod
 
     // Save properties
     data.setLabel(this.label);
+    data.setObjectTypeRef(this.type);
     data.setDistributionType(this.distributionType);
     data.setExpression(this.expression);
     data.setUnit(this.unit);
@@ -197,6 +207,18 @@ export default class GeneratorDataModal extends SemanticComponent implements Mod
       message: `${object.getId()} properties have been saved`,
       newestOnTop: true,
     });
+  }
+
+  public get objectTypes(): GraphData[] {
+    let objectTypes;
+    try {
+      const pages = graphModule.graph.getPages() as TSMap<string, GraphPage>;
+      const nodeData = (pages.get('0') as GraphPage).getData() as TSMap<string, GraphData>;
+      objectTypes = nodeData.values().filter((value: GraphData) => value.getType() === 'objecttype');
+    } catch (e) {
+      objectTypes = e;
+    }
+    return objectTypes;
   }
 }
 </script>

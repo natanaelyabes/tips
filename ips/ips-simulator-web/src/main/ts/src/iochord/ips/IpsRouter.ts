@@ -17,6 +17,10 @@ import WebRouter from './web/WebRouter';
  */
 export default [
   {
+    path: `/${BaseUrlEnum.IOCHORD}`,
+    redirect: `/${BaseUrlEnum.IOCHORD}/${ApplicationEnum.NAME}/home`,
+  },
+  {
     path: `/${BaseUrlEnum.IOCHORD}/${ApplicationEnum.NAME}`,
     component: () => import(/* webpackChunkName: "ips-common-layout-base" */ '@/iochord/ips/common/ui/layouts/BaseLayout.vue'),
     redirect: `/${BaseUrlEnum.IOCHORD}/${ApplicationEnum.NAME}/user/login`,

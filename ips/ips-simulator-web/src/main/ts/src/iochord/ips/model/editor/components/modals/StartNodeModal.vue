@@ -23,8 +23,8 @@
           <div class="row">
             <div class="three wide column">Generator</div>
             <div class="thirteen wide column">
-              <select v-model="generator" id="start_txtgen" class="ui search dropdown">
-                <option v-for="nodeDatum in nodeData" :key="nodeDatum[0]" :value="nodeDatum[0]">{{nodeDatum[0]}}</option>
+              <select v-model="generator" id="start_txtgen" class="ui fluid search dropdown">
+                <option v-for="generator in generators" :key="generator.id" :value="generator.id">{{generator.label}} ({{generator.id}})</option>
               </select>
             </div>
           </div>
@@ -152,14 +152,17 @@ export default class StartNodeModal extends SemanticComponent implements Modal<J
     });
   }
 
-  public get nodeData(): any {
+  public get generators(): GraphData[] {
+    let generators;
     try {
       const pages = graphModule.graph.getPages() as TSMap<string, GraphPage>;
       const nodeData = (pages.get('0') as GraphPage).getData() as TSMap<string, GraphData>;
-      return nodeData.entries();
+      generators = nodeData.values().filter((value: GraphData) => value.getType() === 'generator');
+      return generators;
     } catch (e) {
-      //
+      generators = e;
     }
+    return generators;
   }
 }
 </script>
