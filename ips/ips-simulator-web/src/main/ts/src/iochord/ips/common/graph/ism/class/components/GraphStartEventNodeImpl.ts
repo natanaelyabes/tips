@@ -23,7 +23,6 @@ export class GraphStartEventNodeImpl extends GraphEventNodeImpl implements Graph
     graphStartEventNode.setReportStatistics(object.reportStatistics);
     graphStartEventNode.setGeneratorRef(object.generatorRef);
     GraphStartEventNodeImpl.instance.set(graphStartEventNode.getId() as string, graphStartEventNode);
-
     return graphStartEventNode;
   }
 

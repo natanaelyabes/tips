@@ -15,10 +15,10 @@ export class GraphNodeImpl extends GraphElementImpl implements GraphNode {
 
   private groupName?: string | null;
   private reportStatistics?: boolean | null = false;
-  private inputTypes?: GraphElement[] | null;
-  private outputTypes?: GraphElement[] | null;
-  private inputNodes?: GraphNode[] | null;
-  private outputNodes?: GraphNode[] | null;
+  private inputTypesRef?: string[] = new Array<string>();
+  private outputTypesRef?: string[] = new Array<string>();
+  private inputNodesRef: string[] = new Array<string>();
+  private outputNodesRef: string[] = new Array<string>();
 
   constructor() {
     super();
@@ -29,7 +29,7 @@ export class GraphNodeImpl extends GraphElementImpl implements GraphNode {
   }
 
   public setGroupName(groupName: string): void {
-    this.groupName = groupName ? groupName : this.groupName;
+    this.groupName = groupName as string;
   }
 
   public isReportStatistics(): boolean | null {
@@ -37,43 +37,43 @@ export class GraphNodeImpl extends GraphElementImpl implements GraphNode {
   }
 
   public setReportStatistics(reportStatistics: boolean): void {
-    this.reportStatistics = reportStatistics !== undefined ? reportStatistics : this.reportStatistics;
+    this.reportStatistics = reportStatistics as boolean;
   }
 
   public accept(elements: GraphElement[]): boolean | null {
     return false;
   }
 
-  public getInputTypes(): GraphElement[] | null {
-    return null;
+  public getInputTypesRef(): string[] | null {
+    return this.inputTypesRef as string[];
   }
 
-  public setInputTypes(inputTypes: GraphElement[]): void {
-    this.inputTypes = inputTypes ? inputTypes : this.inputTypes;
+  public setInputTypesRef(inputTypesRef: string[]): void {
+    this.inputTypesRef = inputTypesRef as string[];
   }
 
-  public getOutputTypes(): GraphElement[] | null {
-    return null;
+  public getOutputTypesRef(): string[] | null {
+    return this.outputTypesRef as string[];
   }
 
-  public setOutputTypes(outputTypes: GraphElement[]): void {
-    this.outputTypes = outputTypes ? outputTypes : this.outputNodes;
+  public setOutputTypesRef(outputTypesRef: string[]): void {
+    this.outputTypesRef = outputTypesRef as string[];
   }
 
-  public getInputNodes(): GraphNode[] | null {
-    return null;
+  public getInputNodesRef(): string[] | null {
+    return this.inputNodesRef as string[];
   }
 
-  public setInputNodes(inputNodes: GraphNode[]): void {
-    this.inputNodes = inputNodes ? inputNodes : this.inputNodes;
+  public setInputNodesRef(inputNodesRef: string[]): void {
+    this.inputNodesRef = inputNodesRef as string[];
   }
 
-  public getOutputNodes(): GraphNode[] | null {
-    return null;
+  public getOutputNodesRef(): string[] | null {
+    return this.outputNodesRef as string[];
   }
 
-  public setOutputNodes(outputNodes: GraphNode[]): void {
-    this.outputNodes = outputNodes ? outputNodes : this.outputNodes;
+  public setOutputNodesRef(outputNodesRef: string[]): void {
+    this.outputNodesRef = outputNodesRef as string[];
   }
 
   /** @Override */
