@@ -76,6 +76,14 @@ export class GraphNodeImpl extends GraphElementImpl implements GraphNode {
     this.outputNodesRef = outputNodesRef as string[];
   }
 
+  public validateInputNodes(): Error | null {
+    return null;
+  }
+
+  public validateOutputNodes(): Error | null {
+    return null;
+  }
+
   /** @Override */
   public serialize(): string | null {
     return JSON.stringify(this);

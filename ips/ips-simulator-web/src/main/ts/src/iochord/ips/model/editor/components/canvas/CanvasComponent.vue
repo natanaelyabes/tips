@@ -361,7 +361,6 @@ export default class CanvasComponent extends Mixins(BaseComponent, CanvasMixin) 
             break;
           }
 
-          break;
         }
 
         // Otherwise set paper interactivity to true (user can drag everything)

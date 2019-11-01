@@ -1,4 +1,5 @@
 import { GraphElement } from './GraphElement';
+import { GraphRule } from './GraphRule';
 
 /**
  *
@@ -7,7 +8,7 @@ import { GraphElement } from './GraphElement';
  * @since 2019
  *
  */
-export interface GraphNode extends GraphElement {
+export interface GraphNode extends GraphElement, GraphRule {
   getGroupName(): string | null;
   setGroupName(groupName: string): void;
   isReportStatistics(): boolean | null;

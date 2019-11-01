@@ -18,7 +18,7 @@
               <input type="text" v-model="label" id="object_type_txt_label">
             </div>
           </div>
-          <div class="row">
+          <!-- <div class="row">
             <div class="sixteen wide column">
               <h4>Type</h4>
             </div>
@@ -48,7 +48,7 @@
                 <i class="close icon"></i>
               </button>
             </div>
-          </div>
+          </div> -->
         </div>
       </div>
     </div>

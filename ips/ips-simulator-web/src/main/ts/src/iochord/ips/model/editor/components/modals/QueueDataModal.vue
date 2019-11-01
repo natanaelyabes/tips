@@ -56,7 +56,7 @@
           </div>
           <div class="row">
             <div class="sixteen wide column">
-              <table class="ui celled compact table">
+              <!-- <table class="ui celled compact table">
                 <thead>
                   <tr>
                     <th>Sub Queue ID</th>
@@ -77,7 +77,7 @@
                     </td>
                   </tr>
                 </tbody>
-              </table>
+              </table> -->
             </div>
           </div>
         </div>

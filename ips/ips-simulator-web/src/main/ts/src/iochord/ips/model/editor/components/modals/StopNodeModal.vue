@@ -18,14 +18,14 @@
               <input type="text" v-model="label" id="stop_txt_label">
             </div>
           </div>
-          <div class="row">
+          <!-- <div class="row">
             <div class="sixteen wide column">
               <div class="ui checkbox">
                 <input type="checkbox" v-model="report" class="hidden">
                 <label>Report statistics</label>
               </div>
             </div>
-          </div>
+          </div> -->
         </div>
       </div>
     </div>
