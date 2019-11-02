@@ -3,6 +3,8 @@ import { GraphNodeImpl } from '../GraphNodeImpl';
 import { GraphBranchNode } from '../../interfaces/components/GraphBranchNode';
 import { BRANCH_TYPE, BRANCH_RULE } from '../../enums/BRANCH';
 import { TSMap } from 'typescript-map';
+import { GraphConnectorImpl } from '../GraphConnectorImpl';
+import { GraphConnector } from '../../interfaces/GraphConnector';
 
 /**
  *
@@ -68,6 +70,52 @@ export class GraphBranchNodeImpl extends GraphNodeImpl implements GraphBranchNod
 
   public setConditions(conditions: TSMap<string, string>): void {
     this.conditions = conditions || this.conditions;
+  }
+
+  /** @Override */
+  public validateInputNodes(): Error | null {
+
+    // Get all connectors
+    const connectors = GraphConnectorImpl.instance;
+
+    // Get its input nodes
+    const inputNodes = connectors.values()
+      .filter((connector: GraphConnector) => connector.getTargetRef() === this.getId())
+      .map((connector: GraphConnector) => connector.getTargetRef());
+
+    // Set rule condition
+    const inputNodesMoreThanOne = inputNodes.length >= 1 ? true : false;
+
+    // Assert rule
+    if (this.getBranchType() === BRANCH_TYPE.SPLIT && inputNodesMoreThanOne) {
+      return new Error('Split branch node should not have more than one input nodes ');
+    }
+
+    // Otherwise return nothing
+    return null;
+  }
+
+  /** @Override */
+  public validateOutputNodes(): Error | null {
+
+    // Get all connectors
+    const connectors = GraphConnectorImpl.instance;
+
+    // Get its output nodes
+    const outputNodes = connectors.values()
+      .filter((connector: GraphConnector) => connector.getSourceRef() === this.getId())
+      .map((connector: GraphConnector) => connector.getTargetRef());
+
+    // Set rule condition
+    const outputNodesMoreThanZero = outputNodes.length >= 1 ? true : false;
+
+    // Assert rule
+    if (this.getBranchType() === BRANCH_TYPE.JOIN && outputNodesMoreThanZero) {
+      return new Error('Join branch node should not have more than one output nodes ');
+    }
+
+    // Otherwise return nothing
+    return null;
   }
 
   /** @Override */

@@ -6,7 +6,12 @@
  *
  */
 export enum TIME_UNIT {
+  YEARS,
+  MONTHS,
+  WEEKS,
+  DAYS,
   HOURS,
   MINUTES,
   SECONDS,
+  MILLIS,
 }

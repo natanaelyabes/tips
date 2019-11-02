@@ -23,6 +23,8 @@ import GraphSubject from '@/iochord/ips/common/graph/ism/rxjs/GraphSubject';
 /** Graph Editor */
 import EditorState from '../../../stores/editors/EditorState';
 import { ARC_TYPE } from '@/iochord/ips/common/graph/ism/rendering-engine/joint/shapes/enums/ARC';
+import { NODE_TYPE } from '@/iochord/ips/common/graph/ism/enums/NODE';
+import { GraphNodeImpl } from '@/iochord/ips/common/graph/ism/class/GraphNodeImpl';
 
 // Fetch module from stores
 const graphModule = getModule(GraphModule);
@@ -68,16 +70,42 @@ export default class ConnectorMixin extends BaseComponent {
   }
 
   public setSourceNode(activePage: JointGraphPageImpl, node: joint.dia.Element) {
+
+    // If it is a node instance
     if (node.attributes.nodeId) {
-      const nodeId = (node.attributes.nodeId as string).split('-')[2];
+      const source = GraphNodeImpl.instance.get(node.attributes.nodeId);
+      const error = (source as any).validateOutputNodes();
 
-      this.source = graphModule.pageNode(activePage, nodeId) as GraphNode;
+      // Rule checking for node
+      if (error === null) {
 
-      (graphModule.newItem as JointGraphConnectorImpl).setSourceRef(this.source.getId() as string);
-      const blankPointTarget = new joint.g.Point(node.position().x, node.position().y);
+        // Set source node
+        this.source = source;
 
-      (graphModule.newItem as JointGraphConnectorImpl).render(activePage.getGraph(), blankPointTarget);
+        // Set source ref
+        (graphModule.newItem as JointGraphConnectorImpl).setSourceRef(this.source!.getId() as string);
+
+        // Set target ref as blank point
+        const blankPointTarget = new joint.g.Point(node.position().x, node.position().y);
+
+        // Render conenctor to the canvas
+        (graphModule.newItem as JointGraphConnectorImpl).render(activePage.getGraph(), blankPointTarget);
+
+      } else {
+
+        // Pop up toast
+        ($('body') as any).toast({
+          position: 'bottom right',
+          class: 'error',
+          className: {
+            toast: 'ui message',
+          },
+          message: error.message,
+          newestOnTop: true,
+        });
+      }
     } else {
+
       // Pop up toast
       ($('body') as any).toast({
         position: 'bottom right',
@@ -94,14 +122,15 @@ export default class ConnectorMixin extends BaseComponent {
   public moveToTargetNode(e: MouseEvent, activePage: JointGraphPageImpl) {
     if (graphModule.newItem && this.source) {
 
-      /** Capture svgPoint from MouseEvent */
+      // Capture svgPoint from MouseEvent
       const svgPoint = (activePage.getPaper().svg as SVGSVGElement).createSVGPoint();
       svgPoint.x = e.offsetX;
       svgPoint.y = e.offsetY;
 
-      /** Transform svgPoint to joint.js paper matrix */
+      // Transform svgPoint to joint.js paper matrix
       const pointTransformed = svgPoint.matrixTransform(activePage.getPaper().viewport.getCTM()!.inverse());
 
+      // Blank point target
       const blankPointTarget = new joint.g.Point(pointTransformed.x, pointTransformed.y);
 
       (graphModule.newItem as JointGraphConnectorImpl).render(activePage.getGraph(), blankPointTarget);
@@ -110,64 +139,89 @@ export default class ConnectorMixin extends BaseComponent {
 
   public setTargetNode(activePage: JointGraphPageImpl, node: joint.dia.Element) {
 
+    // If it is a node instance
     if (node.attributes.nodeId) {
 
-      editorState.setDrawing(false);
-      document.body.style.cursor = 'default';
+      const target = GraphNodeImpl.instance.get(node.attributes.nodeId);
+      const error = (target as any).validateInputNodes();
 
-      const nodeId = (node.attributes.nodeId as string).split('-')[2];
-      this.target = graphModule.pageNode(activePage, nodeId) as GraphNode;
+      if (error === null) {
 
-      (graphModule.newItem as JointGraphConnectorImpl).setTargetRef(this.target.getId() as string);
+        // Reset editor state
+        editorState.setDrawing(false);
 
-      // Render newItem
-      (graphModule.newItem as JointGraphConnectorImpl).render(activePage.getGraph());
+        // Reset currsor
+        document.body.style.cursor = 'default';
 
-      // Construct newItem according to its type
-      const newItem = new GraphConnectorImpl();
-      newItem.setId((graphModule.newItem as JointGraphConnectorImpl).getId() as string);
-      newItem.setType((graphModule.newItem as JointGraphConnectorImpl).getType() as string);
-      newItem.setSourceRef(this.source!.getId() as string);
-      newItem.setTargetRef(this.target!.getId() as string);
+        // Set target node
+        this.target = target;
 
-      // Add node to Vuex GraphModule
-      graphModule.addPageArc(
-        {
-          page: activePage,
-          arc: newItem as GraphConnector,
-        },
-      );
+        // Set target ref
+        (graphModule.newItem as JointGraphConnectorImpl).setTargetRef(this.target.getId() as string);
 
-      // Update local instance
-      GraphConnectorImpl.instance.set(newItem.getId() as string, newItem);
+        // Render newItem
+        (graphModule.newItem as JointGraphConnectorImpl).render(activePage.getGraph());
 
-      // Update the rxjs observable
-      GraphSubject.update(graphModule.graph);
+        // Construct newItem according to its type
+        const newItem = new GraphConnectorImpl();
+        newItem.setId((graphModule.newItem as JointGraphConnectorImpl).getId() as string);
+        newItem.setType((graphModule.newItem as JointGraphConnectorImpl).getType() as string);
+        newItem.setSourceRef(this.source!.getId() as string);
+        newItem.setTargetRef(this.target!.getId() as string);
 
-      // Set container to null
-      graphModule.setNewItem(null);
-      this.source = undefined;
-      this.target = undefined;
-      this.newConnector = undefined;
+        // Add node to Vuex GraphModule
+        graphModule.addPageArc(
+          {
+            page: activePage,
+            arc: newItem as GraphConnector,
+          },
+        );
 
-      // Pop up toast
-      ($('body') as any).toast({
-        position: 'bottom right',
-        class: 'success',
-        className: {
-          toast: 'ui message',
-        },
-        showIcon: 'blue long arrow alternate right',
-        message: `${(newItem as GraphConnector).getId()} has been created.`,
-        newestOnTop: true,
-      });
+        // Update local instance
+        GraphConnectorImpl.instance.set(newItem.getId() as string, newItem);
 
-      // Enable the toolbar again
-      $('.sidebar.component .ui.basic.button.item').removeClass('disabled');
+        // Update the rxjs observable
+        GraphSubject.update(graphModule.graph);
 
-      // Remove event listener
-      window.removeEventListener('keydown', this.cancelCreateConnector);
+        // Set container to null
+        graphModule.setNewItem(null);
+        this.source = undefined;
+        this.target = undefined;
+        this.newConnector = undefined;
+
+        // Pop up toast
+        ($('body') as any).toast({
+          position: 'bottom right',
+          class: 'success',
+          className: {
+            toast: 'ui message',
+          },
+          showIcon: 'blue long arrow alternate right',
+          message: `${(newItem as GraphConnector).getId()} has been created.`,
+          newestOnTop: true,
+        });
+
+        // Enable the toolbar again
+        $('.sidebar.component .ui.basic.button.item').removeClass('disabled');
+
+        // Remove event listener
+        window.removeEventListener('keydown', this.cancelCreateConnector);
+
+      } else {
+        // Pop up toast
+        ($('body') as any).toast({
+          position: 'bottom right',
+          class: 'error',
+          className: {
+            toast: 'ui message',
+          },
+          message: error.message,
+          newestOnTop: true,
+        });
+      }
+
     } else {
+
       // Pop up toast
       ($('body') as any).toast({
         position: 'bottom right',
@@ -182,10 +236,13 @@ export default class ConnectorMixin extends BaseComponent {
   }
 
   public deleteConnector(activePage: JointGraphPageImpl, cell: joint.dia.Element) {
+
+    // Check if cell is a connector object
     if (cell.isLink()) {
       const connectorId = cell.attributes.arcId;
       const connector = graphModule.pageArc(activePage as JointGraphPageImpl, connectorId) as GraphConnector;
 
+      // If connector exists
       if (connector) {
         graphModule.deletePageArc({
           page: activePage as JointGraphPageImpl,
@@ -213,8 +270,14 @@ export default class ConnectorMixin extends BaseComponent {
   }
 
   public cancelCreateConnector(e: KeyboardEvent): void {
+
+    // If escape key was pressed
     if (e.key === 'Escape') {
+
+      // And if current editor state is drawing
       if (editorState.drawing) {
+
+        // Reset cursor
         document.body.style.cursor = 'default';
 
         // Set drawing state to false
