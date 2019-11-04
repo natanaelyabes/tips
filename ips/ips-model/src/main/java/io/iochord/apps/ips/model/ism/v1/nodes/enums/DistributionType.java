@@ -1,5 +1,8 @@
 package io.iochord.apps.ips.model.ism.v1.nodes.enums;
 
+import lombok.Getter;
+import lombok.Setter;
+
 /**
  *
  * @package chdsr-model
@@ -9,6 +12,26 @@ package io.iochord.apps.ips.model.ism.v1.nodes.enums;
  *
  */
 public enum DistributionType {
-	RANDOM,
-	CONSTANT
+	CONSTANT("1"),
+	RANDOM("Rand.randInt(lowB, upB)"),
+	BINOMIAL("Binomial(1, )"),
+	NEGATIVE_BINOMIAL("NegativeBinomial(n, p)"),
+	GAMMA("Gamma(n, p)"),
+	GAUSSIAN("Gaussian(mean,stddev)"),
+	LAPLACE("Laplace(location, scale)"),
+	LOGNORMAL("LogNormal(mean, stddev)"),
+	STUDENTST("StudentsT(degreeOfFreedom)"),
+	UNIFORM("Uniform(lowB, upB)"),
+	RAYLEIGH("Rayleigh(scale)"),
+	WEIBULL("Weibull(alpha, beta)"),
+	;
+	
+	@Getter
+	@Setter
+	private String defaultValue;
+	
+	private DistributionType(String defaultValue) {
+		setDefaultValue(defaultValue);
+	}
+	
 }
