@@ -69,7 +69,7 @@ declare const $: any;
 export default class MinimapComponent extends Mixins(BaseComponent, CanvasMixin) {
   @Prop() public response?: Graph;
 
-  public minimapPanAndZoom?: SvgPanZoom.Instance;
+  public panAndZoom?: SvgPanZoom.Instance;
 
   public mounted(): void {
     this.loadGraph();
@@ -88,8 +88,8 @@ export default class MinimapComponent extends Mixins(BaseComponent, CanvasMixin)
         this.currentSelectedElement as GraphNode,
       );
 
-      // Get canvasPanAndZoom instance from renderer
-      this.minimapPanAndZoom = renderer.minimapPanAndZoom;
+      // Get panAndZoom instance from renderer
+      this.panAndZoom = renderer.panAndZoom;
 
       // Set active page to the first page of the graph
       if (this.graph) {

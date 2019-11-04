@@ -70,3 +70,4 @@ yarn-error.log*
 *.sw*
 /chdsr/chdsr-simulator-web/src/main/resources/static
 /chdsr/chdsr-simulator-web/src/main/ts/dist
+/.metadata

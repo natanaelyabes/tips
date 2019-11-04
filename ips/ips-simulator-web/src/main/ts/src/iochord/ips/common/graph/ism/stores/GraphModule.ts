@@ -16,6 +16,7 @@ import { GraphNodeImpl } from '@/iochord/ips/common/graph/ism/class/GraphNodeImp
 
 // Services
 import { IsmModelService } from '@/iochord/ips/common/service/model/IsmModelService';
+import { GraphDataImpl } from '../class/GraphDataImpl';
 
 // Store type
 interface StoreType {
@@ -37,7 +38,7 @@ export default class GraphModule extends VuexModule {
 
   // States
   public graph: Graph = {} as Graph;
-  public newItem: GraphNodeImpl | GraphConnectorImpl | null = null;
+  public newItem: GraphNodeImpl | GraphDataImpl | GraphConnectorImpl | null = null;
 
   // Mutations
   @MutationAction({ mutate: ['graph'] })
@@ -61,7 +62,7 @@ export default class GraphModule extends VuexModule {
   }
 
   @Mutation
-  public setNewItem(newItem: GraphNodeImpl | GraphConnectorImpl | null) {
+  public setNewItem(newItem: GraphNodeImpl | GraphDataImpl | GraphConnectorImpl | null) {
     this.newItem = newItem;
   }
 
@@ -119,12 +120,12 @@ export default class GraphModule extends VuexModule {
   }
 
   @Mutation
-  public setPageArcs({ page, arcs }: { page: GraphPage, arcs: TSMap<string, GraphConnector> }): void {
+  public setPageConnectors({ page, connectors }: { page: GraphPage, connectors: TSMap<string, GraphConnector> }): void {
     const pages = this.graph.getPages();
     if (pages !== null) {
       const exists = pages.get(page.getId() as string);
       if (exists) {
-        exists.setArcs(arcs);
+        exists.setConnectors(connectors);
       } else {
         throw new Error(`Page ${page.getId()} does not exists in Graph ${this.graph.getId()}`);
       }
@@ -133,23 +134,23 @@ export default class GraphModule extends VuexModule {
 
   @Mutation
   public addPageArc({ page, arc }: { page: GraphPage, arc: GraphConnector }) {
-    const arcs = page.getArcs();
-    if (arcs !== null) {
-      const exists = arcs.get(arc.getId() as string);
+    const connectors = page.getConnectors();
+    if (connectors !== null) {
+      const exists = connectors.get(arc.getId() as string);
       if (exists) {
         throw new Error(`Arc ${arc.getId()} had existed in Page ${page.getId()}`);
       }
-      arcs.set(arc.getId() as string, arc);
+      connectors.set(arc.getId() as string, arc);
     }
   }
 
   @Mutation
   public overridePageArc({ page, arc }: { page: GraphPage, arc: GraphConnector }) {
-    const arcs = page.getArcs();
-    if (arcs !== null) {
-      const exists = arcs.get(arc.getId() as string);
+    const connectors = page.getConnectors();
+    if (connectors !== null) {
+      const exists = connectors.get(arc.getId() as string);
       if (exists) {
-        arcs.set(arc.getId() as string, arc);
+        connectors.set(arc.getId() as string, arc);
       } else {
         this.addPageArc({ page, arc });
       }
@@ -158,11 +159,11 @@ export default class GraphModule extends VuexModule {
 
   @Mutation
   public deletePageArc({ page, arc }: { page: GraphPage, arc: GraphConnector }) {
-    const arcs = page.getArcs();
-    if (arcs !== null) {
-      const exists = arcs.get(arc.getId() as string);
+    const connectors = page.getConnectors();
+    if (connectors !== null) {
+      const exists = connectors.get(arc.getId() as string);
       if (exists) {
-        arcs.delete(arc.getId() as string);
+        connectors.delete(arc.getId() as string);
       } else {
         throw new Error(`Arc ${arc.getId()} had existed in Page ${page.getId()}`);
       }
@@ -325,7 +326,7 @@ export default class GraphModule extends VuexModule {
     this.graph.setData(data);
   }
 
-  public get getNewItem(): GraphNodeImpl | GraphConnectorImpl | null {
+  public get getNewItem(): GraphNodeImpl | GraphDataImpl | GraphConnectorImpl | null {
     return this.newItem ? this.newItem : null;
   }
 
@@ -346,17 +347,17 @@ export default class GraphModule extends VuexModule {
     return (pageId: string) => pages !== null ? pages.get(pageId) as GraphPage : null;
   }
 
-  public get pageArcs(): (page: GraphPage) => TSMap<string, GraphConnector> | null {
+  public get pageConnectors(): (page: GraphPage) => TSMap<string, GraphConnector> | null {
     return (page: GraphPage) => {
-      const arcs = page.getArcs();
-      return arcs !== null ? arcs : null;
+      const connectors = page.getConnectors();
+      return connectors !== null ? connectors : null;
     };
   }
 
   public get pageArc(): (page: GraphPage, arcId: string) => GraphConnector | null {
     return (page: GraphPage, arcId: string) => {
-      const arcs = this.pageArcs(page) !== null ? this.pageArcs(page) : null;
-      const arc = (arcs as TSMap<string, GraphConnector>).get(`${page.getId()}-${arcId}`);
+      const connectors = this.pageConnectors(page) !== null ? this.pageConnectors(page) : null;
+      const arc = (connectors as TSMap<string, GraphConnector>).get(arcId);
       return arc !== null || arc !== undefined ? arc as GraphConnector : null;
     };
   }
@@ -368,7 +369,6 @@ export default class GraphModule extends VuexModule {
 
       if (elementType) {
         const keys = data ? data.keys() : null;
-        // let res = keys ? keys.next() : null;
 
         (keys as string[]).forEach((key) => {
           const elType = key.split('-')[1];

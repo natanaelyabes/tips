@@ -3,7 +3,7 @@
     <DepthTwoLeftWrapperComponent>
       <!-- Header -->
       <template slot="header-breadcrumb">
-        <router-link to="/iochord/ips" tag="a" class="section">Home</router-link>
+        <router-link to="/iochord/ips/home" tag="a" class="section">Home</router-link>
         <i class="right angle icon divider"></i>
         <div class="section">Data Management</div>
         <i class="right angle icon divider"></i>
@@ -53,6 +53,7 @@ import ContentFilterPerformanceComponent from '../components/ContentFilterPerfor
 import ContentFilterAttributesComponent from '../components/ContentFilterAttributesComponent.vue';
 import ContentFilterFollowerComponent from '../components/ContentFilterFollowerComponent.vue';
 import ContentFilterPointsComponent from '../components/ContentFilterPointsComponent.vue';
+import ContentFilterMissingImputationComponent from '../components/ContentFilterMissingImputationComponent.vue';
 
 @Component({
   components: {
@@ -63,6 +64,7 @@ import ContentFilterPointsComponent from '../components/ContentFilterPointsCompo
     ContentFilterAttributesComponent,
     ContentFilterFollowerComponent,
     ContentFilterPointsComponent,
+    ContentFilterMissingImputationComponent,
   },
 })
 export default class DataFilter extends Layout02View {

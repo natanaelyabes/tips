@@ -59,6 +59,7 @@ import * as $ from 'jquery';
 @Component
 export default class ItemFilterComponent extends BaseComponent {
   public currentContentComponent: string = '';
+  public filterOptions: string = '';
 
   public onFilterChange(prm: string) {
     switch (prm) {
@@ -80,7 +81,7 @@ export default class ItemFilterComponent extends BaseComponent {
         this.currentContentComponent = 'ContentFilterFollowerComponent';
         break;
       case '7':
-        this.currentContentComponent = 'ContentFilterMissingComponent';
+        this.currentContentComponent = 'ContentFilterMissingImputationComponent';
         break;
     }
     if (prm !== '1') {

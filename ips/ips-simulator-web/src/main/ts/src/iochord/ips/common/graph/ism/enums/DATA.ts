@@ -14,18 +14,18 @@ import { GraphDataResourceImpl } from '../class/components/GraphDataResourceImpl
  */
 export const DATA_TYPE = {
   datatable: GraphDataTableImpl,
-  objecttype: GraphDataObjectTypeImpl,
   generator: GraphDataGeneratorImpl,
+  objecttype: GraphDataObjectTypeImpl,
   function: GraphDataFunctionImpl,
-  queue: GraphDataQueueImpl,
   resource: GraphDataResourceImpl,
+  queue: GraphDataQueueImpl,
 };
 
 export enum DATA_TYPE_ENUM {
   datatable,
-  objecttype,
   generator,
+  objecttype,
   function,
-  queue,
   resource,
+  queue,
 }

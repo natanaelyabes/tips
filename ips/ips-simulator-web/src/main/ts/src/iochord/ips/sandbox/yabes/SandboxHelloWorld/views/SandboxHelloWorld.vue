@@ -4,7 +4,7 @@
 
       <!-- Header -->
       <template slot="header-breadcrumb">
-        <router-link to="/iochord/ips" tag="a" class="section" style="color: white;text-decoration:underline;">Home</router-link>
+        <router-link to="/iochord/ips/home" tag="a" class="section" style="color: white;text-decoration:underline;">Home</router-link>
         <i class="right angle icon divider"></i>
         <div class="section">Sandbox</div>
         <i class="right angle icon divider"></i>

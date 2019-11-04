@@ -16,7 +16,6 @@ import { TSMap } from 'typescript-map';
  */
 export class GraphDataGeneratorImpl extends GraphDataImpl implements GraphDataGenerator {
   public static TYPE: string = 'generator';
-  public static instance: TSMap<string, GraphDataGenerator> = new TSMap<string, GraphDataGenerator>();
 
   /** @Override */
   public static deserialize(object: any): GraphDataGenerator | null {

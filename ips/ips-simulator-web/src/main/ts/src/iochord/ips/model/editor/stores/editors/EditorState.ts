@@ -11,6 +11,7 @@ const store = new Vuex.Store<StoreType>({});
 export default class EditorState extends VuexModule {
   public dragging: boolean = false;
   public drawing: boolean = false;
+  public mode: 'node' | 'data' | 'connector' = 'node';
 
   @Mutation
   public setDragging(dragging: boolean) {
@@ -22,11 +23,20 @@ export default class EditorState extends VuexModule {
     this.drawing = drawing;
   }
 
+  @Mutation
+  public setMode(mode: 'node' | 'data' | 'connector') {
+    this.mode = mode;
+  }
+
   public get isDragging(): boolean {
     return this.dragging;
   }
 
   public get isDrawing(): boolean {
     return this.drawing;
+  }
+
+  public get drawingMode(): 'node' | 'data' | 'connector' {
+    return this.mode;
   }
 }

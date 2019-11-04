@@ -489,8 +489,8 @@
 <text style='font-size:10px; font-family:Verdana;' text-anchor='middle' transform='translate(0,-2)' x='3754' y='-1246.8'>fn_graph_page_set_data()</text>
 <text style='font-size:10px; font-family:Verdana;' text-anchor='middle' transform='translate(0,-2)' x='3754' y='-1231.8'>fn_graph_page_get_nodes()</text>
 <text style='font-size:10px; font-family:Verdana;' text-anchor='middle' transform='translate(0,-2)' x='3754' y='-1216.8'>fn_graph_page_set_nodes()</text>
-<text style='font-size:10px; font-family:Verdana;' text-anchor='middle' transform='translate(0,-2)' x='3754' y='-1201.8'>fn_graph_page_get_arcs()</text>
-<text style='font-size:10px; font-family:Verdana;' text-anchor='middle' transform='translate(0,-2)' x='3754' y='-1186.8'>fn_graph_page_set_arcs()</text>
+<text style='font-size:10px; font-family:Verdana;' text-anchor='middle' transform='translate(0,-2)' x='3754' y='-1201.8'>fn_graph_page_get_connectors()</text>
+<text style='font-size:10px; font-family:Verdana;' text-anchor='middle' transform='translate(0,-2)' x='3754' y='-1186.8'>fn_graph_page_set_connectors()</text>
 </g><g class='node' id='node41'><title>yuml_graphpageimpl</title>
 <polygon fill='skyblue' filter='url(#shadow)' points='3657,-732 3657,-942 3847,-942 3847,-732 3657,-732' stroke='black' style='fill: black; stroke: none; fill-opacity:0.2'/><polygon fill='skyblue' points='3657,-732 3657,-942 3847,-942 3847,-732 3657,-732' stroke='black' style='fill:url(#skyblue);stroke:black;'/>
 <text style='font-size:10px; font-family:Verdana;' text-anchor='middle' transform='translate(0,-2)' x='3752' y='-930.8'>GraphPageImpl</text>
@@ -498,7 +498,7 @@
 <text style='font-size:10px; font-family:Verdana;' text-anchor='middle' transform='translate(0,-2)' x='3752' y='-915.8'>TYPE</text>
 <text style='font-size:10px; font-family:Verdana;' text-anchor='middle' transform='translate(0,-2)' x='3752' y='-900.8'>data</text>
 <text style='font-size:10px; font-family:Verdana;' text-anchor='middle' transform='translate(0,-2)' x='3752' y='-885.8'>nodes</text>
-<text style='font-size:10px; font-family:Verdana;' text-anchor='middle' transform='translate(0,-2)' x='3752' y='-870.8'>arcs</text>
+<text style='font-size:10px; font-family:Verdana;' text-anchor='middle' transform='translate(0,-2)' x='3752' y='-870.8'>connectors</text>
 <polyline fill='none' filter='url(#shadow)' points='3657,-867 3847,-867 ' stroke='black' style='fill: black; stroke: none; fill-opacity:0.2'/><polyline fill='none' points='3657,-867 3847,-867 ' stroke='black' style='fill:url(#none);stroke:black;'/>
 <text style='font-size:10px; font-family:Verdana;' text-anchor='middle' transform='translate(0,-2)' x='3752' y='-855.8'>fn_object_deserialize()</text>
 <text style='font-size:10px; font-family:Verdana;' text-anchor='middle' transform='translate(0,-2)' x='3752' y='-840.8'>fn_graph_element_get_type()</text>
@@ -506,8 +506,8 @@
 <text style='font-size:10px; font-family:Verdana;' text-anchor='middle' transform='translate(0,-2)' x='3752' y='-810.8'>fn_graph_page_set_data()</text>
 <text style='font-size:10px; font-family:Verdana;' text-anchor='middle' transform='translate(0,-2)' x='3752' y='-795.8'>fn_graph_page_get_nodes()</text>
 <text style='font-size:10px; font-family:Verdana;' text-anchor='middle' transform='translate(0,-2)' x='3752' y='-780.8'>fn_graph_page_set_nodes()</text>
-<text style='font-size:10px; font-family:Verdana;' text-anchor='middle' transform='translate(0,-2)' x='3752' y='-765.8'>fn_graph_page_get_arcs()</text>
-<text style='font-size:10px; font-family:Verdana;' text-anchor='middle' transform='translate(0,-2)' x='3752' y='-750.8'>fn_graph_page_set_arcs()</text>
+<text style='font-size:10px; font-family:Verdana;' text-anchor='middle' transform='translate(0,-2)' x='3752' y='-765.8'>fn_graph_page_get_connectors()</text>
+<text style='font-size:10px; font-family:Verdana;' text-anchor='middle' transform='translate(0,-2)' x='3752' y='-750.8'>fn_graph_page_set_connectors()</text>
 <text style='font-size:10px; font-family:Verdana;' text-anchor='middle' transform='translate(0,-2)' x='3752' y='-735.8'>fn_object_serialize()</text>
 </g><g class='edge' id='edge27'><title>yuml_graphpage-&gt;yuml_graphpageimpl</title>
 <path d='M3753.66,-1172.53C3753.34,-1109.1 3752.87,-1014.45 3752.51,-942.007' fill='none' stroke='black'/><path d='M3753.66,-1172.53C3753.34,-1109.1 3752.87,-1014.45 3752.51,-942.007' fill='none' filter='url(#shadow)' stroke='black' style='stroke:{@stroke}; stroke-opacity:0.1; fill:none;'/>

@@ -4,16 +4,14 @@ import { getModule } from 'vuex-module-decorators';
 
 // Classes
 import BaseComponent from '@/iochord/ips/common/ui/layout/class/BaseComponent';
-import { JointGraphNodeImpl } from '@/iochord/ips/common/graph/ism/rendering-engine/joint/shapes/class/JointGraphNodeImpl';
-import { GraphNodeImpl } from '@/iochord/ips/common/graph/ism/class/GraphNodeImpl';
+import { JointGraphDataImpl } from '@/iochord/ips/common/graph/ism/rendering-engine/joint/shapes/class/JointGraphDataImpl';
+import { GraphDataImpl } from '@/iochord/ips/common/graph/ism/class/GraphDataImpl';
 import { JointGraphPageImpl } from '@/iochord/ips/common/graph/ism/rendering-engine/joint/shapes/class/JointGraphPageImpl';
 
 // Interfaces
-import { GraphNode } from '@/iochord/ips/common/graph/ism/interfaces/GraphNode';
-
+import { GraphData } from '@/iochord/ips/common/graph/ism/interfaces/GraphData';
 
 // Vuex & Rxjs
-
 /** Graph */
 import GraphModule from '@/iochord/ips/common/graph/ism/stores/GraphModule';
 import GraphSubject from '@/iochord/ips/common/graph/ism/rxjs/GraphSubject';
@@ -23,25 +21,26 @@ import EditorState from '../../../stores/editors/EditorState';
 
 
 // Enums
-import { NODE_TYPE } from '@/iochord/ips/common/graph/ism/rendering-engine/joint/shapes/enums/NODE';
-import * as NODE_ENUMS from '@/iochord/ips/common/graph/ism/enums/NODE';
-import * as NODE_FACTORY from '@/iochord/ips/common/graph/ism/enums/NODE';
+import { DATA_TYPE } from '@/iochord/ips/common/graph/ism/rendering-engine/joint/shapes/enums/DATA';
+import * as DATA_ENUMS from '@/iochord/ips/common/graph/ism/enums/DATA';
+import * as DATA_FACTORY from '@/iochord/ips/common/graph/ism/enums/DATA';
 
 
-// Enums of NODE
-enum NODE {
-  activity = 'activity',
-  start = 'start',
-  stop = 'stop',
-  branch = 'branch',
-  monitor = 'monitor',
+// Enums of DATA
+enum DATA {
+  datatable = 'datatable',
+  generator = 'generator',
+  objecttype = 'objecttype',
+  function = 'function',
+  resource = 'resource',
+  queue = 'queue',
 }
 
 // Fetch module from stores
 const graphModule = getModule(GraphModule);
 const editorState = getModule(EditorState);
 
-@Component<NodeMixin>({
+@Component<DataMixin>({
   subscriptions: () => {
     return (
       {
@@ -50,11 +49,11 @@ const editorState = getModule(EditorState);
     );
   },
 })
-export default class NodeMixin extends BaseComponent {
+export default class DataMixin extends BaseComponent {
 
-  public newNode?: JointGraphNodeImpl;
+  public newData?: JointGraphDataImpl;
 
-  public createNode(type: NODE, e: MouseEvent) {
+  public createData(type: DATA, e: MouseEvent) {
 
     /** Local variable initialization */
     const keys: any = {
@@ -62,29 +61,26 @@ export default class NodeMixin extends BaseComponent {
     };
 
     /** Create new item */
-    this.newNode = new JointGraphNodeImpl();
+    this.newData = new JointGraphDataImpl();
 
     /** Set properties for the newly created item */
-    this.newNode.setId(`0-${type}-${GraphNodeImpl.instance.size()}`);
-    this.newNode.setType(type.toString());
-    this.newNode.setSize((NODE_TYPE as any)[type].size);
-    this.newNode.setMarkup((NODE_TYPE as any)[type].markup);
-    this.newNode.setAttr((NODE_TYPE as any)[type].attr);
-    this.newNode.setImageIcon((NODE_TYPE as any)[type].image);
+    this.newData.setId(`0-${type}-${GraphDataImpl.instance.size()}`);
+    this.newData.setType(type.toString());
+    this.newData.setSize((DATA_TYPE as any)[type].size);
+    this.newData.setMarkup((DATA_TYPE as any)[type].markup);
+    this.newData.setAttr((DATA_TYPE as any)[type].attr);
+    this.newData.setImageIcon((DATA_TYPE as any)[type].image);
 
-    /** No need to set label for start and stop node */
-    if (!(type.toString() === 'start' || type.toString() === 'stop')) {
-      (this.newNode as JointGraphNodeImpl).setLabel(`New Node ${GraphNodeImpl.instance.size()}`);
-    }
+    (this.newData as JointGraphDataImpl).setLabel(`New Data ${GraphDataImpl.instance.size()}`);
 
     /** Put new item in vuex store */
-    graphModule.setNewItem(this.newNode as JointGraphNodeImpl);
+    graphModule.setNewItem(this.newData as JointGraphDataImpl);
 
     /** Set dragging state to true */
     editorState.setDragging(true);
   }
 
-  public moveNode(e: MouseEvent, activePage: JointGraphPageImpl) {
+  public moveData(e: MouseEvent, activePage: JointGraphPageImpl) {
     if (editorState.dragging && graphModule.newItem !== null) {
 
       /** Capture svgPoint from MouseEvent */
@@ -96,30 +92,30 @@ export default class NodeMixin extends BaseComponent {
       const pointTransformed = svgPoint.matrixTransform(activePage.getPaper().viewport.getCTM()!.inverse());
 
       /** Set position according to the transformed point captured from MouseEvent */
-      (graphModule.newItem as JointGraphNodeImpl).setPosition({
+      (graphModule.newItem as JointGraphDataImpl).setPosition({
         x: pointTransformed.x,
         y: pointTransformed.y,
       });
 
       /** Render newItem */
-      (graphModule.newItem as JointGraphNodeImpl).render(activePage.getGraph());
+      (graphModule.newItem as JointGraphDataImpl).render(activePage.getGraph());
 
       /** Listen to keydown event to check esc button */
-      window.addEventListener('keydown', this.cancelCreateNode);
+      window.addEventListener('keydown', this.cancelCreateData);
     }
   }
 
-  public cancelCreateNode(e: KeyboardEvent) {
+  public cancelCreateData(e: KeyboardEvent) {
     if (e.key === 'Escape') {
       if (editorState.dragging && (graphModule.newItem)) {
 
         // Set dragging state to false
         editorState.setDragging(false);
 
-        // Remove node from joint.js canvas
-        (graphModule.newItem as JointGraphNodeImpl).getNode().remove();
+        // Remove data from joint.js canvas
+        (graphModule.newItem as JointGraphDataImpl).getData().remove();
 
-        // Remove node from GraphModule temporary container
+        // Remove data from GraphModule temporary container
         graphModule.setNewItem(null);
 
         // Enable the toolbar again
@@ -132,52 +128,49 @@ export default class NodeMixin extends BaseComponent {
           className: {
             toast: 'ui message',
           },
-          message: `Canceling node creation.`,
+          message: `Canceling data creation.`,
           newestOnTop: true,
         });
 
         // Remove event listener for cancelCreateItem
-        window.removeEventListener('keydown', this.cancelCreateNode);
+        window.removeEventListener('keydown', this.cancelCreateData);
       }
     }
   }
 
 
-  public saveNode(e: MouseEvent, activePage: JointGraphPageImpl) {
+  public saveData(e: MouseEvent, activePage: JointGraphPageImpl) {
     editorState.setDragging(false);
     if (graphModule.newItem !== null) {
 
       /** Render newItem */
-      (graphModule.newItem as JointGraphNodeImpl).render(activePage.getGraph());
+      (graphModule.newItem as JointGraphDataImpl).render(activePage.getGraph());
 
       /** Construct newItem according to its type */
       const type = graphModule.newItem.getType() as string;
-      const newItem = new (NODE_FACTORY.NODE_TYPE as any)[type]();
-      newItem.setId(`0-${type}-${GraphNodeImpl.instance.size()}`);
+      const newItem = new (DATA_FACTORY.DATA_TYPE as any)[type]();
+      newItem.setId(`0-${type}-${GraphDataImpl.instance.size()}`);
       newItem.setType(type);
 
-      /** No need to set label for start and stop node */
-      if (!(type.toString() === 'start' || type.toString() === 'stop')) {
-        (newItem).setLabel(`New Node ${GraphNodeImpl.instance.size()}`);
-      }
+      (newItem).setLabel(`New Data ${GraphDataImpl.instance.size()}`);
 
-      // Add node to Vuex GraphModule
-      graphModule.addPageNode(
+      // Add data to Vuex GraphModule
+      graphModule.addPageDatum(
         {
           page: activePage,
-          node: newItem as GraphNode,
+          datum: newItem as GraphData,
         },
       );
 
       // Update local instance
-      GraphNodeImpl.instance.set(newItem.getId() as string, (NODE_ENUMS.NODE_TYPE as any)[type].deserialize(newItem));
+      GraphDataImpl.instance.set(newItem.getId() as string, (DATA_ENUMS.DATA_TYPE as any)[type].deserialize(newItem));
 
       // Update the rxjs observable
       GraphSubject.update(graphModule.graph);
 
       // Set container to null
       graphModule.setNewItem(null);
-      this.newNode = undefined;
+      this.newData = undefined;
 
       // Pop up toast
       const icon = {
@@ -194,7 +187,7 @@ export default class NodeMixin extends BaseComponent {
           toast: 'ui message',
         },
         showIcon: (icon as any)[type],
-        message: `${(newItem as GraphNode).getId()} has been created.`,
+        message: `${(newItem as GraphData).getId()} has been created.`,
         newestOnTop: true,
       });
 
@@ -202,7 +195,7 @@ export default class NodeMixin extends BaseComponent {
       $('.sidebar.component .ui.basic.button.item').removeClass('disabled');
 
       // Remove event listener for cancelCreateItem
-      window.removeEventListener('keydown', this.cancelCreateNode);
+      window.removeEventListener('keydown', this.cancelCreateData);
     }
   }
 }

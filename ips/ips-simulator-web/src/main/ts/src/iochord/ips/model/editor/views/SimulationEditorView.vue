@@ -11,7 +11,7 @@
 
       <!-- Header -->
       <template slot="header-breadcrumb">
-        <router-link to="/iochord/ips" tag="a" class="section">Home</router-link>
+        <router-link to="/iochord/ips/home" tag="a" class="section">Home</router-link>
         <i class="right angle icon divider"></i>
         <div class="section">Simulation Editor</div>
         <i class="right angle icon divider"></i>
@@ -21,21 +21,32 @@
       <!--  Left Sidebar Menu Item -->
       <template slot="left-sidebar-menu-item">
         <ControlPaletteComponent :isDisabled="isDisabled" />
-        <ToolboxPaletteComponent :isDisabled="isDisabled" />
+        <NodePaletteComponent :isDisabled="isDisabled" />
         <DataPaletteComponent :isDisabled="isDisabled" />
       </template>
 
       <!--  Ribbon Menu Item -->
       <template slot="ribbon-menu-item">
+
+        <!-- Left menu item -->
         <SimulationDataManagementComponent
           :isDisabled="isDisabled"
-          @create="modelCreate()"
-          @example="modelLoadExample()"
-          />
-        <SimulationPlayerComponent
-          :isPlaying="isDisabled"
-          @play="isDisabled = true; loadNPlay();" 
-          @stop="isDisabled = false" />
+          @create="modelCreate"
+          @example="modelLoadExample" />
+
+        <!-- Right menu item -->
+        <div id="ribbon-player-menu" class="right menu">
+          <SimulationPlayerComponent
+            :isPlaying="isDisabled"
+            @play="isDisabled = true; loadNPlay();"
+            @stop="isDisabled = false" />
+        </div>
+
+        <div id="ribbon-layout-menu" class="right menu">
+          <SimulationLayoutComponent
+            @autolayout="modelAutoLayout"
+            :isDisabled="isDisabled" />
+        </div>
       </template>
 
       <!-- Content -->
@@ -68,7 +79,7 @@ i.big.icon {
 }
 
 @media screen and (max-width: 1440px) {
-  #ribbon-right-menu {
+  #ribbon-player-menu {
     margin-left: 50px!important;
     margin-right: 110px!important;
   }
@@ -131,9 +142,10 @@ import { IsmModelService } from '@/iochord/ips/common/service/model/IsmModelServ
 // Components
 import WrapperComponent from '@/iochord/ips/common/ui/layout/components/WrapperComponent.vue';
 import ControlPaletteComponent from '../components/palette/ControlPaletteComponent.vue';
-import ToolboxPaletteComponent from '../components/palette/ToolboxPaletteComponent.vue';
+import NodePaletteComponent from '../components/palette/NodePaletteComponent.vue';
 import DataPaletteComponent from '../components/palette/DataPaletteComponent.vue';
 import SimulationPlayerComponent from '../components/ribbon/SimulationPlayerComponent.vue';
+import SimulationLayoutComponent from '../components/ribbon/SimulationLayoutComponent.vue';
 import SimulationDataManagementComponent from '../components/ribbon/SimulationDataManagementComponent.vue';
 import CanvasComponent from '../components/canvas/CanvasComponent.vue';
 import MinimapComponent from '../components/minimap/MinimapComponent.vue';
@@ -162,9 +174,10 @@ declare const $: any;
     CanvasComponent,
     MinimapComponent,
     ControlPaletteComponent,
-    ToolboxPaletteComponent,
+    NodePaletteComponent,
     DataPaletteComponent,
     SimulationPlayerComponent,
+    SimulationLayoutComponent,
     SimulationDataManagementComponent,
   },
   subscriptions: () => {
@@ -230,7 +243,6 @@ export default class SimulationEditorView extends Layout01View {
 
   public async loadNPlay() {
     const cpnscala = await IsmSimulatorService.getInstance().postLoadNPlay(graphModule.graph);
-    console.log("SIMULATION WORKS !", cpnscala);
   }
 
   public async modelCreate() {
@@ -240,6 +252,10 @@ export default class SimulationEditorView extends Layout01View {
 
   public async modelLoadExample() {
     await graphModule.loadExampleGraph();
+    this.forceReRender();
+  }
+
+  public modelAutoLayout() {
     this.forceReRender();
   }
 

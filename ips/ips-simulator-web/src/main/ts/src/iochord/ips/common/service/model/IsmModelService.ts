@@ -42,7 +42,7 @@ export class IsmModelService extends ModelService {
         wsc.unsubscribe(wsUri);
         const dfMatrix = JSON.parse(tick.body);
         const nodes: any = {};
-        const arcs: any = {};
+        const connectors: any = {};
         let ni = 0;
         let ai = 0;
         for (const af in dfMatrix) {
@@ -57,7 +57,7 @@ export class IsmModelService extends ModelService {
                 if (!nodes.hasOwnProperty(at)) {
                   nodes[at] = ni++;
                 }
-                arcs[ai] = [ nodes[af], nodes[at], f ];
+                connectors[ai] = [ nodes[af], nodes[at], f ];
                 ai++;
               }
             }
@@ -113,10 +113,10 @@ export class IsmModelService extends ModelService {
         }
         const graphConnectors: any = {};
         let ac = 0;
-        for (const aa in arcs) {
-          if (arcs.hasOwnProperty(aa)) {
+        for (const aa in connectors) {
+          if (connectors.hasOwnProperty(aa)) {
             break;
-            const arc = arcs[aa];
+            const arc = connectors[aa];
             if (graphNodes.hasOwnProperty('node' + arc[0]) && graphNodes.hasOwnProperty('node' + arc[1])) {
               ac++;
               const ain = 'arc' + aa;
@@ -131,7 +131,7 @@ export class IsmModelService extends ModelService {
             }
           }
         }
-        console.log(nc + ' nodes', ac + ' arcs', (nc + ac) + ' objects');
+        console.log(nc + ' nodes', ac + ' connectors', (nc + ac) + ' objects');
         const graphJson = {
           configurations: {},
           control: {},

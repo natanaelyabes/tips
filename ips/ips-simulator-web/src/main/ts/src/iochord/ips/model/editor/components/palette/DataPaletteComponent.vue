@@ -3,43 +3,43 @@
     <div class="item">
       <div class="header">Data Toolbox</div>
       <div class="menu">
-        <a :class="'ui basic button item' + (isDisabled ? ' disabled' : '')" :disabled="isDisabled">
+        <a title="datatable" :disabled="isDisabled" @mousedown="handleToolboxMouseDown(DATA, $event)" :class="'ui basic button item' + (isDisabled ? ' disabled' : '')" >
           <div class="image-icon">
             <img src="@/assets/images/icons/simulation_editor_icon/data_toolbox/datatable.png" alt="" class="ui centered image" />
           </div>
           Data Table
         </a>
-        <a :class="'ui basic button item' + (isDisabled ? ' disabled' : '')" :disabled="isDisabled">
+        <a title="generator" :disabled="isDisabled" @mousedown="handleToolboxMouseDown(DATA, $event)" :class="'ui basic button item' + (isDisabled ? ' disabled' : '')" >
           <div class="image-icon">
             <img src="@/assets/images/icons/simulation_editor_icon/data_toolbox/generator.png" alt="" class="ui centered image" />
           </div>
           Generator
         </a>
-        <a :class="'ui basic button item' + (isDisabled ? ' disabled' : '')" :disabled="isDisabled">
+        <a title="objecttype" :disabled="isDisabled" @mousedown="handleToolboxMouseDown(DATA, $event)" :class="'ui basic button item' + (isDisabled ? ' disabled' : '')" >
           <div class="image-icon">
             <img src="@/assets/images/icons/simulation_editor_icon/data_toolbox/object_type.png" alt="" class="ui centered image" />
           </div>
           Object Type
         </a>
-        <a :class="'ui basic button item' + (isDisabled ? ' disabled' : '')" :disabled="isDisabled">
+        <a title="function" :disabled="isDisabled" @mousedown="handleToolboxMouseDown(DATA, $event)" :class="'ui basic button item' + (isDisabled ? ' disabled' : '')" >
           <div class="image-icon">
             <img src="@/assets/images/icons/simulation_editor_icon/data_toolbox/function.png" alt="" class="ui centered image" />
           </div>
           Function / Method
         </a>
-        <a :class="'ui basic button item' + (isDisabled ? ' disabled' : '')" :disabled="isDisabled">
+        <a title="resource" :disabled="isDisabled" @mousedown="handleToolboxMouseDown(DATA, $event)" :class="'ui basic button item' + (isDisabled ? ' disabled' : '')" >
           <div class="image-icon">
             <img src="@/assets/images/icons/simulation_editor_icon/data_toolbox/resources.png" alt="" class="ui centered image" />
           </div>
           Resources
         </a>
-        <a :class="'ui basic button item' + (isDisabled ? ' disabled' : '')" :disabled="isDisabled">
+        <!-- <a title="monitor" :disabled="isDisabled" @mousedown="handleToolboxMouseDown(DATA, $event)" :class="'ui basic button item' + (isDisabled ? ' disabled' : '')" >
           <div class="image-icon">
             <img src="@/assets/images/icons/simulation_editor_icon/data_toolbox/kpi.png" alt="" class="ui centered image" />
           </div>
           Monitor KPI
-        </a>
-        <a :class="'ui basic button item' + (isDisabled ? ' disabled' : '')" :disabled="isDisabled">
+        </a> -->
+        <a title="queue" :disabled="isDisabled" @mousedown="handleToolboxMouseDown(DATA, $event)" :class="'ui basic button item' + (isDisabled ? ' disabled' : '')" >
           <div class="image-icon">
             <img src="@/assets/images/icons/simulation_editor_icon/data_toolbox/queue.png" alt="" class="ui centered image" />
           </div>
@@ -55,16 +55,17 @@
 </style>
 
 <script lang="ts">
-import { Prop, Component } from 'vue-property-decorator';
+import { Prop, Component, Mixins } from 'vue-property-decorator';
 import BaseComponent from '@/iochord/ips/common/ui/layout/class/BaseComponent';
+import PaletteMixin, { TOOLBOX } from '../../mixins/editors/PaletteMixin';
 
 @Component
-export default class DataPaletteComponent extends BaseComponent {
-
-  @Prop({
-    default: false,
-  })
+export default class DataPaletteComponent extends Mixins(BaseComponent, PaletteMixin) {
+  @Prop({ default: false })
   public isDisabled?: boolean;
 
+  public get DATA(): TOOLBOX {
+    return TOOLBOX.DATA;
+  }
 }
 </script>

@@ -144,7 +144,7 @@ import { IsmModelService } from '@/iochord/ips/common/service/model/IsmModelServ
 // Components
 import WrapperComponent from '@/iochord/ips/common/ui/layout/components/WrapperComponent.vue';
 import ControlPaletteComponent from '../components/palette/ControlPaletteComponent.vue';
-import ToolboxPaletteComponent from '../components/palette/ToolboxPaletteComponent.vue';
+import NodePaletteComponent from '../components/palette/NodePaletteComponent.vue';
 import DataPaletteComponent from '../components/palette/DataPaletteComponent.vue';
 import SimulationPlayerComponent from '../components/ribbon/SimulationPlayerComponent.vue';
 import SimulationDataManagementComponent from '../components/ribbon/SimulationDataManagementComponent.vue';
@@ -173,7 +173,7 @@ declare const $: any;
     WrapperComponent,
     CanvasComponent,
     ControlPaletteComponent,
-    ToolboxPaletteComponent,
+    NodePaletteComponent,
     DataPaletteComponent,
     SimulationPlayerComponent,
     SimulationDataManagementComponent,

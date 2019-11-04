@@ -113,6 +113,7 @@ import { TIME_UNIT } from '@/iochord/ips/common/graph/ism/enums/TIME_UNIT';
 import { GraphDataQueue } from '@/iochord/ips/common/graph/ism/interfaces/components/GraphDataQueue';
 import { GraphBranchNode } from '@/iochord/ips/common/graph/ism/interfaces/components/GraphBranchNode';
 import { BRANCH_GATE, BRANCH_TYPE, BRANCH_RULE } from '@/iochord/ips/common/graph/ism/enums/BRANCH';
+import { GraphConnectorImpl } from '../../../../common/graph/ism/class/GraphConnectorImpl';
 
 // Vuex module instance
 const graphModule = getModule(GraphModule);
@@ -150,7 +151,7 @@ export default class CanvasComponent extends Mixins(BaseComponent, CanvasMixin) 
   public isDisabled?: boolean;
 
   // Pan and zoom
-  public canvasPanAndZoom?: SvgPanZoom.Instance;
+  public panAndZoom?: SvgPanZoom.Instance;
 
   public mounted(): void {
     this.loadGraph();
@@ -174,8 +175,8 @@ export default class CanvasComponent extends Mixins(BaseComponent, CanvasMixin) 
         this.currentSelectedElement as GraphNode,
       );
 
-      // Get canvasPanAndZoom instance from renderer
-      this.canvasPanAndZoom = renderer.canvasPanAndZoom;
+      // Get panAndZoom instance from renderer
+      this.panAndZoom = renderer.panAndZoom;
 
       // 'Listening to events' can only be done after all components were rendered
       renderer.jointPages.forEach((jointPage: JointGraphPageImpl) => {
@@ -228,7 +229,7 @@ export default class CanvasComponent extends Mixins(BaseComponent, CanvasMixin) 
 
           // Remove links that connected to the node as well
           links.forEach((link) => {
-            jointPage.getArcs()!.delete(link.attributes.arcId);
+            jointPage.getConnectors()!.delete(link.attributes.arcId);
             link.remove();
           });
 
@@ -240,6 +241,14 @@ export default class CanvasComponent extends Mixins(BaseComponent, CanvasMixin) 
 
     // Listening to events (Refer to joint.js API docs)
     // (TODO: later each of these event handler must be encapsulated within methods or classes)
+    jointPage.getGraph().on({
+      remove: (cell: joint.dia.Element) => {
+        this.deleteConnector(this.activePage as JointGraphPageImpl, cell);
+        this.source = undefined;
+        this.target = undefined;
+      },
+    });
+
     jointPage.getPaper().on({
       'blank:pointerdown': (elementView: joint.dia.ElementView) => {
 
@@ -247,11 +256,11 @@ export default class CanvasComponent extends Mixins(BaseComponent, CanvasMixin) 
         resetAll(jointPage.getPaper());
 
         // If currently drawing arc
-        if (editorState.drawing && this.canvasPanAndZoom) {
+        if (editorState.drawing && this.panAndZoom) {
 
-          // Disable canvasPanAndZoom
-          this.canvasPanAndZoom.disablePan();
-          this.canvasPanAndZoom.disableZoom();
+          // Disable panAndZoom
+          this.panAndZoom.disablePan();
+          this.panAndZoom.disableZoom();
 
           // Pop error toast to the screen
           $('body').toast({
@@ -264,11 +273,11 @@ export default class CanvasComponent extends Mixins(BaseComponent, CanvasMixin) 
 
           // Change crosshair
           document.body.style.cursor = 'crosshair';
-        } else if (!editorState.drawing && this.canvasPanAndZoom) {
+        } else if (!editorState.drawing && this.panAndZoom) {
 
-          // Otherwise keep canvasPanAndZoom enabled
-          this.canvasPanAndZoom.enablePan();
-          this.canvasPanAndZoom.enableZoom();
+          // Otherwise keep panAndZoom enabled
+          this.panAndZoom.enablePan();
+          this.panAndZoom.enableZoom();
 
           // And change its cursor to grabbing (pan mode)
           document.body.style.cursor = 'grabbing';
@@ -280,7 +289,7 @@ export default class CanvasComponent extends Mixins(BaseComponent, CanvasMixin) 
         resetAll(jointPage.getPaper());
 
         // Disable pan
-        (this.canvasPanAndZoom as SvgPanZoom.Instance).disablePan();
+        (this.panAndZoom as SvgPanZoom.Instance).disablePan();
 
         // If currently drawing arc
         if (editorState.drawing) {
@@ -332,7 +341,7 @@ export default class CanvasComponent extends Mixins(BaseComponent, CanvasMixin) 
         currentElement.findView(jointPage.getPaper()).highlight();
 
         // When drawing a connector
-        if (editorState.drawing) {
+        while (editorState.drawing) {
 
           // User cannot drag anything
           jointPage.getPaper().setInteractivity(false);
@@ -342,16 +351,21 @@ export default class CanvasComponent extends Mixins(BaseComponent, CanvasMixin) 
 
             // Set source node
             this.setSourceNode(this.activePage as JointGraphPageImpl, currentElement);
-          } else if (this.source && !this.target) {
+            break;
+          }
+
+          if (this.source && !this.target) {
 
             // Otherwise set it as target node
             this.setTargetNode(this.activePage as JointGraphPageImpl, currentElement);
+            break;
           }
-        } else {
 
-          // Otherwise set paper interactivity to true (user can drag everything)
-          jointPage.getPaper().setInteractivity(true);
+          break;
         }
+
+        // Otherwise set paper interactivity to true (user can drag everything)
+        jointPage.getPaper().setInteractivity(true);
       },
       'element:pointerclick': (elementView: joint.dia.ElementView) => {
 
