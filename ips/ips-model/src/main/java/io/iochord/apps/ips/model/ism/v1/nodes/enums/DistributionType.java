@@ -1,5 +1,8 @@
 package io.iochord.apps.ips.model.ism.v1.nodes.enums;
 
+import lombok.Getter;
+import lombok.Setter;
+
 /**
  *
  * @package chdsr-model
@@ -9,6 +12,14 @@ package io.iochord.apps.ips.model.ism.v1.nodes.enums;
  *
  */
 public enum DistributionType {
-	RANDOM,
-	CONSTANT
+	RANDOM("0"),
+	CONSTANT("constant(0)");
+	
+	@Getter
+	@Setter
+	private String defaultValue;
+	
+	private DistributionType(String defaultValue) {
+		setDefaultValue(defaultValue);
+	}
 }
