@@ -12,8 +12,19 @@ import lombok.Setter;
  *
  */
 public enum DistributionType {
-	RANDOM("0"),
-	CONSTANT("constant(0)");
+	CONSTANT("1"),
+	RANDOM("Rand.randInt(lowB, upB)"),
+	BINOMIAL("Binomial(1, )"),
+	NEGATIVE_BINOMIAL("NegativeBinomial(n, p)"),
+	GAMMA("Gamma(n, p)"),
+	GAUSSIAN("Gaussian(mean,stddev)"),
+	LAPLACE("Laplace(location, scale)"),
+	LOGNORMAL("LogNormal(mean, stddev)"),
+	STUDENTST("StudentsT(degreeOfFreedom)"),
+	UNIFORM("Uniform(lowB, upB)"),
+	RAYLEIGH("Rayleigh(scale)"),
+	WEIBULL("Weibull(alpha, beta)"),
+	;
 	
 	@Getter
 	@Setter
@@ -22,4 +33,5 @@ public enum DistributionType {
 	private DistributionType(String defaultValue) {
 		setDefaultValue(defaultValue);
 	}
+	
 }
