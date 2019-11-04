@@ -31,7 +31,6 @@ import io.iochord.apps.ips.model.ism.v1.nodes.Start;
 import io.iochord.apps.ips.model.ism.v1.nodes.Stop;
 import io.iochord.apps.ips.model.ism.v1.nodes.impl.ActivityImpl;
 import io.iochord.apps.ips.model.ism.v1.nodes.impl.BranchImpl;
-import io.iochord.apps.ips.model.ism.v1.nodes.impl.ControlImpl;
 import io.iochord.apps.ips.model.ism.v1.nodes.impl.MonitorImpl;
 import io.iochord.apps.ips.model.ism.v1.nodes.impl.StartImpl;
 import io.iochord.apps.ips.model.ism.v1.nodes.impl.StopImpl;

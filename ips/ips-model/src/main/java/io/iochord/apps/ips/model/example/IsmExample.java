@@ -33,6 +33,45 @@ import io.iochord.apps.ips.model.ism.v1.impl.IsmGraphImpl;
  *
  */
 public class IsmExample {
+	public static IsmGraph createDefault() {
+		IsmFactory factory = IsmFactoryImpl.getInstance();
+		IsmGraphImpl net = (IsmGraphImpl) factory.create();
+
+		PageImpl page = (PageImpl) net.getPages().values().iterator().next();
+		ObjectTypeImpl cust = (ObjectTypeImpl) factory.addObjectType(page);
+		cust.setLabel("Unit");
+
+		GeneratorImpl custMu = (GeneratorImpl) factory.addGenerator(page);
+		custMu.setLabel(cust.getLabel() + " MU");
+		custMu.setObjectType(new Referenceable<>(cust));
+		custMu.setExpression("Math.round(Gaussian(100,10).draw())");
+		custMu.setUnit(TimeUnit.MINUTES);
+		custMu.setMaxArrival(100);
+
+		StartImpl start = (StartImpl) factory.addStart(page);
+		start.setGenerator(new Referenceable<>(custMu));
+
+		QueueImpl qTeller = (QueueImpl) factory.addQueue(page);
+		qTeller.setLabel("Activity Queue");
+		qTeller.setSize(35);
+		qTeller.setType(QUEUE_TYPE.FIFO);
+		ResourceImpl resTeller = (ResourceImpl) factory.addResource(page);
+		resTeller.setLabel("Activity Resource");
+		ActivityImpl actTeller = (ActivityImpl) factory.addActivity(page);
+		actTeller.setLabel("Activity Service");
+		actTeller.setQueue(new Referenceable<>(qTeller));
+		actTeller.setResource(new Referenceable<>(resTeller));
+		actTeller.setProcessingTime(DistributionType.CONSTANT);
+		actTeller.setProcessingTimeParameter("Math.round(Gaussian(400, 70).draw())");
+		actTeller.setUnit(TimeUnit.MINUTES);
+
+		StopImpl end = (StopImpl) factory.addStop(page);
+		factory.addConnector(page, start, actTeller);
+		factory.addConnector(page, actTeller, end);
+	
+		return net;
+	}
+	
 	public static IsmGraph create() {
 		IsmFactory factory = IsmFactoryImpl.getInstance();
 		IsmGraphImpl net = (IsmGraphImpl) factory.create();
