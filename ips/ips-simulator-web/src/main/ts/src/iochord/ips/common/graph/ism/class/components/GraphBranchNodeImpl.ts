@@ -69,7 +69,7 @@ export class GraphBranchNodeImpl extends GraphNodeImpl implements GraphBranchNod
   }
 
   public setConditions(conditions: TSMap<string, string>): void {
-    this.conditions = conditions || this.conditions;
+    this.conditions = conditions as TSMap<string, string>;
   }
 
   /** @Override */

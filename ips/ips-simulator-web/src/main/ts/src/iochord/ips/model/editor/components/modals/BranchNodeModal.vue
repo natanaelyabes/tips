@@ -37,7 +37,7 @@
             </div>
           </div>
 
-          <template v-if="selectedGate !== '' && selectedType !== ''">
+          <template v-if="selectedGate && selectedType">
             <!-- Conditions & Rules -->
             <div id="row_branches_rule" class="row">
               <div class="four wide column">Rule</div>
@@ -50,7 +50,7 @@
             </div>
 
             <!-- Condition table -->
-            <div id="row_branches_tbl" class="row">
+            <div v-if="selectedType === 'SPLIT'" id="row_branches_tbl" class="row">
               <div class="four wide column">If</div>
               <div class="twelve wide column">
                 <table class="ui celled compact table">
@@ -63,13 +63,8 @@
                   </thead>
                   <tbody id="tb_add_row">
                     <tr v-for="condition in conditions" :key="condition[0]">
-                      <td>Case.loan > 5000 and case.bank = "A"</td>
-                      <td>0-activity-1</td>
-                      <td>
-                        <button id="btn_del_rule" class="ui negative basic button">
-                          <i class="close icon"></i>
-                        </button>
-                      </td>
+                      <td><input type="text" v-model=condition[1]></td>
+                      <td>{{condition[0]}}</td>
                     </tr>
                   </tbody>
                 </table>
@@ -101,6 +96,8 @@ import { TSMap } from 'typescript-map';
 import { GraphPage } from '@/iochord/ips/common/graph/ism/interfaces/GraphPage';
 import { GraphNodeImpl } from '@/iochord/ips/common/graph/ism/class/GraphNodeImpl';
 import GraphSubject from '@/iochord/ips/common/graph/ism/rxjs/GraphSubject';
+import { GraphConnectorImpl } from '@/iochord/ips/common/graph/ism/class/GraphConnectorImpl';
+import { GraphConnector } from '@/iochord/ips/common/graph/ism/interfaces/GraphConnector';
 
 const graphModule = getModule(GraphModule);
 
@@ -128,6 +125,7 @@ export default class BranchNodeModal extends SemanticComponent implements Modal<
   private selectedGate: BRANCH_GATE = BRANCH_GATE.AND;
   private selectedType: BRANCH_TYPE = BRANCH_TYPE.SPLIT;
   private selectedRule: BRANCH_RULE = BRANCH_RULE.PROBABILITY;
+  private conditions: string[][] = [];
 
   public populateProperties(page: JointGraphPageImpl, object: GraphBranchNodeImpl): void {
 
@@ -142,6 +140,9 @@ export default class BranchNodeModal extends SemanticComponent implements Modal<
     this.selectedGate = object.getGate() as BRANCH_GATE;
     this.selectedRule = object.getRule() as BRANCH_RULE;
     this.selectedType = object.getBranchType() as BRANCH_TYPE;
+
+    // Populate conditions based on output nodes
+    this.setConditions(page, object);
 
     // Initialize dropdown with default value
     $('#branch_txtgate')
@@ -183,6 +184,10 @@ export default class BranchNodeModal extends SemanticComponent implements Modal<
     node.setBranchType(this.selectedType);
     node.setRule(this.selectedRule);
 
+    this.conditions.forEach((condition: string[]) => {
+      (node.getConditions() as TSMap<string, string>).set(condition[0], condition[1]);
+    });
+
     // Change label of the renderer node
     page.getGraph().getCells().map((cell: joint.dia.Cell) => {
       if (cell.attributes.nodeId === object.getId()) {
@@ -210,8 +215,28 @@ export default class BranchNodeModal extends SemanticComponent implements Modal<
     });
   }
 
-  public conditions(object: GraphBranchNodeImpl): TSMap<string, string> {
-    return object.getConditions() as TSMap<string, string>;
+  public setConditions(page: JointGraphPageImpl, object: GraphBranchNodeImpl) {
+    const nodePageId = (object.getId() as string).split('-')[0];
+    const nodePage = (graphModule.graph.getPages() as TSMap<string, GraphPage>).get(nodePageId);
+    const node: GraphBranchNodeImpl = (page.getNodes() as TSMap<string, GraphNode>).get(object.getId() as string) as GraphBranchNodeImpl;
+
+    if ((node.getConditions() as TSMap<string, string>).size() === 0) {
+      this.conditions = [];
+
+      // Get all connectors
+      const connectors = GraphConnectorImpl.instance;
+
+      // Get its output nodes
+      const outputNodes = connectors.values()
+        .filter((connector: GraphConnector) => connector.getSourceRef() === object.getId())
+        .map((connector: GraphConnector) => connector.getTargetRef());
+
+      outputNodes.forEach((nodeId: string | null) => {
+        this.conditions.push([nodeId as string, '']);
+      });
+    } else {
+      this.conditions = (node.getConditions() as TSMap<string, string>).entries();
+    }
   }
 }
 </script>
