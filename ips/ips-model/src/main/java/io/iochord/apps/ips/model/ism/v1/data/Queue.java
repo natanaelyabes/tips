@@ -28,10 +28,13 @@ public interface Queue extends Data {
 	QUEUE_TYPE getType();
 
 	boolean isShared();
-
-	boolean isSingle();
+	
+	
+// TODO: Phase 2
+//	boolean isSingle();
 
 	int getSize();
-	
-	Map<String, Integer> getSizes();
+
+	// TODO: Phase 2
+//	Map<String, Integer> getSizes();
 }

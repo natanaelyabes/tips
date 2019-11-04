@@ -23,6 +23,7 @@ import io.iochord.apps.ips.model.ism.v1.data.impl.ObjectTypeImpl;
 public interface ObjectType extends Data {
 	public static final String TYPE = "objecttype";
 
-	@JsonProperty(value = "typesRef")
-	Map<String, Referenceable<DataTable>> getTypes();
+	// TODO: Phase 2
+//	@JsonProperty(value = "typesRef")
+//	Map<String, Referenceable<DataTable>> getTypes();
 }

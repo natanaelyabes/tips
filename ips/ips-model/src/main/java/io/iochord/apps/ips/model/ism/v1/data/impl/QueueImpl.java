@@ -30,17 +30,17 @@ public class QueueImpl extends DataImpl implements Queue {
 	@Getter
 	@Setter
 	private boolean shared = false;
-
-
-	@Getter
-	@Setter
-	private boolean single = true;
+//
+//
+//	@Getter
+//	@Setter
+//	private boolean single = true;
 	
 	@Getter
 	@Setter
 	private int size = -1;
 	
-	@Getter
-	@Setter
-	private Map<String, Integer> sizes = new LinkedHashMap<>();
+//	@Getter
+//	@Setter
+//	private Map<String, Integer> sizes = new LinkedHashMap<>();
 }

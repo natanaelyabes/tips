@@ -37,5 +37,6 @@ public interface Generator extends Data {
 
 	int getMaxArrival();
 
-	long getFirstCreation();
+	// TODO: Phase 2
+//	long getFirstCreation();
 }

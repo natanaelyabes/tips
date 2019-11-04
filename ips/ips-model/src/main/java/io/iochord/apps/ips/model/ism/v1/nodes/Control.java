@@ -18,4 +18,18 @@ import io.iochord.apps.ips.model.ism.v1.nodes.impl.ControlImpl;
 @JsonTypeName(Control.TYPE)
 public interface Control extends Configuration {
 	public static final String TYPE = "control";
+	
+	public enum STOPPING_CRITERIA {
+		STEP,
+		TIME
+	}
+	
+	int getReplicationNumber();
+	
+	STOPPING_CRITERIA getStoppingCriteria();
+	
+	long getStoppingTime();
+	
+	long getStartTime();
+	
 }

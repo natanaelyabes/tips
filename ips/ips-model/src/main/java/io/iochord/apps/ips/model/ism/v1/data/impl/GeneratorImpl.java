@@ -49,7 +49,8 @@ public class GeneratorImpl extends DataImpl implements Generator {
 	@Setter
 	private int maxArrival = 0;
 
-	@Getter
-	@Setter
-	private long firstCreation = 0;
+	// TODO: Phase 2
+//	@Getter
+//	@Setter
+//	private long firstCreation = 0;
 }

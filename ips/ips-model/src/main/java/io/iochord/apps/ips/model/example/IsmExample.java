@@ -61,9 +61,9 @@ public class IsmExample {
 		actTeller.setLabel("Activity Service");
 		actTeller.setQueue(new Referenceable<>(qTeller));
 		actTeller.setResource(new Referenceable<>(resTeller));
-		actTeller.setProcessingTime(DistributionType.CONSTANT);
-		actTeller.setProcessingTimeParameter("Math.round(Gaussian(400, 70).draw())");
-		actTeller.setUnit(TimeUnit.MINUTES);
+		actTeller.setProcessingTimeDistribution(DistributionType.CONSTANT);
+		actTeller.setProcessingTimeExpression("Math.round(Gaussian(400, 70).draw())");
+		actTeller.setProcessingTimeUnit(TimeUnit.MINUTES);
 
 		StopImpl end = (StopImpl) factory.addStop(page);
 		factory.addConnector(page, start, actTeller);
@@ -100,9 +100,9 @@ public class IsmExample {
 		actTeller.setLabel("Teller Service");
 		actTeller.setQueue(new Referenceable<>(qTeller));
 		actTeller.setResource(new Referenceable<>(resTeller));
-		actTeller.setProcessingTime(DistributionType.CONSTANT);
-		actTeller.setProcessingTimeParameter("Math.round(Gaussian(400, 70).draw())");
-		actTeller.setUnit(TimeUnit.MINUTES);
+		actTeller.setProcessingTimeDistribution(DistributionType.CONSTANT);
+		actTeller.setProcessingTimeExpression("Math.round(Gaussian(400, 70).draw())");
+		actTeller.setProcessingTimeUnit(TimeUnit.MINUTES);
 
 		QueueImpl qATM = (QueueImpl) factory.addQueue(page);
 		qATM.setLabel("ATM Queue");
@@ -114,9 +114,9 @@ public class IsmExample {
 		actATM.setLabel("ATM Service");
 		actATM.setQueue(new Referenceable<>(qATM));
 		actATM.setResource(new Referenceable<>(resATM));
-		actATM.setProcessingTime(DistributionType.CONSTANT);
-		actATM.setProcessingTimeParameter("Math.round(Gaussian(300, 30).draw())");
-		actATM.setUnit(TimeUnit.MINUTES);
+		actATM.setProcessingTimeDistribution(DistributionType.CONSTANT);
+		actATM.setProcessingTimeExpression("Math.round(Gaussian(300, 30).draw())");
+		actATM.setProcessingTimeUnit(TimeUnit.MINUTES);
 
 		StopImpl end = (StopImpl) factory.addStop(page);
 		factory.addConnector(page, start, actATM);
@@ -154,9 +154,9 @@ public class IsmExample {
 		actTeller.setLabel("Teller Service");
 		actTeller.setQueue(new Referenceable<>(qTeller));
 		actTeller.setResource(new Referenceable<>(resTeller));
-		actTeller.setProcessingTime(DistributionType.CONSTANT);
-		actTeller.setProcessingTimeParameter("Math.round(Gaussian(400, 70).draw())");
-		actTeller.setUnit(TimeUnit.MINUTES);
+		actTeller.setProcessingTimeDistribution(DistributionType.CONSTANT);
+		actTeller.setProcessingTimeExpression("Math.round(Gaussian(400, 70).draw())");
+		actTeller.setProcessingTimeUnit(TimeUnit.MINUTES);
 
 		QueueImpl qATM = (QueueImpl) factory.addQueue(page);
 		qATM.setLabel("ATM Queue");
@@ -168,9 +168,9 @@ public class IsmExample {
 		actATM.setLabel("ATM Service");
 		actATM.setQueue(new Referenceable<>(qATM));
 		actATM.setResource(new Referenceable<>(resATM));
-		actATM.setProcessingTime(DistributionType.CONSTANT);
-		actATM.setProcessingTimeParameter("Math.round(Gaussian(300, 30).draw())");
-		actATM.setUnit(TimeUnit.MINUTES);
+		actATM.setProcessingTimeDistribution(DistributionType.CONSTANT);
+		actATM.setProcessingTimeExpression("Math.round(Gaussian(300, 30).draw())");
+		actATM.setProcessingTimeUnit(TimeUnit.MINUTES);
 
 		StopImpl end = (StopImpl) factory.addStop(page);
 
