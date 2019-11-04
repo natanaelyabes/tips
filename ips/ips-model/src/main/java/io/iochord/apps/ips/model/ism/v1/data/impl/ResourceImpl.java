@@ -29,41 +29,49 @@ public class ResourceImpl extends DataImpl implements Resource {
 	@Getter
 	@Setter
 	private String groupId;
-
-	@Getter
-	@Setter
-	private Referenceable<DataTable> data;
-
-	@Getter
-	@Setter
-	private DistributionType setupTime = DistributionType.RANDOM;
-
-	@Getter
-	@Setter
-	private String expression = "";
-
-	@Getter
-	@Setter
-	private TimeUnit timeUnit = TimeUnit.HOURS;
 	
 	@Getter
 	@Setter
-	private ResourceCriteria criteria;
+	private RESOURCE_SELECTION resourceSelection;
+	
+	@Getter
+	@Setter
+	private int numberOfResource;
+	
+//	@Getter
+//	@Setter
+//	private Referenceable<DataTable> data;
 
 	@Getter
 	@Setter
-	private double hourlyIdleCost; 
-	
+	private DistributionType setupTimeDistribution = DistributionType.RANDOM;
+
 	@Getter
 	@Setter
-	private double hourlyBusyCost; 
-	
+	private String setupTimeExpression = "";
+
 	@Getter
 	@Setter
-	private boolean imported = false; 
-	
-	@Getter
-	@Setter
-	private Referenceable<DataTable> dataTable; 
+	private TimeUnit setupTimeUnit = TimeUnit.HOURS;
+//	
+//	@Getter
+//	@Setter
+//	private ResourceCriteria criteria;
+//
+//	@Getter
+//	@Setter
+//	private double hourlyIdleCost; 
+//	
+//	@Getter
+//	@Setter
+//	private double hourlyBusyCost; 
+//	
+//	@Getter
+//	@Setter
+//	private boolean imported = false; 
+//	
+//	@Getter
+//	@Setter
+//	private Referenceable<DataTable> dataTable; 
 
 }

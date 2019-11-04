@@ -25,7 +25,7 @@ public class ObjectTypeImpl extends DataImpl implements ObjectType {
 	@Getter
 	private final String elementType = ObjectType.TYPE;
 	
-	@Getter
-	@Setter
-	private Map<String, Referenceable<DataTable>> types = new LinkedHashMap<>();
+//	@Getter
+//	@Setter
+//	private Map<String, Referenceable<DataTable>> types = new LinkedHashMap<>();
 }

@@ -75,12 +75,12 @@ public class IsmGraphImpl extends ElementImpl implements IsmGraph {
 					}
 				} else if (rd instanceof Resource) {
 					Resource d = (Resource) rd;
-					if (d.getData() != null) {
-						d.getData().setValueRepository(p.getData());
-					}
-					if (d.getDataTable() != null) {
-						d.getDataTable().setValueRepository(p.getData());
-					}
+//					if (d.getData() != null) {
+//						d.getData().setValueRepository(p.getData());
+//					}
+//					if (d.getDataTable() != null) {
+//						d.getDataTable().setValueRepository(p.getData());
+//					}
 				} else if (rd instanceof Function) {
 					Function d = (Function) rd;
 				}
