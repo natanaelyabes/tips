@@ -4,7 +4,9 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 
 import io.iochord.apps.ips.model.ism.v1.impl.ConfigurationImpl;
 import io.iochord.apps.ips.model.ism.v1.nodes.Control;
+import io.iochord.apps.ips.model.ism.v1.nodes.Control.STOPPING_CRITERIA;
 import lombok.Getter;
+import lombok.Setter;
 
 /**
  *
@@ -19,5 +21,21 @@ public class ControlImpl extends ConfigurationImpl implements Control {
 	@Getter
 	private final String elementType = Control.TYPE;
 	
+	@Getter
+	@Setter
+	private int replicationNumber;
+	
+	@Getter
+	@Setter
+	private STOPPING_CRITERIA stoppingCriteria;
+	
+	@Getter
+	@Setter
+	private long stoppingTime;
+	
+	@Getter
+	@Setter
+	private long startTime;
+
 
 }
