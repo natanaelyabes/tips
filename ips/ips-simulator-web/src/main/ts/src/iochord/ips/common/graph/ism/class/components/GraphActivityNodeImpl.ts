@@ -9,6 +9,8 @@ import { RESOURCE_SELECTION } from '../../enums/RESOURCE';
 import { DISTRIBUTION_TYPE } from '../../enums/DISTRIBUTION';
 import { VARIABLE_TYPE } from '../../enums/VARIABLE';
 import { TSMap } from 'typescript-map';
+import { GraphConnectorImpl } from '../GraphConnectorImpl';
+import { GraphConnector } from '../../interfaces/GraphConnector';
 
 /**
  *
@@ -191,6 +193,52 @@ export class GraphActivityNodeImpl extends GraphNodeImpl implements GraphActivit
 
   public setUnit(unit: TIME_UNIT): void {
     this.unit = unit || this.unit;
+  }
+
+  /** @Override */
+  public validateInputNodes(): Error | null {
+
+    // Get all connectors
+    const connectors = GraphConnectorImpl.instance;
+
+    // Get its input nodes
+    const inputNodes = connectors.values()
+      .filter((connector: GraphConnector) => connector.getTargetRef() === this.getId())
+      .map((connector: GraphConnector) => connector.getTargetRef());
+
+    // Set rule condition
+    const inputNodesMoreThanOne = inputNodes.length >= 1 ? true : false;
+
+    // Assert rule
+    if (inputNodesMoreThanOne) {
+      return new Error('Activity node should not have more than one input nodes ');
+    }
+
+    // Otherwise return nothing
+    return null;
+  }
+
+  /** @Override */
+  public validateOutputNodes(): Error | null {
+
+    // Get all connectors
+    const connectors = GraphConnectorImpl.instance;
+
+    // Get its output nodes
+    const outputNodes = connectors.values()
+      .filter((connector: GraphConnector) => connector.getSourceRef() === this.getId())
+      .map((connector: GraphConnector) => connector.getTargetRef());
+
+    // Set rule condition
+    const outputNodesMoreThanOne = outputNodes.length >= 1 ? true : false;
+
+    // Assert rule
+    if (outputNodesMoreThanOne) {
+      return new Error('Activity node should not have more than one output nodes ');
+    }
+
+    // Otherwise return nothing
+    return null;
   }
 
   /** @Override */

@@ -7,6 +7,7 @@ import { GraphDataFunction } from './GraphDataFunction';
 import { GraphDataQueue } from './GraphDataQueue';
 import { GraphDataResource } from './GraphDataResource';
 import { GraphNode } from '../GraphNode';
+import { GraphRule } from '../GraphRule';
 
 /**
  *
