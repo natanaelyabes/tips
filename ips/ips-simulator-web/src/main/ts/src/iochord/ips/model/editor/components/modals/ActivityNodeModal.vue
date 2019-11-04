@@ -105,7 +105,7 @@
                     </div>
                   </template>
 
-                  <div class="sixteen wide column">
+                  <!-- <div class="sixteen wide column">
                     <div class="ui checkbox">
                       <input id="report-statistics" type="checkbox" v-model="report">
                       <label for="report-statistics">Report statistics</label>
@@ -117,7 +117,7 @@
                     <div class="twelve wide column">
                       <input disabled type="text" v-model="customMonitor">
                     </div>
-                  </div>
+                  </div> -->
                 </div>
               </div>
 
@@ -142,6 +142,16 @@
                       <input type="text" v-model="processingTimeParameter">
                     </div>
                   </div>
+                  <div class="row">
+                    <div class="four wide column">Processing Time Unit</div>
+                    <div class="twelve wide column">
+                      <select id="act_txtunit" class="ui fluid search dropdown" v-model="processingUnit">
+                        <option value="HOURS">Hours</option>
+                        <option value="MINUTES">Minutes</option>
+                        <option value="SECONDS">Seconds</option>
+                      </select>
+                    </div>
+                  </div>
                 </div>
 
                 <h4>Setup</h4>
@@ -163,9 +173,9 @@
                     </div>
                   </div>
                   <div class="row">
-                    <div class="four wide column">Unit</div>
+                    <div class="four wide column">Setup Time Unit</div>
                     <div class="twelve wide column">
-                      <select id="act_txtunit" class="ui fluid search dropdown" v-model="unit">
+                      <select id="act_txtunit" class="ui fluid search dropdown" v-model="setupUnit">
                         <option value="HOURS">Hours</option>
                         <option value="MINUTES">Minutes</option>
                         <option value="SECONDS">Seconds</option>
@@ -277,7 +287,8 @@ export default class ActivityNodeModal extends SemanticComponent implements Moda
   private processingTimeParameter: string = '';
   private setupTime: DISTRIBUTION_TYPE = DISTRIBUTION_TYPE.RANDOM;
   private setupTimeParameter: string = '';
-  private unit: TIME_UNIT = TIME_UNIT.MINUTES;
+  private processingUnit: TIME_UNIT = TIME_UNIT.MINUTES;
+  private setupUnit: TIME_UNIT = TIME_UNIT.MINUTES;
   private queue: string = '';
   private inputType: string = '';
   private outputType: string = '';
@@ -300,7 +311,9 @@ export default class ActivityNodeModal extends SemanticComponent implements Moda
     this.processingTimeParameter = object.getProcessingTimeParameter() as string;
     this.setupTime = object.getSetupTime() as DISTRIBUTION_TYPE;
     this.setupTimeParameter = object.getSetupTimeParameter() as string;
-    this.unit = object.getUnit() as TIME_UNIT;
+    this.setupUnit = object.getUnit() as TIME_UNIT;
+    this.processingUnit = object.getUnit() as TIME_UNIT;
+
     this.queue = object.getQueueRef() as string;
     this.function = object.getFunctionRef() as string;
 
@@ -342,10 +355,10 @@ export default class ActivityNodeModal extends SemanticComponent implements Moda
     ;
 
     $('#act_txtunit')
-      .dropdown('set selected', this.unit)
+      .dropdown('set selected', this.setupUnit)
       .dropdown({
         onChange: (val: TIME_UNIT) => {
-          this.unit = val;
+          this.setupUnit = val;
         },
       })
     ;
@@ -383,7 +396,7 @@ export default class ActivityNodeModal extends SemanticComponent implements Moda
     node.setProcessingTimeParameter(this.processingTimeParameter);
     node.setSetupTime(this.setupTime);
     node.setSetupTimeParameter(this.setupTimeParameter);
-    node.setUnit(this.unit);
+    node.setUnit(this.setupUnit);
     node.setQueueRef(this.queue);
     node.setFunctionRef(this.function);
 
