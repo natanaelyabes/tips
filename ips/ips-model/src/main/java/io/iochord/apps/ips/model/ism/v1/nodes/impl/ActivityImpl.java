@@ -49,37 +49,42 @@ public class ActivityImpl extends NodeImpl implements Activity {
 	@Getter
 	@Setter
 	private ResourceSelectionMethod resourceSelectionMethod = ResourceSelectionMethod.RANDOM;
-
-	@Getter
-	@Setter
-	private DistributionType processingTime = DistributionType.CONSTANT;
 	
+//	@Getter
+//	@Setter
+//	private DistributionType setupTime = DistributionType.CONSTANT;
+//	
+//	@Getter
+//	@Setter
+//	private String setupTimeExpression = "0";
+//
+//	@Getter
+//	@Setter
+//	private TimeUnit setupTimeunit = TimeUnit.HOURS;
+
 	@Getter
 	@Setter
-	private String setupTimeParameter = "0";
+	private DistributionType processingTimeDistribution = DistributionType.CONSTANT;
+
+	@Getter
+	@Setter
+	private String processingTimeExpression = "0";
+
+	@Getter
+	@Setter
+	private TimeUnit processingTimeUnit = TimeUnit.HOURS;
 	
-	@Getter
-	@Setter
-	private DistributionType setupTime = DistributionType.CONSTANT;
+//	@Getter
+//	@Setter
+//	private VariableType variable; 
 
-	@Getter
-	@Setter
-	private String processingTimeParameter = "0";
-	
-	@Getter
-	@Setter
-	private VariableType variable; 
+	// TODO: Phase 2
+//	@Getter
+//	@Setter
+//	private double cost = 0;
 
-	@Getter
-	@Setter
-	private TimeUnit unit = TimeUnit.HOURS;
-
-	@Getter
-	@Setter
-	private double cost = 0;
-
-	@Getter
-	@Setter
-	private boolean reportScrap = false;
+//	@Getter
+//	@Setter
+//	private boolean reportScrap = false;
 
 }

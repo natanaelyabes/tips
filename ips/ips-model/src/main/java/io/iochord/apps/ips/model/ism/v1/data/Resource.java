@@ -30,24 +30,31 @@ public interface Resource extends Data {
 	}
 
 	String getGroupId();
-
-	@JsonProperty(value = "dataRef")
-	Referenceable<DataTable> getData();
 	
-	DistributionType getSetupTime();
+	RESOURCE_SELECTION getResourceSelection();
 	
-	String getExpression();
+	// TODO: Phase 1
+	// @Deprecated
+	int getNumberOfResource();
+//
+//	@JsonProperty(value = "dataRef")
+//	Referenceable<DataTable> getData();
 	
-	TimeUnit getTimeUnit();
+	DistributionType getSetupTimeDistribution();
 	
-	ResourceCriteria getCriteria();
+	String getSetupTimeExpression();
 	
-	double getHourlyIdleCost();
+	TimeUnit getSetupTimeUnit();
 	
-	double getHourlyBusyCost();
-	
-	boolean isImported();
-	
-	@JsonProperty(value = "dataTableRef")
-	Referenceable<DataTable> getDataTable();
+//	TODO: Phase 2
+//	ResourceCriteria getCriteria();
+//
+//	double getHourlyIdleCost();
+//	
+//	double getHourlyBusyCost();
+//	
+//	boolean isImported();
+//	
+//	@JsonProperty(value = "dataTableRef")
+//	Referenceable<DataTable> getDataTable();
 }

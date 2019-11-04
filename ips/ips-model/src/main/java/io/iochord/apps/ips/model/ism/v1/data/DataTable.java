@@ -19,6 +19,7 @@ import io.iochord.apps.ips.model.ism.v1.data.impl.DataTableImpl;
 @JsonDeserialize(as = DataTableImpl.class)
 @JsonTypeName(DataTable.TYPE)
 public interface DataTable extends Data {
+
 	public static final String TYPE = "datatable";
 
 	Map<String, String> getFields();

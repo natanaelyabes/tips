@@ -114,9 +114,9 @@ public class SbpnetCreationTest {
 	public void test02CreateObjectTypeComponent() throws Exception {
 		ObjectTypeImpl e = (ObjectTypeImpl) getFactory().addObjectType(getNet().getDefaultPage());
 		e.setLabel("CAR_DEC");
-		e.getTypes().put(dt.getLabel(), new Referenceable<>(dt));
-		e.getTypes().put(dt2.getLabel(), new Referenceable<>(dt2));
-		e.getTypes().put(dt3.getLabel(), new Referenceable<>(dt3));
+//		e.getTypes().put(dt.getLabel(), new Referenceable<>(dt));
+//		e.getTypes().put(dt2.getLabel(), new Referenceable<>(dt2));
+//		e.getTypes().put(dt3.getLabel(), new Referenceable<>(dt3));
 		testSerializeDeserialize(e, ObjectType.class);
 		ot = e;
 	}
@@ -154,7 +154,7 @@ public class SbpnetCreationTest {
 		ResourceImpl e = (ResourceImpl) getFactory().addResource(getNet().getDefaultPage());
 		e.setLabel("resourceA");
 		e.setGroupId("resourceA");
-		e.setData(new Referenceable<>(dt4));
+//		e.setData(new Referenceable<>(dt4));
 		testSerializeDeserialize(e, Resource.class);
 		res = e;
 	}
@@ -166,8 +166,8 @@ public class SbpnetCreationTest {
 		QueueImpl e = (QueueImpl) getFactory().addQueue(getNet().getDefaultPage());
 		e.setLabel("QUEUE A");
 		e.setType(QUEUE_TYPE.LIFO);
-		e.setSingle(false);
-		e.getSizes().put(res.getId(), 10);
+//		e.setSingle(false);
+//		e.getSizes().put(res.getId(), 10);
 		testSerializeDeserialize(e, Queue.class);
 		q = e;
 	}
@@ -199,7 +199,7 @@ public class SbpnetCreationTest {
 		e.setQueue(new Referenceable<>(q));
 		e.setFunction(new Referenceable<>(fn));
 		e.setResource(new Referenceable<>(res));
-		e.setVariable(VariableType.NONE);
+//		e.setVariable(VariableType.NONE);
 		testSerializeDeserialize(e, Activity.class);
 		act = e;
 	}

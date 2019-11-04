@@ -35,26 +35,30 @@ public interface Activity extends Node {
 	@JsonProperty(value = "resourceRef")
 	Referenceable<Resource> getResource();
 	
-	ResourceSelectionMethod getResourceSelectionMethod();
-
-	DistributionType getSetupTime();
-	
-	String getSetupTimeParameter();
-
-	DistributionType getProcessingTime();
-
-	String getProcessingTimeParameter();
-	
-	VariableType getVariable();
-	
-	boolean isReportScrap();
-
-	TimeUnit getUnit();
-	
-	double getCost();
-	
 	@JsonProperty(value = "queueRef")
 	Referenceable<Queue> getQueue();
+
+	// TODO: Phase 2
+//	ResourceSelectionMethod getResourceSelectionMethod();
+
+//	DistributionType getSetupTime();
+//	
+//	String getSetupTimeExpression();
+//
+//	TimeUnit getSetupTimeUnit();
+
+	DistributionType getProcessingTimeDistribution();
+
+	String getProcessingTimeExpression();
+	
+	TimeUnit getProcessingTimeUnit();
+	
+	// TODO: Phase 2
+//	VariableType getVariable();
+//	
+//	boolean isReportScrap();
+//	
+//	double getCost();
 
 	@JsonProperty(value = "functionRef")
 	Referenceable<Function> getFunction();

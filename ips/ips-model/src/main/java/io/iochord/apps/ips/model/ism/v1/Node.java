@@ -36,18 +36,21 @@ import io.iochord.apps.ips.model.ism.v1.nodes.Stop;
 public interface Node extends Element {
 	public static final String TYPE = "node";
 
-	String getGroupName();
+//	// TODO: Phase 2
+//	String getGroupName();
+//
+//	// TODO: Phase 2
+//	boolean isReportStatistics();
+//
+//	// TODO: Phase 2
+//	boolean accept(Collection<Element> elements);
 
-	boolean isReportStatistics();
-
-	boolean accept(Collection<Element> elements);
-
-	Collection<Element> getInputTypes();
-
-	Collection<Element> getOutputTypes();
-
-	Collection<Node> getInputNodes();
-
-	Collection<Node> getOutputNodes();
+//	Collection<Element> getInputTypes();
+//
+//	Collection<Element> getOutputTypes();
+//
+//	Collection<Node> getInputNodes();
+//
+//	Collection<Node> getOutputNodes();
 
 }
