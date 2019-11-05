@@ -11,6 +11,11 @@ class MarkingObserver extends Observer {
   {
     val m = marking.asInstanceOf[(Map[(Boolean,Boolean,Map[String,String]),Any],Map[(Boolean,Boolean,Map[String,String]),Any],String,Map[(String,String),Int],Map[(String,String,Int),Double],Map[(String,String,Int),Double],Long)]
     
+    println("Up ---- "+m._1.toSet)
+    println("Bottom ---- "+m._2.toSet)
+    val diff = m._2.toSet.filterNot(m._1.toSet)
+    println("Dff --- "+diff)
+   
     m._2.filter(p => p._1._1).foreach(p => { 
       println("Token Start In "+p._1._3.keys.head+" : "+p._2)
       //val nt = p._2.keySet.filterNot(m2.keySet)

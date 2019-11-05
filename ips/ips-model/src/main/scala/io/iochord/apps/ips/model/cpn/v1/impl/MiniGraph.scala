@@ -6,7 +6,7 @@ import collection.JavaConverters._
 import io.iochord.apps.ips.model.cpn.v1._
 
 
-class CPNGraph {
+abstract class MiniGraph() {
   private var places = HashMap[String, Place[_]]()
   private var transitions = HashMap[String, Transition[_]]()
 	private var arcs = List[Arc[_,_]]()
@@ -15,7 +15,7 @@ class CPNGraph {
 	def allPlaces: List[Place[_]] =  places.values.toList
 	def allArcs: List[Arc[_,_]] =  arcs
 	
-	def addPlace(place: Place[_]) = {
+	def addPlace[T](place: Place[T]) = {
 	  places += (place.getId() -> place)
 	}
 	
@@ -80,8 +80,4 @@ class CPNGraph {
 	def getTransitions():java.util.List[Transition[_]] = allTransitions.asJava
 	
 	def getArcs():java.util.List[Arc[_,_]] = arcs.asJava
-}
-
-object CPNGraph {
-  def apply() = new CPNGraph()
 }

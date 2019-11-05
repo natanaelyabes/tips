@@ -2,7 +2,7 @@ package io.iochord.apps.ips.model.cpn.v1.impl
 
 import io.iochord.apps.ips.model.cpn.v1._
 
-class Guard[B <:Bind] { 
+class Guard[B] { 
   
   var guardBind:B => Boolean = null
   
