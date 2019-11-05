@@ -8,7 +8,7 @@ object Direction extends Enumeration {
 	  val PtT, TtP = Value
 }
 
-class Arc[T,B <:Bind] (
+class Arc[T,B] (
   private var id: String,
   private var place: Place[T],
   private var transition: Transition[B],

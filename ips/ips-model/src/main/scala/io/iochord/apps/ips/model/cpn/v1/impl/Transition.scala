@@ -4,7 +4,7 @@ import scala.util.control.Breaks._
 import scala.collection.mutable.Map
 import io.iochord.apps.ips.model.cpn.v1._
 
-class Transition[B <:Bind] (
+class Transition[B] (
   private var id: String,
   private var name: String,
   private var guard: Guard[B] = null,
@@ -35,14 +35,14 @@ class Transition[B <:Bind] (
     getMerge()(b1,b2)
   }
   
-  def addIn(arc: Arc[_,B]) {
+  def addIn[T](arc: Arc[T,B]) {
     if(arc.getIsBase())
       in = arc :: in
     else
       in = in ::: List[Arc[_,B]](arc)
   }
 
-  def addOut(arc: Arc[_,B]) {
+  def addOut[T](arc: Arc[T,B]) {
     out = arc :: out
   }
 
