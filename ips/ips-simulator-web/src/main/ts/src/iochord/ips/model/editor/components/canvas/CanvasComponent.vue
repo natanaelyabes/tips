@@ -16,11 +16,15 @@
       </div>
 
     <!-- Data Modals -->
+
+    <DataTableModal ref="datatable" id ="datatable" />
     <ObjectTypeDataModal ref="objecttype" id="objecttype"/>
     <FunctionDataModal ref="function" id="function"/>
     <GeneratorDataModal ref="generator" id="generator"/>
     <QueueDataModal ref="queue" id="queue"/>
     <ResourceDataModal ref="resource" id="resource"/>
+
+    <!-- Node Modals -->
     <StartNodeModal ref="start" id="start"/>
     <BranchNodeModal ref="branch" id="branch"/>
     <ActivityNodeModal ref="activity" id="activity"/>
@@ -88,6 +92,7 @@ import StartNodeModal from '@/iochord/ips/model/editor/components/modals/StartNo
 import ActivityNodeModal from '@/iochord/ips/model/editor/components/modals/ActivityNodeModal.vue';
 import BranchNodeModal from '@/iochord/ips/model/editor/components/modals/BranchNodeModal.vue';
 import StopNodeModal from '@/iochord/ips/model/editor/components/modals/StopNodeModal.vue';
+import DataTableModal from '@/iochord/ips/model/editor/components/modals/DataTableModal.vue';
 import ObjectTypeDataModal from '@/iochord/ips/model/editor/components/modals/ObjectTypeDataModal.vue';
 import ConfigurationModal from '@/iochord/ips/model/editor/components/modals/ConfigurationModal.vue';
 import ControlModal from '@/iochord/ips/model/editor/components/modals/ControlModal.vue';
@@ -133,6 +138,7 @@ const editorState = getModule(EditorState);
     CanvasComponent,
     StartNodeModal,
     StopNodeModal,
+    DataTableModal,
     ObjectTypeDataModal,
     ConfigurationModal,
     ControlModal,
@@ -145,9 +151,7 @@ const editorState = getModule(EditorState);
 export default class CanvasComponent extends Mixins(BaseComponent, CanvasMixin) {
   @Prop() public response?: Graph;
 
-  @Prop({
-    default: false,
-  })
+  @Prop({ default: false })
   public isDisabled?: boolean;
 
   // Pan and zoom
@@ -165,10 +169,6 @@ export default class CanvasComponent extends Mixins(BaseComponent, CanvasMixin) 
       this.graph = this.response as Graph;
 
       // TODO: we can choose any rendering engine later
-
-      // TODO: Extend the capability of the renderer.
-      //       For example, we dont have to re-render the graph
-      //       every time user apply changes to the graph.
       const renderer = new JointJsRenderer(
         this.graph,
         this.activePage as GraphPage,
