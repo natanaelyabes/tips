@@ -31,9 +31,8 @@ object SimpleTest {
     val monitors:Map[(String,String),Int] = Map[(String,String),Int]() //startAct,endAct,flag
     val objMonitors:Map[(String,String,Int),Double] = Map[(String,String,Int),Double]() //(tokenId,startAct,flag),startValue
     val resMonitors:Map[(String,String,Int),Double] = Map[(String,String,Int),Double]() //(startAct,endAct,flag),AggregateValue
-  
-  
-    case class BindTransInit(x:Option[Int]) extends Bind
+    
+    case class BindTransInit(x:Option[Int])
     
     val cgraph = CPNGraph()
     
