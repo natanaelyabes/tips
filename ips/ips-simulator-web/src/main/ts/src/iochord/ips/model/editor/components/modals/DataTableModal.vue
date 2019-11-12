@@ -19,19 +19,30 @@
       </div>
 
       <template v-if="getDataRows().length > 0">
-        <table class="ui celled table">
+        <table class="ui celled stackable table">
           <thead>
             <tr>
               <th>Id</th>
               <th @input="setField" v-for="field in getFields()" :key="field[0]" :id="field[0]" contenteditable>{{field[1]}}</th>
+              <th></th>
             </tr>
           </thead>
           <tbody>
             <tr v-for="(row, i) in getDataRows()" :key="row[0]" :id="row[0]">
               <td>{{i}}</td>
               <td @input="setData(row[i], $event)" v-for="(col, j) in getDataCols()" :key="col[0]" :id="getFields()[j][0]" :data-label="col[0]" contenteditable>{{col[1]}}</td>
+              <td v-if="i === 0" :rowspan="getDataRows().length">
+                <button @click="addNewField()" class="ui fluid blue icon button"><i class="plus icon"></i></button>
+              </td>
             </tr>
           </tbody>
+          <tfoot class="full-width">
+            <tr>
+              <th :colspan="getFields().length + 2">
+                <button @click="addNewRow()" class="ui fluid blue icon button"><i class="plus icon"></i></button>
+              </th>
+            </tr>
+          </tfoot>
         </table>
       </template>
 
@@ -140,7 +151,6 @@ export default class DataTableModal extends SemanticComponent implements Modal<J
   }
 
   public getFields(): string[][] {
-    console.log(this.fields.entries());
     return this.fields.entries();
   }
 
@@ -182,6 +192,24 @@ export default class DataTableModal extends SemanticComponent implements Modal<J
     this.data.set('0-data-0', new TSMap<string, string>()
       .set('0-field-0', 'New Data 1')
       .set('0-field-1', 'New Data 2'));
+  }
+
+  public addNewField(): void {
+    this.fields.set(`${this.page.getId()}-field-${this.fields.entries().length}`, `New Field ${this.fields.entries().length + 1}`);
+    this.data.forEach((datum: TSMap<string, string>) => {
+      datum.set(`${this.page.getId()}-field-${this.fields.entries().length - 1}`, `New Data ${this.fields.entries().length}`);
+    });
+  }
+
+  public addNewRow(): void {
+
+    const fields = new TSMap<string, string>();
+
+    this.fields.forEach((value, key, index) => {
+      fields.set(key as string, `New Data ${index}`);
+    });
+
+    this.data.set(`${this.page.getId()}-data-${this.data.length}`, fields);
   }
 }
 </script>
