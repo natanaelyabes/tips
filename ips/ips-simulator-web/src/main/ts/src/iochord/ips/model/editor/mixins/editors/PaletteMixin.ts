@@ -19,7 +19,6 @@ export enum TOOLBOX {
   DATA = 'DATA',
 }
 
-
 @Component
 export default class PaletteMixin extends Mixins(BaseComponent, NodeMixin, DataMixin, ConnectorMixin) {
   public handleToolboxMouseDown(type: TOOLBOX, e: MouseEvent): void {

@@ -175,12 +175,12 @@ export default class JointJsRenderer {
       node.setAttr((NODE_TYPE as any)[(nodeValue as any)[keys.elementType]].attr);
       node.setImageIcon((NODE_TYPE as any)[(nodeValue as any)[keys.elementType]].image);
 
-      // Demonstrate the use of custom icon
-      if (nodeValue.getLabel() === 'ATM Service') {
-        node.setImageIcon(require('@/assets/images/icons/atm-png.png'));
-      } else if (nodeValue.getLabel() === 'Teller Service') {
-        node.setImageIcon(require('@/assets/images/icons/business-customer-icon.png'));
-      }
+      // TODO: Phase 2: Demonstrate the use of custom icon
+      // if (nodeValue.getLabel() === 'ATM Service') {
+      //   node.setImageIcon(require('@/assets/images/icons/atm-png.png'));
+      // } else if (nodeValue.getLabel() === 'Teller Service') {
+      //   node.setImageIcon(require('@/assets/images/icons/business-customer-icon.png'));
+      // }
 
       // render node
       node.render(jointPage.getGraph());

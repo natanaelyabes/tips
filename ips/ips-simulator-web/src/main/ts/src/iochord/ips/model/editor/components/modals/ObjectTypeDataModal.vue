@@ -13,7 +13,7 @@
       <div class="ui form">
         <div class="ui grid">
           <div class="row">
-            <div class="three wide column">Name</div>
+            <div class="three wide column">Label</div>
             <div class="thirteen wide column">
               <input type="text" v-model="label" id="object_type_txt_label">
             </div>

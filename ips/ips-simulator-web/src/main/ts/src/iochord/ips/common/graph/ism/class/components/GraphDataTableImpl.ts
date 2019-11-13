@@ -20,7 +20,7 @@ export class GraphDataTableImpl extends GraphDataImpl implements GraphDataTable 
   }
 
   private fields?: TSMap<string, string> | null;
-  private data?: TSMap<string, TSMap<string, object>> | null;
+  private data?: TSMap<string, TSMap<string, string>> | null;
 
   constructor() {
     super();
@@ -34,11 +34,11 @@ export class GraphDataTableImpl extends GraphDataImpl implements GraphDataTable 
     this.fields = fields || this.fields;
   }
 
-  public getData(): TSMap<string, TSMap<string, object>> | null {
-    return this.data as TSMap<string, TSMap<string, object>> | null;
+  public getData(): TSMap<string, TSMap<string, string>> | null {
+    return this.data as TSMap<string, TSMap<string, string>> | null;
   }
 
-  public setData(data: TSMap<string, TSMap<string, object>>): void {
+  public setData(data: TSMap<string, TSMap<string, string>>): void {
     this.data = data || this.data;
   }
 
