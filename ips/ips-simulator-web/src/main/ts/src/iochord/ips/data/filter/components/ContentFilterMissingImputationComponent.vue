@@ -3,14 +3,14 @@
     <section>
       <h4 class="ui dividing header">Missing Data Filter</h4>
       <h5>Data summary</h5>
-      <div class="ui three column grid">
+      <div class="ui two column grid">
         <div class="column">
           <div class="ui fluid card">
             <div class="image">
               <BarChart :model="barData1"/>
             </div>
             <div class="content">
-              <label>Number of missing event's attributes</label>
+              <label>Number of missing events by case <br />(Case 별 missing event 수)</label>
             </div>
           </div>
         </div>
@@ -20,20 +20,20 @@
               <BarChart :model="barData2"/>
             </div>
             <div class="content">
-              <label>Number of missing events by case</label>
+              <label>Number of missing events by attributes <br />(속성별 missing event 수)</label>
             </div>
           </div>
         </div>
-        <div class="column">
+        <!-- <div class="column">
           <div class="ui fluid card">
             <div class="image">
               <BarChart :model="barData3"/>
             </div>
             <div class="content">
-              <label>Number of missing event by variables</label>
+              <label>Number of missing event by category <br />(Category 별 missing event 수)</label>
             </div>
           </div>
-        </div>
+        </div> -->
       </div>
     </section>
 
@@ -45,13 +45,13 @@
           <div class="field">
             <div class="ui slider checkbox">
               <input type="radio" name="method" checked="checked" value="deletion" @change="methodChanged($event)">
-              <label>Simple deletion method (%): <span class="ui red text"> {{ expectedDataLoseRate }}</span></label>
+              <label>Simple deletion method (expected data lose rate: <span class="ui red text"> {{ expectedDataLoseRate }}</span> %)</label>
             </div>
           </div>
           <div class="field">
             <div class="ui slider checkbox checked">
               <input type="radio" name="method" value="imputation" @change="methodChanged($event)">
-              <label>Event imputation method (%): <span class="ui red text"> {{ expectedRestorationRate }}</span> </label>
+              <label>Event imputation method (expected restoration rate: <span class="ui red text"> {{ expectedRestorationRate }}</span> %)</label>
             </div>
           </div>
         </div>
@@ -109,11 +109,11 @@
       <h5 class="ui horizontal left aligned divider header">Event Imputation Result</h5>
       <div class="ui two statistics">
         <div class="statistic">
-          <div class="value">95 %</div>
+          <div class="value">95 ~ 97 %</div>
           <div class="label">Expected percentage of repairing rate</div>
         </div>
         <div class="statistic">
-          <div class="value">3 min</div>
+          <div class="value">3 ~ 10 min</div>
           <div class="label">Expected processing time</div>
         </div>
       </div>
@@ -153,29 +153,35 @@ export default class ContentFilterMissingImputationComponent extends BaseCompone
   public expectedRestorationRate: number = 78.6;
 
   public mounted(): void {
-    this.barData1 = [{ name: '1997', value: 86085, type: 'America' },
-                { name: '2007', value: 144776, type: 'America' },
-                { name: '2017', value: 193868, type: 'America' },
-                { name: '1997', value: 9616, type: 'China' },
-                { name: '2007', value: 35715, type: 'China' },
-                { name: '2017', value: 122503, type: 'China' },
-                { name: '1997', value: 44122, type: 'Japan' },
-                { name: '2007', value: 45153, type: 'Japan' },
-                { name: '2017', value: 48675, type: 'Japan' },
-                { name: '1997', value: 22159, type: 'Germany' },
-                { name: '2007', value: 34447, type: 'Germany' },
-                { name: '2017', value: 36865, type: 'Germany' }];
+    this.barData2 = [{ name: 'Timestamp', value: 3, type: 'Case 10' },
+                { name: 'Resource', value: 5, type: 'Case 10' },
+                { name: 'Attribute 1', value: 2, type: 'Case 10' },
+                { name: 'Timestamp', value: 2, type: 'Case 24' },
+                { name: 'Resource', value: 2, type: 'Case 24' },
+                { name: 'Attribute 1', value: 2, type: 'Case 24' },
+                { name: 'Attribute 2', value: 2, type: 'Case 24' },
+                { name: 'Timestamp', value: 3, type: 'Case 64' },
+                { name: 'Timestamp', value: 4, type: 'Case 2' },
+                ];
 
-    this.barData2 = [{ name: '1997', value: 86085, type: 'America' },
-                { name: '2007', value: 144776, type: 'America' },
-                { name: '2017', value: 193868, type: 'America' }];
+    this.barData1 = [{ name: 'Case 10', value: 10, type: 'missing event' },
+                { name: 'Case 24', value: 8, type: 'missing event' },
+                { name: 'Case 64', value: 3, type: 'missing event' },
+                { name: 'Case 2', value: 4, type: 'missing event' },];
 
-    this.barData3 = [{ name: '1997', value: 22159, type: 'Germany' },
-                { name: '2007', value: 34447, type: 'Germany' },
-                { name: '2017', value: 36865, type: 'Germany' }];
+    this.barData3 = [{ name: 'Timestamp', value: 3, type: 'missing event' },
+                { name: 'Resource', value: 5, type: 'missing event' },
+                { name: 'Attribute 1', value: 2, type: 'missing event' },
+                { name: 'Timestamp', value: 2, type: 'missing event' },
+                { name: 'Resource', value: 2, type: 'missing event' },
+                { name: 'Attribute 1', value: 2, type: 'missing event' },
+                { name: 'Attribute 2', value: 2, type: 'missing event' },
+                { name: 'Timestamp', value: 3, type: 'missing event' },
+                { name: 'Timestamp', value: 4, type: 'missing event' },
+                ];
 
     // table data format
-    this.headerTest = ['Case ID', 'No. of Event', 'Missing Category', 'No. of Missing Attribute'];
+    this.headerTest = ['Case ID', 'No. of Event', 'Missing Category', 'No. of Missing Event'];
     this.dataModelTest = [[1, 14, 'Resource', 3], [2, 12, 'Timestamp', 2], [3, 10, 'Attr <key, value>', 5]];
 
     // select option format

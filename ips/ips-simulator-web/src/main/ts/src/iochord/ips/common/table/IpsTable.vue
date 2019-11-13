@@ -39,5 +39,9 @@ export default class IpsTable extends BaseComponent {
 
   @Prop()
   public pagination?: any;
+
+  public created(): void {
+    const self = this;
+  }
 }
 </script>
