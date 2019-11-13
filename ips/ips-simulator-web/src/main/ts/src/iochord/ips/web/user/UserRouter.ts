@@ -14,18 +14,9 @@ export default [
     children: [
       {
         path: `login`,
+        name: 'iochord-ips-login',
         component: () => import(/* webpackChunkName: "ips-simulator-web-user-login" */ './views/AuthenticationLoginView.vue'),
       },
     ],
   },
-/*
-  {
-    path: `auth`,
-    redirect: `/${BaseUrlEnum.IOCHORD}/${ApplicationEnum.NAME}/auth/login`,
-    component: () => import(/* webpackChunkName: "ips-login-view"  './views/AuthenticationIndexView.vue'),
-    children: [
-      ...AuthenticationLoginRouter as RouteConfig[],
-    ],
-  },
-*/
 ] as RouteConfig[] | undefined;

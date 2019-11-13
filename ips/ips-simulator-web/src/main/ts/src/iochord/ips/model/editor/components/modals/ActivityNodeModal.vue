@@ -36,8 +36,9 @@
                     <div class="twelve wide column">
                       <select id="act_txttype" class="ui fluid search dropdown" v-model="activityType">
                         <option value="STANDARD">Standard</option>
-                        <option value="CONCURRENT_BATCH">Concurrent Batch Process</option>
-                        <option value="SPLIT_MODULE">Split Module Process</option>
+                        <!-- TODO: Phase 2 -->
+                        <!-- <option value="CONCURRENT_BATCH">Concurrent Batch Process</option> -->
+                        <!-- <option value="SPLIT_MODULE">Split Module Process</option> -->
                       </select>
                     </div>
                   </div>
@@ -105,6 +106,7 @@
                     </div>
                   </template>
 
+                  <!-- TODO: Phase 2 -->
                   <!-- <div class="sixteen wide column">
                     <div class="ui checkbox">
                       <input id="report-statistics" type="checkbox" v-model="report">
@@ -118,6 +120,15 @@
                       <input disabled type="text" v-model="customMonitor">
                     </div>
                   </div> -->
+
+                  <div class="row">
+                    <div class="four wide column">Queue</div>
+                    <div class="twelve wide column">
+                      <select v-model="queue" id="act_txtqueuelabel" class="ui fluid search dropdown">
+                        <option v-for="queue in queues" :key="queue.id" :value="queue.id">{{queue.label}} ({{queue.id}})</option>
+                      </select>
+                    </div>
+                  </div>
                 </div>
               </div>
 
@@ -142,16 +153,6 @@
                       <input type="text" v-model="processingTimeParameter">
                     </div>
                   </div>
-                  <div class="row">
-                    <div class="four wide column">Processing Time Unit</div>
-                    <div class="twelve wide column">
-                      <select id="act_txtunit" class="ui fluid search dropdown" v-model="processingUnit">
-                        <option value="HOURS">Hours</option>
-                        <option value="MINUTES">Minutes</option>
-                        <option value="SECONDS">Seconds</option>
-                      </select>
-                    </div>
-                  </div>
                 </div>
 
                 <h4>Setup</h4>
@@ -172,26 +173,17 @@
                       <input type="text" v-model="setupTimeParameter">
                     </div>
                   </div>
-                  <div class="row">
-                    <div class="four wide column">Setup Time Unit</div>
-                    <div class="twelve wide column">
-                      <select id="act_txtunit" class="ui fluid search dropdown" v-model="setupUnit">
-                        <option value="HOURS">Hours</option>
-                        <option value="MINUTES">Minutes</option>
-                        <option value="SECONDS">Seconds</option>
-                      </select>
-                    </div>
-                  </div>
                 </div>
 
-                <h4>Queue</h4>
                 <div class="ui divider"></div>
                 <div class="ui grid">
                   <div class="row">
-                    <div class="four wide column">Queue label</div>
+                    <div class="four wide column">Time Unit</div>
                     <div class="twelve wide column">
-                      <select v-model="queue" id="act_txtqueuelabel" class="ui fluid search dropdown">
-                        <option v-for="queue in queues" :key="queue.id" :value="queue.id">{{queue.label}} ({{queue.id}})</option>
+                      <select id="act_txtunit" class="ui fluid search dropdown" v-model="timeUnit">
+                        <option value="HOURS">Hours</option>
+                        <option value="MINUTES">Minutes</option>
+                        <option value="SECONDS">Seconds</option>
                       </select>
                     </div>
                   </div>
@@ -287,8 +279,7 @@ export default class ActivityNodeModal extends SemanticComponent implements Moda
   private processingTimeParameter: string = '';
   private setupTime: DISTRIBUTION_TYPE = DISTRIBUTION_TYPE.RANDOM;
   private setupTimeParameter: string = '';
-  private processingUnit: TIME_UNIT = TIME_UNIT.MINUTES;
-  private setupUnit: TIME_UNIT = TIME_UNIT.MINUTES;
+  private timeUnit: TIME_UNIT = TIME_UNIT.MINUTES;
   private queue: string = '';
   private inputType: string = '';
   private outputType: string = '';
@@ -299,7 +290,7 @@ export default class ActivityNodeModal extends SemanticComponent implements Moda
     // Whole object properties
     this.properties = object;
 
-    // Page Renderer
+    // Page renderer
     this.page = page;
 
     // Component properties
@@ -311,8 +302,7 @@ export default class ActivityNodeModal extends SemanticComponent implements Moda
     this.processingTimeParameter = object.getProcessingTimeParameter() as string;
     this.setupTime = object.getSetupTime() as DISTRIBUTION_TYPE;
     this.setupTimeParameter = object.getSetupTimeParameter() as string;
-    this.setupUnit = object.getUnit() as TIME_UNIT;
-    this.processingUnit = object.getUnit() as TIME_UNIT;
+    this.timeUnit = object.getUnit() as TIME_UNIT;
 
     this.queue = object.getQueueRef() as string;
     this.function = object.getFunctionRef() as string;
@@ -355,10 +345,10 @@ export default class ActivityNodeModal extends SemanticComponent implements Moda
     ;
 
     $('#act_txtunit')
-      .dropdown('set selected', this.setupUnit)
+      .dropdown('set selected', this.timeUnit)
       .dropdown({
         onChange: (val: TIME_UNIT) => {
-          this.setupUnit = val;
+          this.timeUnit = val;
         },
       })
     ;
@@ -396,7 +386,7 @@ export default class ActivityNodeModal extends SemanticComponent implements Moda
     node.setProcessingTimeParameter(this.processingTimeParameter);
     node.setSetupTime(this.setupTime);
     node.setSetupTimeParameter(this.setupTimeParameter);
-    node.setUnit(this.setupUnit);
+    node.setUnit(this.timeUnit);
     node.setQueueRef(this.queue);
     node.setFunctionRef(this.function);
 

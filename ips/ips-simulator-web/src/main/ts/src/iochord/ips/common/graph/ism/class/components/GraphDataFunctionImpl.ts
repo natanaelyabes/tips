@@ -29,8 +29,10 @@ export class GraphDataFunctionImpl extends GraphDataImpl implements GraphDataFun
   }
 
   private inputParameters?: TSMap<string, GraphDataObjectType> | null = new TSMap<string, GraphDataObjectType>();
+  private inputParametersRefs?: TSMap<string, string> | null = new TSMap<string, string>();
   private code?: string | null;
   private outputVariables?: TSMap<string, GraphDataObjectType> | null = new TSMap<string, GraphDataObjectType>();
+  private outputVariablesRefs?: TSMap<string, string> | null = new TSMap<string, string>();
 
   constructor() {
     super();
@@ -41,11 +43,15 @@ export class GraphDataFunctionImpl extends GraphDataImpl implements GraphDataFun
   }
 
   public setInputParameters(inputParameters: TSMap<string, GraphDataObjectType>): void {
-    this.inputParameters = inputParameters || this.inputParameters;
+    this.inputParameters = inputParameters as TSMap<string, GraphDataObjectType>;
   }
 
-  public getInputParametersRefs(): TSMap<string, string | null> | null {
-    return GraphUtil.generateRefs(this.getInputParameters());
+  public getInputParametersRefs(): TSMap<string, string> | null {
+    return this.inputParametersRefs as TSMap<string, string>;
+  }
+
+  public setInputParametersRefs(inputParametersRefs: TSMap<string, string> | null) {
+    this.inputParametersRefs = inputParametersRefs as TSMap<string, string>;
   }
 
   public getCode(): string | null {
@@ -61,11 +67,15 @@ export class GraphDataFunctionImpl extends GraphDataImpl implements GraphDataFun
   }
 
   public setOutputVariables(outputVariables: TSMap<string, GraphDataObjectType>): void {
-    this.outputVariables = outputVariables || this.outputVariables;
+    this.outputVariables = outputVariables as TSMap<string, GraphDataObjectType>;
   }
 
-  public getOutputVariablesRefs(): TSMap<string, string | null> | null {
-    return GraphUtil.generateRefs(this.getOutputVariables());
+  public getOutputVariablesRefs(): TSMap<string, string> | null {
+    return this.outputVariablesRefs as TSMap<string, string>;
+  }
+
+  public setOutputVariablesRefs(outputVariablesRefs: TSMap<string, string> | null) {
+    this.outputVariablesRefs = outputVariablesRefs as TSMap<string, string>;
   }
 
   /** @Override */

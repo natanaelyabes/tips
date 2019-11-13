@@ -11,6 +11,6 @@ import { TSMap } from 'typescript-map';
 export interface GraphDataTable extends GraphData {
   getFields(): TSMap<string, string> | null;
   setFields(fields: TSMap<string, string>): void;
-  getData(): TSMap<string, TSMap<string, object>> | null;
-  setData(data: TSMap<string, TSMap<string, object>>): void;
+  getData(): TSMap<string, TSMap<string, string>> | null;
+  setData(data: TSMap<string, TSMap<string, string>>): void;
 }
