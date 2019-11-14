@@ -5,7 +5,7 @@
       <h5>Data summary</h5>
       <div class="ui two column grid">
         <div class="column">
-          <div class="ui fluid card">
+          <div class="ui fluid card" style="height: 375px">
             <div class="image">
               <BarChart :model="barData1"/>
             </div>
@@ -15,12 +15,38 @@
           </div>
         </div>
         <div class="column">
-          <div class="ui fluid card">
-            <div class="image">
-              <BarChart :model="barData2"/>
+          <div class="ui fluid card" style="height: 375px">
+            <div class="image" style="height: 305px">
+              <!-- <BarChart :model="barData2"/> -->
+              <div class="ui two statistics">
+                <div class="statistic">
+                  <div class="value">6 %</div>
+                  <div class="label">Timestamp</div>
+                </div>
+                <div class="statistic">
+                  <div class="value">12 %</div>
+                  <div class="label">Resource</div>
+                </div>
+                <div class="statistic">
+                  <div class="value">1 %</div>
+                  <div class="label">Attr A</div>
+                </div>
+                <div class="statistic">
+                  <div class="value">6 %</div>
+                  <div class="label">Attr B</div>
+                </div>
+                <div class="statistic">
+                  <div class="value">1 %</div>
+                  <div class="label">Attr C</div>
+                </div>
+                <div class="statistic">
+                  <div class="value">6 %</div>
+                  <div class="label">Attr D</div>
+                </div>
+              </div>
             </div>
             <div class="content">
-              <label>Number of missing events by attributes <br />(속성별 missing event 수)</label>
+              <label>Percentage of missing events by attributes <br />(속성별 missing event %)</label>
             </div>
           </div>
         </div>
@@ -123,8 +149,11 @@
   </div>
 </template>
 
-<style>
-
+<style scoped>
+.eq-card.ui.card {
+  flex: 1; /* Shrink and grow according to available height */
+  flex-basis: 0;
+}
 </style>
 
 <script lang="ts">
@@ -167,7 +196,8 @@ export default class ContentFilterMissingImputationComponent extends BaseCompone
     this.barData1 = [{ name: 'Case 10', value: 10, type: 'missing event' },
                 { name: 'Case 24', value: 8, type: 'missing event' },
                 { name: 'Case 64', value: 3, type: 'missing event' },
-                { name: 'Case 2', value: 4, type: 'missing event' },];
+                { name: 'Case 2', value: 4, type: 'missing event' },
+                ];
 
     this.barData3 = [{ name: 'Timestamp', value: 3, type: 'missing event' },
                 { name: 'Resource', value: 5, type: 'missing event' },
