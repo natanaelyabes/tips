@@ -71,7 +71,7 @@
           <div class="field">
             <div class="ui slider checkbox">
               <input type="radio" name="method" checked="checked" value="deletion" @change="methodChanged($event)">
-              <label>Simple deletion method (expected data lose rate: <span class="ui red text"> {{ expectedDataLoseRate }}</span> %)</label>
+              <label>Simple deletion method (expected data lost rate: <span class="ui red text"> {{ expectedDataLoseRate }}</span> %)</label>
             </div>
           </div>
           <div class="field">
