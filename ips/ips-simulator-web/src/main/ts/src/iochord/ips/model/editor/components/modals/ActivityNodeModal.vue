@@ -26,6 +26,7 @@
                 <a class="active item" data-tab="basic">Basic</a>
                 <a class="item" data-tab="processing">Processing</a>
                 <a class="item" data-tab="advanced">Advanced</a>
+                <a class="item" data-tab="misc">Misc</a>
               </div>
 
               <!-- Basic tab -->
@@ -214,6 +215,20 @@
                   </div>
                 </div>
               </div>
+
+              <div class="ui bottom attached tab segment" data-tab="misc">
+                <div class="ui grid">
+                  <div class="row">
+                    <div class="four wide column">
+                      Image Icon URL
+                    </div>
+                    <div class="twelve wide column">
+                      <input type="text" v-model="imageIcon">
+                      <img :src="imageIcon" alt="">
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -256,6 +271,7 @@ import { DISTRIBUTION_TYPE } from '../../../../common/graph/ism/enums/DISTRIBUTI
 import { TIME_UNIT } from '../../../../common/graph/ism/enums/TIME_UNIT';
 import { GraphElement } from '../../../../common/graph/ism/interfaces/GraphElement';
 import GraphSubject from '@/iochord/ips/common/graph/ism/rxjs/GraphSubject';
+import { NODE_TYPE } from '@/iochord/ips/common/graph/ism/rendering-engine/joint/shapes/enums/NODE';
 
 const graphModule = getModule(GraphModule);
 
@@ -283,6 +299,7 @@ export default class ActivityNodeModal extends SemanticComponent implements Moda
   private inputType: string = '';
   private outputType: string = '';
   private function: string = '';
+  private imageIcon: string = '';
 
   public populateProperties(page: JointGraphPageImpl, object: GraphActivityNodeImpl): void {
 
@@ -302,6 +319,7 @@ export default class ActivityNodeModal extends SemanticComponent implements Moda
     this.setupTime = object.getSetupTime() as DISTRIBUTION_TYPE;
     this.setupTimeParameter = object.getSetupTimeParameter() as string;
     this.timeUnit = object.getUnit() as TIME_UNIT;
+    this.imageIcon = object.getImageIcon() as string;
 
     this.queue = object.getQueueRef() as string;
     this.function = object.getFunctionRef() as string;
@@ -389,12 +407,18 @@ export default class ActivityNodeModal extends SemanticComponent implements Moda
     node.setQueueRef(this.queue);
     node.setFunctionRef(this.function);
 
+    this.imageIcon = this.imageIcon !== '' ? this.imageIcon : NODE_TYPE.activity.image;
+    node.setImageIcon(this.imageIcon);
+
     // Change label of the renderer node
     page.getGraph().getCells().map((cell: joint.dia.Cell) => {
       if (cell.attributes.nodeId === object.getId()) {
         cell.attr({
           label: {
             text: this.label,
+          },
+          image: {
+            xlinkHref: this.imageIcon,
           },
         });
       }
