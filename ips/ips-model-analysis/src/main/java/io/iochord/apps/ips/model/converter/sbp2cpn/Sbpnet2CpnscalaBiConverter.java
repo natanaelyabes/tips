@@ -435,6 +435,7 @@ public class Sbpnet2CpnscalaBiConverter implements Converter<IsmGraph, String> {
 					if (na.getGenerator() == null) {
 						addPlace(na.getId()+"_start_0", na.getLabel()+"_nap1", entTypeId, "", na.getId());
 					} else {
+						System.out.println(na.getId()+"_start_0"+" ----- "+placeshub.get(na.getGenerator().getId()+"_start_0"));
 						placeshub.put(na.getId()+"_start_0",placeshub.get(na.getGenerator().getId()+"_start_0"));
 					}
 				}
@@ -517,13 +518,13 @@ public class Sbpnet2CpnscalaBiConverter implements Converter<IsmGraph, String> {
 			// Convert Arcs
 			for (String s : p.getConnectors().keySet()) {
 				Connector c = p.getConnectors().get(s);
-				//System.out.println("Source HL : "+c.getSource().getId());
-				//System.out.println("Target HL : "+c.getTarget().getId());
+				System.out.println("Source HL : "+c.getSource().getId());
+				System.out.println("Target HL : "+c.getTarget().getId());
 				
 				String source = placeshub.get(c.getSource().getId()+"_start_"+c.getSourceIndex());
 				String target = placeshub.get(c.getTarget().getId()+"_end_"+c.getTargetIndex());
 				
-				//System.out.println(source+" - "+target);
+				System.out.println(source+" - "+target);
 				
 				String t_silent = addTransition("", null, null, b_entTypeId, e_entTypeId, m_entTypeId, "Connector");
 				addArc(source, t_silent, "PtT", entTypeId, b_entTypeId, addArcExp("case entity:"+entTypeId+" => { Some(entity) }"), addTtB(b_entTypeId,"inp match { case entity:"+entTypeId+" => Some(entity); case _ => None }"), addBtT(b_entTypeId,"b.entity.get"), null, null, true, "Connector");
