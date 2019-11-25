@@ -37,24 +37,18 @@ export class GraphConnectorImpl extends GraphElementImpl implements GraphConnect
         graphArc.setType(element.elementType);
         graphArc.setAttributes(element.attributes);
 
-        // Set output nodes TODO: refractor to reference only
-        const outputNodes = GraphNodeImpl.instance.get(element.targetRef).getId() as string;
-        (GraphNodeImpl.instance.get(element.sourceRef).getOutputNodesRef() as string[]).push(outputNodes);
-
-        // Set input nodes TODO: refractor to reference only
-        const inputNodes = GraphNodeImpl.instance.get(element.sourceRef).getId() as string;
-        (GraphNodeImpl.instance.get(element.targetRef).getInputNodesRef() as string[]).push(inputNodes);
-
         graphNodeInstance.forEach((value: TSMap<string, GraphNode>) => {
           if (value.get(element.sourceRef)) {
             graphArc.setSourceRef(element.sourceRef);
           }
         });
+
         graphNodeInstance.forEach((value: TSMap<string, GraphNode>) => {
           if (value.get(element.targetRef)) {
             graphArc.setTargetRef(element.targetRef);
           }
         });
+
         GraphConnectorImpl.instance.set(key, graphArc);
         graphArcMap.set(key, graphArc);
       }

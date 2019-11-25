@@ -58,7 +58,6 @@
                     <tr>
                       <th>Condition</th>
                       <th>Then go to</th>
-                      <th>Action</th>
                     </tr>
                   </thead>
                   <tbody id="tb_add_row">
@@ -72,7 +71,6 @@
             </div>
           </template>
         </div>
-
       </div>
     </div>
     <div class="actions">

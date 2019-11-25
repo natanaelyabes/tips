@@ -4,7 +4,7 @@
       <h4 class="ui dividing header">Timeframe</h4>
         <div class="three fields">
           <div class="ten wide field">
-            <textarea rows="11">this is for chart</textarea>
+            <HistogramChart :model="[1,2,3,4,5,6,7,8,9,10]"/>
           </div>
           <div class="four wide field">
             <textarea rows="4">this is for chart</textarea>
@@ -175,11 +175,16 @@
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator';
 import BaseComponent from '@/iochord/ips/common/ui/layout/class/BaseComponent';
+import HistogramChart from '../../../common/charts/HistogramChart.vue';
 
 // JQuery
 declare const $: any;
 
-@Component
+@Component({
+  components: {
+    HistogramChart,
+  },
+})
 export default class ContentFilterTimeComponent extends BaseComponent {
 // $('#standard_calendar')
 //   .calendar()

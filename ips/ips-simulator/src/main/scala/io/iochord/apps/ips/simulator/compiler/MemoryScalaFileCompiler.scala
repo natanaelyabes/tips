@@ -33,7 +33,7 @@ class MemoryScalaFileCompiler(filePath: String) {
       "import breeze.stats.distributions.Rayleigh \n"+
       "new Simulation {\n"+fileContents+"\n}")
   
-      val compiledCode = toolbox.compile(tree)
+  val compiledCode = toolbox.compile(tree)
   
   def getInstance = compiledCode().asInstanceOf[Simulation]
 }
