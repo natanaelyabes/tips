@@ -48,7 +48,7 @@ public class TestController extends AServiceController {
 
 	@RequestMapping(value=BASE_URI + "/model",produces= {MediaType.APPLICATION_JSON_VALUE})
 	public String get01CreateExampleSimulationModel() {
-		snet = IsmExample.createComplete();
+		snet = IsmExample.createBankExample();
 		return SerializationUtil.encode(snet);
 	}
 	

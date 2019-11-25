@@ -83,13 +83,14 @@ public class IsmModelController extends AModelController {
 	
 	@RequestMapping(value=BASE_URI + "/example",produces= {MediaType.APPLICATION_JSON_VALUE})
 	public String getCreateExampleSimulationModel() {
-		IsmGraph snet = IsmExample.createComplete();
+//		IsmGraph snet = IsmExample.createBankExample();
+		IsmGraph snet = IsmExample.createPortExample();
 		return SerializationUtil.encode(snet);
 	}	
 	
 	@RequestMapping(value=BASE_URI + "/examplecpn",produces= {MediaType.APPLICATION_JSON_VALUE})
 	public String getConvertExampleSimulationModel() {
-		IsmGraph snet = IsmExample.createComplete();
+		IsmGraph snet = IsmExample.createBankExample();
 		Sbpnet2CpnscalaBiConverter converter = new Sbpnet2CpnscalaBiConverter();
 		String cnet = converter.convert(snet);
 		return cnet;

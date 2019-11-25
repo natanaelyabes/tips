@@ -32,7 +32,7 @@ public class CpnScalaSimulatorPerfAnalysisController extends ASimulatorControlle
 	
   @RequestMapping(value = BASE_URI + "/atm/perf/generate", method = RequestMethod.POST)
 	public void test01CpnScalaCreation() throws Exception {
-		IsmGraph snet = IsmExample.createComplete();
+		IsmGraph snet = IsmExample.createBankExample();
 		System.out.println(SerializationUtil.encode(snet));
 		Sbpnet2CpnscalaBiConverter converter = new Sbpnet2CpnscalaBiConverter();
 		String net = converter.convert(snet);
