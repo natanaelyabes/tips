@@ -19,16 +19,13 @@
             </div>
           </div>
           <div class="row">
-            <div class="sixteen wide column">Input Parameters</div>
-          </div>
-          <div class="row">
+            <div class="four wide column">Input Parameters</div>
             <div class="twelve wide column">
               <select id="x_input" v-model="inputParameters" class="ui fluid search dropdown" multiple>
                 <option v-for="objectType in objectTypes" :key="objectType.id" :value="objectType.id">{{objectType.label}} ({{objectType.id}})</option>
               </select>
             </div>
           </div>
-
           <div class="row">
             <div class="sixteen wide column">
               <h4>Code Segment</h4>

@@ -21,12 +21,14 @@ export class GraphDataObjectTypeImpl extends GraphDataImpl implements GraphDataO
     graphDataObjectType.setLabel(object.label);
     graphDataObjectType.setType(object.elementType);
     graphDataObjectType.setAttributes(object.attributes);
-    graphDataObjectType.setTypes(object.types);
+    // graphDataObjectType.setTypes(object.types);
+    graphDataObjectType.setTypeRefs(object.types);
     GraphDataObjectTypeImpl.instance.set(graphDataObjectType.getId() as string, graphDataObjectType);
     return graphDataObjectType;
   }
 
   private types?: TSMap<string, GraphDataTable> | null = new TSMap<string, GraphDataTable>();
+  private typeRef: string = '';
 
   constructor() {
     super();
@@ -40,8 +42,12 @@ export class GraphDataObjectTypeImpl extends GraphDataImpl implements GraphDataO
     this.types = types || this.types;
   }
 
-  public getTypeRefs(): TSMap<string, string | null> | null {
-    return GraphUtil.generateRefs(this.getTypes());
+  public getTypeRefs(): string {
+    return this.typeRef;
+  }
+
+  public setTypeRefs(ref: string): void {
+    this.typeRef = ref;
   }
 
   /** @Override */
