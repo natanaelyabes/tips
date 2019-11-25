@@ -12,5 +12,6 @@ import { TSMap } from 'typescript-map';
 export interface GraphDataObjectType extends GraphData {
   getTypes(): TSMap<string, GraphDataTable> | null;
   setTypes(fields: TSMap<string, GraphDataTable>): void;
-  getTypeRefs(): TSMap<string, string | null> | null;
+  getTypeRefs(): string;
+  setTypeRefs(refs: string): void;
 }

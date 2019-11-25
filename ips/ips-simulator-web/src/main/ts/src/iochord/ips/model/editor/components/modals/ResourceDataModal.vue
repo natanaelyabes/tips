@@ -13,46 +13,20 @@
       <div class="ui form">
         <div class="ui grid">
           <div class="row">
-            <div class="four wide column">Group ID</div>
+            <div class="four wide column">Label</div>
             <div class="twelve wide column">
-              <input type="text" v-model="id" id="x_txt_label">
+              <input type="text" v-model="label" id="x_txt_label">
             </div>
           </div>
           <div class="row">
-            <div class="six wide column">
-              <div class="ui checkbox">
-                <input type="checkbox" v-model="importTable" id="x_txt_import">
-                <label for="x_txt_import">Import from table</label>
-              </div>
+            <div class="four wide column">
+              <label for="x_txt_import">Import from table</label>
             </div>
-            <div class="ten wide column">
-              <button class="ui button">...</button>
+            <div class="twelve wide column">
+              <select id="x_txt_table" class="ui search dropdown" v-model="table">
+                <option v-for="t in tables" :key="t.getId()" :value="t.getId()">{{t.getLabel()}} ({{t.getId()}})</option>
+              </select>
             </div>
-          </div>
-          <div class="row">
-            <table class="ui celled compact table">
-              <thead>
-                <tr>
-                  <th>ID</th>
-                  <th>Quantity</th>
-                  <th>Capacity</th>
-                  <th>Available Time</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td>
-                    <button class="ui negative basic button">
-                      <i class="close icon"></i>
-                    </button>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
           </div>
         </div>
       </div>
@@ -111,7 +85,9 @@ export default class ResourceDataModal extends SemanticComponent implements Moda
 
   // Component properties
   private id: string = '';
+  private label: string = '';
   private importTable: boolean = false;
+  private table: string = '';
 
   public populateProperties(page: JointGraphPageImpl, object: GraphDataResourceImpl) {
 
@@ -123,7 +99,19 @@ export default class ResourceDataModal extends SemanticComponent implements Moda
 
     // Component properties
     this.id = object.getGroupId() as string;
+    this.label = object.getLabel() as string;
     this.importTable = object.isImported() as boolean;
+    this.table = object.getDataRef() as string;
+
+    // Initialize dropdown with default value
+    $('#x_txt_table')
+      .dropdown('set selected', this.table)
+      .dropdown({
+        onChange: (val: string) => {
+          this.table = val;
+        },
+      })
+    ;
   }
 
   public saveProperties(page: JointGraphPageImpl, object: GraphDataResourceImpl) {
@@ -133,7 +121,9 @@ export default class ResourceDataModal extends SemanticComponent implements Moda
 
     // Save properties
     data.setGroupId(this.id);
+    data.setLabel(this.label);
     data.setImported(this.importTable);
+    data.setDataRef(this.table);
 
     // Change label of the renderer data
     page.getGraph().getCells().map((cell: joint.dia.Cell) => {
@@ -160,6 +150,19 @@ export default class ResourceDataModal extends SemanticComponent implements Moda
       message: `${object.getId()} properties have been saved`,
       newestOnTop: true,
     });
+  }
+
+  public get tables(): GraphData[] {
+    let table;
+    try {
+      const pages = graphModule.graph.getPages() as TSMap<string, GraphPage>;
+      const nodeData = (pages.get('0') as GraphPage).getData() as TSMap<string, GraphData>;
+      table = nodeData.values().filter((value: GraphData) => value.getType() === 'datatable');
+      return table;
+    } catch (e) {
+      table = e;
+    }
+    return table;
   }
 }
 </script>
