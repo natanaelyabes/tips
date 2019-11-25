@@ -28,6 +28,8 @@ public interface Element extends Identifiable {
 	String getElementType();
 
 	String getLabel();
+	
+	String getIcon();
 
 	Map<String, String> getAttributes();
 }

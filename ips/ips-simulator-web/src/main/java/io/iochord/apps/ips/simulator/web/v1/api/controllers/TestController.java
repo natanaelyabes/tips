@@ -20,9 +20,6 @@ import io.iochord.apps.ips.simulator.compiler.MemoryScalaCompiler;
 import io.iochord.apps.ips.simulator.compiler.Simulation;
 import io.iochord.apps.ips.simulator.web.TestService;
 import lombok.Getter;
-import scala.Tuple3;
-import scala.collection.Iterator;
-import scala.collection.mutable.HashMap;
 
 /**
  *
@@ -95,7 +92,6 @@ public class TestController extends AServiceController {
 		simulationInstance = msfc.getInstance();
 		Observer obs = new Observer() {
 			
-			@SuppressWarnings({ "unused", "unchecked" })
 			@Override
 			public void update(Observable o, Object arg) {
 				System.out.println("JAVAOBS: " + o);
