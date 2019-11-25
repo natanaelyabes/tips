@@ -1,4 +1,4 @@
-case class Binding00000001(entity:Option[colset00000001]) extends Bind
+case class Binding00000001(entity:Option[colset00000001]) 
 val Eval00000001 = (b1:Binding00000001, b2:Binding00000001) => {
 	(b1.entity == b2.entity || b1.entity == None || b2.entity == None)
 }
