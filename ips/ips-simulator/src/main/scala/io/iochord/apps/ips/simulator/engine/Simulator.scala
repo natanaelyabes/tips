@@ -112,18 +112,18 @@ case class Simulator(calcAvgTimeEnTr:Boolean = false) {
         val r = new java.util.Random();
         val transition = transitions(r.nextInt(transitions.length))
         
-        val markbefore = Map[(Boolean,Boolean,Map[String,String]),Any]()
-        val markafter = Map[(Boolean,Boolean,Map[String,String]),Any]()
+        val markbefore = Map[(String,Map[String,String]),Any]()
+        val markafter = Map[(String,Map[String,String]),Any]()
         
-        transition.getIn().foreach(arc => { val multiset = arc.getPlace().getCurrentMarking().multiset.clone(); markbefore.put((arc.getPlace().getIsStart(),arc.getPlace().getIsEnd(),arc.getPlace().getOrigin()),multiset) } )
-        transition.getOut().foreach(arc => { val multiset = arc.getPlace().getCurrentMarking().multiset.clone(); markbefore.put((arc.getPlace().getIsStart(),arc.getPlace().getIsEnd(),arc.getPlace().getOrigin()),multiset) } )
+        transition.getIn().foreach(arc => { val multiset = arc.getPlace().getCurrentMarking().multiset; markbefore.put((arc.getPlace().getId(),arc.getPlace().getOrigin()),multiset.toString()) } )
+        transition.getOut().foreach(arc => { val multiset = arc.getPlace().getCurrentMarking().multiset; markbefore.put((arc.getPlace().getId(),arc.getPlace().getOrigin()),multiset.toString()) } )
         //println(markbefore)
         //println(transition.getName())
         
         val bindingChosen = transition.execute(globtime.time)
         
-        transition.getIn().foreach(arc => { val multiset = arc.getPlace().getCurrentMarking().multiset.clone(); markafter.put((arc.getPlace().getIsStart(),arc.getPlace().getIsEnd(),arc.getPlace().getOrigin()),multiset) } )
-        transition.getOut().foreach(arc => { val multiset = arc.getPlace().getCurrentMarking().multiset.clone(); markafter.put((arc.getPlace().getIsStart(),arc.getPlace().getIsEnd(),arc.getPlace().getOrigin()),multiset) } )
+        transition.getIn().foreach(arc => { val multiset = arc.getPlace().getCurrentMarking().multiset; markafter.put((arc.getPlace().getId(),arc.getPlace().getOrigin()),multiset.toString()) } )
+        transition.getOut().foreach(arc => { val multiset = arc.getPlace().getCurrentMarking().multiset; markafter.put((arc.getPlace().getId(),arc.getPlace().getOrigin()),multiset.toString()) } )
         //println(markafter)
         
         if(subject != null) {
@@ -178,16 +178,19 @@ case class Simulator(calcAvgTimeEnTr:Boolean = false) {
         val r = new java.util.Random()
         val transition = transitions(r.nextInt(transitions.length))
         
-        val markbefore = Map[(Boolean,Boolean,Map[String,String]),Any]()
-        val markafter = Map[(Boolean,Boolean,Map[String,String]),Any]()
+        val markbefore = Map[(String,Map[String,String]),Any]()
+        val markafter = Map[(String,Map[String,String]),Any]()
         
-        transition.getIn().foreach(arc => { val multiset = arc.getPlace().getCurrentMarking().multiset.clone(); markbefore.put((arc.getPlace().getIsStart(),arc.getPlace().getIsEnd(),arc.getPlace().getOrigin()),multiset) } )
-        transition.getOut().foreach(arc => { val multiset = arc.getPlace().getCurrentMarking().multiset.clone(); markbefore.put((arc.getPlace().getIsStart(),arc.getPlace().getIsEnd(),arc.getPlace().getOrigin()),multiset) } )
+        transition.getIn().foreach(arc => { val multiset = arc.getPlace().getCurrentMarking().multiset; markbefore.put((arc.getPlace().getId(),arc.getPlace().getOrigin()),multiset.toString()) } )
+        transition.getOut().foreach(arc => { val multiset = arc.getPlace().getCurrentMarking().multiset; markbefore.put((arc.getPlace().getId(),arc.getPlace().getOrigin()),multiset.toString()) } )
+        //println(markbefore)
+        //println(transition.getName())
         
         val bindingChosen = transition.execute(globtime.time)
         
-        transition.getIn().foreach(arc => { val multiset = arc.getPlace().getCurrentMarking().multiset.clone(); markafter.put((arc.getPlace().getIsStart(),arc.getPlace().getIsEnd(),arc.getPlace().getOrigin()),multiset) } )
-        transition.getOut().foreach(arc => { val multiset = arc.getPlace().getCurrentMarking().multiset.clone(); markafter.put((arc.getPlace().getIsStart(),arc.getPlace().getIsEnd(),arc.getPlace().getOrigin()),multiset) } )
+        transition.getIn().foreach(arc => { val multiset = arc.getPlace().getCurrentMarking().multiset; markafter.put((arc.getPlace().getId(),arc.getPlace().getOrigin()),multiset.toString()) } )
+        transition.getOut().foreach(arc => { val multiset = arc.getPlace().getCurrentMarking().multiset; markafter.put((arc.getPlace().getId(),arc.getPlace().getOrigin()),multiset.toString()) } )
+        //println(markafter)
         
         if(subject != null) {
           //println("================ Step: "+c+" | globtime: "+globtime.time+" ================")
