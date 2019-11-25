@@ -4,11 +4,11 @@ val filterResGroup1 = Set("GC102", "GC101", "GC107", "GC106", "GC105", "GC104", 
 val filterResGroup2 = Set("TC272", "TC273", "TC271", "TC225", "TC226", "TC223", "TC224", "TC221", "TC265", "TC222", "TC266", "TC263", "TC264", "TC261", "TC262", "RS309", "TC216", "TC214", "RS301", "TC215", "TC212", "TC256", "TC213", "RS304", "TC254", "TC211", "TC255", "RS302", "TC252", "RS303", "TC253", "TC251", "TC245", "TC246", "TC243", "TC244", "TC241", "TH311", "TC242", "TH313", "TH312", "TC236", "TC234", "TC235", "TC232", "TC276", "TC233", "TC274", "TC231", "TC275")
 val filterResGroup3 = Set("YT507", "YT506", "YT508", "YT514", "YT558", "YT513", "YT557", "YT516", "YT515", "YT559", "YT510", "YT554", "YT553", "YT512", "YT556", "YT511", "YT555", "YT550", "YT594", "YT593", "YT552", "YT596", "YT551", "YT595", "YT590", "YT592", "YT518", "YT517", "YT519", "YT525", "YT569", "YT524", "YT527", "YT526", "YT521", "YT565", "YT520", "YT564", "YT523", "YT567", "YT522", "YT566", "YT561", "YT560", "YT563", "YT562", "YT529", "YT528", "YT536", "YT535", "YT579", "YT538", "YT537", "YT532", "YT576", "YT531", "YT575", "YT534", "YT578", "YT533", "YT577", "YT572", "YT571", "YT530", "YT574", "YT573", "YT570", "YT539", "YT503", "YT547", "YT502", "YT546", "YT505", "YT549", "YT504", "YT548", "YT543", "YT587", "YT542", "YT586", "YT501", "YT545", "YT589", "YT500", "YT544", "YT588", "YT583", "YT582", "YT541", "YT585", "YT540", "YT584", "YT581", "YT580")
 
-case class BindTransition(x:Option[Int], y:Option[String], c:Option[Int]) extends Bind
+case class BindTransition(x:Option[Int], y:Option[String], c:Option[Int]) 
 
-case class BindTransInit(x:Option[Int]) extends Bind
+case class BindTransInit(x:Option[Int]) 
 
-case class BindTransProcess(x:Option[Int], y:Option[String]) extends Bind
+case class BindTransProcess(x:Option[Int], y:Option[String]) 
 
 type colset_CASEID = Int
 type colset_RES = String

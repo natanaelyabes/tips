@@ -1,6 +1,7 @@
 package io.iochord.dev.chdsr.simulator.compiler.test
 
 import io.iochord.apps.ips.model.cpn.v1.impl._
+import io.iochord.apps.ips.model.cpn.v1.impl.token._
 import io.iochord.apps.ips.model.cpn.v1._
 import io.iochord.apps.ips.simulator.engine.Simulator
 import io.iochord.apps.ips.simulator.engine.observer.MarkingObserver
@@ -19,7 +20,7 @@ object CompileFromFileTestPerform {
     val memoryScalaFactory = new MemoryScalaFileCompiler(pathfile)
     val simulation = memoryScalaFactory.getInstance
     simulation.addObserver(new MarkingObserver())
-    
+    val r = new Resource("","",5L)
     //val stopCrit = (stop:Any) => stop match { case stop:Boolean => stop }
     //val inpStopCritLoc = false
     
