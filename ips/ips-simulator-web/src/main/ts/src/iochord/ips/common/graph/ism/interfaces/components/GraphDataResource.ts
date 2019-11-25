@@ -32,6 +32,8 @@ export interface GraphDataResource extends GraphData {
   setHourlyBusyCost(cost: number): void;
   isImported(): boolean | null;
   setImported(imported: boolean): void;
+  getNumOfResources(): number | null;
+  setNumOfResources(numOfResources: number | null): void;
   getDataTable(): GraphDataTable | null;
   setDataTable(dataTable: GraphDataTable): void;
 }

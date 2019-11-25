@@ -13,6 +13,7 @@ export class GraphElementImpl implements GraphElement {
   private label?: string | null;
   private elementType?: string | null;
   private attributes?: TSMap<string, string> | null = new TSMap<string, string>();
+  private image?: string;
 
   constructor() {
     //
@@ -48,6 +49,13 @@ export class GraphElementImpl implements GraphElement {
 
   public setAttributes(attributes: TSMap<string, string>) {
     this.attributes = attributes || this.attributes;
+  }
+
+  public getImageIcon(): string {
+    return this.image as string;
+  }
+  public setImageIcon(image: string): void {
+    this.image = image;
   }
 
   public serialize(): string | null {

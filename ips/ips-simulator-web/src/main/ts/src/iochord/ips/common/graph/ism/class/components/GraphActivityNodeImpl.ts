@@ -42,6 +42,7 @@ export class GraphActivityNodeImpl extends GraphNodeImpl implements GraphActivit
     graphActivityNode.setFunctionRef(object.functionRef);
     graphActivityNode.setQueueRef(object.queueRef);
     graphActivityNode.setResourceRef(object.resourceRef);
+    graphActivityNode.setImageIcon(object.icon);
     GraphActivityNodeImpl.instance.set(graphActivityNode.getId() as string, graphActivityNode);
     return graphActivityNode;
   }

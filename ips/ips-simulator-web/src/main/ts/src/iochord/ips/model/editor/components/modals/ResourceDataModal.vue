@@ -19,14 +19,18 @@
             </div>
           </div>
           <div class="row">
-            <div class="four wide column">
+            <div class="four wide column">Number of resources</div>
+            <div class="twelve wide column">
+              <input type="number" v-model="numOfResources" id="x_txt_resources">
+            </div>
+            <!-- <div class="four wide column">
               <label for="x_txt_import">Import from table</label>
             </div>
             <div class="twelve wide column">
               <select id="x_txt_table" class="ui search dropdown" v-model="table">
                 <option v-for="t in tables" :key="t.getId()" :value="t.getId()">{{t.getLabel()}} ({{t.getId()}})</option>
               </select>
-            </div>
+            </div> -->
           </div>
         </div>
       </div>
@@ -86,6 +90,7 @@ export default class ResourceDataModal extends SemanticComponent implements Moda
   // Component properties
   private id: string = '';
   private label: string = '';
+  private numOfResources: number = 0;
   private importTable: boolean = false;
   private table: string = '';
 
@@ -100,6 +105,7 @@ export default class ResourceDataModal extends SemanticComponent implements Moda
     // Component properties
     this.id = object.getGroupId() as string;
     this.label = object.getLabel() as string;
+    this.numOfResources = object.getNumOfResources() as number;
     this.importTable = object.isImported() as boolean;
     this.table = object.getDataRef() as string;
 
@@ -124,6 +130,7 @@ export default class ResourceDataModal extends SemanticComponent implements Moda
     data.setLabel(this.label);
     data.setImported(this.importTable);
     data.setDataRef(this.table);
+    data.setNumOfResources(this.numOfResources);
 
     // Change label of the renderer data
     page.getGraph().getCells().map((cell: joint.dia.Cell) => {

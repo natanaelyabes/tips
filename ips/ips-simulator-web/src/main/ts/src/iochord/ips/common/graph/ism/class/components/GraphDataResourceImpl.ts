@@ -34,6 +34,7 @@ export class GraphDataResourceImpl extends GraphDataImpl implements GraphDataRes
     graphDataResource.setHourlyBusyCost(object.hourlyBusyCost);
     graphDataResource.setImported(object.imported);
     graphDataResource.setDataTable(object.dataTable);
+    graphDataResource.setNumOfResources(object.numberOfResource);
 
     GraphDataResourceImpl.instance.set(graphDataResource.getId() as string, graphDataResource);
     return graphDataResource;
@@ -50,6 +51,7 @@ export class GraphDataResourceImpl extends GraphDataImpl implements GraphDataRes
   private hourlyBusyCost?: number | null = 0;
   private imported?: boolean | null = false;
   private dataTable?: GraphDataTable | null;
+  private numOfResources?: number | null = 0;
 
   constructor() {
     super();
@@ -141,6 +143,14 @@ export class GraphDataResourceImpl extends GraphDataImpl implements GraphDataRes
 
   public setDataTable(dataTable: GraphDataTable): void {
     this.dataTable = dataTable || this.dataTable;
+  }
+
+  public getNumOfResources(): number | null {
+    return this.numOfResources as number;
+  }
+
+  public setNumOfResources(numOfResources: number | null): void {
+    this.numOfResources = numOfResources as number;
   }
 
   /** @Override */

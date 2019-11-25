@@ -175,6 +175,10 @@ export default class JointJsRenderer {
       node.setAttr((NODE_TYPE as any)[(nodeValue as any)[keys.elementType]].attr);
       node.setImageIcon((NODE_TYPE as any)[(nodeValue as any)[keys.elementType]].image);
 
+      if (node.getType() === 'activity' && nodeValue.getImageIcon() !== '') {
+        node.setImageIcon(nodeValue.getImageIcon());
+      }
+
       // TODO: From URL
       // node.setImageIcon('https://imageog.flaticon.com/icons/png/512/62/62470.png?size=1200x630f&pad=10,10,10,10&ext=png&bg=FFFFFFFF');
 

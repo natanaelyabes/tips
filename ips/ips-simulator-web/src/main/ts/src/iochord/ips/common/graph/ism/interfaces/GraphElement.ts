@@ -16,6 +16,8 @@ export interface GraphElement extends ObjectSerializable {
   setLabel(label: string): void;
   getType(): string | null;
   setType(type: string): void;
+  getImageIcon(): string;
+  setImageIcon(image: string): void;
   getAttributes(): TSMap<string, string> | null;
   setAttributes(attributes: TSMap<string, string>): void;
 }
