@@ -13,6 +13,8 @@ import { SemanticModulesIsUsed } from '@/iochord/ips/common/ui/semantic-componen
 @Component
 export default class SemanticComponent extends BaseComponent
 implements SemanticModulesIsUsed {
+  public reRenderKey: number = 0;
+
 
   public mounted(): void {
     this.declareSemanticModules();
@@ -20,5 +22,9 @@ implements SemanticModulesIsUsed {
 
   public declareSemanticModules(): void {
     // console.warn('declareSemanticModules() not implemented.');
+  }
+
+  public forceReRender(): void {
+    this.reRenderKey += 1;
   }
 }
