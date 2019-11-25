@@ -3,13 +3,13 @@
     <div class="item">
       <div class="header">Control</div>
       <div class="menu">
-        <a :class="'ui basic button item' + (isDisabled ? ' disabled' : '')" :disabled="isDisabled">
+        <a @click="openControl()" :class="'ui basic button item' + (isDisabled ? ' disabled' : '')" :disabled="isDisabled">
           <div class="image-icon">
             <img src="@/assets/images/icons/simulation_editor_icon/control/control.png" alt="" class="ui centered image" />
           </div>
           Control
         </a>
-        <a :class="'ui basic button item' + (isDisabled ? ' disabled' : '')" :disabled="isDisabled">
+        <a @click="openConfiguration()" :class="'ui basic button item' + (isDisabled ? ' disabled' : '')" :disabled="isDisabled">
           <div class="image-icon">
             <img src="@/assets/images/icons/simulation_editor_icon/control/configuration.png" alt="" class="ui centered image" />
           </div>
@@ -17,6 +17,84 @@
         </a>
       </div>
     </div>
+
+    <div class="ui tiny control modal">
+      <i class="close icon"></i>
+      <div class="header">
+        <h3 class="ui green header">Control</h3>
+      </div>
+      <div class="content">
+        <div class="ui form">
+          <div class="ui grid">
+            <div class="row">
+              <div class="four wide column">
+                Replication Number
+              </div>
+              <div class="twelve wide column">
+                <input type="number" v-model="replNum" id="ctrl_txt_replNum" />
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="four wide column">
+                Stopping Criteria
+              </div>
+              <div class="six wide column">
+                <select id="ctrl_txt_stop" class="ui fluid search dropdown" v-model="stopCriteria">
+                  <option value="TIME">Time</option>
+                  <option value="STEPS">Steps</option>
+                  <option value="CUSTOM">Custom</option>
+                </select>
+              </div>
+              <div class="six wide column">
+                <template v-if="stopCriteria !== 'CUSTOM'">
+                  <input type="number" v-model="value" id="ctrl_txt_value" />
+                </template>
+                <template v-else>
+                  <select id="act_txtfunction" class="ui fluid search dropdown">
+                    <option v-for="fx in functions" :key="fx.id" :value="fx.id">{{fx.label}} ({{fx.id}})</option>
+                  </select>
+                </template>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="four wide column">
+                Start Simulation Time
+              </div>
+              <div class="twelve wide column">
+                <div class="ui calendar" id="start-simulation-date">
+                  <div class="ui fluid input left icon">
+                    <i class="calendar icon"></i>
+                    <input type="text" v-model="startSimulationDate" placeholder="Date/Time">
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+      <div class="actions">
+        <div class="ui positive button">Save</div>
+        <div class="ui cancel button">Cancel</div>
+      </div>
+    </div>
+
+    <div class="ui overlay fullscreen configuration modal">
+      <i class="close icon"></i>
+      <div class="header">
+        <h3 class="ui green header">Configuration</h3>
+      </div>
+      <div class="content">
+        <p>Test</p>
+      </div>
+      <div class="actions">
+        <div class="ui positive button">Save</div>
+        <div class="ui cancel button">Cancel</div>
+      </div>
+    </div>
+
   </div>
 </template>
 
@@ -27,15 +105,77 @@
 <script lang="ts">
 import { Prop, Component } from 'vue-property-decorator';
 import BaseComponent from '@/iochord/ips/common/ui/layout/class/BaseComponent';
+import { GraphData } from '@/iochord/ips/common/graph/ism/interfaces/GraphData';
+import GraphModule from '@/iochord/ips/common/graph/ism/stores/GraphModule';
+import { getModule } from 'vuex-module-decorators';
+import { TSMap } from 'typescript-map';
+import { GraphPage } from '@/iochord/ips/common/graph/ism/interfaces/GraphPage';
+
+declare const $: any;
+
+const graphModule = getModule(GraphModule);
 
 @Component
 export default class ControlPaletteComponent extends BaseComponent {
-  //
-
-  @Prop({
-    default: false,
-  })
+  @Prop({ default: false })
   public isDisabled?: boolean;
+
+  private replNum?: number = 0;
+  private stopCriteria?: 'TIME' | 'STEPS' | 'CUSTOM' = 'TIME';
+  private value?: number = 0;
+  private startSimulationDate?: string = '';
+  private function?: string = '';
+
+  public openControl(): void {
+    $('.ui.control.modal').modal('show');
+
+    // Initialize dropdown with default value
+    $('#ctrl_txt_stop')
+      .dropdown('set selected', this.stopCriteria)
+      .dropdown({
+        onChange: (val: 'TIME' | 'STEPS' | 'CUSTOM') => {
+          this.stopCriteria = val;
+
+          if (this.stopCriteria === 'CUSTOM') {
+            this.$nextTick(() => {
+              this.initDropdown();
+            });
+          }
+        },
+      })
+    ;
+
+    this.initDropdown();
+
+    $('#start-simulation-date').calendar();
+  }
+
+  public initDropdown(): void {
+    $('#act_txtfunction')
+      .dropdown('set selected', this.function)
+      .dropdown({
+        onChange: (val: string) => {
+          this.function = val;
+        },
+      })
+    ;
+  }
+
+  public openConfiguration(): void {
+    $('.ui.configuration.modal').modal('show');
+  }
+
+  public get functions(): GraphData[] {
+    let functions;
+    try {
+      const pages = graphModule.graph.getPages() as TSMap<string, GraphPage>;
+      const nodeData = (pages.get('0') as GraphPage).getData() as TSMap<string, GraphData>;
+      functions = nodeData.values().filter((value: GraphData) => value.getType() === 'function');
+    } catch (e) {
+      functions = e;
+    }
+    return functions;
+  }
 
 }
 </script>
