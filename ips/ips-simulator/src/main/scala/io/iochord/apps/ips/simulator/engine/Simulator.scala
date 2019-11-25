@@ -129,7 +129,7 @@ case class Simulator(calcAvgTimeEnTr:Boolean = false) {
         if(subject != null) {
           //println("================ Step: "+c+" | globtime: "+globtime.time+" ================")
           //println("Transition: "+transition.getId(),transition.getName())
-          subject.setMarking((markbefore,markafter,transition.getId(),monitors,objMonitors,resMonitors,globtime.getTime())) 
+          subject.setMarking((globtime.getTime(), c, transition.getId(),markbefore,markafter)) 
         }
         c += 1
       }
@@ -195,7 +195,7 @@ case class Simulator(calcAvgTimeEnTr:Boolean = false) {
         if(subject != null) {
           //println("================ Step: "+c+" | globtime: "+globtime.time+" ================")
           //println("Transition: "+transition.getId(),transition.getName())
-          subject.setMarking((markbefore,markafter,transition.getId(),monitors,objMonitors,resMonitors,globtime.getTime()))  
+          subject.setMarking((globtime.getTime(), c, transition.getId(),markbefore,markafter))   
         }
         c += 1
       }

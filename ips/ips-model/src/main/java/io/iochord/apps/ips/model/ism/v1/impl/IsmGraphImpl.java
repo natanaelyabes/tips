@@ -17,6 +17,7 @@ import io.iochord.apps.ips.model.ism.v1.data.Queue;
 import io.iochord.apps.ips.model.ism.v1.data.Resource;
 import io.iochord.apps.ips.model.ism.v1.nodes.Activity;
 import io.iochord.apps.ips.model.ism.v1.nodes.Control;
+import io.iochord.apps.ips.model.ism.v1.nodes.Start;
 import io.iochord.apps.ips.model.ism.v1.IsmGraph;
 import io.iochord.apps.ips.model.ism.v1.Node;
 import lombok.Getter;
@@ -96,6 +97,11 @@ public class IsmGraphImpl extends ElementImpl implements IsmGraph {
 					}
 					if (d.getFunction() != null) {
 						d.getFunction().setValueRepository(p.getData());
+					}
+				} else if (rd instanceof Start) {
+					Start d = (Start) rd;
+					if (d.getGenerator() != null) {
+						d.getGenerator().setValueRepository(p.getData());
 					}
 				}
 			}
