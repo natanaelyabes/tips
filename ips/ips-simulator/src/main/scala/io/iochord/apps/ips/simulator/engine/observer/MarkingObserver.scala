@@ -14,7 +14,7 @@ class MarkingObserver extends Observer {
     println("Marking Before ---- "+m._1.toSet)
     println("Marking After ---- "+m._2.toSet)
     val diff = m._2.toSet.filterNot(m._1.toSet)
-    println("Dff --- "+diff)
+    //println("Dff --- "+diff)
    
     /*
     m._2.filter(p => p._1._1).foreach(p => { 
