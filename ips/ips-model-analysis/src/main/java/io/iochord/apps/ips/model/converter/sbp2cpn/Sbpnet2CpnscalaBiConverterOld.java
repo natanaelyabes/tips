@@ -24,7 +24,7 @@ import io.iochord.apps.ips.model.ism.v1.nodes.Stop;
  * @author Nur Ichsan Utama <ichsan83@gmail.com>
  *
  */
-public class Sbpnet2CpnscalaBiConverter implements Converter<IsmGraph, String> {
+public class Sbpnet2CpnscalaBiConverterOld implements Converter<IsmGraph, String> {
 	
 	class KeyElement {
 		final static String type = "Type";
@@ -278,11 +278,11 @@ public class Sbpnet2CpnscalaBiConverter implements Converter<IsmGraph, String> {
 		return addTimeid;
 	}
 	
-	public String createResourcePlace(String actid) {
+	public String createResourcePlace() {
 		StringBuilder placefactory = new StringBuilder();
 		placefactory.append( "val mapres = Map[(Resource,Long),Int]()\n" );
 		placefactory.append( "val multisetres = new Multiset[Resource](mapres)\n" );
-		placefactory.append( "val placeres"+actid+" = new Place(\"placeres\",\"Resource Place\",multisetres)\n" );
+		placefactory.append( "val placeres = new Place(\"placeres\",\"Resource Place\",multisetres)\n" );
 		placefactory.append( "cgraph.addPlace(placeres)\n" );
 		placefactory.append("\n");
 		
@@ -361,6 +361,8 @@ public class Sbpnet2CpnscalaBiConverter implements Converter<IsmGraph, String> {
 			String e_entResTypeId = addEval("(b1.entity == b2.entity || b1.entity == None || b2.entity == None) && (b1.resource == b2.resource || b1.resource == None || b2.resource == None)", b_entResTypeId);
 			String m_entResTypeId = addMerge("val entity = if(b1.entity == None) b2.entity else b1.entity; val resource = if(b1.resource == None) b2.resource else b1.resource;", b_entResTypeId, "entity,resource");
 			
+			createResourcePlace();
+			
 			// Convert Data Nodes
 			for (String di : p.getData().keySet()) {
 				Data d = p.getData().get(di);
@@ -436,8 +438,6 @@ public class Sbpnet2CpnscalaBiConverter implements Converter<IsmGraph, String> {
 				}
 				if (n instanceof Activity) {
 					Activity na = (Activity) n;
-					createResourcePlace(na.getId());
-					
 					String p_nap1 = addPlace(na.getId()+"_end_0", na.getLabel() + "_nap1", entTypeId, "", na.getId());
 					String t_natstart = addTransition(na.getLabel()+"_natstart", null, null, b_entResTypeId, e_entResTypeId, m_entResTypeId, na.getId());
 					addArc(p_nap1, t_natstart, "PtT", entTypeId, b_entResTypeId, addArcExp("case entity:"+entTypeId+" => { Some(entity) }"), addTtB(b_entResTypeId,"inp match { case entity:"+entTypeId+" => Some(entity); case _ => None }, None "), addBtT(b_entResTypeId,"b.entity.get"), null, null, true, na.getId());
@@ -448,8 +448,8 @@ public class Sbpnet2CpnscalaBiConverter implements Converter<IsmGraph, String> {
 					String p_nap3 = addPlace(na.getId()+"_start_0", na.getLabel() + "_nap3", entTypeId, "", na.getId());
 					addArc(p_nap3, t_natend, "TtP", entTypeId, b_entResTypeId, addArcExp("case entity:"+entTypeId+" => { Some(entity) }"), addTtB(b_entResTypeId,"inp match { case entity:"+entTypeId+" => Some(entity); case _ => None }, None "), addBtT(b_entResTypeId,"b.entity.get"), null, null, false, na.getId());
 					//if(na.getResource() != null) {
-						addArc("placeres"+na.getId(), t_natstart, "PtT", "Resource", b_entResTypeId, addArcExp("case resource:Resource => { Some(resource) }"), addTtB(b_entResTypeId,"None, inp match { case resource:Resource => Some(resource); case _ => None }"), addBtT(b_entResTypeId,"b.resource.get"), null, null, true, na.getId());
-						addArc("placeres"+na.getId(), t_natstart, "TtP", "Resource", b_entResTypeId, addArcExp("case resource:Resource => { Some(resource) }"), addTtB(b_entResTypeId,"None, inp match { case resource:Resource => Some(resource); case _ => None }"), addBtT(b_entResTypeId,"b.resource.get"), null, null, true, na.getId());
+						addArc("placeres", t_natstart, "PtT", "Resource", b_entResTypeId, addArcExp("case resource:Resource => { Some(resource) }"), addTtB(b_entResTypeId,"None, inp match { case resource:Resource => Some(resource); case _ => None }"), addBtT(b_entResTypeId,"b.resource.get"), null, null, true, na.getId());
+						addArc("placeres", t_natstart, "TtP", "Resource", b_entResTypeId, addArcExp("case resource:Resource => { Some(resource) }"), addTtB(b_entResTypeId,"None, inp match { case resource:Resource => Some(resource); case _ => None }"), addBtT(b_entResTypeId,"b.resource.get"), null, null, true, na.getId());
 					//}
 				}
 				if (n instanceof Branch) {

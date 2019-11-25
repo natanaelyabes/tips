@@ -11,6 +11,7 @@ class MemoryScalaCompiler(scalaSource: String) {
   val tree = toolbox.parse(
       "import io.iochord.apps.ips.simulator.compiler._; \n"+
       "import io.iochord.apps.ips.model.cpn.v1.impl._; \n"+
+      "import io.iochord.apps.ips.model.cpn.v1.impl.token._; \n"+
       "import io.iochord.apps.ips.model.cpn.v1._; \n"+
       "import io.iochord.apps.ips.simulator.engine.Simulator; \n"+
       "import io.iochord.apps.ips.simulator.engine.observer.MarkingObserver; \n"+
