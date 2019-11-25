@@ -36,9 +36,8 @@
                     <div class="twelve wide column">
                       <select id="act_txttype" class="ui fluid search dropdown" v-model="activityType">
                         <option value="STANDARD">Standard</option>
-                        <!-- TODO: Phase 2 -->
-                        <!-- <option value="CONCURRENT_BATCH">Concurrent Batch Process</option> -->
-                        <!-- <option value="SPLIT_MODULE">Split Module Process</option> -->
+                        <option value="CONCURRENT_BATCH">Concurrent Batch Process</option>
+                        <option value="SPLIT_MODULE">Split Module Process</option>
                       </select>
                     </div>
                   </div>
@@ -107,7 +106,7 @@
                   </template>
 
                   <!-- TODO: Phase 2 -->
-                  <!-- <div class="sixteen wide column">
+                  <div class="sixteen wide column">
                     <div class="ui checkbox">
                       <input id="report-statistics" type="checkbox" v-model="report">
                       <label for="report-statistics">Report statistics</label>
@@ -119,7 +118,7 @@
                     <div class="twelve wide column">
                       <input disabled type="text" v-model="customMonitor">
                     </div>
-                  </div> -->
+                  </div>
 
                   <div class="row">
                     <div class="four wide column">Queue</div>

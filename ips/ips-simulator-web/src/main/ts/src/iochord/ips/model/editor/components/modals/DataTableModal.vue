@@ -1,5 +1,5 @@
 <template>
-  <div class="ui tiny data table modal">
+  <div class="ui overlay fullscreen data table modal">
     <i class="close icon"></i>
 
     <div class="header">
@@ -22,15 +22,22 @@
         <table class="ui celled stackable table">
           <thead>
             <tr>
+              <th></th>
               <th>Id</th>
-              <th @input="setField" v-for="field in getFields()" :key="field[0]" :id="field[0]" contenteditable>{{field[1]}}</th>
+              <th @input="setField" v-for="field in getFields()" :key="field[0]" :id="field[0]" contenteditable>
+                <!-- <button @click="removeField(field[0])" class="ui circle red icon button"><i class="minus icon"></i></button> -->
+                {{field[1]}}
+              </th>
               <th></th>
             </tr>
           </thead>
           <tbody>
             <tr v-for="(row, i) in getDataRows()" :key="row[0]" :id="row[0]">
-              <td>{{i}}</td>
-              <td @input="setData(row[i], $event)" v-for="(col, j) in getDataCols()" :key="col[0]" :id="getFields()[j][0]" :data-label="col[0]" contenteditable>{{col[1]}}</td>
+              <td>
+                <button @click="removeRow(row[0])" class="ui circle red icon button"><i class="minus icon"></i></button>
+              </td>
+              <td>{{i + 1}}</td>
+              <td @input="setData(row[0], $event)" v-for="(col, j) in getDataCols()" :key="col[0]" :id="getFields()[j][0]" :data-label="col[0]" contenteditable>{{col[1]}}</td>
               <td v-if="i === 0" :rowspan="getDataRows().length">
                 <button @click="addNewField()" class="ui fluid blue icon button"><i class="plus icon"></i></button>
               </td>
@@ -38,7 +45,7 @@
           </tbody>
           <tfoot class="full-width">
             <tr>
-              <th :colspan="getFields().length + 2">
+              <th :colspan="getFields().length + 3">
                 <button @click="addNewRow()" class="ui fluid blue icon button"><i class="plus icon"></i></button>
               </th>
             </tr>
@@ -195,9 +202,28 @@ export default class DataTableModal extends SemanticComponent implements Modal<J
   }
 
   public addNewField(): void {
-    this.fields.set(`${this.page.getId()}-field-${this.fields.entries().length}`, `New Field ${this.fields.entries().length + 1}`);
+
+    // [["0-data-0"], TSMap] => "0-data-0" => take the last 0
+    const key = this.fields.entries()[this.fields.length - 1][0].toString();
+    const id = parseInt(key[key.length - 1], 10) + 1;
+
+    this.fields.set(`${this.page.getId()}-field-${id}`, `New Field ${id + 1}`);
+
     this.data.forEach((datum: TSMap<string, string>) => {
-      datum.set(`${this.page.getId()}-field-${this.fields.entries().length - 1}`, `New Data ${this.fields.entries().length}`);
+      datum.set(`${this.page.getId()}-data-${id - 1}`, `New Data ${id}`);
+    });
+  }
+
+  public removeRow(rowId: string): void {
+    this.data.delete(rowId);
+  }
+
+  public removeField(columnId: string): void {
+    this.fields.delete(columnId);
+    const id = columnId[columnId.length - 1];
+
+    this.data.forEach((datum: TSMap<string, string>) => {
+      datum.delete(`${this.page.getId()}-data-${id}`);
     });
   }
 
@@ -205,11 +231,15 @@ export default class DataTableModal extends SemanticComponent implements Modal<J
 
     const fields = new TSMap<string, string>();
 
-    this.fields.forEach((value, key, index) => {
-      fields.set(key as string, `New Data ${index}`);
+    this.fields.forEach((value, k, index) => {
+      fields.set(k as string, `New Data ${index as number + 1}`);
     });
 
-    this.data.set(`${this.page.getId()}-data-${this.data.length}`, fields);
+    // [["0-data-0"], TSMap] => "0-data-0" => take the last 0
+    const key = this.data.entries()[this.data.length - 1][0].toString();
+    const id = parseInt(key[key.length - 1], 10) + 1;
+
+    this.data.set(`${this.page.getId()}-data-${id}`, fields);
   }
 }
 </script>

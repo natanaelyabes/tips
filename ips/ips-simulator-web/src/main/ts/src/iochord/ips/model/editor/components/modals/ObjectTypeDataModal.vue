@@ -18,6 +18,16 @@
               <input type="text" v-model="label" id="object_type_txt_label">
             </div>
           </div>
+          <div class="row">
+            <div class="four wide column">
+              <label for="x_txt_import">Import from table</label>
+            </div>
+            <div class="twelve wide column">
+              <select id="x_txt_table" class="ui fluid search dropdown" v-model="table">
+                <option v-for="t in tables" :key="t.getId()" :value="t.getId()">{{t.getLabel()}} ({{t.getId()}})</option>
+              </select>
+            </div>
+          </div>
           <!-- <div class="row">
             <div class="sixteen wide column">
               <h4>Type</h4>
@@ -105,6 +115,7 @@ export default class ObjectTypeDataModal extends SemanticComponent implements Mo
 
   // Component properties
   private label: string = '';
+  private table: string = '';
 
   public populateProperties(page: JointGraphPageImpl, object: GraphDataObjectTypeImpl) {
 
@@ -116,6 +127,17 @@ export default class ObjectTypeDataModal extends SemanticComponent implements Mo
 
     // Component properties
     this.label = object.getLabel() as string;
+    this.table = object.getTypeRefs() as string;
+
+    // Initialize dropdown with default value
+    $('#x_txt_table')
+      .dropdown('set selected', this.table)
+      .dropdown({
+        onChange: (val: string) => {
+          this.table = val;
+        },
+      })
+    ;
   }
 
   public saveProperties(page: JointGraphPageImpl, object: GraphDataObjectTypeImpl) {
@@ -125,6 +147,7 @@ export default class ObjectTypeDataModal extends SemanticComponent implements Mo
 
     // Save properties
     data.setLabel(this.label);
+    data.setTypeRefs(this.table);
 
     // Change label of the renderer data
     page.getGraph().getCells().map((cell: joint.dia.Cell) => {
@@ -151,6 +174,19 @@ export default class ObjectTypeDataModal extends SemanticComponent implements Mo
       message: `${object.getId()} properties have been saved`,
       newestOnTop: true,
     });
+  }
+
+  public get tables(): GraphData[] {
+    let table;
+    try {
+      const pages = graphModule.graph.getPages() as TSMap<string, GraphPage>;
+      const nodeData = (pages.get('0') as GraphPage).getData() as TSMap<string, GraphData>;
+      table = nodeData.values().filter((value: GraphData) => value.getType() === 'datatable');
+      return table;
+    } catch (e) {
+      table = e;
+    }
+    return table;
   }
 }
 </script>

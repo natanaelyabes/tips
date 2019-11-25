@@ -175,7 +175,10 @@ export default class JointJsRenderer {
       node.setAttr((NODE_TYPE as any)[(nodeValue as any)[keys.elementType]].attr);
       node.setImageIcon((NODE_TYPE as any)[(nodeValue as any)[keys.elementType]].image);
 
-      // TODO: Phase 2: Demonstrate the use of custom icon
+      // TODO: From URL
+      // node.setImageIcon('https://imageog.flaticon.com/icons/png/512/62/62470.png?size=1200x630f&pad=10,10,10,10&ext=png&bg=FFFFFFFF');
+
+      // TODO: Demonstrate the use of custom icon
       // if (nodeValue.getLabel() === 'ATM Service') {
       //   node.setImageIcon(require('@/assets/images/icons/atm-png.png'));
       // } else if (nodeValue.getLabel() === 'Teller Service') {

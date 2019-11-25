@@ -19,17 +19,13 @@
             </div>
           </div>
           <div class="row">
-            <div class="sixteen wide column">Input Parameters</div>
-          </div>
-          <div class="row">
-
-            <!-- <div class="twelve wide column">
+            <div class="four wide column">Input Parameters</div>
+            <div class="twelve wide column">
               <select id="x_input" v-model="inputParameters" class="ui fluid search dropdown" multiple>
                 <option v-for="objectType in objectTypes" :key="objectType.id" :value="objectType.id">{{objectType.label}} ({{objectType.id}})</option>
               </select>
-            </div> -->
+            </div>
           </div>
-
           <div class="row">
             <div class="sixteen wide column">
               <h4>Code Segment</h4>
@@ -120,26 +116,26 @@ export default class FunctionDataModal extends SemanticComponent implements Moda
     this.label = object.getLabel() as string;
     this.code = object.getCode() as string;
 
-    // this.inputParameters = object.getInputParametersRefs()!.values();
-    // this.outputVariables = object.getOutputVariablesRefs()!.values();
+    this.inputParameters = object.getInputParametersRefs()!.values();
+    this.outputVariables = object.getOutputVariablesRefs()!.values();
 
-    // $('.ui.dropdown#x_input')
-    //   .dropdown('set selected', this.inputParameters)
-    //   .dropdown({
-    //     onChange: (val: string[]) => {
-    //       this.inputParameters = val;
-    //     },
-    //   }
-    // );
+    $('.ui.dropdown#x_input')
+      .dropdown('set selected', this.inputParameters)
+      .dropdown({
+        onChange: (val: string[]) => {
+          this.inputParameters = val;
+        },
+      },
+    );
 
-    // $('.ui.dropdown#x_output')
-    //   .dropdown('set selected', this.outputVariables)
-    //   .dropdown({
-    //     onChange: (val: string[]) => {
-    //       this.outputVariables = val;
-    //     },
-    //   }
-    // );
+    $('.ui.dropdown#x_output')
+      .dropdown('set selected', this.outputVariables)
+      .dropdown({
+        onChange: (val: string[]) => {
+          this.outputVariables = val;
+        },
+      },
+    );
   }
 
   public saveProperties(page: JointGraphPageImpl, object: GraphDataFunctionImpl) {
