@@ -13,7 +13,7 @@ public class Sbpnet2CpnScalaBiConverterTest {
 	
 	@Test
 	public void test01CpnScalaCreation() throws Exception {
-		IsmGraph snet = IsmExample.createComplete();
+		IsmGraph snet = IsmExample.createBankExample();
 		System.out.println(SerializationUtil.encode(snet));
 		Sbpnet2CpnscalaBiConverter converter = new Sbpnet2CpnscalaBiConverter();
 		String net = converter.convert(snet);
