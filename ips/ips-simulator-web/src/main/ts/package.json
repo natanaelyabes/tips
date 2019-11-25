@@ -10,6 +10,8 @@
     "test:e2e": "vue-cli-service test:e2e"
   },
   "dependencies": {
+    "@antv/data-set": "^0.10.2",
+    "@antv/g2": "^3.5.9",
     "axios": "^0.18.1",
     "backbone": "^1.4.0",
     "browserfs": "^1.4.3",
@@ -18,7 +20,7 @@
     "highlight.js": "^9.15.8",
     "jointjs": "^2.2.1",
     "jquery": "^3.4.1",
-    "lodash": "^4.17.11",
+    "lodash": "^4.17.15",
     "register-service-worker": "^1.6.2",
     "rxjs": "^6.5.2",
     "rxjs-compat": "^6.5.2",
@@ -28,6 +30,7 @@
     "vue": "^2.6.10",
     "vue-async-computed": "^3.7.0",
     "vue-class-component": "^6.3.2",
+    "vue-g2": "^1.2.2",
     "vue-property-decorator": "^7.3.0",
     "vue-router": "^3.0.6",
     "vue-rx": "^6.2.0",

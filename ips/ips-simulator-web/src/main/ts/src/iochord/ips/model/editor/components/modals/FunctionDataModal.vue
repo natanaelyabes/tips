@@ -19,11 +19,17 @@
             </div>
           </div>
           <div class="row">
-            <div class="four wide column">Input Parameter</div>
-            <div class="twelve wide column">
-              <input v-model="input" type="text" id="x_txt_label">
-            </div>
+            <div class="sixteen wide column">Input Parameters</div>
           </div>
+          <div class="row">
+
+            <!-- <div class="twelve wide column">
+              <select id="x_input" v-model="inputParameters" class="ui fluid search dropdown" multiple>
+                <option v-for="objectType in objectTypes" :key="objectType.id" :value="objectType.id">{{objectType.label}} ({{objectType.id}})</option>
+              </select>
+            </div> -->
+          </div>
+
           <div class="row">
             <div class="sixteen wide column">
               <h4>Code Segment</h4>
@@ -35,9 +41,11 @@
             </div>
           </div>
           <div class="row">
-            <div class="four wide column">Return Parameter</div>
+            <div class="four wide column">Output Variables</div>
             <div class="twelve wide column">
-              <input v-model="parameter" type="text" id="x_txt_label">
+              <select id="x_output" v-model="outputVariables" class="ui fluid search dropdown" multiple>
+                <option v-for="objectType in objectTypes" :key="objectType.id" :value="objectType.id">{{objectType.label}} ({{objectType.id}})</option>
+              </select>
             </div>
           </div>
         </div>
@@ -96,9 +104,9 @@ export default class FunctionDataModal extends SemanticComponent implements Moda
 
   // Component properties
   private label: string = '';
-  private input: string = '';
+  private inputParameters: string[] = [];
   private code: string = '';
-  private parameter: string = '';
+  private outputVariables: string[] = [];
 
   public populateProperties(page: JointGraphPageImpl, object: GraphDataFunctionImpl) {
 
@@ -111,7 +119,29 @@ export default class FunctionDataModal extends SemanticComponent implements Moda
     // Component properties
     this.label = object.getLabel() as string;
     this.code = object.getCode() as string;
+
+    // this.inputParameters = object.getInputParametersRefs()!.values();
+    // this.outputVariables = object.getOutputVariablesRefs()!.values();
+
+    // $('.ui.dropdown#x_input')
+    //   .dropdown('set selected', this.inputParameters)
+    //   .dropdown({
+    //     onChange: (val: string[]) => {
+    //       this.inputParameters = val;
+    //     },
+    //   }
+    // );
+
+    // $('.ui.dropdown#x_output')
+    //   .dropdown('set selected', this.outputVariables)
+    //   .dropdown({
+    //     onChange: (val: string[]) => {
+    //       this.outputVariables = val;
+    //     },
+    //   }
+    // );
   }
+
   public saveProperties(page: JointGraphPageImpl, object: GraphDataFunctionImpl) {
     const dataPageId = (object.getId() as string).split('-')[0];
     const dataPage = (graphModule.graph.getPages() as TSMap<string, GraphPage>).get(dataPageId);
@@ -146,6 +176,18 @@ export default class FunctionDataModal extends SemanticComponent implements Moda
       message: `${object.getId()} properties have been saved`,
       newestOnTop: true,
     });
+  }
+
+  public get objectTypes(): GraphData[] {
+    let objectTypes;
+    try {
+      const pages = graphModule.graph.getPages() as TSMap<string, GraphPage>;
+      const nodeData = (pages.get('0') as GraphPage).getData() as TSMap<string, GraphData>;
+      objectTypes = nodeData.values().filter((value: GraphData) => value.getType() === 'objecttype');
+    } catch (e) {
+      objectTypes = e;
+    }
+    return objectTypes;
   }
 }
 </script>

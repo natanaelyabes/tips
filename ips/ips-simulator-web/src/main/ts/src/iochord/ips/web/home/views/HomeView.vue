@@ -19,10 +19,11 @@
                   <!-- <div class="ui basic compact icon button"><i class="plus icon"></i></div> -->
                 </div>
                 <div class="description">
-                  <p><a href="#" style="text-decoration: underline">Connect to a data source</a></p>
-                  <p><a href="#" style="text-decoration: underline">Create a simulation model</a></p>
+                  <p><router-link tag="a" class="item" :to="$r('/iochord/ips/data/connection')">Connect to a data source</router-link></p>
+                  <p><router-link tag="a" class="item" :to="$r('/iochord/ips/model/editor')">Create a simulation model</router-link></p>
                   <p><a href="#" style="text-decoration: underline">Discover simulation model</a></p>
                   <p><a href="#" style="text-decoration: underline">Create a hybrid simulation model</a></p>
+                  <p><a href="#" style="text-decoration: underline">Analyze data</a></p>
                 </div>
               </div>
               <div class="extra content">

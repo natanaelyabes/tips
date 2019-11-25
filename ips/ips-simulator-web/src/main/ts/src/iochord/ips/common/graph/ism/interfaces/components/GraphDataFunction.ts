@@ -12,10 +12,10 @@ import { TSMap } from 'typescript-map';
 export interface GraphDataFunction extends GraphData {
   getInputParameters(): TSMap<string, GraphDataObjectType> | null;
   setInputParameters(inputParameters: TSMap<string, GraphDataObjectType>): void;
-  getInputParametersRefs(): TSMap<string, string | null> | null;
+  getInputParametersRefs(): TSMap<string, string> | null;
   getCode(): string | null;
   setCode(code: string): void;
   getOutputVariables(): TSMap<string, GraphDataObjectType> | null;
   setOutputVariables(outputVariables: TSMap<string, GraphDataObjectType>): void;
-  getOutputVariablesRefs(): TSMap<string, string | null> | null;
+  getOutputVariablesRefs(): TSMap<string, string> | null;
 }

@@ -5,5 +5,10 @@
     "ips",
     "deserialize",
     "jointjs"
-  ]
+  ],
+  "workbench.colorCustomizations": {
+    "activityBar.background": "#033337",
+    "titleBar.activeBackground": "#04484D",
+    "titleBar.activeForeground": "#EFFDFE"
+  }
 }
