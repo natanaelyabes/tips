@@ -456,10 +456,10 @@ public class Sbpnet2CpnscalaBiConverter implements Converter<IsmGraph, String> {
 					addArc(p_nap2, t_natend, "PtT", entResTypeId, b_entResTypeId, addArcExp("case (entity:"+entTypeId+",resource:Resource) => { Some(entity, resource) }"), addTtB(b_entResTypeId,"inp match { case (entity:"+entTypeId+",resource:Any) => Some(entity); case _ => None }, inp match { case (entity:Any,resource:Resource) => Some(resource); case _ => None }"), addBtT(b_entResTypeId,"(b.entity.get,b.resource.get)"), null, null, true, na.getId());
 					String p_nap3 = addPlace(na.getId()+"_start_0", na.getLabel() + "_nap3", entTypeId, "", na.getId());
 					addArc(p_nap3, t_natend, "TtP", entTypeId, b_entResTypeId, addArcExp("case entity:"+entTypeId+" => { Some(entity) }"), addTtB(b_entResTypeId,"inp match { case entity:"+entTypeId+" => Some(entity); case _ => None }, None "), addBtT(b_entResTypeId,"b.entity.get"), null, null, false, na.getId());
-					//if(na.getResource() != null) {
+					if(na.getResource() != null) {
 						addArc("place_"+na.getResource().getId().replaceAll("-", ""), t_natstart, "PtT", "Resource", b_entResTypeId, addArcExp("case resource:Resource => { Some(resource) }"), addTtB(b_entResTypeId,"None, inp match { case resource:Resource => Some(resource); case _ => None }"), addBtT(b_entResTypeId,"b.resource.get"), null, null, true, na.getId());
 						addArc("place_"+na.getResource().getId().replaceAll("-", ""), t_natend, "TtP", "Resource", b_entResTypeId, addArcExp("case resource:Resource => { Some(resource) }"), addTtB(b_entResTypeId,"None, inp match { case resource:Resource => Some(resource); case _ => None }"), addBtT(b_entResTypeId,"b.resource.get"), null, null, true, na.getId());
-					//}
+					}
 				}
 				if (n instanceof Branch) {
 					Branch b = (Branch) n;

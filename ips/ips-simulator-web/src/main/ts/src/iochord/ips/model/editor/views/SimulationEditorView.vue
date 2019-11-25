@@ -57,7 +57,70 @@
       <template slot="right-sidebar-menu-item">
         <MinimapComponent v-bind:response="graphData" />
       </template>
+
     </WrapperComponent>
+
+    <div ref="report" class="ui modal">
+      <i class="close icon"></i>
+      <div class="header">
+        Simulation Report
+      </div>
+      <div class="content" style="max-height: 75vh; overflow: auto;">
+        <table class="ui celled structured table">
+          <thead>
+            <tr>
+              <th rowspan="2" style="width: 5%;">No</th>
+              <th rowspan="2" style="width: 15%;">Element</th>
+              <th rowspan="2">Description</th>
+              <th colspan="5">Statistics</th>
+            </tr>
+            <tr>
+              <th style="width: 10%;">Count</th>
+              <th style="width: 10%;">Average</th>
+              <th style="width: 10%;">Total</th>
+              <th style="width: 10%;">Min</th>
+              <th style="width: 10%;">Max</th>
+            </tr>
+          </thead>
+          <tbody>
+            <template v-for="(gs, gsi) in report.groups" >
+              <tr>
+                <td colspan="8">{{ gs.name }}</td>
+              </tr>
+              <template v-for="(es, esi) in gs.elements">
+                <template v-if="es.subElements && es.subElements != null">
+                  <tr v-for="(ess, essi) in es.subElements">
+                    <td v-if="essi == 1" :rowspan="Object.keys(es.subElements).length">{{ esi }}.</td>
+                    <td v-if="essi == 1" :rowspan="Object.keys(es.subElements).length">{{ es.name }}</td>
+                    <td>{{ ess.description }}</td>
+                    <td>{{ ess.count }}</td>
+                    <td>{{ ess.average }}</td>
+                    <td>{{ ess.total }}</td>
+                    <td>{{ ess.min }}</td>
+                    <td>{{ ess.max }}</td>
+                  </tr>
+                </template>
+                <tr v-else>
+                  <td>{{ esi }}.</td>
+                  <td>{{ es.name }}</td>
+                  <td>{{ es.description }}</td>
+                  <td>{{ es.count }}</td>
+                  <td>{{ es.average }}</td>
+                  <td>{{ es.total }}</td>
+                  <td>{{ es.min }}</td>
+                  <td>{{ es.max }}</td>
+                </tr>
+              </template>
+            </template>
+          </tbody>
+        </table>
+      </div>
+      <div class="actions">
+        <div class="ui black deny button">
+          Close
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -192,6 +255,10 @@ export default class SimulationEditorView extends Layout01View {
 
   public isDisabled: boolean = false;
 
+  private report: any = {
+    groups: {},
+  };
+
   /** @Override */
   public overrideBrowserProperties(): void {
     this.setDocumentTitle('Simulation Editor: Editor');
@@ -242,7 +309,10 @@ export default class SimulationEditorView extends Layout01View {
   }
 
   public async loadNPlay() {
-    const cpnscala = await IsmSimulatorService.getInstance().postLoadNPlay(graphModule.graph);
+    const rep = await IsmSimulatorService.getInstance().postLoadNPlay(graphModule.graph);
+    this.report = rep;
+    $(this.$refs['report']).modal('show');
+    this.isDisabled = false;
   }
 
   public async modelCreate() {
