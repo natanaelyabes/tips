@@ -4,7 +4,7 @@ type colset00000001 = (Int,String)
 
 type colset00000002 = (Int,String,CaseData)
 
-case class Binding00000001(entity:Option[colset00000001]) extends Bind
+case class Binding00000001(entity:Option[colset00000001]) 
 val Eval00000001 = (b1:Binding00000001, b2:Binding00000001) => {
 	(b1.entity == b2.entity || b1.entity == None || b2.entity == None)
 }
@@ -32,7 +32,7 @@ val place00000003 = new Place("place00000003","Customer MU_dgpData",ms00000003)
 place00000003.setOrigin(Map[String,String](("0-generator-1","Customer MU_dgpData")))
 cgraph.addPlace(place00000003)
 
-case class Binding00000002(tid:Option[Int],gid:Option[String],data:Option[CaseData]) extends Bind
+case class Binding00000002(tid:Option[Int],gid:Option[String],data:Option[CaseData]) 
 val Eval00000002 = (b1:Binding00000002, b2:Binding00000002) => {
 	(b1.tid == b2.tid || b1.tid == None || b2.tid == None) && (b1.gid == b2.gid || b1.gid == None || b2.gid == None) && (b1.data == b2.data || b1.data == None || b2.data == None)
 }
