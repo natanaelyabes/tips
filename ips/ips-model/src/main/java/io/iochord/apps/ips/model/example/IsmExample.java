@@ -51,15 +51,15 @@ public class IsmExample {
 		StartImpl start = (StartImpl) factory.addStart(page);
 		start.setGenerator(new Referenceable<>(custMu));
 
-		QueueImpl qTeller = (QueueImpl) factory.addQueue(page);
-		qTeller.setLabel("Activity Queue");
-		qTeller.setSize(35);
-		qTeller.setType(QUEUE_TYPE.FIFO);
+//		QueueImpl qTeller = (QueueImpl) factory.addQueue(page);
+//		qTeller.setLabel("Activity Queue");
+//		qTeller.setSize(35);
+//		qTeller.setType(QUEUE_TYPE.FIFO);
 		ResourceImpl resTeller = (ResourceImpl) factory.addResource(page);
 		resTeller.setLabel("Activity Resource");
 		ActivityImpl actTeller = (ActivityImpl) factory.addActivity(page);
 		actTeller.setLabel("Activity Service");
-		actTeller.setQueue(new Referenceable<>(qTeller));
+//		actTeller.setQueue(new Referenceable<>(qTeller));
 		actTeller.setResource(new Referenceable<>(resTeller));
 		actTeller.setProcessingTimeDistribution(DistributionType.CONSTANT);
 		actTeller.setProcessingTimeExpression("Math.round(Gaussian(400, 70).draw())");
@@ -239,6 +239,48 @@ public class IsmExample {
 		StartImpl start = (StartImpl) factory.addStart(page);
 		start.setGenerator(new Referenceable<>(custGenerator));
 
+		ActivityImpl actQSDisc = (ActivityImpl) factory.addActivity(page);
+		actQSDisc.setLabel("Quayside Discharge");
+		actQSDisc.setIcon("/icons/port_icons/quay.png");
+		actQSDisc.setProcessingTimeDistribution(DistributionType.GAUSSIAN);
+		actQSDisc.setProcessingTimeExpression("Math.round(Gaussian(400, 70).draw())");
+		actQSDisc.setProcessingTimeUnit(TimeUnit.MINUTES);
+
+		ActivityImpl actMVDisc = (ActivityImpl) factory.addActivity(page);
+		actMVDisc.setLabel("Move Discharge");
+		actMVDisc.setIcon("/icons/port_icons/move.png");
+		actMVDisc.setProcessingTimeDistribution(DistributionType.GAUSSIAN);
+		actMVDisc.setProcessingTimeExpression("Math.round(Gaussian(400, 70).draw())");
+		actMVDisc.setProcessingTimeUnit(TimeUnit.MINUTES);
+
+		ActivityImpl actYSDisc = (ActivityImpl) factory.addActivity(page);
+		actYSDisc.setLabel("Yardside Discharge");
+		actYSDisc.setIcon("/icons/port_icons/yard.png");
+		actYSDisc.setProcessingTimeDistribution(DistributionType.GAUSSIAN);
+		actYSDisc.setProcessingTimeExpression("Math.round(Gaussian(400, 70).draw())");
+		actYSDisc.setProcessingTimeUnit(TimeUnit.MINUTES);
+
+		ActivityImpl actYSLoad = (ActivityImpl) factory.addActivity(page);
+		actYSLoad.setLabel("Yardside Loading");
+		actYSLoad.setIcon("/icons/port_icons/yard.png");
+		actYSLoad.setProcessingTimeDistribution(DistributionType.GAUSSIAN);
+		actYSLoad.setProcessingTimeExpression("Math.round(Gaussian(400, 70).draw())");
+		actYSLoad.setProcessingTimeUnit(TimeUnit.MINUTES);
+
+		ActivityImpl actMVLoad = (ActivityImpl) factory.addActivity(page);
+		actMVLoad.setLabel("Move Loading");
+		actMVLoad.setIcon("/icons/port_icons/move.png");
+		actMVLoad.setProcessingTimeDistribution(DistributionType.GAUSSIAN);
+		actMVLoad.setProcessingTimeExpression("Math.round(Gaussian(400, 70).draw())");
+		actMVLoad.setProcessingTimeUnit(TimeUnit.MINUTES);
+
+		ActivityImpl actQSLoad = (ActivityImpl) factory.addActivity(page);
+		actQSLoad.setLabel("Quayside Loading");
+		actQSLoad.setIcon("/icons/port_icons/quay.png");
+		actQSLoad.setProcessingTimeDistribution(DistributionType.GAUSSIAN);
+		actQSLoad.setProcessingTimeExpression("Math.round(Gaussian(400, 70).draw())");
+		actQSLoad.setProcessingTimeUnit(TimeUnit.MINUTES);
+
 		ResourceImpl resYT = (ResourceImpl) factory.addResource(page);
 		resYT.setLabel("Yard Trucks");
 		resYT.setNumberOfResource(7);
@@ -249,53 +291,12 @@ public class IsmExample {
 		ResourceImpl resQC = (ResourceImpl) factory.addResource(page);
 		resQC.setLabel("Quay Cranes");
 
-		ActivityImpl actQSDisc = (ActivityImpl) factory.addActivity(page);
-		actQSDisc.setLabel("Quayside Discharge");
-		actQSDisc.setIcon("/icons/port_icons/quay.png");
 		actQSDisc.setResource(new Referenceable<>(resQC));
-		actQSDisc.setProcessingTimeDistribution(DistributionType.GAUSSIAN);
-		actQSDisc.setProcessingTimeExpression("Math.round(Gaussian(400, 70).draw())");
-		actQSDisc.setProcessingTimeUnit(TimeUnit.MINUTES);
-
-		ActivityImpl actMVDisc = (ActivityImpl) factory.addActivity(page);
-		actMVDisc.setLabel("Move Discharge");
-		actMVDisc.setIcon("/icons/port_icons/move.png");
 		actMVDisc.setResource(new Referenceable<>(resYT));
-		actMVDisc.setProcessingTimeDistribution(DistributionType.GAUSSIAN);
-		actMVDisc.setProcessingTimeExpression("Math.round(Gaussian(400, 70).draw())");
-		actMVDisc.setProcessingTimeUnit(TimeUnit.MINUTES);
-
-		ActivityImpl actYSDisc = (ActivityImpl) factory.addActivity(page);
-		actYSDisc.setLabel("Yardside Discharge");
-		actYSDisc.setIcon("/icons/port_icons/yard.png");
 		actYSDisc.setResource(new Referenceable<>(resYC));
-		actYSDisc.setProcessingTimeDistribution(DistributionType.GAUSSIAN);
-		actYSDisc.setProcessingTimeExpression("Math.round(Gaussian(400, 70).draw())");
-		actYSDisc.setProcessingTimeUnit(TimeUnit.MINUTES);
-
-		ActivityImpl actYSLoad = (ActivityImpl) factory.addActivity(page);
-		actYSLoad.setLabel("Yardside Loading");
-		actYSLoad.setIcon("/icons/port_icons/yard.png");
 		actYSLoad.setResource(new Referenceable<>(resYC));
-		actYSLoad.setProcessingTimeDistribution(DistributionType.GAUSSIAN);
-		actYSLoad.setProcessingTimeExpression("Math.round(Gaussian(400, 70).draw())");
-		actYSLoad.setProcessingTimeUnit(TimeUnit.MINUTES);
-
-		ActivityImpl actMVLoad = (ActivityImpl) factory.addActivity(page);
-		actMVLoad.setLabel("Move Loading");
-		actMVLoad.setIcon("/icons/port_icons/move.png");
 		actMVLoad.setResource(new Referenceable<>(resYT));
-		actMVLoad.setProcessingTimeDistribution(DistributionType.GAUSSIAN);
-		actMVLoad.setProcessingTimeExpression("Math.round(Gaussian(400, 70).draw())");
-		actMVLoad.setProcessingTimeUnit(TimeUnit.MINUTES);
-
-		ActivityImpl actQSLoad = (ActivityImpl) factory.addActivity(page);
-		actQSLoad.setLabel("Quayside Loading");
-		actQSLoad.setIcon("/icons/port_icons/quay.png");
 		actQSLoad.setResource(new Referenceable<>(resQC));
-		actQSLoad.setProcessingTimeDistribution(DistributionType.GAUSSIAN);
-		actQSLoad.setProcessingTimeExpression("Math.round(Gaussian(400, 70).draw())");
-		actQSLoad.setProcessingTimeUnit(TimeUnit.MINUTES);
 		
 		BranchImpl xorSplit1 = (BranchImpl) factory.addBranch(page);
 		xorSplit1.setLabel("XOR Split 1");
