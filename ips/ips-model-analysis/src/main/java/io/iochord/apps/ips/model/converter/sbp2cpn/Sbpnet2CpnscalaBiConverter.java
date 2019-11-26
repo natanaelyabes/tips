@@ -442,19 +442,19 @@ public class Sbpnet2CpnscalaBiConverter implements Converter<IsmGraph, String> {
 				if (n instanceof Stop) {
 					Stop no = (Stop) n;
 					
-					addPlace(no.getId()+"_end_0", no.getLabel() + "_nop1", entTypeId, "", no.getId());
+					addPlace(no.getId()+"_end_0", "_nop1", entTypeId, "", no.getId());
 				}
 				if (n instanceof Activity) {
 					Activity na = (Activity) n;
 					
-					String p_nap1 = addPlace(na.getId()+"_end_0", na.getLabel() + "_nap1", entTypeId, "", na.getId());
+					String p_nap1 = addPlace(na.getId()+"_end_0", "_nap1", entTypeId, "", na.getId());
 					String t_natstart = addTransition("_natstart", null, null, b_entResTypeId, e_entResTypeId, m_entResTypeId, na.getId());
 					addArc(p_nap1, t_natstart, "PtT", entTypeId, b_entResTypeId, addArcExp("case entity:"+entTypeId+" => { Some(entity) }"), addTtB(b_entResTypeId,"inp match { case entity:"+entTypeId+" => Some(entity); case _ => None }, None "), addBtT(b_entResTypeId,"b.entity.get"), null, null, true, na.getId());
-					String p_nap2 = addPlace(null, na.getLabel() + "_nap2", entResTypeId, "", na.getId());
+					String p_nap2 = addPlace(null, "_nap2", entResTypeId, "", na.getId());
 					addArc(p_nap2, t_natstart, "TtP", entResTypeId, b_entResTypeId, addArcExp("case (entity:"+entTypeId+",resource:Resource) => { Some(entity, resource) }"), addTtB(b_entResTypeId,"inp match { case (entity:"+entTypeId+",resource:Any) => Some(entity); case _ => None }, inp match { case (entity:Any,resource:Resource) => Some(resource); case _ => None } "), addBtT(b_entResTypeId,"(b.entity.get,b.resource.get)"), addAddedTime(b_entResTypeId,na.getProcessingTimeExpression()), null, false, na.getId());
 					String t_natend = addTransition("_natend", null, null, b_entResTypeId, e_entResTypeId, m_entResTypeId, na.getId());
 					addArc(p_nap2, t_natend, "PtT", entResTypeId, b_entResTypeId, addArcExp("case (entity:"+entTypeId+",resource:Resource) => { Some(entity, resource) }"), addTtB(b_entResTypeId,"inp match { case (entity:"+entTypeId+",resource:Any) => Some(entity); case _ => None }, inp match { case (entity:Any,resource:Resource) => Some(resource); case _ => None }"), addBtT(b_entResTypeId,"(b.entity.get,b.resource.get)"), null, null, true, na.getId());
-					String p_nap3 = addPlace(na.getId()+"_start_0", na.getLabel() + "_nap3", entTypeId, "", na.getId());
+					String p_nap3 = addPlace(na.getId()+"_start_0", "_nap3", entTypeId, "", na.getId());
 					addArc(p_nap3, t_natend, "TtP", entTypeId, b_entResTypeId, addArcExp("case entity:"+entTypeId+" => { Some(entity) }"), addTtB(b_entResTypeId,"inp match { case entity:"+entTypeId+" => Some(entity); case _ => None }, None "), addBtT(b_entResTypeId,"b.entity.get"), null, null, false, na.getId());
 					if(na.getResource() != null) {
 						addArc("place_"+na.getResource().getId().replaceAll("-", ""), t_natstart, "PtT", "Resource", b_entResTypeId, addArcExp("case resource:Resource => { Some(resource) }"), addTtB(b_entResTypeId,"None, inp match { case resource:Resource => Some(resource); case _ => None }"), addBtT(b_entResTypeId,"b.resource.get"), null, null, true, na.getId());
@@ -470,13 +470,13 @@ public class Sbpnet2CpnscalaBiConverter implements Converter<IsmGraph, String> {
 					if (b.getGate() == BranchGate.AND) { 
 						bt = addTransition("_bt", null, null, b_entTypeId, e_entTypeId, m_entTypeId, b.getId());
 					} else if (b.getGate() == BranchGate.XOR) {
-						bp = addPlace(null, b.getLabel() + "_bp", entTypeId, "", b.getId());
+						bp = addPlace(null, "_bp", entTypeId, "", b.getId());
 					}
 						
 					int i = 0;
 					for (Connector c : p.getConnectors().values()) {
 						if (c.getTarget().getValue() != b) continue;
-						String p_bpis = addPlace(b.getId()+"_end_"+i, b.getLabel() + "_bpi" + i + "s", entTypeId, "", b.getId());
+						String p_bpis = addPlace(b.getId()+"_end_"+i, "_bpi" + i + "s", entTypeId, "", b.getId());
 		
 						if (b.getGate() == BranchGate.AND) {
 							addArc(p_bpis, bt, "PtT", entTypeId, b_entTypeId, addArcExp("case entity:"+entTypeId+" => { Some(entity) }"), addTtB(b_entTypeId,"inp match { case entity:"+entTypeId+" => Some(entity); case _ => None }"), addBtT(b_entTypeId,"b.entity.get"), null, null, true, b.getId());
@@ -493,7 +493,7 @@ public class Sbpnet2CpnscalaBiConverter implements Converter<IsmGraph, String> {
 					i = 0;
 					for (Connector c : p.getConnectors().values()) {
 						if (c.getSource().getValue() != b) continue;
-						String p_bpos = addPlace(b.getId()+"_start_"+i, b.getLabel() + "_bpo" + i + "s", entTypeId, "", b.getId());
+						String p_bpos = addPlace(b.getId()+"_start_"+i, "_bpo" + i + "s", entTypeId, "", b.getId());
 						
 						if (b.getGate() == BranchGate.AND) {
 							addArc(p_bpos, bt, "TtP", entTypeId, b_entTypeId, addArcExp("case entity:"+entTypeId+" => { Some(entity) }"), addTtB(b_entTypeId,"inp match { case entity:"+entTypeId+" => Some(entity); case _ => None }"), addBtT(b_entTypeId,"b.entity.get"), null, null, false, b.getId());
