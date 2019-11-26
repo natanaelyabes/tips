@@ -283,9 +283,9 @@ public class Sbpnet2CpnscalaBiConverter implements Converter<IsmGraph, String> {
 	
 	public String createResourcePlace(String resplace) {
 		StringBuilder placefactory = new StringBuilder();
-		placefactory.append( "val mapres = Map[(Resource,Long),Int]()\n" );
-		placefactory.append( "val multisetres = new Multiset[Resource](mapres)\n" );
-		placefactory.append( "val "+resplace+" = new Place(\""+resplace+"\",\"Resource Place\",multisetres)\n" );
+		placefactory.append( "val map"+resplace+" = Map[(Resource,Long),Int]()\n" );
+		placefactory.append( "val ms"+resplace+" = new Multiset[Resource](map"+resplace+")\n" );
+		placefactory.append( "val "+resplace+" = new Place(\""+resplace+"\",\"Resource Place\",ms"+resplace+")\n" );
 		placefactory.append( "cgraph.addPlace("+resplace+")\n" );
 		placefactory.append("\n");
 		

@@ -154,44 +154,44 @@ public class CpnScalaSimulatorController extends ASimulatorController {
 			es2 = new ElementStatistics("Turnaround Time", 100l, 1000.0, 10.0, 100.0);
 			es.getSubElements().put(String.valueOf(es.getSubElements().size() + 1), es2);
 
-//		try {
-//			MemoryScalaCompiler msfc = new MemoryScalaCompiler(conversionResult);
-//			Simulation simulationInstance = msfc.getInstance();
-//			Observer obs = new Observer() {
-//				
-//				@SuppressWarnings({ "rawtypes", "unchecked" })
-//				@Override
-//				public void update(Observable o, Object arg) {
-//					Tuple5 tuple5 = (Tuple5) arg;
-//					System.out.println("JAVAOBS: " + o);
-//					System.out.println(tuple5._4().getClass().getCanonicalName());
-//					HashMap before = (HashMap) tuple5._4();
-//					Iterator it = before.keysIterator();
-//					while (it.hasNext()) {
-//						Tuple2 k = (Tuple2) it.next();
-//						Some v = (Some) before.get((Object) k);
-//						System.out.println("KB " + k);
-//						System.out.println("VB " + v.get());
-//					}
-//					HashMap after = (HashMap) tuple5._5();
-//					Iterator it2 = after.keysIterator();
-//					while (it2.hasNext()) {
-//						Tuple2 k = (Tuple2) it2.next();
-//						Some v = (Some) after.get((Object) k);
-//						System.out.println("KA " + k);
-//						System.out.println("VA " + v.get());
-//					}
-//					System.out.println(arg);
-//				}
-//				
-//			};
-//			simulationInstance.addObserver(obs);
-//			simulationInstances.add(simulationInstance);
-//			simulationObservers.add(obs);
-//			simulationInstance.runUntilMaxArrival();
-//		} catch (Exception ex) {
-//			ex.printStackTrace();
-//		}
+		try {
+			MemoryScalaCompiler msfc = new MemoryScalaCompiler(conversionResult);
+			Simulation simulationInstance = msfc.getInstance();
+			Observer obs = new Observer() {
+				
+				@SuppressWarnings({ "rawtypes", "unchecked" })
+				@Override
+				public void update(Observable o, Object arg) {
+					Tuple5 tuple5 = (Tuple5) arg;
+					System.out.println("JAVAOBS: " + o);
+					System.out.println(tuple5._4().getClass().getCanonicalName());
+					HashMap before = (HashMap) tuple5._4();
+					Iterator it = before.keysIterator();
+					while (it.hasNext()) {
+						Tuple2 k = (Tuple2) it.next();
+						Some v = (Some) before.get((Object) k);
+						System.out.println("KB " + k);
+						System.out.println("VB " + v.get());
+					}
+					HashMap after = (HashMap) tuple5._5();
+					Iterator it2 = after.keysIterator();
+					while (it2.hasNext()) {
+						Tuple2 k = (Tuple2) it2.next();
+						Some v = (Some) after.get((Object) k);
+						System.out.println("KA " + k);
+						System.out.println("VA " + v.get());
+					}
+					System.out.println(arg);
+				}
+				
+			};
+			simulationInstance.addObserver(obs);
+			simulationInstances.add(simulationInstance);
+			simulationObservers.add(obs);
+			simulationInstance.runUntilMaxArrival();
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
 		return report;
 	}
 
