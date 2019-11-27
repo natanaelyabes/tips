@@ -5,6 +5,9 @@ import java.util.Map;
 import java.util.Observable;
 import java.util.Observer;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+
+import io.iochord.apps.ips.common.util.JsonDataCodec;
 import io.iochord.apps.ips.model.ism.v1.Element;
 import io.iochord.apps.ips.model.ism.v1.data.Generator;
 import io.iochord.apps.ips.model.ism.v1.nodes.Activity;
@@ -33,7 +36,13 @@ public class Ism2CpnscalaObserver implements Observer {
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	public void update(Observable o, Object arg) {
-//		observe(o, arg);
+		observe(o, arg);
+//		try {
+//			System.out.println(JsonDataCodec.getSerializer().writeValueAsString(arg));
+//		} catch (JsonProcessingException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
 	}
 	
 	public void observe(Observable o, Object arg) {
@@ -54,23 +63,27 @@ public class Ism2CpnscalaObserver implements Observer {
 		System.out.println(transition + transitionEleId + (e != null ? e.getClass().getCanonicalName() : "null"));
 		if (e != null) {
 			if (e instanceof Generator) {
-				HashMap dgp2Before = (HashMap) prevStateRole.get("_dgp2")._2();
-				HashMap dgp2After = (HashMap) currentStateRole.get("_dgp2")._2();
-				int newToken = dgp2After.size() - dgp2Before.size();
-				if (!getData().containsKey(e)) {
-					getData().put(e, new ElementStatistics(e.getLabel(), "Generator", "Instance Generated", 0l, 0.0, 0.0, 0.0));
+				if (prevStateRole.get("_dgp2") != null) {
+					HashMap dgp2Before = (HashMap) prevStateRole.get("_dgp2")._2();
+					HashMap dgp2After = (HashMap) currentStateRole.get("_dgp2")._2();
+					int newToken = dgp2After.size() - dgp2Before.size();
+					if (!getData().containsKey(e)) {
+						getData().put(e, new ElementStatistics(e.getLabel(), "Generator", "Instance Generated", 0l, 0.0, 0.0, 0.0));
+					}
+					getData().get(e).setCount(getData().get(e).getCount() + newToken);
 				}
-				getData().get(e).setCount(getData().get(e).getCount() + newToken);
 			}
 			if (e instanceof Activity) {
 				e.toString();
-//				HashMap dgp2Before = (HashMap) prevStateRole.get("_nap3")._2();
-//				HashMap dgp2After = (HashMap) currentStateRole.get("_nap3")._2();
-//				int newToken = dgp2After.size() - dgp2Before.size();
-//				if (!getData().containsKey(e)) {
-//					getData().put(e, new ElementStatistics(e.getLabel(), "Activity", "Instance Processed", 0l, 0.0, 0.0, 0.0));
-//				}
-//				getData().get(e).setCount(getData().get(e).getCount() + newToken);
+				if (prevStateRole.get("_nap3") != null) {
+					HashMap dgp2Before = (HashMap) prevStateRole.get("_nap3")._2();
+					HashMap dgp2After = (HashMap) currentStateRole.get("_nap3")._2();
+					int newToken = dgp2After.size() - dgp2Before.size();
+					if (!getData().containsKey(e)) {
+						getData().put(e, new ElementStatistics(e.getLabel(), "Activity", "Instance Processed", 0l, 0.0, 0.0, 0.0));
+					}
+					getData().get(e).setCount(getData().get(e).getCount() + newToken);
+				}
 			}
 		}
 	}
@@ -84,8 +97,16 @@ public class Ism2CpnscalaObserver implements Observer {
 			HashMap v = (HashMap) ((Some) state.get((Object) k)).get();
 //			String placeId = (String) k._1();
 			HashMap placeOrigin = (HashMap) k._2();
-			String placeEleId = (String) placeOrigin.get("origin").get();
-			String placeEleRole = (String) placeOrigin.get("role").get();
+			if (placeOrigin == null) {
+				continue;
+			}
+			Object origin = placeOrigin.get("origin");
+			Object role = placeOrigin.get("role");
+			String placeEleId = origin == null ? "" : (String) placeOrigin.get("origin").get();
+			String placeEleRole = role == null ? "" : (String) placeOrigin.get("role").get();
+			if (origin == null || role == null) {
+				continue;
+			}
 			map.put(placeEleRole, new Tuple2(k, v));
 			map.put(placeEleId + '|' + placeEleRole, new Tuple2(k, v));
 		}
