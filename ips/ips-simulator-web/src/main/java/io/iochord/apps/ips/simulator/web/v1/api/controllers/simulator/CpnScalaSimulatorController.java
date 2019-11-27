@@ -54,7 +54,7 @@ public class CpnScalaSimulatorController extends ASimulatorController {
 		graph.loadReferences();
 		Ism2CpnscalaBiConverter converter = new Ism2CpnscalaBiConverter();
 		Ism2CpnscalaModel conversionResult = converter.convert(graph);
-		// System.out.println(conversionResult.getConvertedModel());
+		//System.out.println(conversionResult.getConvertedModel());
 		Report report = new Report();
 		// MOCKUP REPORT START HERE
 		GroupStatistics gs, gsg, gsa, gsr;

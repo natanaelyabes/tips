@@ -14,7 +14,7 @@ public class Sbpnet2CpnScalaBiConverterTest {
 	
 	@Test
 	public void test01CpnScalaCreation() throws Exception {
-		IsmGraph snet = IsmExample.createBankExample();
+		IsmGraph snet = IsmExample.createPortExample();
 		System.out.println(SerializationUtil.encode(snet));
 		Ism2CpnscalaBiConverter converter = new Ism2CpnscalaBiConverter();
 		Ism2CpnscalaModel net = converter.convert(snet);

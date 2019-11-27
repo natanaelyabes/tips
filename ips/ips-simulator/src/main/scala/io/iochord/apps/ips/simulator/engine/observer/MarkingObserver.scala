@@ -10,10 +10,11 @@ class MarkingObserver extends Observer {
   def update(o:Observable, marking:Object):Unit =
   {
     val m = marking.asInstanceOf[(Long, Int, String, Map[(String,Map[String,String]),Any],Map[(String,Map[String,String]),Any])]
+    println(m)
     
-    println("Marking Before ---- "+m._4.toSet)
-    println("Marking After ---- "+m._5.toSet)
-    val diff = m._5.toSet.filterNot(m._4.toSet)
+    //println("Marking Before ---- "+m._4.toSet)
+    //println("Marking After ---- "+m._5.toSet)
+    //val diff = m._5.toSet.filterNot(m._4.toSet)
     //println("Dff --- "+diff)
    
     /*
