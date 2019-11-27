@@ -1,4 +1,4 @@
-package io.iochord.apps.ips.model.converter.sbp2cpn;
+package io.iochord.apps.ips.model.ism2cpn.converter;
 
 import org.cpntools.accesscpn.model.PetriNet;
 
@@ -15,7 +15,7 @@ import lombok.Setter;
  *
  *
  */
-public class Sbpnet2CpnmlModel implements ConversionModel<IsmGraph, PetriNet> {
+public class Ism2CpnmlModel implements ConversionModel<IsmGraph, PetriNet> {
 
 	@Getter
 	@Setter
