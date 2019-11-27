@@ -281,6 +281,8 @@ public class IsmExample {
 		actQSLoad.setProcessingTimeExpression("Math.round(Gaussian(400, 70).draw())");
 		actQSLoad.setProcessingTimeUnit(TimeUnit.MINUTES);
 
+		
+		/*
 		ResourceImpl resYT = (ResourceImpl) factory.addResource(page);
 		resYT.setLabel("Yard Trucks");
 		resYT.setNumberOfResource(7);
@@ -297,6 +299,7 @@ public class IsmExample {
 		actYSLoad.setResource(new Referenceable<>(resYC));
 		actMVLoad.setResource(new Referenceable<>(resYT));
 		actQSLoad.setResource(new Referenceable<>(resQC));
+		*/
 		
 		BranchImpl xorSplit1 = (BranchImpl) factory.addBranch(page);
 		xorSplit1.setLabel("XOR Split 1");

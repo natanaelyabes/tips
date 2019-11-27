@@ -1,4 +1,4 @@
-package io.iochord.apps.ips.model.converter.sbp2cpn;
+package io.iochord.apps.ips.model.ism2cpn.converter;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -55,7 +55,7 @@ import lombok.Getter;
  *
  *
  */
-public class Sbpnet2CpnmlBiConverter implements Converter<IsmGraph, PetriNet> {
+public class Ism2CpnmlBiConverter implements Converter<IsmGraph, PetriNet> {
 	
 	@Getter
 	protected ModelFactory factory = ModelFactory.INSTANCE;
@@ -201,7 +201,7 @@ public class Sbpnet2CpnmlBiConverter implements Converter<IsmGraph, PetriNet> {
 	
 	@Override
 	public PetriNet convert(IsmGraph snet) {
-		Sbpnet2CpnmlBiConverter converter = this;
+		Ism2CpnmlBiConverter converter = this;
 		PetriNet net = converter.createPetriNet(snet.getId());
 		Page page =  converter.addPage(net, "SBPNET"); 
 		converter.addTypeDeclaration(net, "INT", converter.getCfactory().createCPNInt(), true);
