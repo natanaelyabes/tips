@@ -1,4 +1,4 @@
-package io.iochord.apps.ips.model;
+package io.iochord.apps.ips.model.report;
 
 import java.util.LinkedHashMap;
 import java.util.Map;

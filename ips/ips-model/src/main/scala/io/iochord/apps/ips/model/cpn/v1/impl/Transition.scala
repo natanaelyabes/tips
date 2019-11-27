@@ -159,7 +159,7 @@ class Transition[B] (
   }
   
   def isEnabled(globtime:Long):Boolean = {
-    val (isArcEn, lbe) = isArcEnabledLooksRecur(globtime)
+    val (isArcEn, lbe) = isArcEnabled(globtime)
     
     if(getGuard() != null) {
       val resEvalG = getGuard().evalGuard(lbe)

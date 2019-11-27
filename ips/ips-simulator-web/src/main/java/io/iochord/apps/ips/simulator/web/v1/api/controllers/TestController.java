@@ -13,9 +13,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import io.iochord.apps.ips.common.util.SerializationUtil;
-import io.iochord.apps.ips.model.converter.sbp2cpn.Sbpnet2CpnscalaBiConverter;
 import io.iochord.apps.ips.model.example.IsmExample;
 import io.iochord.apps.ips.model.ism.v1.IsmGraph;
+import io.iochord.apps.ips.model.ism2cpn.converter.Ism2CpnscalaBiConverter;
 import io.iochord.apps.ips.simulator.compiler.MemoryScalaCompiler;
 import io.iochord.apps.ips.simulator.compiler.Simulation;
 import io.iochord.apps.ips.simulator.web.TestService;
@@ -60,8 +60,8 @@ public class TestController extends AServiceController {
 		if (snet == null) {
 			get01CreateExampleSimulationModel();
 		}
-		Sbpnet2CpnscalaBiConverter converter = new Sbpnet2CpnscalaBiConverter();
-		conversionResult = converter.convert(snet);
+		Ism2CpnscalaBiConverter converter = new Ism2CpnscalaBiConverter();
+		conversionResult = converter.convert(snet).getConvertedModel();
 		return conversionResult;
 	}
 	

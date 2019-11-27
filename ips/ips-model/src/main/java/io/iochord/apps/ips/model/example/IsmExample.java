@@ -287,10 +287,12 @@ public class IsmExample {
 		
 		ResourceImpl resYC = (ResourceImpl) factory.addResource(page);
 		resYC.setLabel("Yard Cranes");
+		resYC.setNumberOfResource(5);
 		
 		ResourceImpl resQC = (ResourceImpl) factory.addResource(page);
 		resQC.setLabel("Quay Cranes");
-
+		resQC.setNumberOfResource(5);
+		
 		actQSDisc.setResource(new Referenceable<>(resQC));
 		actMVDisc.setResource(new Referenceable<>(resYT));
 		actYSDisc.setResource(new Referenceable<>(resYC));
