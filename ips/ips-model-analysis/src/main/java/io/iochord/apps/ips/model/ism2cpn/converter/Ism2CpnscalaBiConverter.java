@@ -10,6 +10,7 @@ import io.iochord.apps.ips.model.ism.v1.IsmGraph;
 import io.iochord.apps.ips.model.ism.v1.nodes.Activity;
 import io.iochord.apps.ips.model.ism.v1.nodes.Branch;
 import io.iochord.apps.ips.model.ism.v1.nodes.enums.BranchGate;
+import io.iochord.apps.ips.model.ism.v1.nodes.enums.BranchType;
 import io.iochord.apps.ips.model.ism.v1.data.DataTable;
 import io.iochord.apps.ips.model.ism.v1.data.Function;
 import io.iochord.apps.ips.model.ism.v1.data.Generator;
@@ -298,8 +299,11 @@ public class Ism2CpnscalaBiConverter implements Converter<IsmGraph, Ism2Cpnscala
 		String resid = "res"+resourceid.replaceAll("-", "_");
 		
 		StringBuilder resfactory = new StringBuilder();
-		resfactory.append( "val "+resid+ " = new Resource(\""+resid+"\", \""+name+"\", 0L)\n" );
-		resfactory.append( resplace+".addTokenWithTime( ("+resid+",0L), "+numbofresource+" )\n" );
+		for(int i=1; i<=numbofresource; i++) {
+			String residInScala = resid+"_"+i;
+			resfactory.append( "val "+residInScala+" = new Resource(\""+residInScala+"\", \""+name+"\", 0L)\n" );
+			resfactory.append( resplace+".addTokenWithTime( ("+residInScala+",0L), 1)\n" );
+		}
 		
 		factory.append(resfactory.toString());
 		
@@ -394,7 +398,7 @@ public class Ism2CpnscalaBiConverter implements Converter<IsmGraph, Ism2Cpnscala
 					String e_dgt1 = addEval("(b1.tid == b2.tid || b1.tid == None || b2.tid == None) && (b1.gid == b2.gid || b1.gid == None || b2.gid == None) && (b1.data == b2.data || b1.data == None || b2.data == None)", b_dgt1);
 					String m_dgt1 = addMerge("val tid = if(b1.tid == None) b2.tid else b1.tid;val gid = if(b1.gid == None) b2.gid else b1.gid;val data = if(b1.data == None) b2.data else b1.data;", b_dgt1, "tid,gid,data");
 					
-					String guard = addGuard(b_dgt1, "b.tid.get < "+dg.getMaxArrival());
+					String guard = addGuard(b_dgt1, "b.tid.get <= "+dg.getMaxArrival());
 					String action = addAction(b_dgt1,
 							"val r = new java.util.Random()\n"
 							+ "val rint = r.nextInt();val gid = \""+dg.getId()+"\"\n"
@@ -483,46 +487,58 @@ public class Ism2CpnscalaBiConverter implements Converter<IsmGraph, Ism2Cpnscala
 					Branch b = (Branch) n;
 					//System.out.println("Branch "+b.getId());
 					
-					String bt = null, bp = null;
+					String bt = null;
+					String bp = null;
 					
 					if (b.getGate() == BranchGate.AND) { 
 						bt = addTransition("_bt", null, null, b_entTypeId, e_entTypeId, m_entTypeId, b.getId());
-					} else if (b.getGate() == BranchGate.XOR) {
-						bp = addPlace(null, "_bp", entTypeId, "", b.getId());
-						bp = addPlace(null, "_bp", entTypeId, "", b.getId());
 					}
-						
+					
 					int i = 0;
 					for (Connector c : p.getConnectors().values()) {
-						if (c.getTarget().getValue() != b) continue;
-						String p_bpis = addPlace(b.getId()+"_end_"+i, "_bpi" + i + "s", entTypeId, "", b.getId());
-						
-						if (b.getGate() == BranchGate.AND) {
+						if(b.getGate() == BranchGate.AND) {
+							if (c.getTarget().getValue() != b) continue;
+							String p_bpis = addPlace(b.getId()+"_end_"+i, "_bpi" + i + "s", entTypeId, "", b.getId());
 							addArc(p_bpis, bt, "PtT", entTypeId, b_entTypeId, addArcExp("case entity:"+entTypeId+" => { Some(entity) }"), addTtB(b_entTypeId,"inp match { case entity:"+entTypeId+" => Some(entity); case _ => None }"), addBtT(b_entTypeId,"b.entity.get"), null, null, true, b.getId());
 						}
-						else {
-							String t_silent = addTransition("_temps_"+i, null, null, b_entTypeId, e_entTypeId, m_entTypeId, b.getId());
-							addArc(p_bpis, t_silent, "PtT", entTypeId, b_entTypeId, addArcExp("case entity:"+entTypeId+" => { Some(entity) }"), addTtB(b_entTypeId,"inp match { case entity:"+entTypeId+" => Some(entity); case _ => None }"), addBtT(b_entTypeId,"b.entity.get"), null, null, true, b.getId());
-							addArc(bp, t_silent, "TtP", entTypeId, b_entTypeId, addArcExp("case entity:"+entTypeId+" => { Some(entity) }"), addTtB(b_entTypeId,"inp match { case entity:"+entTypeId+" => Some(entity); case _ => None }"), addBtT(b_entTypeId,"b.entity.get"), null, null, false, b.getId());
+						else if(b.getGate() == BranchGate.XOR) {
+							if(b.getType() == BranchType.SPLIT) {
+								if (c.getTarget().getValue() != b) continue;
+								String p_bpis = addPlace(b.getId()+"_end_"+i, "_bpi" + i + "s", entTypeId, "", b.getId());
+								bp = p_bpis;
+							}
+							else {
+								if (c.getSource().getValue() != b) continue;
+								String p_bpos = addPlace(b.getId()+"_start_"+i, "_bpo" + i + "s", entTypeId, "", b.getId());
+								bp = p_bpos;
+							}
 						}
-						
 						//System.out.println("Source "+c.getSource().getId());
 						i++;
 					}
 					i = 0;
 					for (Connector c : p.getConnectors().values()) {
-						if (c.getSource().getValue() != b) continue;
-						String p_bpos = addPlace(b.getId()+"_start_"+i, "_bpo_" + i + "s", entTypeId, "", b.getId());
-						
-						if (b.getGate() == BranchGate.AND) {
+						if(b.getGate() == BranchGate.AND) {
+							if (c.getSource().getValue() != b) continue;
+							String p_bpos = addPlace(b.getId()+"_start_"+i, "_bpo_" + i + "s", entTypeId, "", b.getId());
 							addArc(p_bpos, bt, "TtP", entTypeId, b_entTypeId, addArcExp("case entity:"+entTypeId+" => { Some(entity) }"), addTtB(b_entTypeId,"inp match { case entity:"+entTypeId+" => Some(entity); case _ => None }"), addBtT(b_entTypeId,"b.entity.get"), null, null, false, b.getId());
-						} else {
-							String t_silent = addTransition("_temps_"+i, null, null, b_entTypeId, e_entTypeId, m_entTypeId, b.getId());
-							addArc(bp, t_silent, "PtT", entTypeId, b_entTypeId, addArcExp("case entity:"+entTypeId+" => { Some(entity) }"), addTtB(b_entTypeId,"inp match { case entity:"+entTypeId+" => Some(entity); case _ => None }"), addBtT(b_entTypeId,"b.entity.get"), null, null, true, b.getId());
-							addArc(p_bpos, t_silent, "TtP", entTypeId, b_entTypeId, addArcExp("case entity:"+entTypeId+" => { Some(entity) }"), addTtB(b_entTypeId,"inp match { case entity:"+entTypeId+" => Some(entity); case _ => None }"), addBtT(b_entTypeId,"b.entity.get"), null, null, false, b.getId());
-							
 						}
-						
+						else if(b.getGate() == BranchGate.XOR) {
+							if(b.getType() == BranchType.SPLIT) {
+								if (c.getSource().getValue() != b) continue;
+								String p_bpos = addPlace(b.getId()+"_start_"+i, "_bpo" + i + "s", entTypeId, "", b.getId());
+								String t_silent = addTransition("_temps_"+i, null, null, b_entTypeId, e_entTypeId, m_entTypeId, b.getId());
+								addArc(bp, t_silent, "PtT", entTypeId, b_entTypeId, addArcExp("case entity:"+entTypeId+" => { Some(entity) }"), addTtB(b_entTypeId,"inp match { case entity:"+entTypeId+" => Some(entity); case _ => None }"), addBtT(b_entTypeId,"b.entity.get"), null, null, true, b.getId());
+								addArc(p_bpos, t_silent, "TtP", entTypeId, b_entTypeId, addArcExp("case entity:"+entTypeId+" => { Some(entity) }"), addTtB(b_entTypeId,"inp match { case entity:"+entTypeId+" => Some(entity); case _ => None }"), addBtT(b_entTypeId,"b.entity.get"), null, null, false, b.getId());
+							}
+							else {
+								if (c.getTarget().getValue() != b) continue;
+								String p_bpis = addPlace(b.getId()+"_end_"+i, "_bpi" + i + "s", entTypeId, "", b.getId());
+								String t_silent = addTransition("_temps_"+i, null, null, b_entTypeId, e_entTypeId, m_entTypeId, b.getId());
+								addArc(p_bpis, t_silent, "PtT", entTypeId, b_entTypeId, addArcExp("case entity:"+entTypeId+" => { Some(entity) }"), addTtB(b_entTypeId,"inp match { case entity:"+entTypeId+" => Some(entity); case _ => None }"), addBtT(b_entTypeId,"b.entity.get"), null, null, true, b.getId());
+								addArc(bp, t_silent, "TtP", entTypeId, b_entTypeId, addArcExp("case entity:"+entTypeId+" => { Some(entity) }"), addTtB(b_entTypeId,"inp match { case entity:"+entTypeId+" => Some(entity); case _ => None }"), addBtT(b_entTypeId,"b.entity.get"), null, null, false, b.getId());
+							}
+						}
 						//System.out.println("Target "+c.getTarget().getId());
 						i++;
 					}
@@ -536,13 +552,13 @@ public class Ism2CpnscalaBiConverter implements Converter<IsmGraph, Ism2Cpnscala
 			// Convert Arcs
 			for (String s : p.getConnectors().keySet()) {
 				Connector c = p.getConnectors().get(s);
-				// System.out.println("Source HL : "+c.getSource().getId());
-				// System.out.println("Target HL : "+c.getTarget().getId());
+				System.out.println("Source HL : "+c.getSource().getId());
+				System.out.println("Target HL : "+c.getTarget().getId());
 				
 				String source = placeshub.get(c.getSource().getId()+"_start_"+c.getSourceIndex());
 				String target = placeshub.get(c.getTarget().getId()+"_end_"+c.getTargetIndex());
 				
-				// System.out.println(source+" - "+target);
+				System.out.println(source+" - "+target);
 				
 				String t_silent = addTransition("silent", null, null, b_entTypeId, e_entTypeId, m_entTypeId, c.getId());
 				addArc(source, t_silent, "PtT", entTypeId, b_entTypeId, addArcExp("case entity:"+entTypeId+" => { Some(entity) }"), addTtB(b_entTypeId,"inp match { case entity:"+entTypeId+" => Some(entity); case _ => None }"), addBtT(b_entTypeId,"b.entity.get"), null, null, true, c.getId());
