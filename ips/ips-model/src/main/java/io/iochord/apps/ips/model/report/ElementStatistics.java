@@ -77,6 +77,10 @@ public class ElementStatistics {
 	@Getter
 	@Setter
 	private Double max;
+	
+	@Getter
+	@Setter
+	private String format;
 
 	@Getter
 	private final Map<String, ElementStatistics> subElements;

@@ -56,6 +56,7 @@ public class IsmExample {
 		actTeller.setProcessingTimeDistribution(DistributionType.CONSTANT);
 		actTeller.setProcessingTimeExpression("Math.round(Gaussian(400, 70).draw())");
 		actTeller.setProcessingTimeUnit(TimeUnit.MINUTES);
+		actTeller.getAttributes().put("2", "대기 시간|2048|151200|92|150|duration");
 
 		ResourceImpl resTeller = (ResourceImpl) factory.addResource(page);
 		resTeller.setLabel("Activity Resource");
@@ -243,58 +244,73 @@ public class IsmExample {
 		start.setGenerator(new Referenceable<>(custGenerator));
 
 		ActivityImpl actQSDisc = (ActivityImpl) factory.addActivity(page);
-		actQSDisc.setLabel("Quayside Discharge");
+		actQSDisc.setLabel("선박에서 양하");//Quayside Discharge");
 		actQSDisc.setIcon("/icons/port_icons/quay.png");
 		actQSDisc.setProcessingTimeDistribution(DistributionType.GAUSSIAN);
 		actQSDisc.setProcessingTimeExpression("Math.round(Gaussian(400, 70).draw())");
 		actQSDisc.setProcessingTimeUnit(TimeUnit.MINUTES);
+		actQSDisc.getAttributes().put("2", "대기 시간|2048|219600|92|122|duration");
+		
 
 		ActivityImpl actMVDisc = (ActivityImpl) factory.addActivity(page);
-		actMVDisc.setLabel("Move Discharge");
+		actMVDisc.setLabel("야드로 트럭 이동"); //Move Discharge");
 		actMVDisc.setIcon("/icons/port_icons/move.png");
 		actMVDisc.setProcessingTimeDistribution(DistributionType.GAUSSIAN);
 		actMVDisc.setProcessingTimeExpression("Math.round(Gaussian(400, 70).draw())");
 		actMVDisc.setProcessingTimeUnit(TimeUnit.MINUTES);
+		actMVDisc.getAttributes().put("2", "대기 시간|2048|259200|1320|1674|duration");
 
 		ActivityImpl actYSDisc = (ActivityImpl) factory.addActivity(page);
-		actYSDisc.setLabel("Yardside Discharge");
+		actYSDisc.setLabel("트럭에서 야드에 양하"); //Yardside Discharge");
 		actYSDisc.setIcon("/icons/port_icons/yard.png");
 		actYSDisc.setProcessingTimeDistribution(DistributionType.GAUSSIAN);
 		actYSDisc.setProcessingTimeExpression("Math.round(Gaussian(400, 70).draw())");
 		actYSDisc.setProcessingTimeUnit(TimeUnit.MINUTES);
+		actYSDisc.getAttributes().put("2", "대기 시간|2048|190800|1320|1674|duration");
 
 		ActivityImpl actYSLoad = (ActivityImpl) factory.addActivity(page);
-		actYSLoad.setLabel("Yardside Loading");
+		actYSLoad.setLabel("야드에서 트럭에 적재"); //Yardside Loading");
 		actYSLoad.setIcon("/icons/port_icons/yard.png");
 		actYSLoad.setProcessingTimeDistribution(DistributionType.GAUSSIAN);
 		actYSLoad.setProcessingTimeExpression("Math.round(Gaussian(400, 70).draw())");
 		actYSLoad.setProcessingTimeUnit(TimeUnit.MINUTES);
+		actYSLoad.getAttributes().put("2", "대기 시간|2048|144000|150|150|duration");
 
 		ActivityImpl actMVLoad = (ActivityImpl) factory.addActivity(page);
-		actMVLoad.setLabel("Move Loading");
+		actMVLoad.setLabel("부두로 트럭 이동"); //Move Loading");
 		actMVLoad.setIcon("/icons/port_icons/move.png");
 		actMVLoad.setProcessingTimeDistribution(DistributionType.GAUSSIAN);
 		actMVLoad.setProcessingTimeExpression("Math.round(Gaussian(400, 70).draw())");
 		actMVLoad.setProcessingTimeUnit(TimeUnit.MINUTES);
+		actMVLoad.getAttributes().put("2", "대기 시간|2048|241200|180|3528|duration");
 
 		ActivityImpl actQSLoad = (ActivityImpl) factory.addActivity(page);
-		actQSLoad.setLabel("Quayside Loading");
+		actQSLoad.setLabel("선적"); //Quayside Loading");
 		actQSLoad.setIcon("/icons/port_icons/quay.png");
 		actQSLoad.setProcessingTimeDistribution(DistributionType.GAUSSIAN);
 		actQSLoad.setProcessingTimeExpression("Math.round(Gaussian(400, 70).draw())");
 		actQSLoad.setProcessingTimeUnit(TimeUnit.MINUTES);
+		actQSLoad.getAttributes().put("2", "대기 시간|2048|151200|92|150|duration");
 
 		ResourceImpl resYT = (ResourceImpl) factory.addResource(page);
-		resYT.setLabel("Yard Trucks");
-		resYT.setNumberOfResource(7);
+		resYT.setLabel("야드 트럭"); //Yard Trucks");
+		resYT.setNumberOfResource(10);
+		resYT.getAttributes().put("2", "유휴 시간|1945|50400|900|14400|duration");
+		resYT.getAttributes().put("3", "야드 트럭 평균 처리 시간 (1 cycle)|1945|154800|150|3528|duration");
 		
 		ResourceImpl resYC = (ResourceImpl) factory.addResource(page);
-		resYC.setLabel("Yard Cranes");
-		resYC.setNumberOfResource(5);
+		resYC.setLabel("야드 크레인"); //Yard Cranes");
+		resYC.setNumberOfResource(10);
+		resYC.getAttributes().put("2", "유휴 시간|1050|73414|180|2400|duration");
+		resYC.getAttributes().put("3", "YC 생산성 (%)|1050|68250|55|78");
+		resYC.getAttributes().put("4", "YC 컨테이너 처리 비용 ($)|1050|4725|1.5|15");
 		
 		ResourceImpl resQC = (ResourceImpl) factory.addResource(page);
-		resQC.setLabel("Quay Cranes");
-		resQC.setNumberOfResource(5);
+		resQC.setLabel("키 크레인"); //Quay Cranes");
+		resQC.setNumberOfResource(10);
+		resQC.getAttributes().put("2", "유휴 시간|2048|7221|750|14000|duration");
+		resQC.getAttributes().put("3", "QC 생산성 (%)|2048|143360.00|63|88");
+		resQC.getAttributes().put("4", "QC 컨테이너 처리 비용 ($)|2048|4096|2|2");
 		
 		actQSDisc.setResource(new Referenceable<>(resQC));
 		actMVDisc.setResource(new Referenceable<>(resYT));
@@ -321,9 +337,11 @@ public class IsmExample {
 		ConnectorImpl arc2c = (ConnectorImpl) factory.addConnector(page, actMVDisc, actYSDisc);
 		ConnectorImpl arc2d = (ConnectorImpl) factory.addConnector(page, actYSDisc, xorJoin1);
 		ConnectorImpl arc3a = (ConnectorImpl) factory.addConnector(page, xorSplit1, actYSLoad);
+		arc3a.setSourceIndex(1);
 		ConnectorImpl arc3b = (ConnectorImpl) factory.addConnector(page, actYSLoad, actMVLoad);
 		ConnectorImpl arc3c = (ConnectorImpl) factory.addConnector(page, actMVLoad, actQSLoad);
 		ConnectorImpl arc3d = (ConnectorImpl) factory.addConnector(page, actQSLoad, xorJoin1);
+		arc3d.setTargetIndex(1);
 		ConnectorImpl arc4 = (ConnectorImpl) factory.addConnector(page, xorJoin1, end);
 //		arc1.getAttributes().put("condition", "<0.4");
 		return net;
