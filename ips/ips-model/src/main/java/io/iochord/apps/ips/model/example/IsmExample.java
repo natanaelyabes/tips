@@ -51,19 +51,22 @@ public class IsmExample {
 		StartImpl start = (StartImpl) factory.addStart(page);
 		start.setGenerator(new Referenceable<>(custMu));
 
-		QueueImpl qTeller = (QueueImpl) factory.addQueue(page);
-		qTeller.setLabel("Activity Queue");
-		qTeller.setSize(35);
-		qTeller.setType(QUEUE_TYPE.FIFO);
-		ResourceImpl resTeller = (ResourceImpl) factory.addResource(page);
-		resTeller.setLabel("Activity Resource");
 		ActivityImpl actTeller = (ActivityImpl) factory.addActivity(page);
 		actTeller.setLabel("Activity Service");
-		actTeller.setQueue(new Referenceable<>(qTeller));
-		actTeller.setResource(new Referenceable<>(resTeller));
 		actTeller.setProcessingTimeDistribution(DistributionType.CONSTANT);
 		actTeller.setProcessingTimeExpression("Math.round(Gaussian(400, 70).draw())");
 		actTeller.setProcessingTimeUnit(TimeUnit.MINUTES);
+
+		ResourceImpl resTeller = (ResourceImpl) factory.addResource(page);
+		resTeller.setLabel("Activity Resource");
+		resTeller.setNumberOfResource(1);
+		actTeller.setResource(new Referenceable<>(resTeller));
+
+//		QueueImpl qTeller = (QueueImpl) factory.addQueue(page);
+//		qTeller.setLabel("Activity Queue");
+//		qTeller.setSize(35);
+//		qTeller.setType(QUEUE_TYPE.FIFO);
+//		actTeller.setQueue(new Referenceable<>(qTeller));
 
 		StopImpl end = (StopImpl) factory.addStop(page);
 		factory.addConnector(page, start, actTeller);
@@ -239,20 +242,9 @@ public class IsmExample {
 		StartImpl start = (StartImpl) factory.addStart(page);
 		start.setGenerator(new Referenceable<>(custGenerator));
 
-		ResourceImpl resYT = (ResourceImpl) factory.addResource(page);
-		resYT.setLabel("Yard Trucks");
-		resYT.setNumberOfResource(7);
-		
-		ResourceImpl resYC = (ResourceImpl) factory.addResource(page);
-		resYC.setLabel("Yard Cranes");
-		
-		ResourceImpl resQC = (ResourceImpl) factory.addResource(page);
-		resQC.setLabel("Quay Cranes");
-
 		ActivityImpl actQSDisc = (ActivityImpl) factory.addActivity(page);
 		actQSDisc.setLabel("Quayside Discharge");
 		actQSDisc.setIcon("/icons/port_icons/quay.png");
-		actQSDisc.setResource(new Referenceable<>(resQC));
 		actQSDisc.setProcessingTimeDistribution(DistributionType.GAUSSIAN);
 		actQSDisc.setProcessingTimeExpression("Math.round(Gaussian(400, 70).draw())");
 		actQSDisc.setProcessingTimeUnit(TimeUnit.MINUTES);
@@ -260,7 +252,6 @@ public class IsmExample {
 		ActivityImpl actMVDisc = (ActivityImpl) factory.addActivity(page);
 		actMVDisc.setLabel("Move Discharge");
 		actMVDisc.setIcon("/icons/port_icons/move.png");
-		actMVDisc.setResource(new Referenceable<>(resYT));
 		actMVDisc.setProcessingTimeDistribution(DistributionType.GAUSSIAN);
 		actMVDisc.setProcessingTimeExpression("Math.round(Gaussian(400, 70).draw())");
 		actMVDisc.setProcessingTimeUnit(TimeUnit.MINUTES);
@@ -268,7 +259,6 @@ public class IsmExample {
 		ActivityImpl actYSDisc = (ActivityImpl) factory.addActivity(page);
 		actYSDisc.setLabel("Yardside Discharge");
 		actYSDisc.setIcon("/icons/port_icons/yard.png");
-		actYSDisc.setResource(new Referenceable<>(resYC));
 		actYSDisc.setProcessingTimeDistribution(DistributionType.GAUSSIAN);
 		actYSDisc.setProcessingTimeExpression("Math.round(Gaussian(400, 70).draw())");
 		actYSDisc.setProcessingTimeUnit(TimeUnit.MINUTES);
@@ -276,7 +266,6 @@ public class IsmExample {
 		ActivityImpl actYSLoad = (ActivityImpl) factory.addActivity(page);
 		actYSLoad.setLabel("Yardside Loading");
 		actYSLoad.setIcon("/icons/port_icons/yard.png");
-		actYSLoad.setResource(new Referenceable<>(resYC));
 		actYSLoad.setProcessingTimeDistribution(DistributionType.GAUSSIAN);
 		actYSLoad.setProcessingTimeExpression("Math.round(Gaussian(400, 70).draw())");
 		actYSLoad.setProcessingTimeUnit(TimeUnit.MINUTES);
@@ -284,7 +273,6 @@ public class IsmExample {
 		ActivityImpl actMVLoad = (ActivityImpl) factory.addActivity(page);
 		actMVLoad.setLabel("Move Loading");
 		actMVLoad.setIcon("/icons/port_icons/move.png");
-		actMVLoad.setResource(new Referenceable<>(resYT));
 		actMVLoad.setProcessingTimeDistribution(DistributionType.GAUSSIAN);
 		actMVLoad.setProcessingTimeExpression("Math.round(Gaussian(400, 70).draw())");
 		actMVLoad.setProcessingTimeUnit(TimeUnit.MINUTES);
@@ -292,10 +280,28 @@ public class IsmExample {
 		ActivityImpl actQSLoad = (ActivityImpl) factory.addActivity(page);
 		actQSLoad.setLabel("Quayside Loading");
 		actQSLoad.setIcon("/icons/port_icons/quay.png");
-		actQSLoad.setResource(new Referenceable<>(resQC));
 		actQSLoad.setProcessingTimeDistribution(DistributionType.GAUSSIAN);
 		actQSLoad.setProcessingTimeExpression("Math.round(Gaussian(400, 70).draw())");
 		actQSLoad.setProcessingTimeUnit(TimeUnit.MINUTES);
+
+		ResourceImpl resYT = (ResourceImpl) factory.addResource(page);
+		resYT.setLabel("Yard Trucks");
+		resYT.setNumberOfResource(7);
+		
+		ResourceImpl resYC = (ResourceImpl) factory.addResource(page);
+		resYC.setLabel("Yard Cranes");
+		resYC.setNumberOfResource(5);
+		
+		ResourceImpl resQC = (ResourceImpl) factory.addResource(page);
+		resQC.setLabel("Quay Cranes");
+		resQC.setNumberOfResource(5);
+		
+		actQSDisc.setResource(new Referenceable<>(resQC));
+		actMVDisc.setResource(new Referenceable<>(resYT));
+		actYSDisc.setResource(new Referenceable<>(resYC));
+		actYSLoad.setResource(new Referenceable<>(resYC));
+		actMVLoad.setResource(new Referenceable<>(resYT));
+		actQSLoad.setResource(new Referenceable<>(resQC));
 		
 		BranchImpl xorSplit1 = (BranchImpl) factory.addBranch(page);
 		xorSplit1.setLabel("XOR Split 1");

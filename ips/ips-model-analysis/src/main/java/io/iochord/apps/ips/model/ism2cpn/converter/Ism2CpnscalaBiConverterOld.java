@@ -1,4 +1,4 @@
-package io.iochord.apps.ips.model.converter.sbp2cpn;
+package io.iochord.apps.ips.model.ism2cpn.converter;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -24,7 +24,7 @@ import io.iochord.apps.ips.model.ism.v1.nodes.Stop;
  * @author Nur Ichsan Utama <ichsan83@gmail.com>
  *
  */
-public class Sbpnet2CpnscalaBiConverterOld implements Converter<IsmGraph, String> {
+public class Ism2CpnscalaBiConverterOld implements Converter<IsmGraph, String> {
 	
 	class KeyElement {
 		final static String type = "Type";
