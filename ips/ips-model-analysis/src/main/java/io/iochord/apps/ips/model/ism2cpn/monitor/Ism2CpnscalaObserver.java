@@ -70,7 +70,8 @@ public class Ism2CpnscalaObserver implements Observer {
 					HashMap dgp2After = (HashMap) currentStateRole.get("_dgp2")._2();
 					int newToken = dgp2After.size() - dgp2Before.size();
 					if (!getData().containsKey(e)) {
-						getData().put(e, new ElementStatistics(e.getLabel(), "Generator", "Instance Generated", 0l, null, null, null));
+						getData().put(e, new ElementStatistics(e.getLabel(), "Generator", 
+							"Instance Generated", 0l, null, null, null, null));
 					}
 					getData().get(e).setCount(getData().get(e).getCount() + newToken);
 				}
@@ -83,9 +84,19 @@ public class Ism2CpnscalaObserver implements Observer {
 						int newToken2 = dgp2Before2.size() - dgp2After2.size();
 						Element re = getModel().getConversionMap().get((String) prevStateRole.get("_resp")._3());
 						if (!getData().containsKey(re)) {
-							getData().put(re, new ElementStatistics(re.getLabel(), "Resource", "Instance Used", 0l, null, null, null));
+							ElementStatistics es = new ElementStatistics(re.getLabel(), "Resource");
+							getData().put(re, es);
+							es.getSubElements().put("1", new ElementStatistics("Resource Used"
+								, 0l, null, null, null, null));
+//							es.getSubElements().put("2", new ElementStatistics("처리 시간" //Turnaround Time"
+//								, 0l, 0.0, 0.0, 0.0));
+//							es.getSubElements().put("3", new ElementStatistics("Productivity"
+//								, 0l, 0.0, 0.0, 0.0));
+//							es.getSubElements().put("4", new ElementStatistics("Cost"
+//								, 0l, 0.0, 0.0, 0.0));
 						}
-						getData().get(re).setCount(getData().get(re).getCount() + newToken2);
+						getData().get(re).getSubElements().get("1").setCount(
+							getData().get(re).getSubElements().get("1").getCount() + newToken2);
 					}
 				}
 				if (transitionEleRole.equalsIgnoreCase("_natend")) {
@@ -93,9 +104,17 @@ public class Ism2CpnscalaObserver implements Observer {
 					HashMap dgp2After = (HashMap) currentStateRole.get("_nap3")._2();
 					int newToken = dgp2After.size() - dgp2Before.size();
 					if (!getData().containsKey(e)) {
-						getData().put(e, new ElementStatistics(e.getLabel(), "Activity", "Instance Processed", 0l, null, null, null));
+						ElementStatistics es = new ElementStatistics(e.getLabel(), "Activity");
+						getData().put(e, es);
+						es.getSubElements().put("1", new ElementStatistics("Instance Processed"
+							, 0l, null, null, null, null));
+//						es.getSubElements().put("2", new ElementStatistics("대기 시간" // Waiting Time
+//							, 0l, 0.0, 0.0, 0.0));
+//						es.getSubElements().put("3", new ElementStatistics("처리 시간" // Processing Time
+//							, 0l, 0.0, 0.0, 0.0));
 					}
-					getData().get(e).setCount(getData().get(e).getCount() + newToken);
+					getData().get(e).getSubElements().get("1").setCount(
+						getData().get(e).getSubElements().get("1").getCount() + newToken);
 				}
 			}
 		}

@@ -68,12 +68,12 @@
       </div>
     </div>
 
-    <div ref="report" class="ui modal fullscreen">
+    <div ref="report" class="ui overlay fullscreen modal">
       <i class="close icon"></i>
       <div class="header">
         Simulation Report
       </div>
-      <div class="content">
+      <div class="content" style="max-height: 75vh; overflow: auto">
         <table class="ui celled structured table">
           <thead>
             <tr>
@@ -83,11 +83,11 @@
               <th colspan="5">Statistics</th>
             </tr>
             <tr>
-              <th style="width: 10%;">Count</th>
-              <th style="width: 10%;">Average</th>
-              <th style="width: 10%;">Total</th>
-              <th style="width: 10%;">Min</th>
-              <th style="width: 10%;">Max</th>
+              <th style="width: 10%;">Count (수량)</th>
+              <th style="width: 10%;">Average (평균)</th>
+              <th style="width: 10%;">Total (합계)</th>
+              <th style="width: 10%;">Min (최소값)</th>
+              <th style="width: 10%;">Max (최대 값)</th>
             </tr>
           </thead>
           <tbody>
@@ -102,10 +102,18 @@
                     <td v-if="essi == 1" :rowspan="Object.keys(es.subElements).length">{{ es.name }}</td>
                     <td>{{ ess.description }}</td>
                     <td>{{ ess.count ? ess.count : '-' }}</td>
-                    <td>{{ ess.average ? ess.average : '-' }}</td>
-                    <td>{{ ess.total ? ess.total : '-' }}</td>
-                    <td>{{ ess.min ? ess.min : '-' }}</td>
-                    <td>{{ ess.max ? ess.max : '-' }}</td>
+                    <template v-if="ess.format == 'duration'">
+                      <td>{{ ess.average ? getDurationString(ess.average) : '-' }}</td>
+                      <td>{{ ess.total ? getDurationString(ess.total) : '-' }}</td>
+                      <td>{{ ess.min ? getDurationString(ess.min) : '-' }}</td>
+                      <td>{{ ess.max ? getDurationString(ess.max) : '-' }}</td>
+                    </template>
+                    <template v-else>
+                      <td>{{ ess.average ? ess.average : '-' }} {{ess.format}}</td>
+                      <td>{{ ess.total ? ess.total : '-' }} {{ess.format}}</td>
+                      <td>{{ ess.min ? ess.min : '-' }} {{ess.format}}</td>
+                      <td>{{ ess.max ? ess.max : '-' }} {{ess.format}}</td>
+                    </template>
                   </tr>
                 </template>
                 <tr :key="esi" v-else>
@@ -113,10 +121,18 @@
                   <td>{{ es.name }}</td>
                   <td>{{ es.description }}</td>
                   <td>{{ es.count ? es.count : '-' }}</td>
-                  <td>{{ es.average ? es.average : '-' }}</td>
-                  <td>{{ es.total ? es.total : '-' }}</td>
-                  <td>{{ es.min ? es.min : '-' }}</td>
-                  <td>{{ es.max ? es.max : '-' }}</td>
+                  <template v-if="es.format == 'duration'">
+                    <td>{{ es.average ? getDurationString(es.average) : '-' }}</td>
+                    <td>{{ es.total ? getDurationString(es.total) : '-' }}</td>
+                    <td>{{ es.min ? getDurationString(es.min) : '-' }}</td>
+                    <td>{{ es.max ? getDurationString(es.max) : '-' }}</td>
+                  </template>
+                  <template v-else>
+                    <td>{{ es.average ? es.average : '-' }} {{es.format}}</td>
+                    <td>{{ es.total ? es.total : '-' }} {{es.format}}</td>
+                    <td>{{ es.min ? es.min : '-' }} {{es.format}}</td>
+                    <td>{{ es.max ? es.max : '-' }} {{es.format}}</td>
+                  </template>
                 </tr>
               </template>
             </template>
@@ -267,6 +283,20 @@ export default class SimulationEditorView extends Layout01View {
   private report: any = {
     groups: {},
   };
+
+  // Please find efficient way to format this
+  public getDurationString(seconds: any) {
+    seconds = Number(seconds);
+    const d = Math.floor(seconds / (3600 * 24));
+    const h = Math.floor(seconds % (3600 * 24) / 3600);
+    const m = Math.floor(seconds % 3600 / 60);
+    const s = Math.floor(seconds % 60);
+    const dDisplay = d > 0 ? d + 'D ' : '';
+    const hDisplay = h > 0 ? h + 'h ' : '';
+    const mDisplay = m > 0 ? m + 'm ' : '';
+    const sDisplay = s > 0 ? s + 's ' : '';
+    return dDisplay + hDisplay + mDisplay + sDisplay;
+  }
 
   /** @Override */
   public overrideBrowserProperties(): void {

@@ -184,6 +184,22 @@ public class CpnScalaSimulatorController extends ASimulatorController {
 				if (e instanceof Resource) {
 					gsr.getElements().put(String.valueOf(gsr.getElements().size() + 1), s);
 				}
+				if (s.getSubElements() != null) {
+					for (String k : e.getAttributes().keySet()) {
+						String[] v = e.getAttributes().get(k).split("\\|");
+						if (v.length < 6) continue;
+						s.getSubElements().put(k, 
+							new ElementStatistics(v[0]
+								, v[1].length() == 0 ? null : Long.parseLong(v[1])
+								, v[2].length() == 0 ? null : Double.parseDouble(v[2])
+								, v[3].length() == 0 ? null : Double.parseDouble(v[3])
+								, v[4].length() == 0 ? null : Double.parseDouble(v[4])
+								, v[5].length() == 0 ? null : Double.parseDouble(v[5])));
+						if (v.length > 6) {
+							s.getSubElements().get(k).setFormat(v[6]);
+						}
+					}
+				}
 			}
 		} catch (Exception ex) {
 			ex.printStackTrace();

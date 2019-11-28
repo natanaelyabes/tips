@@ -86,8 +86,62 @@
       <div class="header">
         <h3 class="ui green header">Configuration</h3>
       </div>
-      <div class="content">
-        <p>Test</p>
+      <div class="content" style="max-height: 75vh; overflow: auto">
+        <template v-if="this.graph && this.graph.pages && this.graph.pages.get('0')">
+          <table class="ui celled structured table">
+          <thead>
+            <tr>
+              <th style="width: 5%;">No</th>
+              <th style="width: 20%;">Element</th>
+              <th colspan="6">Configuration</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td colspan="8">DATA TOOLBOX</td>
+            </tr>
+            <template v-for="(ele, ei) in this.graph.pages.get('0').data._values">
+              <template v-if="ele.elementType && ele.elementType == 'generator'">
+                <tr>
+                  <td>{{ ei }}</td>
+                  <td>{{ ele.label }}</td>
+                  <td style="width: 10%;">Entity per Arrival</td>
+                  <td style="width: 15%;">{{ ele.entitiesPerArrival }}</td>
+                  <td style="width: 10%;">Arrival Rate</td>
+                  <td style="width: 15%;">{{ ele.expression }}</td>
+                  <td style="width: 10%;">Max Arrival</td>
+                  <td style="width: 15%;">{{ ele.maxArrival }}</td>
+                </tr>
+              </template>
+              <template v-if="ele.elementType && ele.elementType == 'resource'">
+                <tr>
+                  <td>{{ ei }}</td>
+                  <td>{{ ele.label }}</td>
+                  <td>Number of Resource</td>
+                  <td>{{ ele.numberOfResource }}</td>
+                  <td colspan="4">&nbsp;</td>
+                </tr>
+              </template>
+            </template>
+            <tr>
+              <td colspan="8">NODE TOOLBOX</td>
+            </tr>
+            <template v-for="(ele, ei) in this.graph.pages.get('0').nodes._values">
+              <template v-if="ele.elementType && ele.elementType == 'activity'">
+                <tr>
+                  <td>{{ ei }}</td>
+                  <td>{{ ele.label }}</td>
+                  <td>Setup Time</td>
+                  <td>{{ ele.setupTime }}</td>
+                  <td>Processing Time (처리 시간)</td>
+                  <td>{{ ele.processingTime }}</td>
+                  <td colspan="2">&nbsp;</td>
+                </tr>
+              </template>
+            </template>
+          </tbody>
+          </table>
+        </template>
       </div>
       <div class="actions">
         <div class="ui positive button">Save</div>
@@ -126,6 +180,8 @@ export default class ControlPaletteComponent extends BaseComponent {
   private startSimulationDate?: string = '';
   private function?: string = '';
 
+  private graph: any = null;
+
   public openControl(): void {
     $('.ui.control.modal').modal('show');
 
@@ -150,6 +206,7 @@ export default class ControlPaletteComponent extends BaseComponent {
 
   public openConfiguration(): void {
     $('.ui.configuration.modal').modal('show');
+    this.graph = graphModule.graph;
   }
 
   public get functions(): GraphData[] {
