@@ -18,29 +18,25 @@ public class ElementStatistics {
 		subElements = new LinkedHashMap<String, ElementStatistics>();
 	}
 
-	public ElementStatistics(String description, Long count, Double total, Double min, Double max) {
+	public ElementStatistics(String description, Long count, Double average, Double total, Double min, Double max) {
 		setName("");
 		setType("");
 		setDescription(description);
 		setCount(count);
+		setAverage(average);
 		setTotal(total);
-		if (total != null && count != null) {
-			setAverage(total == 0 ? total : total / count);
-		}
 		setMin(min);
 		setMax(max);
 		subElements = null;
 	}
 	
-	public ElementStatistics(String name, String type, String description, Long count, Double total, Double min, Double max) {
+	public ElementStatistics(String name, String type, String description, Long count, Double average, Double total, Double min, Double max) {
 		setName(name);
 		setType(type);
 		setDescription(description);
 		setCount(count);
+		setAverage(average);
 		setTotal(total);
-		if (total != null && count != null) {
-			setAverage(total == 0 ? total : total / count);
-		}
 		setMin(min);
 		setMax(max);
 		subElements = null;

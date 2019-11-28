@@ -109,10 +109,10 @@
                       <td>{{ ess.max ? getDurationString(ess.max) : '-' }}</td>
                     </template>
                     <template v-else>
-                      <td>{{ ess.average ? ess.average : '-' }}</td>
-                      <td>{{ ess.total ? ess.total : '-' }}</td>
-                      <td>{{ ess.min ? ess.min : '-' }}</td>
-                      <td>{{ ess.max ? ess.max : '-' }}</td>
+                      <td>{{ ess.average ? ess.average : '-' }} {{ess.format}}</td>
+                      <td>{{ ess.total ? ess.total : '-' }} {{ess.format}}</td>
+                      <td>{{ ess.min ? ess.min : '-' }} {{ess.format}}</td>
+                      <td>{{ ess.max ? ess.max : '-' }} {{ess.format}}</td>
                     </template>
                   </tr>
                 </template>
@@ -128,10 +128,10 @@
                     <td>{{ es.max ? getDurationString(es.max) : '-' }}</td>
                   </template>
                   <template v-else>
-                    <td>{{ es.average ? es.average : '-' }}</td>
-                    <td>{{ es.total ? es.total : '-' }}</td>
-                    <td>{{ es.min ? es.min : '-' }}</td>
-                    <td>{{ es.max ? es.max : '-' }}</td>
+                    <td>{{ es.average ? es.average : '-' }} {{es.format}}</td>
+                    <td>{{ es.total ? es.total : '-' }} {{es.format}}</td>
+                    <td>{{ es.min ? es.min : '-' }} {{es.format}}</td>
+                    <td>{{ es.max ? es.max : '-' }} {{es.format}}</td>
                   </template>
                 </tr>
               </template>
