@@ -455,7 +455,7 @@ public class Ism2CpnscalaBiConverter implements Converter<IsmGraph, Ism2Cpnscala
 					String p_nap1 = addPlace(na.getId()+"_end_0", "_nap1", entTypeId, "", na.getId());
 					
 					if(na.getResource() != null) {
-						   factory.append( "place_"+na.getResource().getId().replaceAll("-", "")+".setOrigin(Map[String,String]((\"origin\",\""+na.getId()+"\"),(\"role\",\""+"place_"+na.getResource().getId().replaceAll("-", "")+"\")))\n" );
+						   factory.append( "place_"+na.getResource().getId().replaceAll("-", "")+".setOrigin(Map[String,String]((\"origin\",\""+na.getResource().getId()+"\"),(\"role\",\"_resp\")))\n" );
 						   String t_natstart = addTransition("_natstart", null, null, b_entResTypeId, e_entResTypeId, m_entResTypeId, na.getId());
 						   addArc(p_nap1, t_natstart, "PtT", entTypeId, b_entResTypeId, addArcExp("case entity:"+entTypeId+" => { Some(entity) }"), addTtB(b_entResTypeId,"inp match { case entity:"+entTypeId+" => Some(entity); case _ => None }, None "), addBtT(b_entResTypeId,"b.entity.get"), null, null, true, na.getId());
 						   String p_nap2 = addPlace(null, "_nap2", entResTypeId, "", na.getId());

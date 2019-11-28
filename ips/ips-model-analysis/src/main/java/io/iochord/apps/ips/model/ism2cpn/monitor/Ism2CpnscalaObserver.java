@@ -17,6 +17,7 @@ import io.iochord.apps.ips.model.report.ElementStatistics;
 import lombok.Getter;
 import scala.Some;
 import scala.Tuple2;
+import scala.Tuple3;
 import scala.Tuple5;
 import scala.collection.Iterator;
 import scala.collection.mutable.HashMap;
@@ -45,6 +46,7 @@ public class Ism2CpnscalaObserver implements Observer {
 //		}
 	}
 	
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public void observe(Observable o, Object arg) {
 		Tuple5 tuple5 = (Tuple5) arg;
 //		long time = (long) tuple5._1();
@@ -53,14 +55,14 @@ public class Ism2CpnscalaObserver implements Observer {
 //		String transitionId = (String) transition._1();
 		HashMap transitionOrigin = (HashMap) transition._2();
 		String transitionEleId = (String) transitionOrigin.get("origin").get();
-//		String transitionEleRole = (String) transitionOrigin.get("role").get();
+		String transitionEleRole = (String) transitionOrigin.get("role").get();
 		HashMap prevState = (HashMap) tuple5._4();
 		HashMap currentState = (HashMap) tuple5._5();
-		Map<String, Tuple2> prevStateRole = getStateRole(prevState);			
-		Map<String, Tuple2> currentStateRole = getStateRole(currentState);
+		Map<String, Tuple3> prevStateRole = getStateRole(prevState);			
+		Map<String, Tuple3> currentStateRole = getStateRole(currentState);
 			
 		Element e = getModel().getConversionMap().get(transitionEleId);
-		System.out.println(transition + transitionEleId + (e != null ? e.getClass().getCanonicalName() : "null"));
+		System.out.println(transitionEleId + " " + transitionEleRole);
 		if (e != null) {
 			if (e instanceof Generator) {
 				if (prevStateRole.get("_dgp2") != null) {
@@ -68,19 +70,30 @@ public class Ism2CpnscalaObserver implements Observer {
 					HashMap dgp2After = (HashMap) currentStateRole.get("_dgp2")._2();
 					int newToken = dgp2After.size() - dgp2Before.size();
 					if (!getData().containsKey(e)) {
-						getData().put(e, new ElementStatistics(e.getLabel(), "Generator", "Instance Generated", 0l, 0.0, 0.0, 0.0));
+						getData().put(e, new ElementStatistics(e.getLabel(), "Generator", "Instance Generated", 0l, null, null, null));
 					}
 					getData().get(e).setCount(getData().get(e).getCount() + newToken);
 				}
 			}
 			if (e instanceof Activity) {
-				e.toString();
-				if (prevStateRole.get("_nap3") != null) {
+				if (transitionEleRole.equalsIgnoreCase("_natstart")) {
+					if (prevStateRole.get("_resp") != null) {
+						HashMap dgp2Before2 = (HashMap) prevStateRole.get("_resp")._2();
+						HashMap dgp2After2 = (HashMap) currentStateRole.get("_resp")._2();
+						int newToken2 = dgp2Before2.size() - dgp2After2.size();
+						Element re = getModel().getConversionMap().get((String) prevStateRole.get("_resp")._3());
+						if (!getData().containsKey(re)) {
+							getData().put(re, new ElementStatistics(re.getLabel(), "Resource", "Instance Used", 0l, null, null, null));
+						}
+						getData().get(re).setCount(getData().get(re).getCount() + newToken2);
+					}
+				}
+				if (transitionEleRole.equalsIgnoreCase("_natend")) {
 					HashMap dgp2Before = (HashMap) prevStateRole.get("_nap3")._2();
 					HashMap dgp2After = (HashMap) currentStateRole.get("_nap3")._2();
 					int newToken = dgp2After.size() - dgp2Before.size();
 					if (!getData().containsKey(e)) {
-						getData().put(e, new ElementStatistics(e.getLabel(), "Activity", "Instance Processed", 0l, 0.0, 0.0, 0.0));
+						getData().put(e, new ElementStatistics(e.getLabel(), "Activity", "Instance Processed", 0l, null, null, null));
 					}
 					getData().get(e).setCount(getData().get(e).getCount() + newToken);
 				}
@@ -89,8 +102,8 @@ public class Ism2CpnscalaObserver implements Observer {
 	}
 	
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public Map<String, Tuple2> getStateRole(HashMap state) {
-		Map<String, Tuple2> map = new LinkedHashMap<>();
+	public Map<String, Tuple3> getStateRole(HashMap state) {
+		Map<String, Tuple3> map = new LinkedHashMap<>();
 		Iterator it = state.keysIterator();
 		while (it.hasNext()) {
 			Tuple2 k = (Tuple2) it.next();
@@ -107,8 +120,7 @@ public class Ism2CpnscalaObserver implements Observer {
 			if (origin == null || role == null) {
 				continue;
 			}
-			map.put(placeEleRole, new Tuple2(k, v));
-			map.put(placeEleId + '|' + placeEleRole, new Tuple2(k, v));
+			map.put(placeEleRole, new Tuple3(k, v, placeEleId));
 		}
 		return map;
 	}
