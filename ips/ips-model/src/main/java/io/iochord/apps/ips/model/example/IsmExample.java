@@ -56,7 +56,6 @@ public class IsmExample {
 		actTeller.setProcessingTimeDistribution(DistributionType.CONSTANT);
 		actTeller.setProcessingTimeExpression("Math.round(Gaussian(400, 70).draw())");
 		actTeller.setProcessingTimeUnit(TimeUnit.MINUTES);
-		actTeller.getAttributes().put("2", "대기 시간|2048|151200|92|150|duration");
 
 		ResourceImpl resTeller = (ResourceImpl) factory.addResource(page);
 		resTeller.setLabel("Activity Resource");
@@ -249,7 +248,7 @@ public class IsmExample {
 		actQSDisc.setProcessingTimeDistribution(DistributionType.GAUSSIAN);
 		actQSDisc.setProcessingTimeExpression("Math.round(Gaussian(400, 70).draw())");
 		actQSDisc.setProcessingTimeUnit(TimeUnit.MINUTES);
-		actQSDisc.getAttributes().put("2", "대기 시간|2048|219600|92|122|duration");
+		actQSDisc.getAttributes().put("2", "대기 시간||92|223200|92|92|duration");
 		
 
 		ActivityImpl actMVDisc = (ActivityImpl) factory.addActivity(page);
@@ -258,7 +257,7 @@ public class IsmExample {
 		actMVDisc.setProcessingTimeDistribution(DistributionType.GAUSSIAN);
 		actMVDisc.setProcessingTimeExpression("Math.round(Gaussian(400, 70).draw())");
 		actMVDisc.setProcessingTimeUnit(TimeUnit.MINUTES);
-		actMVDisc.getAttributes().put("2", "대기 시간|2048|259200|1320|1674|duration");
+		actMVDisc.getAttributes().put("2", "대기 시간||3180|259200|132|1674|duration");
 
 		ActivityImpl actYSDisc = (ActivityImpl) factory.addActivity(page);
 		actYSDisc.setLabel("트럭에서 야드에 양하"); //Yardside Discharge");
@@ -266,7 +265,7 @@ public class IsmExample {
 		actYSDisc.setProcessingTimeDistribution(DistributionType.GAUSSIAN);
 		actYSDisc.setProcessingTimeExpression("Math.round(Gaussian(400, 70).draw())");
 		actYSDisc.setProcessingTimeUnit(TimeUnit.MINUTES);
-		actYSDisc.getAttributes().put("2", "대기 시간|2048|190800|1320|1674|duration");
+		actYSDisc.getAttributes().put("2", "대기 시간||92|190800|92|92|duration");
 
 		ActivityImpl actYSLoad = (ActivityImpl) factory.addActivity(page);
 		actYSLoad.setLabel("야드에서 트럭에 적재"); //Yardside Loading");
@@ -274,7 +273,7 @@ public class IsmExample {
 		actYSLoad.setProcessingTimeDistribution(DistributionType.GAUSSIAN);
 		actYSLoad.setProcessingTimeExpression("Math.round(Gaussian(400, 70).draw())");
 		actYSLoad.setProcessingTimeUnit(TimeUnit.MINUTES);
-		actYSLoad.getAttributes().put("2", "대기 시간|2048|144000|150|150|duration");
+		actYSLoad.getAttributes().put("2", "대기 시간||150|144000|150|150|duration");
 
 		ActivityImpl actMVLoad = (ActivityImpl) factory.addActivity(page);
 		actMVLoad.setLabel("부두로 트럭 이동"); //Move Loading");
@@ -282,7 +281,7 @@ public class IsmExample {
 		actMVLoad.setProcessingTimeDistribution(DistributionType.GAUSSIAN);
 		actMVLoad.setProcessingTimeExpression("Math.round(Gaussian(400, 70).draw())");
 		actMVLoad.setProcessingTimeUnit(TimeUnit.MINUTES);
-		actMVLoad.getAttributes().put("2", "대기 시간|2048|241200|180|3528|duration");
+		actMVLoad.getAttributes().put("2", "대기 시간||2160|241200|180|3528|duration");
 
 		ActivityImpl actQSLoad = (ActivityImpl) factory.addActivity(page);
 		actQSLoad.setLabel("선적"); //Quayside Loading");
@@ -290,27 +289,27 @@ public class IsmExample {
 		actQSLoad.setProcessingTimeDistribution(DistributionType.GAUSSIAN);
 		actQSLoad.setProcessingTimeExpression("Math.round(Gaussian(400, 70).draw())");
 		actQSLoad.setProcessingTimeUnit(TimeUnit.MINUTES);
-		actQSLoad.getAttributes().put("2", "대기 시간|2048|151200|92|150|duration");
+		actQSLoad.getAttributes().put("2", "대기 시간||180|151200|92|150|duration");
 
 		ResourceImpl resYT = (ResourceImpl) factory.addResource(page);
 		resYT.setLabel("야드 트럭"); //Yard Trucks");
 		resYT.setNumberOfResource(10);
-		resYT.getAttributes().put("2", "유휴 시간|1945|50400|900|14400|duration");
-		resYT.getAttributes().put("3", "야드 트럭 평균 처리 시간 (1 cycle)|1945|154800|150|3528|duration");
+		resYT.getAttributes().put("2", "유휴 시간||7200|50400|900|14400|duration");
+		resYT.getAttributes().put("3", "야드 트럭 평균 처리 시간 (1 cycle)||1200|154800|900|3528|duration");
 		
 		ResourceImpl resYC = (ResourceImpl) factory.addResource(page);
 		resYC.setLabel("야드 크레인"); //Yard Cranes");
 		resYC.setNumberOfResource(10);
-		resYC.getAttributes().put("2", "유휴 시간|1050|73414|180|2400|duration");
-		resYC.getAttributes().put("3", "YC 생산성 (%)|1050|68250|55|78");
-		resYC.getAttributes().put("4", "YC 컨테이너 처리 비용 ($)|1050|4725|1.5|15");
+		resYC.getAttributes().put("2", "유휴 시간||1020|72000|180|2400|duration");
+		resYC.getAttributes().put("3", "YC 생산성||65||55|78|%");
+		resYC.getAttributes().put("4", "YC 컨테이너 처리 비용||3.5|4725|1.5|15|$");
 		
 		ResourceImpl resQC = (ResourceImpl) factory.addResource(page);
 		resQC.setLabel("키 크레인"); //Quay Cranes");
 		resQC.setNumberOfResource(10);
-		resQC.getAttributes().put("2", "유휴 시간|2048|7221|750|14000|duration");
-		resQC.getAttributes().put("3", "QC 생산성 (%)|2048|143360.00|63|88");
-		resQC.getAttributes().put("4", "QC 컨테이너 처리 비용 ($)|2048|4096|2|2");
+		resQC.getAttributes().put("2", "유휴 시간||1020|72000|180|2400|duration");
+		resQC.getAttributes().put("3", "QC 생산성||70||63|88|%");
+		resQC.getAttributes().put("4", "QC 컨테이너 처리 비용||2|4096|2|2|$");
 		
 		actQSDisc.setResource(new Referenceable<>(resQC));
 		actMVDisc.setResource(new Referenceable<>(resYT));

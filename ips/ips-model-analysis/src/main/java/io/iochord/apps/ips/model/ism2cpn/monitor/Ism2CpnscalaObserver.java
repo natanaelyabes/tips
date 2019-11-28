@@ -70,7 +70,8 @@ public class Ism2CpnscalaObserver implements Observer {
 					HashMap dgp2After = (HashMap) currentStateRole.get("_dgp2")._2();
 					int newToken = dgp2After.size() - dgp2Before.size();
 					if (!getData().containsKey(e)) {
-						getData().put(e, new ElementStatistics(e.getLabel(), "Generator", "Instance Generated", 0l, null, null, null));
+						getData().put(e, new ElementStatistics(e.getLabel(), "Generator", 
+							"Instance Generated", 0l, null, null, null, null));
 					}
 					getData().get(e).setCount(getData().get(e).getCount() + newToken);
 				}
@@ -86,7 +87,7 @@ public class Ism2CpnscalaObserver implements Observer {
 							ElementStatistics es = new ElementStatistics(re.getLabel(), "Resource");
 							getData().put(re, es);
 							es.getSubElements().put("1", new ElementStatistics("Resource Used"
-								, 0l, null, null, null));
+								, 0l, null, null, null, null));
 //							es.getSubElements().put("2", new ElementStatistics("처리 시간" //Turnaround Time"
 //								, 0l, 0.0, 0.0, 0.0));
 //							es.getSubElements().put("3", new ElementStatistics("Productivity"
@@ -106,7 +107,7 @@ public class Ism2CpnscalaObserver implements Observer {
 						ElementStatistics es = new ElementStatistics(e.getLabel(), "Activity");
 						getData().put(e, es);
 						es.getSubElements().put("1", new ElementStatistics("Instance Processed"
-							, 0l, null, null, null));
+							, 0l, null, null, null, null));
 //						es.getSubElements().put("2", new ElementStatistics("대기 시간" // Waiting Time
 //							, 0l, 0.0, 0.0, 0.0));
 //						es.getSubElements().put("3", new ElementStatistics("처리 시간" // Processing Time
