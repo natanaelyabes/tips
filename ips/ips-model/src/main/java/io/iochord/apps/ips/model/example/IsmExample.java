@@ -51,19 +51,22 @@ public class IsmExample {
 		StartImpl start = (StartImpl) factory.addStart(page);
 		start.setGenerator(new Referenceable<>(custMu));
 
+		ActivityImpl actTeller = (ActivityImpl) factory.addActivity(page);
+		actTeller.setLabel("Activity Service");
+		actTeller.setProcessingTimeDistribution(DistributionType.CONSTANT);
+		actTeller.setProcessingTimeExpression("Math.round(Gaussian(400, 70).draw())");
+		actTeller.setProcessingTimeUnit(TimeUnit.MINUTES);
+
+		ResourceImpl resTeller = (ResourceImpl) factory.addResource(page);
+		resTeller.setLabel("Activity Resource");
+		resTeller.setNumberOfResource(1);
+		actTeller.setResource(new Referenceable<>(resTeller));
+
 //		QueueImpl qTeller = (QueueImpl) factory.addQueue(page);
 //		qTeller.setLabel("Activity Queue");
 //		qTeller.setSize(35);
 //		qTeller.setType(QUEUE_TYPE.FIFO);
-		ResourceImpl resTeller = (ResourceImpl) factory.addResource(page);
-		resTeller.setLabel("Activity Resource");
-		ActivityImpl actTeller = (ActivityImpl) factory.addActivity(page);
-		actTeller.setLabel("Activity Service");
 //		actTeller.setQueue(new Referenceable<>(qTeller));
-		actTeller.setResource(new Referenceable<>(resTeller));
-		actTeller.setProcessingTimeDistribution(DistributionType.CONSTANT);
-		actTeller.setProcessingTimeExpression("Math.round(Gaussian(400, 70).draw())");
-		actTeller.setProcessingTimeUnit(TimeUnit.MINUTES);
 
 		StopImpl end = (StopImpl) factory.addStop(page);
 		factory.addConnector(page, start, actTeller);

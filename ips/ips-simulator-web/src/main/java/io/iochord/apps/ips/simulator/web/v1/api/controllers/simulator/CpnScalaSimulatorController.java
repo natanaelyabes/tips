@@ -14,8 +14,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import io.iochord.apps.ips.model.ism.v1.Element;
 import io.iochord.apps.ips.model.ism.v1.data.Generator;
+import io.iochord.apps.ips.model.ism.v1.data.Resource;
 import io.iochord.apps.ips.model.ism.v1.impl.IsmGraphImpl;
 import io.iochord.apps.ips.model.ism.v1.nodes.Activity;
+import io.iochord.apps.ips.model.ism.v1.nodes.Start;
+import io.iochord.apps.ips.model.ism.v1.nodes.Stop;
 import io.iochord.apps.ips.model.ism2cpn.converter.Ism2CpnscalaBiConverter;
 import io.iochord.apps.ips.model.ism2cpn.converter.Ism2CpnscalaModel;
 import io.iochord.apps.ips.model.report.ElementStatistics;
@@ -134,33 +137,33 @@ public class CpnScalaSimulatorController extends ASimulatorController {
 		gs = new GroupStatistics("RESOURCES");
 		gsr = gs;
 		report.getGroups().put(String.valueOf(report.getGroups().size() + 1), gs);
-			// Add Element Row
-			es = new ElementStatistics("Yard Trucks", "Resource");
-			gs.getElements().put(String.valueOf(gs.getElements().size() + 1), es);
-			es2 = new ElementStatistics("Instance Used", 100l, 1000.0, 10.0, 100.0);
-			es.getSubElements().put(String.valueOf(es.getSubElements().size() + 1), es2);
-			es2 = new ElementStatistics("Idle Time", 100l, 1000.0, 10.0, 100.0);
-			es.getSubElements().put(String.valueOf(es.getSubElements().size() + 1), es2);
-			es2 = new ElementStatistics("Turnaround Time", 100l, 1000.0, 10.0, 100.0);
-			es.getSubElements().put(String.valueOf(es.getSubElements().size() + 1), es2);
-			// Add Element Row
-			es = new ElementStatistics("Yard Cranes", "Resource");
-			gs.getElements().put(String.valueOf(gs.getElements().size() + 1), es);
-			es2 = new ElementStatistics("Instance Used", 100l, 1000.0, 10.0, 100.0);
-			es.getSubElements().put(String.valueOf(es.getSubElements().size() + 1), es2);
-			es2 = new ElementStatistics("Idle Time", 100l, 1000.0, 10.0, 100.0);
-			es.getSubElements().put(String.valueOf(es.getSubElements().size() + 1), es2);
-			es2 = new ElementStatistics("Turnaround Time", 100l, 1000.0, 10.0, 100.0);
-			es.getSubElements().put(String.valueOf(es.getSubElements().size() + 1), es2);
-			// Add Element Row
-			es = new ElementStatistics("Quay Cranes", "Resource");
-			gs.getElements().put(String.valueOf(gs.getElements().size() + 1), es);
-			es2 = new ElementStatistics("Instance Used", 100l, 1000.0, 10.0, 100.0);
-			es.getSubElements().put(String.valueOf(es.getSubElements().size() + 1), es2);
-			es2 = new ElementStatistics("Idle Time", 100l, 1000.0, 10.0, 100.0);
-			es.getSubElements().put(String.valueOf(es.getSubElements().size() + 1), es2);
-			es2 = new ElementStatistics("Turnaround Time", 100l, 1000.0, 10.0, 100.0);
-			es.getSubElements().put(String.valueOf(es.getSubElements().size() + 1), es2);
+//			// Add Element Row
+//			es = new ElementStatistics("Yard Trucks", "Resource");
+//			gs.getElements().put(String.valueOf(gs.getElements().size() + 1), es);
+//			es2 = new ElementStatistics("Instance Used", 100l, 1000.0, 10.0, 100.0);
+//			es.getSubElements().put(String.valueOf(es.getSubElements().size() + 1), es2);
+//			es2 = new ElementStatistics("Idle Time", 100l, 1000.0, 10.0, 100.0);
+//			es.getSubElements().put(String.valueOf(es.getSubElements().size() + 1), es2);
+//			es2 = new ElementStatistics("Turnaround Time", 100l, 1000.0, 10.0, 100.0);
+//			es.getSubElements().put(String.valueOf(es.getSubElements().size() + 1), es2);
+//			// Add Element Row
+//			es = new ElementStatistics("Yard Cranes", "Resource");
+//			gs.getElements().put(String.valueOf(gs.getElements().size() + 1), es);
+//			es2 = new ElementStatistics("Instance Used", 100l, 1000.0, 10.0, 100.0);
+//			es.getSubElements().put(String.valueOf(es.getSubElements().size() + 1), es2);
+//			es2 = new ElementStatistics("Idle Time", 100l, 1000.0, 10.0, 100.0);
+//			es.getSubElements().put(String.valueOf(es.getSubElements().size() + 1), es2);
+//			es2 = new ElementStatistics("Turnaround Time", 100l, 1000.0, 10.0, 100.0);
+//			es.getSubElements().put(String.valueOf(es.getSubElements().size() + 1), es2);
+//			// Add Element Row
+//			es = new ElementStatistics("Quay Cranes", "Resource");
+//			gs.getElements().put(String.valueOf(gs.getElements().size() + 1), es);
+//			es2 = new ElementStatistics("Instance Used", 100l, 1000.0, 10.0, 100.0);
+//			es.getSubElements().put(String.valueOf(es.getSubElements().size() + 1), es2);
+//			es2 = new ElementStatistics("Idle Time", 100l, 1000.0, 10.0, 100.0);
+//			es.getSubElements().put(String.valueOf(es.getSubElements().size() + 1), es2);
+//			es2 = new ElementStatistics("Turnaround Time", 100l, 1000.0, 10.0, 100.0);
+//			es.getSubElements().put(String.valueOf(es.getSubElements().size() + 1), es2);
 
 		try {
 			MemoryScalaCompiler msfc = new MemoryScalaCompiler(conversionResult.getConvertedModel());
@@ -172,11 +175,14 @@ public class CpnScalaSimulatorController extends ASimulatorController {
 			Map<Element, ElementStatistics> stats = conversionResult.getKpiObserver().getData();
 			for (Element e : stats.keySet()) {
 				ElementStatistics s = stats.get(e);
-				if (e instanceof Generator) {
+				if (e instanceof Generator || e instanceof Start || e instanceof Stop) {
 					gsg.getElements().put(String.valueOf(gsg.getElements().size() + 1), s);
 				}
 				if (e instanceof Activity) {
-					gsa.getElements().put(String.valueOf(gsg.getElements().size() + 1), s);
+					gsa.getElements().put(String.valueOf(gsa.getElements().size() + 1), s);
+				}
+				if (e instanceof Resource) {
+					gsr.getElements().put(String.valueOf(gsr.getElements().size() + 1), s);
 				}
 			}
 		} catch (Exception ex) {

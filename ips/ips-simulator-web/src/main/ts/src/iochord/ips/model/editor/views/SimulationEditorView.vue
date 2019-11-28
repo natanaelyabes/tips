@@ -59,13 +59,21 @@
       </template>
 
     </WrapperComponent>
+	
+    <div ref="running" class="ui modal fullscreen">
+		<div class="content">
+			<div class="ui active dimmer">
+				<div class="ui indeterminate text loader">Simulation is Running ... </div>
+			</div>
+		</div>
+	</div>
 
-    <div ref="report" class="ui modal">
+    <div ref="report" class="ui modal fullscreen">
       <i class="close icon"></i>
       <div class="header">
         Simulation Report
       </div>
-      <div class="content" style="max-height: 75vh; overflow: auto;">
+      <div class="content">
         <table class="ui celled structured table">
           <thead>
             <tr>
@@ -93,22 +101,22 @@
                     <td v-if="essi == 1" :rowspan="Object.keys(es.subElements).length">{{ esi }}.</td>
                     <td v-if="essi == 1" :rowspan="Object.keys(es.subElements).length">{{ es.name }}</td>
                     <td>{{ ess.description }}</td>
-                    <td>{{ ess.count }}</td>
-                    <td>{{ ess.average }}</td>
-                    <td>{{ ess.total }}</td>
-                    <td>{{ ess.min }}</td>
-                    <td>{{ ess.max }}</td>
+                    <td>{{ ess.count ? ess.count : '-' }}</td>
+                    <td>{{ ess.average ? ess.average : '-' }}</td>
+                    <td>{{ ess.total ? ess.total : '-' }}</td>
+                    <td>{{ ess.min ? ess.min : '-' }}</td>
+                    <td>{{ ess.max ? ess.max : '-' }}</td>
                   </tr>
                 </template>
                 <tr v-else>
                   <td>{{ esi }}.</td>
                   <td>{{ es.name }}</td>
                   <td>{{ es.description }}</td>
-                  <td>{{ es.count }}</td>
-                  <td>{{ es.average }}</td>
-                  <td>{{ es.total }}</td>
-                  <td>{{ es.min }}</td>
-                  <td>{{ es.max }}</td>
+                  <td>{{ es.count ? es.count : '-' }}</td>
+                  <td>{{ es.average ? es.average : '-' }}</td>
+                  <td>{{ es.total ? es.total : '-' }}</td>
+                  <td>{{ es.min ? es.min : '-' }}</td>
+                  <td>{{ es.max ? es.max : '-' }}</td>
                 </tr>
               </template>
             </template>
@@ -254,6 +262,8 @@ declare const $: any;
 export default class SimulationEditorView extends Layout01View {
 
   public isDisabled: boolean = false;
+  
+  public isRunning: boolean = false;
 
   private report: any = {
     groups: {},
@@ -309,10 +319,14 @@ export default class SimulationEditorView extends Layout01View {
   }
 
   public async loadNPlay() {
+	this.isRunning = true;
+    $(this.$refs['running']).modal('show');
     const rep = await IsmSimulatorService.getInstance().postLoadNPlay(graphModule.graph);
     this.report = rep;
+    $(this.$refs['running']).modal('hide');
     $(this.$refs['report']).modal('show');
     this.isDisabled = false;
+	this.isRunning = false;
   }
 
   public async modelCreate() {

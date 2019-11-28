@@ -12,31 +12,35 @@ public class ElementStatistics {
 		subElements = null;
 	}
 	
-	public ElementStatistics(String name, String type, String description, Long count, double total, double min, double max) {
-		setName(name);
-		setType(type);
-		setDescription(description);
-		setCount(count);
-		setTotal(total);
-		setAverage(total == 0 ? total : total / count);
-		setMin(min);
-		setMax(max);
-		subElements = null;
-	}
-	
 	public ElementStatistics(String name, String type) {
 		setName(name);
 		setType(type);
 		subElements = new LinkedHashMap<String, ElementStatistics>();
 	}
 
-	public ElementStatistics(String description, long count, double total, double min, double max) {
+	public ElementStatistics(String description, Long count, Double total, Double min, Double max) {
 		setName("");
 		setType("");
 		setDescription(description);
 		setCount(count);
 		setTotal(total);
-		setAverage(total == 0 ? total : total / count);
+		if (total != null && count != null) {
+			setAverage(total == 0 ? total : total / count);
+		}
+		setMin(min);
+		setMax(max);
+		subElements = null;
+	}
+	
+	public ElementStatistics(String name, String type, String description, Long count, Double total, Double min, Double max) {
+		setName(name);
+		setType(type);
+		setDescription(description);
+		setCount(count);
+		setTotal(total);
+		if (total != null && count != null) {
+			setAverage(total == 0 ? total : total / count);
+		}
 		setMin(min);
 		setMax(max);
 		subElements = null;
@@ -56,23 +60,23 @@ public class ElementStatistics {
 	
 	@Getter
 	@Setter
-	private Long count = 0l;
+	private Long count;
 	
 	@Getter
 	@Setter
-	private Double average = 0d;
+	private Double average;
 	
 	@Getter
 	@Setter
-	private Double total = 0d;
+	private Double total;
 	
 	@Getter
 	@Setter
-	private Double min = 0d;
+	private Double min;
 	
 	@Getter
 	@Setter
-	private Double max = 0d;
+	private Double max;
 
 	@Getter
 	private final Map<String, ElementStatistics> subElements;
