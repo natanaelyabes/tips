@@ -179,16 +179,6 @@ export default class JointJsRenderer {
         node.setImageIcon(nodeValue.getImageIcon());
       }
 
-      // TODO: From URL
-      // node.setImageIcon('https://imageog.flaticon.com/icons/png/512/62/62470.png?size=1200x630f&pad=10,10,10,10&ext=png&bg=FFFFFFFF');
-
-      // TODO: Demonstrate the use of custom icon
-      // if (nodeValue.getLabel() === 'ATM Service') {
-      //   node.setImageIcon(require('@/assets/images/icons/atm-png.png'));
-      // } else if (nodeValue.getLabel() === 'Teller Service') {
-      //   node.setImageIcon(require('@/assets/images/icons/business-customer-icon.png'));
-      // }
-
       // render node
       node.render(jointPage.getGraph());
 
@@ -235,6 +225,8 @@ export default class JointJsRenderer {
       arc.setSourceRef(arcValue.getSourceRef() as string);
       arc.setTargetRef(arcValue.getTargetRef() as string);
       arc.setAttr(ARC_TYPE.connector.attr);
+      arc.setSourceIndex(arcValue.getSourceIndex() as number);
+      arc.setTargetIndex(arcValue.getTargetIndex() as number);
 
       // render connector
       arc.render(jointPage.getGraph());

@@ -1,6 +1,6 @@
 <!--
   @package ips
-  @author Taufik Nur Adi <taufik.nur.adi@gmail.com>
+  @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
   @since 2019
 -->
 <template>
@@ -58,7 +58,7 @@ const graphModule = getModule(GraphModule);
 /**
  *
  * @package ips
- * @author Taufik Nur Adi <taufik.nur.adi@gmail.com>
+ * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
  * @since 2019
  *
  */

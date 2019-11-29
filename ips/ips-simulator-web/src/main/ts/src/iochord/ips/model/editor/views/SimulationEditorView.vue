@@ -59,14 +59,14 @@
       </template>
 
     </WrapperComponent>
-	
+
     <div ref="running" class="ui modal fullscreen">
-		<div class="content">
-			<div class="ui active dimmer">
-				<div class="ui indeterminate text loader">Simulation is Running ... </div>
-			</div>
-		</div>
-	</div>
+      <div class="content">
+        <div class="ui active dimmer">
+          <div class="ui indeterminate text loader">Simulation is Running ... </div>
+        </div>
+      </div>
+    </div>
 
     <div ref="report" class="ui overlay fullscreen modal">
       <i class="close icon"></i>
@@ -92,12 +92,12 @@
           </thead>
           <tbody>
             <template v-for="(gs, gsi) in report.groups" >
-              <tr>
+              <tr :key="gsi">
                 <td colspan="8">{{ gs.name }}</td>
               </tr>
               <template v-for="(es, esi) in gs.elements">
                 <template v-if="es.subElements && es.subElements != null">
-                  <tr v-for="(ess, essi) in es.subElements">
+                  <tr :key="essi" v-for="(ess, essi) in es.subElements">
                     <td v-if="essi == 1" :rowspan="Object.keys(es.subElements).length">{{ esi }}.</td>
                     <td v-if="essi == 1" :rowspan="Object.keys(es.subElements).length">{{ es.name }}</td>
                     <td>{{ ess.description }}</td>
@@ -116,7 +116,7 @@
                     </template>
                   </tr>
                 </template>
-                <tr v-else>
+                <tr :key="esi" v-else>
                   <td>{{ esi }}.</td>
                   <td>{{ es.name }}</td>
                   <td>{{ es.description }}</td>
@@ -278,7 +278,6 @@ declare const $: any;
 export default class SimulationEditorView extends Layout01View {
 
   public isDisabled: boolean = false;
-
   public isRunning: boolean = false;
 
   private report: any = {

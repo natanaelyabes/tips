@@ -51,8 +51,8 @@
                   <input type="number" v-model="value" id="ctrl_txt_value" />
                 </template>
                 <template v-else>
-                  <select id="act_txtfunction" class="ui fluid search dropdown">
-                    <option v-for="fx in functions" :key="fx.id" :value="fx.id">{{fx.label}} ({{fx.id}})</option>
+                  <select id="act_txtfunction" v-model="this.function">
+                    <option v-for="fx in functions" :key="fx.getId()" :value="fx.getId()">{{fx.getLabel()}} ({{fx.getId()}})</option>
                   </select>
                 </template>
               </div>
@@ -192,29 +192,16 @@ export default class ControlPaletteComponent extends BaseComponent {
         onChange: (val: 'TIME' | 'STEPS' | 'CUSTOM') => {
           this.stopCriteria = val;
 
-          if (this.stopCriteria === 'CUSTOM') {
-            this.$nextTick(() => {
-              this.initDropdown();
-            });
+          if (val === 'CUSTOM') {
+            console.log(this.functions);
           }
         },
       })
     ;
 
-    this.initDropdown();
+    console.log(this.functions);
 
     $('#start-simulation-date').calendar();
-  }
-
-  public initDropdown(): void {
-    $('#act_txtfunction')
-      .dropdown('set selected', this.function)
-      .dropdown({
-        onChange: (val: string) => {
-          this.function = val;
-        },
-      })
-    ;
   }
 
   public openConfiguration(): void {

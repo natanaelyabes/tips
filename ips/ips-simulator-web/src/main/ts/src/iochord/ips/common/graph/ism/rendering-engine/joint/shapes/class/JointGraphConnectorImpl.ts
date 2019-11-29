@@ -2,6 +2,7 @@ import { JointGraphElementIsPaintable } from '@/iochord/ips/common/graph/ism/ren
 import { GraphConnectorImpl } from '@/iochord/ips/common/graph/ism/class/GraphConnectorImpl';
 import { JointGraphElementHasMarkup } from '@/iochord/ips/common/graph/ism/rendering-engine/joint/shapes/interfaces/JointGraphElementHasMarkup';
 import * as joint from 'jointjs';
+import { GraphNodeImpl } from '../../../../class/GraphNodeImpl';
 
 /**
  *
@@ -80,6 +81,28 @@ export class JointGraphConnectorImpl extends GraphConnectorImpl implements Joint
     if (!this.getTargetRef() && position) {
       this.connector.target(position as joint.g.Point);
     }
+
+    this.connector.appendLabel({
+      attrs: {
+        text: {
+          text: `s-${this.getSourceIndex()}`,
+        },
+      },
+      position: {
+        distance: 0.25,
+      },
+    });
+
+    this.connector.appendLabel({
+      attrs: {
+        text: {
+          text: `t-${this.getTargetIndex()}`,
+        },
+      },
+      position: {
+        distance: 0.75,
+      },
+    });
 
     this.connector.attributes.arcId = this.getId();
     this.connector.addTo(graph);

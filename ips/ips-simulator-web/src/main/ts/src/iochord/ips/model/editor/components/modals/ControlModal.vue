@@ -1,6 +1,6 @@
 <!--
   @package ips
-  @author Taufik Nur Adi <taufik.nur.adi@gmail.com>
+  @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
   @since 2019
 -->
 <template>
@@ -57,7 +57,7 @@
 /**
  *
  * @package ips
- * @author Taufik Nur Adi <taufik.nur.adi@gmail.com>
+ * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
  * @since 2019
  *
  */
@@ -71,7 +71,7 @@ declare const $: any;
 /**
  *
  * @package ips
- * @author Taufik Nur Adi <taufik.nur.adi@gmail.com>
+ * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
  * @since 2019
  *
  */

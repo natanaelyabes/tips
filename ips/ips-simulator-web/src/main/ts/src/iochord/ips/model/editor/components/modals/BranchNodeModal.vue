@@ -1,6 +1,6 @@
 <!--
   @package ips
-  @author Taufik Nur Adi <taufik.nur.adi@gmail.com>
+  @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
   @since 2019
 -->
 <template>
@@ -101,11 +101,10 @@ const graphModule = getModule(GraphModule);
 
 declare const $: any;
 
-
 /**
  *
  * @package ips
- * @author Taufik Nur Adi <taufik.nur.adi@gmail.com>
+ * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
  * @since 2019
  *
  */
@@ -229,9 +228,12 @@ export default class BranchNodeModal extends SemanticComponent implements Modal<
         .filter((connector: GraphConnector) => connector.getSourceRef() === object.getId())
         .map((connector: GraphConnector) => connector.getTargetRef());
 
+      // Set conditions
       outputNodes.forEach((nodeId: string | null) => {
-        this.conditions.push([nodeId as string, '']);
+        const goTo = GraphNodeImpl.instance.get(nodeId as string);
+        this.conditions.push([`${(goTo.getLabel() as string)}`, '']);
       });
+
     } else {
       this.conditions = (node.getConditions() as TSMap<string, string>).entries();
     }

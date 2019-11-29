@@ -40,12 +40,42 @@ export class GraphConnectorImpl extends GraphElementImpl implements GraphConnect
         graphNodeInstance.forEach((value: TSMap<string, GraphNode>) => {
           if (value.get(element.sourceRef)) {
             graphArc.setSourceRef(element.sourceRef);
+
+            const node = GraphNodeImpl.instance.get(graphArc.getSourceRef() as string);
+
+            if (node.getType() === 'branch') {
+
+              // Get all connectors
+              const connectors = GraphConnectorImpl.instance;
+
+              // Get its output nodes
+              const outputNodes = connectors.values()
+                .filter((connector: GraphConnector) => connector.getSourceRef() === node.getId())
+                .map((connector: GraphConnector) => connector.getTargetRef());
+
+              graphArc.setSourceIndex(outputNodes.length);
+            }
           }
         });
 
         graphNodeInstance.forEach((value: TSMap<string, GraphNode>) => {
           if (value.get(element.targetRef)) {
             graphArc.setTargetRef(element.targetRef);
+
+            const node = GraphNodeImpl.instance.get(graphArc.getTargetRef() as string);
+
+            if (node.getType() === 'branch') {
+
+              // Get all connectors
+              const connectors = GraphConnectorImpl.instance;
+
+              // Get its input nodes
+              const inputNodes = connectors.values()
+                .filter((connector: GraphConnector) => connector.getTargetRef() === node.getId())
+                .map((connector: GraphConnector) => connector.getTargetRef());
+
+              graphArc.setTargetIndex(inputNodes.length);
+            }
           }
         });
 
@@ -81,7 +111,7 @@ export class GraphConnectorImpl extends GraphElementImpl implements GraphConnect
   }
 
   public setSourceIndex(index: number): void {
-    this.sourceIndex = index || this.sourceIndex;
+    this.sourceIndex = index;
   }
 
   public getSourceRef(): string | null {
@@ -105,7 +135,7 @@ export class GraphConnectorImpl extends GraphElementImpl implements GraphConnect
   }
 
   public setTargetIndex(index: number): void {
-    this.targetIndex = index || this.targetIndex;
+    this.targetIndex = index;
   }
 
   public getTargetRef(): string | null {
