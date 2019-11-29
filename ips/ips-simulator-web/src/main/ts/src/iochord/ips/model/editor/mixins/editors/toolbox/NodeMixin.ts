@@ -156,6 +156,10 @@ export default class NodeMixin extends BaseComponent {
       newItem.setId(`0-${type}-${GraphNodeImpl.instance.size()}`);
       newItem.setType(type);
 
+      if (type === 'activity') {
+        newItem.setImageIcon((NODE_TYPE as any)[type].image);
+      }
+
       /** No need to set label for start and stop node */
       if (!(type.toString() === 'start' || type.toString() === 'stop')) {
         (newItem).setLabel(`New Node ${GraphNodeImpl.instance.size()}`);
