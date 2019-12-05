@@ -82,27 +82,27 @@ export class JointGraphConnectorImpl extends GraphConnectorImpl implements Joint
       this.connector.target(position as joint.g.Point);
     }
 
-    this.connector.appendLabel({
-      attrs: {
-        text: {
-          text: `s-${this.getSourceIndex()}`,
-        },
-      },
-      position: {
-        distance: 0.25,
-      },
-    });
+    // this.connector.appendLabel({
+    //   attrs: {
+    //     text: {
+    //       text: `s-${this.getSourceIndex()}`,
+    //     },
+    //   },
+    //   position: {
+    //     distance: 0.25,
+    //   },
+    // });
 
-    this.connector.appendLabel({
-      attrs: {
-        text: {
-          text: `t-${this.getTargetIndex()}`,
-        },
-      },
-      position: {
-        distance: 0.75,
-      },
-    });
+    // this.connector.appendLabel({
+    //   attrs: {
+    //     text: {
+    //       text: `t-${this.getTargetIndex()}`,
+    //     },
+    //   },
+    //   position: {
+    //     distance: 0.75,
+    //   },
+    // });
 
     this.connector.attributes.arcId = this.getId();
     this.connector.addTo(graph);
