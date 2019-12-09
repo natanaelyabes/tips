@@ -142,6 +142,39 @@ export default class NodeMixin extends BaseComponent {
     }
   }
 
+  public deleteNode(activePage: JointGraphPageImpl, cell: joint.dia.Element) {
+
+    // Check if cell is a node object
+    if (cell.isElement()) {
+      const nodeId = cell.attributes.nodeId;
+      const node = graphModule.pageNode(activePage as JointGraphPageImpl, nodeId) as GraphNode;
+
+      // If Node exists
+      if (node) {
+        graphModule.deletePageNode({
+          page: activePage as JointGraphPageImpl,
+          node,
+        });
+
+        // Update local instance
+        GraphNodeImpl.instance.delete(nodeId as string);
+
+        // Update the rxjs observable
+        GraphSubject.update(graphModule.graph);
+
+        // Pop up toast
+        ($('body') as any).toast({
+          position: 'bottom right',
+          class: 'info',
+          className: {
+            toast: 'ui message',
+          },
+          message: `Successfully remove a node`,
+          newestOnTop: true,
+        });
+      }
+    }
+  }
 
   public saveNode(e: MouseEvent, activePage: JointGraphPageImpl) {
     editorState.setDragging(false);
@@ -155,6 +188,10 @@ export default class NodeMixin extends BaseComponent {
       const newItem = new (NODE_FACTORY.NODE_TYPE as any)[type]();
       newItem.setId(`0-${type}-${GraphNodeImpl.instance.size()}`);
       newItem.setType(type);
+
+      if (type === 'activity') {
+        newItem.setImageIcon((NODE_TYPE as any)[type].image);
+      }
 
       /** No need to set label for start and stop node */
       if (!(type.toString() === 'start' || type.toString() === 'stop')) {

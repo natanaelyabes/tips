@@ -138,6 +138,39 @@ export default class DataMixin extends BaseComponent {
     }
   }
 
+  public deleteData(activePage: JointGraphPageImpl, cell: joint.dia.Element) {
+
+    // Check if cell is a node object
+    if (cell.isElement()) {
+      const dataId = cell.attributes.dataId;
+      const datum = graphModule.pageDatum(activePage as JointGraphPageImpl, dataId) as GraphData;
+
+      // If Node exists
+      if (datum) {
+        graphModule.deletePageDatum({
+          page: activePage as JointGraphPageImpl,
+          datum,
+        });
+
+        // Update local instance
+        GraphDataImpl.instance.delete(dataId as string);
+
+        // Update the rxjs observable
+        GraphSubject.update(graphModule.graph);
+
+        // Pop up toast
+        ($('body') as any).toast({
+          position: 'bottom right',
+          class: 'info',
+          className: {
+            toast: 'ui message',
+          },
+          message: `Successfully remove a data`,
+          newestOnTop: true,
+        });
+      }
+    }
+  }
 
   public saveData(e: MouseEvent, activePage: JointGraphPageImpl) {
     editorState.setDragging(false);

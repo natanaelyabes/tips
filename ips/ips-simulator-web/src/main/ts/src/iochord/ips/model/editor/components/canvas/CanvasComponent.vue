@@ -119,6 +119,7 @@ import { GraphDataQueue } from '@/iochord/ips/common/graph/ism/interfaces/compon
 import { GraphBranchNode } from '@/iochord/ips/common/graph/ism/interfaces/components/GraphBranchNode';
 import { BRANCH_GATE, BRANCH_TYPE, BRANCH_RULE } from '@/iochord/ips/common/graph/ism/enums/BRANCH';
 import { GraphConnectorImpl } from '../../../../common/graph/ism/class/GraphConnectorImpl';
+import { TSMap } from 'typescript-map';
 
 // Vuex module instance
 const graphModule = getModule(GraphModule);
@@ -156,6 +157,9 @@ export default class CanvasComponent extends Mixins(BaseComponent, CanvasMixin) 
 
   // Pan and zoom
   public panAndZoom?: SvgPanZoom.Instance;
+
+  public highlightedElement: TSMap<string, joint.dia.Element> = new TSMap<string, joint.dia.Element>();
+  public isShiftKey: boolean = false;
 
   public mounted(): void {
     this.loadGraph();
@@ -208,35 +212,37 @@ export default class CanvasComponent extends Mixins(BaseComponent, CanvasMixin) 
         // For each element, find its elementView
         const elementView = paper.findViewByModel(element);
 
-        // Unhighlight the element from the elementView
-        elementView.unhighlight();
+        if (!this.isShiftKey) {
+          elementView.unhighlight();
+        }
       });
     };
 
+    document.addEventListener('keydown', (e) => {
+      switch (e.which) {
+        case 46:  this.highlightedElement.forEach((element) => removeNode(element)); break;
+        case 16: this.isShiftKey = e.shiftKey; break;
+      }
+    });
+
+    document.addEventListener('keyup', (e) => {
+      this.isShiftKey = false;
+    });
+
     // Helper to remove node
     const removeNode = (currentElement: joint.dia.Element) => {
-      return (e: KeyboardEvent) => {
+      // Get connected links of current selected nodes (inbound and outbound links)
+      const links = jointPage.getGraph().getConnectedLinks(currentElement);
 
-        // Get connected links of current selected nodes (inbound and outbound links)
-        const links = jointPage.getGraph().getConnectedLinks(currentElement);
+      // Remove node
+      jointPage.getNodes()!.delete(currentElement.attributes.nodeId);
+      currentElement.remove();
 
-        // If delete key was pressed
-        if (e.keyCode === 46) {
-
-          // Remove node
-          jointPage.getNodes()!.delete(currentElement.attributes.nodeId);
-          currentElement.remove();
-
-          // Remove links that connected to the node as well
-          links.forEach((link) => {
-            jointPage.getConnectors()!.delete(link.attributes.arcId);
-            link.remove();
-          });
-
-          // Remove event listener from the deleted nodes
-          currentElement.off('keydown', removeNode(currentElement), false);
-        }
-      };
+      // Remove links that connected to the node as well
+      links.forEach((link) => {
+        (jointPage.getConnectors() as TSMap<string, GraphConnector>).delete(link.attributes.arcId);
+        link.remove();
+      });
     };
 
     // Listening to events (Refer to joint.js API docs)
@@ -244,6 +250,9 @@ export default class CanvasComponent extends Mixins(BaseComponent, CanvasMixin) 
     jointPage.getGraph().on({
       remove: (cell: joint.dia.Element) => {
         this.deleteConnector(this.activePage as JointGraphPageImpl, cell);
+        this.deleteNode(this.activePage as JointGraphPageImpl, cell);
+        this.deleteData(this.activePage as JointGraphPageImpl, cell);
+
         this.source = undefined;
         this.target = undefined;
       },
@@ -284,9 +293,6 @@ export default class CanvasComponent extends Mixins(BaseComponent, CanvasMixin) 
         }
       },
       'element:pointerup blank:pointerup': (elementView: joint.dia.ElementView) => {
-
-        // Reset page
-        resetAll(jointPage.getPaper());
 
         // Disable pan
         (this.panAndZoom as SvgPanZoom.Instance).disablePan();
@@ -415,17 +421,13 @@ export default class CanvasComponent extends Mixins(BaseComponent, CanvasMixin) 
 
         // Get current element
         const currentElement = elementView.model;
-
-        // If delete key was pressed, remove node
-        currentElement.on('keydown', removeNode(currentElement), false);
+        this.highlightedElement.set(currentElement.id as string, currentElement);
       },
       'cell:unhighlight': (elementView: joint.dia.ElementView) => {
 
         // Get current element
         const currentElement = elementView.model;
-
-        // When cell is unhighlighted, remove the event listener for removing nodes
-        currentElement.off('keydown', removeNode(currentElement), false);
+        this.highlightedElement.delete(currentElement.id as string);
       },
     });
   }

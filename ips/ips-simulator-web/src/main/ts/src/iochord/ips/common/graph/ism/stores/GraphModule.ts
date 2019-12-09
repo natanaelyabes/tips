@@ -398,7 +398,7 @@ export default class GraphModule extends VuexModule {
           const elType = result.split('-')[1];
           const dId = result.split('-')[2];
 
-          if (dId === datumId) {
+          if (result === datumId) {
             results = [elType, dId];
           }
         });
@@ -472,7 +472,7 @@ export default class GraphModule extends VuexModule {
           const elType = result.split('-')[1];
           const nId = result.split('-')[2];
 
-          if (nId === nodeId) {
+          if (result === nodeId) {
             results = [elType, nId];
           }
         });

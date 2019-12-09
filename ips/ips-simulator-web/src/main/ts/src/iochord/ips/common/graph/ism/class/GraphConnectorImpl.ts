@@ -40,42 +40,12 @@ export class GraphConnectorImpl extends GraphElementImpl implements GraphConnect
         graphNodeInstance.forEach((value: TSMap<string, GraphNode>) => {
           if (value.get(element.sourceRef)) {
             graphArc.setSourceRef(element.sourceRef);
-
-            const node = GraphNodeImpl.instance.get(graphArc.getSourceRef() as string);
-
-            if (node.getType() === 'branch') {
-
-              // Get all connectors
-              const connectors = GraphConnectorImpl.instance;
-
-              // Get its output nodes
-              const outputNodes = connectors.values()
-                .filter((connector: GraphConnector) => connector.getSourceRef() === node.getId())
-                .map((connector: GraphConnector) => connector.getTargetRef());
-
-              graphArc.setSourceIndex(outputNodes.length);
-            }
           }
         });
 
         graphNodeInstance.forEach((value: TSMap<string, GraphNode>) => {
           if (value.get(element.targetRef)) {
             graphArc.setTargetRef(element.targetRef);
-
-            const node = GraphNodeImpl.instance.get(graphArc.getTargetRef() as string);
-
-            if (node.getType() === 'branch') {
-
-              // Get all connectors
-              const connectors = GraphConnectorImpl.instance;
-
-              // Get its input nodes
-              const inputNodes = connectors.values()
-                .filter((connector: GraphConnector) => connector.getTargetRef() === node.getId())
-                .map((connector: GraphConnector) => connector.getTargetRef());
-
-              graphArc.setTargetIndex(inputNodes.length);
-            }
           }
         });
         GraphConnectorImpl.instance.set(key, graphArc);
@@ -118,6 +88,20 @@ export class GraphConnectorImpl extends GraphElementImpl implements GraphConnect
 
   public setSourceRef(source: string): void {
     this.sourceRef = source;
+    const node = GraphNodeImpl.instance.get(this.getSourceRef() as string);
+
+    if (node.getType() === 'branch') {
+
+      // Get all connectors
+      const connectors = GraphConnectorImpl.instance;
+
+      // Get its output nodes
+      const outputNodes = connectors.values()
+        .filter((connector: GraphConnector) => connector.getSourceRef() === node.getId())
+        .map((connector: GraphConnector) => connector.getTargetRef());
+
+      this.setSourceIndex(outputNodes.length);
+    }
   }
 
   public getTarget(): GraphElement | null {
@@ -142,6 +126,20 @@ export class GraphConnectorImpl extends GraphElementImpl implements GraphConnect
 
   public setTargetRef(target: string): void {
     this.targetRef = target;
+    const node = GraphNodeImpl.instance.get(this.getTargetRef() as string);
+
+    if (node.getType() === 'branch') {
+
+      // Get all connectors
+      const connectors = GraphConnectorImpl.instance;
+
+      // Get its input nodes
+      const inputNodes = connectors.values()
+        .filter((connector: GraphConnector) => connector.getTargetRef() === node.getId())
+        .map((connector: GraphConnector) => connector.getTargetRef());
+
+      this.setTargetIndex(inputNodes.length);
+    }
   }
 
   /** @Override */
