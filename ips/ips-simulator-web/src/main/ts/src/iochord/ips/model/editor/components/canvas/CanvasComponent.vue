@@ -422,7 +422,7 @@ export default class CanvasComponent extends Mixins(BaseComponent, CanvasMixin) 
         }
 
         // Highlight current element
-        currentElement.findView(jointPage.getPaper()).highlight();
+        // currentElement.findView(jointPage.getPaper()).highlight();
       },
       'cell:highlight': (elementView: joint.dia.ElementView) => {
 

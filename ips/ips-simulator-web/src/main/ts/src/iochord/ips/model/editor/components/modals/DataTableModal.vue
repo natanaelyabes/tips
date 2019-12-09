@@ -18,52 +18,8 @@
         </div>
       </div>
 
-      <template v-if="getDataRows().length > 0">
-        <table class="ui celled stackable table">
-          <thead>
-            <tr>
-              <th></th>
-              <th>Id</th>
-              <th @input="setField" v-for="field in getFields()" :key="field[0]" :id="field[0]" contenteditable>
-                <!-- <button @click="removeField(field[0])" class="ui circle red icon button"><i class="minus icon"></i></button> -->
-                {{field[1]}}
-              </th>
-              <th></th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-for="(row, i) in getDataRows()" :key="row[0]" :id="row[0]">
-              <td>
-                <button @click="removeRow(row[0])" class="ui circle red icon button"><i class="minus icon"></i></button>
-              </td>
-              <td>{{i + 1}}</td>
-              <td @input="setData(row[0], $event)" v-for="(col, j) in getDataCols()" :key="col[0]" :id="getFields()[j][0]" :data-label="col[0]" contenteditable>{{col[1]}}</td>
-              <td v-if="i === 0" :rowspan="getDataRows().length">
-                <button @click="addNewField()" class="ui fluid blue icon button"><i class="plus icon"></i></button>
-              </td>
-            </tr>
-          </tbody>
-          <tfoot class="full-width">
-            <tr>
-              <th :colspan="getFields().length + 3">
-                <button @click="addNewRow()" class="ui fluid blue icon button"><i class="plus icon"></i></button>
-              </th>
-            </tr>
-          </tfoot>
-        </table>
-      </template>
-
-      <template v-else-if="getDataRows().length === 0">
-        <div class="ui message">
-          <center>
-            <p><em>No data to be displayed.</em></p>
-            <button @click="createNewEmptyDataTable()" class="ui labeled icon blue button">
-              <i class="plus icon"></i>
-              Create
-            </button>
-          </center>
-        </div>
-      </template>
+      <div id="container">
+      </div>
     </div>
 
     <div class="actions">
@@ -91,6 +47,12 @@ import { GraphDataImpl } from '@/iochord/ips/common/graph/ism/class/GraphDataImp
 import { GraphPage } from '@/iochord/ips/common/graph/ism/interfaces/GraphPage';
 import { GraphData } from '@/iochord/ips/common/graph/ism/interfaces/GraphData';
 
+import '#root/node_modules/jexcel/dist/jexcel.js';
+import '#root/node_modules/jsuites/dist/jsuites.js';
+
+import '#root/node_modules/jexcel/dist/jexcel.css';
+import '#root/node_modules/jsuites/dist/jsuites.css';
+
 declare const $: any;
 
 const graphModule = getModule(GraphModule);
@@ -106,7 +68,18 @@ export default class DataTableModal extends SemanticComponent implements Modal<J
   private fields: TSMap<string, string> = new TSMap<string, string>();
   private data: TSMap<string, TSMap<string, string>> = new TSMap<string, TSMap<string, string>>();
 
+  private d = [
+    ['Jazz', 'Honda', '2019-02-12', '', true, '$ 2.000,00', '#777700'],
+    ['Civic', 'Honda', '2018-07-11', '', true, '$ 4.000,01', '#007777'],
+  ];
+
   public populateProperties(page: JointGraphPageImpl, object: GraphDataTableImpl): void {
+
+    const s = document.getElementById('spreadsheet');
+
+    if (s) {
+      document.getElementById('container')!.removeChild(s as HTMLElement);
+    }
 
     // Whole object properties
     this.properties = object;
@@ -118,6 +91,25 @@ export default class DataTableModal extends SemanticComponent implements Modal<J
     this.label = object.getLabel() as string;
     this.fields = object.getFields() !== undefined ? object.getFields() as TSMap<string, string> : this.fields;
     this.data = object.getData() !== undefined ? object.getData() as TSMap<string, TSMap<string, string>> : this.data;
+
+    const spreadsheet = document.createElement('div');
+    spreadsheet.id = 'spreadsheet';
+    document.getElementById('container')!.appendChild(spreadsheet);
+
+    const jexcel = require('#root/node_modules/jexcel/dist/jexcel.js');
+    jexcel(document.getElementById('spreadsheet'), {
+      data: this.d,
+      columns: [
+        { type: 'text', title: 'Car', width: 120 },
+        { type: 'dropdown', title: 'Make', width: 200, source: [ 'Alfa Romeo', 'Audi', 'Bmw' ] },
+        { type: 'calendar', title: 'Available', width: 200 },
+        { type: 'image', title: 'Photo', width: 120 },
+        { type: 'checkbox', title: 'Stock', width: 80 },
+        { type: 'numeric', title: 'Price', width: 100, mask: '$ #.##,00', decimal: ',' },
+        { type: 'color', width: 100, render: 'square' },
+      ],
+    });
+
   }
 
   public saveProperties(page: JointGraphPageImpl, object: GraphDataTableImpl): void {
