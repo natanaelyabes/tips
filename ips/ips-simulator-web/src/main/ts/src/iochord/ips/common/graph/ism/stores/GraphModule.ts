@@ -321,11 +321,6 @@ export default class GraphModule extends VuexModule {
     this.graph.setControl(control);
   }
 
-  @Mutation
-  public setData(data: TSMap<string, GraphData>): void {
-    this.graph.setData(data);
-  }
-
   public get getNewItem(): GraphNodeImpl | GraphDataImpl | GraphConnectorImpl | null {
     return this.newItem ? this.newItem : null;
   }
@@ -497,9 +492,5 @@ export default class GraphModule extends VuexModule {
 
   public get control(): GraphControl | null {
     return this.graph ? this.graph.getControl() : null;
-  }
-
-  public get data(): TSMap<string, GraphData> | null {
-    return this.graph ? this.graph.getData() : null;
   }
 }

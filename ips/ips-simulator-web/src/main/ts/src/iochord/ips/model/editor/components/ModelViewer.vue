@@ -11,7 +11,7 @@
 
       <!-- Content -->
       <template slot="content">
-        <CanvasComponent :isDisabled="false" :key="reRenderKey" v-bind:response="graphData" style="min-height: 75vh;" />
+        <CanvasComponent :isProcessModel="true" :isDisabled="false" :key="reRenderKey" v-bind:response="graphData" style="min-height: 75vh;" />
       </template>
 
       <template slot="right-sidebar-menu-item">
