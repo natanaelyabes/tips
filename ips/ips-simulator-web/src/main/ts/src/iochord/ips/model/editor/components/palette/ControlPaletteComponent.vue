@@ -46,15 +46,13 @@
                   <option value="CUSTOM">Custom</option>
                 </select>
               </div>
-              <div class="six wide column">
+              <div id="stop-crit" class="six wide column">
                 <template v-if="stopCriteria !== 'CUSTOM'">
                   <input type="number" v-model="value" id="ctrl_txt_value" />
                 </template>
-                <template v-else>
-                  <select id="act_txtfunction" v-model="this.function">
-                    <option v-for="fx in functions" :key="fx.getId()" :value="fx.getId()">{{fx.getLabel()}} ({{fx.getId()}})</option>
-                  </select>
-                </template>
+                <select id="act_txtfunction" class="ui fluid search dropdown" v-model="this.function">
+                  <option v-for="fx in functions" :key="fx.getId()" :value="fx.getId()">{{fx.getLabel()}} ({{fx.getId()}})</option>
+                </select>
               </div>
             </div>
 
@@ -151,7 +149,9 @@
 </template>
 
 <style>
-
+#stop-crit .ui.fluid.search.dropdown {
+  display: none;
+}
 </style>
 
 <script lang="ts">
@@ -173,7 +173,7 @@ export default class ControlPaletteComponent extends BaseComponent {
   public isDisabled?: boolean;
 
   private replNum?: number = 0;
-  private stopCriteria?: 'TIME' | 'STEPS' | 'CUSTOM' = 'TIME';
+  private stopCriteria?: string = 'TIME';
   private value?: number = 0;
   private startSimulationDate?: string = '';
   private function?: string = '';
@@ -187,17 +187,17 @@ export default class ControlPaletteComponent extends BaseComponent {
     $('#ctrl_txt_stop')
       .dropdown('set selected', this.stopCriteria)
       .dropdown({
-        onChange: (val: 'TIME' | 'STEPS' | 'CUSTOM') => {
-          this.stopCriteria = val;
-
+        onChange: (val: string) => {
+          console.log(val);
           if (val === 'CUSTOM') {
-            console.log(this.functions);
+            $('#stop-crit .ui.fluid.search.dropdown').css('display', 'block');
+          } else if (val === 'TIME' || val === 'STEPS') {
+            $('#stop-crit .ui.fluid.search.dropdown').css('display', 'none');
           }
+          this.stopCriteria = val;
         },
       })
     ;
-
-    console.log(this.functions);
 
     $('#start-simulation-date').calendar();
   }
