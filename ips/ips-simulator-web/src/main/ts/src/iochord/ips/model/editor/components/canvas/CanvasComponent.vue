@@ -402,10 +402,10 @@ export default class CanvasComponent extends Mixins(BaseComponent, CanvasMixin) 
         // Get element properties
         if (currentElementCategory === 'node') {
           currentElementId = currentElement.attributes.nodeId.split('-')[2];
-          property = graphModule.pageNode(jointPage, currentElementId);
+          property = graphModule.pageNode(jointPage, currentElement.attributes.nodeId);
         } else if (currentElementCategory === 'data') {
           currentElementId = currentElement.attributes.dataId.split('-')[2];
-          property = graphModule.pageDatum(jointPage, currentElementId);
+          property = graphModule.pageDatum(jointPage, currentElement.attributes.dataId);
         }
 
         // Populate modal with element properties

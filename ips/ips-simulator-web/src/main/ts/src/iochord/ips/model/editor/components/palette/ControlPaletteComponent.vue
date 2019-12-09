@@ -71,7 +71,6 @@
                 </div>
               </div>
             </div>
-
           </div>
         </div>
       </div>
@@ -102,23 +101,23 @@
             </tr>
             <template v-for="(ele, ei) in this.graph.pages.get('0').data._values">
               <template v-if="ele.elementType && ele.elementType == 'generator'">
-                <tr>
+                <tr :key="ei">
                   <td>{{ ei }}</td>
-                  <td>{{ ele.label }}</td>
+                  <td contenteditable>{{ ele.label }}</td>
                   <td style="width: 10%;">Entity per Arrival</td>
-                  <td style="width: 15%;">{{ ele.entitiesPerArrival }}</td>
+                  <td contenteditable style="width: 15%;">{{ ele.entitiesPerArrival }}</td>
                   <td style="width: 10%;">Arrival Rate</td>
-                  <td style="width: 15%;">{{ ele.expression }}</td>
+                  <td contenteditable style="width: 15%;">{{ ele.expression }}</td>
                   <td style="width: 10%;">Max Arrival</td>
-                  <td style="width: 15%;">{{ ele.maxArrival }}</td>
+                  <td contenteditable style="width: 15%;">{{ ele.maxArrival }}</td>
                 </tr>
               </template>
               <template v-if="ele.elementType && ele.elementType == 'resource'">
-                <tr>
+                <tr :key="ei">
                   <td>{{ ei }}</td>
-                  <td>{{ ele.label }}</td>
+                  <td contenteditable>{{ ele.label }}</td>
                   <td>Number of Resource</td>
-                  <td>{{ ele.numberOfResource }}</td>
+                  <td contenteditable>{{ ele.numberOfResource }}</td>
                   <td colspan="4">&nbsp;</td>
                 </tr>
               </template>
@@ -128,13 +127,13 @@
             </tr>
             <template v-for="(ele, ei) in this.graph.pages.get('0').nodes._values">
               <template v-if="ele.elementType && ele.elementType == 'activity'">
-                <tr>
+                <tr :key="ei">
                   <td>{{ ei }}</td>
-                  <td>{{ ele.label }}</td>
+                  <td contenteditable>{{ ele.label }}</td>
                   <td>Setup Time</td>
-                  <td>{{ ele.setupTime }}</td>
+                  <td contenteditable>{{ ele.setupTime }}</td>
                   <td>Processing Time (처리 시간)</td>
-                  <td>{{ ele.processingTime }}</td>
+                  <td contenteditable>{{ ele.processingTime }}</td>
                   <td colspan="2">&nbsp;</td>
                 </tr>
               </template>
@@ -148,7 +147,6 @@
         <div class="ui cancel button">Cancel</div>
       </div>
     </div>
-
   </div>
 </template>
 
