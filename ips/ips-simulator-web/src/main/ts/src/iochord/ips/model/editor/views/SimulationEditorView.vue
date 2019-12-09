@@ -60,13 +60,13 @@
 
     </WrapperComponent>
 
-    <div ref="running" class="ui modal fullscreen">
+    <!-- <div ref="running" class="ui modal fullscreen">
       <div class="content">
         <div class="ui active dimmer">
           <div class="ui indeterminate text loader">Simulation is Running ... </div>
         </div>
       </div>
-    </div>
+    </div> -->
 
     <div ref="report" class="ui overlay fullscreen modal">
       <i class="close icon"></i>
@@ -92,12 +92,12 @@
           </thead>
           <tbody>
             <template v-for="(gs, gsi) in report.groups" >
-              <tr :key="gsi">
+              <tr>
                 <td colspan="8">{{ gs.name }}</td>
               </tr>
               <template v-for="(es, esi) in gs.elements">
                 <template v-if="es.subElements && es.subElements != null">
-                  <tr :key="essi" v-for="(ess, essi) in es.subElements">
+                  <tr v-for="(ess, essi) in es.subElements">
                     <td v-if="essi == 1" :rowspan="Object.keys(es.subElements).length">{{ esi }}.</td>
                     <td v-if="essi == 1" :rowspan="Object.keys(es.subElements).length">{{ es.name }}</td>
                     <td>{{ ess.description }}</td>
@@ -116,7 +116,7 @@
                     </template>
                   </tr>
                 </template>
-                <tr :key="esi" v-else>
+                <tr v-else>
                   <td>{{ esi }}.</td>
                   <td>{{ es.name }}</td>
                   <td>{{ es.description }}</td>
@@ -349,10 +349,15 @@ export default class SimulationEditorView extends Layout01View {
 
   public async loadNPlay() {
     this.isRunning = true;
-    $(this.$refs['running']).modal('show');
+    $('.editor.canvas.ui.basic.segment').dimmer({
+      displayLoader: true,
+      variation: 'inverted',
+      loaderVariation: 'slow blue medium elastic',
+      loaderText: 'Simulation is running',
+    }).dimmer('show');
     const rep = await IsmSimulatorService.getInstance().postLoadNPlay(graphModule.graph);
     this.report = rep;
-    $(this.$refs['running']).modal('hide');
+    $('.editor.canvas.ui.basic.segment').dimmer('hide');
     $(this.$refs['report']).modal('show');
     this.isDisabled = false;
     this.isRunning = false;
