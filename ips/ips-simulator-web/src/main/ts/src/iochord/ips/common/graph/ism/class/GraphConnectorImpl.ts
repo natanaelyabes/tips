@@ -78,12 +78,10 @@ export class GraphConnectorImpl extends GraphElementImpl implements GraphConnect
             }
           }
         });
-
         GraphConnectorImpl.instance.set(key, graphArc);
         graphArcMap.set(key, graphArc);
       }
     }
-
     return graphArcMap;
   }
 
