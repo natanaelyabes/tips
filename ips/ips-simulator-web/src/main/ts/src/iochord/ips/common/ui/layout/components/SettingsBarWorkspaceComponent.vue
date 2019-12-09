@@ -8,7 +8,7 @@
     </RibbonComponent>
 
     <!-- Content -->
-    <div class="ui basic segment">
+    <div class="content">
       <slot name="content"></slot>
     </div>
   </div>
@@ -22,9 +22,14 @@
   display: flex;
 }
 
+.content {
+  height: 100%;
+}
+
 .ui.basic.segment {
   overflow-y: scroll;
   width: 100%;
+  height: 100%;
 }
 </style>
 

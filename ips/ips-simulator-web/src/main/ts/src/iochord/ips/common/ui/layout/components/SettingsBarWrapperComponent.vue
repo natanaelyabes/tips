@@ -24,7 +24,9 @@
 </template>
 
 <style>
-
+.settings.bar.wrapper.component {
+  height: 100%;
+}
 </style>
 
 <script lang="ts">

@@ -48,12 +48,10 @@ export class GraphConnectorImpl extends GraphElementImpl implements GraphConnect
             graphArc.setTargetRef(element.targetRef);
           }
         });
-
         GraphConnectorImpl.instance.set(key, graphArc);
         graphArcMap.set(key, graphArc);
       }
     }
-
     return graphArcMap;
   }
 

@@ -11,15 +11,11 @@
 
       <!-- Content -->
       <template slot="content">
-        <CanvasComponent :key="reRenderKey" v-bind:response="graphData" style="min-height: 75vh;" />
+        <CanvasComponent :isDisabled="false" :key="reRenderKey" v-bind:response="graphData" style="min-height: 75vh;" />
       </template>
 
       <template slot="right-sidebar-menu-item">
-        <!-- TODO: Minimap component -->
-        <div class="ui basic segment" style="width: 260px">
-          <h2>Model Pane</h2>
-          <div id="minimap"></div>
-        </div>
+        <MinimapComponent v-bind:response="graphData" />
       </template>
     </WrapperComponent>
   </div>
@@ -67,17 +63,13 @@ i.big.icon {
   right: 11px;
 }
 
-#minimap {
-  cursor: pointer;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
-  border: 1px solid black;
-  transition: all 0.3s cubic-bezier(.25,.8,.25,1);
-  width: 100%;
-  height: 100%;
+.canvas.component {
+  height: calc(100% - 160px)!important;
 }
 
-#minimap:hover {
-  box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
+.canvas.component .editor.canvas {
+  width: 100%;
+  height: 100%;
 }
 
 @media screen and (max-width: 1440px) {
@@ -153,8 +145,8 @@ import SimulationDataManagementComponent from '../components/ribbon/SimulationDa
 import GraphModule from '@/iochord/ips/common/graph/ism/stores/GraphModule';
 import GraphSubject from '@/iochord/ips/common/graph/ism/rxjs/GraphSubject';
 
-// Async component must be lazily load
-const CanvasComponent = () => import('../components/canvas/CanvasComponent.vue');
+import CanvasComponent from '../components/canvas/CanvasComponent.vue';
+import MinimapComponent from '../components/minimap/MinimapComponent.vue';
 
 // Vuex module
 const graphModule = getModule(GraphModule);
@@ -172,6 +164,7 @@ declare const $: any;
   components: {
     WrapperComponent,
     CanvasComponent,
+    MinimapComponent,
     ControlPaletteComponent,
     NodePaletteComponent,
     DataPaletteComponent,
@@ -206,7 +199,7 @@ export default class ModelViewer extends Layout01View {
       if (graphModule.graph.getVersion === undefined) {
 
         // Fetch graph to Vuex state
-//        await graphModule.loadGraph();
+        await graphModule.loadGraph();
 
         // Print to stdout
         console.log(graphModule.graph);
