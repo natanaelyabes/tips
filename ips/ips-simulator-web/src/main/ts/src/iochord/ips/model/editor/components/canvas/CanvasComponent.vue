@@ -5,7 +5,7 @@
 -->
 <template>
   <div class="canvas component">
-    <div class="editor canvas">
+    <div class="editor canvas ui basic segment">
 
       <!-- Canvas to render graph -->
       <div id="canvas"
@@ -47,6 +47,9 @@
 .canvas.component .editor.canvas {
   width: 100%;
   height: 100%;
+
+  padding: 0;
+  margin: 0;
 }
 </style>
 

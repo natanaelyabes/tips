@@ -109,7 +109,6 @@ export default class DataTableModal extends SemanticComponent implements Modal<J
         { type: 'color', width: 100, render: 'square' },
       ],
     });
-
   }
 
   public saveProperties(page: JointGraphPageImpl, object: GraphDataTableImpl): void {
