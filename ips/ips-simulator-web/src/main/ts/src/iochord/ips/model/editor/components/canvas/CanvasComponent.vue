@@ -152,6 +152,8 @@ const editorState = getModule(EditorState);
 export default class CanvasComponent extends Mixins(BaseComponent, CanvasMixin) {
   @Prop() public response?: Graph;
 
+  @Prop() public isProcessModel?: boolean;
+
   @Prop({ default: false })
   public isDisabled?: boolean;
 
@@ -177,6 +179,7 @@ export default class CanvasComponent extends Mixins(BaseComponent, CanvasMixin) 
         this.graph,
         this.activePage as GraphPage,
         this.currentSelectedElement as GraphNode,
+        this.isProcessModel as boolean,
       );
 
       // Get panAndZoom instance from renderer
@@ -220,7 +223,9 @@ export default class CanvasComponent extends Mixins(BaseComponent, CanvasMixin) 
 
     document.addEventListener('keydown', (e) => {
       switch (e.which) {
-        case 46:  this.highlightedElement.forEach((element) => removeNode(element)); break;
+        // Backspace & Delete
+        case 8: case 46:  this.highlightedElement.forEach((element) => removeNode(element)); break;
+        // Shift
         case 16: this.isShiftKey = e.shiftKey; break;
       }
     });
@@ -408,11 +413,13 @@ export default class CanvasComponent extends Mixins(BaseComponent, CanvasMixin) 
           property = graphModule.pageDatum(jointPage, currentElement.attributes.dataId);
         }
 
-        // Populate modal with element properties
-        (this.$refs[currentElementType] as Modal<JointGraphPageImpl, typeof property>).populateProperties(jointPage, property);
+        if (!this.isProcessModel) {
+          // Populate modal with element properties
+          (this.$refs[currentElementType] as Modal<JointGraphPageImpl, typeof property>).populateProperties(jointPage, property);
 
-        // Show modal
-        $(`#${currentElementType}`).modal('setting', 'transition', 'fade up').modal('show');
+          // Show modal
+          $(`#${currentElementType}`).modal('setting', 'transition', 'fade up').modal('show');
+        }
 
         // Highlight current element
         currentElement.findView(jointPage.getPaper()).highlight();

@@ -51,7 +51,7 @@ export default class JointJsRenderer {
 
   public panAndZoom?: SvgPanZoom.Instance;
 
-  constructor(graph: Graph, activePage: GraphPage, currentSelectedElement: GraphNode) {
+  constructor(graph: Graph, activePage: GraphPage, currentSelectedElement: GraphNode, isProcessModel?: boolean) {
     this.graph = graph;
     this.activePage = activePage;
     this.currentSelectedElement = currentSelectedElement;
@@ -76,7 +76,9 @@ export default class JointJsRenderer {
         this.renderNodes(jointPage);
         this.renderConnectors(jointPage);
 
-        this.renderData(jointPage);
+        if (!isProcessModel) {
+          this.renderData(jointPage);
+        }
 
         // Automatic layout
         this.autoLayoutGraph(jointPage);

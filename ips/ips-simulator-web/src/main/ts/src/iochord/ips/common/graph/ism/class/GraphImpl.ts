@@ -49,11 +49,11 @@ export class GraphImpl extends GraphElementImpl implements Graph {
   }
 
   public getPages(): TSMap<string, GraphPage> | null {
-    return this.pages as TSMap<string, GraphPage> | null;
+    return this.pages as TSMap<string, GraphPage>;
   }
 
   public setPages(pages: TSMap<string, GraphPage>): void {
-    this.pages = pages || this.pages;
+    this.pages = pages as TSMap<string, GraphPage>;
   }
 
   public getDefaultPage(): GraphPage | null {
@@ -78,14 +78,6 @@ export class GraphImpl extends GraphElementImpl implements Graph {
 
   public setControl(control: GraphControl): void {
     this.control = control || this.control;
-  }
-
-  public getData(): TSMap<string, GraphData> | null {
-    return this.data as TSMap<string, GraphData> | null;
-  }
-
-  public setData(data: TSMap<string, GraphData>): void {
-    this.data = data || this.data;
   }
 
   /** @Override */

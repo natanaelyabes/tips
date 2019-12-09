@@ -22,6 +22,4 @@ export interface Graph extends GraphElement {
   setConfigurations(configurations: TSMap<string, GraphConfiguration>): void;
   getControl(): GraphControl | null;
   setControl(control: GraphControl): void;
-  getData(): TSMap<string, GraphData> | null;
-  setData(data: TSMap<string, GraphData>): void;
 }
