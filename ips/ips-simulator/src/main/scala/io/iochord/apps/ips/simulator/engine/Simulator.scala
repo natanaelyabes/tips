@@ -81,7 +81,7 @@ case class Simulator(calcAvgTimeEnTr:Boolean = false) {
     avgTimeEnTr
   }
   
-  def run(net: CPNGraph, stopCrit:Any => Boolean, inpStopCrit:Any, stepsRef:Int = 0, globtime:GlobalTime = new GlobalTime(0), subject:MarkingObservable = null, monitors:Map[(String,String),Int], objMonitors:Map[(String,String,Int),Double], resMonitors:Map[(String,String,Int),Double]) {
+  def run(net: CPNGraph, stopCrit:Any => Boolean, inpStopCrit:Any, stepsRef:Int = 0, globtime:GlobalTime = new GlobalTime(0), subject:MarkingObservable = null) {
     val steps = c+stepsRef;
     
     val allTransitions = net.allTransitions
@@ -141,7 +141,7 @@ case class Simulator(calcAvgTimeEnTr:Boolean = false) {
       println("stop - at step "+c)
   }
   
-  def runWithAsync(net: CPNGraph, stopCrit:Any => Boolean, inpStopCrit:Any, stepsRef:Int = 0, globtime:GlobalTime = new GlobalTime(0), subject:MarkingObservable = null, monitors:Map[(String,String),Int], objMonitors:Map[(String,String,Int),Double], resMonitors:Map[(String,String,Int),Double]) {
+  def runWithAsync(net: CPNGraph, stopCrit:Any => Boolean, inpStopCrit:Any, stepsRef:Int = 0, globtime:GlobalTime = new GlobalTime(0), subject:MarkingObservable = null) {
     val steps = c+stepsRef;
     
     val allTransitions = net.allTransitions

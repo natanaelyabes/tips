@@ -13,9 +13,6 @@ class Place[T] (
   private var currentMarking = initialMarking
   
   private var origin:Map[String,String] = null
-  private var attributes:Map[String,Any] = null
-  private var isStart:Boolean = false
-  private var isEnd:Boolean = false
   
   def initState() = currentMarking = initialMarking
   
@@ -40,18 +37,6 @@ class Place[T] (
   def getOrigin(): Map[String,String] = origin
   
   def setOrigin(origin: Map[String,String]) { this.origin = origin }
-  
-  def getAttributes(): Map[String,Any] = attributes
-  
-  def setAttributes(attributes: Map[String,Any]) { this.attributes = attributes }
-  
-  def getIsStart(): Boolean = isStart
-  
-  def setIsStart(isStart: Boolean) { this.isStart = isStart }
-  
-  def getIsEnd(): Boolean = isEnd
-  
-  def setIsEnd(isStart: Boolean) { this.isEnd = isEnd }
   
   override def toString = name
 }

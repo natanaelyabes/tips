@@ -21,6 +21,7 @@ object CompileFromFileTestPerform {
     val simulation = memoryScalaFactory.getInstance
     simulation.addObserver(new MarkingObserver())
     val r = new Resource("","",5L)
+    
     //val stopCrit = (stop:Any) => stop match { case stop:Boolean => stop }
     //val inpStopCritLoc = false
     

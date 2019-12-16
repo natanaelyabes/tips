@@ -28,10 +28,6 @@ object SimpleTest {
     val subject = new MarkingObservable()
     subject.addObserver(new MarkingObserver())
     
-    val monitors:Map[(String,String),Int] = Map[(String,String),Int]() //startAct,endAct,flag
-    val objMonitors:Map[(String,String,Int),Double] = Map[(String,String,Int),Double]() //(tokenId,startAct,flag),startValue
-    val resMonitors:Map[(String,String,Int),Double] = Map[(String,String,Int),Double]() //(startAct,endAct,flag),AggregateValue
-    
     case class BindTransInit(x:Option[Int])
     
     val cgraph = CPNGraph()
@@ -49,10 +45,6 @@ object SimpleTest {
     val ms2 = new Multiset[colset_CASEID](map_2)
     val pplace2 = new Place("p2","place2",ms2)
     
-    //---------------------- place 2 ------------------
-    val ms3 = new Multiset[colset_CASEID](Map[(colset_CASEID,Long),Int]())
-    val pplace3 = new Place("p3","place3",ms3)
-    
     val eval_trans1 = (b1: BindTransInit, b2: BindTransInit) => {
       (b1.x == b2.x || b1.x == None || b2.x == None)
     }
@@ -67,34 +59,34 @@ object SimpleTest {
     ttrans1.setMerge(merge_trans1)
     
     // x (int) input arc for init from place1_id
-    val arcExpArc1:(colset_CASEID => Option[colset_CASEID]) = (inp:Any) => inp match { case(x:colset_CASEID) => { Some(x) } } //arc1 exp
-    val TtoBArc1:(colset_CASEID => BindTransInit) = (inp:Any) => BindTransInit(inp match { case x:Int => Some(x); case _ => None })
-    val BtoTArc1:(BindTransInit => colset_CASEID) = (b:BindTransInit) => { b.x.get }
-    val arc1 = new Arc[colset_CASEID,BindTransInit]("arc1", pplace1, ttrans1, Direction.PtT, classOf[colset_CASEID])
-    arc1.setIsBase(true)
-    arc1.setArcExp(arcExpArc1)
-    arc1.setTokenToBind(TtoBArc1)
+    val BtoTArc1 = (b:BindTransInit) => { b.x.get }:colset_CASEID
+    val TtoBArc1:(colset_CASEID => Option[BindTransInit]) = (t:colset_CASEID) => {
+      try {
+        val x = t
+        Some(BindTransInit(Some(x)))
+      } catch {
+        case e:Exception => {
+          None
+        }
+      }
+    }
+    val arc1 = new Arc[colset_CASEID,BindTransInit]("arc1", pplace1, ttrans1, Direction.PtT)
     arc1.setBindToToken(BtoTArc1)
+    arc1.setTokenToBind(TtoBArc1)
     
     // x (int) input arc for init from place2_id
-    val arcExpArc2:(colset_CASEID => Option[colset_CASEID]) = (inp:Any) => inp match { case(x:colset_CASEID) => { Some(x) } } //arc2 exp
-    val TtoBArc2:(colset_CASEID => BindTransInit) = (inp:Any) => BindTransInit(inp match { case x:Int => Some(x); case _ => None })
     val BtoTArc2:(BindTransInit => colset_CASEID) = (b:BindTransInit) => { b.x.get }
-    val arc2 = new Arc[colset_CASEID,BindTransInit]("arc2", pplace2, ttrans1, Direction.PtT, classOf[colset_CASEID])
-    arc2.setArcExp(arcExpArc2)
-    arc2.setTokenToBind(TtoBArc2)
+    val addTimeArc2:(BindTransInit => Long) = (b:BindTransInit) => { Math.round(Gaussian(100, 10).draw()) }
+    val arc2 = new Arc[colset_CASEID,BindTransInit]("arc2", pplace2, ttrans1, Direction.TtP)
+    arc2.setIsBase(false)
     arc2.setBindToToken(BtoTArc2)
+    arc2.setAddTime(addTimeArc2)
     
     // x (int) output arc for init to place3
-    val arcExpArc3:(colset_CASEID => Option[colset_CASEID]) = (inp:Any) => inp match { case(x:colset_CASEID) => { Some(x) } } //arc3 exp
-    val TtoBArc3:(colset_CASEID => BindTransInit) = (inp:Any) => BindTransInit(inp match { case x:Int => Some(x); case _ => None })
-    val BtoTArc3:(BindTransInit => colset_CASEID) = (b:BindTransInit) => { b.x.get }
-    val addTimeArc3:(BindTransInit => Long) = (b:BindTransInit) => { Math.round(Gaussian(100, 10).draw()) }
-    val arc3 = new Arc[colset_CASEID,BindTransInit]("arc3", pplace3, ttrans1, Direction.TtP)
-    arc3.setArcExp(arcExpArc3)
-    arc3.setTokenToBind(TtoBArc3)
+    val BtoTArc3:(BindTransInit => colset_CASEID) = (b:BindTransInit) => { b.x.get + 1}
+    val arc3 = new Arc[colset_CASEID,BindTransInit]("arc3", pplace1, ttrans1, Direction.TtP)
+    arc3.setIsBase(false)
     arc3.setBindToToken(BtoTArc3)
-    arc3.setAddTime(addTimeArc3)
     //End ENVIRONMENT
     
     //add transitions
@@ -114,7 +106,6 @@ object SimpleTest {
     val stopCrit = (stop:Any) => stop match { case stop:Boolean => stop }
     val inpStopCrit = false
     
-    new Simulator().run(cgraph, stopCrit, inpStopCrit, 4, globtime, subject, monitors, objMonitors, resMonitors)
-    
+    new Simulator().run(cgraph, stopCrit, inpStopCrit, 4, globtime, subject)
   }
 }

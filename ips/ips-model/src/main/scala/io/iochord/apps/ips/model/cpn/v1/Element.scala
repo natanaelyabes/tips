@@ -7,6 +7,4 @@ trait Element {
 	def setId(inp: String)
 	def getOrigin: Map[String,String]
 	def setOrigin(inp: Map[String,String])
-	def getAttributes: Map[String,Any]
-	def setAttributes(inp: Map[String,Any])
 }
