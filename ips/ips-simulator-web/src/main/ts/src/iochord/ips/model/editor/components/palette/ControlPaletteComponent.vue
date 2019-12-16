@@ -188,7 +188,6 @@ export default class ControlPaletteComponent extends BaseComponent {
       .dropdown('set selected', this.stopCriteria)
       .dropdown({
         onChange: (val: string) => {
-          console.log(val);
           if (val === 'CUSTOM') {
             $('#stop-crit .ui.fluid.search.dropdown').css('display', 'block');
           } else if (val === 'TIME' || val === 'STEPS') {

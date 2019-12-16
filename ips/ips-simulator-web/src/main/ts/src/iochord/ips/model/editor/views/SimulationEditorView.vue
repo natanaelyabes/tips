@@ -60,14 +60,6 @@
 
     </WrapperComponent>
 
-    <!-- <div ref="running" class="ui modal fullscreen">
-      <div class="content">
-        <div class="ui active dimmer">
-          <div class="ui indeterminate text loader">Simulation is Running ... </div>
-        </div>
-      </div>
-    </div> -->
-
     <div ref="report" class="ui overlay fullscreen modal">
       <i class="close icon"></i>
       <div class="header">

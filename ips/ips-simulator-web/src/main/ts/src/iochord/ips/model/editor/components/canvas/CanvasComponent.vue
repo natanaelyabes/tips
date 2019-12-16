@@ -67,10 +67,8 @@ import SvgPanZoom from 'svg-pan-zoom';
 
 // Classes
 import BaseComponent from '@/iochord/ips/common/ui/layout/class/BaseComponent';
-import { Graph } from '@/iochord/ips/common/graph/ism/interfaces/Graph';
 import { GraphControlImpl } from '@/iochord/ips/common/graph/ism/class/components/GraphControlImpl';
 import { GraphImpl } from '@/iochord/ips/common/graph/ism/class/GraphImpl';
-import { GraphPage } from '@/iochord/ips/common/graph/ism/interfaces/GraphPage';
 import { GraphPageImpl } from '@/iochord/ips/common/graph/ism/class/GraphPageImpl';
 import { JointGraphConnectorImpl } from '@/iochord/ips/common/graph/ism/rendering-engine/joint/shapes/class/JointGraphConnectorImpl';
 import { JointGraphNodeImpl } from '@/iochord/ips/common/graph/ism/rendering-engine/joint/shapes/class/JointGraphNodeImpl';
@@ -78,6 +76,8 @@ import { JointGraphPageImpl } from '@/iochord/ips/common/graph/ism/rendering-eng
 import JointJsRenderer from '@/iochord/ips/common/graph/ism/rendering-engine/joint/class/JointJsRenderer';
 
 // Interfaces
+import { Graph } from '@/iochord/ips/common/graph/ism/interfaces/Graph';
+import { GraphPage } from '@/iochord/ips/common/graph/ism/interfaces/GraphPage';
 import { GraphConnector } from '@/iochord/ips/common/graph/ism/interfaces/GraphConnector';
 import { GraphData } from '@/iochord/ips/common/graph/ism/interfaces/GraphData';
 import { GraphElement } from '@/iochord/ips/common/graph/ism/interfaces/GraphElement';
@@ -154,15 +154,10 @@ const editorState = getModule(EditorState);
 })
 export default class CanvasComponent extends Mixins(BaseComponent, CanvasMixin) {
   @Prop() public response?: Graph;
-
   @Prop() public isProcessModel?: boolean;
+  @Prop({ default: false }) public isDisabled?: boolean;
 
-  @Prop({ default: false })
-  public isDisabled?: boolean;
-
-  // Pan and zoom
   public panAndZoom?: SvgPanZoom.Instance;
-
   public highlightedElement: TSMap<string, joint.dia.Element> = new TSMap<string, joint.dia.Element>();
   public isShiftKey: boolean = false;
 
@@ -227,7 +222,10 @@ export default class CanvasComponent extends Mixins(BaseComponent, CanvasMixin) 
     document.addEventListener('keydown', (e) => {
       switch (e.which) {
         // Backspace & Delete
-        case 8: case 46:  this.highlightedElement.forEach((element) => removeNode(element)); break;
+        case 8: case 46:
+          
+          this.highlightedElement.forEach((element) => removeNode(element)); 
+          break;
         // Shift
         case 16: this.isShiftKey = e.shiftKey; break;
       }
