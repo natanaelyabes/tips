@@ -33,7 +33,7 @@ object SimpleTestHanjin {
     val monitors:Map[(String,String),Int] = Map[(String,String),Int]() //startAct,endAct,flag
     val objMonitors:Map[(String,String,Int),Double] = Map[(String,String,Int),Double]() //(tokenId,startAct,flag),startValue
     val resMonitors:Map[(String,String,Int),Double] = Map[(String,String,Int),Double]() //(startAct,endAct,flag),AggregateValue
-    
+    /*
    subject.addObserver(new MarkingObserver())
 
     val filterResGroup1 = Set("GC102", "GC101", "GC107", "GC106", "GC105", "GC104", "GC103")
@@ -754,6 +754,6 @@ object SimpleTestHanjin {
     val inpStopCrit = false
     
     new Simulator().run(cgraph, stopCrit, inpStopCrit, 4, globtime, subject, monitors, objMonitors, resMonitors)
-    
+    */
   }
 }
