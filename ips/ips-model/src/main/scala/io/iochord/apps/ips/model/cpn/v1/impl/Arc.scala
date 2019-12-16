@@ -12,21 +12,16 @@ class Arc[T,B] (
   private var id: String,
   private var place: Place[T],
   private var transition: Transition[B],
-  private var direction: Direction.Value,
-  private var coltype: Class[_] = null) extends Element {
+  private var direction: Direction.Value) extends Element {
   
-  private var isBase: Boolean = false
+  private var isBase: Boolean = true
   
-  private var noTokArcExp:Int = 1
-  private var arcExpV:coltype => Option[coltype] = null
-  private var TtoBV:T => B = null
-  private var BtoTV:B => T = null
-  private var addTime:B => Long = null
+  var noTokArcExp:Int = 1
+  var TtoBV:T => Option[B] = null
+  var BtoTV:B => T = null
+  var addTime:B => Long = null
   
   private var origin:Map[String,String] = null
-  private var attributes:Map[String,Any] = null
-  
-  def getColtype(): Class[_] = { coltype }
   
   type coltype = T
   
@@ -48,35 +43,11 @@ class Arc[T,B] (
   
   def setOrigin(origin: Map[String,String]) { this.origin = origin }
   
-  def getAttributes(): Map[String,Any] = attributes
-  
-  def setAttributes(attributes: Map[String,Any]) { this.attributes = attributes }
-  
-  def setTokenToBind(TtoB:coltype => B) = { TtoBV = TtoB }
-  
-  def getTokenToBind():(coltype => B) = { this.TtoBV }
-  
-  def computeTokenToBind(token:coltype):B = { this.TtoBV(token) }
+  def setTokenToBind(TtoB:coltype => Option[B]) = { TtoBV = TtoB }
   
   def setBindToToken(BtoT:B => coltype) = { BtoTV = BtoT }
   
-  def getBindToToken():(B => coltype) = { this.BtoTV }
-  
-  def computeBindToToken(bind:B):coltype = { this.BtoTV(bind) }
-  
-  def setArcExp(arcExp:coltype => Option[coltype]) = { this.arcExpV = arcExp }
-  
-  def getArcExp():(coltype => Option[coltype]) = { this.arcExpV }
-  
-  def computeArcExp(token:coltype) = { this.arcExpV(token) }
-  
   def setAddTime(addTime:B => Long) = { this.addTime = addTime }
   
-  def getAddTime():(B => Long) = { this.addTime }
-  
-  def computeAddTime(bind:B) = { this.addTime(bind) }
-  
   def setNoTokArcExp(noToken:Int) = { this.noTokArcExp = noToken }
-  
-  def getNoTokArcExp():Int = { this.noTokArcExp }
 }

@@ -11,10 +11,6 @@ import java.util.Observer
 abstract class Simulation(val simulator:Simulator = new Simulator(true)) {
   val cgraph = CPNGraph()
   
-  val monitors:Map[(String,String),Int] = Map[(String,String),Int]() //startAct,endAct,flag
-  val objMonitors:Map[(String,String,Int),Double] = Map[(String,String,Int),Double]() //(tokenId,startAct,flag),startValue
-  val resMonitors:Map[(String,String,Int),Double] = Map[(String,String,Int),Double]() //(startAct,endAct,flag),AggregateValue
-  
   val globtime = new GlobalTime(0)
   var stopCrit:Any => Boolean = null
   var inpStopCrit:Any = null
@@ -32,14 +28,14 @@ abstract class Simulation(val simulator:Simulator = new Simulator(true)) {
     this.stopCrit = (stop:Any) => stop match { case stop:Boolean => stop }
     this.inpStopCrit = false
     
-    simulator.run(cgraph, stopCrit, inpStopCrit, n, globtime, subject, monitors, objMonitors, resMonitors)
+    simulator.run(cgraph, stopCrit, inpStopCrit, n, globtime, subject)
   }
   
   def runStepWithCon(n:Int): Unit = {
     this.stopCrit = (stop:Any) => stop match { case stop:Boolean => stop }
     this.inpStopCrit = false
     
-    simulator.runWithAsync(cgraph, stopCrit, inpStopCrit, n, globtime, subject, monitors, objMonitors, resMonitors)
+    simulator.runWithAsync(cgraph, stopCrit, inpStopCrit, n, globtime, subject)
   }
   
   def runStepTime(timeUntil:Long, n:Int) = {
@@ -47,9 +43,9 @@ abstract class Simulation(val simulator:Simulator = new Simulator(true)) {
     this.inpStopCrit = globtime
     
     if(n <= 0)
-      simulator.run(cgraph, stopCrit, inpStopCrit, -1, globtime, subject, monitors, objMonitors, resMonitors)
+      simulator.run(cgraph, stopCrit, inpStopCrit, -1, globtime, subject)
     else
-      simulator.run(cgraph, stopCrit, inpStopCrit, n, globtime, subject, monitors, objMonitors, resMonitors)
+      simulator.run(cgraph, stopCrit, inpStopCrit, n, globtime, subject)
   }
   
   def getCurrentStep() = {
@@ -68,12 +64,12 @@ abstract class Simulation(val simulator:Simulator = new Simulator(true)) {
     this.stopCrit = (stop:Any) => stop match { case stop:Boolean => stop }
     this.inpStopCrit = false
     
-    simulator.run(cgraph, stopCrit, inpStopCrit, -1, globtime, subject, monitors, objMonitors, resMonitors)
+    simulator.run(cgraph, stopCrit, inpStopCrit, -1, globtime, subject)
   }
   
   def runStopCriteria(stopCritLoc:Any => Boolean = (stop:Any) => stop match { case stop:Boolean => stop }, inpStopCritLoc:Any = false): Unit = {
     this.stopCrit = stopCritLoc
     this.inpStopCrit = inpStopCritLoc
-    simulator.run(cgraph, stopCrit, inpStopCrit, -1, globtime, subject, monitors, objMonitors, resMonitors)
+    simulator.run(cgraph, stopCrit, inpStopCrit, -1, globtime, subject)
   }
 }
