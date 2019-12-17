@@ -11,6 +11,7 @@ import io.iochord.apps.ips.model.ism.v1.IsmGraph;
 import io.iochord.apps.ips.model.ism.v1.nodes.Activity;
 import io.iochord.apps.ips.model.ism.v1.nodes.Branch;
 import io.iochord.apps.ips.model.ism.v1.nodes.enums.BranchGate;
+import io.iochord.apps.ips.model.ism.v1.nodes.enums.BranchRule;
 import io.iochord.apps.ips.model.ism.v1.nodes.enums.BranchType;
 import io.iochord.apps.ips.model.ism.v1.data.DataTable;
 import io.iochord.apps.ips.model.ism.v1.data.Function;
@@ -340,6 +341,15 @@ public class Ism2CpnscalaBiConverter implements Converter<IsmGraph, Ism2Cpnscala
 			String e_entTypeId = addEval("(b1.entity == b2.entity || b1.entity == None || b2.entity == None)", b_entTypeId);
 			String m_entTypeId = addMerge("val entity = if(b1.entity == None) b2.entity else b1.entity;", b_entTypeId, "entity");
 			
+			String entBrTypeId = "colset"+getCounter(KeyElement.type);
+			objecttypes.put("entityBrTypeId", entBrTypeId);
+			factory.append("type "+entBrTypeId+" = ((Int,String),Double)\n");
+			factory.append("\n");
+			
+			String b_entBrTypeId = addBindingClass( "entity:Option["+entTypeId+"],cond:Option[Double]" );
+			String e_entBrTypeId = addEval("(b1.entity == b2.entity || b1.entity == None || b2.entity == None) && (b1.cond == b2.cond || b1.cond == None || b2.cond == None)", b_entBrTypeId);
+			String m_entBrTypeId = addMerge("val entity = if(b1.entity == None) b2.entity else b1.entity; val cond = if(b1.cond == None) b2.cond else b1.cond;", b_entBrTypeId, "entity,cond");
+			
 			String qentTypeId = "colset"+getCounter(KeyElement.type);
 			objecttypes.put("qentityTypeId", qentTypeId);
 			factory.append("type "+qentTypeId+" = List["+entTypeId+"]\n");
@@ -436,7 +446,8 @@ public class Ism2CpnscalaBiConverter implements Converter<IsmGraph, Ism2Cpnscala
 					String pstart = addPlace(na.getId()+"_start_0", "_nap1", entTypeId, "", na.getId(), null);
 					if (na.getGenerator() != null) {
 						String t_gen = cleanId("t_",na.getGenerator().getValue().getId()+"_mergegen");
-						String t_silent = transIfExist.containsKey(t_gen) ? t_gen : addTransition("_start", null, null, b_entTypeId, e_entTypeId, m_entTypeId, na.getId(), na.getGenerator().getValue().getId()+"_mergegen");;
+						String t_silent = transIfExist.containsKey(t_gen) ? t_gen : addTransition("_start", null, null, b_entTypeId, e_entTypeId, m_entTypeId, na.getId(), na.getGenerator().getValue().getId()+"_mergegen");
+						transIfExist.put(t_gen, true);
 						addArc(placeshub.get(na.getGenerator().getId()+"_start_0"), t_silent, "PtT", entTypeId, b_entTypeId, addTtB(b_entTypeId, entTypeId, "entity", "Some(entity)"), addBtT(b_entTypeId, entTypeId, "b.entity.get"), null, null, true, na.getGenerator().getValue().getId());
 						addArc(pstart, t_silent, "TtP", entTypeId, b_entTypeId, null, addBtT(b_entTypeId, entTypeId, "b.entity.get"), null, null, false, na.getGenerator().getValue().getId());
 					}
@@ -532,7 +543,15 @@ public class Ism2CpnscalaBiConverter implements Converter<IsmGraph, Ism2Cpnscala
 							if(b.getType() == BranchType.SPLIT) {
 								if (c.getTarget().getValue() != b) continue;
 								String p_bpis = addPlace(b.getId()+"_end_"+c.getTargetIndex(), "_bpi" + i + "s", entTypeId, "", b.getId(), null);
-								bp = p_bpis;
+								
+								String actiondef = "val newb = b.copy(cond = Some(scala.util.Random.nextDouble()));newb";
+								String action = addAction(b_entBrTypeId, actiondef);
+								
+								String t_condGen = addTransition("_condGen", null, action, b_entBrTypeId, e_entBrTypeId, m_entBrTypeId, b.getId(), null);
+								String p_bpt = addPlace(null, "_bpt", entBrTypeId, "", b.getId(), null);
+								bp = p_bpt;
+								addArc(p_bpis, t_condGen, "PtT", entTypeId, b_entBrTypeId, addTtB(b_entBrTypeId, entTypeId, "entity", "Some(entity),None"), addBtT(b_entBrTypeId, entTypeId, "b.entity.get"), null, null, true, b.getId());
+								addArc(p_bpt, t_condGen, "TtP", entBrTypeId, b_entBrTypeId, addTtB(b_entBrTypeId, entBrTypeId, "(entity,cond)", "Some(entity),Some(cond)"), addBtT(b_entBrTypeId, entBrTypeId, "(b.entity.get,b.cond.get)"), null, null, false, b.getId());
 							}
 							else {
 								if (c.getSource().getValue() != b) continue;
@@ -543,6 +562,7 @@ public class Ism2CpnscalaBiConverter implements Converter<IsmGraph, Ism2Cpnscala
 						//System.out.println("Source "+c.getSource().getId());
 						i++;
 					}
+					
 					i = 0;
 					for (Connector c : p.getConnectors().values()) {
 						if(b.getGate() == BranchGate.AND) {
@@ -553,10 +573,19 @@ public class Ism2CpnscalaBiConverter implements Converter<IsmGraph, Ism2Cpnscala
 						else if(b.getGate() == BranchGate.XOR) {
 							if(b.getType() == BranchType.SPLIT) {
 								if (c.getSource().getValue() != b) continue;
+								String guard = null;
+								if(b.getRule() == BranchRule.DATA)
+								{
+										
+								}
+								else if (b.getRule() == BranchRule.CONDITION) {
+									String guarddef = "b.cond "+c.getAttributes().get("condition");
+									guard = addGuard(b_entBrTypeId, guarddef);
+								}
 								String p_bpos = addPlace(b.getId()+"_start_"+c.getSourceIndex(), "_bpo" + i + "s", entTypeId, "", b.getId(), null);
-								String t_silent = addTransition("_temps_"+i, null, null, b_entTypeId, e_entTypeId, m_entTypeId, b.getId(), null);
-								addArc(bp, t_silent, "PtT", entTypeId, b_entTypeId, addTtB(b_entTypeId, entTypeId, "entity", "Some(entity)"), addBtT(b_entTypeId, entTypeId, "b.entity.get"), null, null, true, b.getId());
-								addArc(p_bpos, t_silent, "TtP", entTypeId, b_entTypeId, null, addBtT(b_entTypeId, entTypeId, "b.entity.get"), null, null, false, b.getId());
+								String t_silent = addTransition("_temps_"+i, guard, null, b_entBrTypeId, e_entBrTypeId, m_entBrTypeId, b.getId(), null);
+								addArc(bp, t_silent, "PtT", entBrTypeId, b_entBrTypeId, addTtB(b_entBrTypeId, entBrTypeId, "(entity,cond)", "Some(entity),Some(cond)"), addBtT(b_entBrTypeId, entBrTypeId, "(b.entity.get,b.cond.get)"), null, null, true, b.getId());
+								addArc(p_bpos, t_silent, "TtP", entTypeId, b_entBrTypeId, null, addBtT(b_entBrTypeId, entTypeId, "b.entity.get"), null, null, false, b.getId());
 							}
 							else {
 								if (c.getTarget().getValue() != b) continue;

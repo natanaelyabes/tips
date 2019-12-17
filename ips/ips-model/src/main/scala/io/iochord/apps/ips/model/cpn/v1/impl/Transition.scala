@@ -161,7 +161,7 @@ class Transition[B] (
       val bAction = action.computeActionFun(bChosen)
       bModify = merge(bChosen,bAction)
     }
-    
+      
     out.foreach(arc => {
       val tGen = arc.BtoTV(bModify)
       if(tGen != None) {
