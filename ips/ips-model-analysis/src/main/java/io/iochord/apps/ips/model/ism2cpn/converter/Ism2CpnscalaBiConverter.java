@@ -10,6 +10,7 @@ import io.iochord.apps.ips.model.ism.v1.Data;
 import io.iochord.apps.ips.model.ism.v1.IsmGraph;
 import io.iochord.apps.ips.model.ism.v1.nodes.Activity;
 import io.iochord.apps.ips.model.ism.v1.nodes.Branch;
+import io.iochord.apps.ips.model.ism.v1.nodes.enums.ActivityType;
 import io.iochord.apps.ips.model.ism.v1.nodes.enums.BranchGate;
 import io.iochord.apps.ips.model.ism.v1.nodes.enums.BranchRule;
 import io.iochord.apps.ips.model.ism.v1.nodes.enums.BranchType;
@@ -272,12 +273,12 @@ public class Ism2CpnscalaBiConverter implements Converter<IsmGraph, Ism2Cpnscala
 		return addTimeid;
 	}
 	
-	public String createResourcePlace(String resId) {
+	public String createResourcePlace(String resId, String typecaseId) {
 		String residClean = cleanId("r_", resId);
 		
 		StringBuilder placefactory = new StringBuilder();
-		placefactory.append( "val map"+residClean+" = Map[(Resource,Long),Int]()\n" );
-		placefactory.append( "val ms"+residClean+" = new Multiset[Resource](map"+residClean+")\n" );
+		placefactory.append( "val map"+residClean+" = Map[(Resource["+typecaseId+"],Long),Int]()\n" );
+		placefactory.append( "val ms"+residClean+" = new Multiset[Resource["+typecaseId+"]](map"+residClean+")\n" );
 		placefactory.append( "val "+residClean+" = new Place(\""+residClean+"\",\"Resource Place\",ms"+residClean+")\n" );
 		placefactory.append( residClean+".setOrigin(Map[String,String]((\"origin\",\""+resId+"\"),(\"role\",\"_resp\")))\n" );
 		placefactory.append( "cgraph.addPlace("+residClean+")\n" );
@@ -308,7 +309,10 @@ public class Ism2CpnscalaBiConverter implements Converter<IsmGraph, Ism2Cpnscala
 		factory.append("\n val "+listid+" = List["+typeid+"]() \n");
 		String pendqueue = addPlace(null, "_qendp", ltypeid, "(("+listid+",0),1)", origin, queue.getId()+"_qendp");
 		
-		String tstartqueue = addTransition("_qstt", null, null, cb, ev, mg, origin, queue.getId()+"_qstt");
+		String guarddef = "b.queue.get.length < "+queue.getSize();
+		String guard = queue.getSize() > 0 ? addGuard(cb, guarddef) : null;
+		
+		String tstartqueue = addTransition("_qstt", guard, null, cb, ev, mg, origin, queue.getId()+"_qstt");
 		
 		addArc(pendqueue, tstartqueue, "PtT", ltypeid, cb, addTtB(cb, ltypeid, "queue", "None, Some(queue)"), addBtT(cb, ltypeid, "b.queue.get"), null, null, true, origin);
 		
@@ -324,12 +328,12 @@ public class Ism2CpnscalaBiConverter implements Converter<IsmGraph, Ism2Cpnscala
 		for (String pi : snet.getPages().keySet()) {
 			io.iochord.apps.ips.model.ism.v1.Page p = snet.getPages().get(pi);
 			
-			String CaseData = "case class CaseData(name:String,age:Int)";
+			String CaseData = "case class CaseData(atr1:String,atr2:Int)";
 			factory.append(CaseData+"\n");
 			factory.append("\n");
 			
 			String dataTypeId = "colset"+getCounter(KeyElement.type);
-			factory.append("type "+dataTypeId+" = (Int,String,CaseData)\n");
+			factory.append("type "+dataTypeId+" = ((Int,String),CaseData)\n");
 			factory.append("\n");
 			
 			String entTypeId = "colset"+getCounter(KeyElement.type);
@@ -361,19 +365,19 @@ public class Ism2CpnscalaBiConverter implements Converter<IsmGraph, Ism2Cpnscala
 			
 			String entResTypeId = "colset"+getCounter(KeyElement.type);
 			objecttypes.put("entityResTypeId", entResTypeId);
-			factory.append("type "+entResTypeId+" = ("+entTypeId+",Resource)\n");
+			factory.append("type "+entResTypeId+" = ("+entTypeId+",Resource["+entTypeId+"])\n");
 			factory.append("\n");
 			
-			String b_entResTypeId = addBindingClass( "entity:Option["+entTypeId+"], resource:Option[Resource]" );
+			String b_entResTypeId = addBindingClass( "entity:Option["+entTypeId+"], resource:Option[Resource["+entTypeId+"]]" );
 			String e_entResTypeId = addEval("(b1.entity == b2.entity || b1.entity == None || b2.entity == None) && (b1.resource == b2.resource || b1.resource == None || b2.resource == None)", b_entResTypeId);
 			String m_entResTypeId = addMerge("val entity = if(b1.entity == None) b2.entity else b1.entity; val resource = if(b1.resource == None) b2.resource else b1.resource;", b_entResTypeId, "entity,resource");
 			
 			String qentResTypeId = "colset"+getCounter(KeyElement.type);
 			objecttypes.put("entityResTypeId", qentResTypeId);
-			factory.append("type "+qentResTypeId+" = ("+entTypeId+",Resource, List["+entTypeId+"])\n");
+			factory.append("type "+qentResTypeId+" = ("+entTypeId+",Resource["+entTypeId+"], List["+entTypeId+"])\n");
 			factory.append("\n");
 			
-			String b_qentResTypeId = addBindingClass( "entity:Option["+entTypeId+"], resource:Option[Resource], queue:Option[List["+entTypeId+"]]" );
+			String b_qentResTypeId = addBindingClass( "entity:Option["+entTypeId+"], resource:Option[Resource["+entTypeId+"]], queue:Option[List["+entTypeId+"]]" );
 			String e_qentResTypeId = addEval("(b1.entity == b2.entity || b1.entity == None || b2.entity == None) && (b1.resource == b2.resource || b1.resource == None || b2.resource == None) && (b1.queue == b2.queue || b1.queue == None || b2.queue == None)", b_qentResTypeId);
 			String m_qentResTypeId = addMerge("val entity = if(b1.entity == None) b2.entity else b1.entity; val resource = if(b1.resource == None) b2.resource else b1.resource; val queue = if(b1.queue == None) b2.queue else b1.queue;", b_qentResTypeId, "entity,resource,queue");
 			
@@ -405,7 +409,7 @@ public class Ism2CpnscalaBiConverter implements Converter<IsmGraph, Ism2Cpnscala
 					String action = addAction(b_dgt1,
 							"val r = new java.util.Random()\n"
 							+ "val rint = r.nextInt();val gid = \""+dg.getId()+"\"\n"
-							+ "val data = CaseData(\"nama\"+rint,rint)\n"
+							+ "val data = CaseData(\"atr\"+rint,rint)\n"
 							+ b_dgt1+"(b.tid,Some(gid),Some(data))");
 					
 					String t_dgt1 = addTransition("_dgt1", guard, action, b_dgt1, e_dgt1, m_dgt1, dg.getId(), null);
@@ -413,7 +417,7 @@ public class Ism2CpnscalaBiConverter implements Converter<IsmGraph, Ism2Cpnscala
 					addArc(p_dgp1, t_dgt1, "PtT", typeId, b_dgt1, addTtB(b_dgt1, typeId, "tid", "Some(tid), None, None"), addBtT(b_dgt1, typeId, "b.tid.get"), null, null, true, dg.getId());
 					addArc(p_dgp1, t_dgt1, "TtP", typeId, b_dgt1, null, addBtT(b_dgt1, typeId, "b.tid.get + 1"), addAddedTime(b_dgt1,dg.getExpression()), null, false, dg.getId());
 					addArc(p_dgp2, t_dgt1, "TtP", entTypeId, b_dgt1, null, addBtT(b_dgt1, entTypeId, "(b.tid.get,b.gid.get)"), null, null, false, dg.getId());
-					addArc(p_dgpData, t_dgt1, "TtP", dataTypeId, b_dgt1, null, addBtT(b_dgt1, dataTypeId, "(b.tid.get,b.gid.get,b.data.get)"), null, null, false, dg.getId());
+					addArc(p_dgpData, t_dgt1, "TtP", dataTypeId, b_dgt1, null, addBtT(b_dgt1, dataTypeId, "((b.tid.get,b.gid.get),b.data.get)"), null, null, false, dg.getId());
 					
 				}
 				if (d instanceof Function) {
@@ -427,7 +431,7 @@ public class Ism2CpnscalaBiConverter implements Converter<IsmGraph, Ism2Cpnscala
 				}
 				if (d instanceof Resource) {
 					Resource r = (Resource) d;
-					createResourcePlace(r.getId());
+					createResourcePlace(r.getId(), entTypeId);
 					addResource(r.getId(), r.getLabel(), r.getNumberOfResource());
 				}
 				if (d instanceof DataTable) {
@@ -462,63 +466,185 @@ public class Ism2CpnscalaBiConverter implements Converter<IsmGraph, Ism2Cpnscala
 					
 					String p_nap1 = addPlace(na.getId()+"_end_0", "_nap1", entTypeId, "", na.getId(), null);
 					
-					if(na.getQueue() != null && na.getResource() != null) {
-						String qidClean = cleanId(null, na.getQueue().getValue().getId());
-						String t_qstt = "t_"+qidClean+"_qstt";
-						String p_qendp = "p_"+qidClean+"_qendp";
-						
-						addArc(p_nap1, t_qstt, "PtT", entTypeId, b_qentTypeId, addTtB(b_qentTypeId, entTypeId, "entity", "Some(entity), None"), addBtT(b_qentTypeId, entTypeId, "b.entity.get"), null, null, true, na.getId());
-						String t_natstart = addTransition("_natstart", null, null, b_qentResTypeId, e_qentResTypeId, m_qentResTypeId, na.getId(), null);
-						addArc(p_qendp, t_natstart, "PtT", qentTypeId, b_qentResTypeId, addTtB(b_qentResTypeId, qentTypeId, "entity::queue", "Some(entity), None, Some(queue)"), addBtT(b_qentResTypeId, qentTypeId, "b.entity.get::b.queue.get"), null, null, true, na.getId());
-						addArc(p_qendp, t_natstart, "TtP", qentTypeId, b_qentResTypeId, null, addBtT(b_qentResTypeId, qentTypeId, "b.queue.get"), null, null, false, na.getId());
-						String p_nap2 = addPlace(null, "_nap2", entResTypeId, "", na.getId(), null);
-					    addArc(p_nap2, t_natstart, "TtP", entResTypeId, b_qentResTypeId, null, addBtT(b_qentResTypeId, entResTypeId, "(b.entity.get,b.resource.get)"), addAddedTime(b_qentResTypeId,na.getProcessingTimeExpression()), null, false, na.getId());
-					    String t_natend = addTransition("_natend", null, null, b_entResTypeId, e_entResTypeId, m_entResTypeId, na.getId(), null);
-					    addArc(p_nap2, t_natend, "PtT", entResTypeId, b_entResTypeId, addTtB(b_entResTypeId, entResTypeId, "(entity, resource)", "Some(entity), Some(resource)"), addBtT(b_entResTypeId, entResTypeId, "(b.entity.get, b.resource.get)"), null, null, true, na.getId());
-					    String p_nap3 = addPlace(na.getId()+"_start_0", "_nap3", entTypeId, "", na.getId(), null);
-					    addArc(p_nap3, t_natend, "TtP", entTypeId, b_entResTypeId, null, addBtT(b_entResTypeId, entTypeId, "b.entity.get"), null, null, false, na.getId());
-					   
-					    addArc(cleanId("r_", na.getResource().getId()), t_natstart, "PtT", "Resource", b_qentResTypeId, addTtB(b_qentResTypeId, "Resource", "resource", "None, Some(resource), None"), addBtT(b_qentResTypeId, "Resource", "b.resource.get"), null, null, true, na.getId());
-					    addArc(cleanId("r_", na.getResource().getId()), t_natend, "TtP", "Resource", b_entResTypeId, null, addBtT(b_entResTypeId, "Resource", "b.resource.get"), null, null, false, na.getId());
+					if(na.getType() == ActivityType.CONCURRENT_BATCH) {
+						if(na.getQueue() != null && na.getResource() != null) {
+							String qidClean = cleanId(null, na.getQueue().getValue().getId());
+							String t_qstt = "t_"+qidClean+"_qstt";
+							String p_qendp = "p_"+qidClean+"_qendp";
+							
+							addArc(p_nap1, t_qstt, "PtT", entTypeId, b_qentTypeId, addTtB(b_qentTypeId, entTypeId, "entity", "Some(entity), None"), addBtT(b_qentTypeId, entTypeId, "b.entity.get"), null, null, true, na.getId());
+							String t_natstart = addTransition("_natstart", null, null, b_qentResTypeId, e_qentResTypeId, m_qentResTypeId, na.getId(), null);
+							addArc(p_qendp, t_natstart, "PtT", qentTypeId, b_qentResTypeId, addTtB(b_qentResTypeId, qentTypeId, "entity::queue", "Some(entity), None, Some(queue)"), addBtT(b_qentResTypeId, qentTypeId, "b.entity.get::b.queue.get"), null, null, true, na.getId());
+							addArc(p_qendp, t_natstart, "TtP", qentTypeId, b_qentResTypeId, null, addBtT(b_qentResTypeId, qentTypeId, "b.queue.get"), null, null, false, na.getId());
+							String p_nap2 = addPlace(null, "_nap2", entResTypeId, "", na.getId(), null);
+						    addArc(p_nap2, t_natstart, "TtP", entResTypeId, b_qentResTypeId, null, addBtT(b_qentResTypeId, entResTypeId, "(b.entity.get,b.resource.get)"), addAddedTime(b_qentResTypeId,na.getProcessingTimeExpression()), null, false, na.getId());
+						    String t_natend = addTransition("_natend", null, null, b_entResTypeId, e_entResTypeId, m_entResTypeId, na.getId(), null);
+						    addArc(p_nap2, t_natend, "PtT", entResTypeId, b_entResTypeId, addTtB(b_entResTypeId, entResTypeId, "(entity, resource)", "Some(entity), Some(resource)"), addBtT(b_entResTypeId, entResTypeId, "(b.entity.get, b.resource.get)"), null, null, true, na.getId());
+						    String p_nap3 = addPlace(na.getId()+"_start_0", "_nap3", entTypeId, "", na.getId(), null);
+						    addArc(p_nap3, t_natend, "TtP", entTypeId, b_entResTypeId, null, addBtT(b_entResTypeId, entTypeId, "b.entity.get"), null, null, false, na.getId());
+						   
+						    addArc(cleanId("r_", na.getResource().getId()), t_natstart, "PtT", "Resource["+entTypeId+"]", b_qentResTypeId, addTtB(b_qentResTypeId, "Resource["+entTypeId+"]", "resource", "None, Some(resource), None"), addBtT(b_qentResTypeId, "Resource["+entTypeId+"]", "b.resource.get"), null, null, true, na.getId());
+						    addArc(cleanId("r_", na.getResource().getId()), t_natend, "TtP", "Resource["+entTypeId+"]", b_entResTypeId, null, addBtT(b_entResTypeId, "Resource["+entTypeId+"]", "b.resource.get"), null, null, false, na.getId());
+						}
+						else if(na.getQueue() != null) {
+							String qidClean = cleanId(null, na.getQueue().getValue().getId());
+							String t_qstt = "t_"+qidClean+"_qstt";
+							String p_qendp = "p_"+qidClean+"_qendp";
+							
+							addArc(p_nap1, t_qstt, "PtT", entTypeId, b_qentTypeId, addTtB(b_qentTypeId, entTypeId, "entity", "Some(entity), None"), addBtT(b_qentTypeId, entTypeId, "b.entity.get"), null, null, true, na.getId());
+							String t_natstart = addTransition("_natstart", null, null, b_qentTypeId, e_qentTypeId, m_qentTypeId, na.getId(), null);
+							addArc(p_qendp, t_natstart, "PtT", qentTypeId, b_qentTypeId, addTtB(b_qentTypeId, qentTypeId, "entity::queue", "Some(entity), Some(queue)"), addBtT(b_qentTypeId, qentTypeId, "b.entity.get::b.queue.get"), null, null, true, na.getId());
+							addArc(p_qendp, t_natstart, "TtP", qentTypeId, b_qentTypeId, null, addBtT(b_qentTypeId, qentTypeId, "b.queue.get"), null, null, false, na.getId());
+							String p_nap2 = addPlace(null, "_nap2", entTypeId, "", na.getId(), null);
+							addArc(p_nap2, t_natstart, "TtP", entTypeId, b_qentTypeId, null, addBtT(b_qentTypeId, entTypeId, "b.entity.get"), addAddedTime(b_entTypeId,na.getProcessingTimeExpression()), null, false, na.getId());
+							String t_natend = addTransition("_natend", null, null, b_entTypeId, e_entTypeId, m_entTypeId, na.getId(), null);
+							addArc(p_nap2, t_natend, "PtT", entTypeId, b_entTypeId, addTtB(b_entTypeId, entTypeId, "entity", "Some(entity)"), addBtT(b_entTypeId, entTypeId, "b.entity.get"), null, null, true, na.getId());
+							String p_nap3 = addPlace(na.getId()+"_start_0", "_nap3", entTypeId, "", na.getId(), null);
+							addArc(p_nap3, t_natend, "TtP", entTypeId, b_entTypeId, null, addBtT(b_entTypeId, entTypeId, "b.entity.get"), null, null, false, na.getId());  
+						}
+						else if(na.getResource() != null) {
+						   String t_natstart = addTransition("_natstart", null, null, b_entResTypeId, e_entResTypeId, m_entResTypeId, na.getId(), null);
+						   addArc(p_nap1, t_natstart, "PtT", entTypeId, b_entResTypeId, addTtB(b_entResTypeId, entTypeId, "entity", "Some(entity), None"), addBtT(b_entResTypeId, entTypeId, "b.entity.get"), null, null, true, na.getId());
+						   String p_nap2 = addPlace(null, "_nap2", entResTypeId, "", na.getId(), null);
+						   addArc(p_nap2, t_natstart, "TtP", entResTypeId, b_entResTypeId, null, addBtT(b_entResTypeId, entResTypeId, "(b.entity.get,b.resource.get)"), addAddedTime(b_entResTypeId,na.getProcessingTimeExpression()), null, false, na.getId());
+						   String t_natend = addTransition("_natend", null, null, b_entResTypeId, e_entResTypeId, m_entResTypeId, na.getId(), null);
+						   addArc(p_nap2, t_natend, "PtT", entResTypeId, b_entResTypeId, addTtB(b_entResTypeId, entResTypeId, "(entity, resource)", "Some(entity), Some(resource)"), addBtT(b_entResTypeId, entResTypeId, "(b.entity.get, b.resource.get)"), null, null, true, na.getId());
+						   String p_nap3 = addPlace(na.getId()+"_start_0", "_nap3", entTypeId, "", na.getId(), null);
+						   addArc(p_nap3, t_natend, "TtP", entTypeId, b_entResTypeId, null, addBtT(b_entResTypeId, entTypeId, "b.entity.get"), null, null, false, na.getId());
+						   
+						   addArc(cleanId("r_", na.getResource().getId()), t_natstart, "PtT", "Resource["+entTypeId+"]", b_entResTypeId, addTtB(b_entResTypeId, "Resource["+entTypeId+"]", "resource", "None, Some(resource)"), addBtT(b_entResTypeId, "Resource["+entTypeId+"]", "b.resource.get"), null, null, true, na.getId());
+						   addArc(cleanId("r_", na.getResource().getId()), t_natend, "TtP", "Resource["+entTypeId+"]", b_entResTypeId, null, addBtT(b_entResTypeId, "Resource["+entTypeId+"]", "b.resource.get"), null, null, false, na.getId());
+						}
+						else {
+						   String t_natstart = addTransition("_natstart", null, null, b_entTypeId, e_entTypeId, m_entTypeId, na.getId(), null);
+						   addArc(p_nap1, t_natstart, "PtT", entTypeId, b_entTypeId, addTtB(b_entTypeId, entTypeId, "entity", "Some(entity)"), addBtT(b_entTypeId, entTypeId, "b.entity.get"), null, null, true, na.getId());
+						   String p_nap2 = addPlace(null, "_nap2", entTypeId, "", na.getId(), null);
+						   addArc(p_nap2, t_natstart, "TtP", entTypeId, b_entTypeId, null, addBtT(b_entTypeId, entTypeId, "b.entity.get"), addAddedTime(b_entTypeId,na.getProcessingTimeExpression()), null, false, na.getId());
+						   String t_natend = addTransition("_natend", null, null, b_entTypeId, e_entTypeId, m_entTypeId, na.getId(), null);
+						   addArc(p_nap2, t_natend, "PtT", entTypeId, b_entTypeId, addTtB(b_entTypeId, entTypeId, "entity", "Some(entity)"), addBtT(b_entTypeId, entTypeId, "b.entity.get"), null, null, true, na.getId());
+						   String p_nap3 = addPlace(na.getId()+"_start_0", "_nap3", entTypeId, "", na.getId(), null);
+						   addArc(p_nap3, t_natend, "TtP", entTypeId, b_entTypeId, null, addBtT(b_entTypeId, entTypeId, "b.entity.get"), null, null, false, na.getId());
+						}
 					}
-					else if(na.getQueue() != null) {
-						String qidClean = cleanId(null, na.getQueue().getValue().getId());
-						String t_qstt = "t_"+qidClean+"_qstt";
-						String p_qendp = "p_"+qidClean+"_qendp";
-						
-						addArc(p_nap1, t_qstt, "PtT", entTypeId, b_qentTypeId, addTtB(b_qentTypeId, entTypeId, "entity", "Some(entity), None"), addBtT(b_qentTypeId, entTypeId, "b.entity.get"), null, null, true, na.getId());
-						String t_natstart = addTransition("_natstart", null, null, b_qentTypeId, e_qentTypeId, m_qentTypeId, na.getId(), null);
-						addArc(p_qendp, t_natstart, "PtT", qentTypeId, b_qentTypeId, addTtB(b_qentTypeId, qentTypeId, "entity::queue", "Some(entity), Some(queue)"), addBtT(b_qentTypeId, qentTypeId, "b.entity.get::b.queue.get"), null, null, true, na.getId());
-						addArc(p_qendp, t_natstart, "TtP", qentTypeId, b_qentTypeId, null, addBtT(b_qentTypeId, qentTypeId, "b.queue.get"), null, null, false, na.getId());
-						String p_nap2 = addPlace(null, "_nap2", entTypeId, "", na.getId(), null);
-						addArc(p_nap2, t_natstart, "TtP", entTypeId, b_qentTypeId, null, addBtT(b_qentTypeId, entTypeId, "b.entity.get"), addAddedTime(b_entTypeId,na.getProcessingTimeExpression()), null, false, na.getId());
-						String t_natend = addTransition("_natend", null, null, b_entTypeId, e_entTypeId, m_entTypeId, na.getId(), null);
-						addArc(p_nap2, t_natend, "PtT", entTypeId, b_entTypeId, addTtB(b_entTypeId, entTypeId, "entity", "Some(entity)"), addBtT(b_entTypeId, entTypeId, "b.entity.get"), null, null, true, na.getId());
-						String p_nap3 = addPlace(na.getId()+"_start_0", "_nap3", entTypeId, "", na.getId(), null);
-						addArc(p_nap3, t_natend, "TtP", entTypeId, b_entTypeId, null, addBtT(b_entTypeId, entTypeId, "b.entity.get"), null, null, false, na.getId());  
-					}
-					else if(na.getResource() != null) {
-					   String t_natstart = addTransition("_natstart", null, null, b_entResTypeId, e_entResTypeId, m_entResTypeId, na.getId(), null);
-					   addArc(p_nap1, t_natstart, "PtT", entTypeId, b_entResTypeId, addTtB(b_entResTypeId, entTypeId, "entity", "Some(entity), None"), addBtT(b_entResTypeId, entTypeId, "b.entity.get"), null, null, true, na.getId());
-					   String p_nap2 = addPlace(null, "_nap2", entResTypeId, "", na.getId(), null);
-					   addArc(p_nap2, t_natstart, "TtP", entResTypeId, b_entResTypeId, null, addBtT(b_entResTypeId, entResTypeId, "(b.entity.get,b.resource.get)"), addAddedTime(b_entResTypeId,na.getProcessingTimeExpression()), null, false, na.getId());
-					   String t_natend = addTransition("_natend", null, null, b_entResTypeId, e_entResTypeId, m_entResTypeId, na.getId(), null);
-					   addArc(p_nap2, t_natend, "PtT", entResTypeId, b_entResTypeId, addTtB(b_entResTypeId, entResTypeId, "(entity, resource)", "Some(entity), Some(resource)"), addBtT(b_entResTypeId, entResTypeId, "(b.entity.get, b.resource.get)"), null, null, true, na.getId());
-					   String p_nap3 = addPlace(na.getId()+"_start_0", "_nap3", entTypeId, "", na.getId(), null);
-					   addArc(p_nap3, t_natend, "TtP", entTypeId, b_entResTypeId, null, addBtT(b_entResTypeId, entTypeId, "b.entity.get"), null, null, false, na.getId());
-					   
-					   addArc(cleanId("r_", na.getResource().getId()), t_natstart, "PtT", "Resource", b_entResTypeId, addTtB(b_entResTypeId, "Resource", "resource", "None, Some(resource)"), addBtT(b_entResTypeId, "Resource", "b.resource.get"), null, null, true, na.getId());
-					   addArc(cleanId("r_", na.getResource().getId()), t_natend, "TtP", "Resource", b_entResTypeId, null, addBtT(b_entResTypeId, "Resource", "b.resource.get"), null, null, false, na.getId());
+					else if(na.getType() == ActivityType.SPLIT_MODULE) {
+						if(na.getQueue() != null && na.getResource() != null) {
+							String qidClean = cleanId(null, na.getQueue().getValue().getId());
+							String t_qstt = "t_"+qidClean+"_qstt";
+							String p_qendp = "p_"+qidClean+"_qendp";
+							
+							addArc(p_nap1, t_qstt, "PtT", entTypeId, b_qentTypeId, addTtB(b_qentTypeId, entTypeId, "entity", "Some(entity), None"), addBtT(b_qentTypeId, entTypeId, "b.entity.get"), null, null, true, na.getId());
+							String t_natstart = addTransition("_natstart", null, null, b_qentResTypeId, e_qentResTypeId, m_qentResTypeId, na.getId(), null);
+							addArc(p_qendp, t_natstart, "PtT", qentTypeId, b_qentResTypeId, addTtB(b_qentResTypeId, qentTypeId, "entity::queue", "Some(entity), None, Some(queue)"), addBtT(b_qentResTypeId, qentTypeId, "b.entity.get::b.queue.get"), null, null, true, na.getId());
+							addArc(p_qendp, t_natstart, "TtP", qentTypeId, b_qentResTypeId, null, addBtT(b_qentResTypeId, qentTypeId, "b.queue.get"), null, null, false, na.getId());
+							String p_nap2 = addPlace(null, "_nap2", entResTypeId, "", na.getId(), null);
+						    addArc(p_nap2, t_natstart, "TtP", entResTypeId, b_qentResTypeId, null, addBtT(b_qentResTypeId, entResTypeId, "(b.entity.get,b.resource.get)"), addAddedTime(b_qentResTypeId,na.getProcessingTimeExpression()), "5", false, na.getId());
+						    String t_natend = addTransition("_natend", null, null, b_entResTypeId, e_entResTypeId, m_entResTypeId, na.getId(), null);
+						    addArc(p_nap2, t_natend, "PtT", entResTypeId, b_entResTypeId, addTtB(b_entResTypeId, entResTypeId, "(entity, resource)", "Some(entity), Some(resource)"), addBtT(b_entResTypeId, entResTypeId, "(b.entity.get, b.resource.get)"), null, null, true, na.getId());
+						    String p_nap3 = addPlace(na.getId()+"_start_0", "_nap3", entTypeId, "", na.getId(), null);
+						    addArc(p_nap3, t_natend, "TtP", entTypeId, b_entResTypeId, null, addBtT(b_entResTypeId, entTypeId, "b.entity.get"), null, null, false, na.getId());
+						   
+						    addArc(cleanId("r_", na.getResource().getId()), t_natstart, "PtT", "Resource["+entTypeId+"]", b_qentResTypeId, addTtB(b_qentResTypeId, "Resource["+entTypeId+"]", "resource", "None, Some(resource), None"), addBtT(b_qentResTypeId, "Resource["+entTypeId+"]", "b.resource.get"), null, null, true, na.getId());
+						    addArc(cleanId("r_", na.getResource().getId()), t_natend, "TtP", "Resource["+entTypeId+"]", b_entResTypeId, null, addBtT(b_entResTypeId, "Resource["+entTypeId+"]", "b.resource.get"), null, null, false, na.getId());
+						}
+						else if(na.getQueue() != null) {
+							String qidClean = cleanId(null, na.getQueue().getValue().getId());
+							String t_qstt = "t_"+qidClean+"_qstt";
+							String p_qendp = "p_"+qidClean+"_qendp";
+							
+							addArc(p_nap1, t_qstt, "PtT", entTypeId, b_qentTypeId, addTtB(b_qentTypeId, entTypeId, "entity", "Some(entity), None"), addBtT(b_qentTypeId, entTypeId, "b.entity.get"), null, null, true, na.getId());
+							String t_natstart = addTransition("_natstart", null, null, b_qentTypeId, e_qentTypeId, m_qentTypeId, na.getId(), null);
+							addArc(p_qendp, t_natstart, "PtT", qentTypeId, b_qentTypeId, addTtB(b_qentTypeId, qentTypeId, "entity::queue", "Some(entity), Some(queue)"), addBtT(b_qentTypeId, qentTypeId, "b.entity.get::b.queue.get"), null, null, true, na.getId());
+							addArc(p_qendp, t_natstart, "TtP", qentTypeId, b_qentTypeId, null, addBtT(b_qentTypeId, qentTypeId, "b.queue.get"), null, null, false, na.getId());
+							String p_nap2 = addPlace(null, "_nap2", entTypeId, "", na.getId(), null);
+							addArc(p_nap2, t_natstart, "TtP", entTypeId, b_qentTypeId, null, addBtT(b_qentTypeId, entTypeId, "b.entity.get"), addAddedTime(b_entTypeId,na.getProcessingTimeExpression()), null, false, na.getId());
+							String t_natend = addTransition("_natend", null, null, b_entTypeId, e_entTypeId, m_entTypeId, na.getId(), null);
+							addArc(p_nap2, t_natend, "PtT", entTypeId, b_entTypeId, addTtB(b_entTypeId, entTypeId, "entity", "Some(entity)"), addBtT(b_entTypeId, entTypeId, "b.entity.get"), null, null, true, na.getId());
+							String p_nap3 = addPlace(na.getId()+"_start_0", "_nap3", entTypeId, "", na.getId(), null);
+							addArc(p_nap3, t_natend, "TtP", entTypeId, b_entTypeId, null, addBtT(b_entTypeId, entTypeId, "b.entity.get"), null, null, false, na.getId());  
+						}
+						else if(na.getResource() != null) {
+						   String t_natstart = addTransition("_natstart", null, null, b_entResTypeId, e_entResTypeId, m_entResTypeId, na.getId(), null);
+						   addArc(p_nap1, t_natstart, "PtT", entTypeId, b_entResTypeId, addTtB(b_entResTypeId, entTypeId, "entity", "Some(entity), None"), addBtT(b_entResTypeId, entTypeId, "b.entity.get"), null, null, true, na.getId());
+						   String p_nap2 = addPlace(null, "_nap2", entResTypeId, "", na.getId(), null);
+						   addArc(p_nap2, t_natstart, "TtP", entResTypeId, b_entResTypeId, null, addBtT(b_entResTypeId, entResTypeId, "(b.entity.get,b.resource.get)"), addAddedTime(b_entResTypeId,na.getProcessingTimeExpression()), "5", false, na.getId());
+						   String t_natend = addTransition("_natend", null, null, b_entResTypeId, e_entResTypeId, m_entResTypeId, na.getId(), null);
+						   addArc(p_nap2, t_natend, "PtT", entResTypeId, b_entResTypeId, addTtB(b_entResTypeId, entResTypeId, "(entity, resource)", "Some(entity), Some(resource)"), addBtT(b_entResTypeId, entResTypeId, "(b.entity.get, b.resource.get)"), null, null, true, na.getId());
+						   String p_nap3 = addPlace(na.getId()+"_start_0", "_nap3", entTypeId, "", na.getId(), null);
+						   addArc(p_nap3, t_natend, "TtP", entTypeId, b_entResTypeId, null, addBtT(b_entResTypeId, entTypeId, "b.entity.get"), null, null, false, na.getId());
+						   
+						   addArc(cleanId("r_", na.getResource().getId()), t_natstart, "PtT", "Resource["+entTypeId+"]", b_entResTypeId, addTtB(b_entResTypeId, "Resource["+entTypeId+"]", "resource", "None, Some(resource)"), addBtT(b_entResTypeId, "Resource["+entTypeId+"]", "b.resource.get"), null, null, true, na.getId());
+						   addArc(cleanId("r_", na.getResource().getId()), t_natend, "TtP", "Resource["+entTypeId+"]", b_entResTypeId, null, addBtT(b_entResTypeId, "Resource["+entTypeId+"]", "b.resource.get"), null, null, false, na.getId());
+						}
+						else {
+						   String t_natstart = addTransition("_natstart", null, null, b_entTypeId, e_entTypeId, m_entTypeId, na.getId(), null);
+						   addArc(p_nap1, t_natstart, "PtT", entTypeId, b_entTypeId, addTtB(b_entTypeId, entTypeId, "entity", "Some(entity)"), addBtT(b_entTypeId, entTypeId, "b.entity.get"), null, null, true, na.getId());
+						   String p_nap2 = addPlace(null, "_nap2", entTypeId, "", na.getId(), null);
+						   addArc(p_nap2, t_natstart, "TtP", entTypeId, b_entTypeId, null, addBtT(b_entTypeId, entTypeId, "b.entity.get"), addAddedTime(b_entTypeId,na.getProcessingTimeExpression()), "5", false, na.getId());
+						   String t_natend = addTransition("_natend", null, null, b_entTypeId, e_entTypeId, m_entTypeId, na.getId(), null);
+						   addArc(p_nap2, t_natend, "PtT", entTypeId, b_entTypeId, addTtB(b_entTypeId, entTypeId, "entity", "Some(entity)"), addBtT(b_entTypeId, entTypeId, "b.entity.get"), null, null, true, na.getId());
+						   String p_nap3 = addPlace(na.getId()+"_start_0", "_nap3", entTypeId, "", na.getId(), null);
+						   addArc(p_nap3, t_natend, "TtP", entTypeId, b_entTypeId, null, addBtT(b_entTypeId, entTypeId, "b.entity.get"), null, null, false, na.getId());
+						}
 					}
 					else {
-					   String t_natstart = addTransition("_natstart", null, null, b_entTypeId, e_entTypeId, m_entTypeId, na.getId(), null);
-					   addArc(p_nap1, t_natstart, "PtT", entTypeId, b_entTypeId, addTtB(b_entTypeId, entTypeId, "entity", "Some(entity)"), addBtT(b_entTypeId, entTypeId, "b.entity.get"), null, null, true, na.getId());
-					   String p_nap2 = addPlace(null, "_nap2", entTypeId, "", na.getId(), null);
-					   addArc(p_nap2, t_natstart, "TtP", entTypeId, b_entTypeId, null, addBtT(b_entTypeId, entTypeId, "b.entity.get"), addAddedTime(b_entTypeId,na.getProcessingTimeExpression()), null, false, na.getId());
-					   String t_natend = addTransition("_natend", null, null, b_entTypeId, e_entTypeId, m_entTypeId, na.getId(), null);
-					   addArc(p_nap2, t_natend, "PtT", entTypeId, b_entTypeId, addTtB(b_entTypeId, entTypeId, "entity", "Some(entity)"), addBtT(b_entTypeId, entTypeId, "b.entity.get"), null, null, true, na.getId());
-					   String p_nap3 = addPlace(na.getId()+"_start_0", "_nap3", entTypeId, "", na.getId(), null);
-					   addArc(p_nap3, t_natend, "TtP", entTypeId, b_entTypeId, null, addBtT(b_entTypeId, entTypeId, "b.entity.get"), null, null, false, na.getId());
+						if(na.getQueue() != null && na.getResource() != null) {
+							String qidClean = cleanId(null, na.getQueue().getValue().getId());
+							String t_qstt = "t_"+qidClean+"_qstt";
+							String p_qendp = "p_"+qidClean+"_qendp";
+							
+							addArc(p_nap1, t_qstt, "PtT", entTypeId, b_qentTypeId, addTtB(b_qentTypeId, entTypeId, "entity", "Some(entity), None"), addBtT(b_qentTypeId, entTypeId, "b.entity.get"), null, null, true, na.getId());
+							String t_natstart = addTransition("_natstart", null, null, b_qentResTypeId, e_qentResTypeId, m_qentResTypeId, na.getId(), null);
+							addArc(p_qendp, t_natstart, "PtT", qentTypeId, b_qentResTypeId, addTtB(b_qentResTypeId, qentTypeId, "entity::queue", "Some(entity), None, Some(queue)"), addBtT(b_qentResTypeId, qentTypeId, "b.entity.get::b.queue.get"), null, null, true, na.getId());
+							addArc(p_qendp, t_natstart, "TtP", qentTypeId, b_qentResTypeId, null, addBtT(b_qentResTypeId, qentTypeId, "b.queue.get"), null, null, false, na.getId());
+							String p_nap2 = addPlace(null, "_nap2", entResTypeId, "", na.getId(), null);
+						    addArc(p_nap2, t_natstart, "TtP", entResTypeId, b_qentResTypeId, null, addBtT(b_qentResTypeId, entResTypeId, "(b.entity.get,b.resource.get)"), addAddedTime(b_qentResTypeId,na.getProcessingTimeExpression()), null, false, na.getId());
+						    String t_natend = addTransition("_natend", null, null, b_entResTypeId, e_entResTypeId, m_entResTypeId, na.getId(), null);
+						    addArc(p_nap2, t_natend, "PtT", entResTypeId, b_entResTypeId, addTtB(b_entResTypeId, entResTypeId, "(entity, resource)", "Some(entity), Some(resource)"), addBtT(b_entResTypeId, entResTypeId, "(b.entity.get, b.resource.get)"), null, null, true, na.getId());
+						    String p_nap3 = addPlace(na.getId()+"_start_0", "_nap3", entTypeId, "", na.getId(), null);
+						    addArc(p_nap3, t_natend, "TtP", entTypeId, b_entResTypeId, null, addBtT(b_entResTypeId, entTypeId, "b.entity.get"), null, null, false, na.getId());
+						   
+						    addArc(cleanId("r_", na.getResource().getId()), t_natstart, "PtT", "Resource["+entTypeId+"]", b_qentResTypeId, addTtB(b_qentResTypeId, "Resource["+entTypeId+"]", "resource", "None, Some(resource), None"), addBtT(b_qentResTypeId, "Resource["+entTypeId+"]", "b.resource.get"), null, null, true, na.getId());
+						    addArc(cleanId("r_", na.getResource().getId()), t_natend, "TtP", "Resource["+entTypeId+"]", b_entResTypeId, null, addBtT(b_entResTypeId, "Resource["+entTypeId+"]", "b.resource.get"), null, null, false, na.getId());
+						}
+						else if(na.getQueue() != null) {
+							String qidClean = cleanId(null, na.getQueue().getValue().getId());
+							String t_qstt = "t_"+qidClean+"_qstt";
+							String p_qendp = "p_"+qidClean+"_qendp";
+							
+							addArc(p_nap1, t_qstt, "PtT", entTypeId, b_qentTypeId, addTtB(b_qentTypeId, entTypeId, "entity", "Some(entity), None"), addBtT(b_qentTypeId, entTypeId, "b.entity.get"), null, null, true, na.getId());
+							String t_natstart = addTransition("_natstart", null, null, b_qentTypeId, e_qentTypeId, m_qentTypeId, na.getId(), null);
+							addArc(p_qendp, t_natstart, "PtT", qentTypeId, b_qentTypeId, addTtB(b_qentTypeId, qentTypeId, "entity::queue", "Some(entity), Some(queue)"), addBtT(b_qentTypeId, qentTypeId, "b.entity.get::b.queue.get"), null, null, true, na.getId());
+							addArc(p_qendp, t_natstart, "TtP", qentTypeId, b_qentTypeId, null, addBtT(b_qentTypeId, qentTypeId, "b.queue.get"), null, null, false, na.getId());
+							String p_nap2 = addPlace(null, "_nap2", entTypeId, "", na.getId(), null);
+							addArc(p_nap2, t_natstart, "TtP", entTypeId, b_qentTypeId, null, addBtT(b_qentTypeId, entTypeId, "b.entity.get"), addAddedTime(b_entTypeId,na.getProcessingTimeExpression()), null, false, na.getId());
+							String t_natend = addTransition("_natend", null, null, b_entTypeId, e_entTypeId, m_entTypeId, na.getId(), null);
+							addArc(p_nap2, t_natend, "PtT", entTypeId, b_entTypeId, addTtB(b_entTypeId, entTypeId, "entity", "Some(entity)"), addBtT(b_entTypeId, entTypeId, "b.entity.get"), null, null, true, na.getId());
+							String p_nap3 = addPlace(na.getId()+"_start_0", "_nap3", entTypeId, "", na.getId(), null);
+							addArc(p_nap3, t_natend, "TtP", entTypeId, b_entTypeId, null, addBtT(b_entTypeId, entTypeId, "b.entity.get"), null, null, false, na.getId());  
+						}
+						else if(na.getResource() != null) {
+						   String t_natstart = addTransition("_natstart", null, null, b_entResTypeId, e_entResTypeId, m_entResTypeId, na.getId(), null);
+						   addArc(p_nap1, t_natstart, "PtT", entTypeId, b_entResTypeId, addTtB(b_entResTypeId, entTypeId, "entity", "Some(entity), None"), addBtT(b_entResTypeId, entTypeId, "b.entity.get"), null, null, true, na.getId());
+						   String p_nap2 = addPlace(null, "_nap2", entResTypeId, "", na.getId(), null);
+						   addArc(p_nap2, t_natstart, "TtP", entResTypeId, b_entResTypeId, null, addBtT(b_entResTypeId, entResTypeId, "(b.entity.get,b.resource.get)"), addAddedTime(b_entResTypeId,na.getProcessingTimeExpression()), null, false, na.getId());
+						   String t_natend = addTransition("_natend", null, null, b_entResTypeId, e_entResTypeId, m_entResTypeId, na.getId(), null);
+						   addArc(p_nap2, t_natend, "PtT", entResTypeId, b_entResTypeId, addTtB(b_entResTypeId, entResTypeId, "(entity, resource)", "Some(entity), Some(resource)"), addBtT(b_entResTypeId, entResTypeId, "(b.entity.get, b.resource.get)"), null, null, true, na.getId());
+						   String p_nap3 = addPlace(na.getId()+"_start_0", "_nap3", entTypeId, "", na.getId(), null);
+						   addArc(p_nap3, t_natend, "TtP", entTypeId, b_entResTypeId, null, addBtT(b_entResTypeId, entTypeId, "b.entity.get"), null, null, false, na.getId());
+						   
+						   addArc(cleanId("r_", na.getResource().getId()), t_natstart, "PtT", "Resource["+entTypeId+"]", b_entResTypeId, addTtB(b_entResTypeId, "Resource["+entTypeId+"]", "resource", "None, Some(resource)"), addBtT(b_entResTypeId, "Resource["+entTypeId+"]", "b.resource.get"), null, null, true, na.getId());
+						   addArc(cleanId("r_", na.getResource().getId()), t_natend, "TtP", "Resource["+entTypeId+"]", b_entResTypeId, null, addBtT(b_entResTypeId, "Resource["+entTypeId+"]", "b.resource.get"), null, null, false, na.getId());
+						}
+						else {
+						   String t_natstart = addTransition("_natstart", null, null, b_entTypeId, e_entTypeId, m_entTypeId, na.getId(), null);
+						   addArc(p_nap1, t_natstart, "PtT", entTypeId, b_entTypeId, addTtB(b_entTypeId, entTypeId, "entity", "Some(entity)"), addBtT(b_entTypeId, entTypeId, "b.entity.get"), null, null, true, na.getId());
+						   String p_nap2 = addPlace(null, "_nap2", entTypeId, "", na.getId(), null);
+						   addArc(p_nap2, t_natstart, "TtP", entTypeId, b_entTypeId, null, addBtT(b_entTypeId, entTypeId, "b.entity.get"), addAddedTime(b_entTypeId,na.getProcessingTimeExpression()), null, false, na.getId());
+						   String t_natend = addTransition("_natend", null, null, b_entTypeId, e_entTypeId, m_entTypeId, na.getId(), null);
+						   addArc(p_nap2, t_natend, "PtT", entTypeId, b_entTypeId, addTtB(b_entTypeId, entTypeId, "entity", "Some(entity)"), addBtT(b_entTypeId, entTypeId, "b.entity.get"), null, null, true, na.getId());
+						   String p_nap3 = addPlace(na.getId()+"_start_0", "_nap3", entTypeId, "", na.getId(), null);
+						   addArc(p_nap3, t_natend, "TtP", entTypeId, b_entTypeId, null, addBtT(b_entTypeId, entTypeId, "b.entity.get"), null, null, false, na.getId());
+						}
 					}
 				}
 				if (n instanceof Branch) {
@@ -579,7 +705,7 @@ public class Ism2CpnscalaBiConverter implements Converter<IsmGraph, Ism2Cpnscala
 										
 								}
 								else if (b.getRule() == BranchRule.CONDITION) {
-									String guarddef = "b.cond "+c.getAttributes().get("condition");
+									String guarddef = "b.cond.get "+c.getAttributes().get("condition");
 									guard = addGuard(b_entBrTypeId, guarddef);
 								}
 								String p_bpos = addPlace(b.getId()+"_start_"+c.getSourceIndex(), "_bpo" + i + "s", entTypeId, "", b.getId(), null);
