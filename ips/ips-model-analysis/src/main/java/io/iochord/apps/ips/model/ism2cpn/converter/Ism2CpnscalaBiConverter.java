@@ -451,8 +451,9 @@ public class Ism2CpnscalaBiConverter implements Converter<IsmGraph, Ism2Cpnscala
 					if (na.getGenerator() != null) {
 						String t_gen = cleanId("t_",na.getGenerator().getValue().getId()+"_mergegen");
 						String t_silent = transIfExist.containsKey(t_gen) ? t_gen : addTransition("_start", null, null, b_entTypeId, e_entTypeId, m_entTypeId, na.getId(), na.getGenerator().getValue().getId()+"_mergegen");
+						if(!transIfExist.containsKey(t_gen))
+							addArc(placeshub.get(na.getGenerator().getId()+"_start_0"), t_silent, "PtT", entTypeId, b_entTypeId, addTtB(b_entTypeId, entTypeId, "entity", "Some(entity)"), addBtT(b_entTypeId, entTypeId, "b.entity.get"), null, null, true, na.getGenerator().getValue().getId());
 						transIfExist.put(t_gen, true);
-						addArc(placeshub.get(na.getGenerator().getId()+"_start_0"), t_silent, "PtT", entTypeId, b_entTypeId, addTtB(b_entTypeId, entTypeId, "entity", "Some(entity)"), addBtT(b_entTypeId, entTypeId, "b.entity.get"), null, null, true, na.getGenerator().getValue().getId());
 						addArc(pstart, t_silent, "TtP", entTypeId, b_entTypeId, null, addBtT(b_entTypeId, entTypeId, "b.entity.get"), null, null, false, na.getGenerator().getValue().getId());
 					}
 				}
