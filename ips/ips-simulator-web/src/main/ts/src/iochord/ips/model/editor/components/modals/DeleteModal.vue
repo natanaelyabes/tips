@@ -110,6 +110,7 @@ export default class DeleteModal extends SemanticComponent implements DeletableM
 
             if ((generator.getObjectTypeRef() as string) === data.id) {
               generator.setObjectTypeRef('');
+              $('#generator_txt_type').dropdown('clear');
             }
 
             break;
@@ -119,6 +120,7 @@ export default class DeleteModal extends SemanticComponent implements DeletableM
 
             if ((objecttype.getTypeRefs() as string) === data.id) {
               objecttype.setTypeRefs('');
+              $('#x_txt_table').dropdown('clear');
             }
 
             break;
@@ -145,6 +147,7 @@ export default class DeleteModal extends SemanticComponent implements DeletableM
 
             if (resource.getDataRef() === data.id) {
               resource.setDataRef('');
+              $('#x_txt_table').dropdown('clear');
             }
 
             break;
@@ -158,6 +161,7 @@ export default class DeleteModal extends SemanticComponent implements DeletableM
 
             if ((start.getGeneratorRef() as string) === data.id) {
               start.setGeneratorRef('');
+              $('#start_txtgen').dropdown('clear');
             }
 
             break;
@@ -166,14 +170,18 @@ export default class DeleteModal extends SemanticComponent implements DeletableM
 
             if ((activity.getQueueRef() as string) === data.id) {
               activity.setQueueRef('');
+              $('#act_txtqueuelabel').dropdown('clear');
+
             }
 
             if ((activity.getResourceRef() as string) === data.id) {
               activity.setResourceRef('');
+              $('#act_txtresource').dropdown('clear');
             }
 
             if ((activity.getFunctionRef() as string) === data.id) {
               activity.setFunctionRef('');
+              $('#act_txtfunction').dropdown('clear');
             }
 
             break;

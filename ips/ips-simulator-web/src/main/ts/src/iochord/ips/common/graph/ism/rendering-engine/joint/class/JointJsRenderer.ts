@@ -32,6 +32,8 @@ declare const $: any;
 
 import { TSMap } from 'typescript-map';
 import { JointGraphDataImpl } from '../shapes/class/JointGraphDataImpl';
+import { GraphBranchNodeImpl } from '../../../class/components/GraphBranchNodeImpl';
+import { BRANCH_TYPE, BRANCH_RULE, BRANCH_GATE } from '../../../enums/BRANCH';
 
 
 export default class JointJsRenderer {
@@ -176,6 +178,21 @@ export default class JointJsRenderer {
       node.setMarkup((NODE_TYPE as any)[(nodeValue as any)[keys.elementType]].markup);
       node.setAttr((NODE_TYPE as any)[(nodeValue as any)[keys.elementType]].attr);
       node.setImageIcon((NODE_TYPE as any)[(nodeValue as any)[keys.elementType]].image);
+
+      if (node.getType() === 'branch') {
+        const gate: BRANCH_GATE = (nodeValue as GraphBranchNodeImpl).getGate() as BRANCH_GATE;
+        const type: BRANCH_TYPE = (nodeValue as GraphBranchNodeImpl).getBranchType() as BRANCH_TYPE;
+
+        if (gate === BRANCH_GATE.AND && type === BRANCH_TYPE.JOIN) {
+          node.setImageIcon(NODE_TYPE.and_join.image);
+        } else if (gate === BRANCH_GATE.AND && type === BRANCH_TYPE.SPLIT) {
+          node.setImageIcon(NODE_TYPE.and_split.image);
+        } else if (gate === BRANCH_GATE.XOR && type === BRANCH_TYPE.JOIN) {
+          node.setImageIcon(NODE_TYPE.xor_join.image);
+        } else if (gate === BRANCH_GATE.XOR && type === BRANCH_TYPE.SPLIT) {
+          node.setImageIcon(NODE_TYPE.xor_split.image);
+        }
+      }
 
       if (node.getType() === 'activity' && nodeValue.getImageIcon() !== '') {
         node.setImageIcon(nodeValue.getImageIcon());

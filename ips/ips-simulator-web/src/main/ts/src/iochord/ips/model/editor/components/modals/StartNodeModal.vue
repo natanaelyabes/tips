@@ -95,6 +95,8 @@ export default class StartNodeModal extends SemanticComponent implements Modal<J
 
   public populateProperties(page: JointGraphPageImpl, object: GraphStartEventNodeImpl): void {
 
+    $('#start_txtgen').dropdown({ clearable: true });
+
     // Whole object properties
     this.properties = object;
 
@@ -114,6 +116,7 @@ export default class StartNodeModal extends SemanticComponent implements Modal<J
         },
       })
     ;
+
   }
 
   public saveProperties(page: JointGraphPageImpl, object: GraphStartEventNodeImpl): void {

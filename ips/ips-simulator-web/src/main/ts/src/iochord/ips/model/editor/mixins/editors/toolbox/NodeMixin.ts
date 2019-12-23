@@ -26,6 +26,8 @@ import EditorState from '../../../stores/editors/EditorState';
 import { NODE_TYPE } from '@/iochord/ips/common/graph/ism/rendering-engine/joint/shapes/enums/NODE';
 import * as NODE_ENUMS from '@/iochord/ips/common/graph/ism/enums/NODE';
 import * as NODE_FACTORY from '@/iochord/ips/common/graph/ism/enums/NODE';
+import { BRANCH_GATE, BRANCH_TYPE } from '@/iochord/ips/common/graph/ism/enums/BRANCH';
+import { GraphBranchNodeImpl } from '@/iochord/ips/common/graph/ism/class/components/GraphBranchNodeImpl';
 
 
 // Enums of NODE
@@ -71,6 +73,10 @@ export default class NodeMixin extends BaseComponent {
     this.newNode.setMarkup((NODE_TYPE as any)[type].markup);
     this.newNode.setAttr((NODE_TYPE as any)[type].attr);
     this.newNode.setImageIcon((NODE_TYPE as any)[type].image);
+
+    if (this.newNode.getType() === 'branch') {
+      this.newNode.setImageIcon(NODE_TYPE.xor_split.image);
+    }
 
     /** No need to set label for start and stop node */
     if (!(type.toString() === 'start' || type.toString() === 'stop')) {
