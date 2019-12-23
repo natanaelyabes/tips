@@ -24,7 +24,7 @@
             <div class="three wide column">Generator</div>
             <div class="thirteen wide column">
               <select v-model="generator" id="start_txtgen" class="ui fluid search dropdown">
-                <option v-for="generator in generators" :key="generator.id" :value="generator.id">{{generator.label}} ({{generator.id}})</option>
+                <option v-for="generator in generators" :key="generator.getId()" :value="generator.getId()">{{generator.getLabel()}} ({{generator.getId()}})</option>
               </select>
             </div>
           </div>
@@ -32,7 +32,7 @@
       </div>
     </div>
     <div class="actions">
-      <div @click="saveProperties(page, properties)" class="ui positive button">Save</div>
+      <div @click = "saveProperties(page, properties)" class="ui positive button">Save</div>
       <div class="ui cancel button">Cancel</div>
     </div>
   </div>
