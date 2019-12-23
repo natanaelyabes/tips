@@ -9,6 +9,7 @@ import { GraphControl } from '../../interfaces/components/GraphControl';
  *
  */
 export class GraphControlImpl extends GraphConfigurationImpl implements GraphControl {
+
   /** @Override */
   public static deserialize(object: any): any | null {
     if (object === null) {

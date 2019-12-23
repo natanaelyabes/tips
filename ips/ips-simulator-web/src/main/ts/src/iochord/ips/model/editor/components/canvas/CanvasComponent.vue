@@ -228,30 +228,31 @@ export default class CanvasComponent extends Mixins(BaseComponent, CanvasMixin) 
         // Backspace & Delete key
         case 8: case 46:
 
-          // Identify deleted nodes
-          this.highlightedElement.forEach((element) => {
-            (this.$refs['delete'] as DeletableModal).populateNode({
-              id: element.attributes.nodeId || element.attributes.dataId,
-              label: element.attributes.attrs.label.text,
-              type: element.attributes.type,
-              category: element.attributes.nodeId ? 'node' : 'data',
+          if (this.highlightedElement.length > 0) {
+            // Identify deleted nodes
+            this.highlightedElement.forEach((element) => {
+              (this.$refs['delete'] as DeletableModal).populateNode({
+                id: element.attributes.nodeId || element.attributes.dataId,
+                label: element.attributes.attrs.label.text,
+                type: element.attributes.type,
+                category: element.attributes.nodeId ? 'node' : 'data',
+              });
             });
-          });
 
-          // Show delete modal
-          $(`#delete`).modal('setting', 'transition', 'fade up')
-            .modal({
+            // Show delete modal
+            $(`#delete`).modal('setting', 'transition', 'fade up')
+              .modal({
 
-              // If approved, then delete
-              onApprove: () => {
-                this.highlightedElement.forEach((element) => removeNode(element));
-              },
+                // If approved, then delete
+                onApprove: () => {
+                  this.highlightedElement.forEach((element) => removeNode(element));
+                },
 
-              // Else, cancel delete, restore modal to initial state
-              onDeny: () => { (this.$refs['delete'] as DeletableModal).reset(); }})
+                // Else, cancel delete, restore modal to initial state
+                onDeny: () => { (this.$refs['delete'] as DeletableModal).reset(); }})
 
-            .modal('show');
-
+              .modal('show');
+          }
           break;
 
         // Shift key

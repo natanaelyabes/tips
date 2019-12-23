@@ -96,6 +96,7 @@ import { GraphNodeImpl } from '@/iochord/ips/common/graph/ism/class/GraphNodeImp
 import GraphSubject from '@/iochord/ips/common/graph/ism/rxjs/GraphSubject';
 import { GraphConnectorImpl } from '@/iochord/ips/common/graph/ism/class/GraphConnectorImpl';
 import { GraphConnector } from '@/iochord/ips/common/graph/ism/interfaces/GraphConnector';
+import { NODE_TYPE } from '@/iochord/ips/common/graph/ism/rendering-engine/joint/shapes/enums/NODE';
 
 const graphModule = getModule(GraphModule);
 
@@ -185,12 +186,25 @@ export default class BranchNodeModal extends SemanticComponent implements Modal<
       (node.getConditions() as TSMap<string, string>).set(condition[0], condition[1]);
     });
 
+    if (node.getGate() === BRANCH_GATE.AND && node.getBranchType() === BRANCH_TYPE.JOIN) {
+      node.setImageIcon(NODE_TYPE.and_join.image);
+    } else if (node.getGate() === BRANCH_GATE.AND && node.getBranchType() === BRANCH_TYPE.SPLIT) {
+      node.setImageIcon(NODE_TYPE.and_split.image);
+    } else if (node.getGate() === BRANCH_GATE.XOR && node.getBranchType() === BRANCH_TYPE.JOIN) {
+      node.setImageIcon(NODE_TYPE.xor_join.image);
+    } else if (node.getGate() === BRANCH_GATE.XOR && node.getBranchType() === BRANCH_TYPE.SPLIT) {
+      node.setImageIcon(NODE_TYPE.xor_split.image);
+    }
+
     // Change label of the renderer node
     page.getGraph().getCells().map((cell: joint.dia.Cell) => {
       if (cell.attributes.nodeId === object.getId()) {
         cell.attr({
           label: {
             text: this.label,
+          },
+          image: {
+            xlinkHref: node.getImageIcon(),
           },
         });
       }

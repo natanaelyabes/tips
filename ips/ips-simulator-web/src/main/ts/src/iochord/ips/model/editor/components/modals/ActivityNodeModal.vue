@@ -334,6 +334,7 @@ export default class ActivityNodeModal extends SemanticComponent implements Moda
       })
     ;
 
+    $('#act_txtresource').dropdown({ clearable: true });
     $('#act_txtresource')
       .dropdown('set selected', this.resource)
       .dropdown({
@@ -370,21 +371,25 @@ export default class ActivityNodeModal extends SemanticComponent implements Moda
       })
     ;
 
+    $('#act_txtqueuelabel').dropdown({ clearable: true });
     $('#act_txtqueuelabel')
       .dropdown('set selected', this.queue)
       .dropdown({
         onChange: (val: string) => {
           this.queue = val;
         },
+        clearable: true,
       })
     ;
 
+    $('#act_txtfunction').dropdown({ clearable: true });
     $('#act_txtfunction')
       .dropdown('set selected', this.function)
       .dropdown({
         onChange: (val: string) => {
           this.function = val;
         },
+        clearable: true,
       })
     ;
   }
