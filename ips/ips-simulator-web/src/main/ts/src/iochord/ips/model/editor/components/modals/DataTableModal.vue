@@ -116,10 +116,10 @@ class Matrix {
   public type: Type[] = [];
   public data: any[][] = [];
 
-  constructor(fields: TSMap<string, string>, data: TSMap<string, TSMap<string, any>>) {
+  constructor(fields?: TSMap<string, string>, data?: TSMap<string, TSMap<string, any>>) {
     // this.initDummyData();
-    this.header = fields.values();
-    this.data = Array.from(data.values().entries());
+    this.header = fields!.values();
+    this.data = Array.from(data!.values().entries());
   }
 
   public initDummyData(): void {
@@ -203,7 +203,7 @@ export default class DataTableModal extends SemanticComponent implements Modal<J
   private fields: TSMap<string, string> = new TSMap<string, string>();
   private data: TSMap<string, TSMap<string, string>> = new TSMap<string, TSMap<string, string>>();
 
-  private matrix?: Matrix;
+  private matrix: Matrix = new Matrix();
 
   public populateProperties(page: JointGraphPageImpl, object: GraphDataTableImpl): void {
 
@@ -218,7 +218,7 @@ export default class DataTableModal extends SemanticComponent implements Modal<J
     this.fields = object.getFields() !== undefined ? object.getFields() as TSMap<string, string> : this.fields;
     this.data = object.getData() !== undefined ? object.getData() as TSMap<string, TSMap<string, string>> : this.data;
 
-    this.matrix = new Matrix(fields, data);
+    this.matrix = new Matrix(this.fields, this.data);
 
     if (this.fields.length === 0 || this.data.length === 0) {
       this.matrix.initDummyData();
