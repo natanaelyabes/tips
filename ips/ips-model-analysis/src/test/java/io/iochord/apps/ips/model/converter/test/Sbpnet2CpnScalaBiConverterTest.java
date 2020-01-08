@@ -10,6 +10,13 @@ import io.iochord.apps.ips.model.ism.v1.IsmGraph;
 import io.iochord.apps.ips.model.ism2cpn.converter.Ism2CpnscalaBiConverter;
 import io.iochord.apps.ips.model.ism2cpn.converter.Ism2CpnscalaModel;
 
+/**
+*
+* @package ips-model-analysis
+* @author Iq Reviessay Pulshashi <pulshashi@ideas.web.id>
+* @since 2019
+*
+*/
 public class Sbpnet2CpnScalaBiConverterTest {
 	
 	@Test

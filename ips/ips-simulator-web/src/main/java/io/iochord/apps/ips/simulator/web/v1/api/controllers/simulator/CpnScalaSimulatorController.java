@@ -3,7 +3,6 @@ package io.iochord.apps.ips.simulator.web.v1.api.controllers.simulator;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Observable;
 import java.util.Observer;
 
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -27,20 +26,14 @@ import io.iochord.apps.ips.model.report.Report;
 import io.iochord.apps.ips.simulator.compiler.MemoryScalaCompiler;
 import io.iochord.apps.ips.simulator.compiler.Simulation;
 import lombok.Getter;
-import scala.Some;
-import scala.Tuple2;
-import scala.Tuple5;
-import scala.collection.Iterator;
-import scala.collection.mutable.HashMap;
 
 /**
- *
- * @package chdsr-simulator-web
- * @author  Iq Reviessay Pulshashi <pulshashi@ideas.web.id>
- * @since   2019
- *
- *
- */
+*
+* @package ips-simulator-web
+* @author  Iq Reviessay Pulshashi <pulshashi@ideas.web.id>
+* @since   2019
+*
+*/
 @RestController
 @CrossOrigin
 public class CpnScalaSimulatorController extends ASimulatorController {
@@ -61,7 +54,7 @@ public class CpnScalaSimulatorController extends ASimulatorController {
 		Report report = new Report();
 		// MOCKUP REPORT START HERE
 		GroupStatistics gs, gsg, gsa, gsr;
-		ElementStatistics es, es2;
+//		ElementStatistics es, es2;
 		// Add Group
 		gs = new GroupStatistics("GENERAL");
 		gsg = gs;

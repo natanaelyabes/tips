@@ -23,6 +23,13 @@ import breeze.stats.distributions.StudentsT
 import breeze.stats.distributions.Uniform
 import breeze.stats.distributions.Rayleigh
 
+/**
+*
+* @package ips-simulator
+* @author Nur Ichsan Utama <ichsan83@gmail.com>
+* @since 2019
+*
+*/
 object SimpleTestHanjin {
   
   def main(args: Array[String]) {

@@ -21,9 +21,12 @@ import io.iochord.apps.ips.model.ism.v1.nodes.Start;
 import io.iochord.apps.ips.model.ism.v1.nodes.Stop;
 
 /**
- * @author Nur Ichsan Utama <ichsan83@gmail.com>
- *
- */
+*
+* @package ips-model-analysis
+* @author Nur Ichsan Utama <ichsan83@gmail.com>
+* @since 2019
+*
+*/
 public class Ism2CpnscalaBiConverterOld implements Converter<IsmGraph, String> {
 	
 	class KeyElement {
@@ -406,7 +409,7 @@ public class Ism2CpnscalaBiConverterOld implements Converter<IsmGraph, String> {
 					// TODO:
 				}
 				if (d instanceof Queue) {
-					Queue q = (Queue) d;
+//					Queue q = (Queue) d;
 					addQueue(entTypeId, qentTypeId, b_qentTypeId, e_qentTypeId, m_qentTypeId, "", "");
 				}
 				if (d instanceof Resource) {

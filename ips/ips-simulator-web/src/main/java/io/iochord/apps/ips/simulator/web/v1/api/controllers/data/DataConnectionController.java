@@ -21,13 +21,12 @@ import io.iochord.apps.ips.model.services.data.im.csv.CsvDataImportResult;
 import io.iochord.apps.ips.model.services.data.im.csv.CsvDataImportService;
 
 /**
- *
- * @package ips-simulator-web
- * @author Iq Reviessay Pulshashi <pulshashi@ideas.web.id>
- * @since 2019
- *
- *
- */
+*
+* @package ips-simulator-web
+* @author  Iq Reviessay Pulshashi <pulshashi@ideas.web.id>
+* @since   2019
+*
+*/
 @RestController
 @CrossOrigin
 public class DataConnectionController extends ADataController {

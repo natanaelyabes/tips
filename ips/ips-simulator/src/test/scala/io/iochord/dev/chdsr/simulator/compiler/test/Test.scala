@@ -14,6 +14,13 @@ import breeze.stats.distributions.Rayleigh;
 import breeze.stats.distributions.WeibullDistribution
 import breeze.stats.distributions.Rand;
 
+/**
+*
+* @package ips-simulator
+* @author Nur Ichsan Utama <ichsan83@gmail.com>
+* @since 2019
+*
+*/
 object Test {
   
   def main(args:Array[String]) {

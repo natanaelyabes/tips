@@ -5,7 +5,13 @@ import collection.JavaConverters._
 
 import io.iochord.apps.ips.model.cpn.v1._
 
-
+/**
+*
+* @package ips-model
+* @author Nur Ichsan Utama <ichsan83@gmail.com>
+* @since 2019
+*
+*/
 class CPNGraph {
   private var places = HashMap[String, Place[_]]()
   private var transitions = HashMap[String, Transition[_]]()

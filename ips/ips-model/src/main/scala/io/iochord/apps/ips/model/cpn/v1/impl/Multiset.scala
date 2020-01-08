@@ -5,6 +5,13 @@ import scala.collection.IterableLike
 import scala.collection.mutable.Builder
 import io.iochord.apps.ips.model.cpn.v1._
 
+/**
+*
+* @package ips-model
+* @author Nur Ichsan Utama <ichsan83@gmail.com>
+* @since 2019
+*
+*/
 class Multiset[T] (val multiset: Map[(T,Long), Int], val coltype: Class[_] = null) {
   
   def getColtype(): Class[_] = { coltype }

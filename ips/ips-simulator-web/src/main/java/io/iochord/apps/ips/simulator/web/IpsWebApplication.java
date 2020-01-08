@@ -7,13 +7,12 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 
 /**
- *
- * @package chdsr-simulator-web
- * @author Iq Reviessay Pulshashi <pulshashi@ideas.web.id>
- * @since 2019
- *
- *
- */
+*
+* @package ips-simulator-web
+* @author  Iq Reviessay Pulshashi <pulshashi@ideas.web.id>
+* @since   2019
+*
+*/
 @SpringBootApplication
 @EnableAutoConfiguration
 @ComponentScan("io.iochord.apps.ips")

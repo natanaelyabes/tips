@@ -4,13 +4,12 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- *
- * @package chdsr-simulator-web
- * @author Iq Reviessay Pulshashi <pulshashi@ideas.web.id>
- * @since 2019
- *
- *
- */
+*
+* @package ips-simulator-web
+* @author  Iq Reviessay Pulshashi <pulshashi@ideas.web.id>
+* @since   2019
+*
+*/
 @RestController
 @CrossOrigin
 public class UserSystemController extends ASystemController {

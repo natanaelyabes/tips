@@ -4,6 +4,13 @@ import scala.util.control.Breaks._
 import scala.collection.mutable.Map
 import io.iochord.apps.ips.model.cpn.v1._
 
+/**
+*
+* @package ips-model
+* @author Nur Ichsan Utama <ichsan83@gmail.com>
+* @since 2019
+*
+*/
 class Transition[B] (
   private var id: String,
   private var name: String,

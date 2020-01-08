@@ -3,6 +3,13 @@ package io.iochord.apps.ips.model.cpn.v1.impl
 import io.iochord.apps.ips.model.cpn.v1._
 import scala.collection.mutable.Map
 
+/**
+*
+* @package ips-model
+* @author Nur Ichsan Utama <ichsan83@gmail.com>
+* @since 2019
+*
+*/
 //PtT -> Place to Transition and TtP -> Transition to Place
 object Direction extends Enumeration {
 	  val PtT, TtP = Value

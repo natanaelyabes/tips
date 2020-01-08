@@ -38,7 +38,6 @@ import io.iochord.apps.ips.model.ism.v1.nodes.Stop;
 import io.iochord.apps.ips.model.ism.v1.nodes.enums.BranchGate;
 import io.iochord.apps.ips.model.ism.v1.nodes.enums.BranchRule;
 import io.iochord.apps.ips.model.ism.v1.nodes.enums.BranchType;
-import io.iochord.apps.ips.model.ism.v1.nodes.enums.VariableType;
 import io.iochord.apps.ips.model.ism.v1.nodes.impl.ActivityImpl;
 import io.iochord.apps.ips.model.ism.v1.nodes.impl.BranchImpl;
 import io.iochord.apps.ips.model.ism.v1.nodes.impl.MonitorImpl;
@@ -100,6 +99,7 @@ public class SbpnetCreationTest {
 		e.getData().get("carType").put("Small", "S");
 		testSerializeDeserialize(e, DataTable.class);
 		dt = e;
+		dt.toString();
 		dt2 = (DataTableImpl) getFactory().addDataTable(getNet().getDefaultPage());
 		dt2.setLabel("carSize");
 		dt3 = (DataTableImpl) getFactory().addDataTable(getNet().getDefaultPage());

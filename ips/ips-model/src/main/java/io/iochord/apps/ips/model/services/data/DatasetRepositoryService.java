@@ -11,6 +11,13 @@ import io.iochord.apps.ips.common.util.JsonDataCodec;
 import io.iochord.apps.ips.core.services.AnIpsService;
 import io.iochord.apps.ips.core.services.ServiceContext;
 
+/**
+*
+* @package ips-model
+* @author Iq Reviessay Pulshashi <pulshashi@ideas.web.id>
+* @since 2019
+*
+*/
 public class DatasetRepositoryService extends AnIpsService<String, Map<String, Dataset>> {
 
 	@Override

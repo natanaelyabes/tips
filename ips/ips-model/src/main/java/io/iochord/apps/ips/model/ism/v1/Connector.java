@@ -8,13 +8,12 @@ import io.iochord.apps.ips.common.models.Referenceable;
 import io.iochord.apps.ips.model.ism.v1.impl.ConnectorImpl;
 
 /**
- *
- * @package chdsr-model
- * @author  Iq Reviessay Pulshashi <pulshashi@ideas.web.id>
- * @since   2019
- *
- *
- */
+*
+* @package ips-model
+* @author Iq Reviessay Pulshashi <pulshashi@ideas.web.id>
+* @since 2019
+*
+*/
 @JsonDeserialize(as = ConnectorImpl.class)
 @JsonTypeName(Connector.TYPE)
 public interface Connector extends Element {
@@ -22,11 +21,11 @@ public interface Connector extends Element {
 
 	@JsonProperty(value = "sourceRef")
 	Referenceable<Element> getSource();
-	
+
 	int getSourceIndex();
 
 	@JsonProperty(value = "targetRef")
 	Referenceable<Element> getTarget();
-	
+
 	int getTargetIndex();
 }

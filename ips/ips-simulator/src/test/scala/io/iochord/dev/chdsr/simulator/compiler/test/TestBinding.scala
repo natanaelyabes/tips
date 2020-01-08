@@ -1,5 +1,12 @@
 package io.iochord.dev.chdsr.simulator.compiler.test
 
+/**
+*
+* @package ips-simulator
+* @author Nur Ichsan Utama <ichsan83@gmail.com>
+* @since 2019
+*
+*/
 object TestBinding {
   def main(args: Array[String]) {
     var lb:List[Int] = List[Int]()

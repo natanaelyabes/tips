@@ -10,7 +10,7 @@
     "test:e2e": "vue-cli-service test:e2e"
   },
   "dependencies": {
-    "@antv/data-set": "^0.10.2",
+    "@antv/data-set": "^0.9.6",
     "@antv/g2": "^3.5.9",
     "axios": "^0.18.1",
     "backbone": "^1.4.0",

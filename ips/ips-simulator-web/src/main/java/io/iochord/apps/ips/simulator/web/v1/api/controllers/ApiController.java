@@ -13,13 +13,12 @@ import org.springframework.web.servlet.mvc.method.RequestMappingInfo;
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
 
 /**
- *
- * @package chdsr-simulator-web
- * @author  Iq Reviessay Pulshashi <pulshashi@ideas.web.id>
- * @since   2019
- *
- *
- */
+*
+* @package ips-simulator-web
+* @author  Iq Reviessay Pulshashi <pulshashi@ideas.web.id>
+* @since   2019
+*
+*/
 @RestController
 @CrossOrigin
 public class ApiController extends AServiceController {

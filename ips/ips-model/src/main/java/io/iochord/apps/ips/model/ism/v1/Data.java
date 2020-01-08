@@ -14,23 +14,16 @@ import io.iochord.apps.ips.model.ism.v1.data.Resource;
 import io.iochord.apps.ips.model.ism.v1.impl.DataImpl;
 
 /**
- *
- * @package chdsr-model
- * @author  Iq Reviessay Pulshashi <pulshashi@ideas.web.id>
- * @since   2019
- *
- *
- */
+*
+* @package ips-model
+* @author Iq Reviessay Pulshashi <pulshashi@ideas.web.id>
+* @since 2019
+*
+*/
 @JsonDeserialize(as = DataImpl.class)
 @JsonTypeName(Data.TYPE)
-@JsonSubTypes({
-	@Type(value = DataTable.class),
-	@Type(value = Function.class),
-	@Type(value = Generator.class),
-	@Type(value = ObjectType.class),
-	@Type(value = Queue.class),
-	@Type(value = Resource.class),
-})
+@JsonSubTypes({ @Type(value = DataTable.class), @Type(value = Function.class), @Type(value = Generator.class),
+		@Type(value = ObjectType.class), @Type(value = Queue.class), @Type(value = Resource.class), })
 public interface Data extends Element {
 	public static final String TYPE = "data";
 }

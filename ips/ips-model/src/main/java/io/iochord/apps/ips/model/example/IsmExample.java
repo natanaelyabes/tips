@@ -23,15 +23,12 @@ import io.iochord.apps.ips.model.ism.v1.impl.IsmFactoryImpl;
 import io.iochord.apps.ips.model.ism.v1.impl.IsmGraphImpl;
 
 /**
- *
- * Example SBPNet Model
- *
- * @package chdsr-model
- * @author  Iq Reviessay Pulshashi <pulshashi@ideas.web.id>
- * @since   2019
- *
- *
- */
+*
+* @package ips-model
+* @author Iq Reviessay Pulshashi <pulshashi@ideas.web.id>
+* @since 2019
+*
+*/
 public class IsmExample {
 	public static IsmGraph createDefault() {
 		IsmFactory factory = IsmFactoryImpl.getInstance();

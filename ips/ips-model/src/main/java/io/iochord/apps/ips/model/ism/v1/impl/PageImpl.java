@@ -13,13 +13,12 @@ import lombok.Getter;
 import lombok.Setter;
 
 /**
- *
- * @package chdsr-model
- * @author  Iq Reviessay Pulshashi <pulshashi@ideas.web.id>
- * @since   2019
- *
- *
- */
+*
+* @package ips-model
+* @author Iq Reviessay Pulshashi <pulshashi@ideas.web.id>
+* @since 2019
+*
+*/
 @JsonTypeName(Page.TYPE)
 public class PageImpl extends ElementImpl implements Page {
 	@Getter

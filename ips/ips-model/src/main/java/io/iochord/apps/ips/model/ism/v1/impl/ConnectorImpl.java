@@ -9,13 +9,12 @@ import lombok.Getter;
 import lombok.Setter;
 
 /**
- *
- * @package chdsr-model
- * @author  Iq Reviessay Pulshashi <pulshashi@ideas.web.id>
- * @since   2019
- *
- *
- */
+*
+* @package ips-model
+* @author Iq Reviessay Pulshashi <pulshashi@ideas.web.id>
+* @since 2019
+*
+*/
 @JsonTypeName(Connector.TYPE)
 public class ConnectorImpl extends ElementImpl implements Connector {
 	@Getter

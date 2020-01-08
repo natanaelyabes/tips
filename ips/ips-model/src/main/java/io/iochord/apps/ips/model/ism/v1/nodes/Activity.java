@@ -13,18 +13,15 @@ import io.iochord.apps.ips.model.ism.v1.data.Queue;
 import io.iochord.apps.ips.model.ism.v1.data.Resource;
 import io.iochord.apps.ips.model.ism.v1.nodes.enums.ActivityType;
 import io.iochord.apps.ips.model.ism.v1.nodes.enums.DistributionType;
-import io.iochord.apps.ips.model.ism.v1.nodes.enums.ResourceSelectionMethod;
-import io.iochord.apps.ips.model.ism.v1.nodes.enums.VariableType;
 import io.iochord.apps.ips.model.ism.v1.nodes.impl.ActivityImpl;
 
 /**
- *
- * @package chdsr-model
- * @author  Iq Reviessay Pulshashi <pulshashi@ideas.web.id>
- * @since   2019
- *
- *
- */
+*
+* @package ips-model
+* @author Iq Reviessay Pulshashi <pulshashi@ideas.web.id>
+* @since 2019
+*
+*/
 @JsonDeserialize(as = ActivityImpl.class)
 @JsonTypeName(Activity.TYPE)
 public interface Activity extends Node {
