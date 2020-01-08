@@ -97,7 +97,7 @@ export default class StartNodeModal extends SemanticComponent implements Modal<J
 
     $('#start_txtgen').dropdown({ clearable: true });
 
-    // Whole object properties
+    // Object properties
     this.properties = object;
 
     // Page Renderer

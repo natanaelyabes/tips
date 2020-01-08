@@ -18,19 +18,72 @@
         </div>
       </div>
 
-      <div id="container">
+      <div class="ui basic segment" id="datatable">
+        <table class="ui definition celled table">
+          <thead>
+            <tr>
+              <th>Header</th>
+              <th v-for="(header, i) in matrix.header" :key="i" contenteditable>
+                {{ header }}
+                <button @click = "matrix.deleteField(i)" class="ui red circle icon button" style="float:right;">
+                  <i class="minus icon"></i>
+                </button>
+              </th>
+              <th rowspan="2">
+                <center>
+                  <button @click = "matrix.insertNewFields()" class="ui blue icon button">
+                    <i class="plus icon"></i>
+                  </button>
+                </center>
+              </th>
+            </tr>
+            <tr>
+              <th>Type</th>
+              <th v-for="(type, j) in matrix.type" :key="j">
+                <select :id="'type-' + j" v-model="matrix.type[j]" class="ui search fluid dropdown">
+                  <option value="" disabled>Type</option>
+                  <option value="String">String</option>
+                  <option value="Int">Int</option>
+                  <option value="Double">Double</option>
+                  <option value="Boolean">Boolean</option>
+                </select>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="(d, k) in matrix.data" :key="k">
+              <td>
+                <button @click = "matrix.deleteRow(k)" class="ui red circle icon button" style="float:right">
+                  <i class="minus icon"></i>
+                </button>
+              </td>
+              <td v-for="(v, l) in matrix.data[k]" :key="l" contenteditable>{{ v }}</td>
+            </tr>
+            <tr>
+              <td></td>
+              <td :colspan="matrix.type.length">
+                <button @click = "matrix.insertNewRow()" class="ui fluid blue icon button">
+                  <i class="plus icon"></i>
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
       </div>
     </div>
 
     <div class="actions">
-      <div @click="saveProperties(page, properties)" class="ui positive button">Save</div>
+      <div @click = "saveProperties(page, properties)" class="ui positive button">Save</div>
       <div class="ui cancel button">Cancel</div>
     </div>
   </div>
 </template>
 
 <style scoped>
-
+#datatable{
+  padding-left: 0;
+  padding-right: 0;
+}
 </style>
 
 <script lang="ts">
@@ -47,15 +100,97 @@ import { GraphDataImpl } from '@/iochord/ips/common/graph/ism/class/GraphDataImp
 import { GraphPage } from '@/iochord/ips/common/graph/ism/interfaces/GraphPage';
 import { GraphData } from '@/iochord/ips/common/graph/ism/interfaces/GraphData';
 
-import '#root/node_modules/jexcel/dist/jexcel.js';
-import '#root/node_modules/jsuites/dist/jsuites.js';
-
-import '#root/node_modules/jexcel/dist/jexcel.css';
-import '#root/node_modules/jsuites/dist/jsuites.css';
-
 declare const $: any;
 
 const graphModule = getModule(GraphModule);
+
+enum Type {
+  String = 'String',
+  Int = 'Int',
+  Double = 'Double',
+  Boolean = 'Boolean',
+}
+
+class Matrix {
+  public header: string[] = [];
+  public type: Type[] = [];
+  public data: any[][] = [];
+
+  constructor(fields: TSMap<string, string>, data: TSMap<string, TSMap<string, any>>) {
+    // this.initDummyData();
+    this.header = fields.values();
+    this.data = Array.from(data.values().entries());
+  }
+
+  public initDummyData(): void {
+    this.header = ['New Field 1', 'New Field 2'];
+    this.type = [Type.String, Type.String];
+    this.data = [
+      ['New Data 1', 'New Data 2'],
+      ['New Data 1', 'New Data 2'],
+    ];
+  }
+
+  public insertNewRow(): void {
+    const newRow = new Array<any>(this.data[0].length);
+
+    this.type.forEach((t, i) => {
+      switch (t) {
+        case Type.String:
+          newRow[i] = 'New Data ' + (i + 1);
+          break;
+        case Type.Int: case Type.Double:
+          newRow[i] = 0;
+          break;
+        case Type.Boolean:
+          newRow[i] = false;
+          break;
+      }
+    });
+
+    this.data.push(newRow);
+  }
+
+  public deleteRow(i: number) {
+    this.data.splice(i, 1);
+  }
+
+  public insertNewFields(): void {
+    this.header[this.header.length] = 'New Field ' + (this.header.length + 1);
+    this.type[this.type.length] = Type.String;
+    this.data.forEach((d, i) => {
+      d[d.length] = 'New Data ' + (d.length + 1);
+    });
+
+    this.data.push();
+  }
+
+  public deleteField(i: number) {
+    this.header.splice(i, 1);
+    this.type.splice(i, 1);
+    this.data.forEach((d) => {
+      d.splice(i, 1);
+    });
+  }
+
+  public toMap(page: JointGraphPageImpl): { fields: TSMap<string, string>, data: TSMap<string, TSMap<string, any>> } {
+    const fields = new TSMap<string, string>();
+    const data = new TSMap<string, TSMap<string, any>>();
+
+    this.header.forEach((h, i) => {
+      fields.set(`${page.getId()}-field-${i}`, h);
+    });
+
+    this.data.forEach((datum, j) => {
+      const value = new TSMap<string, any>();
+      datum.forEach((d, k) => {
+        data.set(`${page.getId()}-data-${j}`, value.set(`${page.getId()}-field-${k}`, d));
+      });
+    });
+
+    return { fields, data };
+  }
+}
 
 @Component
 export default class DataTableModal extends SemanticComponent implements Modal<JointGraphPageImpl, GraphDataTableImpl> {
@@ -68,18 +203,9 @@ export default class DataTableModal extends SemanticComponent implements Modal<J
   private fields: TSMap<string, string> = new TSMap<string, string>();
   private data: TSMap<string, TSMap<string, string>> = new TSMap<string, TSMap<string, string>>();
 
-  private d = [
-    ['Jazz', 'Honda', '2019-02-12', '', true, '$ 2.000,00', '#777700'],
-    ['Civic', 'Honda', '2018-07-11', '', true, '$ 4.000,01', '#007777'],
-  ];
+  private matrix?: Matrix;
 
   public populateProperties(page: JointGraphPageImpl, object: GraphDataTableImpl): void {
-
-    const s = document.getElementById('spreadsheet');
-
-    if (s) {
-      document.getElementById('container')!.removeChild(s as HTMLElement);
-    }
 
     // Whole object properties
     this.properties = object;
@@ -92,29 +218,23 @@ export default class DataTableModal extends SemanticComponent implements Modal<J
     this.fields = object.getFields() !== undefined ? object.getFields() as TSMap<string, string> : this.fields;
     this.data = object.getData() !== undefined ? object.getData() as TSMap<string, TSMap<string, string>> : this.data;
 
-    const spreadsheet = document.createElement('div');
-    spreadsheet.id = 'spreadsheet';
-    document.getElementById('container')!.appendChild(spreadsheet);
+    this.matrix = new Matrix(fields, data);
 
-    const jexcel = require('#root/node_modules/jexcel/dist/jexcel.js');
-    jexcel(document.getElementById('spreadsheet'), {
-      data: this.d,
-      columns: [
-        { type: 'text', title: 'Car', width: 120 },
-        { type: 'dropdown', title: 'Make', width: 200, source: [ 'Alfa Romeo', 'Audi', 'Bmw' ] },
-        { type: 'calendar', title: 'Available', width: 200 },
-        { type: 'image', title: 'Photo', width: 120 },
-        { type: 'checkbox', title: 'Stock', width: 80 },
-        { type: 'numeric', title: 'Price', width: 100, mask: '$ #.##,00', decimal: ',' },
-        { type: 'color', width: 100, render: 'square' },
-      ],
-    });
+    if (this.fields.length === 0 || this.data.length === 0) {
+      this.matrix.initDummyData();
+    }
+
   }
 
   public saveProperties(page: JointGraphPageImpl, object: GraphDataTableImpl): void {
     const dataPageId = (object.getId() as string).split('-')[0];
     const dataPage = (graphModule.graph.getPages() as TSMap<string, GraphPage>).get(dataPageId);
     const data: GraphDataTableImpl = (page.getData() as TSMap<string, GraphData>).get(object.getId() as string) as GraphDataTableImpl;
+
+    const toMap = this.matrix!.toMap(page);
+
+    this.fields = toMap.fields;
+    this.data = toMap.data;
 
     // Save properties
     data.setLabel(this.label);
@@ -160,77 +280,8 @@ export default class DataTableModal extends SemanticComponent implements Modal<J
     return this.getDataRows().map((row) => (row[1] as TSMap<string, string>).entries())[0];
   }
 
-  public setField(e: Event) {
-    const target = e.target;
-    const fieldId = (target as Element).id;
-    const field = (target as Element).innerHTML;
-
-    this.fields.set(fieldId, field);
-  }
-
-  public setData(row: string | TSMap<string, string>, e: Event) {
-    const target = e.target;
-    const fieldId = (target as Element).id;
-    const rowId = row as string;
-
-    this.data.set(rowId, this.data.get(rowId).set(fieldId, (target as Element).innerHTML));
-  }
-
-  public createNewEmptyDataTable(): void {
-
-    // Reset fields and data
-    this.fields = new TSMap<string, string>();
-    this.data = new TSMap<string, TSMap<string, string>>();
-
-    // Create new fields
-    this.fields.set('0-field-0', 'New Field 1');
-    this.fields.set('0-field-1', 'New Field 2');
-
-    // Set data
-    this.data.set('0-data-0', new TSMap<string, string>()
-      .set('0-field-0', 'New Data 1')
-      .set('0-field-1', 'New Data 2'));
-  }
-
-  public addNewField(): void {
-
-    // [["0-data-0"], TSMap] => "0-data-0" => take the last 0
-    const key = this.fields.entries()[this.fields.length - 1][0].toString();
-    const id = parseInt(key[key.length - 1], 10) + 1;
-
-    this.fields.set(`${this.page.getId()}-field-${id}`, `New Field ${id + 1}`);
-
-    this.data.forEach((datum: TSMap<string, string>) => {
-      datum.set(`${this.page.getId()}-data-${id - 1}`, `New Data ${id}`);
-    });
-  }
-
-  public removeRow(rowId: string): void {
-    this.data.delete(rowId);
-  }
-
-  public removeField(columnId: string): void {
-    this.fields.delete(columnId);
-    const id = columnId[columnId.length - 1];
-
-    this.data.forEach((datum: TSMap<string, string>) => {
-      datum.delete(`${this.page.getId()}-data-${id}`);
-    });
-  }
-
-  public addNewRow(): void {
-
-    const fields = new TSMap<string, string>();
-
-    this.fields.forEach((value, k, index) => {
-      fields.set(k as string, `New Data ${index as number + 1}`);
-    });
-
-    // [["0-data-0"], TSMap] => "0-data-0" => take the last 0
-    const key = this.data.entries()[this.data.length - 1][0].toString();
-    const id = parseInt(key[key.length - 1], 10) + 1;
-
-    this.data.set(`${this.page.getId()}-data-${id}`, fields);
+  public declareSemanticModules(): void {
+    $('.ui.dropdown').dropdown();
   }
 }
 </script>

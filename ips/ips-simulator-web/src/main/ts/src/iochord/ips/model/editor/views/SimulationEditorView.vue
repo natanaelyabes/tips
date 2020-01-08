@@ -38,8 +38,8 @@
         <div id="ribbon-player-menu" class="right menu">
           <SimulationPlayerComponent
             :isPlaying="isDisabled"
-            @play="isDisabled = true; loadNPlay();"
-            @stop="isDisabled = false" />
+            @play = "isDisabled = true; loadNPlay();"
+            @stop = "isDisabled = false" />
         </div>
 
         <div id="ribbon-layout-menu" class="right menu">
