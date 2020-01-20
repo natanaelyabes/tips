@@ -1,0 +1,24 @@
+@startuml "Chart"
+class BarChart extends BaseComponent {
+  @Prop public model?: any
+  created(): void
+}
+
+class HistogramChart extends BaseComponent {
+  @Prop public model?: any
+  @Prop public binWidth?: any
+  created(): void
+}
+
+class LineChart extends BaseComponent {
+  @Prop public model?: any
+  created(): void
+}
+
+class PieChart extends BaseComponent {
+  @Prop public model?: any
+  @Prop public options?: any
+  @Prop public axisLabels?: any
+  created(): void
+}
+@enduml

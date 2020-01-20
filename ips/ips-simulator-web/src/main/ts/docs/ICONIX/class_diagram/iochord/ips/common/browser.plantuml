@@ -1,0 +1,15 @@
+@startuml "Browser"
+interface BrowserCanHandleBreakpoints {
+  width: number
+  handleBreakpoints(width: number): void
+}
+
+interface BrowserCanHandleKeyPress {
+  key: number | string
+  handleKeyPress(key: number | string): void
+}
+
+interface BrowserHasProperties {
+  overrideBrowserProperties(): void
+}
+@enduml

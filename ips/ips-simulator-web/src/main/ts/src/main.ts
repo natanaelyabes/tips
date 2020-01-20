@@ -16,13 +16,6 @@ import * as $ from 'jquery';
 import '../public/semantic/dist/semantic.min.css';
 import '../public/semantic/dist/semantic.min.js';
 
-import '../node_modules/jexcel/dist/jexcel.js';
-import '../node_modules/jsuites/dist/jsuites.js';
-
-import '../node_modules/jexcel/dist/jexcel.css';
-import '../node_modules/jsuites/dist/jsuites.css';
-
-
 Vue.use(VueRx, Rx);
 Vue.config.productionTip = false;
 
