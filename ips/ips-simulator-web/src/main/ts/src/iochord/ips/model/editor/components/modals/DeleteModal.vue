@@ -171,7 +171,6 @@ export default class DeleteModal extends SemanticComponent implements DeletableM
             if ((activity.getQueueRef() as string) === data.id) {
               activity.setQueueRef('');
               $('#act_txtqueuelabel').dropdown('clear');
-
             }
 
             if ((activity.getResourceRef() as string) === data.id) {

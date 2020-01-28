@@ -100,7 +100,6 @@ export default class SimulationEditorUIView extends Vue {
 
     /*
       Activity
-
       if Activity Type ===standard Then
       if Activity Type ===concurrent Then
       else (Activity Type ===split module)
@@ -317,11 +316,11 @@ export default class SimulationEditorUIView extends Vue {
     r_generator.addTo(graph);
 
     /* Function */
-    /*const r_function = r_object_type.clone() as joint.shapes.standard.Rectangle;
+    /* const r_function = r_object_type.clone() as joint.shapes.standard.Rectangle;
     r_function.position(400,440);
     r_function.attr('root/title','function');
     r_function.attr('label/text','Function');
-    r_function.addTo(graph);*/
+    r_function.addTo(graph); */
 
     let rClickCounter = 0;
 
@@ -408,7 +407,6 @@ export default class SimulationEditorUIView extends Vue {
           },
         });
       }
-
     }
   }
 }

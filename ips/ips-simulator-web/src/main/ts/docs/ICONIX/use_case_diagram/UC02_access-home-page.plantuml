@@ -29,7 +29,7 @@ rectangle "Access Home Page" {
   package "Recent simulations" as rs {
     usecase (View recent simulation) as uc_rs_1
     usecase (add simulation) as uc_rs_2
-    (filter recent simulation) .> uc_rs_2 : <<extends>>
+    (filter recent simulation) .> uc_rs_1 : <<extends>>
 
     uc_rs_1 -- user
     uc_rs_2 -- user
@@ -38,7 +38,7 @@ rectangle "Access Home Page" {
   package "Recent files" as rf {
     usecase (View recent data connection) as uc_rf_1
     usecase (add data connection) as uc_rf_2
-    (filter recent data connection) .> uc_rf_2 : <<extends>>
+    (filter recent data connection) .> uc_rf_1 : <<extends>>
 
     uc_rf_1 -- user
     uc_rf_2 -- user

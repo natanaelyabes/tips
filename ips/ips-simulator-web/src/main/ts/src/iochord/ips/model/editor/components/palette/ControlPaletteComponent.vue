@@ -3,13 +3,13 @@
     <div class="item">
       <div class="header">Control</div>
       <div class="menu">
-        <a @click="openControl()" :class="'ui basic button item' + (isDisabled ? ' disabled' : '')" :disabled="isDisabled">
+        <a @click = "openControl()" :class="'ui basic button item' + (isDisabled ? ' disabled' : '')" :disabled="isDisabled">
           <div class="image-icon">
             <img src="@/assets/images/icons/simulation_editor_icon/control/control.png" alt="" class="ui centered image" />
           </div>
           Control
         </a>
-        <a @click="openConfiguration()" :class="'ui basic button item' + (isDisabled ? ' disabled' : '')" :disabled="isDisabled">
+        <a @click = "openConfiguration()" :class="'ui basic button item' + (isDisabled ? ' disabled' : '')" :disabled="isDisabled">
           <div class="image-icon">
             <img src="@/assets/images/icons/simulation_editor_icon/control/configuration.png" alt="" class="ui centered image" />
           </div>
