@@ -4,6 +4,15 @@ import scala.reflect.runtime.currentMirror
 import scala.tools.reflect.ToolBox
 import scala.io.Source
   
+/**
+ *
+ * @package ips-simulator
+ * @author  Nur Ichsan Utama <nichsan@pusan.ac.kr>
+ * @since   2019
+ *
+ *
+ */
+
 class MemoryScalaFileCompiler(filePath: String) {
   
   val toolbox = currentMirror.mkToolBox()

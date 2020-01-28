@@ -5,6 +5,15 @@ import io.iochord.apps.ips.model.cpn.v1._
 import scala.collection.generic._
 import scala.collection.mutable.Map
 
+/**
+ *
+ * @package ips-model
+ * @author  Nur Ichsan Utama <nichsan@pusan.ac.kr>
+ * @since   2019
+ *
+ *
+ */
+
 class Place[T] (
   private var id: String,
   private var name: String,

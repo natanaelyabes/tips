@@ -16,6 +16,15 @@ import scala.util.Failure
 import scala.concurrent.Await
 import scala.concurrent.duration.Duration
 
+/**
+ *
+ * @package ips-simulator
+ * @author  Nur Ichsan Utama <nichsan@pusan.ac.kr>
+ * @since   2019
+ *
+ *
+ */
+
 case class Simulator(calcAvgTimeEnTr:Boolean = false) {
   
   var c = 0

@@ -5,6 +5,15 @@ import java.util.Observable
 
 import scala.collection.mutable._
 
+/**
+ *
+ * @package ips-simulator
+ * @author  Nur Ichsan Utama <nichsan@pusan.ac.kr>
+ * @since   2019
+ *
+ *
+ */
+
 class MarkingObserver extends Observer {
   
   def update(o:Observable, marking:Object):Unit =

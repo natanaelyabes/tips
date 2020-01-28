@@ -4,6 +4,14 @@ import java.sql.{Connection,DriverManager}
 import java.util.Date
 import java.text.SimpleDateFormat
 
+/**
+ *
+ * @package ips-simulator
+ * @author  Nur Ichsan Utama <nichsan@pusan.ac.kr>
+ * @since   2019
+ *
+ *
+ */
 class GenGraph {
  
   def create(nTrans:Int):String = {

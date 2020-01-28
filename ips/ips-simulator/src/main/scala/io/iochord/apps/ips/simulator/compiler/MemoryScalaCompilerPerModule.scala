@@ -5,6 +5,15 @@ import scala.tools.reflect.ToolBox
 import io.iochord.apps.ips.model.cpn.v1.impl.CPNGraph
 import java.util.LinkedHashMap
 
+/**
+ *
+ * @package ips-simulator
+ * @author  Nur Ichsan Utama <nichsan@pusan.ac.kr>
+ * @since   2019
+ *
+ *
+ */
+
 class MemoryScalaCompilerPerModule(scalaSource: LinkedHashMap[String,String]) {
   
   val toolbox = ToolBox(currentMirror).mkToolBox()

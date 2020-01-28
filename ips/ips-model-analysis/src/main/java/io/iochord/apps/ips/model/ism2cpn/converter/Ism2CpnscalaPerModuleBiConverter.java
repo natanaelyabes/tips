@@ -25,9 +25,13 @@ import io.iochord.apps.ips.model.ism.v1.nodes.Start;
 import io.iochord.apps.ips.model.ism.v1.nodes.Stop;
 
 /**
- * @author Nur Ichsan Utama <ichsan83@gmail.com>
- *
- */
+*
+* @package ips-model-analysis
+* @author  Nur Ichsan Utama <nichsan@pusan.ac.kr>
+* @since   2019
+*
+*
+*/
 public class Ism2CpnscalaPerModuleBiConverter implements Converter<IsmGraph, Ism2CpnscalaModelPerModule> {
 	
 	class KeyElement {

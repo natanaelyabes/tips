@@ -17,13 +17,13 @@ import lombok.Getter;
 import lombok.Setter;
 
 /**
- *
- * @package chdsr-model-analysis
- * @author  Nur Ichsan Utama <nichsan@pusan.ac.kr>
- * @since   2019
- *
- *
- */
+*
+* @package ips-model-analysis
+* @author  Nur Ichsan Utama <nichsan@pusan.ac.kr>
+* @since   2019
+*
+*
+*/
 public class Ism2CpnscalaModelPerModule implements ConversionModel<IsmGraph, LinkedHashMap<String,String>> {
 
 	@Getter

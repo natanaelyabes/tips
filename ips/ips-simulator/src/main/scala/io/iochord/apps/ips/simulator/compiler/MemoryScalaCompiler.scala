@@ -3,6 +3,15 @@ package io.iochord.apps.ips.simulator.compiler
 import scala.reflect.runtime.currentMirror
 import scala.tools.reflect.ToolBox
   
+/**
+ *
+ * @package ips-simulator
+ * @author  Nur Ichsan Utama <nichsan@pusan.ac.kr>
+ * @since   2019
+ *
+ *
+ */
+
 class MemoryScalaCompiler(scalaSource: String) {
   
   val toolbox = ToolBox(currentMirror).mkToolBox()

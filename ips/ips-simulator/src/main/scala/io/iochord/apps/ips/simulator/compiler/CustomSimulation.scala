@@ -7,6 +7,14 @@ import scala.collection.mutable.ListBuffer
 import org.json.JSONArray
 import io.iochord.apps.ips.model.cpn.v1.impl.Place
 
+/**
+ *
+ * @package ips-simulator
+ * @author  Nur Ichsan Utama <nichsan@pusan.ac.kr>
+ * @since   2019
+ *
+ *
+ */
 class CustomSimulation {
 
   def doTestWithManyToken(noStep: Int, jsonStr: String, modelpath: String): String = {

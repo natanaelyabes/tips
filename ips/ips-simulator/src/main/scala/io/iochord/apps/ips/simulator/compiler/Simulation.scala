@@ -8,6 +8,15 @@ import io.iochord.apps.ips.simulator.engine.subject.MarkingObservable
 import io.iochord.apps.ips.simulator.engine.Simulator
 import java.util.Observer
 
+/**
+ *
+ * @package ips-simulator
+ * @author  Nur Ichsan Utama <nichsan@pusan.ac.kr>
+ * @since   2019
+ *
+ *
+ */
+
 abstract class Simulation(val simulator:Simulator = new Simulator(true)) {
   var cgraph = new CPNGraph()
   
