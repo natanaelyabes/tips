@@ -30,7 +30,7 @@ object SimpleTest {
     
     case class BindTransInit(x:Option[Int])
     
-    val cgraph = CPNGraph()
+    val cgraph = new CPNGraph()
     
     type colset_CASEID = Int
     

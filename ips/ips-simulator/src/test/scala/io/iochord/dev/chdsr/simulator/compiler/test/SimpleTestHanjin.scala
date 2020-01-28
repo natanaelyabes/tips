@@ -28,7 +28,7 @@ object SimpleTestHanjin {
   def main(args: Array[String]) {
     val subject = new MarkingObservable()
     subject.addObserver(new MarkingObserver())
-    val cgraph = CPNGraph()
+    val cgraph = new CPNGraph()
     
     val monitors:Map[(String,String),Int] = Map[(String,String),Int]() //startAct,endAct,flag
     val objMonitors:Map[(String,String,Int),Double] = Map[(String,String,Int),Double]() //(tokenId,startAct,flag),startValue

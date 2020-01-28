@@ -9,7 +9,7 @@ import io.iochord.apps.ips.simulator.engine.Simulator
 import java.util.Observer
 
 abstract class Simulation(val simulator:Simulator = new Simulator(true)) {
-  val cgraph = CPNGraph()
+  var cgraph = new CPNGraph()
   
   val globtime = new GlobalTime(0)
   var stopCrit:Any => Boolean = null

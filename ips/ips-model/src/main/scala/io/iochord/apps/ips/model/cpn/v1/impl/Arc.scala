@@ -29,7 +29,11 @@ class Arc[T,B] (
   
   def setIsBase(isBase:Boolean) { this.isBase = isBase }
   
-  def getPlace(): Place[T] = { place }
+  def setPlace(place:Place[T]) { this.place = place }
+  
+  def setTransition(transition:Transition[B]) { this.transition = transition }
+  
+  def getPlace(): Place[T] = place
   
   def getTransition(): Transition[B] = transition
   
@@ -46,6 +50,8 @@ class Arc[T,B] (
   def setTokenToBind(TtoB:coltype => Option[B]) = { TtoBV = TtoB }
   
   def setBindToToken(BtoT:B => coltype) = { BtoTV = BtoT }
+  
+  def computeTokenToBind(token:coltype):Option[B] = { TtoBV(token) }
   
   def setAddTime(addTime:B => Long) = { this.addTime = addTime }
   

@@ -128,30 +128,6 @@ public class Ism2CpnscalaBiConverter implements Converter<IsmGraph, Ism2Cpnscala
 		return guardid;
 	}
 	
-	public String addActionTtB(String classbinding, String TtBdef) {
-		String counter = getCounter(KeyElement.actionTtB);
-		String TtBid = "ActionTtB"+counter;
-		
-		StringBuilder TtBfactory = new StringBuilder();
-		TtBfactory.append( "val "+TtBid+" = (inp:Any) => "+classbinding+"("+TtBdef+")\n" );
-		
-		factory.append(TtBfactory.toString());
-		
-		return TtBid;
-	}
-	
-	public String addActionBtT(String classbinding, String BtTdef) {
-		String counter = getCounter(KeyElement.actionBtT);
-		String BtTid = "ActionBtT"+counter;
-		
-		StringBuilder BtTfactory = new StringBuilder();
-		BtTfactory.append( "val "+BtTid+" = (b:"+classbinding+") => {"+BtTdef+"}\n" );
-		
-		factory.append(BtTfactory.toString());
-		
-		return BtTid;
-	}
-	
 	public String addAction(String classbinding, String actionfundef) {
 		String counter = getCounter(KeyElement.action);
 		String actionid = "action"+counter;

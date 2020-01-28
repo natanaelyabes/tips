@@ -74,7 +74,7 @@ class Transition[B] (
     val iterator = in.iterator
     
     breakable{while(iterator.hasNext){
-      val arc = iterator.next() match { case arc:Arc[B,_] => arc }
+      val arc = iterator.next() match { case arc:Arc[_,B] => arc }
       val map = arc.getPlace().getCurrentMarking().multiset.filter(_._1._2 <= globtime).groupBy(_._1._1).map({ 
         case (k,v) => k -> (v map (_._2) sum) 
       }).filter(_._2 >= arc.noTokArcExp)
@@ -84,7 +84,7 @@ class Transition[B] (
           val t = m._1
           t match { 
             case t:arc.coltype => { 
-              val b = arc.TtoBV(t)
+              val b = arc.computeTokenToBind(t)
               b 
             } 
           } 
@@ -115,6 +115,70 @@ class Transition[B] (
           break
     }}
     (lbe.length > 0, lbe)
+  }
+  
+  def isArcEnabledLooksRecur(globtime:Long):(Boolean,List[B]) = {
+    var lbe = List[B]()
+    
+    val b = recursive(in,0,0,None)
+    if(b != None)
+      lbe = b.get::lbe
+    
+    (lbe.length > 0, lbe)   
+  }
+  
+  def recursive(inp:List[Arc[_,B]],seq:Int,globtime:Long,bprev:Option[B]):Option[B] = {
+    var bchoose:Option[B] = None
+    
+    val arc = inp(seq)
+    
+    val map = arc.getPlace().getCurrentMarking().multiset.filter(_._1._2 <= globtime).groupBy(_._1._1).map({ 
+      case (k,v) => k -> (v map (_._2) sum) 
+    }).filter(_._2 >= arc.noTokArcExp)
+    
+    if(arc.getIsBase()) {
+      val lbo = map.map(m => { 
+        val t = m._1
+        t match { 
+          case t:arc.coltype => { 
+            val b = arc.computeTokenToBind(t)
+            b 
+          } 
+        } 
+      } ).filter(_ != None).map(_.get).toList
+      
+      for(b <- lbo) {
+        if(seq == 0) {
+          recursive(inp,seq+1,globtime,Some(b))
+        }
+        else {
+          if(eval(bprev.get,b)) {
+            val bnext = merge(bprev.get,b)
+            if(seq < inp.length-1)
+              recursive(inp,seq+1,globtime,Some(bnext))
+            else
+              bchoose = Some(bnext)
+          }
+        }
+      }
+    }
+    else {
+      val lto = map.map(m => { 
+        val t = m._1
+        t
+      } ).toList
+      
+      for(t <- lto) {
+        if(arc.BtoTV(bprev.get) == t) {
+          if(seq < inp.length-1)
+            recursive(inp,seq+1,globtime,Some(bprev.get))
+          else
+            bchoose = Some(bprev.get)
+        }
+      }
+    }
+    
+    bchoose
   }
   
   def isEnabled(globtime:Long):Boolean = {
@@ -161,7 +225,7 @@ class Transition[B] (
       val bAction = action.computeActionFun(bChosen)
       bModify = merge(bChosen,bAction)
     }
-      
+    
     out.foreach(arc => {
       val tGen = arc.BtoTV(bModify)
       if(tGen != None) {

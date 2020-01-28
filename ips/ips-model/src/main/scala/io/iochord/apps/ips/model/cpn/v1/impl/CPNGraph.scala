@@ -49,15 +49,33 @@ class CPNGraph {
   }
 	
 	def addArc[T,B] (arc: Arc[T,B]) {	
-	  
 	  import Direction._
 	  if(arc.getDirection() == PtT)
 	  	arc.getTransition().addIn(arc)
-	  
 	  else
 	  	arc.getTransition().addOut(arc)
 	  
 	  arcs = arc :: arcs
+	}
+	
+	def addPlaceMerge(place: Place[_]) = {
+	  if(places.get(place.getId()) == None)
+	    addPlace(place)
+	}
+	
+	def addTransitionMerge[B](transition: Transition[B]) = {
+	  if(transitions.get(transition.getId()) == None)
+	    addTransition(transition)
+	}
+	
+	def addArcMerge[T,B](arc: Arc[T,B]) {
+	  val place:Place[T] = places(arc.getPlace().getId()).asInstanceOf[Place[T]]
+	  val transition:Transition[B] = transitions(arc.getTransition().getId()).asInstanceOf[Transition[B]]
+	  arc.setPlace(place)
+	  arc.setTransition(transition)
+	  
+	  if(transition.getIn().filter(a => a == arc).size == 0 && transition.getOut().filter(a => a == arc).size == 0)
+	    addArc(arc)
 	}
 	
 	def removeArc[T,B] (arc: Arc[T,B]) {
@@ -80,8 +98,4 @@ class CPNGraph {
 	def getTransitions():java.util.List[Transition[_]] = allTransitions.asJava
 	
 	def getArcs():java.util.List[Arc[_,_]] = arcs.asJava
-}
-
-object CPNGraph {
-  def apply() = new CPNGraph()
 }
