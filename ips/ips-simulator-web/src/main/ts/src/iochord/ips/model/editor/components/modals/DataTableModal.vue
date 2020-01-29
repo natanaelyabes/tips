@@ -116,10 +116,12 @@ class Matrix {
   public type: Type[] = [];
   public data: any[][] = [];
 
-  constructor(fields?: TSMap<string, string>, data?: TSMap<string, TSMap<string, any>>) {
-    // this.initDummyData();
-    this.header = fields!.values();
-    this.data = Array.from(data!.values().entries());
+  constructor(fields?: TSMap<string, string>, type?: TSMap<string, Type>, data?: TSMap<string, TSMap<string, any>>) {
+    if (fields !== undefined || data !== undefined) {
+      this.header = fields!.values();
+      this.type = type!.values();
+      data!.values().forEach((value) => this.data.push(value.values()));
+    }
   }
 
   public initDummyData(): void {
@@ -133,7 +135,6 @@ class Matrix {
 
   public insertNewRow(): void {
     const newRow = new Array<any>(this.data[0].length);
-
     this.type.forEach((t, i) => {
       switch (t) {
         case Type.String:
@@ -147,7 +148,6 @@ class Matrix {
           break;
       }
     });
-
     this.data.push(newRow);
   }
 
@@ -158,19 +158,14 @@ class Matrix {
   public insertNewFields(): void {
     this.header[this.header.length] = 'New Field ' + (this.header.length + 1);
     this.type[this.type.length] = Type.String;
-    this.data.forEach((d, i) => {
-      d[d.length] = 'New Data ' + (d.length + 1);
-    });
-
+    this.data.forEach((d, i) => d[d.length] = 'New Data ' + (d.length + 1));
     this.data.push();
   }
 
   public deleteField(i: number) {
     this.header.splice(i, 1);
     this.type.splice(i, 1);
-    this.data.forEach((d) => {
-      d.splice(i, 1);
-    });
+    this.data.forEach((d) => d.splice(i, 1));
   }
 
   public toMap(page: JointGraphPageImpl): { fields: TSMap<string, string>, data: TSMap<string, TSMap<string, any>> } {
@@ -201,6 +196,7 @@ export default class DataTableModal extends SemanticComponent implements Modal<J
 
   private label: string = '';
   private fields: TSMap<string, string> = new TSMap<string, string>();
+  private type: TSMap<string, Type> = new TSMap<string, Type>();
   private data: TSMap<string, TSMap<string, string>> = new TSMap<string, TSMap<string, string>>();
 
   private matrix: Matrix = new Matrix();
@@ -216,14 +212,16 @@ export default class DataTableModal extends SemanticComponent implements Modal<J
     // Component properties
     this.label = object.getLabel() as string;
     this.fields = object.getFields() !== undefined ? object.getFields() as TSMap<string, string> : this.fields;
+    this.fields.forEach((field) => this.type.set(field, Type.String));
     this.data = object.getData() !== undefined ? object.getData() as TSMap<string, TSMap<string, string>> : this.data;
 
-    this.matrix = new Matrix(this.fields, this.data);
+    // Re-initialize Matrix
+    this.matrix = new Matrix(this.fields, this.type, this.data);
 
+    // If fields and data is empty, generate dummy data
     if (this.fields.length === 0 || this.data.length === 0) {
       this.matrix.initDummyData();
     }
-
   }
 
   public saveProperties(page: JointGraphPageImpl, object: GraphDataTableImpl): void {
@@ -231,7 +229,7 @@ export default class DataTableModal extends SemanticComponent implements Modal<J
     const dataPage = (graphModule.graph.getPages() as TSMap<string, GraphPage>).get(dataPageId);
     const data: GraphDataTableImpl = (page.getData() as TSMap<string, GraphData>).get(object.getId() as string) as GraphDataTableImpl;
 
-    const toMap = this.matrix!.toMap(page);
+    const toMap = this.matrix.toMap(page);
 
     this.fields = toMap.fields;
     this.data = toMap.data;

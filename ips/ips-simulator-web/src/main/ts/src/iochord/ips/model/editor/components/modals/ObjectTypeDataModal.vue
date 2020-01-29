@@ -63,7 +63,7 @@
       </div>
     </div>
     <div class="actions">
-      <div @click="saveProperties(page, properties)" class="ui positive button">Save</div>
+      <div @click = "saveProperties(page, properties)" class="ui positive button">Save</div>
       <div class="ui cancel button">Cancel</div>
     </div>
   </div>
