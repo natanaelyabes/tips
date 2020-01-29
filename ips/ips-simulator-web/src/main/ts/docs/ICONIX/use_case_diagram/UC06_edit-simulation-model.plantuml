@@ -1,0 +1,38 @@
+@startuml "Edit Simulation Model"
+left to right direction
+
+actor :User: as user
+rectangle "Edit Simulation Model" {
+  package "Palette" as p {
+    user -- (Set control configuration)
+    user -- (Configure multiple simulation settings)
+    user -- (Create node)
+    user -- (Create connector)
+  }
+
+  package "Menu" as m {
+    user -- (Create new model)
+    user -- (Save model)
+    user -- (Load example model)
+    user -- (Download model)
+    user -- (Show report)
+  }
+
+  package "Player" as pl {
+    user -- (run simulation)
+    (run simulation) <. (stop simulation) : <<extends>>
+    (run simulation) .> (view report) : <<includes>>
+  }
+
+  package "Canvas" as c {
+    user -- (Drag canvas)
+    user -- (Drag element)
+    user -- (Open node settings)
+    user -- (Auto layout workflow)
+  }
+
+  package "Viewer" as v {
+    user -- (View workflow minimap)
+  }
+}
+@enduml

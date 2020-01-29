@@ -1,0 +1,19 @@
+@startuml "User Authentication"
+left to right direction
+
+actor :User: as user
+rectangle "User Authentication" {
+  ' User needs to be authenticated
+  user -- (authenticate)
+  (authenticate) .> (login) : <<includes>>
+  (authenticate) <. (register) : <<extends>>
+
+  ' Features that are available after user authenticate themselves
+  (login) <.. (Access home page) : <<extends>>
+  (login) <.. (Manage data source) : <<extends>>
+  (login) <.. (Perform event log analysis) : <<extends>>
+  (login) <.. (Generate simulation model) : <<extends>>
+  (login) <.. (Edit simulation model) : <<extends>>
+  (login) <.  (logout) : <<extends>>
+}
+@enduml

@@ -15,14 +15,14 @@
           <div class="row">
             <div class="four wide column">Name</div>
             <div class="twelve wide column">
-              <input v-model="label" type="text" id="x_txt_label">
+              <input v-model="label" type="text" id="x_fn_label">
             </div>
           </div>
           <div class="row">
             <div class="four wide column">Input Parameters</div>
             <div class="twelve wide column">
               <select id="x_input" v-model="inputParameters" class="ui fluid search dropdown" multiple>
-                <option v-for="objectType in objectTypes" :key="objectType.id" :value="objectType.id">{{objectType.label}} ({{objectType.id}})</option>
+                <option v-for="objectType in objectTypes" :key="objectType.getId()" :value="objectType.getId()">{{objectType.getLabel()}} ({{objectType.getId()}})</option>
               </select>
             </div>
           </div>
@@ -40,7 +40,7 @@
             <div class="four wide column">Output Variables</div>
             <div class="twelve wide column">
               <select id="x_output" v-model="outputVariables" class="ui fluid search dropdown" multiple>
-                <option v-for="objectType in objectTypes" :key="objectType.id" :value="objectType.id">{{objectType.label}} ({{objectType.id}})</option>
+                <option v-for="objectType in objectTypes" :key="objectType.getId()" :value="objectType.getId()">{{objectType.getLabel()}} ({{objectType.getId()}})</option>
               </select>
             </div>
           </div>
@@ -48,7 +48,7 @@
       </div>
     </div>
     <div class="actions">
-      <div @click="saveProperties(page, properties)" class="ui positive button">Save</div>
+      <div @click = "saveProperties(page, properties)" class="ui positive button">Save</div>
       <div class="ui cancel button">Cancel</div>
     </div>
   </div>

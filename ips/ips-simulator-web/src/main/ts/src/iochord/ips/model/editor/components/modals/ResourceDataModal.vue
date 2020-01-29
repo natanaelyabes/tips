@@ -15,7 +15,7 @@
           <div class="row">
             <div class="four wide column">Label</div>
             <div class="twelve wide column">
-              <input type="text" v-model="label" id="x_txt_label">
+              <input type="text" v-model="label" id="x_res_label">
             </div>
           </div>
           <div class="row">
@@ -36,7 +36,7 @@
       </div>
     </div>
     <div class="actions">
-      <div @click="saveProperties(page, properties)" class="ui positive button">Save</div>
+      <div @click = "saveProperties(page, properties)" class="ui positive button">Save</div>
       <div class="ui cancel button">Cancel</div>
     </div>
   </div>
