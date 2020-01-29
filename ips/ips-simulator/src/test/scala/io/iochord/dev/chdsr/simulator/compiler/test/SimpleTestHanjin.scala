@@ -23,12 +23,21 @@ import breeze.stats.distributions.StudentsT
 import breeze.stats.distributions.Uniform
 import breeze.stats.distributions.Rayleigh
 
+/**
+ *
+ * @package ips-simulator
+ * @author  Nur Ichsan Utama <nichsan@pusan.ac.kr>
+ * @since   2019
+ *
+ *
+ */
+
 object SimpleTestHanjin {
   
   def main(args: Array[String]) {
     val subject = new MarkingObservable()
     subject.addObserver(new MarkingObserver())
-    val cgraph = CPNGraph()
+    val cgraph = new CPNGraph()
     
     val monitors:Map[(String,String),Int] = Map[(String,String),Int]() //startAct,endAct,flag
     val objMonitors:Map[(String,String,Int),Double] = Map[(String,String,Int),Double]() //(tokenId,startAct,flag),startValue

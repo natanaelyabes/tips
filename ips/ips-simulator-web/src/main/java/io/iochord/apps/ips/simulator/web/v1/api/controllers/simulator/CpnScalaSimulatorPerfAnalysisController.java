@@ -2,6 +2,9 @@ package io.iochord.apps.ips.simulator.web.v1.api.controllers.simulator;
 
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
+import java.util.LinkedHashMap;
+import java.util.Observable;
+import java.util.Observer;
 
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -14,7 +17,9 @@ import io.iochord.apps.ips.common.util.SerializationUtil;
 import io.iochord.apps.ips.model.example.IsmExample;
 import io.iochord.apps.ips.model.ism.v1.IsmGraph;
 import io.iochord.apps.ips.model.ism2cpn.converter.Ism2CpnscalaBiConverter;
+import io.iochord.apps.ips.model.ism2cpn.converter.Ism2CpnscalaPerModuleBiConverter;
 import io.iochord.apps.ips.simulator.compiler.GenGraph;
+import io.iochord.apps.ips.simulator.compiler.MemoryScalaCompilerPerModule;
 import io.iochord.apps.ips.simulator.engine.SimulatorPerformAnalysisJava;
 
 /**
@@ -42,6 +47,29 @@ public class CpnScalaSimulatorPerfAnalysisController extends ASimulatorControlle
 		out.close();
 	}
   
+  	/**
+  	 * Example method to run simulation by per module compiled
+  	 */
+  	@RequestMapping(value = BASE_URI + "/atm/permodule/generate", method = RequestMethod.GET)
+	public void test01CpnScalaPerModuleCreation() throws Exception {
+		IsmGraph snet = IsmExample.createBankExample();
+		System.out.println(SerializationUtil.encode(snet));
+		Ism2CpnscalaPerModuleBiConverter converter = new Ism2CpnscalaPerModuleBiConverter();
+		LinkedHashMap<String, String> net = converter.convert(snet).getConvertedModel();
+		MemoryScalaCompilerPerModule msfc = new MemoryScalaCompilerPerModule(net);
+		io.iochord.apps.ips.simulator.compiler.Simulation simulation = msfc.getInstance();
+		Observer obs = new Observer() {
+			
+			@Override
+			public void update(Observable o, Object arg) {
+				System.out.println("JAVAOBS: " + o);
+				System.out.println(arg);
+			}
+		};
+		simulation.addObserver(obs);
+		simulation.runStep(5);
+	}
+  	
 	@RequestMapping(value = BASE_URI + "/atm/perf/{noStep}", method = RequestMethod.POST)
 	public String perfATMWithSpecNumbToken(@PathVariable("noStep") int noStep, @RequestBody String jsonStr) {
 		SimulatorPerformAnalysisJava spa = new SimulatorPerformAnalysisJava();
