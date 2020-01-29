@@ -20,9 +20,11 @@ import lombok.Setter;
 *
 * @package ips-model-analysis
 * @author  Nur Ichsan Utama <nichsan@pusan.ac.kr>
-* @since   2019
+* @since   2020
 *
-*
+* We need to implement this class to because of compile per module need Map<String,String> input
+* We cannot use one bundle big string to compile each module incrementally
+* This class has same method like old Ism2CpnscalaModel.java but with different input (String change to LinkedHashMap)
 */
 public class Ism2CpnscalaModelPerModule implements ConversionModel<IsmGraph, LinkedHashMap<String,String>> {
 

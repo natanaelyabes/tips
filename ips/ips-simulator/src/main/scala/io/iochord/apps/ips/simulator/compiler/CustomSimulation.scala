@@ -13,11 +13,19 @@ import io.iochord.apps.ips.model.cpn.v1.impl.Place
  * @author  Nur Ichsan Utama <nichsan@pusan.ac.kr>
  * @since   2019
  *
+ * Class to test the performance of the simulation engine
+ * (only use for testing)
  *
  */
 class CustomSimulation {
 
-  def doTestWithManyToken(noStep: Int, jsonStr: String, modelpath: String): String = {
+  /**
+ * @param noStep
+ * @param jsonStr
+ * @param modelpath
+ * @return
+ */
+def doTestWithManyToken(noStep: Int, jsonStr: String, modelpath: String): String = {
     val map = HashMap[String, Any]()
 
     var placesbef = List[Map[String, Any]]()
@@ -113,10 +121,21 @@ object JsonConverter {
     return "{" + json.mkString(",") + "}"
   }
 
+  /**
+   * @param s
+   * @return
+   */
   private def escape(s: String): String = {
     return s.replaceAll("\"", "\\\\\"");
   }
 
+  /**
+   * @param jarr
+   * @param p
+   * @param isBefore
+   * @param isShowPlaces
+   * @return
+   */
   def buildPlace(jarr: JSONArray, p: Place[_], isBefore: Boolean, isShowPlaces: Boolean): HashMap[String, Any] = {
     if (isBefore)
       for (i <- 0 to jarr.length() - 1) {

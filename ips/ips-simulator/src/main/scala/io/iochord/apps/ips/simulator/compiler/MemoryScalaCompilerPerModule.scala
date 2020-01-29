@@ -11,7 +11,7 @@ import java.util.LinkedHashMap
  * @author  Nur Ichsan Utama <nichsan@pusan.ac.kr>
  * @since   2019
  *
- *
+ * Compile class that take Map of scala string as input (per module)
  */
 
 class MemoryScalaCompilerPerModule(scalaSource: LinkedHashMap[String,String]) {
@@ -45,6 +45,11 @@ class MemoryScalaCompilerPerModule(scalaSource: LinkedHashMap[String,String]) {
       
   val compiledCode = toolbox.compile(tree)
   
+  /**
+   * @return instance of simulation class after compiled
+   * It compiled incrementally per module. 
+   * You should able to differentiate between getInstance in MemoryScalaCompiler and MemoryScalaFileCompiler
+   */
   def getInstance = { 
     val sim = compiledCode().asInstanceOf[Simulation]
     val cgraph = new CPNGraph()

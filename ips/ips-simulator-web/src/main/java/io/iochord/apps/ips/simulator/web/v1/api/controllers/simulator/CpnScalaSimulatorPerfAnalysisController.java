@@ -47,6 +47,9 @@ public class CpnScalaSimulatorPerfAnalysisController extends ASimulatorControlle
 		out.close();
 	}
   
+  	/**
+  	 * Example method to run simulation by per module compiled
+  	 */
   	@RequestMapping(value = BASE_URI + "/atm/permodule/generate", method = RequestMethod.GET)
 	public void test01CpnScalaPerModuleCreation() throws Exception {
 		IsmGraph snet = IsmExample.createBankExample();

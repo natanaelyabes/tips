@@ -29,7 +29,9 @@ import io.iochord.apps.ips.model.ism.v1.nodes.Stop;
 * @package ips-model-analysis
 * @author  Nur Ichsan Utama <nichsan@pusan.ac.kr>
 * @since   2019
-*
+* 
+* CPN Scala converter class
+* Convert from IsmGraph to Ism2CpnscalaModel -> scala string
 *
 */
 
@@ -59,14 +61,16 @@ public class Ism2CpnscalaBiConverter implements Converter<IsmGraph, Ism2Cpnscala
 	StringBuilder factory = new StringBuilder();
 	
 	private Map<String, String> objecttypes = new LinkedHashMap<>();
-//	private Map<String, String> generators = new LinkedHashMap<>();
-//	private Map<String, String> resources = new LinkedHashMap<>();
-//	private Map<String, String> queues = new LinkedHashMap<>();
 	private Map<String, String> placeshub = new LinkedHashMap<>();
 	private Map<String, Boolean> transIfExist = new HashMap<>();
 	
 	private Map<String, Integer> counters = new LinkedHashMap<>();
 	
+	/**
+	 * @param clazz
+	 * @return get counter of current value
+	 * This function is used to generate unique value thats all
+	 */
 	private String getCounter(String clazz) {
 		if (!counters.containsKey(clazz)) {
 			counters.put(clazz, 0);
@@ -75,6 +79,15 @@ public class Ism2CpnscalaBiConverter implements Converter<IsmGraph, Ism2Cpnscala
 		return String.format("%2s", counters.get(clazz)).replace(' ', '0');
 	}
 	
+	/**
+	 * @param hubid : is used to keep specific var name of scala place that will be used in the connector part in this class
+	 * @param name : name of this place
+	 * @param type : type of the token multiset in this place
+	 * @param initialMarking : define initial marking for this place
+	 * @param origin : origin of this place (see trait Element in ips-model for detail explanation)
+	 * @param placeId : id of this place if defined (if null it will used getCounter function to set automatic name for the variable) 
+	 * @return the id of this place
+	 */
 	public String addPlace(String hubid, String name, String type, String initialMarking, String origin, String placeId) {
 		String counter = getCounter(KeyElement.place);
 		String mapid = "map"+counter;
@@ -97,6 +110,17 @@ public class Ism2CpnscalaBiConverter implements Converter<IsmGraph, Ism2Cpnscala
 		return placeidClean;
 	}
 	
+	/**
+	 * @param name : name of this transition
+	 * @param guard : guard variable of this transition (the definition of the guard is defined outside of this function)
+	 * @param action : action variable of this transtion (the definition of the action is defined outside of this function)
+	 * @param classbinding : classbinding name of this transition (the definition of the classbinding is defined outside of this function)
+	 * @param eval : eval function of this transition (see Transition class in ips-model to more detail explanation)
+	 * @param merge : merge function of this transition (see Transitio class in ips-model to more detail explanation)
+	 * @param origin : origin of this transition (see trait Element in ips-model for detail explanation)
+	 * @param transId : id of this transition if defined (if null it will used getCounter function to set automatic name for the variable)
+	 * @return the id of this transition
+	 */
 	public String addTransition(String name, String guard, String action, String classbinding, String eval, String merge, String origin, String transId) {
 		String counter = getCounter(KeyElement.transition);
 		String transidClean = transId == null ? "t_"+counter : cleanId("t_", transId);
@@ -119,6 +143,11 @@ public class Ism2CpnscalaBiConverter implements Converter<IsmGraph, Ism2Cpnscala
 		return transidClean;
 	}
 	
+	/**
+	 * @param classbinding
+	 * @param guarddef
+	 * @return
+	 */
 	public String addGuard(String classbinding, String guarddef) {
 		String counter = getCounter(KeyElement.guard);
 		String guardid = "Guard"+counter;
@@ -133,6 +162,11 @@ public class Ism2CpnscalaBiConverter implements Converter<IsmGraph, Ism2Cpnscala
 		return guardid;
 	}
 	
+	/**
+	 * @param classbinding
+	 * @param actionfundef
+	 * @return
+	 */
 	public String addAction(String classbinding, String actionfundef) {
 		String counter = getCounter(KeyElement.action);
 		String actionid = "action"+counter;
@@ -151,6 +185,10 @@ public class Ism2CpnscalaBiConverter implements Converter<IsmGraph, Ism2Cpnscala
 		return actionid;
 	}
 	
+	/**
+	 * @param classdef
+	 * @return
+	 */
 	public String addBindingClass(String classdef) {
 		String counter = getCounter(KeyElement.binding);
 		String bindingid = "Binding"+counter;
@@ -163,6 +201,11 @@ public class Ism2CpnscalaBiConverter implements Converter<IsmGraph, Ism2Cpnscala
 		return bindingid;
 	}
 	
+	/**
+	 * @param evaldef
+	 * @param classbinding
+	 * @return
+	 */
 	public String addEval(String evaldef, String classbinding) {
 		String counter = getCounter(KeyElement.eval);
 		String evalid = "Eval"+counter;
@@ -177,6 +220,12 @@ public class Ism2CpnscalaBiConverter implements Converter<IsmGraph, Ism2Cpnscala
 		return evalid;
 	}
 	
+	/**
+	 * @param mergedef
+	 * @param classbinding
+	 * @param mergeassign
+	 * @return
+	 */
 	public String addMerge(String mergedef, String classbinding, String mergeassign) {
 		String counter = getCounter(KeyElement.merge);
 		String mergeid = "Merge"+counter;
@@ -192,6 +241,20 @@ public class Ism2CpnscalaBiConverter implements Converter<IsmGraph, Ism2Cpnscala
 		return mergeid;
 	}
 	
+	/**
+	 * @param placeid
+	 * @param transitionid
+	 * @param direction
+	 * @param type
+	 * @param classbinding
+	 * @param TtB
+	 * @param BtT
+	 * @param addTime
+	 * @param noToken
+	 * @param isBase
+	 * @param origin
+	 * @return
+	 */
 	public String addArc(String placeid, String transitionid, String direction, String type, String classbinding, String TtB, String BtT, String addTime, String noToken, boolean isBase, String origin) {
 		String counter = getCounter(KeyElement.arc);
 		String arcid = "arc"+counter;
@@ -215,6 +278,13 @@ public class Ism2CpnscalaBiConverter implements Converter<IsmGraph, Ism2Cpnscala
 		return arcid;
 	}
 	
+	/**
+	 * @param classbinding
+	 * @param type
+	 * @param inverse
+	 * @param TtBdef
+	 * @return
+	 */
 	public String addTtB(String classbinding, String type, String inverse, String TtBdef) {
 		String counter = getCounter(KeyElement.TtB);
 		String TtBid = "tTb"+counter;
@@ -227,6 +297,12 @@ public class Ism2CpnscalaBiConverter implements Converter<IsmGraph, Ism2Cpnscala
 		return TtBid;
 	}
 	
+	/**
+	 * @param classbinding
+	 * @param type
+	 * @param BtTdef
+	 * @return
+	 */
 	public String addBtT(String classbinding, String type, String BtTdef) {
 		String counter = getCounter(KeyElement.BtT);
 		String BtTid = "bTt"+counter;
@@ -239,6 +315,11 @@ public class Ism2CpnscalaBiConverter implements Converter<IsmGraph, Ism2Cpnscala
 		return BtTid;
 	}
 	
+	/**
+	 * @param classbinding
+	 * @param addedTimedef
+	 * @return
+	 */
 	public String addAddedTime(String classbinding, String addedTimedef) {
 		if(addedTimedef.length() <= 1)
 			addedTimedef = "0L";
@@ -254,6 +335,11 @@ public class Ism2CpnscalaBiConverter implements Converter<IsmGraph, Ism2Cpnscala
 		return addTimeid;
 	}
 	
+	/**
+	 * @param resId
+	 * @param typecaseId
+	 * @return
+	 */
 	public String createResourcePlace(String resId, String typecaseId) {
 		String residClean = cleanId("r_", resId);
 		
@@ -270,6 +356,11 @@ public class Ism2CpnscalaBiConverter implements Converter<IsmGraph, Ism2Cpnscala
 		return residClean;
 	}
 	
+	/**
+	 * @param resId
+	 * @param name
+	 * @param numbofresource
+	 */
 	public void addResource(String resId, String name, int numbofresource) {
 		String residClean = cleanId("r_", resId);
 		
@@ -283,6 +374,15 @@ public class Ism2CpnscalaBiConverter implements Converter<IsmGraph, Ism2Cpnscala
 		factory.append(resfactory.toString());
 	}
 	
+	/**
+	 * @param typeid
+	 * @param ltypeid
+	 * @param cb
+	 * @param ev
+	 * @param mg
+	 * @param queue
+	 * @param origin
+	 */
 	public void addQueue(String typeid, String ltypeid, String cb, String ev, String mg, Queue queue, String origin) {
 		String qidClean = cleanId("q_", queue.getId());
 		String listid = "list_"+qidClean;
@@ -303,6 +403,9 @@ public class Ism2CpnscalaBiConverter implements Converter<IsmGraph, Ism2Cpnscala
 			addArc(pendqueue, tstartqueue, "TtP", ltypeid, cb, null, addBtT(cb, ltypeid, "b.queue.get:::List(b.entity.get)"), null, null, false, origin);
 	}
 	
+	/* 
+	 * @param snet : accept snet and convert to scala string
+	 */
 	public Ism2CpnscalaModel convert(IsmGraph snet) {
 		Ism2CpnscalaModel result = new Ism2CpnscalaModel();
 		result.setOriginalModel(snet);
@@ -736,6 +839,11 @@ public class Ism2CpnscalaBiConverter implements Converter<IsmGraph, Ism2Cpnscala
 		return result;
 	}
 	
+	/**
+	 * @param prefix
+	 * @param oriId
+	 * @return
+	 */
 	public String cleanId(String prefix, String oriId) {
 		String modId = oriId.replace("-", "");
 		

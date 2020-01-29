@@ -9,4 +9,8 @@ package io.iochord.apps.ips.model.cpn.v1.impl.token
  *
  */
 
+
+/**
+ * Base class for generic token type (such as resource)
+ */
 class General(id:String, name:String)

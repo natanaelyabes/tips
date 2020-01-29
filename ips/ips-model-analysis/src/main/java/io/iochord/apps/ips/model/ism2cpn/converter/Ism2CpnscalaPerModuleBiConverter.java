@@ -1,6 +1,5 @@
 package io.iochord.apps.ips.model.ism2cpn.converter;
 
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -28,9 +27,11 @@ import io.iochord.apps.ips.model.ism.v1.nodes.Stop;
 *
 * @package ips-model-analysis
 * @author  Nur Ichsan Utama <nichsan@pusan.ac.kr>
-* @since   2019
-*
-*
+* @since   2020
+* 
+* CPN Scala converter class per module
+* Convert from IsmGraph to Ism2CpnscalaModelPerModule -> (scala string for each module)
+* 
 */
 public class Ism2CpnscalaPerModuleBiConverter implements Converter<IsmGraph, Ism2CpnscalaModelPerModule> {
 	
@@ -61,6 +62,10 @@ public class Ism2CpnscalaPerModuleBiConverter implements Converter<IsmGraph, Ism
 	
 	private Map<String, Integer> counters = new LinkedHashMap<>();
 	
+	/**
+	 * @param clazz
+	 * @return
+	 */
 	private String getCounter(String clazz) {
 		if (!counters.containsKey(clazz)) {
 			counters.put(clazz, 0);
@@ -69,6 +74,17 @@ public class Ism2CpnscalaPerModuleBiConverter implements Converter<IsmGraph, Ism
 		return String.format("%2s", counters.get(clazz)).replace(' ', '0');
 	}
 	
+	/**
+	 * @param hubid
+	 * @param name
+	 * @param type
+	 * @param initialMarking
+	 * @param origin
+	 * @param placeId
+	 * @return array of string consist of place id and place definition
+	 * 
+	 * We don't directly write to string because we want to package the string per its module (per node of high level representation)
+	 */
 	public String[] addPlace(String hubid, String name, String type, String initialMarking, String origin, String placeId) {
 		String[] id_def = new String[2];
 		
@@ -94,6 +110,17 @@ public class Ism2CpnscalaPerModuleBiConverter implements Converter<IsmGraph, Ism
 		return id_def;
 	}
 	
+	/**
+	 * @param name
+	 * @param guard
+	 * @param action
+	 * @param classbinding
+	 * @param eval
+	 * @param merge
+	 * @param origin
+	 * @param transId
+	 * @return
+	 */
 	public String[] addTransition(String name, String guard, String action, String classbinding, String eval, String merge, String origin, String transId) {
 		String[] id_def = new String[2];
 		
@@ -119,6 +146,11 @@ public class Ism2CpnscalaPerModuleBiConverter implements Converter<IsmGraph, Ism
 		return id_def;
 	}
 	
+	/**
+	 * @param classbinding
+	 * @param guarddef
+	 * @return
+	 */
 	public String[] addGuard(String classbinding, String guarddef) {
 		String[] id_def = new String[2];
 		
@@ -137,6 +169,11 @@ public class Ism2CpnscalaPerModuleBiConverter implements Converter<IsmGraph, Ism
 		return id_def;
 	}
 	
+	/**
+	 * @param classbinding
+	 * @param actionfundef
+	 * @return
+	 */
 	public String[] addAction(String classbinding, String actionfundef) {
 		String[] id_def = new String[2];
 		
@@ -160,6 +197,10 @@ public class Ism2CpnscalaPerModuleBiConverter implements Converter<IsmGraph, Ism
 		return id_def;
 	}
 	
+	/**
+	 * @param classdef
+	 * @return
+	 */
 	public String[] addBindingClass(String classdef) {
 		String[] id_def = new String[2];
 		
@@ -175,6 +216,11 @@ public class Ism2CpnscalaPerModuleBiConverter implements Converter<IsmGraph, Ism
 		return id_def;
 	}
 	
+	/**
+	 * @param evaldef
+	 * @param classbinding
+	 * @return
+	 */
 	public String[] addEval(String evaldef, String classbinding) {
 		String[] id_def = new String[2];
 		
@@ -192,6 +238,12 @@ public class Ism2CpnscalaPerModuleBiConverter implements Converter<IsmGraph, Ism
 		return id_def;
 	}
 	
+	/**
+	 * @param mergedef
+	 * @param classbinding
+	 * @param mergeassign
+	 * @return
+	 */
 	public String[] addMerge(String mergedef, String classbinding, String mergeassign) {
 		String[] id_def = new String[2];
 		
@@ -210,6 +262,20 @@ public class Ism2CpnscalaPerModuleBiConverter implements Converter<IsmGraph, Ism
 		return id_def;
 	}
 	
+	/**
+	 * @param placeid
+	 * @param transitionid
+	 * @param direction
+	 * @param type
+	 * @param classbinding
+	 * @param TtB
+	 * @param BtT
+	 * @param addTime
+	 * @param noToken
+	 * @param isBase
+	 * @param origin
+	 * @return
+	 */
 	public String[] addArc(String placeid, String transitionid, String direction, String type, String classbinding, String TtB, String BtT, String addTime, String noToken, boolean isBase, String origin) {
 		String[] id_def = new String[2];
 		
@@ -236,6 +302,13 @@ public class Ism2CpnscalaPerModuleBiConverter implements Converter<IsmGraph, Ism
 		return id_def;
 	}
 	
+	/**
+	 * @param classbinding
+	 * @param type
+	 * @param inverse
+	 * @param TtBdef
+	 * @return
+	 */
 	public String[] addTtB(String classbinding, String type, String inverse, String TtBdef) {
 		String[] id_def = new String[2];
 		
@@ -251,6 +324,12 @@ public class Ism2CpnscalaPerModuleBiConverter implements Converter<IsmGraph, Ism
 		return id_def;
 	}
 	
+	/**
+	 * @param classbinding
+	 * @param type
+	 * @param BtTdef
+	 * @return
+	 */
 	public String[] addBtT(String classbinding, String type, String BtTdef) {
 		String[] id_def = new String[2];
 		
@@ -266,6 +345,11 @@ public class Ism2CpnscalaPerModuleBiConverter implements Converter<IsmGraph, Ism
 		return id_def;
 	}
 	
+	/**
+	 * @param classbinding
+	 * @param addedTimedef
+	 * @return
+	 */
 	public String[] addAddedTime(String classbinding, String addedTimedef) {
 		String[] id_def = new String[2];
 		
@@ -284,6 +368,11 @@ public class Ism2CpnscalaPerModuleBiConverter implements Converter<IsmGraph, Ism
 		return id_def;
 	}
 	
+	/**
+	 * @param resId
+	 * @param typecaseId
+	 * @return
+	 */
 	public String[] createResourcePlace(String resId, String typecaseId) {
 		String[] id_def = new String[2];
 		
@@ -303,6 +392,12 @@ public class Ism2CpnscalaPerModuleBiConverter implements Converter<IsmGraph, Ism
 		return id_def;
 	}
 	
+	/**
+	 * @param resId
+	 * @param name
+	 * @param numbofresource
+	 * @return
+	 */
 	public String addResource(String resId, String name, int numbofresource) {
 		String residClean = cleanId("r_", resId);
 		
@@ -316,6 +411,16 @@ public class Ism2CpnscalaPerModuleBiConverter implements Converter<IsmGraph, Ism
 		return resfactory.toString();
 	}
 	
+	/**
+	 * @param typeid
+	 * @param ltypeid
+	 * @param cb
+	 * @param ev
+	 * @param mg
+	 * @param queue
+	 * @param origin
+	 * @return
+	 */
 	public String addQueue(String typeid, String ltypeid, String cb, String ev, String mg, Queue queue, String origin) {
 		String qidClean = cleanId("q_", queue.getId());
 		String listid = "list_"+qidClean;
@@ -364,6 +469,9 @@ public class Ism2CpnscalaPerModuleBiConverter implements Converter<IsmGraph, Ism
 		return queuefactory.toString();
 	}
 	
+	/* 
+	 * @param snet : accept snet and convert to scala string per module
+	 */
 	public Ism2CpnscalaModelPerModule convert(IsmGraph snet) {
 		Ism2CpnscalaModelPerModule result = new Ism2CpnscalaModelPerModule();
 		result.setOriginalModel(snet);
@@ -1436,6 +1544,11 @@ public class Ism2CpnscalaPerModuleBiConverter implements Converter<IsmGraph, Ism
 		return result;
 	}
 	
+	/**
+	 * @param prefix
+	 * @param oriId
+	 * @return
+	 */
 	public String cleanId(String prefix, String oriId) {
 		String modId = oriId.replace("-", "");
 		

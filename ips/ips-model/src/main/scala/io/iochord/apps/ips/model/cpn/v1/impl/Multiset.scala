@@ -29,12 +29,6 @@ class Multiset[T] (val multiset: Map[(T,Long), Int], val coltype: Class[_] = nul
   def hasToken(elem: T): Boolean = multiset.filter(x => x._1._1 equals(elem)).size > 0
   
   /**
-   * @param elem : token with time that will be checked if exist in this multiset or not
-   * @return boolean : true or false, true if it is exist and false if not exist
-   */
-  def hasTokenWithTime(elem: (T,Long)): Boolean = multiset.filter(x => x._1 equals(elem)).size > 0
-   
-  /**
    * @param elem : add specific number of token with time into this multiset
    * @return : return the new multiset after adding this element
    */

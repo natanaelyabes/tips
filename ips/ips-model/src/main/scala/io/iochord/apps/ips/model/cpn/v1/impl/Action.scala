@@ -30,8 +30,9 @@ class Action[B] {
   
   /**
    * @param bind : compute the action function by sending parameter to actionFun variable.
+   * @return new bind
    * Need to understand that setActionFun method previously defined above only accept function that tranform object (B => B)
    * This function need specific input, we set the input in this computeActionFun method
    */
-  def computeActionFun(bind:B) { this.actionFun(bind) }
+  def computeActionFun(bind:B):B = { this.actionFun(bind) }
 }

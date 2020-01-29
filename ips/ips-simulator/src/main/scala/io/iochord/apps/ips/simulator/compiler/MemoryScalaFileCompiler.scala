@@ -10,7 +10,7 @@ import scala.io.Source
  * @author  Nur Ichsan Utama <nichsan@pusan.ac.kr>
  * @since   2019
  *
- *
+ * Compile class that take file that consist of scala string as input
  */
 
 class MemoryScalaFileCompiler(filePath: String) {
@@ -45,5 +45,8 @@ class MemoryScalaFileCompiler(filePath: String) {
   
   val compiledCode = toolbox.compile(tree)
   
+  /**
+   * @return instance of simulation class after compiled
+   */
   def getInstance = compiledCode().asInstanceOf[Simulation]
 }

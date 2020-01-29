@@ -30,6 +30,10 @@ class Transition[B] (
   private var origin:Map[String,String] = null
   private var attributes:Map[String,Any] = null
   
+  /**
+   * @param arc : add new input arc to this transition
+   * Base arc should be on first position of the list
+   */
   def addIn[T](arc: Arc[T,B]) {
     if(arc.getIsBase())
       in = arc :: in
@@ -37,46 +41,128 @@ class Transition[B] (
       in = in ::: List[Arc[_,B]](arc)
   }
 
+  /**
+   * @param arc : add new output arc to this transition
+   */
   def addOut[T](arc: Arc[T,B]) {
     out = arc :: out
   }
 
+  /**
+   * @param arc : remove specific input arc from this transition
+   */
   def removeIn(arc: Arc[_,_]) {
     in = in.filterNot(_ == arc)
   }
 
+  /**
+   * @param arc : remove specific output arc from this transition
+   */
   def removeOut(arc: Arc[_,_]) {
     out = out.filterNot(_ == arc)
   }
   
+  /**
+   * @return list of all input arc from this transition
+   */
   def getIn():List[Arc[_,_]] = in
   
+  /**
+   * @return list of all output arc from this transition
+   */
   def getOut():List[Arc[_,_]] = out
   
+  /**
+   * @return id of this transition. (see trait Element for detail explanation)
+   */
   def getId(): String = id
   
+  /**
+   * @param id : set id of this transition. (see trait Element for detail explanation)
+   */
   def setId(id: String) { this.id = id }
   
+  /**
+   * @return name of this transition. (see trait Node for detail explanation)
+   */
   def getName():String = name
   
+  /**
+   * @param name : set name of this transition. (see trait Node for detail explanation)
+   */
   def setName(name: String) { this.name = name }
   
+  /**
+   * @return origin of this transition. (see trait Element for detail explanation)
+   */
   def getOrigin(): Map[String,String] = origin
   
+  /**
+   * @param origin : set origin of this transition. (see trait Element for detail explanation)
+   */
   def setOrigin(origin: Map[String,String]) { this.origin = origin }
   
+  /**
+   * @return attributes. Not used nor defined
+   * Previously requested by Java Dev (Iq) but not yet clear what should return by this function 
+   */
   def getAttributes(): Map[String,Any] = attributes
   
+  /**
+   * @param attributes. Not used nor defined
+   * Previously requested by Java Dev (Iq) but not yet clear what should define by this function 
+   */
   def setAttributes(attributes: Map[String,Any]) { this.attributes = attributes }
   
+  /**
+   * @return guard object of this transition
+   * Guard is used to evaluate enabled transition (together with arc expression) 
+   */
   def getGuard(): Guard[B] = guard
   
+  /**
+   * @param guard : set guard object of this transition
+   * Guard is used to evaluate enabled transition (together with arc expression) 
+   */
   def setGuard(guard: Guard[B]) { this.guard = guard }
   
+  /**
+   * @return action object of this transition
+   * Action is used to transform some binding variables values 
+   */
   def getAction(): Action[B] = action
   
+  /**
+   * @param action : set action object of this transition
+   * Action is used to transform some binding variables values 
+   */
   def setAction(action: Action[B]) { this.action = action }
   
+  /**
+   * @param globtime : accept input current global time of the simulation to be used for evaluate enabled transition
+   * @return boolean value if this transition is enabled or not
+   * This function combine between isArcEnabled and guard function
+   * You change isArcEnabled to isArcEnabledLooksRecur to compare different method of arc enabled evaluation 
+   */
+  def isEnabled(globtime:Long):Boolean = {
+    val (isArcEn, lbe) = isArcEnabled(globtime)
+    
+    if(getGuard() != null) {
+      val resEvalG = getGuard().evalGuard(lbe)
+      setLbeBase(resEvalG._2)
+      resEvalG._1
+    }
+    else {
+      setLbeBase(lbe)
+      isArcEn
+    }
+  }
+  
+  /**
+   * @param globtime: accept input current global time of the simulation to be used for evaluate arc enabled binding
+   * @return pair of Boolean value if this arc is enabled or not and List of binding after arc evaluation
+   * This arc enabled function will evaluate all token in each place of input arc in this transition 
+   */
   def isArcEnabled(globtime:Long):(Boolean,List[B]) = { 
     var lbe = List[B]()
     
@@ -126,6 +212,13 @@ class Transition[B] (
     (lbe.length > 0, lbe)
   }
   
+  /**
+   * @param globtime: accept input current global time of the simulation to be used for evaluate arc enabled binding
+   * @return pair of Boolean value if this arc is enabled or not and List of binding after arc evaluation
+   * This arc enabled function will evaluate until 1 complete binding is found.
+   * It could be not all token in each place of input arc in this transition will be evaluated.
+   * This function used recursive representation (this function is behave looks like deep first search)  
+   */
   def isArcEnabledLooksRecur(globtime:Long):(Boolean,List[B]) = {
     var lbe = List[B]()
     
@@ -136,6 +229,15 @@ class Transition[B] (
     (lbe.length > 0, lbe)   
   }
   
+  /**
+   * @param inp, seq, globtime, bpreve.
+   * inp is list of input arc for this transition
+   * seq is order of input arc being evaluated currently
+   * globtime is current global time of simulation
+   * bpreve is binding values from previous step evalutation
+   * @return only 1 complete binding if found. If not found it will return None
+   * This function is detail implementation of isArcEnabledLooksRecur above 
+   */
   def recursive(inp:List[Arc[_,B]],seq:Int,globtime:Long,bprev:Option[B]):Option[B] = {
     var bchoose:Option[B] = None
     
@@ -190,20 +292,11 @@ class Transition[B] (
     bchoose
   }
   
-  def isEnabled(globtime:Long):Boolean = {
-    val (isArcEn, lbe) = isArcEnabled(globtime)
-    
-    if(getGuard() != null) {
-      val resEvalG = getGuard().evalGuard(lbe)
-      setLbeBase(resEvalG._2)
-      resEvalG._1
-    }
-    else {
-      setLbeBase(lbe)
-      isArcEn
-    }
-  }
-  
+  /**
+   * @param globtime: accept input current global time of the simulation
+   * @return new binding after transition is executed (actually this return value is not used in the simulation engine, only used just for reporting and debugging)
+   * This function will consume or generate new token in input and output arc respectively.  
+   */
   def execute(globtime:Long):B = {
     val r = new java.util.Random()
     val bChosen = lbeBase(r.nextInt(lbeBase.length))
@@ -211,11 +304,12 @@ class Transition[B] (
     in.foreach(arc => { 
       val tChosen = arc.BtoTV(bChosen)
       if(tChosen != None) {
-        val lTchosenComp = arc.getPlace().getCurrentMarking().multiset.filter(_._1._2 <= globtime).groupBy(_._1._1).filter(_._1 == tChosen ).head._2
+        val place = arc.getPlace()
+        val lTchosenComp =place.getCurrentMarking().multiset.filter(_._1._2 <= globtime).groupBy(_._1._1).filter(_._1 == tChosen ).head._2
         val nConsume = 0
         breakable{
           for(tChosenComp <- lTchosenComp) {
-            val tWt = tChosenComp._1
+            val tWt = tChosenComp._1.asInstanceOf
             val nAvail = tChosenComp._2
             val tConsume = Math.min(arc.noTokArcExp - nConsume, nAvail)
             arc.getPlace().removeTokenWithTime(tWt, tConsume)
@@ -245,11 +339,26 @@ class Transition[B] (
     bModify
   }
   
+  /**
+   * @param eval: set eval function to be used for comparing value between two base arc
+   * This function will compare two binding value between two base arc
+   * For comparing between other type of arc (base vs non base, non base vs non base) we don't use this function   
+   */
   def setEval(eval:(B,B) => Boolean) = { this.eval = eval }
   
+  /**
+   * @param merge: set merge function to be used to merge binding value between two arc
+   * This function will be executed if evaluation between two arc is binding (some combnation value is bind)    
+   */
   def setMerge(merge:(B,B) => B) = { this.merge = merge }
   
+  /**
+   * @param lbeBase: set combination list of binding that eligible currently 
+   */
   def setLbeBase(lbeBase:List[B]) = { this.lbeBase = lbeBase }
   
+  /**
+   * @return name of this transition if toString method is called from this object class
+   */
   override def toString = name
 }
