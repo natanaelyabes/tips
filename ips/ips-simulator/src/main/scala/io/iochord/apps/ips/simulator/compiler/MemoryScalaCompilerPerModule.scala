@@ -2,25 +2,24 @@ package io.iochord.apps.ips.simulator.compiler
 
 import scala.reflect.runtime.currentMirror
 import scala.tools.reflect.ToolBox
-import scala.io.Source
-  
+import io.iochord.apps.ips.model.cpn.v1.impl.CPNGraph
+import java.util.LinkedHashMap
+
 /**
  *
  * @package ips-simulator
  * @author  Nur Ichsan Utama <nichsan@pusan.ac.kr>
  * @since   2019
  *
- * Compile class that take file that consist of scala string as input
+ * Compile class that take Map of scala string as input (per module)
  */
 
-class MemoryScalaFileCompiler(filePath: String) {
+class MemoryScalaCompilerPerModule(scalaSource: LinkedHashMap[String,String]) {
   
-  val toolbox = currentMirror.mkToolBox()
+  val toolbox = ToolBox(currentMirror).mkToolBox()
   import toolbox.u._
   
-  val fileContents = Source.fromFile(filePath).getLines().mkString("\n")
-  val tree = toolbox.parse(
-      "import io.iochord.apps.ips.simulator.compiler._; \n"+
+  val importStm = "import io.iochord.apps.ips.simulator.compiler._; \n"+
       "import io.iochord.apps.ips.model.cpn.v1.impl._; \n"+
       "import io.iochord.apps.ips.model.cpn.v1.impl.token._; \n"+
       "import io.iochord.apps.ips.model.cpn.v1._; \n"+
@@ -40,13 +39,31 @@ class MemoryScalaFileCompiler(filePath: String) {
       "import breeze.stats.distributions.NegativeBinomial; \n"+
       "import breeze.stats.distributions.StudentsT; \n"+
       "import breeze.stats.distributions.Uniform; \n"+
-      "import breeze.stats.distributions.Rayleigh \n"+
-      "new Simulation {\n"+fileContents+"\n}")
-  
+      "import breeze.stats.distributions.Rayleigh \n"
+      
+  val tree = toolbox.parse(importStm+"new Simulation { }")
+      
   val compiledCode = toolbox.compile(tree)
   
   /**
    * @return instance of simulation class after compiled
+   * It compiled incrementally per module. 
+   * You should able to differentiate between getInstance in MemoryScalaCompiler and MemoryScalaFileCompiler
    */
-  def getInstance = compiledCode().asInstanceOf[Simulation]
+  def getInstance = { 
+    val sim = compiledCode().asInstanceOf[Simulation]
+    val cgraph = new CPNGraph()
+    val it = scalaSource.keySet().iterator()
+    while(it.hasNext()) {
+      val key = it.next()
+      val strcomp = importStm+"\nval cgraph = new CPNGraph()\n"+scalaSource.get(key)
+      val compcode = toolbox.compile(toolbox.parse(strcomp))
+      val cgraphnew = compcode().asInstanceOf[CPNGraph]
+      cgraphnew.getPlaces().forEach(p => {cgraph.addPlaceMerge(p)})
+      cgraphnew.getTransitions().forEach(t => {cgraph.addTransitionMerge(t)})
+      cgraphnew.getArcs().forEach(a => {cgraph.addArcMerge(a) })
+    }
+    sim.cgraph = cgraph
+    sim
+  }
 }

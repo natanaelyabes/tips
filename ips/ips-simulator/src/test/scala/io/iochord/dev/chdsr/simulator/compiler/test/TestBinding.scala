@@ -1,77 +1,34 @@
 package io.iochord.dev.chdsr.simulator.compiler.test
 
-/**
-*
-* @package ips-simulator
-* @author Nur Ichsan Utama <ichsan83@gmail.com>
-* @since 2019
-*
-*/
+import scala.reflect.runtime.currentMirror
+import scala.tools.reflect.ToolBox
+import scala.io.Source
+
+import io.iochord.apps.ips.model.cpn.v1.impl._;
+
 object TestBinding {
   def main(args: Array[String]) {
-    var lb:List[Int] = List[Int]()
+  
+    val toolbox = ToolBox(currentMirror).mkToolBox()
+    import toolbox.u._,toolbox._
     
-    var inpPlaces:List[List[Int]] = List[List[Int]]()
+    val oks = q"val b = 2; b"
+    val babs = 2
+    val cg = new CPNGraph()
+    val strnya = s"""val b = $cg; b"""
+    //val treenya = typecheck(parse(strnya))
+    val compcode = toolbox.compile(toolbox.parse(strnya))
+    val valuenya = compcode().asInstanceOf[CPNGraph]
+    println(valuenya)
     
-    var p1:List[Int] = List[Int]()
-    var p2:List[Int] = List[Int]()
-    var p3:List[Int] = List[Int]()
-    
-    p1 = 1::p1
-    p1 = 2::p1
-    p1 = 3::p1
-    
-    p2 = 2::p2
-    p2 = 4::p2
-    p2 = 5::p2
-    
-    p3 = 7::p3
-    p3 = 9::p3
-    p3 = 2::p3
-    
-    inpPlaces = p1::inpPlaces
-    inpPlaces = p2::inpPlaces
-    inpPlaces = p3::inpPlaces
-    
-    for(j <- 1 to 100)
-      print("Cek")
-    
-    println("")
-    
-    val start2 = System.currentTimeMillis()
-    var ind2:Int = 0
-    //Alternative Method
-    recursive(inpPlaces,ind2)
-    val duration2 = System.currentTimeMillis() - start2
-    println("Alt Method Dur "+duration2)
-    
-    val start1 = System.currentTimeMillis()
-    var ind1:Int = 1
-    //Current Method
-    for(p <- inpPlaces) {
-      if(lb.length == 0)
-          for(i <- p) {
-            lb = i::lb    
-          }
-      else
-        for(i <- p) {  
-          for(b <- lb) {
-            println("Place"+ind1+" : "+i) 
-          }
-        }  
-      ind1 += 1
-    }
-    val duration1 = System.currentTimeMillis() - start1
-    println("Current Method Dur "+duration1)
+    val b = i"10001"
   }
   
-  def recursive(inp:List[List[Int]],seq:Int):String = {
-    if(seq != inp.length)
-      for(i <- inp(seq)) {
-        println("Place"+(seq+1)+" : "+i)
-        recursive(inp,seq+1)
-      }
-    null
+  implicit class IntContext(val sc: StringContext) {
+    def i(args: Any*): Int = {
+      val orig = sc.s(args: _*)
+      orig.replace(" ", "").toInt
+    }
   }
 }
 

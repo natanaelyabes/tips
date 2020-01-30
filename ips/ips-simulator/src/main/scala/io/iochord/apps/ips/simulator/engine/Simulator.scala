@@ -17,12 +17,15 @@ import scala.concurrent.Await
 import scala.concurrent.duration.Duration
 
 /**
-*
-* @package ips-simulator
-* @author Nur Ichsan Utama <ichsan83@gmail.com>
-* @since 2019
-*
-*/
+ *
+ * @package ips-simulator
+ * @author  Nur Ichsan Utama <nichsan@pusan.ac.kr>
+ * @since   2019
+ *
+ * Simulator engine class
+ *
+ */
+
 case class Simulator(calcAvgTimeEnTr:Boolean = false) {
   
   var c = 0
@@ -30,10 +33,22 @@ case class Simulator(calcAvgTimeEnTr:Boolean = false) {
   var stTimeEnTr = 0L
   var avgTimeEnTr = 0L
   
+  /**
+   * @param transitions : list of transition exist in the graph
+   * @param globtime : current global time of simulation
+   * @return list of transition that is enabled
+   */
   private def enabledTransitions(transitions: List[Transition[_]],globtime:GlobalTime) = {
     transitions.filter(t => {t.isEnabled(globtime.time)})
   }
 
+  /**
+   * @param transitions : list of transition exist in the graph
+   * @param globtime : current global time of simulation
+   * @return list of transition that is enabled
+   * 
+   * Implement concurrent checking of enabled transition
+   */
   private def enabledAsyncTransitions(transitions: List[Transition[_]],globtime:GlobalTime) = {
     val enFutureTransitions: Future[List[Transition[_]]] = 
       Future.sequence(transitions.map(t => Future{t.isEnabled(globtime.time)})).map {
@@ -42,6 +57,11 @@ case class Simulator(calcAvgTimeEnTr:Boolean = false) {
     enFutureTransitions
   }
   
+  /**
+   * @param net : cpngraph for this simulation
+   * @param globtime : current global time of simulation
+   * @return the increment of global time simulation that make one of transition could be enabled
+   */
   private def evalGlobalTime(net:CPNGraph, globtime:GlobalTime):(Boolean,List[Transition[_]]) = {
     var times = List[Long]()
     net.allPlaces.foreach(place => { val multiset = place.getCurrentMarking().multiset; multiset.keys.filter(_._2 > globtime.time).foreach(key => { times = key._2::times }) })
@@ -56,6 +76,13 @@ case class Simulator(calcAvgTimeEnTr:Boolean = false) {
     return (false,null)
   }
   
+  /**
+   * @param net : cpngraph for this simulation
+   * @param globtime : current global time of simulation
+   * @return the increment of global time simulation that make one of transition could be enabled
+   * 
+   * Implement concurrent checking of enabled transition in this function
+   */
   private def evalAsyncGlobalTime(net:CPNGraph, globtime:GlobalTime):(Boolean,List[Transition[_]]) = {
     var trans:List[Transition[_]] = null
     var times = List[Long]()
@@ -80,14 +107,28 @@ case class Simulator(calcAvgTimeEnTr:Boolean = false) {
     return (false,null)
   }
   
+  /**
+   * @return current step of simulation
+   */
   def getCurrentStep() = {
     c
   }
   
+  /**
+   * @return average time of enabled transition (only used for testing)
+   */
   def getAvgTimeEnTr() = {
     avgTimeEnTr
   }
   
+  /**
+   * @param net : cpngraph for this simulation
+   * @param stopCrit : stopping criteria function
+   * @param inpStopCrit : input for stopCrit function
+   * @param stepsRef : how many step simulation should run
+   * @param globtime : current global time of simulation
+   * @param subject : subject in observer pattern to publish the event
+   */
   def run(net: CPNGraph, stopCrit:Any => Boolean, inpStopCrit:Any, stepsRef:Int = 0, globtime:GlobalTime = new GlobalTime(0), subject:MarkingObservable = null) {
     val steps = c+stepsRef;
     
@@ -136,7 +177,7 @@ case class Simulator(calcAvgTimeEnTr:Boolean = false) {
         if(subject != null) {
           //println("================ Step: "+c+" | globtime: "+globtime.time+" ================")
           //println("Transition: "+transition.getId(),transition.getName())
-          subject.setMarking((globtime.getTime(), c, (transition.getId(), transition.getOrigin()),markbefore,markafter)) 
+          subject.setMarking((globtime.getTime(), c+1, (transition.getId(), transition.getOrigin()),markbefore,markafter)) 
         }
         c += 1
       }
@@ -148,6 +189,16 @@ case class Simulator(calcAvgTimeEnTr:Boolean = false) {
       println("stop - at step "+c)
   }
   
+  /**
+   * @param net
+   * @param stopCrit
+   * @param inpStopCrit
+   * @param stepsRef
+   * @param globtime
+   * @param subject
+   * 
+   * Same as above but using concurrent checking of enabled transition
+   */
   def runWithAsync(net: CPNGraph, stopCrit:Any => Boolean, inpStopCrit:Any, stepsRef:Int = 0, globtime:GlobalTime = new GlobalTime(0), subject:MarkingObservable = null) {
     val steps = c+stepsRef;
     
@@ -205,7 +256,7 @@ case class Simulator(calcAvgTimeEnTr:Boolean = false) {
         if(subject != null) {
           //println("================ Step: "+c+" | globtime: "+globtime.time+" ================")
           //println("Transition: "+transition.getId(),transition.getName())
-          subject.setMarking((globtime.getTime(), c, (transition.getId(), transition.getOrigin()),markbefore,markafter))   
+          subject.setMarking((globtime.getTime(), c+1, (transition.getId(), transition.getOrigin()),markbefore,markafter))   
         }
         c += 1
       }

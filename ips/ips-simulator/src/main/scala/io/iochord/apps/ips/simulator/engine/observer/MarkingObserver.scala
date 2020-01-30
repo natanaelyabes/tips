@@ -6,15 +6,21 @@ import java.util.Observable
 import scala.collection.mutable._
 
 /**
-*
-* @package ips-simulator
-* @author Nur Ichsan Utama <ichsan83@gmail.com>
-* @since 2019
-*
-*/
+ *
+ * @package ips-simulator
+ * @author  Nur Ichsan Utama <nichsan@pusan.ac.kr>
+ * @since   2019
+ *
+ * Example observer class to monitoring simulation result
+ *
+ */
 
 class MarkingObserver extends Observer {
   
+  /**
+   * param o
+   * param marking
+   */
   def update(o:Observable, marking:Object):Unit =
   {
     val m = marking.asInstanceOf[(Long, Int, String, Map[(String,Map[String,String]),Any],Map[(String,Map[String,String]),Any])]

@@ -1,0 +1,5 @@
+@startuml "Logging"
+interface LoggingServiceInterface {
+  printToConsole(): void
+}
+@enduml

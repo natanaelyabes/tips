@@ -27,7 +27,7 @@
             <div class="four wide column">Type</div>
             <div class="twelve wide column">
               <select v-model="type" id="generator_txt_type" class="ui fluid search dropdown">
-                <option v-for="objectType in objectTypes" :key="objectType.id" :value="objectType.id">{{objectType.label}} ({{objectType.id}})</option>
+                <option v-for="objectType in objectTypes" :key="objectType.getId()" :value="objectType.getId()">{{objectType.getLabel()}} ({{objectType.getId()}})</option>
               </select>
             </div>
           </div>
@@ -39,44 +39,44 @@
           <div class="row">
             <div class="four wide column">Distribution Type</div>
             <div class="twelve wide column">
-              <input type="text" v-model="distributionType" id="x_txt_label">
+              <input type="text" v-model="distributionType" id="x_txt_dist_type">
             </div>
           </div>
           <div class="row">
             <div class="four wide column">Expression</div>
             <div class="twelve wide column">
-              <input type="text" v-model="expression" id="x_txt_label">
+              <input type="text" v-model="expression" id="x_txt_expr">
             </div>
           </div>
           <div class="row">
             <div class="four wide column">Unit</div>
             <div class="twelve wide column">
-              <input type="text" v-model="unit" id="x_txt_label">
+              <input type="text" v-model="unit" id="x_txt_unit">
             </div>
           </div>
           <div class="row">
             <div class="four wide column">Entities per Arrival</div>
             <div class="twelve wide column">
-              <input type="text" v-model="entities" id="x_txt_label">
+              <input type="text" v-model="entities" id="x_txt_ent">
             </div>
           </div>
           <div class="row">
             <div class="four wide column">Max Arrivals</div>
             <div class="twelve wide column">
-              <input type="text" v-model="maxArrival" id="x_txt_label">
+              <input type="text" v-model="maxArrival" id="x_txt_max_arr">
             </div>
           </div>
           <div class="row">
             <div class="four wide column">First Creation</div>
             <div class="twelve wide column">
-              <input type="text" v-model="firstCreation" id="x_txt_label">
+              <input type="text" v-model="firstCreation" id="x_txt_creation">
             </div>
           </div>
         </div>
       </div>
     </div>
     <div class="actions">
-      <div @click="saveProperties(page, properties)" class="ui positive button">Save</div>
+      <div @click = "saveProperties(page, properties)" class="ui positive button">Save</div>
       <div class="ui cancel button">Cancel</div>
     </div>
   </div>
