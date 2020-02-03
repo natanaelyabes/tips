@@ -1,3 +1,8 @@
+<!--
+  @package ips
+  @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
+  @since 2019
+-->
 <template>
   <div class="sandbox list vuex router detail view">
     <div class="ui basic segment">
@@ -15,6 +20,13 @@ import { Component } from 'vue-property-decorator';
 import PageLayout from '@/iochord/ips/common/ui/layout/class/PageLayout';
 
 @Component
+
+/**
+ * @package ips
+ * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
+ * @since 2019
+ *
+ */
 export default class SandboxListVuexRouterDetail extends PageLayout {
 
   /** @Override */

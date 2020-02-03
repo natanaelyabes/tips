@@ -34,6 +34,12 @@ const store = new Vuex.Store<StoreType>({});
  *
  */
 @Module({ dynamic: true, store, name: 'GraphModule', namespaced: true })
+/**
+ * @package ips
+ * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
+ * @since 2019
+ *
+ */
 export default class GraphModule extends VuexModule {
 
   // States

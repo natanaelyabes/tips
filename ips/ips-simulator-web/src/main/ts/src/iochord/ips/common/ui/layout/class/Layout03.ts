@@ -4,6 +4,13 @@ import { Component } from 'vue-property-decorator';
 
 
 @Component
+
+/**
+ * @package ips
+ * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
+ * @since 2019
+ *
+ */
 export default class Layout03View extends PageLayout implements Layout03HasWrapper {
   public title: string = '';
   public breadcrumbs: any;

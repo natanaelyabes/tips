@@ -1,20 +1,37 @@
 import { Component, Vue } from 'vue-property-decorator';
 import { SemanticModulesIsUsed } from '@/iochord/ips/common/ui/semantic-components/SemanticModulesIsUsed';
 
+@Component
 
 /**
+ * Implementation to define the layout of Vue views or pages.
+ *
+ * @export
+ * @class BaseLayout
+ * @extends {Vue}
+ * @implements {SemanticModulesIsUsed}
  *
  * @package ips
  * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
  * @since 2019
  *
  */
-@Component
-export default class BaseLayout extends Vue
-implements SemanticModulesIsUsed {
+export default class BaseLayout extends Vue implements SemanticModulesIsUsed {
+
+  /**
+   * Re-render trials
+   *
+   * @type {number}
+   * @memberof BaseLayout
+   */
   public reRenderKey: number = 0;
 
-  /** @Override */
+  /**
+   * Override Vue mounted lifecyle
+   *
+   * @override
+   * @memberof BaseLayout
+   */
   public mounted(): void {
     this.declareSemanticModules();
   }
@@ -34,6 +51,6 @@ implements SemanticModulesIsUsed {
    * @memberof BaseLayout
    */
   public declareSemanticModules(): void {
-    // console.warn('declareSemanticModules() not implemented.');
+    //
   }
 }

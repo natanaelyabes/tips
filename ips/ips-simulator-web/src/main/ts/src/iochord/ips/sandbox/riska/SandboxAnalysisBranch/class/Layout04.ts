@@ -3,6 +3,13 @@ import { Layout04HasWrapper } from '../interfaces/Layout04HasWrapper';
 import { Component } from 'vue-property-decorator';
 
 @Component
+
+/**
+ * @package ips
+ * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
+ * @since 2019
+ *
+ */
 export default class Layout04View extends PageLayout implements Layout04HasWrapper {
   public title: string = '';
   public breadcrumbs: any;

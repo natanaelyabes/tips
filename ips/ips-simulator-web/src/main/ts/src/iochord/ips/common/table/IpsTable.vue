@@ -1,3 +1,8 @@
+<!--
+  @package ips
+  @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
+  @since 2019
+-->
 <template>
   <section>
     <table class="ui selectable celled striped table" :header="dataHeader" :data="model" :footer="pagination">
@@ -30,6 +35,12 @@ import BaseComponent from '../ui/layout/class/BaseComponent';
 
   },
 })
+/**
+ * @package ips
+ * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
+ * @since 2019
+ *
+ */
 export default class IpsTable extends BaseComponent {
   @Prop()
   public dataHeader?: any;

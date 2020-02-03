@@ -40,6 +40,13 @@ import BaseLayout from '@/iochord/ips/common/ui/layout/class/BaseLayout';
  *
  */
 @Component
+
+/**
+ * @package ips
+ * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
+ * @since 2019
+ *
+ */
 export default class SandboxTestView extends BaseLayout {
   public test: any = 'test';
 

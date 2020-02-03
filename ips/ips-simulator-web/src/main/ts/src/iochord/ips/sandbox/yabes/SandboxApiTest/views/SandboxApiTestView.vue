@@ -1,3 +1,8 @@
+<!--
+  @package ips
+  @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
+  @since 2019
+-->
 <template>
   <div class="sandbox api test view">
     <h1>{{ responseStatus }}</h1>
@@ -14,6 +19,13 @@ import Axios, { AxiosResponse } from 'axios';
 
 
 @Component
+
+/**
+ * @package ips
+ * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
+ * @since 2019
+ *
+ */
 export default class SandboxApiTestView extends Vue {
 
   private response?: AxiosResponse<any>;

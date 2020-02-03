@@ -1,6 +1,7 @@
 import { RouteConfig } from 'vue-router';
 
 /**
+ * Router registry for Process Discovery pages.
  *
  * @package ips
  * @author Riska A. Sutrisnowati <riska@iochord.com>

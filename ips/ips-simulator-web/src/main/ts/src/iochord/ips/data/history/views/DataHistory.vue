@@ -1,3 +1,8 @@
+<!--
+  @package ips
+  @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
+  @since 2019
+-->
 <template>
   <div class="sandbox data management">
     <DepthTwoLeftWrapperComponent>
@@ -55,6 +60,12 @@ import ContentHistoryComponent from '../components/ContentHistoryComponent.vue';
     ContentHistoryComponent,
   },
 })
+/**
+ * @package ips
+ * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
+ * @since 2019
+ *
+ */
 export default class SandboxDataManagementHistory extends Layout02View {
   public title: string = '';
 

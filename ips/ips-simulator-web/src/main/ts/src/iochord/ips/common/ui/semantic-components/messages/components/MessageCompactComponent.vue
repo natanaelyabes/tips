@@ -37,6 +37,13 @@ import MessageComponent from '@/iochord/ips/common/ui/semantic-components/messag
  *
  */
 @Component
+
+/**
+ * @package ips
+ * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
+ * @since 2019
+ *
+ */
 export default class MessageCompactComponent extends MessageComponent {
   //
 }

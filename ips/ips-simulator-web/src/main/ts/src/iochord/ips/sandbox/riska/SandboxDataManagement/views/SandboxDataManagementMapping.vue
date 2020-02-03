@@ -1,3 +1,8 @@
+<!--
+  @package ips
+  @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
+  @since 2019
+-->
 <template>
   <div class="sandbox data management">
     <DepthTwoLeftWrapperComponent>
@@ -69,6 +74,12 @@ import ContentFilterPointsComponent from '../components/ContentFilterPointsCompo
     ContentFilterPointsComponent,
   },
 })
+/**
+ * @package ips
+ * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
+ * @since 2019
+ *
+ */
 export default class SandboxDataManagementMapping extends Layout02View {
   public title: string = '';
 

@@ -1,3 +1,8 @@
+<!--
+  @package ips
+  @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
+  @since 2019
+-->
 <template>
   <div class="sandbox analysis dist fitting">
     <LeftBarContentWrapperComponent>
@@ -12,10 +17,8 @@
 
       <!-- Left Sidebar Menu Item -->
       <template slot="left-bar-menu-item">
-        <!-- <div class="menu"> -->
-          <a href="/#/iochord/ips/analytics/distribution/settings" class="item">Settings</a>
-          <a href="/#/iochord/ips/analytics/distribution/fitting" class="item">Overall</a>
-        <!-- </div> -->
+        <a href="/#/iochord/ips/analytics/distribution/settings" class="item">Settings</a>
+        <a href="/#/iochord/ips/analytics/distribution/fitting" class="item">Overall</a>
       </template>
 
       <!-- Content -->
@@ -56,13 +59,19 @@ import ContentSplitComponent from '../components/ContentSplitComponent.vue';
     ContentSplitComponent,
   },
 })
+
+/**
+ * Overall page to provide a side by side
+ * view between process model and its fitted distribution.
+ *
+ * @extends BaseComponent
+ * @package ips
+ * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
+ * @since 2019
+ *
+ */
 export default class AnalysisDistFitting extends Layout04View {
   public title: string = '';
-
-
-  public mounted(): void { // implement business logic
-    // alert('ding! DD ppang juwa');
-  }
 
   /** @override */
   public overrideBrowserProperties() {

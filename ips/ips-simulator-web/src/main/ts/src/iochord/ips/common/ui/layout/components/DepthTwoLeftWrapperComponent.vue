@@ -1,3 +1,8 @@
+<!--
+  @package ips
+  @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
+  @since 2019
+-->
 <template>
   <div class="wrapper component">
 
@@ -59,6 +64,12 @@ import DepthTwoLeftWorkspaceComponent from '@/iochord/ips/common/ui/layout/compo
     DepthTwoLeftWorkspaceComponent,
   },
 })
+/**
+ * @package ips
+ * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
+ * @since 2019
+ *
+ */
 export default class DepthTwoLeftWrapperComponent extends BaseComponent {
 
 }

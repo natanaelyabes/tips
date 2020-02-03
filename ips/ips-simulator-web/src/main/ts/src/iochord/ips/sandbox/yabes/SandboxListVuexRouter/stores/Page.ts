@@ -1,6 +1,12 @@
 import { VuexModule, Module, Mutation } from 'vuex-module-decorators';
 
 @Module({ namespaced: true })
+/**
+ * @package ips
+ * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
+ * @since 2019
+ *
+ */
 export default class Page extends VuexModule {
   public name: string = '';
   public author: string = '';

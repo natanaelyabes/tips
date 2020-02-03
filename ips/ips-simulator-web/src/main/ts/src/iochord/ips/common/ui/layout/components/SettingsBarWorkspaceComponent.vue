@@ -1,3 +1,8 @@
+<!--
+  @package ips
+  @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
+  @since 2019
+-->
 <template>
   <div class="settings bar wrapper component">
     <!-- Ribbon Menu Item -->
@@ -43,6 +48,12 @@ import RibbonComponent from '@/iochord/ips/common/ui/layout/components/RibbonCom
     RibbonComponent,
   },
 })
+/**
+ * @package ips
+ * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
+ * @since 2019
+ *
+ */
 export default class SettingsBarWorkspaceComponent extends BaseComponent {
 
 }

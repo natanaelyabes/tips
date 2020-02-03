@@ -1,3 +1,8 @@
+<!--
+  @package ips
+  @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
+  @since 2019
+-->
 <template>
   <div class="sandbox-common-service ui basic segment">
     <div class="ui accordion">
@@ -48,6 +53,12 @@ declare const $: any;
   components: {
    },
  })
+/**
+ * @package ips
+ * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
+ * @since 2019
+ *
+ */
 export default class SandboxCommonService extends Vue {
   public mounted() {
     $('.ui.accordion').accordion();

@@ -1,3 +1,8 @@
+<!--
+  @package ips
+  @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
+  @since 2019
+-->
 <template>
   <div class="sandbox analysis pmd">
     <SettingsBarWrapperComponent>
@@ -62,6 +67,16 @@ const graphModule = getModule(GraphModule);
     ModelViewer,
   },
 })
+
+/**
+ * Process discovery page to mine heuristc net.
+ *
+ * @extends Layout03View
+ * @package ips
+ * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
+ * @since 2019
+ *
+ */
 export default class AnalysisPMD extends Layout03View {
   public title: string = '';
 

@@ -4,6 +4,12 @@ import { TSMap } from 'typescript-map';
 import { GraphPage } from '../interfaces/GraphPage';
 
 /**
+ * Implementation of the graph configuration interface.
+ *
+ * @export
+ * @class GraphConfigurationImpl
+ * @extends {GraphElementImpl}
+ * @implements {GraphConfiguration}
  *
  * @package ips
  * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>

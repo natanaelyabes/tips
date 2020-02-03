@@ -13,6 +13,13 @@ declare const $: any;
  *
  */
 @Component
+
+/**
+ * @package ips
+ * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
+ * @since 2019
+ *
+ */
 export default class MessageComponent extends SemanticComponent {
   @Prop() private size!: string;  // mini|tiny|small|large|big|huge|massive
   @Prop() private dismissible!: boolean;

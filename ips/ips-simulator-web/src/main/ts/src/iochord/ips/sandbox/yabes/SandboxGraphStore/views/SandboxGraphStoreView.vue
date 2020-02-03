@@ -1,3 +1,8 @@
+<!--
+  @package ips
+  @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
+  @since 2019
+-->
 <template>
   <div class="sandbox graph store view">
     <div class="ui basic segment">
@@ -21,6 +26,13 @@ import { GraphPage } from '@/iochord/ips/common/graph/ism/interfaces/GraphPage';
 const graphModule = getModule(GraphModule);
 
 @Component
+
+/**
+ * @package ips
+ * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
+ * @since 2019
+ *
+ */
 export default class SandboxGraphStoreView extends PageLayout {
 
   /** @Override */
