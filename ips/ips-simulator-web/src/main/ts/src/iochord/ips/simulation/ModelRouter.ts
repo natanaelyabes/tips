@@ -12,7 +12,7 @@ import EditorRouter from './editor/EditorRouter';
 export default [
   {
     path: `model`,
-    component: () => import(/* webpackChunkName: "ips-common-layout-base" */ '@/iochord/ips/common/ui/layouts/IpsLayout.vue'),
+    component: () => import(/* webpackChunkName: "ips-common-layout-base" */ '@/iochord/ips/common/ui/components/layout/IpsLayout.vue'),
     children: [
       ...EditorRouter as RouteConfig[],
     ],
