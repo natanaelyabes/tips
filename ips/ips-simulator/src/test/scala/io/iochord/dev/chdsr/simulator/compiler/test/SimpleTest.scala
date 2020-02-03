@@ -22,6 +22,15 @@ import breeze.stats.distributions.StudentsT
 import breeze.stats.distributions.Uniform
 import breeze.stats.distributions.Rayleigh
 
+/**
+ *
+ * @package ips-simulator
+ * @author  Nur Ichsan Utama <nichsan@pusan.ac.kr>
+ * @since   2019
+ *
+ *
+ */
+
 object SimpleTest {
   
   def main(args: Array[String]) {
@@ -30,7 +39,7 @@ object SimpleTest {
     
     case class BindTransInit(x:Option[Int])
     
-    val cgraph = CPNGraph()
+    val cgraph = new CPNGraph()
     
     type colset_CASEID = Int
     
