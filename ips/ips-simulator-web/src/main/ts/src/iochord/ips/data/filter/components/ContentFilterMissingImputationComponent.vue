@@ -1,3 +1,8 @@
+<!--
+  @package ips
+  @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
+  @since 2019
+-->
 <template>
   <div class="content filter missing imputation component">
     <section>
@@ -168,6 +173,12 @@ import IpsTable from '../../../common/table/IpsTable.vue';
     IpsTable,
   },
 })
+/**
+ * @package ips
+ * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
+ * @since 2019
+ *
+ */
 export default class ContentFilterMissingImputationComponent extends BaseComponent {
 
   public selectedMethod: string = 'deletion';

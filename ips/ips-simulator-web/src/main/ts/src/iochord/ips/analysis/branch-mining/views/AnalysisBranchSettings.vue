@@ -1,6 +1,12 @@
+<!--
+  @package ips
+  @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
+  @since 2019
+-->
 <template>
   <div class="sandbox analysis branch">
     <LeftBarContentWrapperComponent>
+
       <!-- Header -->
       <template slot="header-breadcrumb">
         <router-link to="/iochord/ips/home" tag="a" class="section">Home</router-link>
@@ -12,30 +18,17 @@
 
       <!-- Left Sidebar Menu Item -->
       <template slot="left-bar-menu-item">
-        <!-- <div class="menu"> -->
-          <a href="/#/iochord/ips/analytics/branch/settings" class="item">Settings</a>
-          <a href="/#/iochord/ips/analytics/branch/mining" class="item">Overall</a>
-        <!-- </div> -->
+        <a href="/#/iochord/ips/analytics/branch/settings" class="item">Settings</a>
+        <a href="/#/iochord/ips/analytics/branch/mining" class="item">Overall</a>
       </template>
 
       <!-- Content -->
       <template slot="content">
         <ContentSettingsComponent></ContentSettingsComponent>
-        <!-- <ContentSplitComponent></ContentSplitComponent> -->
       </template>
     </LeftBarContentWrapperComponent>
   </div>
 </template>
-
-<!--<style scoped>
-
-.ui.basic.segment {
-  overflow-y: scroll;
-  display: inline-block;
-  height: 100%;
-  width: 50%;
-}
-</style>-->
 
 <style>
 .sandbox.analysis.branch {
@@ -66,13 +59,21 @@ import ContentSplitComponent from '../components/ContentSplitComponent.vue';
     ContentSettingsComponent,
   },
 })
+
+/**
+ * Settings view to set branch mining parameters or properties.
+ *
+ * @export
+ * @class AnalysisBranchSettings
+ * @extends Layout04View
+ *
+ * @package ips
+ * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
+ * @since 2019
+ *
+ */
 export default class AnalysisBranchSettings extends Layout04View {
   public title: string = '';
-
-
-  public mounted(): void { // implement business logic
-    // alert('ding! DD ppang juwa');
-  }
 
   /** @override */
   public overrideBrowserProperties() {

@@ -1,3 +1,8 @@
+<!--
+  @package ips
+  @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
+  @since 2019
+-->
 <template>
   <div class="sandbox joint js view">
     <div id="canvas"></div>
@@ -51,6 +56,13 @@ export class DesertThemePaper extends joint.dia.Paper {
 }
 
 @Component
+
+/**
+ * @package ips
+ * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
+ * @since 2019
+ *
+ */
 export default class SandboxJointJsView extends PageLayout {
 
   /** @Override */

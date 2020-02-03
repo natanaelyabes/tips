@@ -10,6 +10,12 @@ import ImportCsvConfiguration from './models/ImportCsvConfiguration';
  */
 export { ImportCsvConfiguration };
 
+/**
+ * @package ips
+ * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
+ * @since 2019
+ *
+ */
 export default class DataConnectionService extends DataService {
 
   public static readonly BASE_URI: string = DataService.BASE_URI + '';

@@ -34,6 +34,13 @@ import IndexLayout from '@/iochord/ips/common/ui/layout/class/IndexLayout';
  *
  */
 @Component
+
+/**
+ * @package ips
+ * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
+ * @since 2019
+ *
+ */
 export default class AuthenticationIndexView extends IndexLayout {
   //
 }

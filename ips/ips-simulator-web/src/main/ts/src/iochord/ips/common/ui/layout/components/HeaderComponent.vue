@@ -60,6 +60,12 @@ import BaseComponent from '@/iochord/ips/common/ui/layout/class/BaseComponent';
     BreadcrumbComponent,
   },
 })
+/**
+ * @package ips
+ * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
+ * @since 2019
+ *
+ */
 export default class HeaderComponent extends BaseComponent {
   private get hasHeaderTitle(): boolean {
     return !!this.$slots['header-title'];

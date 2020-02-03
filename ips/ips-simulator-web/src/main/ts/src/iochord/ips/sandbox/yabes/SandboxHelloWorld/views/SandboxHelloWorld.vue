@@ -1,3 +1,8 @@
+<!--
+  @package ips
+  @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
+  @since 2019
+-->
 <template>
   <div class="sandbox hello world view">
     <DepthTwoLeftWrapperComponent>
@@ -70,6 +75,12 @@ import NavigationBarComponent from '@/iochord/ips/common/ui/semantic-components/
     NavigationBarComponent,
   },
 })
+/**
+ * @package ips
+ * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
+ * @since 2019
+ *
+ */
 export default class SandboxHelloWorld extends PageLayout {
 
   public mounted(): void {

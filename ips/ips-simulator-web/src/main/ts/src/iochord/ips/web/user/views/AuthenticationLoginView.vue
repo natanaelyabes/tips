@@ -163,6 +163,13 @@ import PageView from '@/iochord/ips/common/ui/layout/class/PageLayout';
  *
  */
 @Component
+
+/**
+ * @package ips
+ * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
+ * @since 2019
+ *
+ */
 export default class AuthenticationLoginView extends PageView {
   private email: string = 'admin@iochord.com';
   private password: string = 'secret123';

@@ -1,3 +1,8 @@
+<!--
+  @package ips
+  @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
+  @since 2019
+-->
 <template>
   <div class="wrapper component">
     <!--  Header -->
@@ -61,6 +66,12 @@ import LeftBarContentWorkspaceComponent from './LeftBarContentWorkspaceComponent
     LeftBarContentWorkspaceComponent,
   },
 })
+/**
+ * @package ips
+ * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
+ * @since 2019
+ *
+ */
 export default class LeftBarContentWrapperComponent extends BaseComponent {
   private get hasLeftContentComponent(): boolean {
     return !!this.$slots['content-left'];

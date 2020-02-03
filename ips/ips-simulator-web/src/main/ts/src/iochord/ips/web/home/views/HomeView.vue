@@ -120,6 +120,12 @@ import WrapperComponent from '@/iochord/ips/common/ui/layout/components/WrapperC
     WrapperComponent,
   },
 })
+/**
+ * @package ips
+ * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
+ * @since 2019
+ *
+ */
 export default class HomeView extends Layout01 {
   /** @Override */
   public overrideBrowserProperties(): void {

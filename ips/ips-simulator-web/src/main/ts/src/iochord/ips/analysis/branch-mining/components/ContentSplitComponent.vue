@@ -1,3 +1,8 @@
+<!--
+  @package ips
+  @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
+  @since 2019
+-->
 <template>
   <div class="content split component">
     <SplitContentWrapperComponent>
@@ -15,18 +20,10 @@
         </div>
       </template>
     </SplitContentWrapperComponent>
-    <!-- <div class="ui basic segment">
-      left
-    </div>
-
-    <div class="ui basic segment">
-      left
-    </div> -->
   </div>
 </template>
 
 <style scoped>
-
 .ui.basic.segment {
   overflow-y: scroll;
   display: inline-block;
@@ -51,6 +48,20 @@ import SplitContentWrapperComponent from '@/iochord/ips/common/ui/layout/compone
     SplitContentWrapperComponent,
   },
 })
+
+/**
+ * Split component to provide a side by side view
+ * between process model and its branching rule.
+ *
+ * @export
+ * @class ContentSplitComponent
+ * @extends BaseComponent
+ *
+ * @package ips
+ * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
+ * @since 2019
+ *
+ */
 export default class ContentSplitComponent extends BaseComponent {
 
 }

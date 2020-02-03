@@ -42,6 +42,13 @@ declare const $: any;
  *
  */
 @Component
+
+/**
+ * @package ips
+ * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
+ * @since 2019
+ *
+ */
 export default class MessageIconComponent extends MessageComponent {
   @Prop() private color!: string; // warning|info|negative|error|positive|success|color
   @Prop() private icon!: string;

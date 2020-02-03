@@ -1,0 +1,48 @@
+import Vuex from 'vuex';
+import { VuexModule, Module, MutationAction, Mutation } from 'vuex-module-decorators';
+
+interface StoreType {
+  editorState: EditorState;
+}
+
+const store = new Vuex.Store<StoreType>({});
+
+@Module({ dynamic: true, store, name: 'EditorState', namespaced: true })
+/**
+ * @package ips
+ * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
+ * @since 2019
+ *
+ */
+export default class EditorState extends VuexModule {
+  public dragging: boolean = false;
+  public drawing: boolean = false;
+  public mode: 'node' | 'data' | 'connector' = 'node';
+
+  @Mutation
+  public setDragging(dragging: boolean) {
+    this.dragging = dragging;
+  }
+
+  @Mutation
+  public setDrawing(drawing: boolean) {
+    this.drawing = drawing;
+  }
+
+  @Mutation
+  public setMode(mode: 'node' | 'data' | 'connector') {
+    this.mode = mode;
+  }
+
+  public get isDragging(): boolean {
+    return this.dragging;
+  }
+
+  public get isDrawing(): boolean {
+    return this.drawing;
+  }
+
+  public get drawingMode(): 'node' | 'data' | 'connector' {
+    return this.mode;
+  }
+}

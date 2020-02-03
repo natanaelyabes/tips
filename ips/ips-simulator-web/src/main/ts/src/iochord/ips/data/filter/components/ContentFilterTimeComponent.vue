@@ -1,3 +1,8 @@
+<!--
+  @package ips
+  @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
+  @since 2019
+-->
 <template>
   <div class="content filter time component">
     <form class="ui form">
@@ -185,6 +190,12 @@ declare const $: any;
     HistogramChart,
   },
 })
+/**
+ * @package ips
+ * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
+ * @since 2019
+ *
+ */
 export default class ContentFilterTimeComponent extends BaseComponent {
 // $('#standard_calendar')
 //   .calendar()

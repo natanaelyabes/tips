@@ -41,6 +41,13 @@ import * as hljs from 'highlight.js';
  *
  */
 @Component
+
+/**
+ * @package ips
+ * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
+ * @since 2019
+ *
+ */
 export default class CodeComponent extends BaseComponent {
   @Prop() private code!: string;
   @Prop() private language!: string;

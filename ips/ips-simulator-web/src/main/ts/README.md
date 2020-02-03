@@ -1,7 +1,5 @@
 # IOChord-CHDSR-simulator
 
-![alt](src/assets/images/screenshots/chrome_2019-07-08_15-45-07.png)
-
 ## Project setup
 ```
 npm install

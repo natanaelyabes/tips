@@ -1,3 +1,8 @@
+<!--
+  @package ips
+  @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
+  @since 2019
+-->
 <template>
   <div class="sandbox analysis dist fitting">
     <LeftBarContentWrapperComponent>
@@ -56,13 +61,18 @@ import Layout04View from '@/iochord/ips/common/ui/layout/class/Layout04';
     ContentSplitComponent,
   },
 })
+
+/**
+ * Settings view to set distribution fitting parameters or properties.
+ *
+ * @extends BaseComponent
+ * @package ips
+ * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
+ * @since 2019
+ *
+ */
 export default class AnalysisDistFittingSettings extends Layout04View {
   public title: string = '';
-
-
-  public mounted(): void { // implement business logic
-    // alert('ding! DD ppang juwa');
-  }
 
   /** @override */
   public overrideBrowserProperties() {

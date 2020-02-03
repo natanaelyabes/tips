@@ -11,6 +11,13 @@ import { SemanticModulesIsUsed } from '@/iochord/ips/common/ui/semantic-componen
  *
  */
 @Component
+
+/**
+ * @package ips
+ * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
+ * @since 2019
+ *
+ */
 export default class SemanticComponent extends BaseComponent
 implements SemanticModulesIsUsed {
   public reRenderKey: number = 0;

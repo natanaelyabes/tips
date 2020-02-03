@@ -48,6 +48,12 @@ import FormComponent from '@/iochord/ips/sandbox/yabes/SandboxParentChild/compon
     FormComponent,
   },
 })
+/**
+ * @package ips
+ * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
+ * @since 2019
+ *
+ */
 export default class SandboxParentChildView extends BaseComponent {
   private firstName: string = '';
   private lastName: string = '';

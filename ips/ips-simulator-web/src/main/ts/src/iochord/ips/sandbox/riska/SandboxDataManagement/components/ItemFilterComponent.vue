@@ -1,3 +1,8 @@
+<!--
+  @package ips
+  @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
+  @since 2019
+-->
 <template>
   <div class="item filter component">
     <form class="ui form">
@@ -57,6 +62,13 @@ import BaseComponent from '@/iochord/ips/common/ui/layout/class/BaseComponent';
 import * as $ from 'jquery';
 
 @Component
+
+/**
+ * @package ips
+ * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
+ * @since 2019
+ *
+ */
 export default class ItemFilterComponent extends BaseComponent {
   public currentContentComponent: string = '';
 

@@ -1,3 +1,8 @@
+<!--
+  @package ips
+  @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
+  @since 2019
+-->
 <template>
   <div class="sandbox rx js view">
     <div class="ui basic segment">
@@ -26,6 +31,12 @@ import { DataService } from '@/iochord/ips/sandbox/yabes/SandboxRxJs/class/DataS
     );
   },
 })
+/**
+ * @package ips
+ * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
+ * @since 2019
+ *
+ */
 export default class SandboxRxJsView extends PageLayout {
   private list: string[] = new Array<string>();
 

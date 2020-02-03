@@ -1,3 +1,8 @@
+<!--
+  @package ips
+  @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
+  @since 2019
+-->
 <template>
   <div class="pmd heuristics ribbon component">
     <div class="item"><div class="header"><strong>Heuristics Miner</strong></div></div>
@@ -62,6 +67,13 @@ import { Vue, Component } from 'vue-property-decorator';
 import BaseComponent from '@/iochord/ips/common/ui/layout/class/BaseComponent';
 
 @Component
+
+/**
+ * @package ips
+ * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
+ * @since 2019
+ *
+ */
 export default class PMDHeuristicsRibbonComponent extends BaseComponent {
 // $('.ui.range.slider')
 //   .slider({
