@@ -6,6 +6,7 @@
 <template>
   <div class="sandbox data management">
     <DepthTwoLeftWrapperComponent>
+
       <!-- Header -->
       <template slot="header-breadcrumb">
         <router-link to="/iochord/ips/home" tag="a" class="section">Home</router-link>
@@ -16,20 +17,9 @@
       </template>
 
       <!-- Depth One Left Sidebar Menu Item -->
-      <template slot="depth-one-menu-item">
-        <!-- <div class="menu"> -->
-          <!-- <a href="/#/iochord/ips/sandbox/sandbox-data-management-history" class="item">File history</a>
-          <a href="/#/iochord/ips/sandbox/sandbox-data-management-filter" class="item">Data filtering</a>
-          <a href="/#/iochord/ips/sandbox/sandbox-data-management-mapping" class="item">Data mapping</a> -->
-        <!-- </div> -->
-      </template>
+      <template slot="depth-one-menu-item"></template>
 
-      <!-- Depth Two Left Sidebar Menu Item -->
-      <!-- <template slot="depth-two-menu-item">
-        <ItemFilterComponent></ItemFilterComponent>
-      </template> -->
-
-       <!-- Content -->
+      <!-- Content -->
       <template slot="content">
         <ContentHistoryComponent></ContentHistoryComponent>
       </template>
@@ -50,8 +40,8 @@ a.section {
 
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator';
-import Layout02View from '@/iochord/ips/sandbox/riska/SandboxDataConnection/class/Layout02';
-import DepthTwoLeftWrapperComponent from '@/iochord/ips/sandbox/riska/SandboxDataConnection/components/DepthTwoLeftWrapperComponent.vue';
+import ExplorerLayoutView from '@/iochord/ips/common/ui/layout/class/ExplorerLayoutView';
+import DepthTwoLeftWrapperComponent from '@/iochord/ips/common/ui/layout/components/DepthTwoLeftWrapperComponent.vue';
 import ContentHistoryComponent from '../components/ContentHistoryComponent.vue';
 
 @Component({
@@ -66,13 +56,8 @@ import ContentHistoryComponent from '../components/ContentHistoryComponent.vue';
  * @since 2019
  *
  */
-export default class SandboxDataManagementHistory extends Layout02View {
+export default class DataHistory extends ExplorerLayoutView {
   public title: string = '';
-
-
-  public mounted(): void { // implement business logic
-
-  }
 
   /** @override */
   public overrideBrowserProperties() {

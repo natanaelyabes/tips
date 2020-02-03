@@ -47,12 +47,12 @@
 <script lang="ts">
 import { Vue, Component, Prop } from 'vue-property-decorator';
 import { getModule } from 'vuex-module-decorators';
-import Layout03View from '@/iochord/ips/common/ui/layout/class/Layout03';
+import VisualizerLayoutView from '@/iochord/ips/common/ui/layout/class/VisualizerLayoutView';
 import SettingsBarWrapperComponent from '@/iochord/ips/common/ui/layout/components/SettingsBarWrapperComponent.vue';
 import PMDHeuristicsRibbonComponent from '../components/PMDHeuristicsRibbonComponent.vue';
 import DataConnectionService from '@/iochord/ips/common/service/data/DataConnectionService';
 import IsmDiscoveryService, { IsmDiscoveryConfiguration } from '@/iochord/ips/common/service/analysis/IsmDiscoveryService';
-import ModelViewer from '@/iochord/ips/model/editor/components/ModelViewer.vue';
+import ModelViewer from '@/iochord/ips/simulation/editor/components/ModelViewer.vue';
 import GraphModule from '@/iochord/ips/common/graph/ism/stores/GraphModule';
 import GraphSubject from '@/iochord/ips/common/graph/ism/rxjs/GraphSubject';
 import { Graph } from '@/iochord/ips/common/graph/ism/interfaces/Graph';
@@ -71,13 +71,13 @@ const graphModule = getModule(GraphModule);
 /**
  * Process discovery page to mine heuristc net.
  *
- * @extends Layout03View
+ * @extends VisualizerLayoutView
  * @package ips
  * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
  * @since 2019
  *
  */
-export default class AnalysisPMD extends Layout03View {
+export default class AnalysisPMD extends VisualizerLayoutView {
   public title: string = '';
 
   @Prop({default: ''})

@@ -21,7 +21,7 @@ import 'vue-g2';
 @Component
 
 /**
- * Bar chart component.
+ * Implementation for bar chart component.
  *
  * @extends BaseComponent
  * @prop {any} model?

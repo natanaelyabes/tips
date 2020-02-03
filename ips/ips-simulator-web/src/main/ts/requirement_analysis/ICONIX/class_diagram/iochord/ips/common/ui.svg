@@ -55,9 +55,9 @@
 <polygon fill='none' filter='url(#shadow)' points='239.983,-254.811 239.359,-265.388 246.442,-257.509 239.983,-254.811' stroke='black' style='fill: black; stroke: none; fill-opacity:0.2'/><polygon fill='none' points='239.983,-254.811 239.359,-265.388 246.442,-257.509 239.983,-254.811' stroke='black' style='fill:url(#none);stroke:black;'/>
 <text style='font-size:8px; font-family:Verdana;' text-anchor='middle' transform='translate(0,0)' x='1284.02' y='-29.8993'>   </text>
 <text style='font-size:8px; font-family:Verdana;' text-anchor='middle' transform='translate(0,0)' x='252.914' y='-246.982'>     </text>
-</g><g class='node' id='node4'><title>yuml_layout04haswrapper</title>
+</g><g class='node' id='node4'><title>yuml_DiffLayout</title>
 <polygon fill='palegreen' filter='url(#shadow)' points='321.5,-182 321.5,-392 476.5,-392 476.5,-182 321.5,-182' stroke='black' style='fill: black; stroke: none; fill-opacity:0.2'/><polygon fill='palegreen' points='321.5,-182 321.5,-392 476.5,-392 476.5,-182 321.5,-182' stroke='black' style='fill:url(#palegreen);stroke:black;'/>
-<text style='font-size:10px; font-family:Verdana;' text-anchor='middle' transform='translate(0,0)' x='399' y='-380.8'>Layout04HasWrapper</text>
+<text style='font-size:10px; font-family:Verdana;' text-anchor='middle' transform='translate(0,0)' x='399' y='-380.8'>DiffLayout</text>
 <polyline fill='none' filter='url(#shadow)' points='321.5,-377 476.5,-377 ' stroke='black' style='fill: black; stroke: none; fill-opacity:0.2'/><polyline fill='none' points='321.5,-377 476.5,-377 ' stroke='black' style='fill:url(#none);stroke:black;'/>
 <text style='font-size:10px; font-family:Verdana;' text-anchor='middle' transform='translate(0,0)' x='399' y='-365.8'>title</text>
 <text style='font-size:10px; font-family:Verdana;' text-anchor='middle' transform='translate(0,0)' x='399' y='-350.8'>breadcrumbs</text>
@@ -73,14 +73,14 @@
 <text style='font-size:10px; font-family:Verdana;' text-anchor='middle' transform='translate(0,0)' x='399' y='-215.8'>setLeftContent()</text>
 <text style='font-size:10px; font-family:Verdana;' text-anchor='middle' transform='translate(0,0)' x='399' y='-200.8'>setRightContent()</text>
 <text style='font-size:10px; font-family:Verdana;' text-anchor='middle' transform='translate(0,0)' x='399' y='-185.8'>setWrapperProperties()</text>
-</g><g class='edge' id='edge2'><title>yuml_layout04haswrapper-&gt;yuml_default</title>
+</g><g class='edge' id='edge2'><title>yuml_DiffLayout-&gt;yuml_default</title>
 <path d='M471.888,-175.197C476.085,-171.839 480.456,-168.749 485,-166 621.656,-83.3169 1102.8,-52.1637 1302.8,-42.6071' fill='none' stroke='black'/><path d='M471.888,-175.197C476.085,-171.839 480.456,-168.749 485,-166 621.656,-83.3169 1102.8,-52.1637 1302.8,-42.6071' fill='none' filter='url(#shadow)' stroke='black' style='stroke:{@stroke}; stroke-opacity:0.1; fill:none;'/>
 <polygon fill='none' filter='url(#shadow)' points='469.323,-172.787 464.031,-181.965 473.892,-178.09 469.323,-172.787' stroke='black' style='fill: black; stroke: none; fill-opacity:0.2'/><polygon fill='none' points='469.323,-172.787 464.031,-181.965 473.892,-178.09 469.323,-172.787' stroke='black' style='fill:url(#none);stroke:black;'/>
 <text style='font-size:8px; font-family:Verdana;' text-anchor='middle' transform='translate(0,0)' x='1283.67' y='-33.0572'>   </text>
 <text style='font-size:8px; font-family:Verdana;' text-anchor='middle' transform='translate(0,0)' x='482.734' y='-171.182'>     </text>
-</g><g class='node' id='node5'><title>yuml_layout03haswrapper</title>
+</g><g class='node' id='node5'><title>yuml_VisualizerLayout</title>
 <polygon fill='palegreen' filter='url(#shadow)' points='494.5,-197 494.5,-377 649.5,-377 649.5,-197 494.5,-197' stroke='black' style='fill: black; stroke: none; fill-opacity:0.2'/><polygon fill='palegreen' points='494.5,-197 494.5,-377 649.5,-377 649.5,-197 494.5,-197' stroke='black' style='fill:url(#palegreen);stroke:black;'/>
-<text style='font-size:10px; font-family:Verdana;' text-anchor='middle' transform='translate(0,0)' x='572' y='-365.8'>Layout03HasWrapper</text>
+<text style='font-size:10px; font-family:Verdana;' text-anchor='middle' transform='translate(0,0)' x='572' y='-365.8'>VisualizerLayout</text>
 <polyline fill='none' filter='url(#shadow)' points='494.5,-362 649.5,-362 ' stroke='black' style='fill: black; stroke: none; fill-opacity:0.2'/><polyline fill='none' points='494.5,-362 649.5,-362 ' stroke='black' style='fill:url(#none);stroke:black;'/>
 <text style='font-size:10px; font-family:Verdana;' text-anchor='middle' transform='translate(0,0)' x='572' y='-350.8'>title</text>
 <text style='font-size:10px; font-family:Verdana;' text-anchor='middle' transform='translate(0,0)' x='572' y='-335.8'>breadcrumbs</text>
@@ -94,14 +94,14 @@
 <text style='font-size:10px; font-family:Verdana;' text-anchor='middle' transform='translate(0,0)' x='572' y='-230.8'>setSettingsBar()</text>
 <text style='font-size:10px; font-family:Verdana;' text-anchor='middle' transform='translate(0,0)' x='572' y='-215.8'>setContent()</text>
 <text style='font-size:10px; font-family:Verdana;' text-anchor='middle' transform='translate(0,0)' x='572' y='-200.8'>setWrapperProperties()</text>
-</g><g class='edge' id='edge3'><title>yuml_layout03haswrapper-&gt;yuml_default</title>
+</g><g class='edge' id='edge3'><title>yuml_VisualizerLayout-&gt;yuml_default</title>
 <path d='M631.041,-189.152C639.518,-180.318 648.85,-172.33 659,-166 765.432,-99.622 1132.68,-60.7975 1302.99,-45.9744' fill='none' stroke='black'/><path d='M631.041,-189.152C639.518,-180.318 648.85,-172.33 659,-166 765.432,-99.622 1132.68,-60.7975 1302.99,-45.9744' fill='none' filter='url(#shadow)' stroke='black' style='stroke:{@stroke}; stroke-opacity:0.1; fill:none;'/>
 <polygon fill='none' filter='url(#shadow)' points='628.265,-187.003 624.123,-196.755 633.442,-191.715 628.265,-187.003' stroke='black' style='fill: black; stroke: none; fill-opacity:0.2'/><polygon fill='none' points='628.265,-187.003 624.123,-196.755 633.442,-191.715 628.265,-187.003' stroke='black' style='fill:url(#none);stroke:black;'/>
 <text style='font-size:8px; font-family:Verdana;' text-anchor='middle' transform='translate(0,0)' x='1283.65' y='-37.1738'>   </text>
 <text style='font-size:8px; font-family:Verdana;' text-anchor='middle' transform='translate(0,0)' x='641.831' y='-183.759'>     </text>
-</g><g class='node' id='node6'><title>yuml_layout02haswrapper</title>
+</g><g class='node' id='node6'><title>yuml_ExplorerLayout</title>
 <polygon fill='palegreen' filter='url(#shadow)' points='668,-182 668,-392 874,-392 874,-182 668,-182' stroke='black' style='fill: black; stroke: none; fill-opacity:0.2'/><polygon fill='palegreen' points='668,-182 668,-392 874,-392 874,-182 668,-182' stroke='black' style='fill:url(#palegreen);stroke:black;'/>
-<text style='font-size:10px; font-family:Verdana;' text-anchor='middle' transform='translate(0,0)' x='771' y='-380.8'>Layout02HasWrapper</text>
+<text style='font-size:10px; font-family:Verdana;' text-anchor='middle' transform='translate(0,0)' x='771' y='-380.8'>ExplorerLayout</text>
 <polyline fill='none' filter='url(#shadow)' points='668,-377 874,-377 ' stroke='black' style='fill: black; stroke: none; fill-opacity:0.2'/><polyline fill='none' points='668,-377 874,-377 ' stroke='black' style='fill:url(#none);stroke:black;'/>
 <text style='font-size:10px; font-family:Verdana;' text-anchor='middle' transform='translate(0,0)' x='771' y='-365.8'>title</text>
 <text style='font-size:10px; font-family:Verdana;' text-anchor='middle' transform='translate(0,0)' x='771' y='-350.8'>breadcrumbs</text>
@@ -117,14 +117,14 @@
 <text style='font-size:10px; font-family:Verdana;' text-anchor='middle' transform='translate(0,0)' x='771' y='-215.8'>setDepthTwoLeftMenuSidebar()</text>
 <text style='font-size:10px; font-family:Verdana;' text-anchor='middle' transform='translate(0,0)' x='771' y='-200.8'>setContent()</text>
 <text style='font-size:10px; font-family:Verdana;' text-anchor='middle' transform='translate(0,0)' x='771' y='-185.8'>setWrapperProperties()</text>
-</g><g class='edge' id='edge4'><title>yuml_layout02haswrapper-&gt;yuml_default</title>
+</g><g class='edge' id='edge4'><title>yuml_ExplorerLayout-&gt;yuml_default</title>
 <path d='M868.182,-175.714C873.021,-172.226 877.967,-168.966 883,-166 1016.15,-87.5496 1196.48,-57.2868 1302.61,-45.8074' fill='none' stroke='black'/><path d='M868.182,-175.714C873.021,-172.226 877.967,-168.966 883,-166 1016.15,-87.5496 1196.48,-57.2868 1302.61,-45.8074' fill='none' filter='url(#shadow)' stroke='black' style='stroke:{@stroke}; stroke-opacity:0.1; fill:none;'/>
 <polygon fill='none' filter='url(#shadow)' points='866.01,-172.968 860.141,-181.789 870.23,-178.553 866.01,-172.968' stroke='black' style='fill: black; stroke: none; fill-opacity:0.2'/><polygon fill='none' points='866.01,-172.968 860.141,-181.789 870.23,-178.553 866.01,-172.968' stroke='black' style='fill:url(#none);stroke:black;'/>
 <text style='font-size:8px; font-family:Verdana;' text-anchor='middle' transform='translate(0,0)' x='1283.14' y='-37.5343'>   </text>
 <text style='font-size:8px; font-family:Verdana;' text-anchor='middle' transform='translate(0,0)' x='879.26' y='-172.218'>     </text>
-</g><g class='node' id='node7'><title>yuml_layout01haswrapper</title>
+</g><g class='node' id='node7'><title>yuml_AppLayout</title>
 <polygon fill='palegreen' filter='url(#shadow)' points='892,-167 892,-407 1048,-407 1048,-167 892,-167' stroke='black' style='fill: black; stroke: none; fill-opacity:0.2'/><polygon fill='palegreen' points='892,-167 892,-407 1048,-407 1048,-167 892,-167' stroke='black' style='fill:url(#palegreen);stroke:black;'/>
-<text style='font-size:10px; font-family:Verdana;' text-anchor='middle' transform='translate(0,0)' x='970' y='-395.8'>Layout01HasWrapper</text>
+<text style='font-size:10px; font-family:Verdana;' text-anchor='middle' transform='translate(0,0)' x='970' y='-395.8'>AppLayout</text>
 <polyline fill='none' filter='url(#shadow)' points='892,-392 1048,-392 ' stroke='black' style='fill: black; stroke: none; fill-opacity:0.2'/><polyline fill='none' points='892,-392 1048,-392 ' stroke='black' style='fill:url(#none);stroke:black;'/>
 <text style='font-size:10px; font-family:Verdana;' text-anchor='middle' transform='translate(0,0)' x='970' y='-380.8'>title</text>
 <text style='font-size:10px; font-family:Verdana;' text-anchor='middle' transform='translate(0,0)' x='970' y='-365.8'>breadcrumbs</text>
@@ -142,7 +142,7 @@
 <text style='font-size:10px; font-family:Verdana;' text-anchor='middle' transform='translate(0,0)' x='970' y='-200.8'>setRibbonMenuItem()</text>
 <text style='font-size:10px; font-family:Verdana;' text-anchor='middle' transform='translate(0,0)' x='970' y='-185.8'>setContent()</text>
 <text style='font-size:10px; font-family:Verdana;' text-anchor='middle' transform='translate(0,0)' x='970' y='-170.8'>setWrapperProperties()</text>
-</g><g class='edge' id='edge5'><title>yuml_layout01haswrapper-&gt;yuml_default</title>
+</g><g class='edge' id='edge5'><title>yuml_AppLayout-&gt;yuml_default</title>
 <path d='M1056.17,-166.641C1056.45,-166.426 1056.72,-166.213 1057,-166 1130.27,-109.903 1231.16,-76.1183 1302.83,-57.6566' fill='none' stroke='black'/><path d='M1056.17,-166.641C1056.45,-166.426 1056.72,-166.213 1057,-166 1130.27,-109.903 1231.16,-76.1183 1302.83,-57.6566' fill='none' filter='url(#shadow)' stroke='black' style='stroke:{@stroke}; stroke-opacity:0.1; fill:none;'/>
 <polygon fill='none' filter='url(#shadow)' points='1053.76,-164.094 1048.28,-173.167 1058.22,-169.487 1053.76,-164.094' stroke='black' style='fill: black; stroke: none; fill-opacity:0.2'/><polygon fill='none' points='1053.76,-164.094 1048.28,-173.167 1058.22,-169.487 1053.76,-164.094' stroke='black' style='fill:url(#none);stroke:black;'/>
 <text style='font-size:8px; font-family:Verdana;' text-anchor='middle' transform='translate(0,0)' x='1282.91' y='-52.2335'>   </text>

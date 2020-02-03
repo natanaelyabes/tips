@@ -56,7 +56,7 @@
         <div class="item">
           <div class="header" style="text-decoration:underline">Simulation Editor</div>
           <div class="menu">
-            <router-link tag="a" class="item" to="/iochord/ips/model/editor">Editor</router-link>
+            <router-link tag="a" class="item" to="/iochord/ips/simulation/editor">Editor</router-link>
             <router-link tag="a" class="item" to="#">Report</router-link>
             <router-link tag="a" class="item" to="#">Export</router-link>
           </div>

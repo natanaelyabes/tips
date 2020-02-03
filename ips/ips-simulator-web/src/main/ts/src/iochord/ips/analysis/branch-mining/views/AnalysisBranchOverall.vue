@@ -47,7 +47,7 @@ a.section {
 
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator';
-import Layout04View from '@/iochord/ips/common/ui/layout/class/Layout04';
+import DiffLayoutView from '@/iochord/ips/common/ui/layout/class/DiffLayoutView';
 import LeftBarContentWrapperComponent from '@/iochord/ips/common/ui/layout/components/LeftBarContentWrapperComponent.vue';
 import ContentSettingsComponent from '../components/ContentSettingsComponent.vue';
 import ContentSplitComponent from '../components/ContentSplitComponent.vue';
@@ -66,17 +66,17 @@ import ContentSplitComponent from '../components/ContentSplitComponent.vue';
  *
  * @export
  * @class AnalysisBranchOverall
- * @extends Layout04View
+ * @extends DiffLayoutView
  *
  * @package ips
  * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
  * @since 2019
  *
  */
-export default class AnalysisBranchOverall extends Layout04View {
+export default class AnalysisBranchOverall extends DiffLayoutView {
 
   /**
-   *
+   * Title fields of AnalysisBranchOverall
    *
    * @type {string}
    * @memberof AnalysisBranchOverall
@@ -84,6 +84,7 @@ export default class AnalysisBranchOverall extends Layout04View {
   public title: string = '';
 
   /**
+   * Override browser properties for AnalysisBranchOverall
    *
    * @override
    * @memberof AnalysisBranchOverall
@@ -93,6 +94,7 @@ export default class AnalysisBranchOverall extends Layout04View {
   }
 
   /**
+   * Override title for AnalysisBranchOverall
    *
    * @override
    * @memberof AnalysisBranchOverall
