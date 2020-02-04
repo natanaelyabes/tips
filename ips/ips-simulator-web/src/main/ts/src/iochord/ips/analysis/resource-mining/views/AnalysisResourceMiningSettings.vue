@@ -59,7 +59,7 @@ import ContentSettingsComponent from '../components/ContentSettingsComponent.vue
 })
 
 /**
- * Settings view to set resoruce miner parameters or properties.
+ * Settings view to assign resoruce miner parameters or properties.
  *
  * @extends DiffLayoutView
  * @package ips

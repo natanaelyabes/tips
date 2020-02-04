@@ -76,7 +76,7 @@ import ContentSplitComponent from '../components/ContentSplitComponent.vue';
 export default class AnalysisBranchOverall extends DiffLayoutView {
 
   /**
-   * Title fields of AnalysisBranchOverall
+   * Title field of AnalysisBranchOverall
    *
    * @type {string}
    * @memberof AnalysisBranchOverall

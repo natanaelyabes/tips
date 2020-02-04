@@ -74,14 +74,6 @@ import BaseComponent from '@/iochord/ips/common/ui/layout/class/BaseComponent';
  *
  */
 export default class PMDHeuristicsRibbonComponent extends BaseComponent {
-// $('.ui.range.slider')
-//   .slider({
-//     min: 5,
-//     max: 100,
-//     start: 10,
-//     end: 90,
-//     step: 5
-//   })
-// ;
+  //
 }
 </script>

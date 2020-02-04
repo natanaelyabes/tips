@@ -21,7 +21,6 @@ export class GraphDataObjectTypeImpl extends GraphDataImpl implements GraphDataO
     graphDataObjectType.setLabel(object.label);
     graphDataObjectType.setType(object.elementType);
     graphDataObjectType.setAttributes(object.attributes);
-    // graphDataObjectType.setTypes(object.types);
     graphDataObjectType.setTypeRefs(object.types);
     GraphDataObjectTypeImpl.instance.set(graphDataObjectType.getId() as string, graphDataObjectType);
     return graphDataObjectType;

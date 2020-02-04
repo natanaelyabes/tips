@@ -6,6 +6,7 @@
 <template>
   <div class="sandbox analysis dist fitting">
     <LeftBarContentWrapperComponent>
+
       <!-- Header -->
       <template slot="header-breadcrumb">
         <router-link to="/iochord/ips/home" tag="a" class="section">Home</router-link>
@@ -51,7 +52,6 @@ import DiffLayoutView from '@/iochord/ips/common/ui/layout/class/DiffLayoutView'
 import ContentSettingsComponent from '../components/ContentSettingsComponent.vue';
 import ContentSplitComponent from '../components/ContentSplitComponent.vue';
 
-
 @Component({
   components: {
     LeftBarContentWrapperComponent,
@@ -70,15 +70,32 @@ import ContentSplitComponent from '../components/ContentSplitComponent.vue';
  * @since 2019
  *
  */
-export default class AnalysisDistFitting extends DiffLayoutView {
+export default class AnalysisDistFittingOverall extends DiffLayoutView {
+
+  /**
+   * Title field of AnalysisDistFittingOverall
+   *
+   * @type {string}
+   * @memberof AnalysisDistFittingOverall
+   */
   public title: string = '';
 
-  /** @override */
+  /**
+   * Override browser properties for AnalysisDistFittingOverall
+   *
+   * @override
+   * @memberof AnalysisDistFittingOverall
+   */
   public overrideBrowserProperties() {
     this.setDocumentTitle('Data Analysis: Distribution Fitting');
   }
 
-  /** @Override */
+  /**
+   * Override title for AnalysisDistFittingOverall
+   *
+   * @override
+   * @memberof AnalysisDistFittingOverall
+   */
   public setTitle(): void {
     this.title = `Distribution Fitting`;
   }

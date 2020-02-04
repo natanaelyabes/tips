@@ -30,7 +30,7 @@
 
       <!-- Content -->
       <template slot="content">
-        {{graphJson}}
+        {{ graphJson }}
         <ModelViewer></ModelViewer>
       </template>
 
@@ -71,30 +71,74 @@ const graphModule = getModule(GraphModule);
 /**
  * Process discovery page to mine heuristc net.
  *
- * @extends VisualizerLayoutView
+ * @export
+ * @class AnalysisPMD
+ * @extends {VisualizerLayoutView}
+ *
  * @package ips
  * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
  * @since 2019
  *
  */
 export default class AnalysisPMD extends VisualizerLayoutView {
+
+  /**
+   * Title field for AnalysisPMD.
+   *
+   * @type {string}
+   * @memberof AnalysisPMD
+   */
   public title: string = '';
 
+  /**
+   * Dataset Id field for selecting event log dataset.
+   *
+   * @type {*}
+   * @memberof AnalysisPMD
+   */
   @Prop({default: ''})
   public datasetId!: any;
 
+  /**
+   * Datasets field to receive JSON data from web service.
+   *
+   * @memberof AnalysisPMD
+   */
   public datasets = {};
 
+  /**
+   * Field to collect basic statistics: number of graph and number of nodes.
+   *
+   * @type {string}
+   * @memberof AnalysisPMD
+   */
   public graphJson: string = '';
 
+  /**
+   * Field for message loaders.
+   *
+   * @type {string}
+   * @memberof AnalysisPMD
+   */
   public progressMessage: string = '';
 
+  /**
+   * Perform analysis upon selected dataset by executing process mining algorithm.
+   *
+   * @memberof AnalysisPMD
+   */
   public mine(): void {
     const self = this;
     const selectedDatasetId = (this.$refs['datasetSelector'] as any).value;
     self.runMine(selectedDatasetId);
   }
 
+  /**
+   * Discover process graph from the web service.
+   *
+   * @param {string} selectedDatasetId
+   * @memberof AnalysisPMD
+   */
   public runMine(selectedDatasetId: string): void {
     const self = this;
     if (selectedDatasetId !== '---') {
@@ -127,7 +171,13 @@ export default class AnalysisPMD extends VisualizerLayoutView {
     }
   }
 
-  public mounted(): void { // implement business logic
+
+  /**
+   * Override Vue mounted lifecyle
+   *
+   * @memberof AnalysisPMD
+   */
+  public mounted(): void {
     const self = this;
     DataConnectionService.getInstance().getDataConnections((res: any) => {
       self.datasets = res.data;
@@ -139,12 +189,22 @@ export default class AnalysisPMD extends VisualizerLayoutView {
     });
   }
 
-  /** @override */
+  /**
+   * Override browser properties for AnalysisPMD
+   *
+   * @override
+   * @memberof AnalysisPMD
+   */
   public overrideBrowserProperties() {
     this.setDocumentTitle('Data Analysis: Process Model Discovery');
   }
 
-  /** @Override */
+  /**
+   * Override title for AnalysisPMD
+   *
+   * @override
+   * @memberof AnalysisPMD
+   */
   public setTitle(): void {
     this.title = `Process Model Discovery`;
   }
