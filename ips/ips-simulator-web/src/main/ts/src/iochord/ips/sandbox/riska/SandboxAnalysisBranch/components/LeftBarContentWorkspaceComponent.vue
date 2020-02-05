@@ -1,3 +1,8 @@
+<!--
+  @package ips
+  @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
+  @since 2019
+-->
 <template>
   <div class="left bar content workspace component">
     <!-- Left Bar Menu Item -->
@@ -59,6 +64,12 @@ import SidebarComponent from '@/iochord/ips/common/ui/layout/components/SidebarC
     SidebarComponent,
   },
 })
+/**
+ * @package ips
+ * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
+ * @since 2019
+ *
+ */
 export default class LeftBarContentWorkspaceComponent extends BaseComponent {
   private get hasSplitContentComponent(): boolean {
     return !!this.$slots['content-right'];

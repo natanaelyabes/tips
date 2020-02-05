@@ -1,3 +1,8 @@
+<!--
+  @package ips
+  @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
+  @since 2019
+-->
 <template>
   <div class="sandbox new data connection">
     <DepthTwoLeftWrapperComponent>
@@ -82,6 +87,12 @@ import ItemConnectionComponent from '../components/ItemConnectionComponent.vue';
       ItemConnectionComponent,
    },
  })
+/**
+ * @package ips
+ * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
+ * @since 2019
+ *
+ */
 export default class SandboxDataConnectionNew extends Layout02View {
   public title: string = '';
   public currentContentComponent: string = 'ContentOraclePropertiesComponent';

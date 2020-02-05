@@ -1,3 +1,8 @@
+<!--
+  @package ips
+  @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
+  @since 2019
+-->
 <template>
   <div class="content settings component">
         <div class="ui basic segment">
@@ -186,6 +191,13 @@ import { Component, Vue } from 'vue-property-decorator';
 import BaseComponent from '../../../../common/ui/layout/class/BaseComponent';
 
 @Component
+
+/**
+ * @package ips
+ * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
+ * @since 2019
+ *
+ */
 export default class ContentSettingsComponent extends BaseComponent {
 
 }

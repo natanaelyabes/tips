@@ -3,6 +3,7 @@ import { BaseUrlEnum, ApplicationEnum } from '@/iochord/ips/common/enums';
 import { BrowserHasProperties } from '@/iochord/ips/common/browser/interfaces/BrowserHasProperties';
 import { Component } from 'vue-property-decorator';
 
+@Component
 
 /**
  *
@@ -11,10 +12,13 @@ import { Component } from 'vue-property-decorator';
  * @since 2019
  *
  */
-@Component
-export default class PageLayout extends BaseLayout
-implements BrowserHasProperties {
-  /** @Override */
+export default class PageLayout extends BaseLayout implements BrowserHasProperties {
+
+  /**
+   *
+   * @override
+   * @memberof PageLayout
+   */
   public mounted(): void {
     this.overrideBrowserProperties();
   }

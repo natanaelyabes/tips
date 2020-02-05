@@ -123,6 +123,12 @@ const graphModule = getModule(GraphModule);
     );
   },
 })
+/**
+ * @package ips
+ * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
+ * @since 2019
+ *
+ */
 export default class IpsLayout extends IndexLayout {
 
   /** @Override */

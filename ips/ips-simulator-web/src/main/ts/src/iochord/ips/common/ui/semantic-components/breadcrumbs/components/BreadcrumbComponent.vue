@@ -34,6 +34,13 @@ import SemanticComponent from '@/iochord/ips/common/ui/semantic-components/Seman
  *
  */
 @Component
+
+/**
+ * @package ips
+ * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
+ * @since 2019
+ *
+ */
 export default class BreadcrumbComponent extends SemanticComponent {
   //
 }

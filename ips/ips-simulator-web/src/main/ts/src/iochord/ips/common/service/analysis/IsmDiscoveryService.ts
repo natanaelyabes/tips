@@ -10,6 +10,12 @@ import IsmDiscoveryConfiguration from './models/IsmDiscoveryConfiguration';
  */
 export { IsmDiscoveryConfiguration };
 
+/**
+ * @package ips
+ * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
+ * @since 2019
+ *
+ */
 export default class IsmDiscoveryService extends AnalysisService {
 
   public static readonly BASE_URI: string = AnalysisService.BASE_URI + '';

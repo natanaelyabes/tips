@@ -1,3 +1,8 @@
+<!--
+  @package ips
+  @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
+  @since 2019
+-->
 <template>
   <div class="sandbox analysis pmd">
     <SettingsBarWrapperComponent>
@@ -44,6 +49,12 @@ import PMDHeuristicsRibbonComponent from '../components/PMDHeuristicsRibbonCompo
     PMDHeuristicsRibbonComponent,
   },
 })
+/**
+ * @package ips
+ * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
+ * @since 2019
+ *
+ */
 export default class SandboxAnalysisPMD extends Layout03View {
  public title: string = '';
 

@@ -1,0 +1,29 @@
+@startuml "Display Control Configuration Modal"
+
+actor User
+boundary "Control Palette Component \n(ControlPaletteComponent.vue)" as editor
+control "Display Control Configuration Modal" as c1
+control "Save configuration" as c2
+
+entity "Simulation model" as e1
+
+User -> editor
+
+editor -> c1 : "openControl()"
+activate c1
+c1 -> c1 : "populateProperties(page, object)"
+activate c1
+
+c1 -> c2 : "saveProperties(page, object)"
+deactivate c1
+
+c2 -> e1
+activate e1
+|||
+e1 --> c1
+deactivate c1
+deactivate e1
+
+c1 --> editor
+
+@enduml

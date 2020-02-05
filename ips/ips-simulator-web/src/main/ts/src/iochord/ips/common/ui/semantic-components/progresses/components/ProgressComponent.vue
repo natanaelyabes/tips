@@ -36,6 +36,13 @@ declare const $: any;
  *
  */
 @Component
+
+/**
+ * @package ips
+ * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
+ * @since 2019
+ *
+ */
 export default class ProgressComponent extends SemanticComponent {
   @Prop() private percent!: number;
   @Prop() private color!: string;

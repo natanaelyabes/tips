@@ -5,8 +5,8 @@ import DistributionFittingRouter from './distribution-fitting/DistributionFittin
 import ProcessDiscoveryRouter from './process-discovery/ProcessDiscoveryRouter';
 import ResourceMiningRouter from './resource-mining/ResourceMiningRouter';
 
-
 /**
+ * Router registry for analytics package.
  *
  * @package ips
  * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>

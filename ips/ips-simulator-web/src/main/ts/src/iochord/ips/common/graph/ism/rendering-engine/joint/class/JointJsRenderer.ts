@@ -36,6 +36,12 @@ import { GraphBranchNodeImpl } from '../../../class/components/GraphBranchNodeIm
 import { BRANCH_TYPE, BRANCH_RULE, BRANCH_GATE } from '../../../enums/BRANCH';
 
 
+/**
+ * @package ips
+ * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
+ * @since 2019
+ *
+ */
 export default class JointJsRenderer {
   public canvasWidth?: number;
   public canvasHeight?: number;

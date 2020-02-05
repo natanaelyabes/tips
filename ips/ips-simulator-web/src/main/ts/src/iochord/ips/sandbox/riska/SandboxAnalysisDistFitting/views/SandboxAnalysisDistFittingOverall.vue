@@ -1,3 +1,8 @@
+<!--
+  @package ips
+  @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
+  @since 2019
+-->
 <template>
   <div class="sandbox analysis dist fitting">
     <LeftBarContentWrapperComponent>
@@ -56,6 +61,12 @@ import ContentSplitComponent from '../components/ContentSplitComponent.vue';
     ContentSplitComponent,
   },
 })
+/**
+ * @package ips
+ * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
+ * @since 2019
+ *
+ */
 export default class SandboxAnalysisDistFitting extends Layout04View {
   public title: string = '';
 

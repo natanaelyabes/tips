@@ -1,6 +1,12 @@
+<!--
+  @package ips
+  @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
+  @since 2019
+-->
 <template>
   <div class="sandbox analysis resources">
     <LeftBarContentWrapperComponent>
+
       <!-- Header -->
       <template slot="header-breadcrumb">
         <router-link to="/iochord/ips/home" tag="a" class="section">Home</router-link>
@@ -12,10 +18,8 @@
 
       <!-- Left Sidebar Menu Item -->
       <template slot="left-bar-menu-item">
-        <!-- <div class="menu"> -->
-          <a href="/#/iochord/ips/analytics/resource/settings" class="item">Settings</a>
-          <a href="/#/iochord/ips/analytics/resource/mining" class="item">Overall</a>
-        <!-- </div> -->
+        <a href="/#/iochord/ips/analytics/resource/settings" class="item">Settings</a>
+        <a href="/#/iochord/ips/analytics/resource/mining" class="item">Overall</a>
       </template>
 
       <!-- Content -->
@@ -53,6 +57,17 @@ import ContentSettingsComponent from '../components/ContentSettingsComponent.vue
     ContentSettingsComponent,
   },
 })
+
+/**
+ * Overall page to provide a side by side
+ * view between process model and its fitted distribution.
+ *
+ * @extends Layout04View
+ * @package ips
+ * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
+ * @since 2019
+ *
+ */
 export default class AnalysisResourceMiningOverall extends Layout04View {
   public title: string = '';
 

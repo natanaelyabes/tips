@@ -12,6 +12,13 @@ import PageLayout from '@/iochord/ips/common/ui/layout/class/PageLayout';
  *
  */
 @Component
+
+/**
+ * @package ips
+ * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
+ * @since 2019
+ *
+ */
 export default class Layout01View extends PageLayout
 implements Layout01HasWrapper {
   public title: string = '';

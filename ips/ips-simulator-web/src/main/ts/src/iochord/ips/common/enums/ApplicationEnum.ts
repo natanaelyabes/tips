@@ -1,4 +1,5 @@
 /**
+ * Application wide enum
  *
  * @package ips
  * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>

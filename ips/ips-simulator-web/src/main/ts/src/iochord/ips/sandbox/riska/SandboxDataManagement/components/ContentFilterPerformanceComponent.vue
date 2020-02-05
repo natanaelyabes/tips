@@ -1,3 +1,8 @@
+<!--
+  @package ips
+  @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
+  @since 2019
+-->
 <template>
   <div class="content filter performance component">
     <form class="ui form">
@@ -47,6 +52,13 @@ import BaseComponent from '@/iochord/ips/common/ui/layout/class/BaseComponent';
 import * as $ from 'jquery';
 
 @Component
+
+/**
+ * @package ips
+ * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
+ * @since 2019
+ *
+ */
 export default class ContentFilterPerformanceComponent extends BaseComponent {
 
 }

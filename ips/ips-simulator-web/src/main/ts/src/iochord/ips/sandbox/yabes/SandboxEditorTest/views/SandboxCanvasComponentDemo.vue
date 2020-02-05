@@ -1,3 +1,8 @@
+<!--
+  @package ips
+  @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
+  @since 2019
+-->
 <template>
   <div class="sandbox canvas component demo view">
     <CanvasComponent :key="reRenderKey" v-bind:response="graphData" />
@@ -34,6 +39,12 @@ const graphModule = getModule(GraphModule);
     );
   },
 })
+/**
+ * @package ips
+ * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
+ * @since 2019
+ *
+ */
 export default class SandboxCanvasComponentDemo extends BaseLayout {
 
   /** @Override */

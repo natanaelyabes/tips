@@ -1,3 +1,8 @@
+<!--
+  @package ips
+  @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
+  @since 2019
+-->
 <template>
   <div class="sandbox data connection">
     <DepthTwoLeftWrapperComponent>
@@ -84,6 +89,12 @@ import ItemExistedConnectionComponent from '../components/ItemExistedConnectionC
       ItemExistedConnectionComponent,
    },
  })
+/**
+ * @package ips
+ * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
+ * @since 2019
+ *
+ */
 export default class SandboxDataConnectionList extends Layout02View {
   public title: string = '';
   public currentContentComponent: string = 'ContentOraclePropertiesComponent';

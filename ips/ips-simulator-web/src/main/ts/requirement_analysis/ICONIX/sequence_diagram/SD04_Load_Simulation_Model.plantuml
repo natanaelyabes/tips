@@ -1,0 +1,17 @@
+@startuml "Load Simulation Model"
+
+actor User
+boundary "Editor page \n(SimulationEditorView.vue)" as editor
+control "Load example model" as c1
+entity "Simulation model" as e1
+
+User -> editor
+
+editor -> c1 : "modelLoadExample()"
+c1 -> e1
+activate e1
+|||
+e1 --> editor
+deactivate e1
+
+@enduml

@@ -1,3 +1,8 @@
+<!--
+  @package ips
+  @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
+  @since 2019
+-->
 <template>
   <div class="workspace component">
 
@@ -51,6 +56,12 @@ import SidebarComponent from '@/iochord/ips/common/ui/layout/components/SidebarC
     SidebarComponent,
   },
 })
+/**
+ * @package ips
+ * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
+ * @since 2019
+ *
+ */
 export default class DepthTwoLeftWorkspaceComponent extends BaseComponent {
 
 }

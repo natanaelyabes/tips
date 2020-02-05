@@ -1,3 +1,8 @@
+<!--
+  @package ips
+  @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
+  @since 2019
+-->
 <template>
   <div class="content data upload component">
     <form ref="frmUpload" class="ui form">
@@ -82,6 +87,13 @@ import BaseComponent from '@/iochord/ips/common/ui/layout/class/BaseComponent';
 import DataConnectionService, { ImportCsvConfiguration } from '@/iochord/ips/common/service/data/DataConnectionService';
 
 @Component
+
+/**
+ * @package ips
+ * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
+ * @since 2019
+ *
+ */
 export default class ContentDataUploadComponent extends BaseComponent {
 
   public isUploading: boolean = false;

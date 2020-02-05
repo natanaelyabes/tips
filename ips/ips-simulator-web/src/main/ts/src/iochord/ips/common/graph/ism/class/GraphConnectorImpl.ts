@@ -10,6 +10,12 @@ import { TSMap } from 'typescript-map';
 import { GraphNodeImpl } from './GraphNodeImpl';
 
 /**
+ * Implementation of GraphConnector interface.
+ *
+ * @export
+ * @class GraphConnectorImpl
+ * @extends {GraphElementImpl}
+ * @implements {GraphConnector}
  *
  * @package ips
  * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
@@ -17,8 +23,24 @@ import { GraphNodeImpl } from './GraphNodeImpl';
  *
  */
 export class GraphConnectorImpl extends GraphElementImpl implements GraphConnector {
+
+  /**
+   * Instances of GraphConnector
+   *
+   * @static
+   * @type {TSMap<string, GraphConnector>}
+   * @memberof GraphConnectorImpl
+   */
   public static instance: TSMap<string, GraphConnector> = new TSMap<string, GraphConnector>();
 
+  /**
+   * Deserialize JSON object as GraphConnectorImpl class
+   *
+   * @static
+   * @param {*} object
+   * @returns {(TSMap<string, GraphConnector> | null)}
+   * @memberof GraphConnectorImpl
+   */
   public static deserialize(object: any): TSMap<string, GraphConnector> | null {
     const graphArcMap: TSMap<string, GraphConnector> = new TSMap<string, GraphConnector>();
     const graphNodeInstance: Array<TSMap<string, GraphNode>> = [
@@ -55,8 +77,32 @@ export class GraphConnectorImpl extends GraphElementImpl implements GraphConnect
     return graphArcMap;
   }
 
+  /**
+   *
+   *
+   * @private
+   * @type {(GraphElement | null)}
+   * @memberof GraphConnectorImpl
+   */
+
   private source?: GraphElement | null;
+
+  /**
+   *
+   *
+   * @private
+   * @type {(string | null)}
+   * @memberof GraphConnectorImpl
+   */
   private sourceRef?: string | null;
+
+  /**
+   *
+   *
+   * @private
+   * @type {(number | null)}
+   * @memberof GraphConnectorImpl
+   */
   private sourceIndex?: number | null = 0;
   private target?: GraphElement | null;
   private targetRef?: string | null;
