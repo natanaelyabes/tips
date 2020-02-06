@@ -550,7 +550,7 @@ public class Ism2CpnscalaPerModuleBiConverter implements Converter<IsmGraph, Ism
 				Data d = p.getData().get(di);
 				result.getConversionMap().put(d.getId(), d);
 				if (d instanceof ObjectType) {
-					ObjectType ot = (ObjectType) d;
+//					ObjectType ot = (ObjectType) d;
 				}
 				if (d instanceof Generator) {
 					Generator dg = (Generator) d;
@@ -651,7 +651,7 @@ public class Ism2CpnscalaPerModuleBiConverter implements Converter<IsmGraph, Ism
 					strStart.append(pstart[1]);
 					
 					if (na.getGenerator() != null) {
-						String t_genid = cleanId("t_",na.getGenerator().getValue().getId()+"_mergegen");
+//						String t_genid = cleanId("t_",na.getGenerator().getValue().getId()+"_mergegen");
 						
 						String[] t_silent = addTransition("_start", null, null, b_entType[0], e_entType[0], m_entType[0], na.getId(), na.getGenerator().getValue().getId()+"_mergegen");
 						strStart.append(t_silent[1]);
