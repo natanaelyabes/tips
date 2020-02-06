@@ -8,6 +8,7 @@ import com.opencsv.CSVReader;
 import com.opencsv.CSVReaderBuilder;
 
 import io.iochord.apps.ips.common.models.Dataset;
+import io.iochord.apps.ips.common.util.LoggerUtil;
 import io.iochord.apps.ips.common.util.SerializationUtil;
 import io.iochord.apps.ips.core.services.AnIpsAsyncService;
 import io.iochord.apps.ips.core.services.ServiceContext;
@@ -55,12 +56,16 @@ public class CsvDataImportService extends AnIpsAsyncService<CsvDataImportConfigu
 				isql.append(");");
 				try (PreparedStatement st = conn.prepareStatement(sql.toString());) {
 					st.execute();
-				} catch (Exception ex) { logException(ex); }
+				} catch (Exception ex) {
+					LoggerUtil.log(ex);
+				}
 				sql = new StringBuilder();
 				sql.append("COMMENT ON TABLE ").append(name).append(" IS '").append(SerializationUtil.encode(config)).append("';");
 				try (PreparedStatement st = conn.prepareStatement(sql.toString());) {
 					st.execute();
-				} catch (Exception ex) { logException(ex); }
+				} catch (Exception ex) {
+					LoggerUtil.log(ex);
+				}
 				try (PreparedStatement st = conn.prepareStatement(isql.toString());) {
 					int brows = 0;
 					while (cells != null) {
@@ -80,10 +85,14 @@ public class CsvDataImportService extends AnIpsAsyncService<CsvDataImportConfigu
 					if (brows > 0) {
 						st.executeBatch();
 					}
-				} catch (Exception ex) { logException(ex); }
+				} catch (Exception ex) {
+					LoggerUtil.log(ex);
+				}
 			}
 			csvReader.close();
-		} catch (Exception ex) { logException(ex); }
+		} catch (Exception ex) {
+			LoggerUtil.log(ex);
+		}
 		return result;
 	}
 	

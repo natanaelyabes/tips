@@ -4,6 +4,7 @@ import java.util.Map;
 import java.util.TreeMap;
 
 import io.iochord.apps.ips.common.models.Referenceable;
+import io.iochord.apps.ips.common.util.LoggerUtil;
 import io.iochord.apps.ips.model.ism.v1.Configuration;
 import io.iochord.apps.ips.model.ism.v1.Connector;
 import io.iochord.apps.ips.model.ism.v1.Data;
@@ -109,7 +110,9 @@ public class IsmFactoryImpl implements IsmFactory {
 					data.setId(page.getId() + "-" + dataType + "-" + String.valueOf(page.getData().size()));
 					page.getData().put(data.getId(), data);
 					return data;
-				} catch (Exception e) {}
+				} catch (Exception ex) {
+					LoggerUtil.log(ex);
+				}
 			}
 		}
 		return null;
@@ -125,7 +128,9 @@ public class IsmFactoryImpl implements IsmFactory {
 					node.setId(page.getId() + "-" + nodeType + "-" + String.valueOf(page.getNodes().size()));
 					page.getNodes().put(node.getId(), node);
 					return node;
-				} catch (Exception e) {}
+				} catch (Exception ex) {
+					LoggerUtil.log(ex);
+				}
 			}
 		}
 		return null;

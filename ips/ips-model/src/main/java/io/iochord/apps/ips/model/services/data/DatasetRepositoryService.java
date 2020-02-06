@@ -8,6 +8,7 @@ import java.util.Map;
 
 import io.iochord.apps.ips.common.models.Dataset;
 import io.iochord.apps.ips.common.util.JsonDataCodec;
+import io.iochord.apps.ips.common.util.LoggerUtil;
 import io.iochord.apps.ips.core.services.AnIpsService;
 import io.iochord.apps.ips.core.services.ServiceContext;
 
@@ -37,8 +38,12 @@ public class DatasetRepositoryService extends AnIpsService<String, Map<String, D
 					ds.setId(tablename);
 					datasets.put(ds.getId(), ds);
 				}
-			} catch (Exception ex) { logException(ex); }
-		} catch (Exception ex) { logException(ex); }
+			} catch (Exception ex) {
+				LoggerUtil.log(ex);
+			}
+		} catch (Exception ex) {
+			LoggerUtil.log(ex);
+		}
 		return datasets;
 	}
 
