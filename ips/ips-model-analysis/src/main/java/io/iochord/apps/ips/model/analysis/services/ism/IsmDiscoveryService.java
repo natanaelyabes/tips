@@ -115,10 +115,7 @@ public class IsmDiscoveryService extends AnIpsAsyncService<IsmDiscoveryConfigura
 					dfMatrix.get(actFrom).put(actTo, actFrequency);
 	//				getLogger().debug(actFrom + " --> " + actTo + " : "  + actFrequency);
 				}
-				rs.close();
-				st.close();
 			} catch (Exception ex) {}
-			conn.close();
 		} catch (Exception ex) {}
 //		getLogger().info("Mining Directly-follow Matrix " + tabName + " ( " + colCaseId + ", " + colActivity + ", " + colTs
 //				+ ") Finished ... " + (System.currentTimeMillis() - started) + " ms.");
