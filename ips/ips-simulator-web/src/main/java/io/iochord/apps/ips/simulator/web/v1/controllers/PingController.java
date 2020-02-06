@@ -1,8 +1,7 @@
 package io.iochord.apps.ips.simulator.web.v1.controllers;
 
 import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -28,7 +27,7 @@ public class PingController extends AController {
 	 * 
 	 * @return PONG string
 	 */
-	@RequestMapping(value = BASE_URI + "/ping", method = RequestMethod.GET)
+	@GetMapping(value = BASE_URI + "/ping")
 	public String getPing() {
 		return "PONG";
 	}

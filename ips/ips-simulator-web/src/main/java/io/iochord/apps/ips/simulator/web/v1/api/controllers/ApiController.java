@@ -7,7 +7,7 @@ import java.util.TreeSet;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.mvc.method.RequestMappingInfo;
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
@@ -49,7 +49,7 @@ public class ApiController extends AServiceController {
 	 * 
 	 * @return List of API endpoints
 	 */
-	@RequestMapping(BASE_URI + "")
+	@GetMapping(value = BASE_URI + "")
 	public Map<String, Object> getIndex() {
 		Map<String, Object> result = new LinkedHashMap<>();
 		Set<String> routes = new TreeSet<>();

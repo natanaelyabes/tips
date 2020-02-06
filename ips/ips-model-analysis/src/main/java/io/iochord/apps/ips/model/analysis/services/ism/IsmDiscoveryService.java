@@ -71,8 +71,7 @@ public class IsmDiscoveryService extends AnIpsAsyncService<IsmDiscoveryConfigura
 // 		getLogger().info("Mining Directly-follow Matrix " + tabName + " ( " + colCaseId + ", " + colActivity + ", " + colTs
 //				+ ") Started ... ");
 		Map<String, Map<String, Long>> dfMatrix = new LinkedHashMap<>();
-		try {
-			Connection conn = context.getDataSource().getConnection();
+		try (Connection conn = context.getDataSource().getConnection();) {
 			StringBuilder sql = new StringBuilder();
 			sql.append("SELECT ")
 				.append("	CASE  ")
@@ -104,24 +103,23 @@ public class IsmDiscoveryService extends AnIpsAsyncService<IsmDiscoveryConfigura
 				.append("ON ne.ri = ce.ri + 1 ")
 				.append("GROUP BY af, at");
 //			getLogger().debug(sql.toString());
-			PreparedStatement st = conn.prepareStatement(sql.toString());
-			ResultSet rs = st.executeQuery();
-			while (rs.next()) {
-				String actFrom = rs.getString(1);
-				String actTo = rs.getString(2);
-				long actFrequency = rs.getLong(3);
-				if (!dfMatrix.containsKey(actFrom)) {
-					dfMatrix.put(actFrom, new LinkedHashMap<>());
+			try (PreparedStatement st = conn.prepareStatement(sql.toString());
+				ResultSet rs = st.executeQuery();) {
+				while (rs.next()) {
+					String actFrom = rs.getString(1);
+					String actTo = rs.getString(2);
+					long actFrequency = rs.getLong(3);
+					if (!dfMatrix.containsKey(actFrom)) {
+						dfMatrix.put(actFrom, new LinkedHashMap<>());
+					}
+					dfMatrix.get(actFrom).put(actTo, actFrequency);
+	//				getLogger().debug(actFrom + " --> " + actTo + " : "  + actFrequency);
 				}
-				dfMatrix.get(actFrom).put(actTo, actFrequency);
-//				getLogger().debug(actFrom + " --> " + actTo + " : "  + actFrequency);
-			}
-			rs.close();
-			st.close();
+				rs.close();
+				st.close();
+			} catch (Exception ex) {}
 			conn.close();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		} catch (Exception ex) {}
 //		getLogger().info("Mining Directly-follow Matrix " + tabName + " ( " + colCaseId + ", " + colActivity + ", " + colTs
 //				+ ") Finished ... " + (System.currentTimeMillis() - started) + " ms.");
 		return dfMatrix;

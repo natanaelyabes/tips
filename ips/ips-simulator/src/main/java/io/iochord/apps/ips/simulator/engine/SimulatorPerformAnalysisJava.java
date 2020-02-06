@@ -2,7 +2,6 @@ package io.iochord.apps.ips.simulator.engine;
 
 import java.lang.management.ManagementFactory;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import io.iochord.apps.ips.simulator.compiler.CustomSimulation;
@@ -19,7 +18,7 @@ public class SimulatorPerformAnalysisJava {
 	@SuppressWarnings("restriction")
 	public String doTestWithManyToken(int noStep, String jsonStr, String modelpath) {
 
-		double mb = 1024*1024;
+		double mb = 1024d * 1024d;
 			    
 		Runtime runtime = Runtime.getRuntime();
 		com.sun.management.OperatingSystemMXBean bean = (com.sun.management.OperatingSystemMXBean) 
@@ -30,10 +29,7 @@ public class SimulatorPerformAnalysisJava {
 	    
 		try {
 			Thread.sleep(100);
-		} catch (InterruptedException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
+		} catch (Exception ex) {}
 		
 		double used1 = (runtime.totalMemory() - runtime.freeMemory()) / mb;
 	    double free1 = runtime.freeMemory() / mb;
@@ -98,10 +94,7 @@ public class SimulatorPerformAnalysisJava {
 			 jobcpu.put("cpuaft", jobcpuaft);
 			 
 			 job.put("cpu", jobcpu);
-		} catch (JSONException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		} catch (Exception ex) {}
 	    
 		return job.toString();
 	}
