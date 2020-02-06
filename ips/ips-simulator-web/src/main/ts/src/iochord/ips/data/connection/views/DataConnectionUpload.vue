@@ -6,6 +6,7 @@
 <template>
   <div class="sandbox uploadfile data connection">
     <DepthTwoLeftWrapperComponent>
+
       <!-- Header -->
       <template slot="header-breadcrumb">
         <router-link to="/iochord/ips/home" tag="a" class="section">Home</router-link>
@@ -45,6 +46,7 @@ a.section {
   text-decoration: underline;
 }
 </style>
+
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator';
 import ExplorerLayoutView from '@/iochord/ips/common/ui/layout/class/ExplorerLayoutView';

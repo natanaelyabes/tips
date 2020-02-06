@@ -7,5 +7,9 @@
  *
  */
 export enum ApplicationEnum {
+
+  /**
+   * The name of the application.
+   */
   NAME = 'ips',
 }

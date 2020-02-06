@@ -6,6 +6,7 @@
 <template>
   <div class="sandbox analysis dist fitting">
     <LeftBarContentWrapperComponent>
+
       <!-- Header -->
       <template slot="header-breadcrumb">
         <router-link to="/iochord/ips/home" tag="a" class="section">Home</router-link>
@@ -17,10 +18,8 @@
 
       <!-- Left Sidebar Menu Item -->
       <template slot="left-bar-menu-item">
-        <!-- <div class="menu"> -->
-          <a href="/#/iochord/ips/analytics/distribution/settings" class="item">Settings</a>
-          <a href="/#/iochord/ips/analytics/distribution/fitting" class="item">Overall</a>
-        <!-- </div> -->
+        <a href="/#/iochord/ips/analytics/distribution/settings" class="item">Settings</a>
+        <a href="/#/iochord/ips/analytics/distribution/fitting" class="item">Overall</a>
       </template>
 
       <!-- Content -->
@@ -53,7 +52,6 @@ import ContentSettingsComponent from '../components/ContentSettingsComponent.vue
 import ContentSplitComponent from '../components/ContentSplitComponent.vue';
 import DiffLayoutView from '@/iochord/ips/common/ui/layout/class/DiffLayoutView';
 
-
 @Component({
   components: {
     LeftBarContentWrapperComponent,
@@ -63,7 +61,7 @@ import DiffLayoutView from '@/iochord/ips/common/ui/layout/class/DiffLayoutView'
 })
 
 /**
- * Settings view to set distribution fitting parameters or properties.
+ * Settings view to assign distribution fitting parameters or properties.
  *
  * @extends BaseComponent
  * @package ips
@@ -72,14 +70,29 @@ import DiffLayoutView from '@/iochord/ips/common/ui/layout/class/DiffLayoutView'
  *
  */
 export default class AnalysisDistFittingSettings extends DiffLayoutView {
+
+  /**
+   * Title field for AnalysisDistFittingSettings
+   *
+   * @type {string}
+   * @memberof AnalysisDistFittingSettings
+   */
   public title: string = '';
 
-  /** @override */
+  /**
+   * Override browser properties for AnalysisDistFittingSettings
+   *
+   * @memberof AnalysisDistFittingSettings
+   */
   public overrideBrowserProperties() {
     this.setDocumentTitle('Data Analysis: Distribution Fitting');
   }
 
-  /** @Override */
+  /**
+   * Override title for AnalysisDistFittingSettings
+   *
+   * @memberof AnalysisDistFittingSettings
+   */
   public setTitle(): void {
     this.title = `Distribution Fitting`;
   }

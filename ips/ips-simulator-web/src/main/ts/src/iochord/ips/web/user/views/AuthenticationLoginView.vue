@@ -155,13 +155,6 @@ import { BaseUrlEnum, ApplicationEnum } from '@/iochord/ips/common/enums';
 
 import PageView from '@/iochord/ips/common/ui/layout/class/PageLayout';
 
-/**
- *
- * @package ips
- * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
- * @since 2019
- *
- */
 @Component
 
 /**

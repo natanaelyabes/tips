@@ -1,6 +1,11 @@
 import { GraphElement } from './GraphElement';
 
 /**
+ * The interface of the graph data.
+ *
+ * @export
+ * @interface GraphData
+ * @extends {GraphElement}
  *
  * @package ips
  * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
@@ -8,4 +13,5 @@ import { GraphElement } from './GraphElement';
  *
  */
 export interface GraphData extends GraphElement {
+  //
 }

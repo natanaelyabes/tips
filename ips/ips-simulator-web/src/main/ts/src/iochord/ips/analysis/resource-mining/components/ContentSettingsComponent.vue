@@ -29,7 +29,7 @@ import BaseComponent from '@/iochord/ips/common/ui/layout/class/BaseComponent';
 @Component
 
 /**
- * Settings view to set resource mining parameters or properties.
+ * Settings view to assign resource mining parameters or properties.
  *
  * @extends BaseComponent
  * @package ips

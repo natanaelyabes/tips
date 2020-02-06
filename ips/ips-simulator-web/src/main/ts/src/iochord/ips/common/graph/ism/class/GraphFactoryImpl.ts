@@ -38,6 +38,12 @@ import { GraphStopEventNode } from '../interfaces/components/GraphStopEventNode'
 import { TSMap } from 'typescript-map';
 
 /**
+ * Factory class to create GraphImpl object. Implementation of GraphFactory interface.
+ *
+ * @export
+ * @class GraphFactoryImpl
+ * @extends {GraphNodeImpl}
+ * @implements {GraphFactory}
  *
  * @package ips
  * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
@@ -45,26 +51,64 @@ import { TSMap } from 'typescript-map';
  *
  */
 export class GraphFactoryImpl implements GraphFactory {
+
+  /**
+   * Returns the instances of GraphFactory.
+   *
+   * @static
+   * @returns {GraphFactory}
+   * @memberof GraphFactoryImpl
+   */
   public static getInstance(): GraphFactory {
     return this.instance;
   }
 
+  /**
+   * Instance of GraphFactory.
+   *
+   * @private
+   * @static
+   * @type {GraphFactory}
+   * @memberof GraphFactoryImpl
+   */
   private static readonly instance: GraphFactory = new GraphFactoryImpl();
 
+  /**
+   * The number of graph constructed by GraphFactory.
+   *
+   * @private
+   * @type {number}
+   * @memberof GraphFactoryImpl
+   */
   private netCounter: number = 0;
 
-  constructor() {
-    //
-  }
-
+  /**
+   * Returns the counter of current GraphFactory.
+   *
+   * @returns {number}
+   * @memberof GraphFactoryImpl
+   */
   public getCounter(): number {
     return this.netCounter;
   }
 
+  /**
+   * Assigns a counter to current GraphFactory.
+   *
+   * @param {number} counter
+   * @memberof GraphFactoryImpl
+   */
   public setCounter(counter: number): void {
     this.netCounter = counter;
   }
 
+  /**
+   * Create Graph object.
+   *
+   * @param {(Graph | null)} [ref]
+   * @returns {Graph}
+   * @memberof GraphFactoryImpl
+   */
   public create(ref?: Graph | null): Graph {
     const net: Graph = new GraphImpl();
     net.setId('MODEL-' + this.netCounter);
@@ -74,6 +118,13 @@ export class GraphFactoryImpl implements GraphFactory {
     return net;
   }
 
+  /**
+   * Add a page to Graph object.
+   *
+   * @param {Graph} net
+   * @returns {(GraphPage | null)}
+   * @memberof GraphFactoryImpl
+   */
   public addPage(net: Graph): GraphPage | null {
     let page: GraphPage | null = new GraphPageImpl();
     if (net !== null) {
@@ -87,6 +138,14 @@ export class GraphFactoryImpl implements GraphFactory {
     return page;
   }
 
+  /**
+   * Add data to the specified page of the Graph.
+   *
+   * @param {GraphPage} page
+   * @param {string} dataType
+   * @returns {(GraphData | null)}
+   * @memberof GraphFactoryImpl
+   */
   public addData(page: GraphPage, dataType: string): GraphData | null {
     const dt: string = dataType.toLowerCase();
     let data: GraphData | null = new (DATA_TYPE as any)[dt]();
@@ -103,6 +162,14 @@ export class GraphFactoryImpl implements GraphFactory {
     return data;
   }
 
+  /**
+   * Add node to the specified page of the Graph
+   *
+   * @param {GraphPage} page
+   * @param {string} nodeType
+   * @returns {(GraphNode | null)}
+   * @memberof GraphFactoryImpl
+   */
   public addNode(page: GraphPage, nodeType: string): GraphNode | null {
     const nt: string = nodeType.toLowerCase();
     let node: GraphNode | null = new (NODE_TYPE as any)[nt]();
@@ -119,6 +186,15 @@ export class GraphFactoryImpl implements GraphFactory {
     return node;
   }
 
+  /**
+   * Add connector to the specified page of the Graph.
+   *
+   * @param {GraphPage} page
+   * @param {GraphElement} source
+   * @param {GraphElement} target
+   * @returns {(GraphConnector | null)}
+   * @memberof GraphFactoryImpl
+   */
   public addConnector(page: GraphPage, source: GraphElement, target: GraphElement): GraphConnector | null {
     let arc: GraphConnector | null = new GraphConnectorImpl();
     if (page !== null) {
@@ -132,6 +208,13 @@ export class GraphFactoryImpl implements GraphFactory {
     return arc;
   }
 
+  /**
+   * Add configuration to the current graph.
+   *
+   * @param {Graph} net
+   * @returns {(GraphConfiguration | null)}
+   * @memberof GraphFactoryImpl
+   */
   public addConfiguration(net: Graph): GraphConfiguration | null {
     let config: GraphConfiguration | null = new GraphConfigurationImpl();
     if (net !== null) {
@@ -145,46 +228,123 @@ export class GraphFactoryImpl implements GraphFactory {
     return config;
   }
 
+  /**
+   * Add data table to the specified page.
+   *
+   * @param {GraphPage} page
+   * @returns {(GraphDataTable | null)}
+   * @memberof GraphFactoryImpl
+   */
   public addDataTable(page: GraphPage): GraphDataTable | null {
     return this.addData(page, GraphDataTableImpl.TYPE) as GraphDataTable | null;
   }
 
+  /**
+   * Add object type to the specified page.
+   *
+   * @param {GraphPage} page
+   * @returns {(GraphDataObjectType | null)}
+   * @memberof GraphFactoryImpl
+   */
   public addObjectType(page: GraphPage): GraphDataObjectType | null {
     return this.addData(page, GraphDataObjectTypeImpl.TYPE) as GraphDataObjectType | null;
   }
 
+  /**
+   * Add generator to the specified page.
+   *
+   * @param {GraphPage} page
+   * @returns {(GraphDataGenerator | null)}
+   * @memberof GraphFactoryImpl
+   */
   public addGenerator(page: GraphPage): GraphDataGenerator | null {
     return this.addData(page, GraphDataGeneratorImpl.TYPE) as GraphDataGenerator | null;
   }
 
+  /**
+   * Add function to the specified page.
+   *
+   * @param {GraphPage} page
+   * @returns {(GraphDataFunction | null)}
+   * @memberof GraphFactoryImpl
+   */
   public addFunction(page: GraphPage): GraphDataFunction | null {
     return this.addData(page, GraphDataFunctionImpl.TYPE) as GraphDataFunction | null;
   }
 
+  /**
+   * Add queue to the specified page.
+   *
+   * @param {GraphPage} page
+   * @returns {(GraphDataQueue | null)}
+   * @memberof GraphFactoryImpl
+   */
   public addQueue(page: GraphPage): GraphDataQueue | null {
     return this.addData(page, GraphDataQueueImpl.TYPE) as GraphDataQueue | null;
   }
 
+  /**
+   * Add resource to the specified page.
+   *
+   * @param {GraphPage} page
+   * @returns {(GraphDataResource | null)}
+   * @memberof GraphFactoryImpl
+   */
   public addResource(page: GraphPage): GraphDataResource | null {
     return this.addData(page, GraphDataResourceImpl.TYPE) as GraphDataResource | null;
   }
 
+  /**
+   * Add start event node to the specified page.
+   *
+   * @param {GraphPage} page
+   * @returns {(GraphStartEventNode | null)}
+   * @memberof GraphFactoryImpl
+   */
   public addStart(page: GraphPage): GraphStartEventNode | null {
     return this.addNode(page, GraphStartEventNodeImpl.TYPE) as GraphStartEventNode | null;
   }
 
+  /**
+   * Add stop event node to the specified page.
+   *
+   * @param {GraphPage} page
+   * @returns {(GraphStopEventNode | null)}
+   * @memberof GraphFactoryImpl
+   */
   public addStop(page: GraphPage): GraphStopEventNode | null {
     return this.addNode(page, GraphStopEventNodeImpl.TYPE) as GraphStopEventNode | null;
   }
 
+  /**
+   * Add activity node to the specified page.
+   *
+   * @param {GraphPage} page
+   * @returns {(GraphActivityNode | null)}
+   * @memberof GraphFactoryImpl
+   */
   public addActivity(page: GraphPage): GraphActivityNode | null {
     return this.addNode(page, GraphActivityNodeImpl.TYPE) as GraphActivityNode | null;
   }
 
+  /**
+   * Add branch to the specified page.
+   *
+   * @param {GraphPage} page
+   * @returns {(GraphBranchNode | null)}
+   * @memberof GraphFactoryImpl
+   */
   public addBranch(page: GraphPage): GraphBranchNode | null {
     return this.addNode(page, GraphBranchNodeImpl.TYPE) as GraphBranchNode | null;
   }
 
+  /**
+   * Add monitor to the specified page.
+   *
+   * @param {GraphPage} page
+   * @returns {(GraphMonitorNode | null)}
+   * @memberof GraphFactoryImpl
+   */
   public addMonitor(page: GraphPage): GraphMonitorNode | null {
     return this.addNode(page, GraphMonitorNodeImpl.TYPE) as GraphMonitorNode | null;
   }

@@ -1,6 +1,9 @@
 import * as joint from 'jointjs';
 
 /**
+ * Enumerations for arc type.
+ *
+ * @export
  *
  * @package ips
  * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>

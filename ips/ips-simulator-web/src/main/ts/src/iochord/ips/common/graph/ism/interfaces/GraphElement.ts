@@ -1,8 +1,13 @@
-import { ObjectSerializable } from '../../../interfaces/ObjectSerializable';
+import { ObjectSerializable } from '../../../lang/interfaces/ObjectSerializable';
 import { BRANCH_TYPE } from '../enums/BRANCH';
 import { TSMap } from 'typescript-map';
 
 /**
+ * The interface of the graph element.
+ *
+ * @export
+ * @interface Graph
+ * @extends {GraphElement}
  *
  * @package ips
  * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>

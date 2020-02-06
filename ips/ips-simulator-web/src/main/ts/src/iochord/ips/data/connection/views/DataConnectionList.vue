@@ -18,11 +18,9 @@
 
       <!-- Depth One Left Sidebar Menu Item -->
       <template slot="depth-one-menu-item">
-        <!-- <div class="menu"> -->
-          <a href="/#/iochord/ips/data/connection" class="item">List of connection</a>
-          <a href="/#/iochord/ips/data/connection/new" class="item">New connection</a>
-          <a href="/#/iochord/ips/data/connection/upload" class="item">Import</a>
-        <!-- </div> -->
+        <a href="/#/iochord/ips/data/connection" class="item">List of connection</a>
+        <a href="/#/iochord/ips/data/connection/new" class="item">New connection</a>
+        <a href="/#/iochord/ips/data/connection/upload" class="item">Import</a>
       </template>
 
       <!-- Depth Two Left Sidebar Menu Item -->
@@ -32,18 +30,10 @@
 
       <!-- Content -->
       <template slot="content">
-        <component :is="currentContentComponent">
-        </component>
-        <!-- <ContentMysqlPropertiesComponent></ContentMysqlPropertiesComponent> -->
-        <!-- <ContentFileQueryComponent></ContentFileQueryComponent> -->
-        <!-- <ContentDataViewComponent></ContentDataViewComponent> -->
-        <!-- <ContentDataUploadComponent></ContentDataUploadComponent> -->
+        <component :is="currentContentComponent"></component>
       </template>
     </DepthTwoLeftWrapperComponent>
   </div>
-
-
-
 </template>
 
 <style>
@@ -75,20 +65,21 @@ import ItemExistedConnectionComponent from '../components/ItemExistedConnectionC
 
 @Component({
   components: {
-      DepthTwoLeftWrapperComponent,
-      ContentOraclePropertiesComponent,
-      ContentMssqlPropertiesComponent,
-      ContentMysqlPropertiesComponent,
-      ContentHadoopPropertiesComponent,
-      ContentDataViewComponent,
-      ContentDataUploadComponent,
-      ContentQueryComponent,
-      ContentFileQueryComponent,
-      ItemUploadComponent,
-      ItemConnectionComponent,
-      ItemExistedConnectionComponent,
-   },
- })
+    DepthTwoLeftWrapperComponent,
+    ContentOraclePropertiesComponent,
+    ContentMssqlPropertiesComponent,
+    ContentMysqlPropertiesComponent,
+    ContentHadoopPropertiesComponent,
+    ContentDataViewComponent,
+    ContentDataUploadComponent,
+    ContentQueryComponent,
+    ContentFileQueryComponent,
+    ItemUploadComponent,
+    ItemConnectionComponent,
+    ItemExistedConnectionComponent,
+  },
+})
+
 /**
  * @package ips
  * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>

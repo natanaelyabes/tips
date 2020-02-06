@@ -34,11 +34,6 @@
         <br />
         <div class="inline fields">
           <div class="eight wide field">
-            <!--
-            <button type="button" class="ui disabled button">
-              Use file
-            </button>
-            -->
             <button type="button" :disabled="isUploading" class="ui primary button" @click="doImport()">
               Import {{uploadStatus}}
             </button>
@@ -46,40 +41,10 @@
               Cancel
             </button>
           </div>
-          <div class="eight wide field">
-
-          </div>
         </div>
     </form>
-    <!--
-    <h4 class="ui dividing header">Data Preview</h4>
-      <div style="overflow-x: hidden; overflow-y: scroll; border: 1px solid rgba(34,36,38,.15); height: 500px; width: 100%">
-        <table class="ui celled striped table">
-          <thead>
-            <tr>
-              <th>Column 1</th>
-              <th>Column 2</th>
-              <th>Column 3</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td class="collapsing">
-                node_modules
-              </td>
-              <td>Initial commit</td>
-              <td class="right aligned collapsing">10 hours ago</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    -->
   </div>
 </template>
-
-<style>
-
-</style>
 
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator';

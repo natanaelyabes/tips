@@ -6,6 +6,12 @@ import { GraphConnectorImpl } from '../GraphConnectorImpl';
 import { GraphConnector } from '../../interfaces/GraphConnector';
 
 /**
+ * Implementation of GraphStartEventNodeImpl interface.
+ *
+ * @export
+ * @class GraphStartEventNodeImpl
+ * @extends {GraphNodeImpl}
+ * @implements {GraphStartEventNodeImpl}
  *
  * @package ips
  * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
@@ -13,8 +19,25 @@ import { GraphConnector } from '../../interfaces/GraphConnector';
  *
  */
 export class GraphStartEventNodeImpl extends GraphEventNodeImpl implements GraphStartEventNode {
+
+  /**
+   * Field to identify the type of node.
+   *
+   * @static
+   * @type {string}
+   * @memberof GraphStartEventNodeImpl
+   */
   public static TYPE: string = 'start';
 
+  /**
+   * Deserialize JSON object as GraphStartEventNodeImpl.
+   *
+   * @override
+   * @static
+   * @param {*} object
+   * @returns {(GraphStartEventNode | null)}
+   * @memberof GraphStartEventNodeImpl
+   */
   public static deserialize(object: any): GraphStartEventNode | null {
     const graphStartEventNode: GraphStartEventNode = new GraphStartEventNodeImpl();
     graphStartEventNode.setId(object.id);
@@ -28,30 +51,80 @@ export class GraphStartEventNodeImpl extends GraphEventNodeImpl implements Graph
     return graphStartEventNode;
   }
 
+  /**
+   * Generator data node assigned to the current start event node.
+   *
+   * @private
+   * @type {(GraphDataGenerator | null)}
+   * @memberof GraphStartEventNodeImpl
+   */
   private generator?: GraphDataGenerator | null;
+
+  /**
+   * Generator data node assigned to the current start event node as string reference.
+   *
+   * @private
+   * @type {(string | null)}
+   * @memberof GraphStartEventNodeImpl
+   */
   private generatorRef?: string | null;
 
+  /**
+   * Creates an instance of GraphStartEventNodeImpl.
+   *
+   * @memberof GraphStartEventNodeImpl
+   */
   constructor() {
     super();
   }
 
+  /**
+   * Returns the generator assigned to the current start event node.
+   *
+   * @returns {(GraphDataGenerator | null)}
+   * @memberof GraphStartEventNodeImpl
+   */
   public getGenerator(): GraphDataGenerator | null {
     return this.generator as GraphDataGenerator | null;
   }
 
+  /**
+   * Assigns generator data node to the current start event node.
+   *
+   * @param {GraphDataGenerator} generator
+   * @memberof GraphStartEventNodeImpl
+   */
   public setGenerator(generator: GraphDataGenerator): void {
     this.generator = generator;
   }
 
+  /**
+   * Returns the generator assigned to the current start event as string reference.
+   *
+   * @returns {(string | null)}
+   * @memberof GraphStartEventNodeImpl
+   */
   public getGeneratorRef(): string | null {
     return this.generatorRef as string;
   }
 
+  /**
+   * Assigns the generator to the current start event node as string reference.
+   *
+   * @param {string} generator
+   * @memberof GraphStartEventNodeImpl
+   */
   public setGeneratorRef(generator: string): void {
     this.generatorRef = generator;
   }
 
-  /** @Override */
+  /**
+   * To attest that the input nodes have adhered the simulation model rule.
+   *
+   * @override
+   * @returns {(Error | null)}
+   * @memberof GraphStartEventNodeImpl
+   */
   public validateInputNodes(): Error | null {
 
     // Get all connectors
@@ -74,7 +147,13 @@ export class GraphStartEventNodeImpl extends GraphEventNodeImpl implements Graph
     return null;
   }
 
-  /** @Override */
+  /**
+   * To attest that the output nodes have adhered the simulation model rule.
+   *
+   * @override
+   * @returns {(Error | null)}
+   * @memberof GraphActivityNodeImpl
+   */
   public validateOutputNodes(): Error | null {
 
     // Get all connectors
@@ -97,7 +176,13 @@ export class GraphStartEventNodeImpl extends GraphEventNodeImpl implements Graph
     return null;
   }
 
-  /** @Override */
+  /**
+   * Serialize GraphStartEventNodeImpl as JSON string.
+   *
+   * @override
+   * @returns {(string | null)}
+   * @memberof GraphStartEventNodeImpl
+   */
   public serialize(): string | null {
     return JSON.stringify(this);
   }

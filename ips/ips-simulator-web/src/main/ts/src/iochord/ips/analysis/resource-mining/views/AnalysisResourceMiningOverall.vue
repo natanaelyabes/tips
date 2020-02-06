@@ -71,11 +71,6 @@ import ContentSettingsComponent from '../components/ContentSettingsComponent.vue
 export default class AnalysisResourceMiningOverall extends DiffLayoutView {
   public title: string = '';
 
-
-  public mounted(): void { // implement business logic
-    // alert('ding! DD ppang juwa');
-  }
-
   /** @override */
   public overrideBrowserProperties() {
     this.setDocumentTitle('Data Analysis: Resources');

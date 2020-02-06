@@ -5,6 +5,12 @@ import { GraphConnectorImpl } from '../GraphConnectorImpl';
 import { GraphConnector } from '../../interfaces/GraphConnector';
 
 /**
+ * Implementation of GraphStopEventNode interface.
+ *
+ * @export
+ * @class GraphStopEventNodeImpl
+ * @extends {GraphNodeImpl}
+ * @implements {GraphStopEventNode}
  *
  * @package ips
  * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
@@ -12,8 +18,25 @@ import { GraphConnector } from '../../interfaces/GraphConnector';
  *
  */
 export class GraphStopEventNodeImpl extends GraphEventNodeImpl implements GraphStopEventNode {
+
+  /**
+   * Field to identify the type of node.
+   *
+   * @static
+   * @type {string}
+   * @memberof GraphStopEventNodeImpl
+   */
   public static TYPE: string = 'stop';
 
+  /**
+   * Deserialize JSON object to GraphStopEventNodeImpl.
+   *
+   * @override
+   * @static
+   * @param {*} object
+   * @returns {(GraphStopEventNode | null)}
+   * @memberof GraphStopEventNodeImpl
+   */
   public static deserialize(object: any): GraphStopEventNode | null {
     const graphStopEventNode: GraphStopEventNode = new GraphStopEventNodeImpl();
     graphStopEventNode.setId(object.id);
@@ -26,7 +49,12 @@ export class GraphStopEventNodeImpl extends GraphEventNodeImpl implements GraphS
     return graphStopEventNode;
   }
 
-  /** @Override */
+  /**
+   * To attest that the input nodes have adhered the simulation model rule.
+   *
+   * @returns {(Error | null)}
+   * @memberof GraphStopEventNodeImpl
+   */
   public validateInputNodes(): Error | null {
 
     // Get all connectors
@@ -49,7 +77,12 @@ export class GraphStopEventNodeImpl extends GraphEventNodeImpl implements GraphS
     return null;
   }
 
-  /** @Override */
+  /**
+   * To attest that the output nodes have adhered the simulation model rule.
+   *
+   * @returns {(Error | null)}
+   * @memberof GraphStopEventNodeImpl
+   */
   public validateOutputNodes(): Error | null {
 
     // Get all connectors
@@ -72,7 +105,13 @@ export class GraphStopEventNodeImpl extends GraphEventNodeImpl implements GraphS
     return null;
   }
 
-  /** @Override */
+  /**
+   * Serialize GraphStopEventNodeImpl as JSON string.
+   *
+   * @override
+   * @returns {(string | null)}
+   * @memberof GraphStopEventNodeImpl
+   */
   public serialize(): string | null {
     return JSON.stringify(this);
   }

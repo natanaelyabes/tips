@@ -24,7 +24,7 @@ import BaseComponent from '@/iochord/ips/common/ui/layout/class/BaseComponent';
 @Component
 
 /**
- * Settings view to set distribution fitting parameters or properties.
+ * Settings view to assign distribution fitting parameters or properties.
  *
  * @extends BaseComponent
  * @package ips

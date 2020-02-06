@@ -61,7 +61,7 @@ import ContentSplitComponent from '../components/ContentSplitComponent.vue';
 })
 
 /**
- * Settings view to set branch mining parameters or properties.
+ * Settings view to assign branch mining parameters or properties.
  *
  * @export
  * @class AnalysisBranchSettings
@@ -75,7 +75,7 @@ import ContentSplitComponent from '../components/ContentSplitComponent.vue';
 export default class AnalysisBranchSettings extends DiffLayoutView {
 
   /**
-   * Title fields of AnalysisBranchSettings
+   * Title field of AnalysisBranchSettings
    *
    * @type {string}
    * @memberof AnalysisBranchSettings

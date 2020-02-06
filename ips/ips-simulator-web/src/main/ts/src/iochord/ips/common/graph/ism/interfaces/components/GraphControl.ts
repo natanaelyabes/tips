@@ -1,6 +1,11 @@
 import { GraphConfiguration } from '../GraphConfiguration';
 
 /**
+ * The interface of graph control.
+ *
+ * @export
+ * @interface GraphControl
+ * @extends {GraphConfiguration}
  *
  * @package ips
  * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
@@ -8,4 +13,5 @@ import { GraphConfiguration } from '../GraphConfiguration';
  *
  */
 export interface GraphControl extends GraphConfiguration {
+  //
 }

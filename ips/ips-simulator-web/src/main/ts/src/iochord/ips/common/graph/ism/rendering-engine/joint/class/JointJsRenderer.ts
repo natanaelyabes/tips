@@ -35,30 +35,100 @@ import { JointGraphDataImpl } from '../shapes/class/JointGraphDataImpl';
 import { GraphBranchNodeImpl } from '../../../class/components/GraphBranchNodeImpl';
 import { BRANCH_TYPE, BRANCH_RULE, BRANCH_GATE } from '../../../enums/BRANCH';
 
-
 /**
+ * Graph renderer based on Joint.js library.
+ *
+ * @export
+ * @class JointJsRenderer
+ *
  * @package ips
  * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
  * @since 2019
  *
  */
 export default class JointJsRenderer {
+
+  /**
+   * The width of canvas with respect to the resolution of screen monitor.
+   *
+   * @type {number}
+   * @memberof JointJsRenderer
+   */
   public canvasWidth?: number;
+
+  /**
+   * The height of canvas with respect to the resolution of screen monitor.
+   *
+   * @type {number}
+   * @memberof JointJsRenderer
+   */
   public canvasHeight?: number;
 
-  // Find all node types in the graph
+  /**
+   * The types of node identified within the current graph.
+   *
+   * @type {Set<string>}
+   * @memberof JointJsRenderer
+   */
   public nodeTypes: Set<string> = new Set<string>();
+
+  /**
+   * The types of data node identified within the current graph.
+   *
+   * @type {Set<string>}
+   * @memberof JointJsRenderer
+   */
   public dataTypes: Set<string> = new Set<string>();
 
-  // Graph data
+  /**
+   * Graph object
+   *
+   * @type {Graph}
+   * @memberof JointJsRenderer
+   */
   public graph?: Graph;
 
+  /**
+   * Active page need to be displayed in the canvas.
+   *
+   * @type {GraphPage}
+   * @memberof JointJsRenderer
+   */
   public activePage?: GraphPage;
+
+  /**
+   * Map of graph pages.
+   *
+   * @type {TSMap<string, JointGraphPageImpl>}
+   * @memberof JointJsRenderer
+   */
   public jointPages: TSMap<string, JointGraphPageImpl> = new TSMap<string, JointGraphPageImpl>();
+
+  /**
+   * Current selected element, identified by highlighted events.
+   *
+   * @type {GraphNode}
+   * @memberof JointJsRenderer
+   */
   public currentSelectedElement?: GraphNode;
 
+  /**
+   * Instance of SvgPanZoom.
+   *
+   * @type {SvgPanZoom.Instance}
+   * @memberof JointJsRenderer
+   */
   public panAndZoom?: SvgPanZoom.Instance;
 
+  /**
+   * Creates an instance of JointJsRenderer.
+   *
+   * @param {Graph} graph
+   * @param {GraphPage} activePage
+   * @param {GraphNode} currentSelectedElement
+   * @param {boolean} [isProcessModel]
+   * @memberof JointJsRenderer
+   */
   constructor(graph: Graph, activePage: GraphPage, currentSelectedElement: GraphNode, isProcessModel?: boolean) {
     this.graph = graph;
     this.activePage = activePage;
@@ -105,18 +175,44 @@ export default class JointJsRenderer {
     }
   }
 
+  /**
+   * Returns the identified node types within the graph of current active page.
+   *
+   * @returns {Set<string>}
+   * @memberof JointJsRenderer
+   */
   public getNodeTypes(): Set<string> {
     return this.nodeTypes;
   }
 
+  /**
+   * Returns the identified data node types within the graph of current active page.
+   *
+   * @returns {Set<string>}
+   * @memberof JointJsRenderer
+   */
   public getDataTypes(): Set<string> {
     return this.dataTypes;
   }
 
+  /**
+   * Current selected active page of the graph.
+   *
+   * @param {string} pageId
+   * @returns
+   * @memberof JointJsRenderer
+   */
   public activeJointPage(pageId: string) {
     return this.jointPages.get(pageId as string);
   }
 
+  /**
+   * Assign the properties of graph page.
+   *
+   * @param {JointGraphPageImpl} jointPage
+   * @param {GraphPage} currentPage
+   * @memberof JointJsRenderer
+   */
   public setProperties(jointPage: JointGraphPageImpl, currentPage: GraphPage): void {
     jointPage.setId(currentPage.getId() as string);
     jointPage.setLabel(currentPage.getLabel() as string);
@@ -128,6 +224,12 @@ export default class JointJsRenderer {
     jointPage.setData(currentPage.getData() as TSMap<string, GraphData>);
   }
 
+  /**
+   * Render the graph page to canvas.
+   *
+   * @param {JointGraphPageImpl} jointPage
+   * @memberof JointJsRenderer
+   */
   public renderPage(jointPage: JointGraphPageImpl): void {
 
     // Set the paper as the graph container
@@ -148,6 +250,12 @@ export default class JointJsRenderer {
     } as joint.dia.Paper.Options ));
   }
 
+  /**
+   * Render the minimap to canvas.
+   *
+   * @param {JointGraphPageImpl} jointPage
+   * @memberof JointJsRenderer
+   */
   public renderMinimap(jointPage: JointGraphPageImpl): void {
 
     // Set the minimap for each page
@@ -168,6 +276,12 @@ export default class JointJsRenderer {
     jointPage.getMinimap().scale(0.1);
   }
 
+  /**
+   * Render nodes element to canvas.
+   *
+   * @param {JointGraphPageImpl} jointPage
+   * @memberof JointJsRenderer
+   */
   public renderNodes(jointPage: JointGraphPageImpl): void {
     const keys: any = { elementType: 'elementType' };
 
@@ -212,6 +326,12 @@ export default class JointJsRenderer {
     });
   }
 
+  /**
+   * Render data to canvas.
+   *
+   * @param {JointGraphPageImpl} jointPage
+   * @memberof JointJsRenderer
+   */
   public renderData(jointPage: JointGraphPageImpl): void {
     const keys: any = { elementType: 'elementType' };
 
@@ -237,6 +357,12 @@ export default class JointJsRenderer {
     });
   }
 
+  /**
+   * Render connectors to canvas.
+   *
+   * @param {JointGraphPageImpl} jointPage
+   * @memberof JointJsRenderer
+   */
   public renderConnectors(jointPage: JointGraphPageImpl): void {
     const keys: any = { elementType: 'elementType' };
 
@@ -258,6 +384,12 @@ export default class JointJsRenderer {
     });
   }
 
+  /**
+   * Order the layout of the graph.
+   *
+   * @param {JointGraphPageImpl} jointPage
+   * @memberof JointJsRenderer
+   */
   public autoLayoutGraph(jointPage: JointGraphPageImpl): void {
     joint.layout.DirectedGraph.layout(jointPage.getGraph(), {
       ranker: 'network-simplex',
@@ -268,6 +400,12 @@ export default class JointJsRenderer {
     } as joint.layout.DirectedGraph.LayoutOptions);
   }
 
+  /**
+   * Position the graph to the center of the canvas
+   *
+   * @param {JointGraphPageImpl} jointPage
+   * @memberof JointJsRenderer
+   */
   public centerGraph(jointPage: JointGraphPageImpl): void {
     const PageViewportBBox = jointPage.getPaper().viewport.getBBox();
     jointPage.getPaper().translate(
@@ -276,6 +414,12 @@ export default class JointJsRenderer {
     );
   }
 
+  /**
+   * Position the graph to the center of the minimap
+   *
+   * @param {JointGraphPageImpl} jointPage
+   * @memberof JointJsRenderer
+   */
   public centerMinimap(jointPage: JointGraphPageImpl): void {
     const MinimapViewportBBox = jointPage.getMinimap().viewport.getBoundingClientRect();
     jointPage.getMinimap().translate(
@@ -284,6 +428,12 @@ export default class JointJsRenderer {
     );
   }
 
+  /**
+   * Enable pan and zoom for minimap and canvas
+   *
+   * @param {JointGraphPageImpl} jointPage
+   * @memberof JointJsRenderer
+   */
   public enableZoomAndPanning(jointPage: JointGraphPageImpl): void {
 
     // Enable pan and zoom for minimap
