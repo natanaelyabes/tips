@@ -25,4 +25,7 @@ public abstract class AnIpsService<C, R> extends IdentifiableImpl {
 
 	public abstract R run(ServiceContext context, C config) throws Exception;
 
+	public void logException(Exception ex) {
+		
+	}
 }
