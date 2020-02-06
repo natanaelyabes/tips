@@ -17,13 +17,12 @@ import io.iochord.apps.ips.model.analysis.services.ism.IsmDiscoveryService;
 import io.iochord.apps.ips.model.ism.v1.IsmGraph;
 
 /**
- *
- * @package chdsr-simulator-web
- * @author Iq Reviessay Pulshashi <pulshashi@ideas.web.id>
- * @since 2019
- *
- *
- */
+*
+* @package ips-simulator-web
+* @author  Iq Reviessay Pulshashi <pulshashi@ideas.web.id>
+* @since   2019
+*
+*/
 @RestController
 @CrossOrigin
 public class IsmDiscoveryController extends AnAnalysisController {

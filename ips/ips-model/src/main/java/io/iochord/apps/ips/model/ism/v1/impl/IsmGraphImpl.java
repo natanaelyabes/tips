@@ -9,11 +9,9 @@ import io.iochord.apps.ips.model.ism.v1.Configuration;
 import io.iochord.apps.ips.model.ism.v1.Connector;
 import io.iochord.apps.ips.model.ism.v1.Data;
 import io.iochord.apps.ips.model.ism.v1.Page;
-import io.iochord.apps.ips.model.ism.v1.data.DataTable;
 import io.iochord.apps.ips.model.ism.v1.data.Function;
 import io.iochord.apps.ips.model.ism.v1.data.Generator;
 import io.iochord.apps.ips.model.ism.v1.data.ObjectType;
-import io.iochord.apps.ips.model.ism.v1.data.Queue;
 import io.iochord.apps.ips.model.ism.v1.data.Resource;
 import io.iochord.apps.ips.model.ism.v1.nodes.Activity;
 import io.iochord.apps.ips.model.ism.v1.nodes.Control;
@@ -24,13 +22,12 @@ import lombok.Getter;
 import lombok.Setter;
 
 /**
- *
- * @package chdsr-model
- * @author  Iq Reviessay Pulshashi <pulshashi@ideas.web.id>
- * @since   2019
- *
- *
- */
+*
+* @package ips-model
+* @author Iq Reviessay Pulshashi <pulshashi@ideas.web.id>
+* @since 2019
+*
+*/
 @JsonTypeName(IsmGraph.TYPE)
 public class IsmGraphImpl extends ElementImpl implements IsmGraph {
 	@Getter
@@ -51,10 +48,6 @@ public class IsmGraphImpl extends ElementImpl implements IsmGraph {
 	@Setter
 	private Control control;
 
-	@Getter
-	@Setter
-	private Map<String, Data> data = new LinkedHashMap<>();
-
 	@Override
 	public Page getDefaultPage() {
 		if (getPages() != null) {
@@ -68,14 +61,14 @@ public class IsmGraphImpl extends ElementImpl implements IsmGraph {
 		for (Page p : pages.values()) {
 			for (Data rd : p.getData().values()) {
 				if (rd instanceof ObjectType) {
-					ObjectType d = (ObjectType) rd;
+//					ObjectType d = (ObjectType) rd;
 				} else if (rd instanceof Generator) {
 					Generator d = (Generator) rd;
 					if (d.getObjectType() != null) {
 						d.getObjectType().setValueRepository(p.getData());
 					}
 				} else if (rd instanceof Resource) {
-					Resource d = (Resource) rd;
+//					Resource d = (Resource) rd;
 //					if (d.getData() != null) {
 //						d.getData().setValueRepository(p.getData());
 //					}
@@ -83,7 +76,7 @@ public class IsmGraphImpl extends ElementImpl implements IsmGraph {
 //						d.getDataTable().setValueRepository(p.getData());
 //					}
 				} else if (rd instanceof Function) {
-					Function d = (Function) rd;
+//					Function d = (Function) rd;
 				}
 			}
 			for (Node rd : p.getNodes().values()) {

@@ -10,13 +10,12 @@ import io.iochord.apps.ips.model.ism.v1.impl.IsmGraphImpl;
 import io.iochord.apps.ips.model.ism.v1.nodes.Control;
 
 /**
- *
- * @package chdsr-model
- * @author  Iq Reviessay Pulshashi <pulshashi@ideas.web.id>
- * @since   2019
- *
- *
- */
+*
+* @package ips-model
+* @author Iq Reviessay Pulshashi <pulshashi@ideas.web.id>
+* @since 2019
+*
+*/
 @JsonDeserialize(as = IsmGraphImpl.class)
 @JsonTypeName(IsmGraph.TYPE)
 public interface IsmGraph extends Element {
@@ -25,7 +24,7 @@ public interface IsmGraph extends Element {
 	String getVersion();
 
 	Map<String, Page> getPages();
-	
+
 	@JsonIgnore
 	Page getDefaultPage();
 
@@ -33,7 +32,5 @@ public interface IsmGraph extends Element {
 
 	Control getControl();
 
-	Map<String, Data> getData();
-	
 	void loadReferences();
 }

@@ -8,15 +8,12 @@ import com.fasterxml.jackson.module.scala.DefaultScalaModule;
 import lombok.Getter;
 
 /**
- * 
- * JSON data codec
- *
- * @package chdsr-common
- * @author  Iq Reviessay Pulshashi <pulshashi@ideas.web.id>
- * @since   2019
- *
- *
- */
+*
+* @package ips-common
+* @author Iq Reviessay Pulshashi <pulshashi@ideas.web.id>
+* @since 2019
+*
+*/
 public class JsonDataCodec implements DataCodec<String> {
 
 	@Getter
@@ -37,7 +34,7 @@ public class JsonDataCodec implements DataCodec<String> {
 		omDefault.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 		return omDefault;
 	}
-	
+
 	@Override
 	public String encode(Object obj) {
 		try {

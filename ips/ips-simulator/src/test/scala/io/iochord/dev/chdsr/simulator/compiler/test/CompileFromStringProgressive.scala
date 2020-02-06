@@ -15,6 +15,13 @@ import scala.reflect.runtime.currentMirror
 import scala.tools.reflect.ToolBox
 import scala.io.Source
     
+/**
+*
+* @package ips-simulator
+* @author Nur Ichsan Utama <ichsan83@gmail.com>
+* @since 2019
+*
+*/
 object CompileFromStringProgressive {
   
   def main(args: Array[String]) {

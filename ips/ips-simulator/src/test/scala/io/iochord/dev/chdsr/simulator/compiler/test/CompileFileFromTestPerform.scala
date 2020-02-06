@@ -11,6 +11,13 @@ import io.iochord.apps.ips.simulator.compiler.MemoryScalaFileCompiler
 import scala.collection.mutable._
 import scala.util.control.Breaks._
 
+/**
+*
+* @package ips-simulator
+* @author Nur Ichsan Utama <ichsan83@gmail.com>
+* @since 2019
+*
+*/
 object CompileFromFileTestPerform {
   
   def main(args: Array[String]) {

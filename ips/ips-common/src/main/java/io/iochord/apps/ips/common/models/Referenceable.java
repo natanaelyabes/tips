@@ -11,21 +11,18 @@ import lombok.Getter;
 import lombok.Setter;
 
 /**
- *
- * General interface for IPR model
- *
- * @package ipr-core
- * @author Iq Reviessay Pulshashi <pulshashi@ideas.web.id>
- * @since 2019
- *
- *
- */
+*
+* @package ips-common
+* @author Iq Reviessay Pulshashi <pulshashi@ideas.web.id>
+* @since 2019
+*
+*/
 @JsonSerialize(converter = Referenceable2String.class)
 @JsonDeserialize(converter = String2Referenceable.class)
 public class Referenceable<V extends Identifiable> extends IdentifiableImpl {
 
 	public Referenceable() {
-		
+
 	}
 
 	public Referenceable(V object) {
@@ -34,23 +31,23 @@ public class Referenceable<V extends Identifiable> extends IdentifiableImpl {
 			setValueRef(object.getId());
 		}
 	}
-	
+
 	private String valueRef;
-	
+
 	public String getId() {
 		if (getValue() != null) {
 			return getValue().getId();
 		}
 		return super.getId();
 	}
-	
+
 	@Getter
 	@Setter
 	private Map<String, ? extends Identifiable> valueRepository;
-	
+
 	@Setter
 	private V value;
-	
+
 	@SuppressWarnings("unchecked")
 	public V getValue() {
 		if (value != null) {
@@ -62,7 +59,7 @@ public class Referenceable<V extends Identifiable> extends IdentifiableImpl {
 		}
 		return value;
 	}
-	
+
 	public String getValueRef() {
 		if (value != null) {
 			return value.getId();
@@ -70,16 +67,16 @@ public class Referenceable<V extends Identifiable> extends IdentifiableImpl {
 			return valueRef;
 		}
 	}
-	
+
 	public void setValueRef(String valueRef) {
 		this.valueRef = valueRef;
 	}
-	
+
 	public <E extends V> E getValueAs(Class<E> clazz) {
 		if (getValue() != null && clazz.isInstance(getValue())) {
 			return clazz.cast(getValue());
 		}
 		return null;
 	}
-	
+
 }

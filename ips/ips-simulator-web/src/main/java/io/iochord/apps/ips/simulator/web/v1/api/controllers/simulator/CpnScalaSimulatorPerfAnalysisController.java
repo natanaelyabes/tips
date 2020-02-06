@@ -23,13 +23,12 @@ import io.iochord.apps.ips.simulator.compiler.MemoryScalaCompilerPerModule;
 import io.iochord.apps.ips.simulator.engine.SimulatorPerformAnalysisJava;
 
 /**
- *
- * @package chdsr-simulator-web
- * @author  Nur Ichsan Utama <ichsan83@gmail.com>
- * @since   2019
- *
- *
- */
+*
+* @package ips-simulator-web
+* @author  Iq Reviessay Pulshashi <pulshashi@ideas.web.id>
+* @since   2019
+*
+*/
 @RestController
 @CrossOrigin
 public class CpnScalaSimulatorPerfAnalysisController extends ASimulatorController {

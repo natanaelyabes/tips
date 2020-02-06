@@ -5,13 +5,9 @@ import java.util.Map;
 import java.util.Observable;
 import java.util.Observer;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-
-import io.iochord.apps.ips.common.util.JsonDataCodec;
 import io.iochord.apps.ips.model.ism.v1.Element;
 import io.iochord.apps.ips.model.ism.v1.data.Generator;
 import io.iochord.apps.ips.model.ism.v1.nodes.Activity;
-import io.iochord.apps.ips.model.ism.v1.nodes.Start;
 import io.iochord.apps.ips.model.ism2cpn.converter.Ism2CpnscalaModel;
 import io.iochord.apps.ips.model.report.ElementStatistics;
 import lombok.Getter;
@@ -22,6 +18,13 @@ import scala.Tuple5;
 import scala.collection.Iterator;
 import scala.collection.mutable.HashMap;
 
+/**
+*
+* @package ips-model-analysis
+* @author Iq Reviessay Pulshashi <pulshashi@ideas.web.id>
+* @since 2019
+*
+*/
 public class Ism2CpnscalaObserver implements Observer {
 	
 	@Getter
@@ -34,7 +37,6 @@ public class Ism2CpnscalaObserver implements Observer {
 		model = ism2CpnscalaModel;
 	}
 
-	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	public void update(Observable o, Object arg) {
 		observe(o, arg);

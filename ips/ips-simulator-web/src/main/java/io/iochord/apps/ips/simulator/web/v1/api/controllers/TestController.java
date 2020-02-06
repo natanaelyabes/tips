@@ -22,13 +22,12 @@ import io.iochord.apps.ips.simulator.web.TestService;
 import lombok.Getter;
 
 /**
- *
- * @package chdsr-simulator-web
- * @author  Iq Reviessay Pulshashi <pulshashi@ideas.web.id>
- * @since   2019
- *
- *
- */
+*
+* @package ips-simulator-web
+* @author  Iq Reviessay Pulshashi <pulshashi@ideas.web.id>
+* @since   2019
+*
+*/
 @RestController
 @CrossOrigin
 public class TestController extends AServiceController {

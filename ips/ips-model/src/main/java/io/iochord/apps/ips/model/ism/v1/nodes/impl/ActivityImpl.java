@@ -9,7 +9,6 @@ import io.iochord.apps.ips.model.ism.v1.nodes.Activity;
 import io.iochord.apps.ips.model.ism.v1.nodes.enums.ActivityType;
 import io.iochord.apps.ips.model.ism.v1.nodes.enums.DistributionType;
 import io.iochord.apps.ips.model.ism.v1.nodes.enums.ResourceSelectionMethod;
-import io.iochord.apps.ips.model.ism.v1.nodes.enums.VariableType;
 import io.iochord.apps.ips.common.models.Referenceable;
 import io.iochord.apps.ips.model.ism.v1.data.Function;
 import io.iochord.apps.ips.model.ism.v1.data.Queue;
@@ -18,13 +17,12 @@ import lombok.Getter;
 import lombok.Setter;
 
 /**
- *
- * @package chdsr-model
- * @author  Iq Reviessay Pulshashi <pulshashi@ideas.web.id>
- * @since   2019
- *
- *
- */
+*
+* @package ips-model
+* @author Iq Reviessay Pulshashi <pulshashi@ideas.web.id>
+* @since 2019
+*
+*/
 @JsonTypeName(Activity.TYPE)
 public class ActivityImpl extends NodeImpl implements Activity {
 	@Getter

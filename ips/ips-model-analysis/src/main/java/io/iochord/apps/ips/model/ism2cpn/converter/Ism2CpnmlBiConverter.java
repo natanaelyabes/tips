@@ -48,13 +48,12 @@ import io.iochord.apps.ips.model.ism.v1.nodes.Stop;
 import lombok.Getter;
 
 /**
- *
- * @package chdsr-model-analysis
- * @author  Iq Reviessay Pulshashi <pulshashi@ideas.web.id>
- * @since   2019
- *
- *
- */
+*
+* @package ips-model-analysis
+* @author Iq Reviessay Pulshashi <pulshashi@ideas.web.id>
+* @since 2019
+*
+*/
 public class Ism2CpnmlBiConverter implements Converter<IsmGraph, PetriNet> {
 	
 	@Getter

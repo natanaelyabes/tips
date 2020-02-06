@@ -7,6 +7,13 @@ import org.json.JSONObject;
 
 import io.iochord.apps.ips.simulator.compiler.CustomSimulation;
 
+/**
+*
+* @package ips-simulator
+* @author Nur Ichsan Utama <ichsan83@gmail.com>
+* @since 2019
+*
+*/
 public class SimulatorPerformAnalysisJava {
 
 	@SuppressWarnings("restriction")

@@ -4,13 +4,12 @@ import lombok.Getter;
 import lombok.Setter;
 
 /**
- *
- * @package ips-model-analysis
- * @author  Iq Reviessay Pulshashi <pulshashi@ideas.web.id>
- * @since   2019
- *
- *
- */
+*
+* @package ips-model-analysis
+* @author Iq Reviessay Pulshashi <pulshashi@ideas.web.id>
+* @since 2019
+*
+*/
 public class IsmDiscoveryConfiguration {
 
 	@Getter

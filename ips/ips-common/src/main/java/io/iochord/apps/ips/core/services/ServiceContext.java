@@ -18,15 +18,14 @@ import lombok.Getter;
 import lombok.Setter;
 
 /**
- *
- * @package ipr-core
- * @author Iq Reviessay Pulshashi <pulshashi@ideas.web.id>
- * @since 2019
- *
- *
- */
+*
+* @package ips-common
+* @author Iq Reviessay Pulshashi <pulshashi@ideas.web.id>
+* @since 2019
+*
+*/
 public class ServiceContext extends IdentifiableImpl {
-	
+
 	@Getter
 	private static final Logger logger = LoggerFactory.getLogger(ServiceContext.class);
 
@@ -35,16 +34,11 @@ public class ServiceContext extends IdentifiableImpl {
 	public static final String WS_RESPONSE_URI = "/r";
 	public static final String WS_RESPONSE_PROGRESS_URI = WS_RESPONSE_URI + "/p";
 	public static final String WS_RESPONSE_COMPLETED_URI = WS_RESPONSE_URI + "/c";
-	
+
 	public enum State {
-		CREATED,
-		QUEUED,
-		RUNNING,
-		COMPLETED,
-		CANCELED, 
-		ERROR, 
+		CREATED, QUEUED, RUNNING, COMPLETED, CANCELED, ERROR,
 	}
-	
+
 	@Getter
 	@Setter
 	@JsonIgnore
@@ -53,24 +47,24 @@ public class ServiceContext extends IdentifiableImpl {
 	@Getter
 	@Setter
 	@JsonIgnore
-	private SimpMessagingTemplate wsmTemplate; 
+	private SimpMessagingTemplate wsmTemplate;
 
 	@Getter
 	@Setter
 	@JsonIgnore
 	private Map<String, Resource> resources = new TreeMap<>();
-	
+
 	@Getter
 	private final ServiceContextInfo info = new ServiceContextInfo();
 
 	@Getter
 	@Setter
 	private Object data;
-	
+
 	public ServiceContext() {
 		setId(String.valueOf(getInfo().getCreated()));
 	}
-	
+
 	public void start() {
 		getInfo().setStarted(System.currentTimeMillis());
 	}
@@ -82,7 +76,7 @@ public class ServiceContext extends IdentifiableImpl {
 		if (getWsmTemplate() == null) {
 			return;
 		}
-		logger.info("updateProgress " +  WS_RESPONSE_PROGRESS_URI + "/" + getId(), getInfo());
+		logger.info("updateProgress " + WS_RESPONSE_PROGRESS_URI + "/" + getId(), getInfo());
 		getWsmTemplate().convertAndSend(WS_RESPONSE_PROGRESS_URI + "/" + getId(), getInfo());
 	}
 
@@ -97,24 +91,23 @@ public class ServiceContext extends IdentifiableImpl {
 		getWsmTemplate().convertAndSend(WS_RESPONSE_COMPLETED_URI + "/" + getId(), this);
 		return data;
 	}
-	
 
 	public <T> void updateProgress(float progress) {
 		updateProgress(progress, null, new Date());
 	}
-	
+
 	public <T> void updateProgress(T data) {
 		updateProgress(getInfo().getProgress(), data, new Date());
 	}
-	
+
 	public <T> void updateProgress(float progress, T data) {
 		updateProgress(progress, data, new Date());
 	}
-	
+
 	public <T> T completeAndDestroy() {
 		return completeAndDestroy(State.COMPLETED, 100, null);
 	}
-	
+
 	public <T> T completeAndDestroy(T data) {
 		return completeAndDestroy(State.COMPLETED, 100, data);
 	}
