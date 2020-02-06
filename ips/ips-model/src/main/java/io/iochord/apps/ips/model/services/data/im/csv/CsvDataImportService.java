@@ -13,6 +13,13 @@ import io.iochord.apps.ips.common.util.SerializationUtil;
 import io.iochord.apps.ips.core.services.AnIpsAsyncService;
 import io.iochord.apps.ips.core.services.ServiceContext;
 
+/**
+*
+* @package ips-model
+* @author Iq Reviessay Pulshashi <pulshashi@ideas.web.id>
+* @since 2019
+*
+*/
 public class CsvDataImportService extends AnIpsAsyncService<CsvDataImportConfiguration, CsvDataImportResult> {
 	
 	@Override

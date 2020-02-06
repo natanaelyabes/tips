@@ -12,23 +12,22 @@ import io.iochord.apps.ips.common.models.Identifiable;
 import io.iochord.apps.ips.model.ism.v1.impl.ElementImpl;
 
 /**
- *
- * @package chdsr-model
- * @author  Iq Reviessay Pulshashi <pulshashi@ideas.web.id>
- * @since   2019
- *
- *
- */
+*
+* @package ips-model
+* @author Iq Reviessay Pulshashi <pulshashi@ideas.web.id>
+* @since 2019
+*
+*/
 @JsonDeserialize(as = ElementImpl.class)
 @JsonTypeInfo(use = Id.NAME, property = "elementType", include = As.EXISTING_PROPERTY)
 @JsonTypeName(Element.TYPE)
 public interface Element extends Identifiable {
 	public static final String TYPE = "element";
-	
+
 	String getElementType();
 
 	String getLabel();
-	
+
 	String getIcon();
 
 	Map<String, String> getAttributes();

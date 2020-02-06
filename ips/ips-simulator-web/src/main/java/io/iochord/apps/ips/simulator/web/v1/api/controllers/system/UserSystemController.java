@@ -4,19 +4,21 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
+ * 
+ * User controller (/user/user)
  *
- * @package chdsr-simulator-web
+ * @package ips-simulator-web
  * @author Iq Reviessay Pulshashi <pulshashi@ideas.web.id>
  * @since 2019
- *
  *
  */
 @RestController
 @CrossOrigin
 public class UserSystemController extends ASystemController {
 
+	/**
+	 * API URI prefix
+	 */
 	public static final String BASE_URI = ASystemController.BASE_URI + "/user";
 
-	
-	
 }

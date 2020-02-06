@@ -11,13 +11,12 @@ import lombok.Getter;
 import lombok.Setter;
 
 /**
- *
- * @package chdsr-model
- * @author  Iq Reviessay Pulshashi <pulshashi@ideas.web.id>
- * @since   2019
- *
- *
- */
+*
+* @package ips-model
+* @author Iq Reviessay Pulshashi <pulshashi@ideas.web.id>
+* @since 2019
+*
+*/
 @JsonTypeName(DataTable.TYPE)
 public class DataTableImpl extends DataImpl implements DataTable {
 	@Getter

@@ -18,10 +18,9 @@ import io.iochord.apps.ips.model.ism.v1.IsmGraph;
 
 /**
  *
- * @package chdsr-simulator-web
+ * @package ips-simulator-web
  * @author Iq Reviessay Pulshashi <pulshashi@ideas.web.id>
  * @since 2019
- *
  *
  */
 @RestController
@@ -30,12 +29,20 @@ public class IsmDiscoveryController extends AnAnalysisController {
 
 	public static final String BASE_URI = AnAnalysisController.BASE_URI + "/discover";
 
-	@RequestMapping(value = { BASE_URI + "/ism", BASE_URI + "/ism/{datasetId}" }, method = { RequestMethod.GET, RequestMethod.POST })
-	public ServiceContext getPostDiscoverIsm(
-			@PathVariable Optional<String> datasetId,
-			@RequestBody(required = false) IsmDiscoveryConfiguration config,
-			@RequestHeader HttpHeaders headers
-		) throws Exception {
+	/**
+	 * Process discovery action
+	 * 
+	 * @param datasetId dataset Id
+	 * @param config process discovery configuration
+	 * @param headers autowired http headers
+	 * @return service context instance
+	 * @throws Exception exception
+	 */
+	@RequestMapping(value = { BASE_URI + "/ism", BASE_URI + "/ism/{datasetId}" }, method = { RequestMethod.GET,
+			RequestMethod.POST })
+	public ServiceContext getPostDiscoverIsm(@PathVariable Optional<String> datasetId,
+			@RequestBody(required = false) IsmDiscoveryConfiguration config, @RequestHeader HttpHeaders headers)
+			throws Exception {
 		if (config == null && datasetId.isPresent()) {
 			config = new IsmDiscoveryConfiguration();
 			config.setDatasetId(datasetId.get());
@@ -43,5 +50,5 @@ public class IsmDiscoveryController extends AnAnalysisController {
 		ServiceContext result = run(new IsmDiscoveryService(), config, IsmGraph.class, headers);
 		return result;
 	}
-	
+
 }

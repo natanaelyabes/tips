@@ -12,13 +12,12 @@ import io.iochord.apps.ips.model.ism.v1.data.impl.GeneratorImpl;
 import io.iochord.apps.ips.model.ism.v1.nodes.enums.DistributionType;
 
 /**
- *
- * @package chdsr-model
- * @author  Iq Reviessay Pulshashi <pulshashi@ideas.web.id>
- * @since   2019
- *
- *
- */
+*
+* @package ips-model
+* @author Iq Reviessay Pulshashi <pulshashi@ideas.web.id>
+* @since 2019
+*
+*/
 @JsonDeserialize(as = GeneratorImpl.class)
 @JsonTypeName(Generator.TYPE)
 public interface Generator extends Data {

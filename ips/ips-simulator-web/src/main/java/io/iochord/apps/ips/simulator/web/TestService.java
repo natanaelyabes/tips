@@ -9,18 +9,19 @@ import org.springframework.stereotype.Service;
 
 /**
  *
- * @package chdsr-simulator-web
- * @author  Iq Reviessay Pulshashi <pulshashi@ideas.web.id>
- * @since   2019
+ * Test Async Service
  *
+ * @package ips-simulator-web
+ * @author Iq Reviessay Pulshashi <pulshashi@ideas.web.id>
+ * @since 2019
  *
  */
 @Service
 public class TestService {
 	private static Logger log = LoggerFactory.getLogger(TestService.class);
-	
+
 	private long id = 0;
-	
+
 	@Async("asyncExecutor")
 	public CompletableFuture<Long> asyncService() {
 		long result = id++;
