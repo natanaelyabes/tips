@@ -10,7 +10,7 @@ import { RouteConfig } from 'vue-router';
 export default [
   {
     path: `user`,
-    component: () => import(/* webpackChunkName: "ips-common-layout-base" */ '@/iochord/ips/common/ui/layouts/BaseLayout.vue'),
+    component: () => import(/* webpackChunkName: "ips-common-layout-base" */ '@/iochord/ips/common/ui/components/layout/BaseLayout.vue'),
     children: [
       {
         path: `login`,

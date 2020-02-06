@@ -47,7 +47,7 @@ a.section {
 
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator';
-import Layout04View from '@/iochord/ips/common/ui/layout/class/Layout04';
+import DiffLayoutView from '@/iochord/ips/common/ui/layout/class/DiffLayoutView';
 import LeftBarContentWrapperComponent from '@/iochord/ips/common/ui/layout/components/LeftBarContentWrapperComponent.vue';
 import ContentSettingsComponent from '../components/ContentSettingsComponent.vue';
 
@@ -62,13 +62,13 @@ import ContentSettingsComponent from '../components/ContentSettingsComponent.vue
  * Overall page to provide a side by side
  * view between process model and its fitted distribution.
  *
- * @extends Layout04View
+ * @extends DiffLayoutView
  * @package ips
  * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
  * @since 2019
  *
  */
-export default class AnalysisResourceMiningOverall extends Layout04View {
+export default class AnalysisResourceMiningOverall extends DiffLayoutView {
   public title: string = '';
 
 

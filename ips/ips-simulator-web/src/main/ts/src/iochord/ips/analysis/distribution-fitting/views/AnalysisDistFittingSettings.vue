@@ -51,7 +51,7 @@ import { Vue, Component } from 'vue-property-decorator';
 import LeftBarContentWrapperComponent from '@/iochord/ips/common/ui/layout/components/LeftBarContentWrapperComponent.vue';
 import ContentSettingsComponent from '../components/ContentSettingsComponent.vue';
 import ContentSplitComponent from '../components/ContentSplitComponent.vue';
-import Layout04View from '@/iochord/ips/common/ui/layout/class/Layout04';
+import DiffLayoutView from '@/iochord/ips/common/ui/layout/class/DiffLayoutView';
 
 
 @Component({
@@ -71,7 +71,7 @@ import Layout04View from '@/iochord/ips/common/ui/layout/class/Layout04';
  * @since 2019
  *
  */
-export default class AnalysisDistFittingSettings extends Layout04View {
+export default class AnalysisDistFittingSettings extends DiffLayoutView {
   public title: string = '';
 
   /** @override */

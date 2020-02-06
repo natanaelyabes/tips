@@ -82,7 +82,7 @@ import { GraphData } from '@/iochord/ips/common/graph/ism/interfaces/GraphData';
 import { GraphElement } from '@/iochord/ips/common/graph/ism/interfaces/GraphElement';
 import { GraphNode } from '@/iochord/ips/common/graph/ism/interfaces/GraphNode';
 import { GraphStartEventNode } from '@/iochord/ips/common/graph/ism/interfaces/components/GraphStartEventNode';
-import { Modal } from '@/iochord/ips/model/editor/interfaces/Modal';
+import { Modal } from '@/iochord/ips/simulation/editor/interfaces/Modal';
 
 // Enums
 import { NODE_TYPE } from '@/iochord/ips/common/graph/ism/rendering-engine/joint/shapes/enums/NODE';
@@ -90,19 +90,19 @@ import { ARC_TYPE } from '@/iochord/ips/common/graph/ism/rendering-engine/joint/
 import { MODAL_TYPE } from '../../enums/MODAL';
 
 // Components
-import StartNodeModal from '@/iochord/ips/model/editor/components/modals/StartNodeModal.vue';
-import ActivityNodeModal from '@/iochord/ips/model/editor/components/modals/ActivityNodeModal.vue';
-import BranchNodeModal from '@/iochord/ips/model/editor/components/modals/BranchNodeModal.vue';
-import StopNodeModal from '@/iochord/ips/model/editor/components/modals/StopNodeModal.vue';
-import DataTableModal from '@/iochord/ips/model/editor/components/modals/DataTableModal.vue';
-import ObjectTypeDataModal from '@/iochord/ips/model/editor/components/modals/ObjectTypeDataModal.vue';
-import ConfigurationModal from '@/iochord/ips/model/editor/components/modals/ConfigurationModal.vue';
-import ControlModal from '@/iochord/ips/model/editor/components/modals/ControlModal.vue';
-import FunctionDataModal from '@/iochord/ips/model/editor/components/modals/FunctionDataModal.vue';
-import GeneratorDataModal from '@/iochord/ips/model/editor/components/modals/GeneratorDataModal.vue';
-import QueueDataModal from '@/iochord/ips/model/editor/components/modals/QueueDataModal.vue';
-import ResourceDataModal from '@/iochord/ips/model/editor/components/modals/ResourceDataModal.vue';
-import DeleteModal from '@/iochord/ips/model/editor/components/modals/DeleteModal.vue';
+import StartNodeModal from '@/iochord/ips/simulation/editor/components/modals/StartNodeModal.vue';
+import ActivityNodeModal from '@/iochord/ips/simulation/editor/components/modals/ActivityNodeModal.vue';
+import BranchNodeModal from '@/iochord/ips/simulation/editor/components/modals/BranchNodeModal.vue';
+import StopNodeModal from '@/iochord/ips/simulation/editor/components/modals/StopNodeModal.vue';
+import DataTableModal from '@/iochord/ips/simulation/editor/components/modals/DataTableModal.vue';
+import ObjectTypeDataModal from '@/iochord/ips/simulation/editor/components/modals/ObjectTypeDataModal.vue';
+import ConfigurationModal from '@/iochord/ips/simulation/editor/components/modals/ConfigurationModal.vue';
+import ControlModal from '@/iochord/ips/simulation/editor/components/modals/ControlModal.vue';
+import FunctionDataModal from '@/iochord/ips/simulation/editor/components/modals/FunctionDataModal.vue';
+import GeneratorDataModal from '@/iochord/ips/simulation/editor/components/modals/GeneratorDataModal.vue';
+import QueueDataModal from '@/iochord/ips/simulation/editor/components/modals/QueueDataModal.vue';
+import ResourceDataModal from '@/iochord/ips/simulation/editor/components/modals/ResourceDataModal.vue';
+import DeleteModal from '@/iochord/ips/simulation/editor/components/modals/DeleteModal.vue';
 
 // Mixins
 import CanvasMixin from '../../mixins/editors/CanvasMixin';

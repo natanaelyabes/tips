@@ -17,7 +17,7 @@ import 'vue-g2';
 @Component
 
 /**
- * Line chart component.
+ * Implementation of line chart component.
  *
  * @prop {any} model?
  *

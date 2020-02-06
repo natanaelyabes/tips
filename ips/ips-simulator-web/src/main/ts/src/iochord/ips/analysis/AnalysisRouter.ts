@@ -16,7 +16,7 @@ import ResourceMiningRouter from './resource-mining/ResourceMiningRouter';
 export default [
   {
     path: `analytics`,
-    component: () => import(/* webpackChunkName: "ips-common-layout-base" */ '@/iochord/ips/common/ui/layouts/IpsLayout.vue'),
+    component: () => import(/* webpackChunkName: "ips-common-layout-base" */ '@/iochord/ips/common/ui/components/layout/IpsLayout.vue'),
     children: [
       ...BranchMiningRouter as RouteConfig[],
       ...DistributionFittingRouter as RouteConfig[],

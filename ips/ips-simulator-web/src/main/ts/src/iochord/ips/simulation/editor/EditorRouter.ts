@@ -11,7 +11,7 @@ import { ApplicationEnum, BaseUrlEnum } from '@/iochord/ips/common/enums/index';
 export default [
   {
     path: `editor`,
-    component: () => import(/* webpackChunkName: "ips-common-layout-base" */ '@/iochord/ips/common/ui/layouts/BaseLayout.vue'),
+    component: () => import(/* webpackChunkName: "ips-common-layout-base" */ '@/iochord/ips/common/ui/components/layout/BaseLayout.vue'),
     children: [
       {
         path: ``,

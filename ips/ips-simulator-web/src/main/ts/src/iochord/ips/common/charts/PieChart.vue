@@ -24,7 +24,7 @@ import 'vue-g2';
 })
 
 /**
- * Pie chart component.
+ * Implementation of pie chart component.
  *
  * @extends BaseComponent
  * @prop {any} model?

@@ -17,7 +17,7 @@ import 'vue-g2';
 @Component
 
 /**
- * Histogram chart component.
+ * Implementation of histogram chart component.
  *
  * @extends BaseComponent
  * @prop {any} binWidth?

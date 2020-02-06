@@ -59,7 +59,7 @@ a.section {
 
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator';
-import Layout02View from '@/iochord/ips/common/ui/layout/class/Layout02';
+import ExplorerLayoutView from '@/iochord/ips/common/ui/layout/class/ExplorerLayoutView';
 import DepthTwoLeftWrapperComponent from '@/iochord/ips/common/ui/layout/components/DepthTwoLeftWrapperComponent.vue';
 import ContentOraclePropertiesComponent from '../components/ContentOraclePropertiesComponent.vue';
 import ContentMssqlPropertiesComponent from '../components/ContentMssqlPropertiesComponent.vue';
@@ -93,7 +93,7 @@ import ItemConnectionComponent from '../components/ItemConnectionComponent.vue';
  * @since 2019
  *
  */
-export default class SandboxDataConnectionNew extends Layout02View {
+export default class SandboxDataConnectionNew extends ExplorerLayoutView {
   public title: string = '';
   public currentContentComponent: string = 'ContentOraclePropertiesComponent';
 

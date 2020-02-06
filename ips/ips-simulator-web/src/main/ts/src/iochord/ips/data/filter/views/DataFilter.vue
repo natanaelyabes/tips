@@ -50,7 +50,7 @@ a.section {
 
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator';
-import Layout02View from '@/iochord/ips/common/ui/layout/class/Layout02';
+import ExplorerLayoutView from '@/iochord/ips/common/ui/layout/class/ExplorerLayoutView';
 import DepthTwoLeftWrapperComponent from '@/iochord/ips/common/ui/layout/components/DepthTwoLeftWrapperComponent.vue';
 import ItemFilterComponent from '../components/ItemFilterComponent.vue';
 import ContentFilterTimeComponent from '../components/ContentFilterTimeComponent.vue';
@@ -78,7 +78,7 @@ import ContentFilterMissingImputationComponent from '../components/ContentFilter
  * @since 2019
  *
  */
-export default class DataFilter extends Layout02View {
+export default class DataFilter extends ExplorerLayoutView {
   public title: string = '';
   public currentContentComponent: string = 'ContentFilterTimeComponent';
 

@@ -84,12 +84,12 @@
           </thead>
           <tbody>
             <template v-for="(gs, gsi) in report.groups" >
-              <tr>
+              <tr :key="gsi + 100">
                 <td colspan="8">{{ gs.name }}</td>
               </tr>
               <template v-for="(es, esi) in gs.elements">
                 <template v-if="es.subElements && es.subElements != null">
-                  <tr v-for="(ess, essi) in es.subElements">
+                  <tr v-for="(ess, essi) in es.subElements" :key="essi + 1000">
                     <td v-if="essi == 1" :rowspan="Object.keys(es.subElements).length">{{ esi }}.</td>
                     <td v-if="essi == 1" :rowspan="Object.keys(es.subElements).length">{{ es.name }}</td>
                     <td>{{ ess.description }}</td>
@@ -108,7 +108,7 @@
                     </template>
                   </tr>
                 </template>
-                <tr v-else>
+                <tr :key="esi + 1000" v-else>
                   <td>{{ esi }}.</td>
                   <td>{{ es.name }}</td>
                   <td>{{ es.description }}</td>
@@ -200,14 +200,14 @@ import * as joint from 'jointjs';
 import '#root/node_modules/jointjs/dist/joint.css';
 
 // Classes
-import Layout01View from '@/iochord/ips/common/ui/layout/class/Layout01';
+import AppLayoutView from '@/iochord/ips/common/ui/layout/class/AppLayoutView';
 import { GraphImpl } from '@/iochord/ips/common/graph/ism/class/GraphImpl';
 import { GraphNodeImpl } from '@/iochord/ips/common/graph/ism/class/GraphNodeImpl';
 import { GraphConnectorImpl } from '@/iochord/ips/common/graph/ism/class/GraphConnectorImpl';
 import { GraphPageImpl } from '@/iochord/ips/common/graph/ism/class/GraphPageImpl';
 
 // Interfaces
-import { Layout01HasWrapper } from '@/iochord/ips/common/ui/layout/interfaces/Layout01HasWrapper';
+import { AppLayout } from '@/iochord/ips/common/ui/layout/interfaces/AppLayout';
 import { BrowserHasProperties } from '@/iochord/ips/common/browser/interfaces/BrowserHasProperties';
 import { SemanticModulesIsUsed } from '@/iochord/ips/common/ui/semantic-components/SemanticModulesIsUsed';
 import { Graph } from '@/iochord/ips/common/graph/ism/interfaces/Graph';
@@ -273,7 +273,7 @@ declare const $: any;
  * @since 2019
  *
  */
-export default class SimulationEditorView extends Layout01View {
+export default class SimulationEditorView extends AppLayoutView {
 
   public isDisabled: boolean = false;
   public isRunning: boolean = false;

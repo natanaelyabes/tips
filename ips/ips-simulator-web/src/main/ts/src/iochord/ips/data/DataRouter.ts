@@ -16,7 +16,7 @@ import DataHistoryRouter from './history/DataHistoryRouter';
 export default [
   {
     path: `data`,
-    component: () => import(/* webpackChunkName: "ips-common-layout-base" */ '@/iochord/ips/common/ui/layouts/IpsLayout.vue'),
+    component: () => import(/* webpackChunkName: "ips-common-layout-base" */ '@/iochord/ips/common/ui/components/layout/IpsLayout.vue'),
     children: [
       ...DataConnectionRouter as RouteConfig[],
       ...DataFilterRouter as RouteConfig[],
