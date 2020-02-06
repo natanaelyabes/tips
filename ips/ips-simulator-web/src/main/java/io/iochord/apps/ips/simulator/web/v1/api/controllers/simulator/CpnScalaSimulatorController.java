@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import io.iochord.apps.ips.common.util.LoggerUtil;
 import io.iochord.apps.ips.model.ism.v1.Element;
 import io.iochord.apps.ips.model.ism.v1.data.Generator;
 import io.iochord.apps.ips.model.ism.v1.data.Resource;
@@ -211,7 +212,9 @@ public class CpnScalaSimulatorController extends ASimulatorController {
 					}
 				}
 			}
-		} catch (Exception ex) {}
+		} catch (Exception ex) {
+			LoggerUtil.log(ex);
+		}
 		return report;
 	}
 

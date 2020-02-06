@@ -4,6 +4,7 @@ import java.lang.management.ManagementFactory;
 
 import org.json.JSONObject;
 
+import io.iochord.apps.ips.common.util.LoggerUtil;
 import io.iochord.apps.ips.simulator.compiler.CustomSimulation;
 
 /**
@@ -29,7 +30,9 @@ public class SimulatorPerformAnalysisJava {
 	    
 		try {
 			Thread.sleep(100);
-		} catch (Exception ex) {}
+		} catch (Exception ex) {
+			LoggerUtil.log(ex);
+		}
 		
 		double used1 = (runtime.totalMemory() - runtime.freeMemory()) / mb;
 	    double free1 = runtime.freeMemory() / mb;
@@ -94,7 +97,9 @@ public class SimulatorPerformAnalysisJava {
 			 jobcpu.put("cpuaft", jobcpuaft);
 			 
 			 job.put("cpu", jobcpu);
-		} catch (Exception ex) {}
+		} catch (Exception ex) {
+			LoggerUtil.log(ex);
+		}
 	    
 		return job.toString();
 	}

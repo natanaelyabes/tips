@@ -8,12 +8,12 @@ import com.fasterxml.jackson.module.scala.DefaultScalaModule;
 import lombok.Getter;
 
 /**
-*
-* @package ips-common
-* @author Iq Reviessay Pulshashi <pulshashi@ideas.web.id>
-* @since 2019
-*
-*/
+ *
+ * @package ips-common
+ * @author Iq Reviessay Pulshashi <pulshashi@ideas.web.id>
+ * @since 2019
+ *
+ */
 public class JsonDataCodec implements DataCodec<String> {
 
 	@Getter
@@ -39,7 +39,9 @@ public class JsonDataCodec implements DataCodec<String> {
 	public String encode(Object obj) {
 		try {
 			return getSerializer().writeValueAsString(obj);
-		} catch (Exception e) {}
+		} catch (Exception ex) {
+			LoggerUtil.log(ex);
+		}
 		return null;
 	}
 
@@ -47,7 +49,9 @@ public class JsonDataCodec implements DataCodec<String> {
 	public String encodePretty(Object obj) {
 		try {
 			return getSerializer().writerWithDefaultPrettyPrinter().writeValueAsString(obj);
-		} catch (Exception e) {}
+		} catch (Exception ex) {
+			LoggerUtil.log(ex);
+		}
 		return null;
 	}
 
@@ -55,7 +59,9 @@ public class JsonDataCodec implements DataCodec<String> {
 	public <U> U decode(String eobj, Class<U> type) {
 		try {
 			return getDeserializer().readValue(eobj, type);
-		} catch (Exception e) {}
+		} catch (Exception ex) {
+			LoggerUtil.log(ex);
+		}
 		return null;
 	}
 

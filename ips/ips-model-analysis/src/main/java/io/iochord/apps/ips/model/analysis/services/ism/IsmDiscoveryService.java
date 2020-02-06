@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import io.iochord.apps.ips.common.util.LoggerUtil;
 import io.iochord.apps.ips.core.services.AnIpsAsyncService;
 import io.iochord.apps.ips.core.services.ServiceContext;
 import io.iochord.apps.ips.model.ism.v1.IsmGraph;
@@ -115,8 +116,12 @@ public class IsmDiscoveryService extends AnIpsAsyncService<IsmDiscoveryConfigura
 					dfMatrix.get(actFrom).put(actTo, actFrequency);
 	//				getLogger().debug(actFrom + " --> " + actTo + " : "  + actFrequency);
 				}
-			} catch (Exception ex) { logException(ex); }
-		} catch (Exception ex) { logException(ex); }
+			} catch (Exception ex) {
+				LoggerUtil.log(ex);
+			}
+		} catch (Exception ex) {
+			LoggerUtil.log(ex);
+		}
 //		getLogger().info("Mining Directly-follow Matrix " + tabName + " ( " + colCaseId + ", " + colActivity + ", " + colTs
 //				+ ") Finished ... " + (System.currentTimeMillis() - started) + " ms.");
 		return dfMatrix;
