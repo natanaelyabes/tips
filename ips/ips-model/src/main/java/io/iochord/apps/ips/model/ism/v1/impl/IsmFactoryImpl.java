@@ -109,9 +109,7 @@ public class IsmFactoryImpl implements IsmFactory {
 					data.setId(page.getId() + "-" + dataType + "-" + String.valueOf(page.getData().size()));
 					page.getData().put(data.getId(), data);
 					return data;
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
+				} catch (Exception e) {}
 			}
 		}
 		return null;
@@ -127,9 +125,7 @@ public class IsmFactoryImpl implements IsmFactory {
 					node.setId(page.getId() + "-" + nodeType + "-" + String.valueOf(page.getNodes().size()));
 					page.getNodes().put(node.getId(), node);
 					return node;
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
+				} catch (Exception e) {}
 			}
 		}
 		return null;

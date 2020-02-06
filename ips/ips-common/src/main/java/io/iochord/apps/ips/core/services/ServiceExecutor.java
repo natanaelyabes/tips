@@ -61,7 +61,6 @@ public class ServiceExecutor {
 			R result = service.run(context, config);
 			context.completeAndDestroy(State.COMPLETED, 0, result);
 		} catch (Exception ex) {
-			ex.printStackTrace();
 			context.completeAndDestroy(State.ERROR, -1, ex);
 		}
 		return context;

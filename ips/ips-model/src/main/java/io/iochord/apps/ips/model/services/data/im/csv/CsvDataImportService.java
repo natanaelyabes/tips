@@ -2,7 +2,6 @@ package io.iochord.apps.ips.model.services.data.im.csv;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
-import java.sql.SQLException;
 
 import com.opencsv.CSVParserBuilder;
 import com.opencsv.CSVReader;
@@ -28,8 +27,7 @@ public class CsvDataImportService extends AnIpsAsyncService<CsvDataImportConfigu
 		CsvDataImportResult result = new CsvDataImportResult();
 		result.setConfig(config);
 		result.setName(name);
-		try {
-			Connection conn = context.getDataSource().getConnection();
+		try (Connection conn = context.getDataSource().getConnection();) {
 			CSVReader csvReader = new CSVReaderBuilder(config.getReader())
 				.withCSVParser(
 					new CSVParserBuilder()
@@ -55,46 +53,41 @@ public class CsvDataImportService extends AnIpsAsyncService<CsvDataImportConfigu
 				}
 				sql.append(");");
 				isql.append(");");
-				try {
-					PreparedStatement st = conn.prepareStatement(sql.toString());
+				try (PreparedStatement st = conn.prepareStatement(sql.toString());) {
 					st.execute();
 					st.close();
-					sql = new StringBuilder();
-					sql.append("COMMENT ON TABLE ").append(name).append(" IS '").append(SerializationUtil.encode(config)).append("';");
-					st = conn.prepareStatement(sql.toString());
+				} catch (Exception ex) {}
+				sql = new StringBuilder();
+				sql.append("COMMENT ON TABLE ").append(name).append(" IS '").append(SerializationUtil.encode(config)).append("';");
+				try (PreparedStatement st = conn.prepareStatement(sql.toString());) {
 					st.execute();
 					st.close();
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
-				PreparedStatement st = conn.prepareStatement(isql.toString());
-				int brows = 0;
-				while (cells != null) {
-					for (int i = 0; i < cols; i++) {
-						st.setString(i + 1, i < cells.length ? cells[i] : null);
+				} catch (Exception ex) {}
+				try (PreparedStatement st = conn.prepareStatement(isql.toString());) {
+					int brows = 0;
+					while (cells != null) {
+						for (int i = 0; i < cols; i++) {
+							st.setString(i + 1, i < cells.length ? cells[i] : null);
+						}
+						st.addBatch();
+						if (brows % 1000 == 0) {
+							context.updateProgress(rows);
+							st.executeBatch();
+							brows = 0;
+						}
+						cells = csvReader.readNext();
+						rows++;
+						brows++;
 					}
-					st.addBatch();
-					if (brows % 1000 == 0) {
-						context.updateProgress(rows);
+					if (brows > 0) {
 						st.executeBatch();
-						st.close();
-						st = conn.prepareStatement(isql.toString());
-						brows = 0;
 					}
-					cells = csvReader.readNext();
-					rows++;
-					brows++;
-				}
-				if (brows > 0) {
-					st.executeBatch();
-				}
-				st.close();
+					st.close();
+				} catch (Exception ex) {}
 			}
 			csvReader.close();
 			conn.close();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		} catch (Exception ex) {}
 		return result;
 	}
 	

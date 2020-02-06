@@ -28,9 +28,7 @@ public class TestService {
 		log.info("async " + result + " start");
 		try {
 			Thread.sleep(10000);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
+		} catch (Exception ex) {}
 		log.info("async " + result + " complete");
 		return CompletableFuture.completedFuture(result);
 	}

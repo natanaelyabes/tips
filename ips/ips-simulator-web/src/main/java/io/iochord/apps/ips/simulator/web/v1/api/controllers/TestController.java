@@ -9,6 +9,7 @@ import java.util.concurrent.PriorityBlockingQueue;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -99,7 +100,7 @@ public class TestController extends AServiceController {
 	 * 
 	 * @return new simulation model as a string
 	 */
-	@RequestMapping(value = BASE_URI + "/model", produces = { MediaType.APPLICATION_JSON_VALUE })
+	@GetMapping(value = BASE_URI + "/model", produces = { MediaType.APPLICATION_JSON_VALUE })
 	public String get01CreateExampleSimulationModel() {
 		snet = IsmExample.createBankExample();
 		return SerializationUtil.encode(snet);
@@ -110,7 +111,7 @@ public class TestController extends AServiceController {
 	 * 
 	 * @return
 	 */
-	@RequestMapping(value = BASE_URI + "/convert", produces = { MediaType.APPLICATION_JSON_VALUE })
+	@GetMapping(value = BASE_URI + "/convert", produces = { MediaType.APPLICATION_JSON_VALUE })
 	public String get02ConvertToCPNScala() {
 		if (snet == null) {
 			get01CreateExampleSimulationModel();
@@ -125,7 +126,7 @@ public class TestController extends AServiceController {
 	 * 
 	 * @return simulation monitor instance
 	 */
-	@RequestMapping(value = BASE_URI + "/result", produces = { MediaType.APPLICATION_JSON_VALUE })
+	@GetMapping(value = BASE_URI + "/result", produces = { MediaType.APPLICATION_JSON_VALUE })
 	public java.util.Map<String, Integer> getResult() {
 		return basicMonitorResult;
 	}
@@ -135,7 +136,7 @@ public class TestController extends AServiceController {
 	 * 
 	 * @return observer mapping
 	 */
-	@RequestMapping(value = BASE_URI + "/init", produces = { MediaType.APPLICATION_JSON_VALUE })
+	@GetMapping(value = BASE_URI + "/init", produces = { MediaType.APPLICATION_JSON_VALUE })
 	public Map<String, Integer> get03InitSimulation() {
 		if (conversionResult == null) {
 			get02ConvertToCPNScala();
@@ -187,7 +188,7 @@ public class TestController extends AServiceController {
 	 * 
 	 * @return output message
 	 */
-	@RequestMapping(value = BASE_URI + "/run", produces = { MediaType.APPLICATION_JSON_VALUE })
+	@GetMapping(value = BASE_URI + "/run", produces = { MediaType.APPLICATION_JSON_VALUE })
 	public Queue<String> get04Step() {
 		if (simulationInstance == null) {
 			get03InitSimulation();
