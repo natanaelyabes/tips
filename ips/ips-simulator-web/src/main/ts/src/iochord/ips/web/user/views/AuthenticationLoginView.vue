@@ -44,8 +44,8 @@
           Copyright &copy; IOChord 2019
         </footer>
         <div class="ui small images centered">
-          <a href="http://pusan.ac.kr/kor/Main.do" target="_blank"><img class="ui image" src="@/assets/images/logos/pnu_logo_transparent_dark.png" /></a>
-          <a href="http://www.iochord.com/" target="_blank"><img class="ui image" src="@/assets/images/logos/iochord.png" /></a>
+          <a href="http://pusan.ac.kr/kor/Main.do" target="_blank" rel="noopener noreferrer"><img class="ui image" src="@/assets/images/logos/pnu_logo_transparent_dark.png" /></a>
+          <a href="http://www.iochord.com/" target="_blank" rel="noopener noreferrer"><img class="ui image" src="@/assets/images/logos/iochord.png" /></a>
         </div>
       </div>
     </div>
