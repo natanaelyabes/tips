@@ -22,39 +22,95 @@ import io.iochord.apps.ips.simulator.web.TestService;
 import lombok.Getter;
 
 /**
-*
-* @package ips-simulator-web
-* @author  Iq Reviessay Pulshashi <pulshashi@ideas.web.id>
-* @since   2019
-*
-*/
+ * 
+ * Controller for testing purposes (/test)
+ *
+ * @package ips-simulator-web
+ * @author Iq Reviessay Pulshashi <pulshashi@ideas.web.id>
+ * @since 2019
+ *
+ */
 @RestController
 @CrossOrigin
 public class TestController extends AServiceController {
 	public static final String BASE_URI = AServiceController.BASE_URI + "/test";
-	
+
+	/**
+	 * Temporary graph instance
+	 */
 	@Getter
 	private IsmGraph snet;
-	
+
+	/**
+	 * Test service instance
+	 */
 	@Autowired
 	private TestService svc;
-	
-	@RequestMapping(value=BASE_URI + "/async")
+
+	/**
+	 * Conversion result instance
+	 */
+	@Getter
+	private String conversionResult;
+
+	/**
+	 * Simulation instance
+	 */
+	@Getter
+	private Simulation simulationInstance;
+
+	/**
+	 * Reverse lookup simulation object
+	 */
+	@Getter
+	java.util.Map<String, String> reverseLookup = new java.util.LinkedHashMap<>();
+
+	/**
+	 * Basic monitor instance
+	 */
+	@Getter
+	java.util.Map<String, Integer> basicMonitorResult = new java.util.LinkedHashMap<>();
+
+	/**
+	 * Is running flag
+	 */
+	@Getter
+	private boolean isRunning = false;
+
+	/**
+	 * Simulation output messages
+	 */
+	@Getter
+	private Queue<String> outputMessage = new PriorityBlockingQueue<>();
+
+	/**
+	 * Run test async service
+	 * 
+	 * @return dummy return
+	 */
+	@RequestMapping(value = BASE_URI + "/async")
 	public Long getAsync() {
 		svc.asyncService();
 		return 1l;
 	}
 
-	@RequestMapping(value=BASE_URI + "/model",produces= {MediaType.APPLICATION_JSON_VALUE})
+	/**
+	 * Test simulation model creation
+	 * 
+	 * @return new simulation model as a string
+	 */
+	@RequestMapping(value = BASE_URI + "/model", produces = { MediaType.APPLICATION_JSON_VALUE })
 	public String get01CreateExampleSimulationModel() {
 		snet = IsmExample.createBankExample();
 		return SerializationUtil.encode(snet);
 	}
-	
-	@Getter
-	private String conversionResult;
 
-	@RequestMapping(value=BASE_URI + "/convert",produces= {MediaType.APPLICATION_JSON_VALUE})
+	/**
+	 * Test simulation conversion to CPN scala
+	 * 
+	 * @return
+	 */
+	@RequestMapping(value = BASE_URI + "/convert", produces = { MediaType.APPLICATION_JSON_VALUE })
 	public String get02ConvertToCPNScala() {
 		if (snet == null) {
 			get01CreateExampleSimulationModel();
@@ -63,26 +119,23 @@ public class TestController extends AServiceController {
 		conversionResult = converter.convert(snet).getConvertedModel();
 		return conversionResult;
 	}
-	
-	@Getter
-	private Simulation simulationInstance;
 
-	@Getter
-	java.util.Map<String, String> reverseLookup = new java.util.LinkedHashMap<>();
-
-	@Getter
-	java.util.Map<String, Integer> basicMonitorResult = new java.util.LinkedHashMap<>();
-	
-	
-	@RequestMapping(value=BASE_URI + "/result",produces= {MediaType.APPLICATION_JSON_VALUE})
+	/**
+	 * Simulation monitor getter
+	 * 
+	 * @return simulation monitor instance
+	 */
+	@RequestMapping(value = BASE_URI + "/result", produces = { MediaType.APPLICATION_JSON_VALUE })
 	public java.util.Map<String, Integer> getResult() {
 		return basicMonitorResult;
 	}
-	
-	@Getter
-	private Queue<String> outputMessage = new PriorityBlockingQueue<>();
 
-	@RequestMapping(value=BASE_URI + "/init",produces= {MediaType.APPLICATION_JSON_VALUE})
+	/**
+	 * Initialize test simulation
+	 * 
+	 * @return observer mapping
+	 */
+	@RequestMapping(value = BASE_URI + "/init", produces = { MediaType.APPLICATION_JSON_VALUE })
 	public Map<String, Integer> get03InitSimulation() {
 		if (conversionResult == null) {
 			get02ConvertToCPNScala();
@@ -90,54 +143,56 @@ public class TestController extends AServiceController {
 		MemoryScalaCompiler msfc = new MemoryScalaCompiler(conversionResult);
 		simulationInstance = msfc.getInstance();
 		Observer obs = new Observer() {
-			
+
 			@Override
 			public void update(Observable o, Object arg) {
 				System.out.println("JAVAOBS: " + o);
 				System.out.println(arg);
-//				Tuple3<?, ?, ?> t = (Tuple3<?, ?, ?>) arg;
-//				HashMap<?, ?> prev = (HashMap<?, ?>) t._1();
-//				HashMap<Object, Object> next = (HashMap<Object, Object>) t._2();
-//				Iterator<Object> i = next.keysIterator();
-//				while (i.hasNext()) {
-//					Object k = i.next();
-//					HashMap<Object, Integer> v = (HashMap<Object, Integer>) next.get(k).get();
-//					String ks = k.toString();
-//					if (reverseLookup.containsKey(ks)) {
-//						String ename = reverseLookup.get(ks);
-//						int vit = 0;
-//						if (v != null) {
-//							Iterator<Integer> vi = v.valuesIterator(); 
-//							while (vi.hasNext()) {
-//								vit += vi.next();
-//							}
-//						}
-//						basicMonitorResult.put(ename, vit);
-//					}
-//				}
-//				outputMessage.add(o.toString() + ": " +  arg.toString());
+				// Tuple3<?, ?, ?> t = (Tuple3<?, ?, ?>) arg;
+				// HashMap<?, ?> prev = (HashMap<?, ?>) t._1();
+				// HashMap<Object, Object> next = (HashMap<Object, Object>) t._2();
+				// Iterator<Object> i = next.keysIterator();
+				// while (i.hasNext()) {
+				// Object k = i.next();
+				// HashMap<Object, Integer> v = (HashMap<Object, Integer>) next.get(k).get();
+				// String ks = k.toString();
+				// if (reverseLookup.containsKey(ks)) {
+				// String ename = reverseLookup.get(ks);
+				// int vit = 0;
+				// if (v != null) {
+				// Iterator<Integer> vi = v.valuesIterator();
+				// while (vi.hasNext()) {
+				// vit += vi.next();
+				// }
+				// }
+				// basicMonitorResult.put(ename, vit);
+				// }
+				// }
+				// outputMessage.add(o.toString() + ": " + arg.toString());
 			}
-			
+
 		};
 		simulationInstance.addObserver(obs);
-//		for (Element e : conversionResult.getBasicMonitors().keySet()) {
-//			Pair<String, String> ev = conversionResult.getBasicMonitors().get(e);
-//			String ename = e.getId() + " --> " + ev.getFirst() + " = " + ev.getSecond();
-//			reverseLookup.put(ev.getFirst(), ename);
-//			basicMonitorResult.put(ename, 0);
-//		}
+		// for (Element e : conversionResult.getBasicMonitors().keySet()) {
+		// Pair<String, String> ev = conversionResult.getBasicMonitors().get(e);
+		// String ename = e.getId() + " --> " + ev.getFirst() + " = " + ev.getSecond();
+		// reverseLookup.put(ev.getFirst(), ename);
+		// basicMonitorResult.put(ename, 0);
+		// }
 		return basicMonitorResult;
 	}
-	
-	@Getter
-	private boolean isRunning = false;
 
-	@RequestMapping(value=BASE_URI + "/run",produces= {MediaType.APPLICATION_JSON_VALUE})
+	/**
+	 * Run simulation instance
+	 * 
+	 * @return output message
+	 */
+	@RequestMapping(value = BASE_URI + "/run", produces = { MediaType.APPLICATION_JSON_VALUE })
 	public Queue<String> get04Step() {
 		if (simulationInstance == null) {
 			get03InitSimulation();
 		}
-//		getSimulationInstance().runSimulation();
+		// getSimulationInstance().runSimulation();
 		return outputMessage;
 	}
 

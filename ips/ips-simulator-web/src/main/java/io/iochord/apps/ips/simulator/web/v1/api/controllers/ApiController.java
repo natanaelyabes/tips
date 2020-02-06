@@ -13,23 +13,42 @@ import org.springframework.web.servlet.mvc.method.RequestMappingInfo;
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
 
 /**
-*
-* @package ips-simulator-web
-* @author  Iq Reviessay Pulshashi <pulshashi@ideas.web.id>
-* @since   2019
-*
-*/
+ * 
+ * IPS API Lister Controller (/api)
+ *
+ * @package ips-simulator-web
+ * @author Iq Reviessay Pulshashi <pulshashi@ideas.web.id>
+ * @since 2019
+ *
+ */
 @RestController
 @CrossOrigin
 public class ApiController extends AServiceController {
+	/**
+	 * API URI prefix
+	 */
 	public static final String BASE_URI = AServiceController.BASE_URI + "";
+	
+	/**
+	 * Autowired handler mapping
+	 */
 	private final RequestMappingHandlerMapping handlerMapping;
 
+	/**
+	 * Default constructor
+	 * 
+	 * @param handlerMapping autowired by SpringBoot
+	 */
 	@Autowired
 	public ApiController(RequestMappingHandlerMapping handlerMapping) {
 		this.handlerMapping = handlerMapping;
 	}
 
+	/**
+	 * Default action (/api/)
+	 * 
+	 * @return List of API endpoints
+	 */
 	@RequestMapping(BASE_URI + "")
 	public Map<String, Object> getIndex() {
 		Map<String, Object> result = new LinkedHashMap<>();
