@@ -21,18 +21,29 @@ import io.iochord.apps.ips.model.services.data.im.csv.CsvDataImportResult;
 import io.iochord.apps.ips.model.services.data.im.csv.CsvDataImportService;
 
 /**
-*
-* @package ips-simulator-web
-* @author  Iq Reviessay Pulshashi <pulshashi@ideas.web.id>
-* @since   2019
-*
-*/
+ * 
+ * Base controller for data (/data)
+ *
+ * @package ips-simulator-web
+ * @author Iq Reviessay Pulshashi <pulshashi@ideas.web.id>
+ * @since 2019
+ *
+ */
 @RestController
 @CrossOrigin
 public class DataConnectionController extends ADataController {
 
+	/**
+	 * API URI prefix
+	 */
 	public static final String BASE_URI = ADataController.BASE_URI + "";
-	
+
+	/**
+	 * Data connection list acton
+	 * 
+	 * @param headers autowired http headers
+	 * @return service context
+	 */
 	@RequestMapping(value = BASE_URI + "/connection/list")
 	public ServiceContext getDataConnectionsList(@RequestHeader HttpHeaders headers) {
 		ServiceContext context = getServiceContext();
@@ -45,18 +56,24 @@ public class DataConnectionController extends ADataController {
 		context.completeAndDestroy(datasets);
 		return context;
 	}
-	
+
+	/**
+	 * IPR csv data import action
+	 * 
+	 * @param jsonConfig data import configuration as JSON string
+	 * @param file csv file
+	 * @param headers autowired http headers
+	 * @return service context
+	 * @throws Exception
+	 */
 	@RequestMapping(value = BASE_URI + "/import/csv", method = RequestMethod.POST)
-	public ServiceContext postImportCsv(
-			@RequestPart("config") String jsonConfig,
-			@RequestPart("file") MultipartFile file,
-			@RequestHeader HttpHeaders headers
-		) throws Exception {
+	public ServiceContext postImportCsv(@RequestPart("config") String jsonConfig,
+			@RequestPart("file") MultipartFile file, @RequestHeader HttpHeaders headers) throws Exception {
 		CsvDataImportConfiguration config = SerializationUtil.decode(jsonConfig, CsvDataImportConfiguration.class);
 		config.setFilename(file.getOriginalFilename());
 		config.setReader(new InputStreamReader(file.getInputStream()));
 		ServiceContext result = run(new CsvDataImportService(), config, CsvDataImportResult.class, headers);
 		return result;
 	}
-	
+
 }

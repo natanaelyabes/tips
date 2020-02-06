@@ -7,18 +7,25 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 
 /**
-*
-* @package ips-simulator-web
-* @author  Iq Reviessay Pulshashi <pulshashi@ideas.web.id>
-* @since   2019
-*
-*/
+ * 
+ * IPS Web Application Entrypoint 
+ *
+ * @package ips-simulator-web
+ * @author Iq Reviessay Pulshashi <pulshashi@ideas.web.id>
+ * @since 2019
+ *
+ */
 @SpringBootApplication
 @EnableAutoConfiguration
 @ComponentScan("io.iochord.apps.ips")
 @Configuration
 public class IpsWebApplication {
 
+	/**
+	 * Application entrypoint
+	 * 
+	 * @param args arguments
+	 */
 	public static void main(String[] args) {
 		SpringApplication.run(IpsWebApplication.class);
 	}
