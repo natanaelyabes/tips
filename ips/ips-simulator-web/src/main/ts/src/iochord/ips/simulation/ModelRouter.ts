@@ -11,7 +11,7 @@ import EditorRouter from './editor/EditorRouter';
  */
 export default [
   {
-    path: `model`,
+    path: `simulation`,
     component: () => import(/* webpackChunkName: "ips-common-layout-base" */ '@/iochord/ips/common/ui/components/layout/IpsLayout.vue'),
     children: [
       ...EditorRouter as RouteConfig[],

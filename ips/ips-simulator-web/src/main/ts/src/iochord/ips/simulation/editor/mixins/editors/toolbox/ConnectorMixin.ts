@@ -176,7 +176,7 @@ export default class ConnectorMixin extends BaseComponent {
         newItem.setTargetRef(this.target!.getId() as string);
 
         // Add node to Vuex GraphModule
-        graphModule.addPageArc(
+        graphModule.addPageConnector(
           {
             page: activePage,
             arc: newItem as GraphConnector,
@@ -245,12 +245,12 @@ export default class ConnectorMixin extends BaseComponent {
 
     // Check if cell is a connector object
     if (cell.isLink()) {
-      const connectorId = cell.attributes.arcId;
-      const connector = graphModule.pageArc(activePage as JointGraphPageImpl, connectorId) as GraphConnector;
+      const connectorId = cell.attributes.connectorId;
+      const connector = graphModule.pageConnector(activePage as JointGraphPageImpl, connectorId) as GraphConnector;
 
       // If connector exists
       if (connector) {
-        graphModule.deletePageArc({
+        graphModule.deletePageConnector({
           page: activePage as JointGraphPageImpl,
           arc: connector,
         });

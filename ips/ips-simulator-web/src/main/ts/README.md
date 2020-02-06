@@ -1,4 +1,4 @@
-# IOChord-CHDSR-simulator
+# IOchord-IPS-UI
 
 ## Project setup
 ```

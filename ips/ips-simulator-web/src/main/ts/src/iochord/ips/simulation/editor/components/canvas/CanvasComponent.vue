@@ -283,7 +283,7 @@ export default class CanvasComponent extends Mixins(BaseComponent, CanvasMixin) 
 
       // Remove links that connected to the node as well
       links.forEach((link) => {
-        (jointPage.getConnectors() as TSMap<string, GraphConnector>).delete(link.attributes.arcId);
+        (jointPage.getConnectors() as TSMap<string, GraphConnector>).delete(link.attributes.connectorId);
         link.remove();
       });
     };

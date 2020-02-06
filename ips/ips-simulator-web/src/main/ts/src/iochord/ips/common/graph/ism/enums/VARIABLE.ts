@@ -1,4 +1,5 @@
 /**
+ * Enumerations for the types of variable.
  *
  * @package ips
  * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>

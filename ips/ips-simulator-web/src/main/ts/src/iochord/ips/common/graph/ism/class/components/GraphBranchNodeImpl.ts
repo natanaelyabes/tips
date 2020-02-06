@@ -7,6 +7,12 @@ import { GraphConnectorImpl } from '../GraphConnectorImpl';
 import { GraphConnector } from '../../interfaces/GraphConnector';
 
 /**
+ * Implementation of GraphBranchNodeImpl interface.
+ *
+ * @export
+ * @class GraphBranchNodeImplImpl
+ * @extends {GraphNodeImpl}
+ * @implements {GraphBranchNodeImpl}
  *
  * @package ips
  * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
@@ -14,8 +20,25 @@ import { GraphConnector } from '../../interfaces/GraphConnector';
  *
  */
 export class GraphBranchNodeImpl extends GraphNodeImpl implements GraphBranchNode {
+
+  /**
+   * Field to identify the type of the node.
+   *
+   * @static
+   * @type {string}
+   * @memberof GraphBranchNodeImpl
+   */
   public static TYPE: string = 'branch';
 
+  /**
+   * Deserialize JSON object as GraphBranchNode.
+   *
+   * @override
+   * @static
+   * @param {*} object
+   * @returns {(GraphBranchNode | null)}
+   * @memberof GraphBranchNodeImpl
+   */
   public static deserialize(object: any): GraphBranchNode | null {
     const graphBranchNode: GraphBranchNode = new GraphBranchNodeImpl();
     graphBranchNode.setId(object.id);
@@ -31,48 +54,138 @@ export class GraphBranchNodeImpl extends GraphNodeImpl implements GraphBranchNod
     return graphBranchNode;
   }
 
+  /**
+   * The gate type of current branch node.
+   *
+   * @private
+   * @type {(BRANCH_GATE | null)}
+   * @memberof GraphBranchNodeImpl
+   */
   private gate?: BRANCH_GATE | null = BRANCH_GATE.XOR;
+
+  /**
+   * The type of current branch node.
+   *
+   * @private
+   * @type {(BRANCH_TYPE | null)}
+   * @memberof GraphBranchNodeImpl
+   */
   private type?: BRANCH_TYPE | null = BRANCH_TYPE.SPLIT;
+
+  /**
+   * The rule of branching of current branch node.
+   *
+   * @private
+   * @type {(BRANCH_RULE | null)}
+   * @memberof GraphBranchNodeImpl
+   */
   private rule?: BRANCH_RULE | null = BRANCH_RULE.PROBABILITY;
+
+  /**
+   * Conditions of current branch node.
+   *
+   * @private
+   * @type {(TSMap<string, string> | null)}
+   * @memberof GraphBranchNodeImpl
+   */
   private conditions?: TSMap<string, string> | null = new TSMap<string, string>();
 
+  /**
+   * Creates an instance of GraphBranchNodeImpl.
+   *
+   * @memberof GraphBranchNodeImpl
+   */
   constructor() {
     super();
   }
 
+  /**
+   * Returns branch type of current branch node.
+   *
+   * @returns {(BRANCH_TYPE | null)}
+   * @memberof GraphBranchNodeImpl
+   */
   public getBranchType(): BRANCH_TYPE | null {
     return this.type as BRANCH_TYPE | null;
   }
 
+  /**
+   * Assigns branch type to current branch node.
+   *
+   * @param {BRANCH_TYPE} type
+   * @memberof GraphBranchNodeImpl
+   */
   public setBranchType(type: BRANCH_TYPE): void {
-    this.type = type || this.type;
+    this.type = type as BRANCH_TYPE;
   }
 
+  /**
+   * Returns gate type of current branch node.
+   *
+   * @returns {(BRANCH_GATE | null)}
+   * @memberof GraphBranchNodeImpl
+   */
   public getGate(): BRANCH_GATE | null {
     return this.gate as BRANCH_GATE | null;
   }
 
+  /**
+   * Assigns gate type to current branch node.
+   *
+   * @param {BRANCH_GATE} gate
+   * @memberof GraphBranchNodeImpl
+   */
   public setGate(gate: BRANCH_GATE): void {
-    this.gate = gate || this.gate;
+    this.gate = gate as BRANCH_GATE;
   }
 
+  /**
+   * Returns rule of current branch node.
+   *
+   * @returns {(BRANCH_RULE | null)}
+   * @memberof GraphBranchNodeImpl
+   */
   public getRule(): BRANCH_RULE | null {
     return this.rule as BRANCH_RULE | null;
   }
 
+  /**
+   * Assigns rule to current branch node.
+   *
+   * @param {BRANCH_RULE} rule
+   * @memberof GraphBranchNodeImpl
+   */
   public setRule(rule: BRANCH_RULE): void {
-    this.rule = rule || this.rule;
+    this.rule = rule as BRANCH_RULE;
   }
 
+  /**
+   * Returns conditions of current branch node.
+   *
+   * @returns {(TSMap<string, string> | null)}
+   * @memberof GraphBranchNodeImpl
+   */
   public getConditions(): TSMap<string, string> | null {
     return this.conditions as TSMap<string, string> | null;
   }
 
+  /**
+   * Assigns conditions to current branch node.
+   *
+   * @param {TSMap<string, string>} conditions
+   * @memberof GraphBranchNodeImpl
+   */
   public setConditions(conditions: TSMap<string, string>): void {
     this.conditions = conditions as TSMap<string, string>;
   }
 
-  /** @Override */
+  /**
+   * To attest that the input nodes have adhered the simulation model rule.
+   *
+   * @override
+   * @returns {(Error | null)}
+   * @memberof GraphBranchNodeImpl
+   */
   public validateInputNodes(): Error | null {
 
     // Get all connectors
@@ -95,7 +208,13 @@ export class GraphBranchNodeImpl extends GraphNodeImpl implements GraphBranchNod
     return null;
   }
 
-  /** @Override */
+  /**
+   * To attest that the output nodes have adhered the simulation model rule.
+   *
+   * @override
+   * @returns {(Error | null)}
+   * @memberof GraphBranchNodeImpl
+   */
   public validateOutputNodes(): Error | null {
 
     // Get all connectors
@@ -118,7 +237,12 @@ export class GraphBranchNodeImpl extends GraphNodeImpl implements GraphBranchNod
     return null;
   }
 
-  /** @Override */
+  /**
+   * Serialize branch node object as JSON string.
+   *
+   * @returns {(string | null)}
+   * @memberof GraphBranchNodeImpl
+   */
   public serialize(): string | null {
     return JSON.stringify(this);
   }

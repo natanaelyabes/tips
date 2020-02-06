@@ -1,9 +1,26 @@
 import * as joint from 'jointjs';
 
+/**
+ * Define the anchors mode of graph.
+ *
+ * @export
+ * @class Anchors
+ */
 export class Anchors {
-  /*
-   * @author: clientIO
-   * @url: https://github.com/clientIO/joint/blob/master/plugins/anchors/joint.anchors.js
+
+  /**
+   * Skip end magnet perpendicular anchor.
+   *
+   * @author clientIO
+   * @url https://github.com/clientIO/joint/blob/master/plugins/anchors/joint.anchors.js
+   *
+   * @static
+   * @param {joint.dia.ElementView} endView
+   * @param {SVGElement} endMagnet
+   * @param {joint.g.Point} anchorReference
+   * @param {{ [key: string]: any; }} args
+   * @returns
+   * @memberof Anchors
    */
   public static skipEndMagnetPerpendicularAnchor(endView: joint.dia.ElementView, endMagnet: SVGElement, anchorReference: joint.g.Point, args: { [key: string]: any; }) {
     const angle: number = endView.model.angle();

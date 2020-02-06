@@ -37,8 +37,9 @@ export class GraphActivityNodeImpl extends GraphNodeImpl implements GraphActivit
   public static TYPE: string = 'activity';
 
   /**
-   * Deserialize JSON object to GraphActivityNode
+   * Deserialize JSON object as GraphActivityNode.
    *
+   * @override
    * @static
    * @param {*} object
    * @returns {(GraphActivityNode | null)}
@@ -405,7 +406,7 @@ export class GraphActivityNodeImpl extends GraphNodeImpl implements GraphActivit
   }
 
   /**
-   * Boolean function to attest whether activity scrap is reported.
+   * Boolean function to To attest that the whether activity scrap is reported.
    *
    * @returns {(boolean | null)}
    * @memberof GraphActivityNodeImpl
@@ -545,7 +546,7 @@ export class GraphActivityNodeImpl extends GraphNodeImpl implements GraphActivit
   }
 
   /**
-   * Attest the input nodes adhere the the simulation model rule.
+   * To attest that the input nodes have adhered the simulation model rule.
    *
    * @override
    * @returns {(Error | null)}
@@ -574,7 +575,7 @@ export class GraphActivityNodeImpl extends GraphNodeImpl implements GraphActivit
   }
 
   /**
-   * Attest the output nodes adhere the the simulation model rule.
+   * To attest that the output nodes have adhered the simulation model rule.
    *
    * @override
    * @returns {(Error | null)}

@@ -7,5 +7,9 @@
  *
  */
 export enum BaseUrlEnum {
+
+  /**
+   * IOCHORD base URL
+   */
   IOCHORD = 'iochord',
 }
