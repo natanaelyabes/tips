@@ -50,9 +50,7 @@ public class DataConnectionController extends ADataController {
 		Map<String, Dataset> datasets = null;
 		try {
 			datasets = new DatasetRepositoryService().run(context, "");
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		} catch (Exception e) {}
 		context.completeAndDestroy(datasets);
 		return context;
 	}

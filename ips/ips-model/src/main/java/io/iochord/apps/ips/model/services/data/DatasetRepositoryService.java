@@ -37,10 +37,7 @@ public class DatasetRepositoryService extends AnIpsService<String, Map<String, D
 					ds.setId(tablename);
 					datasets.put(ds.getId(), ds);
 				}
-				rs.close();
-				st.close();
 			} catch (Exception ex) {}
-			conn.close();
 		} catch (Exception ex) {}
 		return datasets;
 	}

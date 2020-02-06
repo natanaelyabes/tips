@@ -10,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import io.iochord.apps.ips.common.util.SerializationUtil;
@@ -89,7 +88,7 @@ public class TestController extends AServiceController {
 	 * 
 	 * @return dummy return
 	 */
-	@RequestMapping(value = BASE_URI + "/async")
+	@GetMapping(value = BASE_URI + "/async")
 	public Long getAsync() {
 		svc.asyncService();
 		return 1l;

@@ -211,9 +211,7 @@ public class CpnScalaSimulatorController extends ASimulatorController {
 					}
 				}
 			}
-		} catch (Exception ex) {
-			ex.printStackTrace();
-		}
+		} catch (Exception ex) {}
 		return report;
 	}
 

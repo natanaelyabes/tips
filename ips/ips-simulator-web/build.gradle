@@ -37,4 +37,4 @@ task npmDist(type: Copy) {
 }
 
 tasks.npmDist.dependsOn npmBuild
-tasks.compileJava.dependsOn npmDist
+// tasks.compileJava.dependsOn npmDist

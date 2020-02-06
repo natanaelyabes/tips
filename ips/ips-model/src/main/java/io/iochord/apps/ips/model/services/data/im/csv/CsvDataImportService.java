@@ -55,13 +55,11 @@ public class CsvDataImportService extends AnIpsAsyncService<CsvDataImportConfigu
 				isql.append(");");
 				try (PreparedStatement st = conn.prepareStatement(sql.toString());) {
 					st.execute();
-					st.close();
 				} catch (Exception ex) {}
 				sql = new StringBuilder();
 				sql.append("COMMENT ON TABLE ").append(name).append(" IS '").append(SerializationUtil.encode(config)).append("';");
 				try (PreparedStatement st = conn.prepareStatement(sql.toString());) {
 					st.execute();
-					st.close();
 				} catch (Exception ex) {}
 				try (PreparedStatement st = conn.prepareStatement(isql.toString());) {
 					int brows = 0;
@@ -82,11 +80,9 @@ public class CsvDataImportService extends AnIpsAsyncService<CsvDataImportConfigu
 					if (brows > 0) {
 						st.executeBatch();
 					}
-					st.close();
 				} catch (Exception ex) {}
 			}
 			csvReader.close();
-			conn.close();
 		} catch (Exception ex) {}
 		return result;
 	}
