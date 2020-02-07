@@ -6,11 +6,12 @@ import java.util.Map;
 import java.util.Observer;
 
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import io.iochord.apps.ips.common.util.LoggerUtil;
 import io.iochord.apps.ips.model.ism.v1.Element;
 import io.iochord.apps.ips.model.ism.v1.data.Generator;
 import io.iochord.apps.ips.model.ism.v1.data.Resource;
@@ -59,7 +60,7 @@ public class CpnScalaSimulatorController extends ASimulatorController {
 	/**
 	 * Load and simulate ISM model
 	 */
-	@RequestMapping(value = BASE_URI + "/loadnplay", method = RequestMethod.POST)
+	@PostMapping(value = BASE_URI + "/loadnplay")
 	public Report postLoadNPlay(@RequestBody IsmGraphImpl graph) {
 		graph.loadReferences();
 		Ism2CpnscalaBiConverter converter = new Ism2CpnscalaBiConverter();
@@ -212,43 +213,43 @@ public class CpnScalaSimulatorController extends ASimulatorController {
 				}
 			}
 		} catch (Exception ex) {
-			ex.printStackTrace();
+			LoggerUtil.log(ex);
 		}
 		return report;
 	}
 
-	@RequestMapping(BASE_URI + "")
+	@GetMapping(BASE_URI + "")
 	public String getIndex() {
 		return "Ok";
 	}
 
-	@RequestMapping(BASE_URI + "/load/{cpnId}")
+	@GetMapping(BASE_URI + "/load/{cpnId}")
 	public String getLoad() {
 		return "Ok";
 	}
 
-	@RequestMapping(BASE_URI + "/step/{cpnId}/{n}")
+	@GetMapping(BASE_URI + "/step/{cpnId}/{n}")
 	public String getStep() {
 		return "Ok";
 	}
 
-	@RequestMapping(BASE_URI + "/warptime/{cpnId}/{t}")
+	@GetMapping(BASE_URI + "/warptime/{cpnId}/{t}")
 	public String getWarp() {
 		return "Ok";
 	}
 
-	@RequestMapping(BASE_URI + "/fastforward/{cpnId}")
+	@GetMapping(BASE_URI + "/fastforward/{cpnId}")
 	public String getFastForward() {
 		return "Ok";
 	}
 
-	@RequestMapping(BASE_URI + "/start")
+	@GetMapping(BASE_URI + "/start")
 	public String start() {
 		return "Ok";
 	}
 
 	// */
-	@RequestMapping(BASE_URI + "/test")
+	@GetMapping(BASE_URI + "/test")
 	public String test() {
 		String myclassSyntax = "new Simulation {\n" + "val test1 = \"Simulation MODEL-0\"\n"
 				+ "override def runSimulation(cpnGraph: CPNGraph):Unit =" + "{ println(\"Run Simulation\") }\n"

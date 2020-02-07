@@ -7,6 +7,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
+import io.iochord.apps.ips.common.util.LoggerUtil;
+
 /**
  *
  * Test Async Service
@@ -28,8 +30,8 @@ public class TestService {
 		log.info("async " + result + " start");
 		try {
 			Thread.sleep(10000);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
+		} catch (Exception ex) {
+			LoggerUtil.log(ex);
 		}
 		log.info("async " + result + " complete");
 		return CompletableFuture.completedFuture(result);

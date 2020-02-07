@@ -5,10 +5,10 @@ import java.util.Map;
 
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import io.iochord.apps.ips.common.util.SerializationUtil;
@@ -48,7 +48,7 @@ public class IsmModelController extends AModelController {
 	 * 
 	 * @return string 'Ok'
 	 */
-	@RequestMapping(BASE_URI + "")
+	@GetMapping(BASE_URI + "")
 	public String getIndex() {
 		return "Ok";
 	}
@@ -57,7 +57,7 @@ public class IsmModelController extends AModelController {
 	 * Create new ISM without default nodes
 	 * @return new ISM
 	 */
-	@RequestMapping(BASE_URI + "/create")
+	@GetMapping(BASE_URI + "/create")
 	public IsmGraph getCreateDefault() {
 		return getCreate(0);
 	}
@@ -68,7 +68,7 @@ public class IsmModelController extends AModelController {
 	 * @param defaultNodes 0: empty ISM, >0: with default nodes
 	 * @return new ISM
 	 */
-	@RequestMapping(BASE_URI + "/create/{defaultNodes}")
+	@GetMapping(BASE_URI + "/create/{defaultNodes}")
 	public IsmGraph getCreate(@PathVariable int defaultNodes) {
 		IsmGraph net;
 		if (defaultNodes > 0) {
@@ -87,7 +87,7 @@ public class IsmModelController extends AModelController {
 	 * @param modelId ISM Id
 	 * @return ISM
 	 */
-	@RequestMapping(BASE_URI + "/view/{modelId}")
+	@GetMapping(BASE_URI + "/view/{modelId}")
 	public IsmGraph getView(@PathVariable String modelId) {
 		if (nets.containsKey(modelId)) {
 			IsmGraph net = nets.get(modelId);
@@ -103,7 +103,7 @@ public class IsmModelController extends AModelController {
 	 * @param graph updated ISM
 	 * @return updated ISM
 	 */
-	@RequestMapping(value = BASE_URI + "/edit/{modelId}", method = RequestMethod.POST)
+	@PostMapping(value = BASE_URI + "/edit/{modelId}")
 	public IsmGraph postEdit(@PathVariable String modelId, @RequestBody IsmGraphImpl graph) {
 		if (nets.containsKey(modelId)) {
 			IsmGraph net = nets.get(modelId);
@@ -120,7 +120,7 @@ public class IsmModelController extends AModelController {
 	 * 
 	 * @return example ISM as string
 	 */
-	@RequestMapping(value = BASE_URI + "/example", produces = { MediaType.APPLICATION_JSON_VALUE })
+	@GetMapping(value = BASE_URI + "/example", produces = { MediaType.APPLICATION_JSON_VALUE })
 	public String getCreateExampleSimulationModel() {
 		// IsmGraph snet = IsmExample.createBankExample();
 		IsmGraph snet = IsmExample.createPortExample();
@@ -132,7 +132,7 @@ public class IsmModelController extends AModelController {
 	 * 
 	 * @return example ISM as CPNScala
 	 */
-	@RequestMapping(value = BASE_URI + "/examplecpn", produces = { MediaType.APPLICATION_JSON_VALUE })
+	@GetMapping(value = BASE_URI + "/examplecpn", produces = { MediaType.APPLICATION_JSON_VALUE })
 	public String getConvertExampleSimulationModel() {
 		IsmGraph snet = IsmExample.createBankExample();
 		Ism2CpnscalaBiConverter converter = new Ism2CpnscalaBiConverter();

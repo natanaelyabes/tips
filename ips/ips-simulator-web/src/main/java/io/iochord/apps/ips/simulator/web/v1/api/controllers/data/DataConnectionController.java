@@ -5,9 +5,9 @@ import java.util.Map;
 
 import org.springframework.http.HttpHeaders;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
@@ -44,15 +44,13 @@ public class DataConnectionController extends ADataController {
 	 * @param headers autowired http headers
 	 * @return service context
 	 */
-	@RequestMapping(value = BASE_URI + "/connection/list")
+	@GetMapping(value = BASE_URI + "/connection/list")
 	public ServiceContext getDataConnectionsList(@RequestHeader HttpHeaders headers) {
 		ServiceContext context = getServiceContext();
 		Map<String, Dataset> datasets = null;
 		try {
 			datasets = new DatasetRepositoryService().run(context, "");
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		} catch (Exception e) {}
 		context.completeAndDestroy(datasets);
 		return context;
 	}
@@ -66,7 +64,7 @@ public class DataConnectionController extends ADataController {
 	 * @return service context
 	 * @throws Exception
 	 */
-	@RequestMapping(value = BASE_URI + "/import/csv", method = RequestMethod.POST)
+	@PostMapping(value = BASE_URI + "/import/csv")
 	public ServiceContext postImportCsv(@RequestPart("config") String jsonConfig,
 			@RequestPart("file") MultipartFile file, @RequestHeader HttpHeaders headers) throws Exception {
 		CsvDataImportConfiguration config = SerializationUtil.decode(jsonConfig, CsvDataImportConfiguration.class);

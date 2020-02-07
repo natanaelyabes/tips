@@ -27,10 +27,8 @@ node {
 	nodeModulesDir = file("${project.projectDir}/src/main/ts")
 }
 
-task npmBuild( type: NpmTask, dependsOn: 'npmSetup' ) {
-//    script = file( 'src/main/ts' )
+task npmBuild( type: NpmTask, dependsOn: 'npmInstall' ) {
     args = ['run', 'build']
-    
 }
 
 task npmDist(type: Copy) {
@@ -39,4 +37,4 @@ task npmDist(type: Copy) {
 }
 
 tasks.npmDist.dependsOn npmBuild
-tasks.compileJava.dependsOn npmDist
+// tasks.compileJava.dependsOn npmDist

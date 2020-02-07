@@ -5,10 +5,9 @@ import java.util.Optional;
 import org.springframework.http.HttpHeaders;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import io.iochord.apps.ips.core.services.ServiceContext;
@@ -38,8 +37,7 @@ public class IsmDiscoveryController extends AnAnalysisController {
 	 * @return service context instance
 	 * @throws Exception exception
 	 */
-	@RequestMapping(value = { BASE_URI + "/ism", BASE_URI + "/ism/{datasetId}" }, method = { RequestMethod.GET,
-			RequestMethod.POST })
+	@PostMapping(value = { BASE_URI + "/ism", BASE_URI + "/ism/{datasetId}" })
 	public ServiceContext getPostDiscoverIsm(@PathVariable Optional<String> datasetId,
 			@RequestBody(required = false) IsmDiscoveryConfiguration config, @RequestHeader HttpHeaders headers)
 			throws Exception {
