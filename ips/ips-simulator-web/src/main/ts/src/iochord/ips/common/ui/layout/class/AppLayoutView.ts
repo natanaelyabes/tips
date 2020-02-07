@@ -6,10 +6,15 @@ import PageLayout from '@/iochord/ips/common/ui/layout/class/PageLayout';
 @Component
 
 /**
+ * Wiki menu component.
+ *
+ * @export
+ * @class WikiMenuComponent
+ * @extends {BaseComponent}
+ *
  * @package ips
  * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
  * @since 2019
- *
  */
 export default class AppLayoutView extends PageLayout implements AppLayout {
   public title: string = '';

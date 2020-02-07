@@ -1,6 +1,6 @@
 <!--
   @package ips
-  @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
+  @author Riska Asriana Sutrisnowati <riska@iochord.com>
   @since 2019
 -->
 <template>
@@ -81,27 +81,60 @@ import ItemExistedConnectionComponent from '../components/ItemExistedConnectionC
 })
 
 /**
- * @package ips
- * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
- * @since 2019
+ * Data connection list component.
  *
+ * @export
+ * @class DataConnectionList
+ * @extends {ExplorerLayoutView}
+ *
+ * @package ips
+ * @author Riska Asriana Sutrisnowati <riska@iochord.com>
+ * @since 2019
  */
-export default class SandboxDataConnectionList extends ExplorerLayoutView {
+export default class DataConnectionList extends ExplorerLayoutView {
+
+  /**
+   * Title of data connection list.
+   *
+   * @type {string}
+   * @memberof DataConnectionList
+   */
   public title: string = '';
+
+  /**
+   * Current content component.
+   *
+   * @type {string}
+   * @memberof DataConnectionList
+   */
   public currentContentComponent: string = 'ContentOraclePropertiesComponent';
 
+  /**
+   * Vue mounted lifecycle.
+   *
+   * @memberof DataConnectionList
+   */
   public mounted(): void {
     this.$root.$on('ebContentComponent', (prm: string) => {
       this.currentContentComponent = prm;
     });
   }
 
-  /** @override */
+  /**
+   * Override browser properties.
+   *
+   * @override
+   * @memberof DataConnectionList
+   */
   public overrideBrowserProperties() {
     this.setDocumentTitle('Data Management: List of Connections');
   }
 
-  /** @Override */
+  /**
+   * Assigns title to the layout.
+   *
+   * @memberof DataConnectionList
+   */
   public setTitle(): void {
     this.title = `List Connection`;
   }

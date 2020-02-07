@@ -45,6 +45,10 @@
 </style>
 
 <script lang="ts">
+/**
+ * @module   iochord/ips/analysis/process-discovery/
+ */
+
 import { Vue, Component, Prop } from 'vue-property-decorator';
 import { getModule } from 'vuex-module-decorators';
 import VisualizerLayoutView from '@/iochord/ips/common/ui/layout/class/VisualizerLayoutView';

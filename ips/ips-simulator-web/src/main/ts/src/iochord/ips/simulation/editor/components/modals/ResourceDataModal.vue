@@ -23,14 +23,6 @@
             <div class="twelve wide column">
               <input type="number" v-model="numberOfResource" id="x_txt_resources">
             </div>
-            <!-- <div class="four wide column">
-              <label for="x_txt_import">Import from table</label>
-            </div>
-            <div class="twelve wide column">
-              <select id="x_txt_table" class="ui search dropdown" v-model="table">
-                <option v-for="t in tables" :key="t.getId()" :value="t.getId()">{{t.getLabel()}} ({{t.getId()}})</option>
-              </select>
-            </div> -->
           </div>
         </div>
       </div>
@@ -41,16 +33,6 @@
     </div>
   </div>
 </template>
-
-<style>
-/**
- *
- * @package ips
- * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
- * @since 2019
- *
- */
-</style>
 
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
@@ -70,40 +52,95 @@ const graphModule = getModule(GraphModule);
 
 declare const $: any;
 
-
-/**
- *
- * @package ips
- * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
- * @since 2019
- *
- */
 @Component
 
 /**
+ * The resource data modal.
+ *
+ * @export
+ * @class ResourceDataModal
+ * @extends {SemanticComponent}
+ * @implements {Modal<JointGraphPageImpl, GraphDataResourceImpl>}
+ *
  * @package ips
  * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
  * @since 2019
- *
  */
 export default class ResourceDataModal extends SemanticComponent implements Modal<JointGraphPageImpl, GraphDataResourceImpl> {
 
-  // Whole object properties
+  /**
+   * The graph data resource properties.
+   *
+   * @private
+   * @type {GraphDataResourceImpl}
+   * @memberof ResourceDataModal
+   */
   private properties!: GraphDataResourceImpl;
 
-  // Page renderer
+  /**
+   * The graph page data object.
+   *
+   * @private
+   * @type {JointGraphPageImpl}
+   * @memberof ResourceDataModal
+   */
   private page!: JointGraphPageImpl;
 
-  // Component properties
+  /**
+   * The id of resource data object.
+   *
+   * @private
+   * @type {string}
+   * @memberof ResourceDataModal
+   */
   private id: string = '';
+
+  /**
+   * The label of resource data object.
+   *
+   * @private
+   * @type {string}
+   * @memberof ResourceDataModal
+   */
   private label: string = '';
+
+  /**
+   * Specify the number of resources.
+   *
+   * @private
+   * @type {number}
+   * @memberof ResourceDataModal
+   */
   private numberOfResource: number = 0;
+
+  /**
+   * Indicates whether a further resource properties is being imported. False otherwise.
+   *
+   * @private
+   * @type {boolean}
+   * @memberof ResourceDataModal
+   */
   private importTable: boolean = false;
+
+  /**
+   * The data table object as string reference.
+   *
+   * @private
+   * @type {string}
+   * @memberof ResourceDataModal
+   */
   private table: string = '';
 
+  /**
+   * Assigns the properties of resource data node to the resource data modal properties.
+   *
+   * @param {JointGraphPageImpl} page
+   * @param {GraphDataResourceImpl} object
+   * @memberof ResourceDataModal
+   */
   public populateProperties(page: JointGraphPageImpl, object: GraphDataResourceImpl) {
 
-    // Whole object properties
+    // Object properties
     this.properties = object;
 
     // Page renderer
@@ -127,6 +164,13 @@ export default class ResourceDataModal extends SemanticComponent implements Moda
     ;
   }
 
+  /**
+   * Store the properties into resource data object, commit to vuex store.
+   *
+   * @param {JointGraphPageImpl} page
+   * @param {GraphDataResourceImpl} object
+   * @memberof ResourceDataModal
+   */
   public saveProperties(page: JointGraphPageImpl, object: GraphDataResourceImpl) {
     const dataPageId = (object.getId() as string).split('-')[0];
     const dataPage = (graphModule.graph.getPages() as TSMap<string, GraphPage>).get(dataPageId);

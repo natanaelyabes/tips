@@ -99,35 +99,55 @@ import SemanticComponent from '@/iochord/ips/common/ui/semantic-components/Seman
 // JQuery Symbol Handler
 declare const $: any;
 
-
-/**
- *
- * @package ips
- * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
- * @since 2019
- *
- */
 @Component
 
 /**
+ * Navigation bar component.
+ *
+ * @export
+ * @class NavigationBarComponent
+ * @extends {BaseComponent}
+ *
  * @package ips
  * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
  * @since 2019
- *
  */
 export default class NavigationTopSidebarComponent extends SemanticComponent {
+
+  /**
+   * Boolean variable to open or close the menu side bar.
+   *
+   * @private
+   * @type {boolean}
+   * @memberof NavigationTopSidebarComponent
+   */
   private menuIsOpen: boolean = false;
 
-  /** @Override */
+  /**
+   * Mounted Vue lifecycle.
+   *
+   * @memberof NavigationTopSidebarComponent
+   */
   public mounted(): void {
     // this.closeMenu();
   }
 
-  /** @Override */
+  /**
+   * Declare semantic modules.
+   *
+   * @override
+   * @memberof NavigationTopSidebarComponent
+   */
   public declareSemanticModules(): void {
     this.declareSidebar();
   }
 
+  /**
+   * Declare sidebar module.
+   *
+   * @private
+   * @memberof NavigationTopSidebarComponent
+   */
   private declareSidebar(): void {
     $('.navigation-top-sidebar.component .ui.sidebar').sidebar({
       context: '.navigation-top-sidebar.component',
@@ -136,6 +156,12 @@ export default class NavigationTopSidebarComponent extends SemanticComponent {
     this.makeResponsive();
   }
 
+  /**
+   * Listen to resize event and evaluate browser width to make content responsive.
+   *
+   * @private
+   * @memberof NavigationTopSidebarComponent
+   */
   private makeResponsive(): void {
     this.evaluateBrowserWidth();
 
@@ -145,6 +171,12 @@ export default class NavigationTopSidebarComponent extends SemanticComponent {
     });
   }
 
+  /**
+   * Handle responsiveness of the content by evaluating browser width.
+   *
+   * @private
+   * @memberof NavigationTopSidebarComponent
+   */
   private evaluateBrowserWidth(): void {
     const browser: BrowserCanHandleBreakpoints = {
       width: window.innerWidth,
@@ -162,6 +194,12 @@ export default class NavigationTopSidebarComponent extends SemanticComponent {
     browser.handleBreakpoints(browser.width);
   }
 
+  /**
+   * Simple adjustment for top fixed menu.
+   *
+   * @private
+   * @memberof NavigationTopSidebarComponent
+   */
   private adjustTopFixedMenu(): void {
     setTimeout(() => {
       const sidebarLogoItemHeight = $('.logo.item').css('height');
@@ -170,6 +208,12 @@ export default class NavigationTopSidebarComponent extends SemanticComponent {
     }, 10);
   }
 
+  /**
+   * Toggle the menu to be opened or closed according to the boolean variable.
+   *
+   * @private
+   * @memberof NavigationTopSidebarComponent
+   */
   private toggleMenu(): void {
     if (this.menuIsOpen) {
       this.closeMenu();
@@ -178,6 +222,12 @@ export default class NavigationTopSidebarComponent extends SemanticComponent {
     }
   }
 
+  /**
+   * Close the menu of the side bar.
+   *
+   * @private
+   * @memberof NavigationTopSidebarComponent
+   */
   private closeMenu(): void {
 
     // Close the menu after 200ms
@@ -193,6 +243,12 @@ export default class NavigationTopSidebarComponent extends SemanticComponent {
     this.menuIsOpen = !this.menuIsOpen;
   }
 
+  /**
+   * Open menu of the side bar.
+   *
+   * @private
+   * @memberof NavigationTopSidebarComponent
+   */
   private openMenu(): void {
 
     const browser: BrowserCanHandleBreakpoints = {

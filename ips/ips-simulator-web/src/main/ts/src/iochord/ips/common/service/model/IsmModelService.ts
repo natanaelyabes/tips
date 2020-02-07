@@ -5,16 +5,34 @@ import { Client } from 'webstomp-client';
 import { Observable } from 'rxjs';
 
 /**
+ * The ISM model service class.
+ *
+ * @export
+ * @class IsmModelService
+ * @extends {ModelService}
  *
  * @package ips
  * @author  Iq Reviessay Pulshashi <pulshashi@ideas.web.id>
  * @since   2019
- *
  */
 export class IsmModelService extends ModelService {
 
+  /**
+   * The base URI for ISM model service.
+   *
+   * @static
+   * @type {string}
+   * @memberof IsmModelService
+   */
   public static readonly BASE_URI: string = ModelService.BASE_URI + '/ism';
 
+  /**
+   * Returns the instance of ISM model service.
+   *
+   * @static
+   * @returns {IsmModelService}
+   * @memberof IsmModelService
+   */
   public static getInstance(): IsmModelService {
     if (IsmModelService.__INSTANCE == null) {
       IsmModelService.__INSTANCE = new IsmModelService();
@@ -22,8 +40,23 @@ export class IsmModelService extends ModelService {
     return IsmModelService.__INSTANCE;
   }
 
+  /**
+   * The instance for ISM model service.
+   *
+   * @private
+   * @static
+   * @type {IsmModelService}
+   * @memberof IsmModelService
+   */
   private static __INSTANCE: IsmModelService;
 
+  /**
+   * Store model to the webservice.
+   *
+   * @param {*} graph
+   * @param {*} callback
+   * @memberof IsmModelService
+   */
   public callSaveModel(graph: any, callback: any) {
     this.getWsClient((wsc: Client) => {
       const wsUri = IsmModelService.BASE_URI + '/edit/1';
@@ -35,6 +68,12 @@ export class IsmModelService extends ModelService {
     });
   }
 
+  /**
+   * Returns the example model.
+   *
+   * @param {*} callback
+   * @memberof IsmModelService
+   */
   public getExampleModelWs(callback: any) {
     this.getWsClient((wsc: Client) => {
       const wsUri = '/res/test';
@@ -155,29 +194,61 @@ export class IsmModelService extends ModelService {
     });
   }
 
+  /**
+   * Returns the example model from web service.
+   *
+   * @returns {Promise<Graph>}
+   * @memberof IsmModelService
+   */
   public async getExampleModel(): Promise<Graph> {
     const response = await this.remoteGet(IsmModelService.BASE_URI + '/example');
     return GraphImpl.deserialize(response.data) as Graph;
   }
 
+  /**
+   * Returns the default model from web service.
+   *
+   * @returns {Promise<Graph>}
+   * @memberof IsmModelService
+   */
   public async getCreateDefault(): Promise<Graph> {
     const response = await this.remoteGet(IsmModelService.BASE_URI + '/create');
     return GraphImpl.deserialize(response.data) as Graph;
   }
 
+  /**
+   * Returns the default model from web service.
+   *
+   * @param {string} defaultNodes
+   * @returns {Promise<Graph>}
+   * @memberof IsmModelService
+   */
   public async getCreate(defaultNodes: string): Promise<Graph> {
     const response = await this.remoteGet(IsmModelService.BASE_URI + '/create/' + defaultNodes);
     return GraphImpl.deserialize(response.data) as Graph;
   }
 
+  /**
+   * Returns the model to be edited from the web service.
+   *
+   * @param {string} modelId
+   * @returns {Promise<Graph>}
+   * @memberof IsmModelService
+   */
   public async getEdit(modelId: string): Promise<Graph> {
     const response = await this.remoteGet(IsmModelService.BASE_URI + '/edit/' + modelId);
     return GraphImpl.deserialize(response.data) as Graph;
   }
 
+  /**
+   * Returns the view of the model from web service.
+   *
+   * @param {string} modelId
+   * @returns {Promise<Graph>}
+   * @memberof IsmModelService
+   */
   public async getView(modelId: string): Promise<Graph> {
     const response = await this.remoteGet(IsmModelService.BASE_URI + '/view/' + modelId);
     return GraphImpl.deserialize(response.data) as Graph;
   }
-
 }

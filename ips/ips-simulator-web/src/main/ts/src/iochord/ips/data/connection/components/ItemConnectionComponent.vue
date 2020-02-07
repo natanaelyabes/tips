@@ -1,6 +1,6 @@
 <!--
   @package ips
-  @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
+  @author Riska Asriana Sutrisnowati <riska@iochord.com>
   @since 2019
 -->
 <template>
@@ -11,17 +11,12 @@
         <i class="search icon"></i>
       </div>
     </div>
-    <a v-on:click= "chooseConnection('oracle')" class="item">Oracle</a>
-    <a v-on:click= "chooseConnection('mssql')" class="item">MSSQL Server</a>
-    <a v-on:click= "chooseConnection('mysql')" class="item">MySQL</a>
-    <a v-on:click= "chooseConnection('hadoop')" class="item">Hadoop FS</a>
+    <a v-on:click = "chooseConnection('oracle')" class="item">Oracle</a>
+    <a v-on:click = "chooseConnection('mssql')" class="item">MSSQL Server</a>
+    <a v-on:click = "chooseConnection('mysql')" class="item">MySQL</a>
+    <a v-on:click = "chooseConnection('hadoop')" class="item">Hadoop FS</a>
   </div>
 </template>
-
-<style>
-
-</style>
-
 
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator';
@@ -30,14 +25,32 @@ import BaseComponent from '@/iochord/ips/common/ui/layout/class/BaseComponent';
 @Component
 
 /**
- * @package ips
- * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
- * @since 2019
+ * Item connection component.
  *
+ * @export
+ * @class ItemConnectionComponent
+ * @extends {BaseComponent}
+ *
+ * @package ips
+ * @author Riska Asriana Sutrisnowati <riska@iochord.com>
+ * @since 2019
  */
 export default class ItemConnectionComponent extends BaseComponent {
+
+  /**
+   * Current content component.
+   *
+   * @type {string}
+   * @memberof ItemConnectionComponent
+   */
   public currentContentComponent: string = '';
 
+  /**
+   * Choose connection.
+   *
+   * @param {string} prm
+   * @memberof ItemConnectionComponent
+   */
   public chooseConnection(prm: string) {
     if (prm === 'oracle') {
       this.currentContentComponent = 'ContentOraclePropertiesComponent';
@@ -52,4 +65,3 @@ export default class ItemConnectionComponent extends BaseComponent {
   }
 }
 </script>
->

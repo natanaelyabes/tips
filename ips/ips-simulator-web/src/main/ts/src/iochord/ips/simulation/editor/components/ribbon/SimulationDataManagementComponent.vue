@@ -66,17 +66,41 @@ declare const $: any;
 @Component
 
 /**
+ * The simulation data management component.
+ *
+ * @export
+ * @class SimulationDataManagementComponent
+ * @extends {BaseComponent}
+ *
  * @package ips
  * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
  * @since 2019
- *
  */
 export default class SimulationDataManagementComponent extends BaseComponent {
-  @Prop({ default: false })
-  public isDisabled?: boolean;
 
+  /**
+   * Indicates that the simulation model is being disabled.
+   *
+   * @type {boolean}
+   * @memberof SimulationDataManagementComponent
+   */
+  @Prop({ default: false }) public isDisabled?: boolean;
+
+  /**
+   * Indicates whether a model pane is being opened.
+   *
+   * @type {boolean}
+   * @memberof SimulationDataManagementComponent
+   */
   public modelPaneIsOpen: boolean = true;
 
+  /**
+   * Store the simulation model over HTTP REST protocol.
+   *
+   * @private
+   * @returns {Promise<void>}
+   * @memberof SimulationDataManagementComponent
+   */
   private async doSaveModel(): Promise<void> {
     console.log('BEFORE: ' + JSON.stringify(graphModule.graph));
 
@@ -90,6 +114,12 @@ export default class SimulationDataManagementComponent extends BaseComponent {
     console.log('AFTER: ' + JSON.stringify(result.data));
   }
 
+  /**
+   * Display the upload file modal.
+   *
+   * @private
+   * @memberof SimulationDataManagementComponent
+   */
   private showUploadFileModal(): void {
     $('.ui.upload.file.modal').modal('show');
   }

@@ -53,13 +53,6 @@
 </template>
 
 <style scoped>
-/**
- *
- * @package ips
- * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
- * @since 2019
- *
- */
 .login.view {
   background: #03628c;
   background-size: cover;
@@ -158,24 +151,66 @@ import PageView from '@/iochord/ips/common/ui/layout/class/PageLayout';
 @Component
 
 /**
+ * The authentication login view.
+ *
+ * @export
+ * @class AuthenticationLoginView
+ * @extends {PageView}
+ *
  * @package ips
  * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
  * @since 2019
- *
  */
 export default class AuthenticationLoginView extends PageView {
+
+  /**
+   * The email of the user.
+   *
+   * @private
+   * @type {string}
+   * @memberof AuthenticationLoginView
+   */
   private email: string = 'admin@iochord.com';
+
+  /**
+   * The password for the user.
+   *
+   * @private
+   * @type {string}
+   * @memberof AuthenticationLoginView
+   */
   private password: string = 'secret123';
+
+  /**
+   * Indicates whether a login error is exists. False otherwise.
+   *
+   * @private
+   * @type {boolean}
+   * @memberof AuthenticationLoginView
+   */
   private error: boolean = false;
+
+  /**
+   * The login error message.
+   *
+   * @private
+   * @type {string}
+   * @memberof AuthenticationLoginView
+   */
   private errorMessage: string = '';
 
-  /** @Override */
+  /**
+   * Override the browser properties.
+   *
+   * @override
+   * @memberof AuthenticationLoginView
+   */
   public overrideBrowserProperties(): void {
     this.setDocumentTitle('Login');
   }
 
   /**
-   * Handle login logic from view
+   * Handles the user login.
    *
    * @memberof Index
    */

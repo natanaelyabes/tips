@@ -3,6 +3,7 @@ import { RouteConfig, Route } from 'vue-router';
 import EditorRouter from './editor/EditorRouter';
 
 /**
+ * Router registry for the simulation router.
  *
  * @package ips
  * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>

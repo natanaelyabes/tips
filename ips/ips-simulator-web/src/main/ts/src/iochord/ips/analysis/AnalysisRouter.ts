@@ -1,5 +1,4 @@
 import { RouteConfig, Route } from 'vue-router';
-
 import BranchMiningRouter from './branch-mining/BranchMiningRouter';
 import DistributionFittingRouter from './distribution-fitting/DistributionFittingRouter';
 import ProcessDiscoveryRouter from './process-discovery/ProcessDiscoveryRouter';

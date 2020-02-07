@@ -53,39 +53,25 @@
   </div>
 </template>
 
-<style>
-/**
- *
- * @package ips
- * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
- * @since 2019
- *
- */
-</style>
-
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
 import SemanticComponent from '@/iochord/ips/common/ui/semantic-components/SemanticComponent';
 declare const $: any;
 
-/**
- *
- * @package ips
- * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
- * @since 2019
- *
- */
 @Component
 
 /**
+ * The control settings modal.
+ *
+ * @export
+ * @class ControlModal
+ * @extends {SemanticComponent}
+ *
  * @package ips
  * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
  * @since 2019
- *
  */
 export default class ControlModal extends SemanticComponent {
-  public log(): void {
-    console.log('Test');
-  }
+  //
 }
 </script>

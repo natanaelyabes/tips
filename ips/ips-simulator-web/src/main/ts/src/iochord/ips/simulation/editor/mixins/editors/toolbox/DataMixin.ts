@@ -40,6 +40,11 @@ enum DATA {
 const graphModule = getModule(GraphModule);
 const editorState = getModule(EditorState);
 
+/**
+ *
+ *
+
+ */
 @Component<DataMixin>({
   subscriptions: () => {
     return (
@@ -50,15 +55,33 @@ const editorState = getModule(EditorState);
   },
 })
 /**
+ * The data mixin object.
+ *
+ * @export
+ * @class DataMixin
+ * @extends {BaseComponent}
+ *
  * @package ips
  * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
  * @since 2019
- *
  */
 export default class DataMixin extends BaseComponent {
 
+  /**
+   * The new data object
+   *
+   * @type {JointGraphDataImpl}
+   * @memberof DataMixin
+   */
   public newData?: JointGraphDataImpl;
 
+  /**
+   * Create new data object.
+   *
+   * @param {DATA} type
+   * @param {MouseEvent} e
+   * @memberof DataMixin
+   */
   public createData(type: DATA, e: MouseEvent) {
 
     /** Local variable initialization */
@@ -86,6 +109,13 @@ export default class DataMixin extends BaseComponent {
     editorState.setDragging(true);
   }
 
+  /**
+   * Draw data object to screen.
+   *
+   * @param {MouseEvent} e
+   * @param {JointGraphPageImpl} activePage
+   * @memberof DataMixin
+   */
   public moveData(e: MouseEvent, activePage: JointGraphPageImpl) {
     if (editorState.dragging && graphModule.newItem !== null) {
 
@@ -111,6 +141,12 @@ export default class DataMixin extends BaseComponent {
     }
   }
 
+  /**
+   * Cancel create new data.
+   *
+   * @param {KeyboardEvent} e
+   * @memberof DataMixin
+   */
   public cancelCreateData(e: KeyboardEvent) {
     if (e.key === 'Escape') {
       if (editorState.dragging && (graphModule.newItem)) {
@@ -144,6 +180,13 @@ export default class DataMixin extends BaseComponent {
     }
   }
 
+  /**
+   * Delete data object.
+   *
+   * @param {JointGraphPageImpl} activePage
+   * @param {joint.dia.Element} cell
+   * @memberof DataMixin
+   */
   public deleteData(activePage: JointGraphPageImpl, cell: joint.dia.Element) {
 
     // Check if cell is a node object
@@ -178,6 +221,13 @@ export default class DataMixin extends BaseComponent {
     }
   }
 
+  /**
+   * Draw data object to screen, then store and commit the new data object to vuex store.
+   *
+   * @param {MouseEvent} e
+   * @param {JointGraphPageImpl} activePage
+   * @memberof DataMixin
+   */
   public saveData(e: MouseEvent, activePage: JointGraphPageImpl) {
     editorState.setDragging(false);
     if (graphModule.newItem !== null) {

@@ -62,7 +62,7 @@
                   </thead>
                   <tbody id="tb_add_row">
                     <tr v-for="condition in conditions" :key="condition[0]">
-                      <td><input type="text" v-model=condition[1]></td>
+                      <td><input type="text" v-model="condition[1]"></td>
                       <td>{{condition[0]}}</td>
                     </tr>
                   </tbody>
@@ -74,7 +74,7 @@
       </div>
     </div>
     <div class="actions">
-      <div @click="saveProperties(page, properties)" class="ui positive button">Save</div>
+      <div @click = "saveProperties(page, properties)" class="ui positive button">Save</div>
       <div class="ui cancel button">Cancel</div>
     </div>
   </div>
@@ -102,39 +102,95 @@ const graphModule = getModule(GraphModule);
 
 declare const $: any;
 
-/**
- *
- * @package ips
- * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
- * @since 2019
- *
- */
 @Component
 
 /**
+ * Branch node modal.
+ *
+ * @export
+ * @class BranchNodeModal
+ * @extends {SemanticComponent}
+ * @implements {Modal<JointGraphPageImpl, GraphBranchNodeImpl>}
+ *
  * @package ips
  * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
  * @since 2019
- *
  */
 export default class BranchNodeModal extends SemanticComponent implements Modal<JointGraphPageImpl, GraphBranchNodeImpl> {
 
-  // Whole object properties
+  /**
+   * The properties of branch node.
+   *
+   * @private
+   * @type {GraphBranchNodeImpl}
+   * @memberof BranchNodeModal
+   */
   private properties!: GraphBranchNodeImpl;
 
-  // Renderer page
+  /**
+   * The graph page object.
+   *
+   * @private
+   * @type {JointGraphPageImpl}
+   * @memberof BranchNodeModal
+   */
   private page!: JointGraphPageImpl;
 
-  // Component properties
+  /**
+   * The label of branch node.
+   *
+   * @private
+   * @type {string}
+   * @memberof BranchNodeModal
+   */
   private label: string = '';
+
+  /**
+   * The gate type of a branch node.
+   *
+   * @private
+   * @type {BRANCH_GATE}
+   * @memberof BranchNodeModal
+   */
   private selectedGate: BRANCH_GATE = BRANCH_GATE.AND;
+
+  /**
+   * The type of a branch node.
+   *
+   * @private
+   * @type {BRANCH_TYPE}
+   * @memberof BranchNodeModal
+   */
   private selectedType: BRANCH_TYPE = BRANCH_TYPE.SPLIT;
+
+  /**
+   * The rule of a branch node.
+   *
+   * @private
+   * @type {BRANCH_RULE}
+   * @memberof BranchNodeModal
+   */
   private selectedRule: BRANCH_RULE = BRANCH_RULE.PROBABILITY;
+
+  /**
+   * The conditions of branch node.
+   *
+   * @private
+   * @type {string[][]}
+   * @memberof BranchNodeModal
+   */
   private conditions: string[][] = [];
 
+  /**
+   * Assigns the properties of branch node to the field of branch node modal.
+   *
+   * @param {JointGraphPageImpl} page
+   * @param {GraphBranchNodeImpl} object
+   * @memberof BranchNodeModal
+   */
   public populateProperties(page: JointGraphPageImpl, object: GraphBranchNodeImpl): void {
 
-    // Whole object properties
+    // Object properties
     this.properties = object;
 
     // Page renderer
@@ -178,6 +234,13 @@ export default class BranchNodeModal extends SemanticComponent implements Modal<
     ;
   }
 
+  /**
+   * Store the properties into branch node object, commit to the graph vuex module.
+   *
+   * @param {JointGraphPageImpl} page
+   * @param {GraphBranchNodeImpl} object
+   * @memberof BranchNodeModal
+   */
   public saveProperties(page: JointGraphPageImpl, object: GraphBranchNodeImpl): void {
     const nodePageId = (object.getId() as string).split('-')[0];
     const nodePage = (graphModule.graph.getPages() as TSMap<string, GraphPage>).get(nodePageId);

@@ -33,13 +33,6 @@
 </template>
 
 <style scoped>
-/**
- *
- * @package ips
- * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
- * @since 2019
- *
- */
 .canvas.component {
   height: calc(100% - 60px);
 }
@@ -129,13 +122,6 @@ import { DeletableModal } from '../../interfaces/DeletableModal';
 const graphModule = getModule(GraphModule);
 const editorState = getModule(EditorState);
 
-/**
- *
- * @package ips
- * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
- * @since 2019
- *
- */
 @Component({
   components: {
     ActivityNodeModal,
@@ -154,26 +140,83 @@ const editorState = getModule(EditorState);
     DeleteModal,
   },
 })
+
 /**
+ * The canvas component.
+ *
+ * @export
+ * @class CanvasComponent
+ * @extends {Mixins(BaseComponent, CanvasMixin)}
+ *
  * @package ips
  * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
  * @since 2019
- *
  */
 export default class CanvasComponent extends Mixins(BaseComponent, CanvasMixin) {
+
+  /**
+   * Response from the web service as the graph JSON object.
+   *
+   * @type {Graph}
+   * @memberof CanvasComponent
+   */
   @Prop() public response?: Graph;
+
+  /**
+   * Boolean variable to evaluate if the graph object is a process model. False otherwise.
+   *
+   * @type {boolean}
+   * @memberof CanvasComponent
+   */
   @Prop() public isProcessModel?: boolean;
+
+  /**
+   * Boolean flag to enable/disable canvas.
+   *
+   * @type {boolean}
+   * @memberof CanvasComponent
+   */
   @Prop({ default: false }) public isDisabled?: boolean;
 
+  /**
+   * SVG Pan and Zoom instance.
+   *
+   * @type {SvgPanZoom.Instance}
+   * @memberof CanvasComponent
+   */
   public panAndZoom?: SvgPanZoom.Instance;
+
+  /**
+   * List of highlighted elements.
+   *
+   * @type {TSMap<string, joint.dia.Element>}
+   * @memberof CanvasComponent
+   */
   public highlightedElement: TSMap<string, joint.dia.Element> = new TSMap<string, joint.dia.Element>();
+
+  /**
+   * Boolean variable to flag whether a shift key is being pressed. False otherwise.
+   *
+   * @type {boolean}
+   * @memberof CanvasComponent
+   */
   public isShiftKey: boolean = false;
 
+  /**
+   * Vue mounted lifecycle.
+   *
+   * @memberof CanvasComponent
+   */
   public mounted(): void {
     this.loadGraph();
     this.$forceUpdate();
   }
 
+  /**
+   * Load graph into canvas.
+   *
+   * @memberof CanvasComponent
+   */
   public loadGraph(): void {
     try {
 
@@ -210,6 +253,13 @@ export default class CanvasComponent extends Mixins(BaseComponent, CanvasMixin) 
     }
   }
 
+  /**
+   * Listen to Joint.js canvas events.
+   *
+   * @private
+   * @param {JointGraphPageImpl} jointPage
+   * @memberof CanvasComponent
+   */
   private whileListenToEvents(jointPage: JointGraphPageImpl): void {
 
     // Helper to reset all elements

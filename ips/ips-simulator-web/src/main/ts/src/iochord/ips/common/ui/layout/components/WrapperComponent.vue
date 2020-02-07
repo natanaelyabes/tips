@@ -42,13 +42,6 @@
 </template>
 
 <style scoped>
-/**
- *
- * @package ips
- * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
- * @since 2019
- *
- */
 .wrapper.component {
   height: 100%;
   display: flex;
@@ -64,14 +57,6 @@ import TitleMenuBarComponent from './TitleMenuBarComponent.vue';
 import WorkspaceComponent from './WorkspaceComponent.vue';
 import BaseComponent from '@/iochord/ips/common/ui/layout/class/BaseComponent';
 
-
-/**
- *
- * @package ips
- * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
- * @since 2019
- *
- */
 @Component({
   components: {
     HeaderComponent,
@@ -79,34 +64,88 @@ import BaseComponent from '@/iochord/ips/common/ui/layout/class/BaseComponent';
     WorkspaceComponent,
   },
 })
+
 /**
+ * Wrapper component.
+ *
+ * @export
+ * @class WrapperComponent
+ * @extends {BaseComponent}
+ *
  * @package ips
  * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
  * @since 2019
- *
  */
 export default class WrapperComponent extends BaseComponent {
 
+  /**
+   * Boolean function to evaluate whether current component has header. False otherwise.
+   *
+   * @readonly
+   * @private
+   * @type {boolean}
+   * @memberof WrapperComponent
+   */
   private get hasHeader(): boolean {
     return !!this.$slots['header-title'] || !!this.$slots['header-breadcrumb'];
   }
 
+  /**
+   * Boolean function to evaluate whether current component has title menu. False otherwise.
+   *
+   * @readonly
+   * @private
+   * @type {boolean}
+   * @memberof WrapperComponent
+   */
   private get hasTitleMenu(): boolean {
     return !!this.$slots['title-menu-item'];
   }
 
+  /**
+   * Boolean function to evaluate whether current component has left side bar. False otherwise.
+   *
+   * @readonly
+   * @private
+   * @type {boolean}
+   * @memberof WrapperComponent
+   */
   private get hasLeftSidebar(): boolean {
     return !!this.$slots['left-sidebar-menu-item'];
   }
 
+  /**
+   * Boolean function to evaluate whether current component has right side bar. False otherwise.
+   *
+   * @readonly
+   * @private
+   * @type {boolean}
+   * @memberof WrapperComponent
+   */
   private get hasRightSidebar(): boolean {
     return !!this.$slots['right-sidebar-menu-item'];
   }
 
+  /**
+   * Boolean function to evaluate whether current component has ribbon. False otherwise.
+   *
+   * @readonly
+   * @private
+   * @type {boolean}
+   * @memberof WrapperComponent
+   */
   private get hasRibbon(): boolean {
     return !!this.$slots['ribbon-menu-item'];
   }
 
+  /**
+   * Boolean function to evaluate whether current component has content. False otherwise.
+   *
+   * @readonly
+   * @private
+   * @type {boolean}
+   * @memberof WrapperComponent
+   */
   private get hasContent(): boolean {
     return !!this.$slots['content'];
   }

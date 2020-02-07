@@ -109,6 +109,11 @@ declare const $: any;
 
 const graphModule = getModule(GraphModule);
 
+/**
+ * Enumeration for supported Type.
+ *
+ * @enum {number}
+ */
 enum Type {
   String = 'String',
   Int = 'Int',
@@ -116,11 +121,45 @@ enum Type {
   Boolean = 'Boolean',
 }
 
+/**
+ * Matrix class for creating data tables.
+ *
+ * @class Matrix
+ */
 class Matrix {
+
+  /**
+   * The header of the matrix.
+   *
+   * @type {string[]}
+   * @memberof Matrix
+   */
   public header: string[] = [];
+
+  /**
+   * Type of the matrix.
+   *
+   * @type {Type[]}
+   * @memberof Matrix
+   */
   public type: Type[] = [];
+
+  /**
+   * Data of the matrix.
+   *
+   * @type {any[][]}
+   * @memberof Matrix
+   */
   public data: any[][] = [];
 
+  /**
+   * Creates an instance of Matrix.
+   *
+   * @param {TSMap<string, string>} [fields]
+   * @param {TSMap<string, Type>} [type]
+   * @param {TSMap<string, TSMap<string, any>>} [data]
+   * @memberof Matrix
+   */
   constructor(fields?: TSMap<string, string>, type?: TSMap<string, Type>, data?: TSMap<string, TSMap<string, any>>) {
     if (fields !== undefined || data !== undefined) {
       this.header = fields!.values();
@@ -129,6 +168,11 @@ class Matrix {
     }
   }
 
+  /**
+   * Initialize matrix with copy data.
+   *
+   * @memberof Matrix
+   */
   public initDummyData(): void {
     this.header = ['New Field 1', 'New Field 2'];
     this.type = [Type.String, Type.String];
@@ -138,6 +182,11 @@ class Matrix {
     ];
   }
 
+  /**
+   * Methods to insert new row into the data table matrix.
+   *
+   * @memberof Matrix
+   */
   public insertNewRow(): void {
     const newRow = new Array<any>(this.data[0].length);
     this.type.forEach((t, i) => {
@@ -156,10 +205,21 @@ class Matrix {
     this.data.push(newRow);
   }
 
+  /**
+   * Delete row of the data table matrix.
+   *
+   * @param {number} i
+   * @memberof Matrix
+   */
   public deleteRow(i: number) {
     this.data.splice(i, 1);
   }
 
+  /**
+   * Insert new fields to the data table matrix.
+   *
+   * @memberof Matrix
+   */
   public insertNewFields(): void {
     this.header[this.header.length] = 'New Field ' + (this.header.length + 1);
     this.type[this.type.length] = Type.String;
@@ -167,12 +227,25 @@ class Matrix {
     this.data.push();
   }
 
+  /**
+   * Delete field of the data table matrix.
+   *
+   * @param {number} i
+   * @memberof Matrix
+   */
   public deleteField(i: number) {
     this.header.splice(i, 1);
     this.type.splice(i, 1);
     this.data.forEach((d) => d.splice(i, 1));
   }
 
+  /**
+   * Turn matrix into map object.
+   *
+   * @param {JointGraphPageImpl} page
+   * @returns {{ fields: TSMap<string, string>, data: TSMap<string, TSMap<string, any>> }}
+   * @memberof Matrix
+   */
   public toMap(page: JointGraphPageImpl): { fields: TSMap<string, string>, data: TSMap<string, TSMap<string, any>> } {
     const fields = new TSMap<string, string>();
     const data = new TSMap<string, TSMap<string, any>>();
@@ -195,27 +268,92 @@ class Matrix {
 @Component
 
 /**
+ * The data table modal.
+ *
+ * @export
+ * @class DataTableModal
+ * @extends {SemanticComponent}
+ * @implements {Modal<JointGraphPageImpl, GraphDataTableImpl>}
+ *
  * @package ips
  * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
  * @since 2019
- *
  */
 export default class DataTableModal extends SemanticComponent implements Modal<JointGraphPageImpl, GraphDataTableImpl> {
 
+  /**
+   * The properties of data table modal.
+   *
+   * @private
+   * @type {GraphDataTableImpl}
+   * @memberof DataTableModal
+   */
   private properties!: GraphDataTableImpl;
 
+  /**
+   * The page of the graph.
+   *
+   * @private
+   * @type {JointGraphPageImpl}
+   * @memberof DataTableModal
+   */
   private page!: JointGraphPageImpl;
 
+  /**
+   * The label of the data table.
+   *
+   * @private
+   * @type {string}
+   * @memberof DataTableModal
+   */
   private label: string = '';
+
+  /**
+   * The fields of the data table.
+   *
+   * @private
+   * @type {TSMap<string, string>}
+   * @memberof DataTableModal
+   */
   private fields: TSMap<string, string> = new TSMap<string, string>();
+
+  /**
+   * The type of the fields of the data table.
+   *
+   * @private
+   * @type {TSMap<string, Type>}
+   * @memberof DataTableModal
+   */
   private type: TSMap<string, Type> = new TSMap<string, Type>();
+
+  /**
+   * The data of the data table.
+   *
+   * @private
+   * @type {TSMap<string, TSMap<string, string>>}
+   * @memberof DataTableModal
+   */
   private data: TSMap<string, TSMap<string, string>> = new TSMap<string, TSMap<string, string>>();
 
+  /**
+   * Matrix object representing the data table.
+   *
+   * @private
+   * @type {Matrix}
+   * @memberof DataTableModal
+   */
   private matrix: Matrix = new Matrix();
 
+  /**
+   * Assigns the properties of data table node to the field of data table node modal.
+   *
+   * @param {JointGraphPageImpl} page
+   * @param {GraphDataTableImpl} object
+   * @memberof DataTableModal
+   */
   public populateProperties(page: JointGraphPageImpl, object: GraphDataTableImpl): void {
 
-    // Whole object properties
+    // Object properties
     this.properties = object;
 
     // Page renderer
@@ -236,6 +374,13 @@ export default class DataTableModal extends SemanticComponent implements Modal<J
     }
   }
 
+  /**
+   * Store the properties into data table object, commit to the graph vuex module.
+   *
+   * @param {JointGraphPageImpl} page
+   * @param {GraphDataTableImpl} object
+   * @memberof DataTableModal
+   */
   public saveProperties(page: JointGraphPageImpl, object: GraphDataTableImpl): void {
     const dataPageId = (object.getId() as string).split('-')[0];
     const dataPage = (graphModule.graph.getPages() as TSMap<string, GraphPage>).get(dataPageId);
@@ -278,18 +423,41 @@ export default class DataTableModal extends SemanticComponent implements Modal<J
     });
   }
 
+  /**
+   * Returns the fields of the matrix.
+   *
+   * @returns {string[][]}
+   * @memberof DataTableModal
+   */
   public getFields(): string[][] {
     return this.fields.entries();
   }
 
+  /**
+   * Returns the data rows of the matrix.
+   *
+   * @returns {(Array<Array<string | TSMap<string, string>>>)}
+   * @memberof DataTableModal
+   */
   public getDataRows(): Array<Array<string | TSMap<string, string>>> {
     return this.data.entries();
   }
 
+  /**
+   * Returns the data columns of the matrix..
+   *
+   * @returns {string[][]}
+   * @memberof DataTableModal
+   */
   public getDataCols(): string[][] {
     return this.getDataRows().map((row) => (row[1] as TSMap<string, string>).entries())[0];
   }
 
+  /**
+   * Declare semantic modules.
+   *
+   * @memberof DataTableModal
+   */
   public declareSemanticModules(): void {
     $('.ui.dropdown').dropdown();
   }

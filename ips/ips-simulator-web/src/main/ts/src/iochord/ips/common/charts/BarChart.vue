@@ -9,10 +9,6 @@
   </section>
 </template>
 
-<style>
-
-</style>
-
 <script lang="ts">
 import { Vue, Component, Prop } from 'vue-property-decorator';
 import BaseComponent from '../ui/layout/class/BaseComponent';
@@ -27,7 +23,7 @@ import 'vue-g2';
  * @prop {any} model?
  *
  * @package ips
- * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
+ * @author Riska Asriana Sutrisnowati <riska@iochord.com>
  * @since 2019
  *
  */

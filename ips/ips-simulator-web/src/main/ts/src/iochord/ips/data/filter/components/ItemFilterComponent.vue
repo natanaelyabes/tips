@@ -1,6 +1,6 @@
 <!--
   @package ips
-  @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
+  @author Riska Asriana Sutrisnowati <riska@iochord.com>
   @since 2019
 -->
 <template>
@@ -52,10 +52,6 @@
   </div>
 </template>
 
-<style>
-
-</style>
-
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator';
 import BaseComponent from '@/iochord/ips/common/ui/layout/class/BaseComponent';
@@ -64,15 +60,40 @@ import * as $ from 'jquery';
 @Component
 
 /**
- * @package ips
- * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
- * @since 2019
+ * Item filter component.
  *
+ * @export
+ * @class ItemFilterComponent
+ * @extends {BaseComponent}
+ *
+ * @package ips
+ * @author Riska Asriana Sutrisnowati <riska@iochord.com>
+ * @since 2019
  */
 export default class ItemFilterComponent extends BaseComponent {
+
+  /**
+   * Current content component.
+   *
+   * @type {string}
+   * @memberof ItemFilterComponent
+   */
   public currentContentComponent: string = '';
+
+  /**
+   * Filter options.
+   *
+   * @type {string}
+   * @memberof ItemFilterComponent
+   */
   public filterOptions: string = '';
 
+  /**
+   * Filter change event listener.
+   *
+   * @param {string} prm
+   * @memberof ItemFilterComponent
+   */
   public onFilterChange(prm: string) {
     switch (prm) {
       case '1':

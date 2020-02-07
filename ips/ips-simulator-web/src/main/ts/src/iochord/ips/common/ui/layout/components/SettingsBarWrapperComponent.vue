@@ -46,11 +46,17 @@ import SettingsBarWorkspaceComponent from './SettingsBarWorkspaceComponent.vue';
     SettingsBarWorkspaceComponent,
   },
 })
+
 /**
+ * Settings bar wrapper component.
+ *
+ * @export
+ * @class SettingsBarWrapperComponent
+ * @extends {BaseComponent}
+ *
  * @package ips
  * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
  * @since 2019
- *
  */
 export default class SettingsBarWrapperComponent extends BaseComponent {
 

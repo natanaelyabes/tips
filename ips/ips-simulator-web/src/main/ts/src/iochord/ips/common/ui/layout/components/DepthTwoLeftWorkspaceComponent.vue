@@ -23,25 +23,10 @@
     <div class="ui basic segment">
       <slot name="content"></slot>
     </div>
-
-    <!-- <SidebarComponent type="labeled icon" v-if="hasRightSidebarComponent">
-      <template slot="sidebar-menu-item">
-        <slot name="right-sidebar-menu-item"></slot>
-      </template>
-    </SidebarComponent> -->
   </div>
-
-
 </template>
 
 <style scoped>
-/**
- *
- * @package ips
- * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
- * @since 2019
- *
- */
 .depth.two.component {
   height: 100%;
   overflow: hidden;
@@ -60,10 +45,6 @@
 }
 </style>
 
-<style>
-
-</style>
-
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator';
 import BaseComponent from '@/iochord/ips/common/ui/layout/class/BaseComponent';
@@ -74,13 +55,19 @@ import SidebarComponent from '@/iochord/ips/common/ui/layout/components/SidebarC
       SidebarComponent,
   },
 })
+
 /**
+ * Depth two left workspace component of PageLayout.
+ *
+ * @export
+ * @class ContentComponent
+ * @extends {BaseComponent}
+ *
  * @package ips
  * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
  * @since 2019
- *
  */
 export default class DepthTwoLeftWorkspaceComponent extends BaseComponent {
-
+  //
 }
 </script>

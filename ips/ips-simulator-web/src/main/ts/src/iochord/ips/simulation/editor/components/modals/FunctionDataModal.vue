@@ -82,16 +82,16 @@ const graphModule = getModule(GraphModule);
 
 declare const $: any;
 
-/**
- *
- * @package ips
- * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
- * @since 2019
- *
- */
 @Component
 
 /**
+ * The function data modal.
+ *
+ * @export
+ * @class FunctionDataModal
+ * @extends {SemanticComponent}
+ * @implements {Modal<JointGraphPageImpl, GraphDataFunctionImpl>}
+ *
  * @package ips
  * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
  * @since 2019
@@ -99,21 +99,70 @@ declare const $: any;
  */
 export default class FunctionDataModal extends SemanticComponent implements Modal<JointGraphPageImpl, GraphDataFunctionImpl> {
 
-  // Whole object properties
+  /**
+   * Returns the properties of graph data function.
+   *
+   * @private
+   * @type {GraphDataFunctionImpl}
+   * @memberof FunctionDataModal
+   */
   private properties!: GraphDataFunctionImpl;
 
-  // Page renderer
+  /**
+   * Returns the page of the graph.
+   *
+   * @private
+   * @type {JointGraphPageImpl}
+   * @memberof FunctionDataModal
+   */
   private page!: JointGraphPageImpl;
 
-  // Component properties
+  /**
+   * The label of the function data modal.
+   *
+   * @private
+   * @type {string}
+   * @memberof FunctionDataModal
+   */
   private label: string = '';
+
+  /**
+   * The input parameters for function data node.
+   *
+   * @private
+   * @type {string[]}
+   * @memberof FunctionDataModal
+   */
   private inputParameters: string[] = [];
+
+  /**
+   * The source code for function data node.
+   *
+   * @private
+   * @type {string}
+   * @memberof FunctionDataModal
+   */
   private code: string = '';
+
+  /**
+   * The output variables of the function data node.
+   *
+   * @private
+   * @type {string[]}
+   * @memberof FunctionDataModal
+   */
   private outputVariables: string[] = [];
 
+  /**
+   * Assigns the properties of function data node to the function data modal properties.
+   *
+   * @param {JointGraphPageImpl} page
+   * @param {GraphDataFunctionImpl} object
+   * @memberof FunctionDataModal
+   */
   public populateProperties(page: JointGraphPageImpl, object: GraphDataFunctionImpl) {
 
-    // Whole object properties
+    // Object properties
     this.properties = object;
 
     // Page renderer
@@ -145,6 +194,13 @@ export default class FunctionDataModal extends SemanticComponent implements Moda
     );
   }
 
+  /**
+   * Store the properties into function data object, commit to the graph vuex module.
+   *
+   * @param {JointGraphPageImpl} page
+   * @param {GraphDataFunctionImpl} object
+   * @memberof FunctionDataModal
+   */
   public saveProperties(page: JointGraphPageImpl, object: GraphDataFunctionImpl) {
     const dataPageId = (object.getId() as string).split('-')[0];
     const dataPage = (graphModule.graph.getPages() as TSMap<string, GraphPage>).get(dataPageId);
@@ -181,6 +237,13 @@ export default class FunctionDataModal extends SemanticComponent implements Moda
     });
   }
 
+  /**
+   * Returns the list of object type.
+   *
+   * @readonly
+   * @type {GraphData[]}
+   * @memberof FunctionDataModal
+   */
   public get objectTypes(): GraphData[] {
     let objectTypes;
     try {

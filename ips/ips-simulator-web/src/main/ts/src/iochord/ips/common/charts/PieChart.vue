@@ -9,10 +9,6 @@
   </section>
 </template>
 
-<style>
-
-</style>
-
 <script lang="ts">
 import { Vue, Component, Prop } from 'vue-property-decorator';
 import BaseComponent from '../ui/layout/class/BaseComponent';

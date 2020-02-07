@@ -15,26 +15,9 @@
 </template>
 
 <style scoped>
-/**
- *
- * @package ips
- * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
- * @since 2019
- *
- */
 .content.component {
   width: 100%;
 }
-</style>
-
-<style>
-/**
- *
- * @package ips
- * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
- * @since 2019
- *
- */
 </style>
 
 <script lang="ts">
@@ -45,26 +28,33 @@ import { Component, Vue } from 'vue-property-decorator';
 import RibbonComponent from './RibbonComponent.vue';
 import BaseComponent from '@/iochord/ips/common/ui/layout/class/BaseComponent';
 
-
-/**
- *
- * @package ips
- * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
- * @since 2019
- *
- */
 @Component({
   components: {
     RibbonComponent,
   },
 })
+
 /**
+ * Content component of PageLayout
+ *
+ * @export
+ * @class ContentComponent
+ * @extends {BaseComponent}
+ *
  * @package ips
  * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
  * @since 2019
- *
  */
 export default class ContentComponent extends BaseComponent {
+
+  /**
+   * Boolean function to evaluate whether a ribbon component exists. False otherwise.
+   *
+   * @readonly
+   * @private
+   * @type {boolean}
+   * @memberof ContentComponent
+   */
   private get hasRibbonComponent(): boolean {
     return !!this.$slots['ribbon-menu-item'];
   }

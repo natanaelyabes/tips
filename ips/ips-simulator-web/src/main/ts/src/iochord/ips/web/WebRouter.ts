@@ -4,7 +4,7 @@ import HomeRouter from './home/HomeRouter';
 import UserRouter from './user/UserRouter';
 
 /**
- * Router registry for web page.
+ * Router registry for the web page.
  *
  * @package ips
  * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>

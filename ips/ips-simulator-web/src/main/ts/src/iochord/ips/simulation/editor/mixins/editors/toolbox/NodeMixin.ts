@@ -29,8 +29,11 @@ import * as NODE_FACTORY from '@/iochord/ips/common/graph/ism/enums/NODE';
 import { BRANCH_GATE, BRANCH_TYPE } from '@/iochord/ips/common/graph/ism/enums/BRANCH';
 import { GraphBranchNodeImpl } from '@/iochord/ips/common/graph/ism/class/components/GraphBranchNodeImpl';
 
-
-// Enums of NODE
+/**
+ * Enumerations of types of the node.
+ *
+ * @enum {number}
+ */
 enum NODE {
   activity = 'activity',
   start = 'start',
@@ -39,7 +42,6 @@ enum NODE {
   monitor = 'monitor',
 }
 
-// Fetch module from stores
 const graphModule = getModule(GraphModule);
 const editorState = getModule(EditorState);
 
@@ -52,16 +54,35 @@ const editorState = getModule(EditorState);
     );
   },
 })
+
 /**
+ * The node mixin class.
+ *
+ * @export
+ * @class NodeMixin
+ * @extends {BaseComponent}
+ *
  * @package ips
  * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
  * @since 2019
- *
  */
 export default class NodeMixin extends BaseComponent {
 
+  /**
+   * The new node object.
+   *
+   * @type {JointGraphNodeImpl}
+   * @memberof NodeMixin
+   */
   public newNode?: JointGraphNodeImpl;
 
+  /**
+   * Create new node object.
+   *
+   * @param {NODE} type
+   * @param {MouseEvent} e
+   * @memberof NodeMixin
+   */
   public createNode(type: NODE, e: MouseEvent) {
 
     /** Local variable initialization */
@@ -96,6 +117,13 @@ export default class NodeMixin extends BaseComponent {
     editorState.setDragging(true);
   }
 
+  /**
+   * Draw the node to canvas.
+   *
+   * @param {MouseEvent} e
+   * @param {JointGraphPageImpl} activePage
+   * @memberof NodeMixin
+   */
   public moveNode(e: MouseEvent, activePage: JointGraphPageImpl) {
     if (editorState.dragging && graphModule.newItem !== null) {
 
@@ -121,6 +149,12 @@ export default class NodeMixin extends BaseComponent {
     }
   }
 
+  /**
+   * Cancel the creation of node object.
+   *
+   * @param {KeyboardEvent} e
+   * @memberof NodeMixin
+   */
   public cancelCreateNode(e: KeyboardEvent) {
     if (e.key === 'Escape') {
       if (editorState.dragging && (graphModule.newItem)) {
@@ -154,6 +188,13 @@ export default class NodeMixin extends BaseComponent {
     }
   }
 
+  /**
+   * Delete node object from the canvas.
+   *
+   * @param {JointGraphPageImpl} activePage
+   * @param {joint.dia.Element} cell
+   * @memberof NodeMixin
+   */
   public deleteNode(activePage: JointGraphPageImpl, cell: joint.dia.Element) {
 
     // Check if cell is a node object
@@ -188,6 +229,13 @@ export default class NodeMixin extends BaseComponent {
     }
   }
 
+  /**
+   * Draw node object to screen, then store and commit the new node object to vuex store.
+   *
+   * @param {MouseEvent} e
+   * @param {JointGraphPageImpl} activePage
+   * @memberof NodeMixin
+   */
   public saveNode(e: MouseEvent, activePage: JointGraphPageImpl) {
     editorState.setDragging(false);
     if (graphModule.newItem !== null) {

@@ -6,26 +6,24 @@
 <template>
   <router-view></router-view>
 </template>
-<style>
-</style>
+
 <script lang="ts">
 import { Component, Vue  } from 'vue-property-decorator';
 
-/**
- *
- * @package ips
- * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
- * @since 2019
- *
- */
 @Component
 
 /**
+ * Base layout for IPS application.
+ *
+ * @export
+ * @class BaseLayout
+ * @extends {Vue}
+ *
  * @package ips
  * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
  * @since 2019
- *
  */
 export default class BaseLayout extends Vue {
+  //
 }
 </script>

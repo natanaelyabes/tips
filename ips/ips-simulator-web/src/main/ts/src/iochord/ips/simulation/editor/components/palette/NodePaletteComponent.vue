@@ -73,20 +73,46 @@ const graphModule = getModule(GraphModule);
     );
   },
 })
+
 /**
+ * The node palette component.
+ *
+ * @export
+ * @class NodePaletteComponent
+ * @extends {Mixins(BaseComponent, PaletteMixin)}
+ *
  * @package ips
  * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
  * @since 2019
- *
  */
 export default class NodePaletteComponent extends Mixins(BaseComponent, PaletteMixin) {
-  @Prop({ default: false })
-  public isDisabled?: boolean;
 
+  /**
+   * Indicates whether node pallete component is being disabled. False otherwise.
+   *
+   * @type {boolean}
+   * @memberof NodePaletteComponent
+   */
+  @Prop({ default: false }) public isDisabled?: boolean;
+
+  /**
+   * Returns the TOOLBOX.NODE enumeration.
+   *
+   * @readonly
+   * @type {TOOLBOX}
+   * @memberof NodePaletteComponent
+   */
   public get NODE(): TOOLBOX {
     return TOOLBOX.NODE;
   }
 
+  /**
+   * Returns the TOOLBOX.CONNECTOR enumeration.
+   *
+   * @readonly
+   * @type {TOOLBOX}
+   * @memberof NodePaletteComponent
+   */
   public get CONNECTOR(): TOOLBOX {
     return TOOLBOX.CONNECTOR;
   }

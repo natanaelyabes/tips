@@ -69,37 +69,66 @@ import { GraphNode } from '../../../../common/graph/ism/interfaces/GraphNode';
 import { JointGraphPageImpl } from '@/iochord/ips/common/graph/ism/rendering-engine/joint/shapes/class/JointGraphPageImpl';
 import GraphSubject from '@/iochord/ips/common/graph/ism/rxjs/GraphSubject';
 
-
 // Vuex
 const graphModule = getModule(GraphModule);
 
-/**
- *
- * @package ips
- * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
- * @since 2019
- *
- */
 @Component
 
 /**
+ * The start node modal.
+ *
+ * @export
+ * @class StartNodeModal
+ * @extends {SemanticComponent}
+ * @implements {Modal<JointGraphPageImpl, GraphStartEventNodeImpl>}
+ *
  * @package ips
  * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
  * @since 2019
- *
  */
 export default class StartNodeModal extends SemanticComponent implements Modal<JointGraphPageImpl, GraphStartEventNodeImpl> {
 
-  // Whole object properties
+  /**
+   * The graph start event node object.
+   *
+   * @private
+   * @type {GraphStartEventNodeImpl}
+   * @memberof StartNodeModal
+   */
   private properties!: GraphStartEventNodeImpl;
 
-  // Renderer page
+  /**
+   * The graph page object.
+   *
+   * @private
+   * @type {JointGraphPageImpl}
+   * @memberof StartNodeModal
+   */
   private page!: JointGraphPageImpl;
 
-  // Component properties
+  /**
+   * The label of start event node.
+   *
+   * @private
+   * @memberof StartNodeModal
+   */
   private label = '';
+
+  /**
+   * The generator data object as string reference.
+   *
+   * @private
+   * @memberof StartNodeModal
+   */
   private generator = '';
 
+  /**
+   * Assigns the properties of start event node to the start event node modal properties.
+   *
+   * @param {JointGraphPageImpl} page
+   * @param {GraphStartEventNodeImpl} object
+   * @memberof StartNodeModal
+   */
   public populateProperties(page: JointGraphPageImpl, object: GraphStartEventNodeImpl): void {
 
     $('#start_txtgen').dropdown({ clearable: true });
@@ -126,6 +155,13 @@ export default class StartNodeModal extends SemanticComponent implements Modal<J
 
   }
 
+  /**
+   * Store the properties into start event node object, commit to vuex store.
+   *
+   * @param {JointGraphPageImpl} page
+   * @param {GraphStartEventNodeImpl} object
+   * @memberof StartNodeModal
+   */
   public saveProperties(page: JointGraphPageImpl, object: GraphStartEventNodeImpl): void {
     const nodePageId = (object.getId() as string).split('-')[0];
     const nodePage = (graphModule.graph.getPages() as TSMap<string, GraphPage>).get(nodePageId);
@@ -162,6 +198,13 @@ export default class StartNodeModal extends SemanticComponent implements Modal<J
     });
   }
 
+  /**
+   * Returns the list of generators.
+   *
+   * @readonly
+   * @type {GraphData[]}
+   * @memberof StartNodeModal
+   */
   public get generators(): GraphData[] {
     let generators;
     try {

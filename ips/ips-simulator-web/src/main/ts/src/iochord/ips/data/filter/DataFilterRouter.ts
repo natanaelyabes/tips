@@ -1,11 +1,11 @@
 import { RouteConfig } from 'vue-router';
 
 /**
+ * Router properties for the data filter module.
  *
  * @package ips
  * @author Riska A. Sutrisnowati <riska@iochord.com>
  * @since 2019
- *
  */
 export default [
   {

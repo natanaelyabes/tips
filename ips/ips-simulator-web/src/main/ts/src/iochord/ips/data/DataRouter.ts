@@ -7,21 +7,21 @@ import DataHistoryRouter from './history/DataHistoryRouter';
 
 
 /**
+ * The router properties for data connection module.
  *
  * @package ips
- * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
+ * @author Riska A. Sutrisnowati <riska@iochord.com>
  * @since 2019
- *
  */
 export default [
   {
     path: `data`,
     component: () => import(/* webpackChunkName: "ips-common-layout-base" */ '@/iochord/ips/common/ui/components/layout/IpsLayout.vue'),
     children: [
-      ...DataConnectionRouter as RouteConfig[],
-      ...DataFilterRouter as RouteConfig[],
-      ...DataMappingRouter as RouteConfig[],
-      ...DataHistoryRouter as RouteConfig[],
+      ...DataConnectionRouter,
+      ...DataFilterRouter,
+      ...DataMappingRouter,
+      ...DataHistoryRouter,
     ],
   },
 ] as RouteConfig[];

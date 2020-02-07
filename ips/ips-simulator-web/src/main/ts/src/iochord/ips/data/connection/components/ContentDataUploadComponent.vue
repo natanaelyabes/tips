@@ -1,6 +1,6 @@
 <!--
   @package ips
-  @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
+  @author Riska Asriana Sutrisnowati <riska@iochord.com>
   @since 2019
 -->
 <template>
@@ -54,17 +54,47 @@ import DataConnectionService, { ImportCsvConfiguration } from '@/iochord/ips/com
 @Component
 
 /**
- * @package ips
- * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
- * @since 2019
+ * Content data upload component.
  *
+ * @export
+ * @class ContentDataUploadComponent
+ * @extends {BaseComponent}
+ *
+ * @package ips
+ * @author Riska Asriana Sutrisnowati <riska@iochord.com>
+ * @since 2019
  */
 export default class ContentDataUploadComponent extends BaseComponent {
 
+  /**
+   * Status to indicate whether current component is in the uploading state. False otherwise.
+   *
+   * @type {boolean}
+   * @memberof ContentDataUploadComponent
+   */
   public isUploading: boolean = false;
+
+  /**
+   * Status to indicate the upload state.
+   *
+   * @type {string}
+   * @memberof ContentDataUploadComponent
+   */
   public uploadStatus: string = '';
+
+  /**
+   * CSV import configuration.
+   *
+   * @type {ImportCsvConfiguration}
+   * @memberof ContentDataUploadComponent
+   */
   public config: ImportCsvConfiguration = new ImportCsvConfiguration();
 
+  /**
+   * Import CSV from local files.
+   *
+   * @memberof ContentDataUploadComponent
+   */
   public doImport() {
     const self = this;
     const frmUpload = self.$refs['frmUpload'] as HTMLFormElement;
@@ -83,12 +113,5 @@ export default class ContentDataUploadComponent extends BaseComponent {
       });
     }
   }
-
-  /** @Override */
-  public async mounted(): Promise<void> {
-    //
-  }
 }
-
 </script>
-

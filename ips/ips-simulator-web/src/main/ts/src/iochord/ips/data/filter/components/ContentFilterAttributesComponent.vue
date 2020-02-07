@@ -1,6 +1,6 @@
 <!--
   @package ips
-  @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
+  @author Riska Asriana Sutrisnowati <riska@iochord.com>
   @since 2019
 -->
 <template>
@@ -153,10 +153,6 @@
   </div>
 </template>
 
-<style>
-
-</style>
-
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator';
 import BaseComponent from '@/iochord/ips/common/ui/layout/class/BaseComponent';
@@ -164,20 +160,48 @@ import BaseComponent from '@/iochord/ips/common/ui/layout/class/BaseComponent';
 @Component
 
 /**
- * @package ips
- * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
- * @since 2019
+ * Content filter attributes component.
  *
+ * @export
+ * @class ContentFilterAttributesComponent
+ * @extends {BaseComponent}
+ *
+ * @package ips
+ * @author Riska Asriana Sutrisnowati <riska@iochord.com>
+ * @since 2019
  */
 export default class ContentFilterAttributesComponent extends BaseComponent {
 
-public selected: any = [];
-public selectAllFlag: boolean = false;
+  /**
+   * Selected attributes.
+   *
+   * @type {*}
+   * @memberof ContentFilterAttributesComponent
+   */
+  public selected: any = [];
 
+  /**
+   * Flag to select all items.
+   *
+   * @type {boolean}
+   * @memberof ContentFilterAttributesComponent
+   */
+  public selectAllFlag: boolean = false;
+
+  /**
+   * Select all attributes of the content filter.
+   *
+   * @memberof ContentFilterAttributesComponent
+   */
   public selectAll(): void {
     console.log('select all');
   }
 
+  /**
+   * Deselect all attributes of the content filter.
+   *
+   * @memberof ContentFilterAttributesComponent
+   */
   public deselectAll(): void {
     console.log('deselect all');
   }

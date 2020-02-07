@@ -28,37 +28,6 @@
               </select>
             </div>
           </div>
-          <!-- <div class="row">
-            <div class="sixteen wide column">
-              <h4>Type</h4>
-            </div>
-          </div>
-          <div class="row">
-            <div class="twelve wide column">
-              <input type="text" id="x_txt_label">
-            </div>
-            <div class="two wide column">
-              <button class="ui button">...</button>
-            </div>
-            <div class="two wide column">
-              <button class="ui positive basic button">
-                <i class="plus icon"></i>
-              </button>
-            </div>
-          </div>
-          <div class="row">
-            <div class="twelve wide column">
-              <input type="text" id="x_txt_label">
-            </div>
-            <div class="two wide column">
-              <button class="ui button">...</button>
-            </div>
-            <div class="two wide column">
-              <button class="ui negative basic button">
-                <i class="close icon"></i>
-              </button>
-            </div>
-          </div> -->
         </div>
       </div>
     </div>
@@ -68,16 +37,6 @@
     </div>
   </div>
 </template>
-
-<style>
-/**
- *
- * @package ips
- * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
- * @since 2019
- *
- */
-</style>
 
 <script lang="ts">
 import { Component, Prop, Watch, Vue } from 'vue-property-decorator';
@@ -97,36 +56,67 @@ declare const $: any;
 
 const graphModule = getModule(GraphModule);
 
-/**
- *
- * @package ips
- * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
- * @since 2019
- *
- */
 @Component
 
 /**
+ * The object type data modal.
+ *
+ * @class ObjectTypeDataModal
+ * @extends {SemanticComponent}
+ * @implements {Modal<JointGraphPageImpl, GraphDataObjectTypeImpl>}
+ *
  * @package ips
  * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
  * @since 2019
- *
  */
 export default class ObjectTypeDataModal extends SemanticComponent implements Modal<JointGraphPageImpl, GraphDataObjectTypeImpl> {
 
-  // Whole object properties
+  /**
+   * The properties of object type data modal.
+   *
+   * @private
+   * @type {GraphDataObjectTypeImpl}
+   * @memberof ObjectTypeDataModal
+   */
   private properties!: GraphDataObjectTypeImpl;
 
-  // Page renderer
+  /**
+   * The graph page object.
+   *
+   * @private
+   * @type {JointGraphPageImpl}
+   * @memberof ObjectTypeDataModal
+   */
   private page!: JointGraphPageImpl;
 
-  // Component properties
+  /**
+   * The label of object type.
+   *
+   * @private
+   * @type {string}
+   * @memberof ObjectTypeDataModal
+   */
   private label: string = '';
+
+  /**
+   * The table of the object type.
+   *
+   * @private
+   * @type {string}
+   * @memberof ObjectTypeDataModal
+   */
   private table: string = '';
 
+  /**
+   * Assigns the properties of object type data node to the object type data modal properties.
+   *
+   * @param {JointGraphPageImpl} page
+   * @param {GraphDataObjectTypeImpl} object
+   * @memberof ObjectTypeDataModal
+   */
   public populateProperties(page: JointGraphPageImpl, object: GraphDataObjectTypeImpl) {
 
-    // Whole object properties
+    // Object properties
     this.properties = object;
 
     // Page renderer
@@ -147,6 +137,13 @@ export default class ObjectTypeDataModal extends SemanticComponent implements Mo
     ;
   }
 
+  /**
+   * Store the properties into object type data object, commit to vuex store.
+   *
+   * @param {JointGraphPageImpl} page
+   * @param {GraphDataObjectTypeImpl} object
+   * @memberof ObjectTypeDataModal
+   */
   public saveProperties(page: JointGraphPageImpl, object: GraphDataObjectTypeImpl) {
     const dataPageId = (object.getId() as string).split('-')[0];
     const dataPage = (graphModule.graph.getPages() as TSMap<string, GraphPage>).get(dataPageId);
@@ -183,6 +180,13 @@ export default class ObjectTypeDataModal extends SemanticComponent implements Mo
     });
   }
 
+  /**
+   * Returns the tables of the object type data modal.
+   *
+   * @readonly
+   * @type {GraphData[]}
+   * @memberof ObjectTypeDataModal
+   */
   public get tables(): GraphData[] {
     let table;
     try {

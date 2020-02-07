@@ -32,13 +32,6 @@
 </template>
 
 <style scoped>
-/**
- *
- * @package ips
- * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
- * @since 2019
- *
- */
 .workspace.component {
   height: 100%;
   overflow-x: auto;
@@ -49,17 +42,6 @@
 }
 </style>
 
-<style>
-/**
- *
- * @package ips
- * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
- * @since 2019
- *
- */
-</style>
-
-
 <script lang="ts">
 // Vue & Libraries
 import { Component, Vue } from 'vue-property-decorator';
@@ -69,35 +51,58 @@ import SidebarComponent from './SidebarComponent.vue';
 import ContentComponent from './ContentComponent.vue';
 import BaseComponent from '@/iochord/ips/common/ui/layout/class/BaseComponent';
 
-
-/**
- *
- * @package ips
- * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
- * @since 2019
- *
- */
 @Component({
   components: {
     SidebarComponent,
     ContentComponent,
   },
 })
+
 /**
+ * Workspace component.
+ *
+ * @export
+ * @class WorkspaceComponent
+ * @extends {BaseComponent}
+ *
  * @package ips
  * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
  * @since 2019
- *
  */
 export default class WorkspaceComponent extends BaseComponent {
+
+  /**
+   * Boolean function to evaluate whether current component has left sidebar component. False otherwise.
+   *
+   * @readonly
+   * @private
+   * @type {boolean}
+   * @memberof WorkspaceComponent
+   */
   private get hasLeftSidebarComponent(): boolean {
     return !!this.$slots['left-sidebar-menu-item'];
   }
 
+  /**
+   * Boolean function to evaluate whether current component has content component. False otherwise.
+   *
+   * @readonly
+   * @private
+   * @type {boolean}
+   * @memberof WorkspaceComponent
+   */
   private get hasContentComponent(): boolean {
     return !!this.$slots['content'];
   }
 
+  /**
+   * Boolean function to evaluate whether current component has right sidebar component. False otherwise.
+   *
+   * @readonly
+   * @private
+   * @type {boolean}
+   * @memberof WorkspaceComponent
+   */
   private get hasRightSidebarComponent(): boolean {
     return !!this.$slots['right-sidebar-menu-item'];
   }
