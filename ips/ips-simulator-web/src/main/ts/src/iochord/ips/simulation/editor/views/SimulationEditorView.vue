@@ -141,13 +141,6 @@
 </template>
 
 <style scoped>
-/**
- *
- * @package ips
- * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
- * @since 2019
- *
- */
 .image-icon .ui.image {
   border-radius: 0;
   margin-bottom: .5em;
@@ -166,13 +159,6 @@ i.big.icon {
 </style>
 
 <style>
-/**
- *
- * @package ips
- * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
- * @since 2019
- *
- */
 .editor.view {
   height: 100%;
   display: flex;
@@ -240,13 +226,6 @@ const graphModule = getModule(GraphModule);
 
 declare const $: any;
 
-/**
- *
- * @package ips
- * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
- * @since 2019
- *
- */
 @Component<SimulationEditorView>({
   components: {
     WrapperComponent,
@@ -267,22 +246,54 @@ declare const $: any;
     );
   },
 })
+
 /**
+ * The simulation editor view.
+ *
+ * @export
+ * @class SimulationEditorView
+ * @extends {AppLayoutView}
+ *
  * @package ips
  * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
  * @since 2019
- *
  */
 export default class SimulationEditorView extends AppLayoutView {
 
+  /**
+   * Indicates whether a simulation editor view is being disabled. False otherwise.
+   *
+   * @type {boolean}
+   * @memberof SimulationEditorView
+   */
   public isDisabled: boolean = false;
+
+  /**
+   * Indicates whether a simulation editor is in the running state. False otherwise.
+   *
+   * @type {boolean}
+   * @memberof SimulationEditorView
+   */
   public isRunning: boolean = false;
 
+  /**
+   * Report object of the simulation editor.
+   *
+   * @private
+   * @type {*}
+   * @memberof SimulationEditorView
+   */
   private report: any = {
     groups: {},
   };
 
-  // Please find efficient way to format this
+  /**
+   * Returns the duration in DD:hh:mm:ss format
+   *
+   * @param {*} seconds
+   * @returns
+   * @memberof SimulationEditorView
+   */
   public getDurationString(seconds: any) {
     seconds = Number(seconds);
     const d = Math.floor(seconds / (3600 * 24));
@@ -296,17 +307,33 @@ export default class SimulationEditorView extends AppLayoutView {
     return dDisplay + hDisplay + mDisplay + sDisplay;
   }
 
-  /** @Override */
+  /**
+   * Override the browser properties.
+   *
+   * @override
+   * @memberof SimulationEditorView
+   */
   public overrideBrowserProperties(): void {
     this.setDocumentTitle('Simulation Editor: Editor');
   }
 
-  /** @Override */
+  /**
+   * Assigns the title of the simulation editor view.
+   *
+   * @override
+   * @memberof SimulationEditorView
+   */
   public setTitle(): void {
     this.title = `Editor`;
   }
 
-  /** @Override */
+  /**
+   * Vue mounted lifecycle.
+   *
+   * @override
+   * @returns {Promise<void>}
+   * @memberof SimulationEditorView
+   */
   public async mounted(): Promise<void> {
     try {
 
@@ -345,6 +372,11 @@ export default class SimulationEditorView extends AppLayoutView {
     });
   }
 
+  /**
+   * To load and play the simulation model.
+   *
+   * @memberof SimulationEditorView
+   */
   public async loadNPlay() {
     this.isRunning = true;
     $('.editor.canvas.ui.basic.segment').dimmer({
@@ -361,20 +393,42 @@ export default class SimulationEditorView extends AppLayoutView {
     this.isRunning = false;
   }
 
+  /**
+   * To create new simulation model and reset the canvas as blank.
+   *
+   * @memberof SimulationEditorView
+   */
   public async modelCreate() {
     await graphModule.newGraph();
     this.forceReRender();
   }
 
+  /**
+   * Load the example of simulation model.
+   *
+   * @memberof SimulationEditorView
+   */
   public async modelLoadExample() {
     await graphModule.loadExampleGraph();
     this.forceReRender();
   }
 
+  /**
+   * Performs auto-layout algorithm to the graph and arrange the simulation model.
+   *
+   * @memberof SimulationEditorView
+   */
   public modelAutoLayout() {
     this.forceReRender();
   }
 
+  /**
+   * Returns the graph data object.
+   *
+   * @readonly
+   * @type {(Graph | undefined)}
+   * @memberof SimulationEditorView
+   */
   public get graphData(): Graph | undefined {
     return graphModule.graph;
   }

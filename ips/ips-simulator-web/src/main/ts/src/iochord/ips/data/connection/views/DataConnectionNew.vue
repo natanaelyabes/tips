@@ -1,6 +1,6 @@
 <!--
   @package ips
-  @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
+  @author Riska Asriana Sutrisnowati <riska@iochord.com>
   @since 2019
 -->
 <template>
@@ -79,27 +79,61 @@ import ItemConnectionComponent from '../components/ItemConnectionComponent.vue';
 })
 
 /**
- * @package ips
- * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
- * @since 2019
+ * Data connection view.
  *
+ * @export
+ * @class DataConnectionNew
+ * @extends {ExplorerLayoutView}
+ *
+ * @package ips
+ * @author Riska Asriana Sutrisnowati <riska@iochord.com>
+ * @since 2019
  */
-export default class SandboxDataConnectionNew extends ExplorerLayoutView {
+export default class DataConnectionNew extends ExplorerLayoutView {
+
+  /**
+   * The title of data connection view.
+   *
+   * @type {string}
+   * @memberof DataConnectionNew
+   */
   public title: string = '';
+
+  /**
+   * Current content component.
+   *
+   * @type {string}
+   * @memberof DataConnectionNew
+   */
   public currentContentComponent: string = 'ContentOraclePropertiesComponent';
 
+  /**
+   * Vue mounted lifecycle.
+   *
+   * @memberof DataConnectionNew
+   */
   public mounted(): void {
     this.$root.$on('ebContentComponent', (prm: string) => {
       this.currentContentComponent = prm;
     });
   }
 
-  /** @override */
+  /**
+   * Override browser properties.
+   *
+   * @override
+   * @memberof DataConnectionNew
+   */
   public overrideBrowserProperties() {
     this.setDocumentTitle('Data Management: Import New Connection');
   }
 
-  /** @Override */
+  /**
+   * Assigns title to the data connection view.
+   *
+   * @override
+   * @memberof DataConnectionNew
+   */
   public setTitle(): void {
     this.title = `New Connection`;
   }

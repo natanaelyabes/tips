@@ -1,6 +1,6 @@
 <!--
   @package ips
-  @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
+  @author Riska Asriana Sutrisnowati <riska@iochord.com>
   @since 2019
 -->
 <template>
@@ -173,10 +173,6 @@
   </div>
 </template>
 
-<style>
-
-</style>
-
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator';
 import BaseComponent from '@/iochord/ips/common/ui/layout/class/BaseComponent';
@@ -190,27 +186,50 @@ declare const $: any;
     HistogramChart,
   },
 })
+
 /**
- * @package ips
- * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
- * @since 2019
+ * Content filter time component.
  *
+ * @export
+ * @class ContentFilterTimeComponent
+ * @extends {BaseComponent}
+ *
+ * @package ips
+ * @author Riska Asriana Sutrisnowati <riska@iochord.com>
+ * @since 2019
  */
 export default class ContentFilterTimeComponent extends BaseComponent {
-// $('#standard_calendar')
-//   .calendar()
-// ;
+
+  /**
+   * Time filter offset checkbox model.
+   *
+   * @type {string}
+   * @memberof ContentFilterTimeComponent
+   */
   public timefilterOffsetCheckboxModel: string = '';
+
   public checkTimefilterOfficehourCheckboxModel: string = '';
   public checkTimefilterHolidaysCheckboxModel: string = '';
 
+  /**
+   * Validate offset status.
+   *
+   * @type {boolean}
+   * @memberof ContentFilterTimeComponent
+   */
   public offsetValidated: boolean = true;
+
   public officeHourValidated: boolean = true;
   public holidaysValidated: boolean = true;
 
-  public mounted(): void {
-    console.log($('#timefilterStdtTimeframeCalendar'));
 
+  /**
+   * Vue mounted lifecycle.
+   *
+   * @override
+   * @memberof ContentFilterTimeComponent
+   */
+  public mounted(): void {
     $('#timefilterStdtTimeframeCalendar').calendar({
       type: 'date',
     });
@@ -233,37 +252,32 @@ export default class ContentFilterTimeComponent extends BaseComponent {
   }
 
   public checkTimefilterOfficehourCheckbox(ev: any): void {
-    // console.log(this.checkTimefilterOfficehourCheckboxModel);
-    // console.log(ev);
     if (this.checkTimefilterOfficehourCheckboxModel) {
       this.officeHourValidated = false;
-      // console.log(this.offsetValidated);
     } else {
       this.officeHourValidated = true;
-      // console.log(this.offsetValidated);
     }
   }
 
   public checkTimefilterHolidaysCheckbox(ev: any): void {
-    console.log(this.checkTimefilterHolidaysCheckboxModel);
     if (this.checkTimefilterHolidaysCheckboxModel) {
       this.holidaysValidated = false;
-      // console.log(this.offsetValidated);
     } else {
       this.holidaysValidated = true;
-      // console.log(this.offsetValidated);
     }
   }
 
+  /**
+   * Checkbox method handler for time filter offset status.
+   *
+   * @param {*} ev
+   * @memberof ContentFilterTimeComponent
+   */
   public checkTimefilterOffsetCheckbox(ev: any): void {
-    console.log(this.timefilterOffsetCheckboxModel);
-
     if (this.timefilterOffsetCheckboxModel) {
       this.offsetValidated = false;
-      // console.log(this.offsetValidated);
     } else {
       this.offsetValidated = true;
-      // console.log(this.offsetValidated);
     }
   }
 }

@@ -33,42 +33,42 @@
   </div>
 </template>
 
-<style>
-/**
- *
- * @package ips
- * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
- * @since 2019
- *
- */
-</style>
-
 <script lang="ts">
 import { Component, Prop, Vue, Watch } from 'vue-property-decorator';
 import SemanticComponent from '@/iochord/ips/common/ui/semantic-components/SemanticComponent';
 declare const $: any;
 
-
-/**
- *
- * @package ips
- * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
- * @since 2019
- *
- */
 @Component
 
 /**
+ * The configuration modal.
+ *
+ * @export
+ * @class ConfigurationModal
+ * @extends {SemanticComponent}
+ *
  * @package ips
  * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
  * @since 2019
- *
  */
 export default class ConfigurationModal extends SemanticComponent {
+
+  /**
+   * Declare semantic module for the configuration modal.
+   *
+   * @override
+   * @memberof ConfigurationModal
+   */
   public declareSemanticModules(): void {
     $('.ui.dropdown').dropdown();
     $('.tabular.menu .item').tab();
   }
+
+  /**
+   * Vue mounted lifecycle.
+   *
+   * @memberof ConfigurationModal
+   */
   public mounted(): void {
     $('#sim_config_generate').click(() => {
       const rsc_val = $('#rsc_txt').val();
@@ -106,10 +106,6 @@ export default class ConfigurationModal extends SemanticComponent {
 
       $('#sim_config_tbl').html(gen_tbl);
     });
-  }
-
-  public log(): void {
-    console.log('Test');
   }
 }
 </script>

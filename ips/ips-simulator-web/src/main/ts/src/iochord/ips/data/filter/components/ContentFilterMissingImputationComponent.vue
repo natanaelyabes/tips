@@ -1,6 +1,6 @@
 <!--
   @package ips
-  @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
+  @author Riska Asriana Sutrisnowati <riska@iochord.com>
   @since 2019
 -->
 <template>
@@ -22,7 +22,6 @@
         <div class="column">
           <div class="ui fluid card" style="height: 375px">
             <div class="image" style="height: 305px">
-              <!-- <BarChart :model="barData2"/> -->
               <div class="ui two statistics">
                 <div class="statistic">
                   <div class="value">6 %</div>
@@ -55,20 +54,11 @@
             </div>
           </div>
         </div>
-        <!-- <div class="column">
-          <div class="ui fluid card">
-            <div class="image">
-              <BarChart :model="barData3"/>
-            </div>
-            <div class="content">
-              <label>Number of missing event by category <br />(Category 별 missing event 수)</label>
-            </div>
-          </div>
-        </div> -->
       </div>
     </section>
 
     <div class="ui hidden divider"></div>
+
     <section>
       <h5 class="ui horizontal left aligned divider header">Data handling methods</h5>
       <div class="ui form">
@@ -90,6 +80,7 @@
     </section>
 
     <div class="ui hidden divider"></div>
+
     <!-- Data deletion results -->
     <section  v-if=" selectedMethod == 'deletion'">
       <form class="ui form">
@@ -116,7 +107,6 @@
 
     <!-- Data imputation input parameter & results -->
     <section v-if=" selectedMethod == 'imputation'">
-      <!-- <h5 class="ui horizontal left aligned divider header">Setting Parameters</h5> -->
       <form class="ui form">
         <div class="fields">
           <div class="field">
@@ -127,10 +117,6 @@
             <label>Select variables</label>
             <select class="ui fluid dropdown" v-model="selected" >
               <option v-for="option in atrOptions" :value="option.id" :key="option.id">{{option.text}} </option>
-              <!-- <option value="activity">activity</option>
-              <option value="resource">resource</option>
-              <option value="attribute1">attr1</option>
-              <option value="attribute2">attr2</option> -->
             </select>
           </div>
         </div>
@@ -173,59 +159,142 @@ import IpsTable from '../../../common/table/IpsTable.vue';
     IpsTable,
   },
 })
+
 /**
- * @package ips
- * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
- * @since 2019
+ * Content filter follower component.
  *
+ * @export
+ * @class ContentFilterFollowerComponent
+ * @extends {BaseComponent}
+ *
+ * @package ips
+ * @author Riska Asriana Sutrisnowati <riska@iochord.com>
+ * @since 2019
  */
 export default class ContentFilterMissingImputationComponent extends BaseComponent {
 
+  /**
+   * Method for filter missing imputation.
+   *
+   * @type {string}
+   * @memberof ContentFilterMissingImputationComponent
+   */
   public selectedMethod: string = 'deletion';
+
+  /**
+   * Data for bar chart 1.
+   *
+   * @type {*}
+   * @memberof ContentFilterMissingImputationComponent
+   */
   public barData1: any = [];
+
+  /**
+   * Data for bar chart 2.
+   *
+   * @type {*}
+   * @memberof ContentFilterMissingImputationComponent
+   */
   public barData2: any = [];
+
+  /**
+   * Data for bar chart 3.
+   *
+   * @type {*}
+   * @memberof ContentFilterMissingImputationComponent
+   */
   public barData3: any = [];
+
+  /**
+   * Data for header.
+   *
+   * @type {*}
+   * @memberof ContentFilterMissingImputationComponent
+   */
   public headerTest: any = [];
+
+  /**
+   * Data for model.
+   *
+   * @type {*}
+   * @memberof ContentFilterMissingImputationComponent
+   */
   public dataModelTest: any = [];
+
+  /**
+   * List of selected items.
+   *
+   * @type {*}
+   * @memberof ContentFilterMissingImputationComponent
+   */
   public selected: any = [];
+
+  /**
+   * List of attribute options.
+   *
+   * @type {*}
+   * @memberof ContentFilterMissingImputationComponent
+   */
   public atrOptions: any = [];
+
+  /**
+   * The desired data lose rate if the missing imputation filter is applied.
+   *
+   * @type {number}
+   * @memberof ContentFilterMissingImputationComponent
+   */
   public expectedDataLoseRate: number = 10.0;
+
+  /**
+   * The desired restoration rate if the missing imputation filter is applied.
+   *
+   * @type {number}
+   * @memberof ContentFilterMissingImputationComponent
+   */
   public expectedRestorationRate: number = 78.6;
 
+  /**
+   * Vue mounted lifecycle.
+   *
+   * @memberof ContentFilterMissingImputationComponent
+   */
   public mounted(): void {
-    this.barData2 = [{ name: 'Timestamp', value: 3, type: 'Case 10' },
-                { name: 'Resource', value: 5, type: 'Case 10' },
-                { name: 'Attribute 1', value: 2, type: 'Case 10' },
-                { name: 'Timestamp', value: 2, type: 'Case 24' },
-                { name: 'Resource', value: 2, type: 'Case 24' },
-                { name: 'Attribute 1', value: 2, type: 'Case 24' },
-                { name: 'Attribute 2', value: 2, type: 'Case 24' },
-                { name: 'Timestamp', value: 3, type: 'Case 64' },
-                { name: 'Timestamp', value: 4, type: 'Case 2' },
-                ];
+    this.barData2 = [
+      { name: 'Timestamp', value: 3, type: 'Case 10' },
+      { name: 'Resource', value: 5, type: 'Case 10' },
+      { name: 'Attribute 1', value: 2, type: 'Case 10' },
+      { name: 'Timestamp', value: 2, type: 'Case 24' },
+      { name: 'Resource', value: 2, type: 'Case 24' },
+      { name: 'Attribute 1', value: 2, type: 'Case 24' },
+      { name: 'Attribute 2', value: 2, type: 'Case 24' },
+      { name: 'Timestamp', value: 3, type: 'Case 64' },
+      { name: 'Timestamp', value: 4, type: 'Case 2' }
+    ];
 
-    this.barData1 = [{ name: 'Case 10', value: 10, type: 'missing event' },
-                { name: 'Case 24', value: 8, type: 'missing event' },
-                { name: 'Case 64', value: 3, type: 'missing event' },
-                { name: 'Case 2', value: 4, type: 'missing event' },
-                ];
+    this.barData1 = [
+      { name: 'Case 10', value: 10, type: 'missing event' },
+      { name: 'Case 24', value: 8, type: 'missing event' },
+      { name: 'Case 64', value: 3, type: 'missing event' },
+      { name: 'Case 2', value: 4, type: 'missing event' }
+    ];
 
-    this.barData3 = [{ name: 'Timestamp', value: 3, type: 'missing event' },
-                { name: 'Resource', value: 5, type: 'missing event' },
-                { name: 'Attribute 1', value: 2, type: 'missing event' },
-                { name: 'Timestamp', value: 2, type: 'missing event' },
-                { name: 'Resource', value: 2, type: 'missing event' },
-                { name: 'Attribute 1', value: 2, type: 'missing event' },
-                { name: 'Attribute 2', value: 2, type: 'missing event' },
-                { name: 'Timestamp', value: 3, type: 'missing event' },
-                { name: 'Timestamp', value: 4, type: 'missing event' },
-                ];
+    this.barData3 = [
+      { name: 'Timestamp', value: 3, type: 'missing event' },
+      { name: 'Resource', value: 5, type: 'missing event' },
+      { name: 'Attribute 1', value: 2, type: 'missing event' },
+      { name: 'Timestamp', value: 2, type: 'missing event' },
+      { name: 'Resource', value: 2, type: 'missing event' },
+      { name: 'Attribute 1', value: 2, type: 'missing event' },
+      { name: 'Attribute 2', value: 2, type: 'missing event' },
+      { name: 'Timestamp', value: 3, type: 'missing event' },
+      { name: 'Timestamp', value: 4, type: 'missing event' }
+    ];
 
-    // table data format
+    // Table data format
     this.headerTest = ['Case ID', 'No. of Event', 'Missing Category', 'No. of Missing Event'];
     this.dataModelTest = [[1, 14, 'Resource', 3], [2, 12, 'Timestamp', 2], [3, 10, 'Attr <key, value>', 5]];
 
-    // select option format
+    // Select option format
     this.atrOptions = [
       {id: 1, text: 'attribute 1'},
       {id: 2, text: 'attribute 2'},
@@ -235,12 +304,16 @@ export default class ContentFilterMissingImputationComponent extends BaseCompone
       {id: 6, text: 'activity'},
       {id: 7, text: 'resource'},
     ];
-
   }
 
+  /**
+   * Listens to the changed value for method selection.
+   *
+   * @param {*} ev
+   * @memberof ContentFilterMissingImputationComponent
+   */
   public methodChanged(ev: any): void {
     this.selectedMethod = String($('input[name=method]:checked').val());
   }
-
 }
 </script>

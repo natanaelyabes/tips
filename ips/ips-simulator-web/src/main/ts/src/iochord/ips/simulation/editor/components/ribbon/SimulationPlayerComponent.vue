@@ -28,13 +28,24 @@ import BaseComponent from '@/iochord/ips/common/ui/layout/class/BaseComponent';
 @Component
 
 /**
+ * The simulation player component.
+ *
+ * @export
+ * @class SimulationPlayerComponent
+ * @extends {BaseComponent}
+ *
  * @package ips
  * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
  * @since 2019
- *
  */
 export default class SimulationPlayerComponent extends BaseComponent {
-  @Prop({ default: false })
-  public isPlaying?: boolean;
+
+  /**
+   * Indicates whether a simulation player is in the playing state. False otherwise.
+   *
+   * @type {boolean}
+   * @memberof SimulationPlayerComponent
+   */
+  @Prop({ default: false }) public isPlaying?: boolean;
 }
 </script>

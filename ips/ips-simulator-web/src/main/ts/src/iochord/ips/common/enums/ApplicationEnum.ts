@@ -1,4 +1,8 @@
 /**
+ * @module   iochord/ips/common/enums/
+ */
+
+/**
  * Application wide enum
  *
  * @package ips

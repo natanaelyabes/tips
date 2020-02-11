@@ -1,6 +1,6 @@
 <!--
   @package ips
-  @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
+  @author Riska Asriana Sutrisnowati <riska@iochord.com>
   @since 2019
 -->
 <template>
@@ -79,20 +79,40 @@ import ItemConnectionComponent from '../components/ItemConnectionComponent.vue';
 })
 
 /**
- * @package ips
- * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
- * @since 2019
+ * Data connection upload view.
  *
+ * @export
+ * @class DataConnectionNew
+ * @extends {ExplorerLayoutView}
+ *
+ * @package ips
+ * @author Riska Asriana Sutrisnowati <riska@iochord.com>
+ * @since 2019
  */
-export default class SandboxDataConnectionUpload extends ExplorerLayoutView {
+export default class DataConnectionUpload extends ExplorerLayoutView {
+
+  /**
+   * The title of data connection upload.
+   *
+   * @type {string}
+   * @memberof DataConnectionUpload
+   */
   public title: string = '';
 
-  /** @override */
+  /**
+   * Override the browser properties.
+   *
+   * @memberof DataConnectionUpload
+   */
   public overrideBrowserProperties() {
     this.setDocumentTitle('Data Management: Import File');
   }
 
-  /** @Override */
+  /**
+   * Assigns title to the data connection upload.
+   *
+   * @memberof DataConnectionUpload
+   */
   public setTitle(): void {
     this.title = `Upload`;
   }

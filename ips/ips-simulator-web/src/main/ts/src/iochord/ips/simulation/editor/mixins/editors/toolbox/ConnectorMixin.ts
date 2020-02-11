@@ -39,17 +39,50 @@ const editorState = getModule(EditorState);
     );
   },
 })
+
 /**
+ * The connector mixin class
+ *
+ * @export
+ * @class ConnectorMixin
+ * @extends {BaseComponent}
+ *
  * @package ips
  * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
  * @since 2019
- *
  */
 export default class ConnectorMixin extends BaseComponent {
+
+  /**
+   * New connector object
+   *
+   * @type {JointGraphConnectorImpl}
+   * @memberof ConnectorMixin
+   */
   public newConnector?: JointGraphConnectorImpl;
+
+  /**
+   * The source of the connector.
+   *
+   * @type {GraphNode}
+   * @memberof ConnectorMixin
+   */
   public source?: GraphNode;
+
+  /**
+   * The target of the connector.
+   *
+   * @type {GraphNode}
+   * @memberof ConnectorMixin
+   */
   public target?: GraphNode;
 
+  /**
+   * Create new connector object.
+   *
+   * @param {MouseEvent} e
+   * @memberof ConnectorMixin
+   */
   public createConnector(e: MouseEvent): void {
     document.body.style.cursor = 'crosshair';
 
@@ -75,6 +108,13 @@ export default class ConnectorMixin extends BaseComponent {
     window.addEventListener('keydown', this.cancelCreateConnector);
   }
 
+  /**
+   * Assigns the source node to the connector.
+   *
+   * @param {JointGraphPageImpl} activePage
+   * @param {joint.dia.Element} node
+   * @memberof ConnectorMixin
+   */
   public setSourceNode(activePage: JointGraphPageImpl, node: joint.dia.Element) {
 
     // If it is a node instance
@@ -125,6 +165,13 @@ export default class ConnectorMixin extends BaseComponent {
     }
   }
 
+  /**
+   * Draw connector to the canvas.
+   *
+   * @param {MouseEvent} e
+   * @param {JointGraphPageImpl} activePage
+   * @memberof ConnectorMixin
+   */
   public moveToTargetNode(e: MouseEvent, activePage: JointGraphPageImpl) {
     if (graphModule.newItem && this.source) {
 
@@ -143,6 +190,13 @@ export default class ConnectorMixin extends BaseComponent {
     }
   }
 
+  /**
+   * Assigns target node to the connector.
+   *
+   * @param {JointGraphPageImpl} activePage
+   * @param {joint.dia.Element} node
+   * @memberof ConnectorMixin
+   */
   public setTargetNode(activePage: JointGraphPageImpl, node: joint.dia.Element) {
 
     // If it is a node instance
@@ -241,6 +295,13 @@ export default class ConnectorMixin extends BaseComponent {
     }
   }
 
+  /**
+   * Delete the connector object.
+   *
+   * @param {JointGraphPageImpl} activePage
+   * @param {joint.dia.Element} cell
+   * @memberof ConnectorMixin
+   */
   public deleteConnector(activePage: JointGraphPageImpl, cell: joint.dia.Element) {
 
     // Check if cell is a connector object
@@ -275,6 +336,12 @@ export default class ConnectorMixin extends BaseComponent {
     }
   }
 
+  /**
+   * Cancel create connector object.
+   *
+   * @param {KeyboardEvent} e
+   * @memberof ConnectorMixin
+   */
   public cancelCreateConnector(e: KeyboardEvent): void {
 
     // If escape key was pressed

@@ -12,13 +12,6 @@
 </template>
 
 <style scoped>
-/**
- *
- * @package ips
- * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
- * @since 2019
- *
- */
 .footer.component{
   position: static;
   bottom: 1em;
@@ -30,25 +23,38 @@
 import { Component } from 'vue-property-decorator';
 import BaseComponent from '@/iochord/ips/common/ui/layout/class/BaseComponent';
 
-
-/**
- *
- * @package ips
- * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
- * @since 2019
- *
- */
 @Component
 
 /**
+ * Footer component.
+ *
+ * @export
+ * @class FooterComponent
+ * @extends {BaseComponent}
+ *
  * @package ips
  * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
  * @since 2019
- *
  */
 export default class FooterComponent extends BaseComponent {
+
+  /**
+   * The current date.
+   *
+   * @private
+   * @type {Date}
+   * @memberof FooterComponent
+   */
   private currentDate: Date = new Date();
 
+  /**
+   * Returns the year of current date object.
+   *
+   * @readonly
+   * @private
+   * @type {number}
+   * @memberof FooterComponent
+   */
   private get currentYear(): number {
     return this.currentDate.getFullYear();
   }

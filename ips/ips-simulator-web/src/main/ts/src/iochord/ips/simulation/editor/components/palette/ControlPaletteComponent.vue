@@ -175,23 +175,81 @@ const graphModule = getModule(GraphModule);
 @Component
 
 /**
+ * The control palette component.
+ *
  * @package ips
  * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
  * @since 2019
- *
  */
 export default class ControlPaletteComponent extends BaseComponent {
-  @Prop({ default: false })
-  public isDisabled?: boolean;
 
+  /**
+   * Indicates whether a control palette is being disabled. False otherwise.
+   *
+   * @type {boolean}
+   * @memberof ControlPaletteComponent
+   */
+  @Prop({ default: false }) public isDisabled?: boolean;
+
+  /**
+   * The number of replication performed against simulation model.
+   *
+   * @private
+   * @type {number}
+   * @memberof ControlPaletteComponent
+   */
   private replNum?: number = 0;
+
+  /**
+   * The criteria for stop
+   *
+   * @private
+   * @type {string}
+   * @memberof ControlPaletteComponent
+   */
   private stopCriteria?: string = 'TIME';
+
+  /**
+   * The value for the stopping criteria.
+   *
+   * @private
+   * @type {number}
+   * @memberof ControlPaletteComponent
+   */
   private value?: number = 0;
+
+  /**
+   * The date where simulation begins.
+   *
+   * @private
+   * @type {string}
+   * @memberof ControlPaletteComponent
+   */
   private startSimulationDate?: string = '';
+
+  /**
+   * The function data object as string reference.
+   *
+   * @private
+   * @type {string}
+   * @memberof ControlPaletteComponent
+   */
   private function?: string = '';
 
+  /**
+   * The graph object.
+   *
+   * @private
+   * @type {*}
+   * @memberof ControlPaletteComponent
+   */
   private graph: any = null;
 
+  /**
+   * To open the control configurations modal.
+   *
+   * @memberof ControlPaletteComponent
+   */
   public openControl(): void {
     $('.ui.control.modal').modal('show');
 
@@ -213,11 +271,23 @@ export default class ControlPaletteComponent extends BaseComponent {
     $('#start-simulation-date').calendar();
   }
 
+  /**
+   * To open the simulation configuration modal.
+   *
+   * @memberof ControlPaletteComponent
+   */
   public openConfiguration(): void {
     $('.ui.configuration.modal').modal('show');
     this.graph = graphModule.graph;
   }
 
+  /**
+   * Returns the list of function data objects as string reference.
+   *
+   * @readonly
+   * @type {GraphData[]}
+   * @memberof ControlPaletteComponent
+   */
   public get functions(): GraphData[] {
     let functions;
     try {
@@ -229,6 +299,5 @@ export default class ControlPaletteComponent extends BaseComponent {
     }
     return functions;
   }
-
 }
 </script>

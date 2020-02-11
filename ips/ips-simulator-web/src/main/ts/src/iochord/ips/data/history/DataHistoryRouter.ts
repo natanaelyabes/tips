@@ -1,11 +1,11 @@
 import { RouteConfig } from 'vue-router';
 
 /**
+ * Router properties for data history.
  *
  * @package ips
  * @author Riska A. Sutrisnowati <riska@iochord.com>
  * @since 2019
- *
  */
 export default [
   {

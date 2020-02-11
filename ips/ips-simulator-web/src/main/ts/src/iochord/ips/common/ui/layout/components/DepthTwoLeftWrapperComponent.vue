@@ -6,7 +6,7 @@
 <template>
   <div class="wrapper component">
 
-  <!--  Header -->
+    <!-- Header -->
     <HeaderComponent>
       <template slot="header-title">
         <slot name="header-title"/>
@@ -21,11 +21,9 @@
       <template slot="depth-one-menu-item">
         <slot name="depth-one-menu-item"></slot>
       </template>
-
       <template slot="depth-two-menu-item">
         <slot name="depth-two-menu-item"></slot>
       </template>
-
       <template slot="content">
         <slot name="content"></slot>
       </template>
@@ -34,22 +32,11 @@
 </template>
 
 <style scoped>
-/**
- *
- * @package ips
- * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
- * @since 2019
- *
- */
 .wrapper.component {
   height: 100%;
   display: flex;
   flex-direction: column;
 }
-</style>
-
-<style>
-
 </style>
 
 <script lang="ts">
@@ -64,13 +51,19 @@ import DepthTwoLeftWorkspaceComponent from '@/iochord/ips/common/ui/layout/compo
     DepthTwoLeftWorkspaceComponent,
   },
 })
+
 /**
+ * Depth two left wrapper component of PageLayout.
+ *
+ * @export
+ * @class DepthTwoLeftWrapperComponent
+ * @extends {BaseComponent}
+ *
  * @package ips
  * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
  * @since 2019
- *
  */
 export default class DepthTwoLeftWrapperComponent extends BaseComponent {
-
+  //
 }
 </script>

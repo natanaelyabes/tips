@@ -26,32 +26,76 @@ const editorState = getModule(EditorState);
 @Component
 
 /**
+ * The canvas mixin object.
+ *
+ * @export
+ * @class CanvasMixin
+ * @extends {Mixins(BaseComponent, PaletteMixin)}
+ *
  * @package ips
  * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
  * @since 2019
- *
  */
 export default class CanvasMixin extends Mixins(BaseComponent, PaletteMixin) {
 
-  // To store graph
+  /**
+   * The graph object.
+   *
+   * @type {Graph}
+   * @memberof CanvasMixin
+   */
   public graph?: Graph;
 
-  // To determine current active page
+  /**
+   * The active page object.
+   *
+   * @type {(JointGraphPageImpl | GraphPage)}
+   * @memberof CanvasMixin
+   */
   public activePage?: JointGraphPageImpl | GraphPage;
 
-  // Container to put current selected element
+  /**
+   * Current selected element object.
+   *
+   * @type {GraphNode}
+   * @memberof CanvasMixin
+   */
   public currentSelectedElement?: GraphNode;
 
-  // Types of node identified within loaded graph
+  /**
+   * The types of node available during the load time.
+   *
+   * @type {Set<string>}
+   * @memberof CanvasMixin
+   */
   public nodeTypes: Set<string> = new Set<string>();
+
+  /**
+   * The types of data available during the load time.
+   *
+   * @type {Set<string>}
+   * @memberof CanvasMixin
+   */
   public dataTypes: Set<string> = new Set<string>();
 
+  /**
+   * The canvas mouse down event handler.
+   *
+   * @param {MouseEvent} e
+   * @memberof CanvasMixin
+   */
   public handleCanvasMouseDown(e: MouseEvent) {
     if (!editorState.dragging && !editorState.drawing) {
       editorState.setDragging(true);
     }
   }
 
+  /**
+   * The canvas mouse move event handler.
+   *
+   * @param {MouseEvent} e
+   * @memberof CanvasMixin
+   */
   public handleCanvasMouseMove(e: MouseEvent) {
     if (editorState.dragging && !editorState.drawing && this.activePage) {
       if (editorState.drawingMode === 'node') {
@@ -68,6 +112,12 @@ export default class CanvasMixin extends Mixins(BaseComponent, PaletteMixin) {
     }
   }
 
+  /**
+   * The canvas mouse up event handler.
+   *
+   * @param {MouseEvent} e
+   * @memberof CanvasMixin
+   */
   public handleCanvasMouseUp(e: MouseEvent) {
     if (editorState.dragging && !editorState.drawing && this.activePage) {
       if (editorState.drawingMode === 'node') {
@@ -82,7 +132,12 @@ export default class CanvasMixin extends Mixins(BaseComponent, PaletteMixin) {
     }
   }
 
-  // TODO: Probably useless
+  /**
+   * The canvas escape button handler.
+   *
+   * @param {KeyboardEvent} e
+   * @memberof CanvasMixin
+   */
   public handleEscapeButton(e: KeyboardEvent) {
     if (editorState.dragging && !editorState.drawing) {
       if (editorState.drawingMode === 'node') {

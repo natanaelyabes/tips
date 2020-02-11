@@ -22,13 +22,6 @@
 </template>
 
 <style scoped>
-/**
- *
- * @package ips
- * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
- * @since 2019
- *
- */
 .image-icon .ui.image {
   border-radius: 0;
   margin-bottom: .5em;
@@ -81,13 +74,6 @@ i.big.icon {
 </style>
 
 <style>
-/**
- *
- * @package ips
- * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
- * @since 2019
- *
- */
 .editor.view {
   height: 100%;
   display: flex;
@@ -153,13 +139,6 @@ const graphModule = getModule(GraphModule);
 
 declare const $: any;
 
-/**
- *
- * @package ips
- * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
- * @since 2019
- *
- */
 @Component({
   components: {
     WrapperComponent,
@@ -179,25 +158,47 @@ declare const $: any;
     );
   },
 })
+
 /**
+ * The model viewer component.
+ *
+ * @export
+ * @class ModelViewer
+ * @extends {AppLayoutView}
+ *
  * @package ips
  * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
  * @since 2019
- *
  */
 export default class ModelViewer extends AppLayoutView {
 
-  /** @Override */
+  /**
+   * Override the browser properties.
+   *
+   * @override
+   * @memberof ModelViewer
+   */
   public overrideBrowserProperties(): void {
     this.setDocumentTitle('Simulation Editor: Editor');
   }
 
-  /** @Override */
+  /**
+   * Assigns a title for the model view.
+   *
+   * @override
+   * @memberof ModelViewer
+   */
   public setTitle(): void {
     this.title = `Editor`;
   }
 
-  /** @Override */
+  /**
+   * Vue mounted lifecycle.
+   *
+   * @override
+   * @returns {Promise<void>}
+   * @memberof ModelViewer
+   */
   public async mounted(): Promise<void> {
     try {
 
@@ -236,6 +237,13 @@ export default class ModelViewer extends AppLayoutView {
     });
   }
 
+  /**
+   * Returns the graph data object.
+   *
+   * @readonly
+   * @type {(Graph | undefined)}
+   * @memberof ModelViewer
+   */
   public get graphData(): Graph | undefined {
     return graphModule.graph;
   }

@@ -9,33 +9,20 @@
   </div>
 </template>
 
-<style>
-/**
- *
- * @package ips
- * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
- * @since 2019
- *
- */
-</style>
-
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
 import IndexLayout from '@/iochord/ips/common/ui/layout/class/IndexLayout';
 
-
 /**
+ * The simulation editor index view.
+ *
+ * @export
+ * @class SimulationEditorIndexView
+ * @extends {IndexLayout}
  *
  * @package ips
  * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
  * @since 2019
- *
- */
-/**
- * @package ips
- * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
- * @since 2019
- *
  */
 export default class SimulationEditorIndexView extends IndexLayout {
   //

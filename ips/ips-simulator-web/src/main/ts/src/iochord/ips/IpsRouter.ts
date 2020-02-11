@@ -2,7 +2,7 @@ import { RouteConfig, Route } from 'vue-router';
 import { ApplicationEnum, BaseUrlEnum } from '@/iochord/ips/common/enums/index';
 
 import DataRouter from './data/DataRouter';
-import ModelRouter from './simulation/ModelRouter';
+import ModelRouter from './simulation/SimulationRouter';
 import AnalysisRouter from './analysis/AnalysisRouter';
 import WebRouter from './web/WebRouter';
 

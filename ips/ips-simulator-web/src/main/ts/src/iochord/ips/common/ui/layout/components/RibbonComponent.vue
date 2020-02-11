@@ -14,13 +14,6 @@
 </template>
 
 <style scoped>
-/**
- *
- * @package ips
- * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
- * @since 2019
- *
- */
 .ribbon.component {
   border-bottom: 1px solid rgba(0,0,0,.2);
 }
@@ -32,13 +25,6 @@
 </style>
 
 <style>
-/**
- *
- * @package ips
- * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
- * @since 2019
- *
- */
  @media screen and (max-width: 1440px) {
   .ribbon.component .ui.menu.secondary {
     width: max-content;
@@ -54,26 +40,24 @@ import { Component, Vue } from 'vue-property-decorator';
 import NavigationBarComponent from '@/iochord/ips/common/ui/semantic-components/navigations/components/NavigationBarComponent.vue';
 import BaseComponent from '@/iochord/ips/common/ui/layout/class/BaseComponent';
 
-
-/**
- *
- * @package ips
- * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
- * @since 2019
- *
- */
 @Component({
   components: {
     NavigationBarComponent,
   },
 })
+
 /**
+ * Ribbon component.
+ *
+ * @export
+ * @class RibbonComponent
+ * @extends {BaseComponent}
+ *
  * @package ips
  * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
  * @since 2019
- *
  */
 export default class RibbonComponent extends BaseComponent {
-
+  //
 }
 </script>

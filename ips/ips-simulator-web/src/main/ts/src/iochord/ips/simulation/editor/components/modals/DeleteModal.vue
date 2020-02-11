@@ -95,21 +95,55 @@ declare const $: any;
     );
   },
 })
+
 /**
+ * The delete modal.
+ *
+ * @export
+ * @class DeleteModal
+ * @extends {SemanticComponent}
+ * @implements {DeletableModal}
+ *
  * @package ips
  * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
  * @since 2019
- *
  */
 export default class DeleteModal extends SemanticComponent implements DeletableModal {
+
+  /**
+   * List of the deleted nodes.
+   *
+   * @private
+   * @type {any[]}
+   * @memberof DeleteModal
+   */
   private nodes: any[] = [];
+
+  /**
+   * The page of the graph.
+   *
+   * @private
+   * @type {JointGraphPageImpl}
+   * @memberof DeleteModal
+   */
   private page?: JointGraphPageImpl;
 
+  /**
+   * Put the nodes and its depended nodes to the list of deleted nodes.
+   *
+   * @param {*} node
+   * @memberof DeleteModal
+   */
   public populateNode(node: any): void {
     node.dependedNodes = this.getDependedNodes(node);
     this.nodes.push(node);
   }
 
+  /**
+   * Reset the modal fields.
+   *
+   * @memberof DeleteModal
+   */
   public resetFields(): void {
     this.nodes.forEach((data) => {
       const pageId = (data.id as string).split('-')[0];
@@ -203,14 +237,32 @@ export default class DeleteModal extends SemanticComponent implements DeletableM
 
   }
 
+  /**
+   * Reset the list of the deleted nodes.
+   *
+   * @memberof DeleteModal
+   */
   public reset(): void {
     this.nodes = [];
   }
 
+  /**
+   * Vue deleted lifecycle
+   *
+   * @override
+   * @memberof DeleteModal
+   */
   public destroyed(): void {
     this.nodes = [];
   }
 
+  /**
+   * Returns the depended nodes of the deleted node.
+   *
+   * @param {*} data
+   * @returns
+   * @memberof DeleteModal
+   */
   public getDependedNodes(data: any) {
     const dependedNodes: any[] = [];
 
@@ -341,6 +393,11 @@ export default class DeleteModal extends SemanticComponent implements DeletableM
     return dependedNodes;
   }
 
+  /**
+   * Declare semantic modules.
+   *
+   * @memberof DeleteModal
+   */
   public declareSemanticModules(): void {
     $('.ui.accordion').accordion();
   }

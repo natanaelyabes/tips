@@ -72,21 +72,49 @@ const graphModule = getModule(GraphModule);
 declare const $: any;
 
 /**
+ * The canvas component.
+ *
+ * @export
+ * @class MinimapComponent
+ * @extends {Mixins(BaseComponent, CanvasMixin)}
+ *
  * @package ips
  * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
  * @since 2019
- *
  */
 export default class MinimapComponent extends Mixins(BaseComponent, CanvasMixin) {
+
+  /**
+   * Response from the web service as the graph object.
+   *
+   * @type {Graph}
+   * @memberof MinimapComponent
+   */
   @Prop() public response?: Graph;
 
+  /**
+   * The SVG Pan and Zoom instance.
+   *
+   * @type {SvgPanZoom.Instance}
+   * @memberof MinimapComponent
+   */
   public panAndZoom?: SvgPanZoom.Instance;
 
+  /**
+   * Vue mounted lifecycle.
+   *
+   * @memberof MinimapComponent
+   */
   public mounted(): void {
     this.loadGraph();
     this.$forceUpdate();
   }
 
+  /**
+   * Load graph into minimap.
+   *
+   * @memberof MinimapComponent
+   */
   public loadGraph(): void {
     try {
 

@@ -38,12 +38,6 @@
           </div>
           Resources
         </a>
-        <!-- <a title="monitor" :disabled="isDisabled" @mousedown="handleToolboxMouseDown(DATA, $event)" :class="'ui basic button item' + (isDisabled ? ' disabled' : '')" >
-          <div class="image-icon">
-            <img src="@/assets/images/icons/simulation_editor_icon/data_toolbox/kpi.png" alt="" class="ui centered image" />
-          </div>
-          Monitor KPI
-        </a> -->
         <a title="queue" :disabled="isDisabled" @mousedown="handleToolboxMouseDown(DATA, $event)" :class="'ui basic button item' + (isDisabled ? ' disabled' : '')" >
           <div class="image-icon">
             <img src="@/assets/images/icons/simulation_editor_icon/data_toolbox/queue.png" alt="" class="ui centered image" />
@@ -55,10 +49,6 @@
   </div>
 </template>
 
-<style>
-
-</style>
-
 <script lang="ts">
 import { Prop, Component, Mixins } from 'vue-property-decorator';
 import BaseComponent from '@/iochord/ips/common/ui/layout/class/BaseComponent';
@@ -67,15 +57,33 @@ import PaletteMixin, { TOOLBOX } from '../../mixins/editors/PaletteMixin';
 @Component
 
 /**
+ * The data palette component.
+ *
+ * @export
+ * @class DataPaletteComponent
+ * @extends {Mixins(BaseComponent, PaletteMixin)}
+ *
  * @package ips
  * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
  * @since 2019
- *
  */
 export default class DataPaletteComponent extends Mixins(BaseComponent, PaletteMixin) {
-  @Prop({ default: false })
-  public isDisabled?: boolean;
 
+  /**
+   * Indicates whether a data palette component is being disabled. False otherwise.
+   *
+   * @type {boolean}
+   * @memberof DataPaletteComponent
+   */
+  @Prop({ default: false }) public isDisabled?: boolean;
+
+  /**
+   * Returns the TOOLBOX.DATA enumeration.
+   *
+   * @readonly
+   * @type {TOOLBOX}
+   * @memberof DataPaletteComponent
+   */
   public get DATA(): TOOLBOX {
     return TOOLBOX.DATA;
   }

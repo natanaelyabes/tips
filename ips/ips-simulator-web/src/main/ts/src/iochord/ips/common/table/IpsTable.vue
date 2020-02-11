@@ -1,7 +1,7 @@
 <!--
   @package ips
-  @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
-  @since 2019
+  @author  Iq Reviessay Pulshashi <pulshashi@ideas.web.id>
+  @since   2019
 -->
 <template>
   <section>
@@ -16,41 +16,60 @@
           <th v-for="(column, k) in row" :key="k">{{column}}</th>
         </tr>
       </tbody>
-      <!-- <tfoot>
-      </tfoot> -->
     </table>
   </section>
 </template>
-
-<style scoped>
-
-</style>
 
 <script lang="ts">
 import { Vue, Component, Prop } from 'vue-property-decorator';
 import BaseComponent from '../ui/layout/class/BaseComponent';
 
-@Component({
-  components: {
+@Component
 
-  },
-})
 /**
- * @package ips
- * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
- * @since 2019
+ * The IPS table component.
  *
+ * @export
+ * @class IpsTable
+ * @extends {BaseComponent}
+ *
+ * @package ips
+ * @author  Iq Reviessay Pulshashi <pulshashi@ideas.web.id>
+ * @since   2019
  */
 export default class IpsTable extends BaseComponent {
+  /**
+   * Header of the table
+   *
+   * @type {*}
+   * @memberof IpsTable
+   */
   @Prop()
   public dataHeader?: any;
 
+  /**
+   * The table data model.
+   *
+   * @type {*}
+   * @memberof IpsTable
+   */
   @Prop()
   public model?: any;
 
+  /**
+   * Pagination object of the table
+   *
+   * @type {*}
+   * @memberof IpsTable
+   */
   @Prop()
   public pagination?: any;
 
+  /**
+   * Perform specific action upon created Vue lifecyle.
+   *
+   * @memberof IpsTable
+   */
   public created(): void {
     const self = this;
   }

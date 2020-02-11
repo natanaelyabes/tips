@@ -6,15 +6,21 @@ import { Component } from 'vue-property-decorator';
 @Component
 
 /**
+ * Implementation of page layout class.
+ *
+ * @export
+ * @class PageLayout
+ * @extends {BaseLayout}
+ * @implements {BrowserHasProperties}
  *
  * @package ips
  * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
  * @since 2019
- *
  */
 export default class PageLayout extends BaseLayout implements BrowserHasProperties {
 
   /**
+   * Mounted lifecycle of Vue.
    *
    * @override
    * @memberof PageLayout

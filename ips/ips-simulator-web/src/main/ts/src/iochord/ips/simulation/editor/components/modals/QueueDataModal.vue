@@ -54,32 +54,6 @@
               <input type="text" v-model="size" id="x_txt_size">
             </div>
           </div>
-          <div class="row">
-            <div class="sixteen wide column">
-              <!-- <table class="ui celled compact table">
-                <thead>
-                  <tr>
-                    <th>Sub Queue ID</th>
-                    <th>Queue Size</th>
-                    <th>Resource ID</th>
-                    <th></th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td>
-                      <button class="ui negative basic button">
-                        <i class="close icon"></i>
-                      </button>
-                    </td>
-                  </tr>
-                </tbody>
-              </table> -->
-            </div>
-          </div>
         </div>
       </div>
     </div>
@@ -89,16 +63,6 @@
     </div>
   </div>
 </template>
-
-<style>
-/**
- *
- * @package ips
- * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
- * @since 2019
- *
- */
-</style>
 
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
@@ -119,39 +83,91 @@ const graphModule = getModule(GraphModule);
 
 declare const $: any;
 
-/**
- *
- * @package ips
- * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
- * @since 2019
- *
- */
 @Component
 
 /**
- * @package ips
- * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
- * @since 2019
+ * The queue data modal.
  *
+ * @export
+ * @class QueueDataModal
+ * @extends {SemanticComponent}
+ * @implements {Modal<JointGraphPageImpl, GraphDataQueueImpl>}
  */
 export default class QueueDataModal extends SemanticComponent implements Modal<JointGraphPageImpl, GraphDataQueueImpl> {
 
-  // Whole object properties
+  /**
+   * The queue data object.
+   *
+   * @private
+   * @type {GraphDataQueueImpl}
+   * @memberof QueueDataModal
+   */
   private properties!: GraphDataQueueImpl;
 
-  // Page renderer
+  /**
+   * The graph page object.
+   *
+   * @private
+   * @type {JointGraphPageImpl}
+   * @memberof QueueDataModal
+   */
   private page!: JointGraphPageImpl;
 
-  // Component properties
+  /**
+   * The label of queue.
+   *
+   * @private
+   * @type {string}
+   * @memberof QueueDataModal
+   */
   private label: string = '';
+
+  /**
+   * Specify the type of the queue.
+   *
+   * @private
+   * @type {QUEUE_TYPE}
+   * @memberof QueueDataModal
+   */
   private type: QUEUE_TYPE = QUEUE_TYPE.FIFO;
+
+  /**
+   * Flag indicates the queue is shared. False otherwise.
+   *
+   * @private
+   * @type {boolean}
+   * @memberof QueueDataModal
+   */
   private shared: boolean = false;
+
+  /**
+   * Indicates the queue is single. False otherwise.
+   *
+   * @private
+   * @type {boolean}
+   * @memberof QueueDataModal
+   */
   private single: boolean = true;
+
+  /**
+   * Determines the size of the queue.
+   *
+   * @private
+   * @type {number}
+   * @memberof QueueDataModal
+   */
   private size: number = 0;
 
+  /**
+   * Assigns the properties of queue data node to the queue data modal properties.
+   *
+   * @param {JointGraphPageImpl} page
+   * @param {GraphDataQueueImpl} object
+   * @memberof QueueDataModal
+   */
   public populateProperties(page: JointGraphPageImpl, object: GraphDataQueueImpl) {
 
-    // Whole object properties
+    // Object properties
     this.properties = object;
 
     // Page renderer
@@ -174,6 +190,13 @@ export default class QueueDataModal extends SemanticComponent implements Modal<J
     ;
   }
 
+  /**
+   * Store the properties into queue data object, commit to vuex store.
+   *
+   * @param {JointGraphPageImpl} page
+   * @param {GraphDataQueueImpl} object
+   * @memberof QueueDataModal
+   */
   public saveProperties(page: JointGraphPageImpl, object: GraphDataQueueImpl) {
     const dataPageId = (object.getId() as string).split('-')[0];
     const dataPage = (graphModule.graph.getPages() as TSMap<string, GraphPage>).get(dataPageId);

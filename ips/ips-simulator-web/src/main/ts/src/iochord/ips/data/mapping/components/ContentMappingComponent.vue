@@ -1,6 +1,6 @@
 <!--
   @package ips
-  @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
+  @author Riska Asriana Sutrisnowati <riska@iochord.com>
   @since 2019
 -->
 <template>
@@ -228,10 +228,15 @@ import ContentDataViewComponent from '../../SandboxDataConnection/components/Con
 @Component
 
 /**
- * @package ips
- * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
- * @since 2019
+ * The content mapping component.
  *
+ * @export
+ * @class ContentMappingComponent
+ * @extends {BaseComponent}
+ *
+ * @package ips
+ * @author Riska Asriana Sutrisnowati <riska@iochord.com>
+ * @since 2019
  */
 export default class ContentMappingComponent extends BaseComponent {
 

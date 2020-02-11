@@ -82,16 +82,6 @@
   </div>
 </template>
 
-<style>
-/**
- *
- * @package ips
- * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
- * @since 2019
- *
- */
-</style>
-
 <script lang="ts">
 import { Component, Prop, Watch, Vue } from 'vue-property-decorator';
 import SemanticComponent from '@/iochord/ips/common/ui/semantic-components/SemanticComponent';
@@ -112,43 +102,121 @@ const graphModule = getModule(GraphModule);
 
 declare const $: any;
 
-
-/**
- *
- * @package ips
- * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
- * @since 2019
- *
- */
 @Component
 
 /**
+ * The generator data modal.
+ *
+ * @class GeneratorDataModal
+ * @extends {SemanticComponent}
+ * @implements {Modal<JointGraphPageImpl, GraphDataGeneratorImpl>}
+ *
  * @package ips
  * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
  * @since 2019
- *
  */
 export default class GeneratorDataModal extends SemanticComponent implements Modal<JointGraphPageImpl, GraphDataGeneratorImpl> {
 
-  // Whole object properties
+  /**
+   * The object of graph data generator.
+   *
+   * @private
+   * @type {GraphDataGeneratorImpl}
+   * @memberof GeneratorDataModal
+   */
   private properties!: GraphDataGeneratorImpl;
 
-  // Page renderer
+  /**
+   * The graph page object.
+   *
+   * @private
+   * @type {JointGraphPageImpl}
+   * @memberof GeneratorDataModal
+   */
   private page!: JointGraphPageImpl;
 
-  // Component properties
+  /**
+   * The label of generator data modal.
+   *
+   * @private
+   * @type {string}
+   * @memberof GeneratorDataModal
+   */
   private label: string = '';
+
+  /**
+   * The type of generator data modal.
+   *
+   * @private
+   * @type {string}
+   * @memberof GeneratorDataModal
+   */
   private type: string = '';
+
+  /**
+   * The distribution model of the generator.
+   *
+   * @private
+   * @type {DISTRIBUTION_TYPE}
+   * @memberof GeneratorDataModal
+   */
   private distributionType: DISTRIBUTION_TYPE = DISTRIBUTION_TYPE.RANDOM;
+
+  /**
+   * The expression for distribution type of the generator.
+   *
+   * @private
+   * @type {string}
+   * @memberof GeneratorDataModal
+   */
   private expression: string = '';
+
+  /**
+   * The time unit settings for the generator.
+   *
+   * @private
+   * @type {TIME_UNIT}
+   * @memberof GeneratorDataModal
+   */
   private unit: TIME_UNIT = TIME_UNIT.MINUTES;
+
+  /**
+   * The number of entities of the generator.
+   *
+   * @private
+   * @type {number}
+   * @memberof GeneratorDataModal
+   */
   private entities: number = 0;
+
+  /**
+   * The number of maximum arrival of the generator.
+   *
+   * @private
+   * @type {number}
+   * @memberof GeneratorDataModal
+   */
   private maxArrival: number = 0;
+
+  /**
+   * Number of first created entities for the generator.
+   *
+   * @private
+   * @type {number}
+   * @memberof GeneratorDataModal
+   */
   private firstCreation: number = 0;
 
+  /**
+   * Assigns the properties of generator data node to the generator data modal properties.
+   *
+   * @param {JointGraphPageImpl} page
+   * @param {GraphDataGeneratorImpl} object
+   * @memberof GeneratorDataModal
+   */
   public populateProperties(page: JointGraphPageImpl, object: GraphDataGeneratorImpl) {
 
-    // Whole object properties
+    // Object properties
     this.properties = object;
 
     // Page renderer
@@ -174,6 +242,13 @@ export default class GeneratorDataModal extends SemanticComponent implements Mod
     ;
   }
 
+  /**
+   * Store the properties into generator data object, commit to vuex store.
+   *
+   * @param {JointGraphPageImpl} page
+   * @param {GraphDataGeneratorImpl} object
+   * @memberof GeneratorDataModal
+   */
   public saveProperties(page: JointGraphPageImpl, object: GraphDataGeneratorImpl) {
     const dataPageId = (object.getId() as string).split('-')[0];
     const dataPage = (graphModule.graph.getPages() as TSMap<string, GraphPage>).get(dataPageId);
@@ -216,6 +291,13 @@ export default class GeneratorDataModal extends SemanticComponent implements Mod
     });
   }
 
+  /**
+   * Returns the object type of generator data modal.
+   *
+   * @readonly
+   * @type {GraphData[]}
+   * @memberof GeneratorDataModal
+   */
   public get objectTypes(): GraphData[] {
     let objectTypes;
     try {

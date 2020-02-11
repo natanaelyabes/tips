@@ -1,6 +1,6 @@
 <!--
   @package ips
-  @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
+  @author Riska Asriana Sutrisnowati <riska@iochord.com>
   @since 2019
 -->
 <template>
@@ -27,16 +27,32 @@ import DataConnectionService from '@/iochord/ips/common/service/data/DataConnect
 @Component
 
 /**
- * @package ips
- * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
- * @since 2019
+ * Item existed connection component.
  *
+ * @export
+ * @class ItemExistedConnectionComponent
+ * @extends {BaseComponent}
+ *
+ * @package ips
+ * @author Riska Asriana Sutrisnowati <riska@iochord.com>
+ * @since 2019
  */
 export default class ItemExistedConnectionComponent extends BaseComponent {
 
+  /**
+   * Dataset object.
+   *
+   * @memberof ItemExistedConnectionComponent
+   */
   public datasets = {};
 
-  /** @Override */
+  /**
+   * Vue mounted lifecycle.
+   *
+   * @override
+   * @returns {Promise<void>}
+   * @memberof ItemExistedConnectionComponent
+   */
   public async mounted(): Promise<void> {
     const self = this;
     DataConnectionService.getInstance().getDataConnections((res: any) => {
@@ -45,6 +61,5 @@ export default class ItemExistedConnectionComponent extends BaseComponent {
       console.log('AAAAAAAA', tick);
     });
   }
-
 }
 </script>

@@ -4,7 +4,7 @@ import { SemanticModulesIsUsed } from '@/iochord/ips/common/ui/semantic-componen
 @Component
 
 /**
- * Implementation to define the layout of Vue views or pages.
+ * Implementation class to define the layout of Vue views or pages.
  *
  * @export
  * @class BaseLayout

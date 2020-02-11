@@ -48,7 +48,7 @@
                       <div class="four wide column">Resources</div>
                       <div class="twelve wide column">
                         <select v-model="resource" id="act_txtresource" class="ui fluid search dropdown">
-                          <option v-for="resource in resources" :key="resource.id" :value="resource.id">{{resource.label}} ({{resource.id}})</option>
+                          <option v-for="resource in resources" :key="resource.getId()" :value="resource.getId()">{{resource.getLabel()}} ({{resource.getId()}})</option>
                         </select>
                       </div>
                     </div>
@@ -65,7 +65,7 @@
                       <div class="four wide column">Resources</div>
                       <div class="twelve wide column">
                         <select v-model="resource" id="act_txtresource" class="ui fluid search dropdown">
-                          <option v-for="resource in resources" :key="resource.id" :value="resource.id">{{resource.label}} ({{resource.id}})</option>
+                          <option v-for="resource in resources" :key="resource.getId()" :value="resource.getId()">{{resource.getLabel()}} ({{resource.getId()}})</option>
                         </select>
                       </div>
                     </div>
@@ -94,7 +94,7 @@
                       <div class="four wide column">Resources</div>
                       <div class="twelve wide column">
                         <select v-model="resource" id="act_txtresource" class="ui fluid search dropdown">
-                          <option v-for="resource in resources" :key="resource.id" :value="resource.id">{{resource.label}} ({{resource.id}})</option>
+                          <option v-for="resource in resources" :key="resource.getId()" :value="resource.getId()">{{resource.getLabel()}} ({{resource.getId()}})</option>
                         </select>
                       </div>
                     </div>
@@ -125,7 +125,7 @@
                     <div class="four wide column">Queue</div>
                     <div class="twelve wide column">
                       <select v-model="queue" id="act_txtqueuelabel" class="ui fluid search dropdown">
-                        <option v-for="queue in queues" :key="queue.id" :value="queue.id">{{queue.label}} ({{queue.id}})</option>
+                        <option v-for="queue in queues" :key="queue.getId()" :value="queue.getId()">{{queue.getLabel()}} ({{queue.getId()}})</option>
                       </select>
                     </div>
                   </div>
@@ -209,7 +209,7 @@
                     <div class="four wide column">Function</div>
                     <div class="twelve wide column">
                       <select v-model="this.function" id="act_txtfunction" class="ui fluid search dropdown">
-                        <option v-for="fx in functions" :key="fx.id" :value="fx.id">{{fx.label}} ({{fx.id}})</option>
+                        <option v-for="fx in functions" :key="fx.getId()" :value="fx.getId()">{{fx.getLabel()}} ({{fx.getId()}})</option>
                       </select>
                     </div>
                   </div>
@@ -235,7 +235,7 @@
       </div>
     </div>
     <div class="actions">
-      <div @click="saveProperties(page, properties)" class="ui positive button">Save</div>
+      <div @click = "saveProperties(page, properties)" class="ui positive button">Save</div>
       <div class="ui cancel button">Cancel</div>
     </div>
   </div>
@@ -278,39 +278,182 @@ const graphModule = getModule(GraphModule);
 @Component
 
 /**
+ * The activity node modal component.
+ *
+ * @export
+ * @class ActivityNodeModal
+ * @extends {SemanticComponent}
+ * @implements {Modal<JointGraphPageImpl, GraphActivityNodeImpl>}
+ *
  * @package ips
  * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
  * @since 2019
- *
  */
 export default class ActivityNodeModal extends SemanticComponent implements Modal<JointGraphPageImpl, GraphActivityNodeImpl> {
 
-  // Whole object properties
+  /**
+   * The graph activity node object.
+   *
+   * @private
+   * @type {GraphActivityNodeImpl}
+   * @memberof ActivityNodeModal
+   */
   private properties!: GraphActivityNodeImpl;
 
-  // Renderer page
+  /**
+   * The graph page object.
+   *
+   * @private
+   * @type {JointGraphPageImpl}
+   * @memberof ActivityNodeModal
+   */
   private page!: JointGraphPageImpl;
 
-  // Component properties
+  /**
+   * The label of an activity.
+   *
+   * @private
+   * @type {string}
+   * @memberof ActivityNodeModal
+   */
   private label: string = '';
+
+  /**
+   * The type of an activity.
+   *
+   * @private
+   * @type {ACTIVITY_TYPE}
+   * @memberof ActivityNodeModal
+   */
   private activityType: ACTIVITY_TYPE = ACTIVITY_TYPE.STANDARD;
+
+  /**
+   * The resource object as string reference.
+   *
+   * @private
+   * @type {string}
+   * @memberof ActivityNodeModal
+   */
   private resource: string = '';
+
+  /**
+   * A flag to enable reporting towards activity node.
+   *
+   * @private
+   * @type {boolean}
+   * @memberof ActivityNodeModal
+   */
   private report: boolean = false;
+
+  /**
+   * The monitor object as string reference.
+   *
+   * @private
+   * @type {string}
+   * @memberof ActivityNodeModal
+   */
   private customMonitor: string = '';
+
+  /**
+   * The distribution model of processing time.
+   *
+   * @private
+   * @type {DISTRIBUTION_TYPE}
+   * @memberof ActivityNodeModal
+   */
   private processingTime: DISTRIBUTION_TYPE = DISTRIBUTION_TYPE.RANDOM;
+
+  /**
+   * The parameter setup for the specified distribution model of processing time.
+   *
+   * @private
+   * @type {string}
+   * @memberof ActivityNodeModal
+   */
   private processingTimeParameter: string = '';
+
+  /**
+   * The distribution model of setup time.
+   *
+   * @private
+   * @type {DISTRIBUTION_TYPE}
+   * @memberof ActivityNodeModal
+   */
   private setupTime: DISTRIBUTION_TYPE = DISTRIBUTION_TYPE.RANDOM;
+
+  /**
+   * The parameter setup for the specified distribution model of processing time.
+   *
+   * @private
+   * @type {string}
+   * @memberof ActivityNodeModal
+   */
   private setupTimeParameter: string = '';
+
+  /**
+   * The time unit specified for an activity.
+   *
+   * @private
+   * @type {TIME_UNIT}
+   * @memberof ActivityNodeModal
+   */
   private timeUnit: TIME_UNIT = TIME_UNIT.MINUTES;
+
+  /**
+   * The queue object as string reference.
+   *
+   * @private
+   * @type {string}
+   * @memberof ActivityNodeModal
+   */
   private queue: string = '';
+
+  /**
+   * The type of input object as string reference.
+   *
+   * @private
+   * @type {string}
+   * @memberof ActivityNodeModal
+   */
   private inputType: string = '';
+
+  /**
+   * The type of output object as string reference.
+   *
+   * @private
+   * @type {string}
+   * @memberof ActivityNodeModal
+   */
   private outputType: string = '';
+
+  /**
+   * The function object as string reference.
+   *
+   * @private
+   * @type {string}
+   * @memberof ActivityNodeModal
+   */
   private function: string = '';
+
+  /**
+   * The URI of image for activity icon.
+   *
+   * @private
+   * @type {string}
+   * @memberof ActivityNodeModal
+   */
   private imageIcon: string = '';
 
+  /**
+   * Assign activity properties to the field of activity modal.
+   *
+   * @param {JointGraphPageImpl} page
+   * @param {GraphActivityNodeImpl} object
+   * @memberof ActivityNodeModal
+   */
   public populateProperties(page: JointGraphPageImpl, object: GraphActivityNodeImpl): void {
 
-    // Whole object properties
+    // Object properties
     this.properties = object;
 
     // Page renderer
@@ -401,6 +544,13 @@ export default class ActivityNodeModal extends SemanticComponent implements Moda
     ;
   }
 
+  /**
+   * Store the properties into activty node object, commit to the graph vuex module.
+   *
+   * @param {JointGraphPageImpl} page
+   * @param {GraphActivityNodeImpl} object
+   * @memberof ActivityNodeModal
+   */
   public saveProperties(page: JointGraphPageImpl, object: GraphActivityNodeImpl): void {
     const nodePageId = (object.getId() as string).split('-')[0];
     const nodePage = (graphModule.graph.getPages() as TSMap<string, GraphPage>).get(nodePageId);
@@ -452,10 +602,22 @@ export default class ActivityNodeModal extends SemanticComponent implements Moda
     });
   }
 
+  /**
+   * Declare semantic module.
+   *
+   * @memberof ActivityNodeModal
+   */
   public declareSemanticModules(): void {
     $('.menu .item').tab();
   }
 
+  /**
+   * Returns the resources of an activity.
+   *
+   * @readonly
+   * @type {GraphData[]}
+   * @memberof ActivityNodeModal
+   */
   public get resources(): GraphData[] {
     let resources;
     try {
@@ -468,6 +630,13 @@ export default class ActivityNodeModal extends SemanticComponent implements Moda
     return resources;
   }
 
+  /**
+   * Returns the queues of an activity.
+   *
+   * @readonly
+   * @type {GraphData[]}
+   * @memberof ActivityNodeModal
+   */
   public get queues(): GraphData[] {
     let queues;
     try {
@@ -480,6 +649,13 @@ export default class ActivityNodeModal extends SemanticComponent implements Moda
     return queues;
   }
 
+  /**
+   * Returns the functions of an activity.
+   *
+   * @readonly
+   * @type {GraphData[]}
+   * @memberof ActivityNodeModal
+   */
   public get functions(): GraphData[] {
     let functions;
     try {

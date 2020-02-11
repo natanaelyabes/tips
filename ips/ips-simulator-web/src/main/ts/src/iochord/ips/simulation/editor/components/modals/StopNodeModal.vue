@@ -18,19 +18,11 @@
               <input type="text" v-model="label" id="stop_txt_label">
             </div>
           </div>
-          <!-- <div class="row">
-            <div class="sixteen wide column">
-              <div class="ui checkbox">
-                <input type="checkbox" v-model="report" class="hidden">
-                <label>Report statistics</label>
-              </div>
-            </div>
-          </div> -->
         </div>
       </div>
     </div>
     <div class="actions">
-      <div @click="saveProperties(page, properties)" class="ui positive button">Save</div>
+      <div @click = "saveProperties(page, properties)" class="ui positive button">Save</div>
       <div class="ui cancel button">Cancel</div>
     </div>
   </div>
@@ -56,35 +48,63 @@ declare const $: any;
 const graphModule = getModule(GraphModule);
 
 /**
+ * The stop node modal.
  *
- * @package ips
- * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
- * @since 2019
- *
+ * @export
+ * @class StopNodeModal
+ * @extends {SemanticComponent}
+ * @implements {Modal<JointGraphPageImpl, GraphStopEventNodeImpl>}
  */
 @Component
 
-/**
- * @package ips
- * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
- * @since 2019
- *
- */
 export default class StopNodeModal extends SemanticComponent implements Modal<JointGraphPageImpl, GraphStopEventNodeImpl> {
 
-  // Whole object properties
+  /**
+   * The stop event node object.
+   *
+   * @private
+   * @type {GraphStopEventNodeImpl}
+   * @memberof StopNodeModal
+   */
   private properties!: GraphStopEventNodeImpl;
 
-  // Page renderer
+  /**
+   * The graph page object.
+   *
+   * @private
+   * @type {JointGraphPageImpl}
+   * @memberof StopNodeModal
+   */
   private page!: JointGraphPageImpl;
 
-  // Component properties
+  /**
+   * The label of the stop event node.
+   *
+   * @private
+   * @type {string}
+   * @memberof StopNodeModal
+   */
   private label: string = '';
+
+  /**
+   * Indicates that the statistics of stop modal is being reported. False otherwise.
+   *
+   * @private
+   * @type {boolean}
+   * @memberof StopNodeModal
+   */
   private report: boolean = false;
 
+  /**
+   * Assigns the properties of stop event node to the stop event node modal properties.
+   *
+   * @param {JointGraphPageImpl} page
+   * @param {GraphStopEventNodeImpl} object
+   * @memberof StopNodeModal
+   */
   public populateProperties(page: JointGraphPageImpl, object: GraphStopEventNodeImpl): void {
 
-    // Whole object properties
+    // Object properties
     this.properties = object;
 
     // Page renderer
@@ -95,6 +115,13 @@ export default class StopNodeModal extends SemanticComponent implements Modal<Jo
     this.report = object.isReportStatistics() as boolean;
   }
 
+  /**
+   * Store the properties into stop event node object, commit to vuex store.
+   *
+   * @param {JointGraphPageImpl} page
+   * @param {GraphStopEventNodeImpl} object
+   * @memberof StopNodeModal
+   */
   public saveProperties(page: JointGraphPageImpl, object: GraphStopEventNodeImpl): void {
     const nodePageId = (object.getId() as string).split('-')[0];
     const nodePage = (graphModule.graph.getPages() as TSMap<string, GraphPage>).get(nodePageId);

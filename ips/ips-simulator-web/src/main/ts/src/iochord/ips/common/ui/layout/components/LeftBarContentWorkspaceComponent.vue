@@ -5,6 +5,7 @@
 -->
 <template>
   <div class="left bar content workspace component">
+
     <!-- Left Bar Menu Item -->
     <SidebarComponent id="left-bar">
       <template slot="sidebar-menu-item">
@@ -12,29 +13,13 @@
       </template>
     </SidebarComponent>
 
-    <!-- <SplitContentComponent v-if="hasSplitContentComponent"> -->
-      <!-- <template slot="content-left">
-        <slot name="content-left"></slot>
-      </template>
-
-      <template slot="content-right">
-        <slot name="content-right"></slot>
-      </template> -->
-      <div class="ui basic segment">
-        <slot name="content"></slot>
-      </div>
-    <!-- </SplitContentComponent> -->
+    <div class="ui basic segment">
+      <slot name="content"></slot>
+    </div>
   </div>
 </template>
 
 <style scoped>
-/**
- *
- * @package ips
- * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
- * @since 2019
- *
- */
 .left.bar.content.workspace.component {
   height: 100%;
   overflow: hidden;
@@ -50,10 +35,6 @@
 }
 </style>
 
-<style>
-
-</style>
-
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator';
 import BaseComponent from '@/iochord/ips/common/ui/layout/class/BaseComponent';
@@ -64,13 +45,28 @@ import SidebarComponent from '@/iochord/ips/common/ui/layout/components/SidebarC
     SidebarComponent,
   },
 })
+
 /**
+ * Left bar content workspace component.
+ *
+ * @export
+ * @class LeftBarContentWorkspaceComponent
+ * @extends {BaseComponent}
+ *
  * @package ips
  * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
  * @since 2019
- *
  */
 export default class LeftBarContentWorkspaceComponent extends BaseComponent {
+
+  /**
+   * Boolean function to evaluate whether split content component does exists. False otherwise.
+   *
+   * @readonly
+   * @private
+   * @type {boolean}
+   * @memberof LeftBarContentWorkspaceComponent
+   */
   private get hasSplitContentComponent(): boolean {
     return !!this.$slots['content-right'];
   }

@@ -102,13 +102,10 @@ import { AppLayout } from '@/iochord/ips/common/ui/layout/interfaces/AppLayout';
 // Components
 import WrapperComponent from '@/iochord/ips/common/ui/layout/components/WrapperComponent.vue';
 
-
 /**
  *
- * @package ips
- * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
- * @since 2019
  *
+
  */
 @Component({
   components: {
@@ -116,18 +113,32 @@ import WrapperComponent from '@/iochord/ips/common/ui/layout/components/WrapperC
   },
 })
 /**
+ * The home view.
+ *
+ * @export
+ * @class HomeView
+ * @extends {AppLayoutView}
+ *
  * @package ips
  * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
  * @since 2019
- *
  */
 export default class HomeView extends AppLayoutView {
-  /** @Override */
+
+  /**
+   * Override the browser properties.
+   *
+   * @memberof HomeView
+   */
   public overrideBrowserProperties(): void {
     this.setDocumentTitle('Home');
   }
 
-  /** @Override */
+  /**
+   * Assigns title to the home view page.
+   *
+   * @memberof HomeView
+   */
   public setTitle(): void {
     this.title = 'Home';
   }

@@ -10,13 +10,6 @@
 </template>
 
 <style scoped>
-/**
- *
- * @package ips
- * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
- * @since 2019
- *
- */
 .code.component pre {
   white-space: pre-wrap;
   white-space: -moz-pre-wrap;
@@ -32,26 +25,45 @@ import BaseComponent from '@/iochord/ips/common/ui/layout/class/BaseComponent';
 import '#root/node_modules/highlight.js/styles/default.css';
 import * as hljs from 'highlight.js';
 
-
-/**
- *
- * @package ips
- * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
- * @since 2019
- *
- */
 @Component
 
 /**
+ * Code component.
+ *
+ * @export
+ * @class CodeComponent
+ * @extends {BaseComponent}
+ *
  * @package ips
  * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
  * @since 2019
- *
  */
 export default class CodeComponent extends BaseComponent {
+
+  /**
+   * The code to be displayed by this component.
+   *
+   * @private
+   * @type {string}
+   * @memberof CodeComponent
+   */
   @Prop() private code!: string;
+
+  /**
+   * The language of the code.
+   *
+   * @private
+   * @type {string}
+   * @memberof CodeComponent
+   */
   @Prop() private language!: string;
 
+  /**
+   * Mounted lifecyle of the component.
+   *
+   * @private
+   * @memberof CodeComponent
+   */
   private mounted(): void {
     const hljsInitHighlightning: any = hljs.initHighlighting;
     hljs.initHighlightingOnLoad();
