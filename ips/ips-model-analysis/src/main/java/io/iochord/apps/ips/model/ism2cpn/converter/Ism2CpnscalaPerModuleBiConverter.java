@@ -1515,9 +1515,6 @@ public class Ism2CpnscalaPerModuleBiConverter implements Converter<IsmGraph, Ism
 				strCon.append(source[1]);
 				strCon.append(target[1]);
 				
-				//System.out.println(source[0]+" - "+target[0]);
-				
-				
 				String[] oriRole = target[0].contains("-stop-") ? new String[]{target[0],"_stop"} : new String[]{c.getId(), "silent"};
 				String[] t_silent = addTransition(oriRole[1], null, null, b_entType[0], e_entType[0], m_entType[0], oriRole[0], null);
 				strCon.append(t_silent[1]);

@@ -64,7 +64,10 @@ case class Simulator(calcAvgTimeEnTr:Boolean = false) {
    */
   private def evalGlobalTime(net:CPNGraph, globtime:GlobalTime):(Boolean,List[Transition[_]]) = {
     var times = List[Long]()
-    net.allPlaces.foreach(place => { val multiset = place.getCurrentMarking().multiset; multiset.keys.filter(_._2 > globtime.time).foreach(key => { times = key._2::times }) })
+    net.allPlaces.foreach(place => { 
+      val multiset = place.getCurrentMarking().multiset
+      multiset.keys.filter(_._2 > globtime.time).foreach(key => { times = key._2::times }) 
+    })
     times = times.distinct.sorted
     times.foreach(time => {
       val trans = net.allTransitions.filter(t => {t.isEnabled(time)})
@@ -86,7 +89,10 @@ case class Simulator(calcAvgTimeEnTr:Boolean = false) {
   private def evalAsyncGlobalTime(net:CPNGraph, globtime:GlobalTime):(Boolean,List[Transition[_]]) = {
     var trans:List[Transition[_]] = null
     var times = List[Long]()
-    net.allPlaces.foreach(place => { val multiset = place.getCurrentMarking().multiset; multiset.keys.filter(_._2 > globtime.time).foreach(key => { times = key._2::times }) })
+    net.allPlaces.foreach(place => { 
+      val multiset = place.getCurrentMarking().multiset
+      multiset.keys.filter(_._2 > globtime.time).foreach(key => { times = key._2::times }) 
+    })
     times = times.distinct.sorted
     times.foreach(time => {
       val enF: Future[List[Transition[_]]] = 
@@ -153,7 +159,7 @@ case class Simulator(calcAvgTimeEnTr:Boolean = false) {
         if(calcAvgTimeEnTr) {
           val tnow = System.nanoTime()
           val enTr = tnow - stTimeEnTr
-          avgTimeEnTr = if(c == 0) enTr else (avgTimeEnTr + enTr)/2
+          avgTimeEnTr = if(c == 0) enTr else (avgTimeEnTr + enTr)/2 // increment averaging
           //println(c + " : " + avgTimeEnTr + " , " + enTr + " , " + stTimeEnTr + " , " +tnow)
         }
         

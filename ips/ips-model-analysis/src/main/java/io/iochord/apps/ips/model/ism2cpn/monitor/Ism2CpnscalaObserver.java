@@ -25,13 +25,13 @@ import scala.collection.mutable.HashMap;
 public class Ism2CpnscalaObserver implements Observer {
 	
 	@Getter
-	private final Ism2CpnscalaModel model;
+	private final  Map<String, Element> conversionMap;
 	
 	@Getter
 	private final Map<Element, ElementStatistics> data = new LinkedHashMap<>();
 
-	public Ism2CpnscalaObserver(Ism2CpnscalaModel ism2CpnscalaModel) {
-		model = ism2CpnscalaModel;
+	public Ism2CpnscalaObserver(Map<String, Element> cm) {
+		conversionMap = cm;
 	}
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
@@ -61,7 +61,7 @@ public class Ism2CpnscalaObserver implements Observer {
 		Map<String, Tuple3> prevStateRole = getStateRole(prevState);			
 		Map<String, Tuple3> currentStateRole = getStateRole(currentState);
 			
-		Element e = getModel().getConversionMap().get(transitionEleId);
+		Element e = getConversionMap().get(transitionEleId);
 		System.out.println(transitionEleId + " " + transitionEleRole);
 		if (e != null) {
 			if (e instanceof Generator) {
@@ -82,7 +82,7 @@ public class Ism2CpnscalaObserver implements Observer {
 						HashMap dgp2Before2 = (HashMap) prevStateRole.get("_resp")._2();
 						HashMap dgp2After2 = (HashMap) currentStateRole.get("_resp")._2();
 						int newToken2 = dgp2Before2.size() - dgp2After2.size();
-						Element re = getModel().getConversionMap().get((String) prevStateRole.get("_resp")._3());
+						Element re = getConversionMap().get((String) prevStateRole.get("_resp")._3());
 						if (!getData().containsKey(re)) {
 							ElementStatistics es = new ElementStatistics(re.getLabel(), "Resource");
 							getData().put(re, es);

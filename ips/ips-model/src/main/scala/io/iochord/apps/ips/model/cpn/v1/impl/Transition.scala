@@ -63,12 +63,12 @@ class Transition[B] (
   }
   
   /**
-   * @return list of all input arc from this transition
+   * @return list of all input arcs from this transition
    */
   def getIn():List[Arc[_,_]] = in
   
   /**
-   * @return list of all output arc from this transition
+   * @return list of all output arcs from this transition
    */
   def getOut():List[Arc[_,_]] = out
   
@@ -78,7 +78,7 @@ class Transition[B] (
   def getId(): String = id
   
   /**
-   * @param id : set id of this transition. (see trait Element for detail explanation)
+   * @param id : assign id of this transition. (see trait Element for detail explanation)
    */
   def setId(id: String) { this.id = id }
   
@@ -88,7 +88,7 @@ class Transition[B] (
   def getName():String = name
   
   /**
-   * @param name : set name of this transition. (see trait Node for detail explanation)
+   * @param name : assign name of this transition. (see trait Node for detail explanation)
    */
   def setName(name: String) { this.name = name }
   
@@ -98,19 +98,19 @@ class Transition[B] (
   def getOrigin(): Map[String,String] = origin
   
   /**
-   * @param origin : set origin of this transition. (see trait Element for detail explanation)
+   * @param origin : assign origin of this transition. (see trait Element for detail explanation)
    */
   def setOrigin(origin: Map[String,String]) { this.origin = origin }
   
   /**
    * @return attributes. Not used nor defined
-   * Previously requested by Java Dev (Iq) but not yet clear what should return by this function 
+   * Previously requested by Java Dev (Iq) but not yet clear what should be returned by this function 
    */
   def getAttributes(): Map[String,Any] = attributes
   
   /**
    * @param attributes. Not used nor defined
-   * Previously requested by Java Dev (Iq) but not yet clear what should define by this function 
+   * Previously requested by Java Dev (Iq) but not yet clear what should be defined by this function 
    */
   def setAttributes(attributes: Map[String,Any]) { this.attributes = attributes }
   
@@ -121,7 +121,7 @@ class Transition[B] (
   def getGuard(): Guard[B] = guard
   
   /**
-   * @param guard : set guard object of this transition
+   * @param guard : assign guard object of this transition
    * Guard is used to evaluate enabled transition (together with arc expression) 
    */
   def setGuard(guard: Guard[B]) { this.guard = guard }
@@ -133,13 +133,13 @@ class Transition[B] (
   def getAction(): Action[B] = action
   
   /**
-   * @param action : set action object of this transition
+   * @param action : assign action object of this transition
    * Action is used to transform some binding variables values 
    */
   def setAction(action: Action[B]) { this.action = action }
   
   /**
-   * @param globtime : accept input current global time of the simulation to be used for evaluate enabled transition
+   * @param globtime : accept input current global time of the simulation to be used to evaluate enabling transition
    * @return boolean value if this transition is enabled or not
    * This function combine between isArcEnabled and guard function
    * You change isArcEnabled to isArcEnabledLooksRecur to compare different method of arc enabled evaluation 
@@ -170,6 +170,7 @@ class Transition[B] (
     
     breakable{while(iterator.hasNext){
       val arc = iterator.next() match { case arc:Arc[_,B] => arc }
+      
       val map = arc.getPlace().getCurrentMarking().multiset.filter(_._1._2 <= globtime).groupBy(_._1._1).map({ 
         case (k,v) => k -> (v map (_._2) sum) 
       }).filter(_._2 >= arc.noTokArcExp)
@@ -340,20 +341,20 @@ class Transition[B] (
   }
   
   /**
-   * @param eval: set eval function to be used for comparing value between two base arc
+   * @param eval: assign eval function to be used for comparing value between two base arc
    * This function will compare two binding value between two base arc
    * For comparing between other type of arc (base vs non base, non base vs non base) we don't use this function   
    */
   def setEval(eval:(B,B) => Boolean) = { this.eval = eval }
   
   /**
-   * @param merge: set merge function to be used to merge binding value between two arc
-   * This function will be executed if evaluation between two arc is binding (some combnation value is bind)    
+   * @param merge: assign merge function to be used to merge binding value between two arc
+   * This function will be executed if evaluation between two arc is binding (some combination value is bind)    
    */
   def setMerge(merge:(B,B) => B) = { this.merge = merge }
   
   /**
-   * @param lbeBase: set combination list of binding that eligible currently 
+   * @param lbeBase: assign combination list of binding that eligible currently 
    */
   def setLbeBase(lbeBase:List[B]) = { this.lbeBase = lbeBase }
   

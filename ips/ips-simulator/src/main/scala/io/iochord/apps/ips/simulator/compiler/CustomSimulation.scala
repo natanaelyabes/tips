@@ -20,10 +20,10 @@ import io.iochord.apps.ips.model.cpn.v1.impl.Place
 class CustomSimulation {
 
   /**
- * @param noStep
- * @param jsonStr
- * @param modelpath
- * @return
+ * @param noStep : assign how many number of step should be run for the simulation
+ * @param jsonStr : json string to assign specific marking condition (how many token should be assign as default in each place)
+ * @param modelpath : assign path where file contain cpn scala model is located
+ * @return : json string show the performance benchmark 
  */
 def doTestWithManyToken(noStep: Int, jsonStr: String, modelpath: String): String = {
     val map = HashMap[String, Any]()
@@ -122,7 +122,7 @@ object JsonConverter {
   }
 
   /**
-   * @param s
+   * @param s : escape specific character to avoid error when compiling
    * @return
    */
   private def escape(s: String): String = {

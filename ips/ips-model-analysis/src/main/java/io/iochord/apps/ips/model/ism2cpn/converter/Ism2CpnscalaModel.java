@@ -45,7 +45,7 @@ public class Ism2CpnscalaModel implements ConversionModel<IsmGraph, String> {
 	private final Map<String, Element> conversionMap = new LinkedHashMap<>();
 	
 	public Ism2CpnscalaModel() {
-		kpiObserver = new Ism2CpnscalaObserver(this);
+		kpiObserver = new Ism2CpnscalaObserver(this.getConversionMap());
 	}
 	
 }
