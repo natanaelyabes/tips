@@ -15,7 +15,7 @@ import io.iochord.apps.ips.common.models.Referenceable;
 public class String2Referenceable<V extends Identifiable> extends StdConverter<String, Referenceable<V>> {
 
 	public Referenceable<V> convert(String value) {
-		Referenceable<V> ref = new Referenceable<V>();
+		Referenceable<V> ref = new Referenceable<>();
 		ref.setValueRef(value);
 		return ref;
 	}

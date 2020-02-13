@@ -15,9 +15,7 @@ import io.iochord.apps.ips.model.ism.v1.impl.ConfigurationImpl;
 *
 */
 @JsonDeserialize(as = ConfigurationImpl.class)
-@JsonTypeName(Configuration.TYPE)
+@JsonTypeName(ElementType.ELEMENT_CONFIGURATION)
 public interface Configuration extends Element {
-	public static final String TYPE = "configuration";
-
 	Map<String, Page> getPages();
 }

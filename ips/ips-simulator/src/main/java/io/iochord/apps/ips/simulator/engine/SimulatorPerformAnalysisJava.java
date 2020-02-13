@@ -31,7 +31,7 @@ public class SimulatorPerformAnalysisJava {
 		try {
 			Thread.sleep(100);
 		} catch (Exception ex) {
-			LoggerUtil.log(ex);
+			LoggerUtil.logError(ex);
 		}
 		
 		double used1 = (runtime.totalMemory() - runtime.freeMemory()) / mb;
@@ -98,7 +98,7 @@ public class SimulatorPerformAnalysisJava {
 			 
 			 job.put("cpu", jobcpu);
 		} catch (Exception ex) {
-			LoggerUtil.log(ex);
+			LoggerUtil.logError(ex);
 		}
 	    
 		return job.toString();

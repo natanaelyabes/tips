@@ -1,6 +1,5 @@
 package io.iochord.apps.ips.simulator.web.v1.api.controllers.system;
 
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -13,7 +12,6 @@ import org.springframework.web.bind.annotation.RestController;
  *
  */
 @RestController
-@CrossOrigin
 public class UserSystemController extends ASystemController {
 
 	/**

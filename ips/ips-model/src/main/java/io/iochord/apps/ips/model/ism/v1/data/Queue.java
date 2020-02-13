@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 import io.iochord.apps.ips.model.ism.v1.Data;
+import io.iochord.apps.ips.model.ism.v1.ElementType;
 import io.iochord.apps.ips.model.ism.v1.data.impl.QueueImpl;
 
 /**
@@ -14,9 +15,8 @@ import io.iochord.apps.ips.model.ism.v1.data.impl.QueueImpl;
 *
 */
 @JsonDeserialize(as = QueueImpl.class)
-@JsonTypeName(Queue.TYPE)
+@JsonTypeName(ElementType.DATA_QUEUE)
 public interface Queue extends Data {
-	public static final String TYPE = "queue";
 
 	public enum QUEUE_TYPE {
 		LIFO, FIFO,
@@ -25,13 +25,6 @@ public interface Queue extends Data {
 	QUEUE_TYPE getType();
 
 	boolean isShared();
-	
-	
-// TODO: Phase 2
-//	boolean isSingle();
 
 	int getSize();
-
-	// TODO: Phase 2
-//	Map<String, Integer> getSizes();
 }

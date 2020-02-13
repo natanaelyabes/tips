@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import io.iochord.apps.ips.common.util.LoggerUtil;
 import io.iochord.apps.ips.core.services.AnIpsAsyncService;
@@ -27,18 +28,22 @@ import io.iochord.apps.ips.model.ism.v1.nodes.impl.ActivityImpl;
 public class IsmDiscoveryService extends AnIpsAsyncService<IsmDiscoveryConfiguration, IsmGraph> {
 
 	@Override
-	public IsmGraph run(ServiceContext context, IsmDiscoveryConfiguration config) throws Exception {
+	public IsmGraph run(ServiceContext context, IsmDiscoveryConfiguration config) {
 		IsmFactory factory = IsmFactoryImpl.getInstance();
-		IsmGraph result = factory.create();
 		context.updateProgress(25, "Discovering DF matrix.");
 		Map<String, Map<String, Long>> dfMatrix = discoverDfMatrix(context, config.getDatasetId(), config.getColCaseId(), config.getColEventActivity(), config.getColEventTimestamp(), config.getSkipRows());
-		Map<String, Activity> nodes = new LinkedHashMap<String, Activity>();
-		for (String fa : dfMatrix.keySet()) {
-			nodes.put(fa, null);
-			for (String ta : dfMatrix.get(fa).keySet()) {
+		Map<String, Activity> nodes = new LinkedHashMap<>();
+		for (Entry<String, Map<String, Long>> fae : dfMatrix.entrySet()) {
+			nodes.put(fae.getKey(), null);
+			for (String ta : fae.getValue().keySet()) {
 				nodes.put(ta, null);
 			}
 		}
+		return createGraph(context, factory, nodes, dfMatrix);
+	}
+	
+	public IsmGraph createGraph(ServiceContext context, IsmFactory factory, Map<String, Activity> nodes, Map<String, Map<String, Long>> dfMatrix) {
+		IsmGraph result = factory.create();
 		Page p = result.getPages().values().iterator().next();
 		int ni = 0;
 		for (String ea : nodes.keySet()) {
@@ -51,9 +56,15 @@ public class IsmDiscoveryService extends AnIpsAsyncService<IsmDiscoveryConfigura
 			}
 			if (ni > 10) break;
 		}
+		createConnector(context, factory, nodes, dfMatrix, p, ni);
+		return result;
+	}
+
+	private void createConnector(ServiceContext context, IsmFactory factory, Map<String, Activity> nodes, Map<String, Map<String, Long>> dfMatrix, Page p, int ni) {
 		int ci = 0;
-		for (String fa : dfMatrix.keySet()) {
-			for (String ta : dfMatrix.get(fa).keySet()) {
+		for (Entry<String, Map<String, Long>> fae : dfMatrix.entrySet()) {
+			String fa = fae.getKey();
+			for (String ta : fae.getValue().keySet()) {
 				if (nodes.containsKey(fa) && nodes.containsKey(ta)) {
 					ConnectorImpl c = (ConnectorImpl) factory.addConnector(p, nodes.get(fa), nodes.get(ta));
 					c.setId("CONNECTOR" + ni);
@@ -61,16 +72,12 @@ public class IsmDiscoveryService extends AnIpsAsyncService<IsmDiscoveryConfigura
 					if (++ci % 100 == 0) {
 						context.updateProgress(75, ci + " connector found.");
 					}
-		//			if (ci > 10) break;
 				}
 			}
 		}
-		return result;
 	}
 
 	public Map<String, Map<String, Long>> discoverDfMatrix(ServiceContext context, String tabName, String colCaseId, String colActivity, String colTs,  int skip) {
-// 		getLogger().info("Mining Directly-follow Matrix " + tabName + " ( " + colCaseId + ", " + colActivity + ", " + colTs
-//				+ ") Started ... ");
 		Map<String, Map<String, Long>> dfMatrix = new LinkedHashMap<>();
 		try (Connection conn = context.getDataSource().getConnection();) {
 			StringBuilder sql = new StringBuilder();
@@ -103,7 +110,6 @@ public class IsmDiscoveryService extends AnIpsAsyncService<IsmDiscoveryConfigura
 				.append(") AS ne ")
 				.append("ON ne.ri = ce.ri + 1 ")
 				.append("GROUP BY af, at");
-//			getLogger().debug(sql.toString());
 			try (PreparedStatement st = conn.prepareStatement(sql.toString());
 				ResultSet rs = st.executeQuery();) {
 				while (rs.next()) {
@@ -114,16 +120,11 @@ public class IsmDiscoveryService extends AnIpsAsyncService<IsmDiscoveryConfigura
 						dfMatrix.put(actFrom, new LinkedHashMap<>());
 					}
 					dfMatrix.get(actFrom).put(actTo, actFrequency);
-	//				getLogger().debug(actFrom + " --> " + actTo + " : "  + actFrequency);
 				}
-			} catch (Exception ex) {
-				LoggerUtil.log(ex);
 			}
 		} catch (Exception ex) {
-			LoggerUtil.log(ex);
+			LoggerUtil.logError(ex);
 		}
-//		getLogger().info("Mining Directly-follow Matrix " + tabName + " ( " + colCaseId + ", " + colActivity + ", " + colTs
-//				+ ") Finished ... " + (System.currentTimeMillis() - started) + " ms.");
 		return dfMatrix;
 	}
 }

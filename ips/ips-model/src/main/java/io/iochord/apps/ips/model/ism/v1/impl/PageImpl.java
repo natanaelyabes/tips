@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 
 import io.iochord.apps.ips.model.ism.v1.Connector;
 import io.iochord.apps.ips.model.ism.v1.Data;
+import io.iochord.apps.ips.model.ism.v1.ElementType;
 import io.iochord.apps.ips.model.ism.v1.Node;
 import io.iochord.apps.ips.model.ism.v1.Page;
 import lombok.Getter;
@@ -19,10 +20,8 @@ import lombok.Setter;
 * @since 2019
 *
 */
-@JsonTypeName(Page.TYPE)
+@JsonTypeName(ElementType.ELEMENT_PAGE)
 public class PageImpl extends ElementImpl implements Page {
-	@Getter
-	private final String elementType = Page.TYPE;
 	
 	@Getter
 	@Setter
@@ -35,4 +34,9 @@ public class PageImpl extends ElementImpl implements Page {
 	@Getter
 	@Setter
 	private Map<String, Connector> connectors = new LinkedHashMap<>();
+
+	public String getElementType() {
+		return ElementType.ELEMENT_PAGE;
+	}
+	
 }

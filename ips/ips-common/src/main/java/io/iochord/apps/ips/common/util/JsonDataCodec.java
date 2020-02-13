@@ -5,8 +5,6 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.module.scala.DefaultScalaModule;
 
-import lombok.Getter;
-
 /**
  *
  * @package ips-common
@@ -16,8 +14,7 @@ import lombok.Getter;
  */
 public class JsonDataCodec implements DataCodec<String> {
 
-	@Getter
-	private final String type = "json";
+	public static final String TYPE = "json";
 
 	public static ObjectMapper getSerializer() {
 		ObjectMapper omDefault = new ObjectMapper();
@@ -34,13 +31,18 @@ public class JsonDataCodec implements DataCodec<String> {
 		omDefault.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 		return omDefault;
 	}
-
+	
+	@Override
+	public String getType() {
+		return TYPE;
+	}
+	
 	@Override
 	public String encode(Object obj) {
 		try {
 			return getSerializer().writeValueAsString(obj);
 		} catch (Exception ex) {
-			LoggerUtil.log(ex);
+			LoggerUtil.logError(ex);
 		}
 		return null;
 	}
@@ -50,7 +52,7 @@ public class JsonDataCodec implements DataCodec<String> {
 		try {
 			return getSerializer().writerWithDefaultPrettyPrinter().writeValueAsString(obj);
 		} catch (Exception ex) {
-			LoggerUtil.log(ex);
+			LoggerUtil.logError(ex);
 		}
 		return null;
 	}
@@ -60,7 +62,7 @@ public class JsonDataCodec implements DataCodec<String> {
 		try {
 			return getDeserializer().readValue(eobj, type);
 		} catch (Exception ex) {
-			LoggerUtil.log(ex);
+			LoggerUtil.logError(ex);
 		}
 		return null;
 	}

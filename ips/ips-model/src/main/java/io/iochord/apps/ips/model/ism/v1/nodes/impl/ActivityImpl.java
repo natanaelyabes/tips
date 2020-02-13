@@ -10,6 +10,7 @@ import io.iochord.apps.ips.model.ism.v1.nodes.enums.ActivityType;
 import io.iochord.apps.ips.model.ism.v1.nodes.enums.DistributionType;
 import io.iochord.apps.ips.model.ism.v1.nodes.enums.ResourceSelectionMethod;
 import io.iochord.apps.ips.common.models.Referenceable;
+import io.iochord.apps.ips.model.ism.v1.ElementType;
 import io.iochord.apps.ips.model.ism.v1.data.Function;
 import io.iochord.apps.ips.model.ism.v1.data.Queue;
 import io.iochord.apps.ips.model.ism.v1.data.Resource;
@@ -23,14 +24,9 @@ import lombok.Setter;
 * @since 2019
 *
 */
-@JsonTypeName(Activity.TYPE)
+@JsonTypeName(ElementType.NODE_ACTIVITY)
 public class ActivityImpl extends NodeImpl implements Activity {
-	@Getter
-	private final String elementType = Activity.TYPE;
-	
-	@Getter
-	@Setter
-	private ActivityType type = ActivityType.STANDARD;
+	private ActivityType activityType = ActivityType.STANDARD;
 
 	@Getter
 	@Setter
@@ -48,18 +44,6 @@ public class ActivityImpl extends NodeImpl implements Activity {
 	@Setter
 	private ResourceSelectionMethod resourceSelectionMethod = ResourceSelectionMethod.RANDOM;
 	
-//	@Getter
-//	@Setter
-//	private DistributionType setupTime = DistributionType.CONSTANT;
-//	
-//	@Getter
-//	@Setter
-//	private String setupTimeExpression = "0";
-//
-//	@Getter
-//	@Setter
-//	private TimeUnit setupTimeunit = TimeUnit.HOURS;
-
 	@Getter
 	@Setter
 	private DistributionType processingTimeDistribution = DistributionType.CONSTANT;
@@ -71,18 +55,18 @@ public class ActivityImpl extends NodeImpl implements Activity {
 	@Getter
 	@Setter
 	private TimeUnit processingTimeUnit = TimeUnit.HOURS;
+
+	@Override
+	public ActivityType getType() {
+		return activityType;
+	}
 	
-//	@Getter
-//	@Setter
-//	private VariableType variable; 
-
-	// TODO: Phase 2
-//	@Getter
-//	@Setter
-//	private double cost = 0;
-
-//	@Getter
-//	@Setter
-//	private boolean reportScrap = false;
+	public void setType(ActivityType activityType) {
+		this.activityType = activityType;
+	}
+	
+	public String getElementType() {
+		return ElementType.NODE_ACTIVITY;
+	}
 
 }

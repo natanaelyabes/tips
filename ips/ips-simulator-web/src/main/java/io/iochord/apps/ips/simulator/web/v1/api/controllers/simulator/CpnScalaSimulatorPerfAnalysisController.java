@@ -3,16 +3,15 @@ package io.iochord.apps.ips.simulator.web.v1.api.controllers.simulator;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.util.LinkedHashMap;
-import java.util.Observable;
 import java.util.Observer;
 
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import io.iochord.apps.ips.common.util.LoggerUtil;
 import io.iochord.apps.ips.common.util.SerializationUtil;
 import io.iochord.apps.ips.model.example.IsmExample;
 import io.iochord.apps.ips.model.ism.v1.IsmGraph;
@@ -32,14 +31,13 @@ import io.iochord.apps.ips.simulator.engine.SimulatorPerformAnalysisJava;
  *
  */
 @RestController
-@CrossOrigin
 public class CpnScalaSimulatorPerfAnalysisController extends ASimulatorController {
 	public static final String BASE_URI = ASimulatorController.BASE_URI + "/cpnscala";
 
 	@PostMapping(value = BASE_URI + "/atm/perf/generate")
-	public void test01CpnScalaCreation() throws Exception {
+	public void test01CpnScalaCreation() throws FileNotFoundException {
 		IsmGraph snet = IsmExample.createBankExample();
-		System.out.println(SerializationUtil.encode(snet));
+		LoggerUtil.logInfo(SerializationUtil.encode(snet));
 		Ism2CpnscalaBiConverter converter = new Ism2CpnscalaBiConverter();
 		String net = converter.convert(snet).getConvertedModel();
 
@@ -52,20 +50,16 @@ public class CpnScalaSimulatorPerfAnalysisController extends ASimulatorControlle
 	 * Example method to run simulation by per module compiled
 	 */
 	@GetMapping(value = BASE_URI + "/atm/permodule/generate")
-	public void test01CpnScalaPerModuleCreation() throws Exception {
+	public void test01CpnScalaPerModuleCreation() {
 		IsmGraph snet = IsmExample.createBankExample();
-		System.out.println(SerializationUtil.encode(snet));
+		LoggerUtil.logInfo(SerializationUtil.encode(snet));
 		Ism2CpnscalaPerModuleBiConverter converter = new Ism2CpnscalaPerModuleBiConverter();
 		LinkedHashMap<String, String> net = converter.convert(snet).getConvertedModel();
 		MemoryScalaCompilerPerModule msfc = new MemoryScalaCompilerPerModule(net);
 		io.iochord.apps.ips.simulator.compiler.Simulation simulation = msfc.getInstance();
-		Observer obs = new Observer() {
-
-			@Override
-			public void update(Observable o, Object arg) {
-				System.out.println("JAVAOBS: " + o);
-				System.out.println(arg);
-			}
+		Observer obs = (o, arg) -> {
+			LoggerUtil.logInfo("JAVAOBS: " + o);
+			LoggerUtil.logInfo("" + arg);
 		};
 		simulation.addObserver(obs);
 		simulation.runStep(5);

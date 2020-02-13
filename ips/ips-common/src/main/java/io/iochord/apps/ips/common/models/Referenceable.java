@@ -34,6 +34,7 @@ public class Referenceable<V extends Identifiable> extends IdentifiableImpl {
 
 	private String valueRef;
 
+	@Override
 	public String getId() {
 		if (getValue() != null) {
 			return getValue().getId();
@@ -52,10 +53,8 @@ public class Referenceable<V extends Identifiable> extends IdentifiableImpl {
 	public V getValue() {
 		if (value != null) {
 			return value;
-		} else if (valueRef != null && getValueRepository() != null) {
-			if (getValueRepository().containsKey(valueRef)) {
-				value = (V) getValueRepository().get(valueRef);
-			}
+		} else if (valueRef != null && getValueRepository() != null && getValueRepository().containsKey(valueRef)) {
+			value = (V) getValueRepository().get(valueRef);
 		}
 		return value;
 	}

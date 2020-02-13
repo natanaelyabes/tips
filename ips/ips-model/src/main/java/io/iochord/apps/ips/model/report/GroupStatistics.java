@@ -27,6 +27,6 @@ public class GroupStatistics {
 	private String name = "";
 
 	@Getter
-	private final Map<String, ElementStatistics> elements = new LinkedHashMap<String, ElementStatistics>();
+	private final Map<String, ElementStatistics> elements = new LinkedHashMap<>();
 
 }

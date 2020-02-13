@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 import io.iochord.apps.ips.common.models.Referenceable;
+import io.iochord.apps.ips.model.ism.v1.ElementType;
 import io.iochord.apps.ips.model.ism.v1.Node;
 import io.iochord.apps.ips.model.ism.v1.data.Function;
 import io.iochord.apps.ips.model.ism.v1.data.Queue;
@@ -23,10 +24,8 @@ import io.iochord.apps.ips.model.ism.v1.nodes.impl.ActivityImpl;
 *
 */
 @JsonDeserialize(as = ActivityImpl.class)
-@JsonTypeName(Activity.TYPE)
+@JsonTypeName(ElementType.NODE_ACTIVITY)
 public interface Activity extends Node {
-	public static final String TYPE = "activity";
-
 	ActivityType getType();
 
 	@JsonProperty(value = "resourceRef")
@@ -35,27 +34,11 @@ public interface Activity extends Node {
 	@JsonProperty(value = "queueRef")
 	Referenceable<Queue> getQueue();
 
-	// TODO: Phase 2
-//	ResourceSelectionMethod getResourceSelectionMethod();
-
-//	DistributionType getSetupTime();
-//	
-//	String getSetupTimeExpression();
-//
-//	TimeUnit getSetupTimeUnit();
-
 	DistributionType getProcessingTimeDistribution();
 
 	String getProcessingTimeExpression();
 	
 	TimeUnit getProcessingTimeUnit();
-	
-	// TODO: Phase 2
-//	VariableType getVariable();
-//	
-//	boolean isReportScrap();
-//	
-//	double getCost();
 
 	@JsonProperty(value = "functionRef")
 	Referenceable<Function> getFunction();

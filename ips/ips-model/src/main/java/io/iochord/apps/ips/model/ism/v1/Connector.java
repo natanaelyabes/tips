@@ -15,9 +15,8 @@ import io.iochord.apps.ips.model.ism.v1.impl.ConnectorImpl;
 *
 */
 @JsonDeserialize(as = ConnectorImpl.class)
-@JsonTypeName(Connector.TYPE)
+@JsonTypeName(ElementType.ELEMENT_CONNECTOR)
 public interface Connector extends Element {
-	public static final String TYPE = "connector";
 
 	@JsonProperty(value = "sourceRef")
 	Referenceable<Element> getSource();

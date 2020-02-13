@@ -5,6 +5,7 @@ import java.util.concurrent.TimeUnit;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 import io.iochord.apps.ips.common.models.Referenceable;
+import io.iochord.apps.ips.model.ism.v1.ElementType;
 import io.iochord.apps.ips.model.ism.v1.data.Generator;
 import io.iochord.apps.ips.model.ism.v1.data.ObjectType;
 import io.iochord.apps.ips.model.ism.v1.impl.DataImpl;
@@ -19,10 +20,8 @@ import lombok.Setter;
 * @since 2019
 *
 */
-@JsonTypeName(Generator.TYPE)
+@JsonTypeName(ElementType.DATA_GENERATOR)
 public class GeneratorImpl extends DataImpl implements Generator {
-	@Getter
-	private final String elementType = Generator.TYPE;
 	
 	@Getter
 	@Setter
@@ -48,8 +47,8 @@ public class GeneratorImpl extends DataImpl implements Generator {
 	@Setter
 	private int maxArrival = 0;
 
-	// TODO: Phase 2
-//	@Getter
-//	@Setter
-//	private long firstCreation = 0;
+	public String getElementType() {
+		return ElementType.DATA_GENERATOR;
+	}
+
 }

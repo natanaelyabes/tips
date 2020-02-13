@@ -60,6 +60,9 @@ public class ServiceExecutor {
 			context.start();
 			R result = service.run(context, config);
 			context.completeAndDestroy(State.COMPLETED, 0, result);
+			if (resultClass != null) {
+				resultClass.toString();
+			}
 		} catch (Exception ex) {
 			context.completeAndDestroy(State.ERROR, -1, ex);
 		}

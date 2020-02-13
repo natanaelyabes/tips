@@ -4,6 +4,7 @@ import java.util.concurrent.TimeUnit;
 
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
+import io.iochord.apps.ips.model.ism.v1.ElementType;
 import io.iochord.apps.ips.model.ism.v1.data.Resource;
 import io.iochord.apps.ips.model.ism.v1.impl.DataImpl;
 import io.iochord.apps.ips.model.ism.v1.nodes.enums.DistributionType;
@@ -17,10 +18,8 @@ import lombok.Setter;
 * @since 2019
 *
 */
-@JsonTypeName(Resource.TYPE)
+@JsonTypeName(ElementType.DATA_RESOURCE)
 public class ResourceImpl extends DataImpl implements Resource {
-	@Getter
-	private final String elementType = Resource.TYPE;
 	
 	@Getter
 	@Setter
@@ -33,10 +32,6 @@ public class ResourceImpl extends DataImpl implements Resource {
 	@Getter
 	@Setter
 	private int numberOfResource;
-	
-//	@Getter
-//	@Setter
-//	private Referenceable<DataTable> data;
 
 	@Getter
 	@Setter
@@ -49,25 +44,9 @@ public class ResourceImpl extends DataImpl implements Resource {
 	@Getter
 	@Setter
 	private TimeUnit setupTimeUnit = TimeUnit.HOURS;
-//	
-//	@Getter
-//	@Setter
-//	private ResourceCriteria criteria;
-//
-//	@Getter
-//	@Setter
-//	private double hourlyIdleCost; 
-//	
-//	@Getter
-//	@Setter
-//	private double hourlyBusyCost; 
-//	
-//	@Getter
-//	@Setter
-//	private boolean imported = false; 
-//	
-//	@Getter
-//	@Setter
-//	private Referenceable<DataTable> dataTable; 
+
+	public String getElementType() {
+		return ElementType.DATA_RESOURCE;
+	}
 
 }
