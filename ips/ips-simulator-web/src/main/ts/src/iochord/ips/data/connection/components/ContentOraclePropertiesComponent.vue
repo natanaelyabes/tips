@@ -1,3 +1,8 @@
+<!--
+  @package ips
+  @author Riska Asriana Sutrisnowati <riska@iochord.com>
+  @since 2019
+-->
 <template>
   <div class="content oracle properties component">
     <form class="ui form">
@@ -125,7 +130,19 @@ import { Vue, Component } from 'vue-property-decorator';
 import BaseComponent from '@/iochord/ips/common/ui/layout/class/BaseComponent';
 
 @Component
-export default class ContentOraclePropertiesComponent extends BaseComponent {
 
+/**
+ * Content Oracle properties component.
+ *
+ * @export
+ * @class ContentOraclePropertiesComponent
+ * @extends {BaseComponent}
+ *
+ * @package ips
+ * @author Riska Asriana Sutrisnowati <riska@iochord.com>
+ * @since 2019
+ */
+export default class ContentOraclePropertiesComponent extends BaseComponent {
+  //
 }
 </script>

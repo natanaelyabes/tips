@@ -1,6 +1,9 @@
 import * as joint from 'jointjs';
 
 /**
+ * Enumerations for node type.
+ *
+ * @export
  *
  * @package ips
  * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>

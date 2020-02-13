@@ -1,19 +1,16 @@
+<!--
+  @package ips
+  @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
+  @since 2019
+-->
 <template>
   <div class="split content component">
-      <slot name="content-left"></slot>
-
-      <slot name="content-right"></slot>
+    <slot name="content-left"></slot>
+    <slot name="content-right"></slot>
   </div>
 </template>
 
 <style scoped>
-/**
- *
- * @package ips
- * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
- * @since 2019
- *
- */
 .split.content.component {
   display: block;
   width: 100%;
@@ -32,7 +29,19 @@ import { Component, Vue } from 'vue-property-decorator';
 import BaseComponent from '@/iochord/ips/common/ui/layout/class/BaseComponent';
 
 @Component
-export default class SplitContentComponent extends BaseComponent {
 
+/**
+ * Split content component.
+ *
+ * @export
+ * @class SplitContentComponent
+ * @extends {BaseComponent}
+ *
+ * @package ips
+ * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
+ * @since 2019
+ */
+export default class SplitContentComponent extends BaseComponent {
+  //
 }
 </script>

@@ -1,24 +1,35 @@
+<!--
+  @package ips
+  @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
+  @since 2019
+-->
 <template>
   <section>
     <g2-histogram :bin-width="binWidth" :bins="0" :data="model" :axisName="{x: 'Interval',y: 'Count'}" :axisColor="{ titleColor: '#e50000', labelColor: '#e50000' }" :color="{backgroundColor: '#e50000'}"></g2-histogram>
   </section>
 </template>
 
-<style scoped>
-
-</style>
-
 <script lang="ts">
 import { Vue, Prop, Component } from 'vue-property-decorator';
 import BaseComponent from '../ui/layout/class/BaseComponent';
 import 'vue-g2';
 
-@Component({
-  components: {
+@Component
 
-  },
-})
+/**
+ * Implementation of histogram chart component.
+ *
+ * @extends BaseComponent
+ * @prop {any} binWidth?
+ * @prop {any} model?
+ *
+ * @package ips
+ * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
+ * @since 2019
+ *
+ */
 export default class HistogramChart extends BaseComponent {
+
   @Prop()
   public binWidth?: any;
 
@@ -31,10 +42,6 @@ export default class HistogramChart extends BaseComponent {
 
   public mounted(): void {
     console.log(this.$children[0]);
-    // this.$children[0];
-    // .interval().color('#e50000')
-    // (this.$children[0] as any).chart.interval().color('#e50000');
-    // (this.$children[0] as any).drawChart(this.model);
   }
 }
 </script>

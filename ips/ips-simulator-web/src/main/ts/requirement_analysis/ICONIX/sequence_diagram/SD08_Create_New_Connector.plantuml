@@ -1,0 +1,39 @@
+@startuml "Create new connector"
+
+actor User
+boundary "Palette Component  \n(NodePaletteComponent.vue)" as p
+control "Listen to events \n(PaletteMixin.ts)" as c1
+control "Update Canvas \n(ConnectorMixin.ts)" as c2
+control "Save model" as c3
+
+entity "Simulation model" as e1
+
+User -> p
+
+p -> c1 : "handleToolboxMouseDown(TYPE, event)"
+|||
+alt TYPE == 'TOOLBOX.CONNECTOR'
+  c1 -> c2 : "createConnector(type, event)"
+  activate c2
+  c2 -> c2 : "moveConnector(event, activePage)"
+  |||
+  c2 -> c3 : "setSourceNode(activePage, node)"
+  |||
+  c3 -> e1
+  |||
+  e1 --> c2
+  alt on CanvasMixin.handleEscapeButton()
+    c2 -> c2 : "cancelCreateData(event)"
+  else
+    c2 -> c3 : "setTargetNode(activePage, node)"
+  end
+  |||
+  c3 -> e1
+  |||
+  e1 --> c2
+  deactivate c2
+end
+|||
+c2 --> p
+
+@enduml

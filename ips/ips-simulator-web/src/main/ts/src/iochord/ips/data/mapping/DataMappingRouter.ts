@@ -1,16 +1,16 @@
 import { RouteConfig } from 'vue-router';
 
 /**
+ * The routing properties for data mapping module.
  *
  * @package ips
  * @author Riska A. Sutrisnowati <riska@iochord.com>
  * @since 2019
- *
  */
 export default [
   {
     path: `mapping`,
-    component: () => import(/* webpackChunkName: "ips-common-layout-base" */ '@/iochord/ips/common/ui/layouts/BaseLayout.vue'),
+    component: () => import(/* webpackChunkName: "ips-common-layout-base" */ '@/iochord/ips/common/ui/components/layout/BaseLayout.vue'),
     children: [
       {
         path: ``,

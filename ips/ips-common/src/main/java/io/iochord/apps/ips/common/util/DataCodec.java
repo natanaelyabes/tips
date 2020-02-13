@@ -1,15 +1,12 @@
 package io.iochord.apps.ips.common.util;
 
 /**
- * Data Codec class for serialize / deserialize object
- *
- * @package chdsr-common
- * @author  Iq Reviessay Pulshashi <pulshashi@ideas.web.id>
- * @since   2019
- *
- * @param <T> resulting data type
- *
- */
+*
+* @package ips-common
+* @author Iq Reviessay Pulshashi <pulshashi@ideas.web.id>
+* @since 2019
+*
+*/
 public interface DataCodec<T> {
 	/**
 	 *
@@ -20,9 +17,10 @@ public interface DataCodec<T> {
 
 	/**
 	 *
-	 * Encode / serialize obj into resulting type object 
+	 * Encode / serialize obj into resulting type object
 	 * 
-	 * @param obj object
+	 * @param obj
+	 *            object
 	 * @return encoded object
 	 *
 	 */
@@ -32,7 +30,8 @@ public interface DataCodec<T> {
 	 * 
 	 * Encode / serialize obj into resulting type object (pretty version)
 	 *
-	 * @param obj object
+	 * @param obj
+	 *            object
 	 * @return encoded object (pretty)
 	 *
 	 */
@@ -42,8 +41,10 @@ public interface DataCodec<T> {
 	 * 
 	 * Decode / deserialize eobj into object of type
 	 *
-	 * @param eobj encoded object
-	 * @param type object type
+	 * @param eobj
+	 *            encoded object
+	 * @param type
+	 *            object type
 	 * @return object
 	 *
 	 */

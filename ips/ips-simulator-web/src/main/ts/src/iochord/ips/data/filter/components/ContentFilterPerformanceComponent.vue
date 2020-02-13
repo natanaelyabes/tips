@@ -1,3 +1,8 @@
+<!--
+  @package ips
+  @author Riska Asriana Sutrisnowati <riska@iochord.com>
+  @since 2019
+-->
 <template>
   <div class="content filter performance component">
     <form class="ui form">
@@ -37,17 +42,25 @@
   </div>
 </template>
 
-<style>
-
-</style>
-
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator';
 import BaseComponent from '@/iochord/ips/common/ui/layout/class/BaseComponent';
 import * as $ from 'jquery';
 
 @Component
-export default class ContentFilterPerformanceComponent extends BaseComponent {
 
+/**
+ * Content filter performance component.
+ *
+ * @export
+ * @class ContentFilterPerformanceComponent
+ * @extends {BaseComponent}
+ *
+ * @package ips
+ * @author Riska Asriana Sutrisnowati <riska@iochord.com>
+ * @since 2019
+ */
+export default class ContentFilterPerformanceComponent extends BaseComponent {
+  //
 }
 </script>

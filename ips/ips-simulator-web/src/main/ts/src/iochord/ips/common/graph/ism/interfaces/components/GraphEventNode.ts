@@ -1,6 +1,11 @@
 import { GraphNode } from '../GraphNode';
 
 /**
+ * The interface of graph event node.
+ *
+ * @export
+ * @interface GraphEventNode
+ * @extends {GraphNode}
  *
  * @package ips
  * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
@@ -8,4 +13,5 @@ import { GraphNode } from '../GraphNode';
  *
  */
 export interface GraphEventNode extends GraphNode {
+  //
 }

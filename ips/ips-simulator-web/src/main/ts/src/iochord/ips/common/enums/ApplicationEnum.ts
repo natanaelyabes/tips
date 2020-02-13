@@ -1,4 +1,9 @@
 /**
+ * @module   iochord/ips/common/enums/
+ */
+
+/**
+ * Application wide enum
  *
  * @package ips
  * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
@@ -6,5 +11,9 @@
  *
  */
 export enum ApplicationEnum {
+
+  /**
+   * The name of the application.
+   */
   NAME = 'ips',
 }

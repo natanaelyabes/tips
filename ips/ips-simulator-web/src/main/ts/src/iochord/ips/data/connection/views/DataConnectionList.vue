@@ -1,3 +1,8 @@
+<!--
+  @package ips
+  @author Riska Asriana Sutrisnowati <riska@iochord.com>
+  @since 2019
+-->
 <template>
   <div class="sandbox data connection">
     <DepthTwoLeftWrapperComponent>
@@ -13,11 +18,9 @@
 
       <!-- Depth One Left Sidebar Menu Item -->
       <template slot="depth-one-menu-item">
-        <!-- <div class="menu"> -->
-          <a href="/#/iochord/ips/data/connection" class="item">List of connection</a>
-          <a href="/#/iochord/ips/data/connection/new" class="item">New connection</a>
-          <a href="/#/iochord/ips/data/connection/upload" class="item">Import</a>
-        <!-- </div> -->
+        <a href="/#/iochord/ips/data/connection" class="item">List of connection</a>
+        <a href="/#/iochord/ips/data/connection/new" class="item">New connection</a>
+        <a href="/#/iochord/ips/data/connection/upload" class="item">Import</a>
       </template>
 
       <!-- Depth Two Left Sidebar Menu Item -->
@@ -27,18 +30,10 @@
 
       <!-- Content -->
       <template slot="content">
-        <component :is="currentContentComponent">
-        </component>
-        <!-- <ContentMysqlPropertiesComponent></ContentMysqlPropertiesComponent> -->
-        <!-- <ContentFileQueryComponent></ContentFileQueryComponent> -->
-        <!-- <ContentDataViewComponent></ContentDataViewComponent> -->
-        <!-- <ContentDataUploadComponent></ContentDataUploadComponent> -->
+        <component :is="currentContentComponent"></component>
       </template>
     </DepthTwoLeftWrapperComponent>
   </div>
-
-
-
 </template>
 
 <style>
@@ -54,7 +49,7 @@ a.section {
 
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator';
-import Layout02View from '@/iochord/ips/common/ui/layout/class/Layout02';
+import ExplorerLayoutView from '@/iochord/ips/common/ui/layout/class/ExplorerLayoutView';
 import DepthTwoLeftWrapperComponent from '@/iochord/ips/common/ui/layout/components/DepthTwoLeftWrapperComponent.vue';
 import ContentOraclePropertiesComponent from '../components/ContentOraclePropertiesComponent.vue';
 import ContentMssqlPropertiesComponent from '../components/ContentMssqlPropertiesComponent.vue';
@@ -70,36 +65,76 @@ import ItemExistedConnectionComponent from '../components/ItemExistedConnectionC
 
 @Component({
   components: {
-      DepthTwoLeftWrapperComponent,
-      ContentOraclePropertiesComponent,
-      ContentMssqlPropertiesComponent,
-      ContentMysqlPropertiesComponent,
-      ContentHadoopPropertiesComponent,
-      ContentDataViewComponent,
-      ContentDataUploadComponent,
-      ContentQueryComponent,
-      ContentFileQueryComponent,
-      ItemUploadComponent,
-      ItemConnectionComponent,
-      ItemExistedConnectionComponent,
-   },
- })
-export default class SandboxDataConnectionList extends Layout02View {
+    DepthTwoLeftWrapperComponent,
+    ContentOraclePropertiesComponent,
+    ContentMssqlPropertiesComponent,
+    ContentMysqlPropertiesComponent,
+    ContentHadoopPropertiesComponent,
+    ContentDataViewComponent,
+    ContentDataUploadComponent,
+    ContentQueryComponent,
+    ContentFileQueryComponent,
+    ItemUploadComponent,
+    ItemConnectionComponent,
+    ItemExistedConnectionComponent,
+  },
+})
+
+/**
+ * Data connection list component.
+ *
+ * @export
+ * @class DataConnectionList
+ * @extends {ExplorerLayoutView}
+ *
+ * @package ips
+ * @author Riska Asriana Sutrisnowati <riska@iochord.com>
+ * @since 2019
+ */
+export default class DataConnectionList extends ExplorerLayoutView {
+
+  /**
+   * Title of data connection list.
+   *
+   * @type {string}
+   * @memberof DataConnectionList
+   */
   public title: string = '';
+
+  /**
+   * Current content component.
+   *
+   * @type {string}
+   * @memberof DataConnectionList
+   */
   public currentContentComponent: string = 'ContentOraclePropertiesComponent';
 
+  /**
+   * Vue mounted lifecycle.
+   *
+   * @memberof DataConnectionList
+   */
   public mounted(): void {
     this.$root.$on('ebContentComponent', (prm: string) => {
       this.currentContentComponent = prm;
     });
   }
 
-  /** @override */
+  /**
+   * Override browser properties.
+   *
+   * @override
+   * @memberof DataConnectionList
+   */
   public overrideBrowserProperties() {
     this.setDocumentTitle('Data Management: List of Connections');
   }
 
-  /** @Override */
+  /**
+   * Assigns title to the layout.
+   *
+   * @memberof DataConnectionList
+   */
   public setTitle(): void {
     this.title = `List Connection`;
   }

@@ -1,3 +1,8 @@
+<!--
+  @package ips
+  @author Riska Asriana Sutrisnowati <riska@iochord.com>
+  @since 2019
+-->
 <template>
   <div class="item upload component">
     <div class="item">
@@ -24,7 +29,19 @@ import { Vue, Component } from 'vue-property-decorator';
 import BaseComponent from '@/iochord/ips/common/ui/layout/class/BaseComponent';
 
 @Component
-export default class ItemUploadComponent extends BaseComponent {
 
+/**
+ * Content data upload component.
+ *
+ * @export
+ * @class ItemUploadComponent
+ * @extends {BaseComponent}
+ *
+ * @package ips
+ * @author Riska Asriana Sutrisnowati <riska@iochord.com>
+ * @since 2019
+ */
+export default class ItemUploadComponent extends BaseComponent {
+  //
 }
 </script>

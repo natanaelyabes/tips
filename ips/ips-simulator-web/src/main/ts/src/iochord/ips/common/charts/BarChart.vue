@@ -1,12 +1,13 @@
+<!--
+  @package ips
+  @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
+  @since 2019
+-->
 <template>
   <section>
     <g2-column :height="300" :data="model" :is-bar="false" />
   </section>
 </template>
-
-<style>
-
-</style>
 
 <script lang="ts">
 import { Vue, Component, Prop } from 'vue-property-decorator';
@@ -14,6 +15,18 @@ import BaseComponent from '../ui/layout/class/BaseComponent';
 import 'vue-g2';
 
 @Component
+
+/**
+ * Implementation for bar chart component.
+ *
+ * @extends BaseComponent
+ * @prop {any} model?
+ *
+ * @package ips
+ * @author Riska Asriana Sutrisnowati <riska@iochord.com>
+ * @since 2019
+ *
+ */
 export default class BarChart extends BaseComponent {
 
   @Prop()

@@ -8,10 +8,10 @@ import java.util.Observer;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
 import io.iochord.apps.ips.common.util.JsonDataCodec;
+import io.iochord.apps.ips.common.util.LoggerUtil;
 import io.iochord.apps.ips.model.ism.v1.Element;
 import io.iochord.apps.ips.model.ism.v1.data.Generator;
 import io.iochord.apps.ips.model.ism.v1.nodes.Activity;
-import io.iochord.apps.ips.model.ism.v1.nodes.Start;
 import io.iochord.apps.ips.model.ism2cpn.converter.Ism2CpnscalaModel;
 import io.iochord.apps.ips.model.report.ElementStatistics;
 import lombok.Getter;
@@ -22,28 +22,33 @@ import scala.Tuple5;
 import scala.collection.Iterator;
 import scala.collection.mutable.HashMap;
 
+/**
+*
+* @package ips-model-analysis
+* @author Iq Reviessay Pulshashi <pulshashi@ideas.web.id>
+* @since 2019
+*
+*/
 public class Ism2CpnscalaObserver implements Observer {
 	
 	@Getter
-	private final  Map<String, Element> conversionMap;
+	private final Ism2CpnscalaModel model;
 	
 	@Getter
 	private final Map<Element, ElementStatistics> data = new LinkedHashMap<>();
 
-	public Ism2CpnscalaObserver(Map<String, Element> cm) {
-		conversionMap = cm;
+	public Ism2CpnscalaObserver(Ism2CpnscalaModel ism2CpnscalaModel) {
+		model = ism2CpnscalaModel;
 	}
 
-	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	public void update(Observable o, Object arg) {
 		observe(o, arg);
-//		try {
-//			System.out.println(JsonDataCodec.getSerializer().writeValueAsString(arg));
-//		} catch (JsonProcessingException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
+		try {
+			System.out.println(JsonDataCodec.getSerializer().writeValueAsString(arg));
+		} catch (JsonProcessingException ex) {
+			LoggerUtil.logError(ex);
+		}
 	}
 	
 	@SuppressWarnings({ "rawtypes", "unchecked" })
@@ -61,39 +66,41 @@ public class Ism2CpnscalaObserver implements Observer {
 		Map<String, Tuple3> prevStateRole = getStateRole(prevState);			
 		Map<String, Tuple3> currentStateRole = getStateRole(currentState);
 			
-		Element e = getConversionMap().get(transitionEleId);
-		System.out.println(transitionEleId + " " + transitionEleRole);
+		Element e = getModel().getConversionMap().get(transitionEleId);
+		LoggerUtil.logInfo(transitionEleId + " " + transitionEleRole);
 		if (e != null) {
 			if (e instanceof Generator) {
-				if (prevStateRole.get("_dgp2") != null) {
-					HashMap dgp2Before = (HashMap) prevStateRole.get("_dgp2")._2();
-					HashMap dgp2After = (HashMap) currentStateRole.get("_dgp2")._2();
+				String dgp2Str = "_dgp2";
+				if (prevStateRole.get(dgp2Str) != null) {
+					HashMap dgp2Before = (HashMap) prevStateRole.get(dgp2Str)._2();
+					HashMap dgp2After = (HashMap) currentStateRole.get(dgp2Str)._2();
 					int newToken = dgp2After.size() - dgp2Before.size();
 					if (!getData().containsKey(e)) {
 						getData().put(e, new ElementStatistics(e.getLabel(), "Generator", 
-							"Instance Generated", 0l, null, null, null, null));
+							"Instance Generated", 0l));
 					}
 					getData().get(e).setCount(getData().get(e).getCount() + newToken);
 				}
 			}
 			if (e instanceof Activity) {
 				if (transitionEleRole.equalsIgnoreCase("_natstart")) {
-					if (prevStateRole.get("_resp") != null) {
-						HashMap dgp2Before2 = (HashMap) prevStateRole.get("_resp")._2();
-						HashMap dgp2After2 = (HashMap) currentStateRole.get("_resp")._2();
+					String respStr = "_resp";
+					if (prevStateRole.get(respStr) != null) {
+						HashMap dgp2Before2 = (HashMap) prevStateRole.get(respStr)._2();
+						HashMap dgp2After2 = (HashMap) currentStateRole.get(respStr)._2();
 						int newToken2 = dgp2Before2.size() - dgp2After2.size();
-						Element re = getConversionMap().get((String) prevStateRole.get("_resp")._3());
+						Element re = getModel().getConversionMap().get((String) prevStateRole.get("_resp")._3());
 						if (!getData().containsKey(re)) {
 							ElementStatistics es = new ElementStatistics(re.getLabel(), "Resource");
 							getData().put(re, es);
 							es.getSubElements().put("1", new ElementStatistics("Resource Used"
 								, 0l, null, null, null, null));
-//							es.getSubElements().put("2", new ElementStatistics("처리 시간" //Turnaround Time"
-//								, 0l, 0.0, 0.0, 0.0));
-//							es.getSubElements().put("3", new ElementStatistics("Productivity"
-//								, 0l, 0.0, 0.0, 0.0));
-//							es.getSubElements().put("4", new ElementStatistics("Cost"
-//								, 0l, 0.0, 0.0, 0.0));
+							es.getSubElements().put("2", new ElementStatistics("처리 시간 (Turnaround Time)"
+								, 0l, null, null, null, null));
+							es.getSubElements().put("3", new ElementStatistics("Productivity"
+								, 0l, null, null, null, null));
+							es.getSubElements().put("4", new ElementStatistics("Cost"
+								, 0l, null, null, null, null));
 						}
 						getData().get(re).getSubElements().get("1").setCount(
 							getData().get(re).getSubElements().get("1").getCount() + newToken2);
@@ -108,10 +115,10 @@ public class Ism2CpnscalaObserver implements Observer {
 						getData().put(e, es);
 						es.getSubElements().put("1", new ElementStatistics("Instance Processed"
 							, 0l, null, null, null, null));
-//						es.getSubElements().put("2", new ElementStatistics("대기 시간" // Waiting Time
-//							, 0l, 0.0, 0.0, 0.0));
-//						es.getSubElements().put("3", new ElementStatistics("처리 시간" // Processing Time
-//							, 0l, 0.0, 0.0, 0.0));
+						es.getSubElements().put("2", new ElementStatistics("대기 시간 (Waiting Time)"
+								, 0l, null, null, null, null));
+						es.getSubElements().put("3", new ElementStatistics("처리 시간 (Processing Time)"
+								, 0l, null, null, null, null));
 					}
 					getData().get(e).getSubElements().get("1").setCount(
 						getData().get(e).getSubElements().get("1").getCount() + newToken);

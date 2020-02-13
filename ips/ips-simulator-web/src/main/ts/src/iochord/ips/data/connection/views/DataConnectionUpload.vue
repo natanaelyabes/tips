@@ -1,35 +1,39 @@
+<!--
+  @package ips
+  @author Riska Asriana Sutrisnowati <riska@iochord.com>
+  @since 2019
+-->
 <template>
-    <div class="sandbox uploadfile data connection">
-        <DepthTwoLeftWrapperComponent>
-          <!-- Header -->
-          <template slot="header-breadcrumb">
-            <router-link to="/iochord/ips/home" tag="a" class="section">Home</router-link>
-            <i class="right angle icon divider"></i>
-            <div class="section">Data Management</div>
-            <i class="right angle icon divider"></i>
-            <div class="active section">{{this.title}}</div>
-          </template>
+  <div class="sandbox uploadfile data connection">
+    <DepthTwoLeftWrapperComponent>
 
-          <!-- Depth One Left Sidebar Menu Item -->
-          <template slot="depth-one-menu-item">
-            <!-- <div class="menu"> -->
-          <a href="/#/iochord/ips/data/connection" class="item">List of connection</a>
-          <a href="/#/iochord/ips/data/connection/new" class="item">New connection</a>
-          <a href="/#/iochord/ips/data/connection/upload" class="item">Import</a>
-            <!-- </div> -->
-          </template>
+      <!-- Header -->
+      <template slot="header-breadcrumb">
+        <router-link to="/iochord/ips/home" tag="a" class="section">Home</router-link>
+        <i class="right angle icon divider"></i>
+        <div class="section">Data Management</div>
+        <i class="right angle icon divider"></i>
+        <div class="active section">{{this.title}}</div>
+      </template>
 
-          <!-- Depth Two Left Sidebar Menu Item -->
-          <template slot="depth-two-menu-item">
-            <ItemUploadComponent></ItemUploadComponent>
-          </template>
+      <!-- Depth One Left Sidebar Menu Item -->
+      <template slot="depth-one-menu-item">
+        <a href="/#/iochord/ips/data/connection" class="item">List of connection</a>
+        <a href="/#/iochord/ips/data/connection/new" class="item">New connection</a>
+        <a href="/#/iochord/ips/data/connection/upload" class="item">Import</a>
+      </template>
 
-          <!-- Content -->
-          <template slot="content">
-            <ContentDataUploadComponent></ContentDataUploadComponent>
-          </template>
-        </DepthTwoLeftWrapperComponent>
-    </div>
+      <!-- Depth Two Left Sidebar Menu Item -->
+      <template slot="depth-two-menu-item">
+        <ItemUploadComponent></ItemUploadComponent>
+      </template>
+
+      <!-- Content -->
+      <template slot="content">
+        <ContentDataUploadComponent></ContentDataUploadComponent>
+      </template>
+    </DepthTwoLeftWrapperComponent>
+  </div>
 </template>
 
 <style>
@@ -42,9 +46,10 @@ a.section {
   text-decoration: underline;
 }
 </style>
+
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator';
-import Layout02View from '@/iochord/ips/common/ui/layout/class/Layout02';
+import ExplorerLayoutView from '@/iochord/ips/common/ui/layout/class/ExplorerLayoutView';
 import DepthTwoLeftWrapperComponent from '@/iochord/ips/common/ui/layout/components/DepthTwoLeftWrapperComponent.vue';
 import ContentOraclePropertiesComponent from '../components/ContentOraclePropertiesComponent.vue';
 import ContentMssqlPropertiesComponent from '../components/ContentMssqlPropertiesComponent.vue';
@@ -59,28 +64,55 @@ import ItemConnectionComponent from '../components/ItemConnectionComponent.vue';
 
 @Component({
   components: {
-      DepthTwoLeftWrapperComponent,
-      ContentOraclePropertiesComponent,
-      ContentMssqlPropertiesComponent,
-      ContentMysqlPropertiesComponent,
-      ContentHadoopPropertiesComponent,
-      ContentDataViewComponent,
-      ContentDataUploadComponent,
-      ContentQueryComponent,
-      ContentFileQueryComponent,
-      ItemUploadComponent,
-      ItemConnectionComponent,
-   },
- })
- export default class SandboxDataConnectionUpload extends Layout02View {
+    DepthTwoLeftWrapperComponent,
+    ContentOraclePropertiesComponent,
+    ContentMssqlPropertiesComponent,
+    ContentMysqlPropertiesComponent,
+    ContentHadoopPropertiesComponent,
+    ContentDataViewComponent,
+    ContentDataUploadComponent,
+    ContentQueryComponent,
+    ContentFileQueryComponent,
+    ItemUploadComponent,
+    ItemConnectionComponent,
+  },
+})
+
+/**
+ * Data connection upload view.
+ *
+ * @export
+ * @class DataConnectionNew
+ * @extends {ExplorerLayoutView}
+ *
+ * @package ips
+ * @author Riska Asriana Sutrisnowati <riska@iochord.com>
+ * @since 2019
+ */
+export default class DataConnectionUpload extends ExplorerLayoutView {
+
+  /**
+   * The title of data connection upload.
+   *
+   * @type {string}
+   * @memberof DataConnectionUpload
+   */
   public title: string = '';
 
-  /** @override */
+  /**
+   * Override the browser properties.
+   *
+   * @memberof DataConnectionUpload
+   */
   public overrideBrowserProperties() {
     this.setDocumentTitle('Data Management: Import File');
   }
 
-  /** @Override */
+  /**
+   * Assigns title to the data connection upload.
+   *
+   * @memberof DataConnectionUpload
+   */
   public setTitle(): void {
     this.title = `Upload`;
   }

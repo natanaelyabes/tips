@@ -1,0 +1,27 @@
+@startuml "Play Simulation Model"
+
+actor User
+boundary "Editor page \n(SimulationEditorView.vue)" as editor
+control "Run simulation model" as c1
+control "Run simulation model" as c1
+entity "Simulation results" as e1
+
+User -> editor
+activate editor
+editor -> c1 : "loadNPlay()"
+activate c1
+
+c1 -> e1
+activate e1
+|||
+alt terminate simulation
+c1 --> editor : stop the simulation
+end
+e1 --> c1
+|||
+deactivate e1
+
+c1 --> editor
+deactivate c1
+
+@enduml

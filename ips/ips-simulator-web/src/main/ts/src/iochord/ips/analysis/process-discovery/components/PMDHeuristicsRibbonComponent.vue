@@ -1,3 +1,8 @@
+<!--
+  @package ips
+  @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
+  @since 2019
+-->
 <template>
   <div class="pmd heuristics ribbon component">
     <div class="item"><div class="header"><strong>Heuristics Miner</strong></div></div>
@@ -53,24 +58,22 @@
   </div>
 </template>
 
-<style>
-
-</style>
-
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator';
 import BaseComponent from '@/iochord/ips/common/ui/layout/class/BaseComponent';
 
 @Component
+
+/**
+ * Ribbon component to define heuristic net parameter settings
+ *
+ * @extends BaseComponent
+ * @package ips
+ * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
+ * @since 2019
+ *
+ */
 export default class PMDHeuristicsRibbonComponent extends BaseComponent {
-// $('.ui.range.slider')
-//   .slider({
-//     min: 5,
-//     max: 100,
-//     start: 10,
-//     end: 90,
-//     step: 5
-//   })
-// ;
+  //
 }
 </script>

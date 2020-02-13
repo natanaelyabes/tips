@@ -5,6 +5,13 @@ import java.util.Date;
 import lombok.Getter;
 import lombok.Setter;
 
+/**
+*
+* @package ips-common
+* @author Iq Reviessay Pulshashi <pulshashi@ideas.web.id>
+* @since 2019
+*
+*/
 public class Resource extends IdentifiableImpl {
 
 	@Getter
@@ -46,5 +53,5 @@ public class Resource extends IdentifiableImpl {
 	@Getter
 	@Setter
 	private Long deletedBy;
-	
+
 }

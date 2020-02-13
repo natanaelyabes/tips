@@ -1,3 +1,8 @@
+<!--
+  @package ips
+  @author Riska Asriana Sutrisnowati <riska@iochord.com>
+  @since 2019
+-->
 <template>
   <div class="content mapping component">
     <form class="ui form">
@@ -221,6 +226,18 @@ import ContentDataViewComponent from '../../SandboxDataConnection/components/Con
 
 
 @Component
+
+/**
+ * The content mapping component.
+ *
+ * @export
+ * @class ContentMappingComponent
+ * @extends {BaseComponent}
+ *
+ * @package ips
+ * @author Riska Asriana Sutrisnowati <riska@iochord.com>
+ * @since 2019
+ */
 export default class ContentMappingComponent extends BaseComponent {
 
 }

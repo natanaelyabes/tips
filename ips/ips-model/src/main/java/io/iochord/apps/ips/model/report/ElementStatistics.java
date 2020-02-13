@@ -6,6 +6,13 @@ import java.util.Map;
 import lombok.Getter;
 import lombok.Setter;
 
+/**
+*
+* @package ips-model
+* @author Iq Reviessay Pulshashi <pulshashi@ideas.web.id>
+* @since 2019
+*
+*/
 public class ElementStatistics {
 
 	public ElementStatistics() {
@@ -15,7 +22,7 @@ public class ElementStatistics {
 	public ElementStatistics(String name, String type) {
 		setName(name);
 		setType(type);
-		subElements = new LinkedHashMap<String, ElementStatistics>();
+		subElements = new LinkedHashMap<>();
 	}
 
 	public ElementStatistics(String description, Long count, Double average, Double total, Double min, Double max) {
@@ -30,15 +37,11 @@ public class ElementStatistics {
 		subElements = null;
 	}
 	
-	public ElementStatistics(String name, String type, String description, Long count, Double average, Double total, Double min, Double max) {
+	public ElementStatistics(String name, String type, String description, Long count) {
 		setName(name);
 		setType(type);
 		setDescription(description);
 		setCount(count);
-		setAverage(average);
-		setTotal(total);
-		setMin(min);
-		setMax(max);
 		subElements = null;
 	}
 

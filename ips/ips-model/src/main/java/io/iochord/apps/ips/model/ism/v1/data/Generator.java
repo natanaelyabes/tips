@@ -8,22 +8,20 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 import io.iochord.apps.ips.common.models.Referenceable;
 import io.iochord.apps.ips.model.ism.v1.Data;
+import io.iochord.apps.ips.model.ism.v1.ElementType;
 import io.iochord.apps.ips.model.ism.v1.data.impl.GeneratorImpl;
 import io.iochord.apps.ips.model.ism.v1.nodes.enums.DistributionType;
 
 /**
- *
- * @package chdsr-model
- * @author  Iq Reviessay Pulshashi <pulshashi@ideas.web.id>
- * @since   2019
- *
- *
- */
+*
+* @package ips-model
+* @author Iq Reviessay Pulshashi <pulshashi@ideas.web.id>
+* @since 2019
+*
+*/
 @JsonDeserialize(as = GeneratorImpl.class)
-@JsonTypeName(Generator.TYPE)
+@JsonTypeName(ElementType.DATA_GENERATOR)
 public interface Generator extends Data {
-	public static final String TYPE = "generator";
-	
 	@JsonProperty(value = "objectTypeRef")
 	Referenceable<ObjectType> getObjectType();
 
@@ -36,7 +34,4 @@ public interface Generator extends Data {
 	int getEntitiesPerArrival();
 
 	int getMaxArrival();
-
-	// TODO: Phase 2
-//	long getFirstCreation();
 }

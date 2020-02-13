@@ -1,3 +1,8 @@
+<!--
+  @package ips
+  @author Riska Asriana Sutrisnowati <riska@iochord.com>
+  @since 2019
+-->
 <template>
   <div class="content filter points component">
     <form class="ui form">
@@ -228,7 +233,19 @@ import { Vue, Component } from 'vue-property-decorator';
 import BaseComponent from '@/iochord/ips/common/ui/layout/class/BaseComponent';
 
 @Component
-export default class ContentFilterPointsComponent extends BaseComponent {
 
+/**
+ * Content filter points component.
+ *
+ * @export
+ * @class ContentFilterPointsComponent
+ * @extends {BaseComponent}
+ *
+ * @package ips
+ * @author Riska Asriana Sutrisnowati <riska@iochord.com>
+ * @since 2019
+ */
+export default class ContentFilterPointsComponent extends BaseComponent {
+  //
 }
 </script>

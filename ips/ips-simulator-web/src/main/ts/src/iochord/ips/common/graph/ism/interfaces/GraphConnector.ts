@@ -1,6 +1,11 @@
 import { GraphElement } from './GraphElement';
 
 /**
+ * The interface of graph configuration.
+ *
+ * @export
+ * @interface GraphConnector
+ * @extends {GraphElement}
  *
  * @package ips
  * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>

@@ -12,13 +12,6 @@
 </template>
 
 <style scoped>
-/**
- *
- * @package ips
- * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
- * @since 2019
- *
- */
 .ui.menu {
   width: 100%;
 }
@@ -28,18 +21,46 @@
 import { Component, Prop, Vue } from 'vue-property-decorator';
 import SemanticComponent from '@/iochord/ips/common/ui/semantic-components/SemanticComponent';
 
+@Component
 
 /**
+ * Navigation bar component.
+ *
+ * @export
+ * @class NavigationBarComponent
+ * @extends {SemanticComponent}
  *
  * @package ips
  * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
  * @since 2019
- *
  */
-@Component
 export default class NavigationBarComponent extends SemanticComponent {
+
+  /**
+   * Type of navigation bar component.
+   *
+   * @private
+   * @type {string}
+   * @memberof NavigationBarComponent
+   */
   @Prop() private type!: string;
+
+  /**
+   * Color of navigation bar component.
+   *
+   * @private
+   * @type {string}
+   * @memberof NavigationBarComponent
+   */
   @Prop() private color!: string;
+
+  /**
+   * Size of navigation bar component.
+   *
+   * @private
+   * @type {string}
+   * @memberof NavigationBarComponent
+   */
   @Prop() private size!: string;
 }
 </script>

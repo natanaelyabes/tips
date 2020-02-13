@@ -10,13 +10,6 @@
 </template>
 
 <style>
-/**
- *
- * @package ips
- * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
- * @since 2019
- *
- */
 .index.view {
   height: 100%;
 }
@@ -26,14 +19,17 @@
 import { Component } from 'vue-property-decorator';
 import IndexLayout from '@/iochord/ips/common/ui/layout/class/IndexLayout';
 
+@Component
+
 /**
+ * @export
+ * @class AuthenticationIndexView
+ * @extends {IndexLayout}
  *
  * @package ips
  * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
  * @since 2019
- *
  */
-@Component
 export default class AuthenticationIndexView extends IndexLayout {
   //
 }

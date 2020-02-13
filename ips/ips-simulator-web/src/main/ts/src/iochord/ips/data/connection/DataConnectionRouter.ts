@@ -1,16 +1,16 @@
 import { RouteConfig } from 'vue-router';
 
 /**
+ * Router properties for Data Connection.
  *
  * @package ips
  * @author Riska A. Sutrisnowati <riska@iochord.com>
  * @since 2019
- *
  */
 export default [
   {
     path: `connection`,
-    component: () => import(/* webpackChunkName: "ips-common-layout-base" */ '@/iochord/ips/common/ui/layouts/BaseLayout.vue'),
+    component: () => import(/* webpackChunkName: "ips-common-layout-base" */ '@/iochord/ips/common/ui/components/layout/BaseLayout.vue'),
     children: [
       {
         path: ``,

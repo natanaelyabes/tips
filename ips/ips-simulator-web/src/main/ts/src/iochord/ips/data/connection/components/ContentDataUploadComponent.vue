@@ -1,3 +1,8 @@
+<!--
+  @package ips
+  @author Riska Asriana Sutrisnowati <riska@iochord.com>
+  @since 2019
+-->
 <template>
   <div class="content data upload component">
     <form ref="frmUpload" class="ui form">
@@ -29,11 +34,6 @@
         <br />
         <div class="inline fields">
           <div class="eight wide field">
-            <!--
-            <button type="button" class="ui disabled button">
-              Use file
-            </button>
-            -->
             <button type="button" :disabled="isUploading" class="ui primary button" @click="doImport()">
               Import {{uploadStatus}}
             </button>
@@ -41,40 +41,10 @@
               Cancel
             </button>
           </div>
-          <div class="eight wide field">
-
-          </div>
         </div>
     </form>
-    <!--
-    <h4 class="ui dividing header">Data Preview</h4>
-      <div style="overflow-x: hidden; overflow-y: scroll; border: 1px solid rgba(34,36,38,.15); height: 500px; width: 100%">
-        <table class="ui celled striped table">
-          <thead>
-            <tr>
-              <th>Column 1</th>
-              <th>Column 2</th>
-              <th>Column 3</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td class="collapsing">
-                node_modules
-              </td>
-              <td>Initial commit</td>
-              <td class="right aligned collapsing">10 hours ago</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    -->
   </div>
 </template>
-
-<style>
-
-</style>
 
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator';
@@ -82,12 +52,49 @@ import BaseComponent from '@/iochord/ips/common/ui/layout/class/BaseComponent';
 import DataConnectionService, { ImportCsvConfiguration } from '@/iochord/ips/common/service/data/DataConnectionService';
 
 @Component
+
+/**
+ * Content data upload component.
+ *
+ * @export
+ * @class ContentDataUploadComponent
+ * @extends {BaseComponent}
+ *
+ * @package ips
+ * @author Riska Asriana Sutrisnowati <riska@iochord.com>
+ * @since 2019
+ */
 export default class ContentDataUploadComponent extends BaseComponent {
 
+  /**
+   * Status to indicate whether current component is in the uploading state. False otherwise.
+   *
+   * @type {boolean}
+   * @memberof ContentDataUploadComponent
+   */
   public isUploading: boolean = false;
+
+  /**
+   * Status to indicate the upload state.
+   *
+   * @type {string}
+   * @memberof ContentDataUploadComponent
+   */
   public uploadStatus: string = '';
+
+  /**
+   * CSV import configuration.
+   *
+   * @type {ImportCsvConfiguration}
+   * @memberof ContentDataUploadComponent
+   */
   public config: ImportCsvConfiguration = new ImportCsvConfiguration();
 
+  /**
+   * Import CSV from local files.
+   *
+   * @memberof ContentDataUploadComponent
+   */
   public doImport() {
     const self = this;
     const frmUpload = self.$refs['frmUpload'] as HTMLFormElement;
@@ -106,12 +113,5 @@ export default class ContentDataUploadComponent extends BaseComponent {
       });
     }
   }
-
-  /** @Override */
-  public async mounted(): Promise<void> {
-    //
-  }
 }
-
 </script>
-

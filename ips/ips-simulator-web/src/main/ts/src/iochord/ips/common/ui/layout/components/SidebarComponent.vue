@@ -13,24 +13,7 @@
   </div>
 </template>
 
-<style scoped>
-/**
- *
- * @package ips
- * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
- * @since 2019
- *
- */
-</style>
-
 <style>
-/**
- *
- * @package ips
- * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
- * @since 2019
- *
- */
 .sidebar.component .navigation-bar.component {
   height: 100%;
   max-height: 100%;
@@ -60,20 +43,32 @@ import { Component, Vue, Prop } from 'vue-property-decorator';
 import NavigationBarComponent from '@/iochord/ips/common/ui/semantic-components/navigations/components/NavigationBarComponent.vue';
 import BaseComponent from '@/iochord/ips/common/ui/layout/class/BaseComponent';
 
-
-/**
- *
- * @package ips
- * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
- * @since 2019
- *
- */
 @Component({
   components: {
     NavigationBarComponent,
   },
 })
+
+/**
+ * Sidebar component.
+ *
+ * @export
+ * @class SidebarComponent
+ * @extends {BaseComponent}
+ *
+ * @package ips
+ * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
+ * @since 2019
+ */
 export default class SidebarComponent extends BaseComponent {
+
+  /**
+   * Specify the type of the sidebar.
+   *
+   * @private
+   * @type {string}
+   * @memberof SidebarComponent
+   */
   @Prop() private type!: string;
 }
 </script>

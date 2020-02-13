@@ -11,6 +11,7 @@ build:
   stage: build
   script: 
     - gradle --build-cache build
+    - gradle sonarqube -x test -Dsonar.projectKey=ips -Dsonar.host.url=http://apps-sonarqube-sonarqube:9000 -Dsonar.login=e8008f23a68aa7c49851cd5947a043288453f5af --stacktrace
     - gradle artifactoryPublish
   cache:
     key: "$CI_COMMIT_REF_NAME"
@@ -18,7 +19,17 @@ build:
     paths:
       - build
       - .gradle
-      
+
+sonar-ts:
+  image: sonarsource/sonar-scanner-cli
+  stage: build
+  variables:
+    SONAR_HOST_URL: 'http://apps-sonarqube-sonarqube:9000'
+    SONAR_TOKEN: 'e8008f23a68aa7c49851cd5947a043288453f5af'
+  script:
+    - cd $CI_PROJECT_DIR/ips/ips-simulator-web/src/main/ts
+    - sonar-scanner -Dsonar.projectKey=ips-ui -Dsonar.sources=./src/iochord -Dsonar.host.url=$SONAR_HOST_URL -Dsonar.login=$SONAR_TOKEN
+
 stop:
   image: lwolf/helm-kubectl-docker:v152_213
   stage: build

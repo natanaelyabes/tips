@@ -1,6 +1,12 @@
+<!--
+  @package ips
+  @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
+  @since 2019
+-->
 <template>
   <div class="sandbox analysis dist fitting">
     <LeftBarContentWrapperComponent>
+
       <!-- Header -->
       <template slot="header-breadcrumb">
         <router-link to="/iochord/ips/home" tag="a" class="section">Home</router-link>
@@ -12,10 +18,8 @@
 
       <!-- Left Sidebar Menu Item -->
       <template slot="left-bar-menu-item">
-        <!-- <div class="menu"> -->
-          <a href="/#/iochord/ips/analytics/distribution/settings" class="item">Settings</a>
-          <a href="/#/iochord/ips/analytics/distribution/fitting" class="item">Overall</a>
-        <!-- </div> -->
+        <a href="/#/iochord/ips/analytics/distribution/settings" class="item">Settings</a>
+        <a href="/#/iochord/ips/analytics/distribution/fitting" class="item">Overall</a>
       </template>
 
       <!-- Content -->
@@ -42,12 +46,15 @@ a.section {
 </style>
 
 <script lang="ts">
+/**
+ * @module   iochord/ips/analysis/distribution-fitting/
+ */
+
 import { Vue, Component } from 'vue-property-decorator';
 import LeftBarContentWrapperComponent from '@/iochord/ips/common/ui/layout/components/LeftBarContentWrapperComponent.vue';
-import Layout04View from '@/iochord/ips/common/ui/layout/class/Layout04';
+import DiffLayoutView from '@/iochord/ips/common/ui/layout/class/DiffLayoutView';
 import ContentSettingsComponent from '../components/ContentSettingsComponent.vue';
 import ContentSplitComponent from '../components/ContentSplitComponent.vue';
-
 
 @Component({
   components: {
@@ -56,20 +63,43 @@ import ContentSplitComponent from '../components/ContentSplitComponent.vue';
     ContentSplitComponent,
   },
 })
-export default class AnalysisDistFitting extends Layout04View {
+
+/**
+ * Overall page to provide a side by side
+ * view between process model and its fitted distribution.
+ *
+ * @extends BaseComponent
+ * @package ips
+ * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
+ * @since 2019
+ *
+ */
+export default class AnalysisDistFittingOverall extends DiffLayoutView {
+
+  /**
+   * Title field of AnalysisDistFittingOverall
+   *
+   * @type {string}
+   * @memberof AnalysisDistFittingOverall
+   */
   public title: string = '';
 
-
-  public mounted(): void { // implement business logic
-    // alert('ding! DD ppang juwa');
-  }
-
-  /** @override */
+  /**
+   * Override browser properties for AnalysisDistFittingOverall
+   *
+   * @override
+   * @memberof AnalysisDistFittingOverall
+   */
   public overrideBrowserProperties() {
     this.setDocumentTitle('Data Analysis: Distribution Fitting');
   }
 
-  /** @Override */
+  /**
+   * Override title for AnalysisDistFittingOverall
+   *
+   * @override
+   * @memberof AnalysisDistFittingOverall
+   */
   public setTitle(): void {
     this.title = `Distribution Fitting`;
   }

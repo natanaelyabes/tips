@@ -1,3 +1,8 @@
+<!--
+  @package ips
+  @author Riska Asriana Sutrisnowati <riska@iochord.com>
+  @since 2019
+-->
 <template>
   <div class="content file query component">
     <form class="ui form">
@@ -45,16 +50,24 @@
   </div>
 </template>
 
-<style>
-
-</style>
-
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator';
 import BaseComponent from '@/iochord/ips/common/ui/layout/class/BaseComponent';
 
 @Component
-export default class ContentFileQueryComponent extends BaseComponent {
 
+/**
+ * Content file query component.
+ *
+ * @export
+ * @class ContentFileQueryComponent
+ * @extends {BaseComponent}
+ *
+ * @package ips
+ * @author Riska Asriana Sutrisnowati <riska@iochord.com>
+ * @since 2019
+ */
+export default class ContentFileQueryComponent extends BaseComponent {
+  //
 }
 </script>

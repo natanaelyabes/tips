@@ -7,11 +7,12 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 
 /**
+ * 
+ * IPS Web Application Entrypoint 
  *
- * @package chdsr-simulator-web
+ * @package ips-simulator-web
  * @author Iq Reviessay Pulshashi <pulshashi@ideas.web.id>
  * @since 2019
- *
  *
  */
 @SpringBootApplication
@@ -20,6 +21,11 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class IpsWebApplication {
 
+	/**
+	 * Application entrypoint
+	 * 
+	 * @param args arguments
+	 */
 	public static void main(String[] args) {
 		SpringApplication.run(IpsWebApplication.class);
 	}

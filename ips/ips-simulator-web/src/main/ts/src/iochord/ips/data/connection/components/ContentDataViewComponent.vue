@@ -1,3 +1,8 @@
+<!--
+  @package ips
+  @author Riska Asriana Sutrisnowati <riska@iochord.com>
+  @since 2019
+-->
 <template>
   <div class="content data view component">
       <form class="ui form">
@@ -160,7 +165,19 @@ import { Vue, Component } from 'vue-property-decorator';
 import BaseComponent from '@/iochord/ips/common/ui/layout/class/BaseComponent';
 
 @Component
-export default class ContentDataViewComponent extends BaseComponent {
 
+/**
+ * Content data view component.
+ *
+ * @export
+ * @class ContentDataViewComponent
+ * @extends {BaseComponent}
+ *
+ * @package ips
+ * @author Riska Asriana Sutrisnowati <riska@iochord.com>
+ * @since 2019
+ */
+export default class ContentDataViewComponent extends BaseComponent {
+  //
 }
 </script>

@@ -28,9 +28,7 @@ node {
 }
 
 task npmBuild( type: NpmTask, dependsOn: 'npmInstall' ) {
-//    script = file( 'src/main/ts' )
     args = ['run', 'build']
-    
 }
 
 task npmDist(type: Copy) {
@@ -39,4 +37,4 @@ task npmDist(type: Copy) {
 }
 
 tasks.npmDist.dependsOn npmBuild
-tasks.compileJava.dependsOn npmDist
+// tasks.compileJava.dependsOn npmDist

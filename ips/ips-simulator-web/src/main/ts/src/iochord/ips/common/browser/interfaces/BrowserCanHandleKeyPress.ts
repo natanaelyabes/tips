@@ -1,4 +1,5 @@
 /**
+ * Listener interface to handle actions after certain key press event.
  *
  * @package ips
  * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>

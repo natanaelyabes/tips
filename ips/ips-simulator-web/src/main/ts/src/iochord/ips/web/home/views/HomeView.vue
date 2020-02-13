@@ -15,12 +15,9 @@
             <div class="ui card">
               <div class="content">
                 <h2 class="left floated">Getting Started</h2>
-                <div class="right floated">
-                  <!-- <div class="ui basic compact icon button"><i class="plus icon"></i></div> -->
-                </div>
                 <div class="description">
-                  <p><router-link tag="a" class="item" :to="'/iochord/ips/data/connection'">Connect to a data source</router-link></p>
-                  <p><router-link tag="a" class="item" :to="'/iochord/ips/model/editor'">Create a simulation model</router-link></p>
+                  <p><router-link tag="a" style="text-decoration: underline" class="item" :to="'/iochord/ips/data/connection'">Connect to a data source</router-link></p>
+                  <p><router-link tag="a" style="text-decoration: underline" class="item" :to="'/iochord/ips/simulation/editor'">Create a simulation model</router-link></p>
                   <p><a href="#" style="text-decoration: underline">Discover simulation model</a></p>
                   <p><a href="#" style="text-decoration: underline">Create a hybrid simulation model</a></p>
                   <p><a href="#" style="text-decoration: underline">Analyze data</a></p>
@@ -40,7 +37,6 @@
                 </div>
                 <div class="description">
                   <div class="ui middle aligned divided list">
-                    <!-- router links -->
                     <p>No recent simulations available.</p>
                   </div>
                 </div>
@@ -60,7 +56,6 @@
                 </div>
                 <div class="description">
                   <div class="ui middle aligned divided list">
-                    <!-- router links -->
                     <p>No recent files available.</p>
                   </div>
                 </div>
@@ -99,34 +94,51 @@
 import { Component, Vue } from 'vue-property-decorator';
 
 // Classes
-import Layout01 from '@/iochord/ips/common/ui/layout/class/Layout01';
+import AppLayoutView from '@/iochord/ips/common/ui/layout/class/AppLayoutView';
 
 // Interfaces
-import { Layout01HasWrapper } from '@/iochord/ips/common/ui/layout/interfaces/Layout01HasWrapper';
+import { AppLayout } from '@/iochord/ips/common/ui/layout/interfaces/AppLayout';
 
 // Components
 import WrapperComponent from '@/iochord/ips/common/ui/layout/components/WrapperComponent.vue';
 
-
 /**
  *
- * @package ips
- * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
- * @since 2019
  *
+
  */
 @Component({
   components: {
     WrapperComponent,
   },
 })
-export default class HomeView extends Layout01 {
-  /** @Override */
+/**
+ * The home view.
+ *
+ * @export
+ * @class HomeView
+ * @extends {AppLayoutView}
+ *
+ * @package ips
+ * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
+ * @since 2019
+ */
+export default class HomeView extends AppLayoutView {
+
+  /**
+   * Override the browser properties.
+   *
+   * @memberof HomeView
+   */
   public overrideBrowserProperties(): void {
     this.setDocumentTitle('Home');
   }
 
-  /** @Override */
+  /**
+   * Assigns title to the home view page.
+   *
+   * @memberof HomeView
+   */
   public setTitle(): void {
     this.title = 'Home';
   }

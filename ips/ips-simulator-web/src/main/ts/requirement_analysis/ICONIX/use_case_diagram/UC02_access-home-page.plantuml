@@ -1,0 +1,48 @@
+@startuml "Access Home Page"
+left to right direction
+
+actor :User: as user
+
+rectangle "Access Home Page" {
+  package "Getting Started" as gs {
+    usecase (Connect to data source) as uc_gs_1
+    usecase (Create simulation model) as uc_gs_2
+    usecase (Discover simulation model) as uc_gs_3
+    usecase (Create hybrid simulation model) as uc_gs_4
+    usecase (Analyze data) as uc_gs_5
+
+    ' Help
+    (help) ..> uc_gs_1 : <<extends>>
+    (help) ..> uc_gs_2 : <<extends>>
+    (help) ..> uc_gs_3 : <<extends>>
+    (help) ..> uc_gs_4 : <<extends>>
+    (help) ..> uc_gs_5 : <<extends>>
+
+    ' Relationship
+    uc_gs_1 -- user
+    uc_gs_2 -- user
+    uc_gs_3 -- user
+    uc_gs_4 -- user
+    uc_gs_5 -- user
+  }
+
+  package "Recent simulations" as rs {
+    usecase (View recent simulation) as uc_rs_1
+    usecase (add simulation) as uc_rs_2
+    (filter recent simulation) .> uc_rs_1 : <<extends>>
+
+    uc_rs_1 -- user
+    uc_rs_2 -- user
+  }
+
+  package "Recent files" as rf {
+    usecase (View recent data connection) as uc_rf_1
+    usecase (add data connection) as uc_rf_2
+    (filter recent data connection) .> uc_rf_1 : <<extends>>
+
+    uc_rf_1 -- user
+    uc_rf_2 -- user
+  }
+}
+
+@enduml

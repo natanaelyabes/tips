@@ -1,3 +1,8 @@
+<!--
+  @package ips
+  @author Riska Asriana Sutrisnowati <riska@iochord.com>
+  @since 2019
+-->
 <template>
   <div class="content mssql properties component">
     <form class="ui form">
@@ -96,7 +101,19 @@ import BaseComponent from '@/iochord/ips/common/ui/layout/class/BaseComponent';
 
 
 @Component
-export default class ContentMssqlPropertiesComponent extends BaseComponent {
 
+/**
+ * Content MSSQL properties component.
+ *
+ * @export
+ * @class ContentMssqlPropertiesComponent
+ * @extends {BaseComponent}
+ *
+ * @package ips
+ * @author Riska Asriana Sutrisnowati <riska@iochord.com>
+ * @since 2019
+ */
+export default class ContentMssqlPropertiesComponent extends BaseComponent {
+  //
 }
 </script>

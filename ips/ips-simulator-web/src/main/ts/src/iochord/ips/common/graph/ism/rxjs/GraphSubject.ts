@@ -1,5 +1,17 @@
 import { Graph } from '@/iochord/ips/common/graph/ism/interfaces/Graph';
 import { Observable, Subject } from 'rxjs';
+
+/**
+ * A class to define graph as a rxjs subject.
+ *
+ * @export
+ * @class GraphSubject
+ *
+ * @package ips
+ * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
+ * @since 2019
+ *
+ */
 export default class GraphSubject {
 
   public static toObservable(): Observable<Graph> {

@@ -1,4 +1,5 @@
 /**
+ * Base URL enum
  *
  * @package ips
  * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
@@ -6,5 +7,9 @@
  *
  */
 export enum BaseUrlEnum {
+
+  /**
+   * IOCHORD base URL
+   */
   IOCHORD = 'iochord',
 }
