@@ -20,9 +20,8 @@ import io.iochord.apps.ips.model.ism.v1.impl.ElementImpl;
 */
 @JsonDeserialize(as = ElementImpl.class)
 @JsonTypeInfo(use = Id.NAME, property = "elementType", include = As.EXISTING_PROPERTY)
-@JsonTypeName(Element.TYPE)
+@JsonTypeName(ElementType.ELEMENT)
 public interface Element extends Identifiable {
-	public static final String TYPE = "element";
 
 	String getElementType();
 
@@ -31,4 +30,5 @@ public interface Element extends Identifiable {
 	String getIcon();
 
 	Map<String, String> getAttributes();
+
 }

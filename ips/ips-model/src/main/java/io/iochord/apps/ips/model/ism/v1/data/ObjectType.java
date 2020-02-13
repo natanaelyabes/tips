@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 import io.iochord.apps.ips.model.ism.v1.Data;
+import io.iochord.apps.ips.model.ism.v1.ElementType;
 import io.iochord.apps.ips.model.ism.v1.data.impl.ObjectTypeImpl;
 
 /**
@@ -14,11 +15,6 @@ import io.iochord.apps.ips.model.ism.v1.data.impl.ObjectTypeImpl;
 *
 */
 @JsonDeserialize(as = ObjectTypeImpl.class)
-@JsonTypeName(ObjectType.TYPE)
+@JsonTypeName(ElementType.DATA_OBJECTTYPE)
 public interface ObjectType extends Data {
-	public static final String TYPE = "objecttype";
-
-	// TODO: Phase 2
-//	@JsonProperty(value = "typesRef")
-//	Map<String, Referenceable<DataTable>> getTypes();
 }

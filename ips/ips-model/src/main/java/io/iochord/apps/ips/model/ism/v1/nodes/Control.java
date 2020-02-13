@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 import io.iochord.apps.ips.model.ism.v1.Configuration;
+import io.iochord.apps.ips.model.ism.v1.ElementType;
 import io.iochord.apps.ips.model.ism.v1.nodes.impl.ControlImpl;
 
 /**
@@ -14,10 +15,8 @@ import io.iochord.apps.ips.model.ism.v1.nodes.impl.ControlImpl;
 *
 */
 @JsonDeserialize(as = ControlImpl.class)
-@JsonTypeName(Control.TYPE)
+@JsonTypeName(ElementType.NODE_CONTROL)
 public interface Control extends Configuration {
-	public static final String TYPE = "control";
-	
 	public enum STOPPING_CRITERIA {
 		STEP,
 		TIME

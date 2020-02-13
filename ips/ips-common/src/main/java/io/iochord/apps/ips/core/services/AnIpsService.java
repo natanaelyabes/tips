@@ -23,5 +23,5 @@ public abstract class AnIpsService<C, R> extends IdentifiableImpl {
 		this.async = async;
 	}
 
-	public abstract R run(ServiceContext context, C config) throws Exception;
+	public abstract R run(ServiceContext context, C config);
 }

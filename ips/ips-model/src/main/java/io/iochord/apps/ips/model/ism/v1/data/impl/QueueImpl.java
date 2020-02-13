@@ -2,6 +2,7 @@ package io.iochord.apps.ips.model.ism.v1.data.impl;
 
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
+import io.iochord.apps.ips.model.ism.v1.ElementType;
 import io.iochord.apps.ips.model.ism.v1.data.Queue;
 import io.iochord.apps.ips.model.ism.v1.impl.DataImpl;
 import lombok.Getter;
@@ -14,29 +15,30 @@ import lombok.Setter;
 * @since 2019
 *
 */
-@JsonTypeName(Queue.TYPE)
+@JsonTypeName(ElementType.DATA_QUEUE)
 public class QueueImpl extends DataImpl implements Queue {
-	@Getter
-	private final String elementType = Queue.TYPE;
 	
-	@Getter
-	@Setter
-	private QUEUE_TYPE type = QUEUE_TYPE.FIFO;
+	private QUEUE_TYPE queueType = QUEUE_TYPE.FIFO;
 
 	@Getter
 	@Setter
 	private boolean shared = false;
-//
-//
-//	@Getter
-//	@Setter
-//	private boolean single = true;
-	
+
 	@Getter
 	@Setter
 	private int size = -1;
+
+	public String getElementType() {
+		return ElementType.DATA_QUEUE;
+	}
+
+	@Override
+	public QUEUE_TYPE getType() {
+		return queueType;
+	}
 	
-//	@Getter
-//	@Setter
-//	private Map<String, Integer> sizes = new LinkedHashMap<>();
+	public void setType(QUEUE_TYPE queueType) {
+		this.queueType = queueType;
+	}
+
 }

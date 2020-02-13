@@ -4,7 +4,6 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -31,7 +30,6 @@ import io.iochord.apps.ips.model.ism2cpn.converter.Ism2CpnscalaBiConverter;
  *
  */
 @RestController
-@CrossOrigin
 public class IsmModelController extends AModelController {
 	/**
 	 * API URI prefix
@@ -90,8 +88,7 @@ public class IsmModelController extends AModelController {
 	@GetMapping(BASE_URI + "/view/{modelId}")
 	public IsmGraph getView(@PathVariable String modelId) {
 		if (nets.containsKey(modelId)) {
-			IsmGraph net = nets.get(modelId);
-			return net;
+			return nets.get(modelId);
 		}
 		return null;
 	}
@@ -119,10 +116,11 @@ public class IsmModelController extends AModelController {
 	 * Create example ISM
 	 * 
 	 * @return example ISM as string
+	 * 
+	 *  // createBankExample();
 	 */
 	@GetMapping(value = BASE_URI + "/example", produces = { MediaType.APPLICATION_JSON_VALUE })
 	public String getCreateExampleSimulationModel() {
-		// IsmGraph snet = IsmExample.createBankExample();
 		IsmGraph snet = IsmExample.createPortExample();
 		return SerializationUtil.encode(snet);
 	}
@@ -136,7 +134,6 @@ public class IsmModelController extends AModelController {
 	public String getConvertExampleSimulationModel() {
 		IsmGraph snet = IsmExample.createBankExample();
 		Ism2CpnscalaBiConverter converter = new Ism2CpnscalaBiConverter();
-		String cnet = converter.convert(snet).getConvertedModel();
-		return cnet;
+		return converter.convert(snet).getConvertedModel();
 	}
 }

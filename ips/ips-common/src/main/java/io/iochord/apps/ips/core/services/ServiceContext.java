@@ -6,8 +6,6 @@ import java.util.TreeMap;
 
 import javax.sql.DataSource;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -25,9 +23,6 @@ import lombok.Setter;
 *
 */
 public class ServiceContext extends IdentifiableImpl {
-
-	@Getter
-	private static final Logger logger = LoggerFactory.getLogger(ServiceContext.class);
 
 	public static final String WS_ENDPOINT = "/ws-ips";
 	public static final String WS_REQUEST_URI = "/q";
@@ -76,7 +71,6 @@ public class ServiceContext extends IdentifiableImpl {
 		if (getWsmTemplate() == null) {
 			return;
 		}
-		logger.info("updateProgress " + WS_RESPONSE_PROGRESS_URI + "/" + getId(), getInfo());
 		getWsmTemplate().convertAndSend(WS_RESPONSE_PROGRESS_URI + "/" + getId(), getInfo());
 	}
 
@@ -87,12 +81,11 @@ public class ServiceContext extends IdentifiableImpl {
 		if (getWsmTemplate() == null) {
 			return null;
 		}
-		logger.info("completeAndDestroy " + WS_RESPONSE_COMPLETED_URI + "/" + getId(), this);
 		getWsmTemplate().convertAndSend(WS_RESPONSE_COMPLETED_URI + "/" + getId(), this);
 		return data;
 	}
 
-	public <T> void updateProgress(float progress) {
+	public void updateProgress(float progress) {
 		updateProgress(progress, null, new Date());
 	}
 

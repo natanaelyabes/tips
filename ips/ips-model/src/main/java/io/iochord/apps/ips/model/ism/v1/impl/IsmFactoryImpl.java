@@ -9,6 +9,7 @@ import io.iochord.apps.ips.model.ism.v1.Configuration;
 import io.iochord.apps.ips.model.ism.v1.Connector;
 import io.iochord.apps.ips.model.ism.v1.Data;
 import io.iochord.apps.ips.model.ism.v1.Element;
+import io.iochord.apps.ips.model.ism.v1.ElementType;
 import io.iochord.apps.ips.model.ism.v1.Node;
 import io.iochord.apps.ips.model.ism.v1.Page;
 import io.iochord.apps.ips.model.ism.v1.data.DataTable;
@@ -60,18 +61,18 @@ public class IsmFactoryImpl implements IsmFactory {
 	private int netCounter = 0;
 	
 	protected IsmFactoryImpl() {
-		getDataImplementations().put(DataTable.TYPE, DataTableImpl.class);
-		getDataImplementations().put(ObjectType.TYPE, ObjectTypeImpl.class);
-		getDataImplementations().put(Generator.TYPE, GeneratorImpl.class);
-		getDataImplementations().put(Function.TYPE, FunctionImpl.class);
-		getDataImplementations().put(Queue.TYPE, QueueImpl.class);
-		getDataImplementations().put(Resource.TYPE, ResourceImpl.class);
+		getDataImplementations().put(ElementType.DATA_DATATABLE, DataTableImpl.class);
+		getDataImplementations().put(ElementType.DATA_OBJECTTYPE, ObjectTypeImpl.class);
+		getDataImplementations().put(ElementType.DATA_GENERATOR, GeneratorImpl.class);
+		getDataImplementations().put(ElementType.DATA_FUNCTION, FunctionImpl.class);
+		getDataImplementations().put(ElementType.DATA_QUEUE, QueueImpl.class);
+		getDataImplementations().put(ElementType.DATA_RESOURCE, ResourceImpl.class);
 
-		getNodeImplementations().put(Start.TYPE, StartImpl.class);
-		getNodeImplementations().put(Stop.TYPE, StopImpl.class);
-		getNodeImplementations().put(Activity.TYPE, ActivityImpl.class);
-		getNodeImplementations().put(Branch.TYPE, BranchImpl.class);
-		getNodeImplementations().put(Monitor.TYPE, MonitorImpl.class);
+		getNodeImplementations().put(ElementType.NODE_START, StartImpl.class);
+		getNodeImplementations().put(ElementType.NODE_STOP, StopImpl.class);
+		getNodeImplementations().put(ElementType.NODE_ACTIVITY, ActivityImpl.class);
+		getNodeImplementations().put(ElementType.NODE_BRANCH, BranchImpl.class);
+		getNodeImplementations().put(ElementType.NODE_MONITOR, MonitorImpl.class);
 	}
 
 	@Override
@@ -85,7 +86,6 @@ public class IsmFactoryImpl implements IsmFactory {
 		net.setId("MODEL-" + netCounter);
 		addPage(net);
 		addConfiguration(net);
-//		net.setControl(new ControlImpl());
 		return net;
 	}
 
@@ -107,11 +107,11 @@ public class IsmFactoryImpl implements IsmFactory {
 			if (getDataImplementations().containsKey(dt)) {
 				try {
 					DataImpl data = (DataImpl) getDataImplementations().get(dt).getConstructors()[0].newInstance();
-					data.setId(page.getId() + "-" + dataType + "-" + String.valueOf(page.getData().size()));
+					data.setId(page.getId() + "-" + dataType + "-" + page.getData().size());
 					page.getData().put(data.getId(), data);
 					return data;
 				} catch (Exception ex) {
-					LoggerUtil.log(ex);
+					LoggerUtil.logError(ex);
 				}
 			}
 		}
@@ -125,11 +125,11 @@ public class IsmFactoryImpl implements IsmFactory {
 			if (getNodeImplementations().containsKey(nt)) {
 				try {
 					NodeImpl node = (NodeImpl) getNodeImplementations().get(nt).getConstructors()[0].newInstance();
-					node.setId(page.getId() + "-" + nodeType + "-" + String.valueOf(page.getNodes().size()));
+					node.setId(page.getId() + "-" + nodeType + "-" + page.getNodes().size());
 					page.getNodes().put(node.getId(), node);
 					return node;
 				} catch (Exception ex) {
-					LoggerUtil.log(ex);
+					LoggerUtil.logError(ex);
 				}
 			}
 		}
@@ -140,7 +140,7 @@ public class IsmFactoryImpl implements IsmFactory {
 	public Connector addConnector(Page page, Element source, Element target) {
 		if (page != null) {
 			ConnectorImpl arc = new ConnectorImpl();
-			arc.setId(page.getId() + "-" + String.valueOf(page.getConnectors().size()));
+			arc.setId(page.getId() + "-" + page.getConnectors().size());
 			arc.setSource(new Referenceable<Element>(source));
 			arc.setTarget(new Referenceable<Element>(target));
 			page.getConnectors().put(arc.getId(), arc);
@@ -162,56 +162,56 @@ public class IsmFactoryImpl implements IsmFactory {
 
 	@Override
 	public DataTable addDataTable(Page page) {
-		return (DataTable) addData(page, DataTable.TYPE);
+		return (DataTable) addData(page, ElementType.DATA_DATATABLE);
 	}
 
 	@Override
 	public ObjectType addObjectType(Page page) {
-		return (ObjectType) addData(page, ObjectType.TYPE);
+		return (ObjectType) addData(page, ElementType.DATA_OBJECTTYPE);
 	}
 
 	@Override
 	public Generator addGenerator(Page page) {
-		return (Generator) addData(page, Generator.TYPE);
+		return (Generator) addData(page, ElementType.DATA_GENERATOR);
 	}
 
 	@Override
 	public Function addFunction(Page page) {
-		return (Function) addData(page, Function.TYPE);
+		return (Function) addData(page, ElementType.DATA_FUNCTION);
 	}
 
 	@Override
 	public Queue addQueue(Page page) {
-		return (Queue) addData(page, Queue.TYPE);
+		return (Queue) addData(page, ElementType.DATA_QUEUE);
 	}
 
 	@Override
 	public Resource addResource(Page page) {
-		return (Resource) addData(page, Resource.TYPE);
+		return (Resource) addData(page, ElementType.DATA_RESOURCE);
 	}
 
 	@Override
 	public Start addStart(Page page) {
-		return (Start) addNode(page, Start.TYPE);
+		return (Start) addNode(page, ElementType.NODE_START);
 	}
 
 	@Override
 	public Stop addStop(Page page) {
-		return (Stop) addNode(page, Stop.TYPE);
+		return (Stop) addNode(page, ElementType.NODE_STOP);
 	}
 
 	@Override
 	public Activity addActivity(Page page) {
-		return (Activity) addNode(page, Activity.TYPE);
+		return (Activity) addNode(page, ElementType.NODE_ACTIVITY);
 	}
 
 	@Override
 	public Branch addBranch(Page page) {
-		return (Branch) addNode(page, Branch.TYPE);
+		return (Branch) addNode(page, ElementType.NODE_BRANCH);
 	}
 
 	@Override
 	public Monitor addMonitor(Page page) {
-		return (Monitor) addNode(page, Monitor.TYPE);
+		return (Monitor) addNode(page, ElementType.NODE_MONITOR);
 	}	
 }

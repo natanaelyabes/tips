@@ -106,7 +106,7 @@ class GenGraph {
     val url = "jdbc:mysql://localhost:3306/chdsr?verifyServerCertificate=false&useSSL=false&requireSSL=false&serverTimezone=UTC"
     val driver = "com.mysql.cj.jdbc.Driver"
     val username = "root"
-    val password = "1234"
+    val password = null
     var connection:Connection = null
     
     val sbvseq = new StringBuilder()

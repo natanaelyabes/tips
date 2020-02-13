@@ -3,7 +3,6 @@ package io.iochord.apps.ips.simulator.web.v1.api.controllers.analysis;
 import java.util.Optional;
 
 import org.springframework.http.HttpHeaders;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -23,7 +22,6 @@ import io.iochord.apps.ips.model.ism.v1.IsmGraph;
  *
  */
 @RestController
-@CrossOrigin
 public class IsmDiscoveryController extends AnAnalysisController {
 
 	public static final String BASE_URI = AnAnalysisController.BASE_URI + "/discover";
@@ -39,14 +37,12 @@ public class IsmDiscoveryController extends AnAnalysisController {
 	 */
 	@PostMapping(value = { BASE_URI + "/ism", BASE_URI + "/ism/{datasetId}" })
 	public ServiceContext getPostDiscoverIsm(@PathVariable Optional<String> datasetId,
-			@RequestBody(required = false) IsmDiscoveryConfiguration config, @RequestHeader HttpHeaders headers)
-			throws Exception {
+			@RequestBody(required = false) IsmDiscoveryConfiguration config, @RequestHeader HttpHeaders headers) {
 		if (config == null && datasetId.isPresent()) {
 			config = new IsmDiscoveryConfiguration();
 			config.setDatasetId(datasetId.get());
 		}
-		ServiceContext result = run(new IsmDiscoveryService(), config, IsmGraph.class, headers);
-		return result;
+		return run(new IsmDiscoveryService(), config, IsmGraph.class, headers);
 	}
 
 }
