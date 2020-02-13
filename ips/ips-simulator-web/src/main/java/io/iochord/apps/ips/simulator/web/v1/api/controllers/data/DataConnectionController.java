@@ -1,10 +1,10 @@
 package io.iochord.apps.ips.simulator.web.v1.api.controllers.data;
 
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Map;
 
 import org.springframework.http.HttpHeaders;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import io.iochord.apps.ips.common.models.Dataset;
+import io.iochord.apps.ips.common.util.LoggerUtil;
 import io.iochord.apps.ips.common.util.SerializationUtil;
 import io.iochord.apps.ips.core.services.ServiceContext;
 import io.iochord.apps.ips.model.services.data.DatasetRepositoryService;
@@ -30,7 +31,6 @@ import io.iochord.apps.ips.model.services.data.im.csv.CsvDataImportService;
  *
  */
 @RestController
-@CrossOrigin
 public class DataConnectionController extends ADataController {
 
 	/**
@@ -50,7 +50,9 @@ public class DataConnectionController extends ADataController {
 		Map<String, Dataset> datasets = null;
 		try {
 			datasets = new DatasetRepositoryService().run(context, "");
-		} catch (Exception e) {}
+		} catch (Exception ex) {
+			LoggerUtil.logError(ex);
+		}
 		context.completeAndDestroy(datasets);
 		return context;
 	}
@@ -62,16 +64,16 @@ public class DataConnectionController extends ADataController {
 	 * @param file csv file
 	 * @param headers autowired http headers
 	 * @return service context
+	 * @throws IOException 
 	 * @throws Exception
 	 */
 	@PostMapping(value = BASE_URI + "/import/csv")
 	public ServiceContext postImportCsv(@RequestPart("config") String jsonConfig,
-			@RequestPart("file") MultipartFile file, @RequestHeader HttpHeaders headers) throws Exception {
+			@RequestPart("file") MultipartFile file, @RequestHeader HttpHeaders headers) throws IOException {
 		CsvDataImportConfiguration config = SerializationUtil.decode(jsonConfig, CsvDataImportConfiguration.class);
 		config.setFilename(file.getOriginalFilename());
 		config.setReader(new InputStreamReader(file.getInputStream()));
-		ServiceContext result = run(new CsvDataImportService(), config, CsvDataImportResult.class, headers);
-		return result;
+		return run(new CsvDataImportService(), config, CsvDataImportResult.class, headers);
 	}
 
 }

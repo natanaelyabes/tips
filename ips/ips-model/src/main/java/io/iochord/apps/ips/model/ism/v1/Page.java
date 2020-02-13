@@ -15,9 +15,8 @@ import io.iochord.apps.ips.model.ism.v1.impl.PageImpl;
 *
 */
 @JsonDeserialize(as = PageImpl.class)
-@JsonTypeName(Page.TYPE)
+@JsonTypeName(ElementType.ELEMENT_PAGE)
 public interface Page extends Element {
-	public static final String TYPE = "page";
 
 	Map<String, Data> getData();
 

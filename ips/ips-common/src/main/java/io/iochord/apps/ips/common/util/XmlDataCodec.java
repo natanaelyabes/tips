@@ -5,8 +5,6 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import com.fasterxml.jackson.module.scala.DefaultScalaModule;
 
-import lombok.Getter;
-
 /**
 *
 * @package ips-common
@@ -16,8 +14,7 @@ import lombok.Getter;
 */
 public class XmlDataCodec extends JsonDataCodec implements DataCodec<String> {
 
-	@Getter
-	private final String type = "xml";
+	public static final String TYPE = "xml";
 
 	public static XmlMapper getSerializer() {
 		XmlMapper omDefault = new XmlMapper();
@@ -34,5 +31,9 @@ public class XmlDataCodec extends JsonDataCodec implements DataCodec<String> {
 		omDefault.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 		return omDefault;
 	}
-
+	
+	@Override
+	public String getType() {
+		return TYPE;
+	}
 }

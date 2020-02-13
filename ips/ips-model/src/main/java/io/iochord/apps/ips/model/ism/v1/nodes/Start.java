@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 import io.iochord.apps.ips.common.models.Referenceable;
+import io.iochord.apps.ips.model.ism.v1.ElementType;
 import io.iochord.apps.ips.model.ism.v1.Node;
 import io.iochord.apps.ips.model.ism.v1.data.Generator;
 import io.iochord.apps.ips.model.ism.v1.nodes.impl.StartImpl;
@@ -17,10 +18,8 @@ import io.iochord.apps.ips.model.ism.v1.nodes.impl.StartImpl;
 *
 */
 @JsonDeserialize(as = StartImpl.class)
-@JsonTypeName(Start.TYPE)
+@JsonTypeName(ElementType.NODE_START)
 public interface Start extends Node {
-	public static final String TYPE = "start";
-
 	@JsonProperty(value = "generatorRef")
 	Referenceable<Generator> getGenerator();
 }

@@ -17,9 +17,8 @@ import io.iochord.apps.ips.model.ism.v1.nodes.Control;
 *
 */
 @JsonDeserialize(as = IsmGraphImpl.class)
-@JsonTypeName(IsmGraph.TYPE)
+@JsonTypeName(ElementType.ELEMENT_NET)
 public interface IsmGraph extends Element {
-	public static final String TYPE = "net";
 
 	String getVersion();
 

@@ -22,7 +22,7 @@ import io.iochord.apps.ips.core.services.ServiceContext;
 public class DatasetRepositoryService extends AnIpsService<String, Map<String, Dataset>> {
 
 	@Override
-	public Map<String, Dataset> run(ServiceContext context, String config) throws Exception {
+	public Map<String, Dataset> run(ServiceContext context, String config) {
 		Map<String, Dataset> datasets = new LinkedHashMap<>();
 		try (Connection conn = context.getDataSource().getConnection();) {
 			StringBuilder sql = new StringBuilder();
@@ -38,11 +38,9 @@ public class DatasetRepositoryService extends AnIpsService<String, Map<String, D
 					ds.setId(tablename);
 					datasets.put(ds.getId(), ds);
 				}
-			} catch (Exception ex) {
-				LoggerUtil.log(ex);
 			}
 		} catch (Exception ex) {
-			LoggerUtil.log(ex);
+			LoggerUtil.logError(ex);
 		}
 		return datasets;
 	}

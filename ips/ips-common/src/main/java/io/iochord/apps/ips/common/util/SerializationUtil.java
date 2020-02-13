@@ -1,5 +1,8 @@
 package io.iochord.apps.ips.common.util;
 
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
+
 /**
 *
 * @package ips-common
@@ -7,6 +10,7 @@ package io.iochord.apps.ips.common.util;
 * @since 2019
 *
 */
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class SerializationUtil {
 
 	private static JsonDataCodec json;

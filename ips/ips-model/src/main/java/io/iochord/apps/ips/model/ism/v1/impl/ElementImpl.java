@@ -6,6 +6,7 @@ import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 import io.iochord.apps.ips.model.ism.v1.Element;
+import io.iochord.apps.ips.model.ism.v1.ElementType;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -16,10 +17,8 @@ import lombok.Setter;
 * @since 2019
 *
 */
-@JsonTypeName(Element.TYPE)
+@JsonTypeName(ElementType.ELEMENT)
 public class ElementImpl implements Element {
-	@Getter
-	private final String elementType = Element.TYPE;
 
 	@Getter
 	@Setter
@@ -36,4 +35,9 @@ public class ElementImpl implements Element {
 	@Getter
 	@Setter
 	private Map<String, String> attributes = new LinkedHashMap<>();
+	
+	public String getElementType() {
+		return ElementType.ELEMENT;
+	}
+
 }

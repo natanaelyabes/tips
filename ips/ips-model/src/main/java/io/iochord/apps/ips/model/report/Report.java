@@ -15,6 +15,6 @@ import lombok.Getter;
 public class Report {
 
 	@Getter
-	private final Map<String, GroupStatistics> groups = new LinkedHashMap<String, GroupStatistics>();
+	private final Map<String, GroupStatistics> groups = new LinkedHashMap<>();
 
 }

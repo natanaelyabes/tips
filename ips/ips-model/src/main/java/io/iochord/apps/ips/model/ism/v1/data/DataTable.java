@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 import io.iochord.apps.ips.model.ism.v1.Data;
+import io.iochord.apps.ips.model.ism.v1.ElementType;
 import io.iochord.apps.ips.model.ism.v1.data.impl.DataTableImpl;
 
 /**
@@ -16,10 +17,8 @@ import io.iochord.apps.ips.model.ism.v1.data.impl.DataTableImpl;
 *
 */
 @JsonDeserialize(as = DataTableImpl.class)
-@JsonTypeName(DataTable.TYPE)
+@JsonTypeName(ElementType.DATA_DATATABLE)
 public interface DataTable extends Data {
-
-	public static final String TYPE = "datatable";
 
 	Map<String, String> getFields();
 

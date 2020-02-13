@@ -8,6 +8,7 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 import io.iochord.apps.ips.common.models.Referenceable;
 import io.iochord.apps.ips.model.ism.v1.Data;
+import io.iochord.apps.ips.model.ism.v1.ElementType;
 import io.iochord.apps.ips.model.ism.v1.data.impl.FunctionImpl;
 
 /**
@@ -18,9 +19,8 @@ import io.iochord.apps.ips.model.ism.v1.data.impl.FunctionImpl;
 *
 */
 @JsonDeserialize(as = FunctionImpl.class)
-@JsonTypeName(Function.TYPE)
+@JsonTypeName(ElementType.DATA_FUNCTION)
 public interface Function extends Data {
-	public static final String TYPE = "function";
 
 	@JsonProperty(value = "inputParametersRef")
 	Map<String, Referenceable<ObjectType>> getInputParameters();

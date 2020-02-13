@@ -8,11 +8,9 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import io.iochord.apps.ips.model.ism.v1.Configuration;
 import io.iochord.apps.ips.model.ism.v1.Connector;
 import io.iochord.apps.ips.model.ism.v1.Data;
+import io.iochord.apps.ips.model.ism.v1.ElementType;
 import io.iochord.apps.ips.model.ism.v1.Page;
-import io.iochord.apps.ips.model.ism.v1.data.Function;
 import io.iochord.apps.ips.model.ism.v1.data.Generator;
-import io.iochord.apps.ips.model.ism.v1.data.ObjectType;
-import io.iochord.apps.ips.model.ism.v1.data.Resource;
 import io.iochord.apps.ips.model.ism.v1.nodes.Activity;
 import io.iochord.apps.ips.model.ism.v1.nodes.Control;
 import io.iochord.apps.ips.model.ism.v1.nodes.Start;
@@ -28,13 +26,9 @@ import lombok.Setter;
 * @since 2019
 *
 */
-@JsonTypeName(IsmGraph.TYPE)
+@JsonTypeName(ElementType.ELEMENT_NET)
 public class IsmGraphImpl extends ElementImpl implements IsmGraph {
-	@Getter
-	private final String elementType = IsmGraph.TYPE;
-
-	@Getter
-	private final String version = "1.0";
+	private static final String VERSION = "1.0";
 
 	@Getter
 	@Setter
@@ -47,6 +41,14 @@ public class IsmGraphImpl extends ElementImpl implements IsmGraph {
 	@Getter
 	@Setter
 	private Control control;
+	
+	public String getElementType() {
+		return ElementType.ELEMENT_NET;
+	}
+	
+	public String getVersion() {
+		return VERSION;
+	}
 
 	@Override
 	public Page getDefaultPage() {
@@ -60,53 +62,27 @@ public class IsmGraphImpl extends ElementImpl implements IsmGraph {
 	public void loadReferences() {
 		for (Page p : pages.values()) {
 			for (Data rd : p.getData().values()) {
-				if (rd instanceof ObjectType) {
-//					ObjectType d = (ObjectType) rd;
-				} else if (rd instanceof Generator) {
+				if (rd instanceof Generator) {
 					Generator d = (Generator) rd;
-					if (d.getObjectType() != null) {
-						d.getObjectType().setValueRepository(p.getData());
-					}
-				} else if (rd instanceof Resource) {
-//					Resource d = (Resource) rd;
-//					if (d.getData() != null) {
-//						d.getData().setValueRepository(p.getData());
-//					}
-//					if (d.getDataTable() != null) {
-//						d.getDataTable().setValueRepository(p.getData());
-//					}
-				} else if (rd instanceof Function) {
-//					Function d = (Function) rd;
+					d.getObjectType().setValueRepository(p.getData());
 				}
 			}
 			for (Node rd : p.getNodes().values()) {
 				if (rd instanceof Activity) {
 					Activity d = (Activity) rd;
-					if (d.getResource() != null) {
-						d.getResource().setValueRepository(p.getData());
-					}
-					if (d.getQueue() != null) {
-						d.getQueue().setValueRepository(p.getData());
-					}
-					if (d.getFunction() != null) {
-						d.getFunction().setValueRepository(p.getData());
-					}
+					d.getResource().setValueRepository(p.getData());
+					d.getQueue().setValueRepository(p.getData());
+					d.getFunction().setValueRepository(p.getData());
 				} else if (rd instanceof Start) {
 					Start d = (Start) rd;
-					if (d.getGenerator() != null) {
-						d.getGenerator().setValueRepository(p.getData());
-					}
+					d.getGenerator().setValueRepository(p.getData());
 				}
 			}
 			for (Connector rd : p.getConnectors().values()) {
 				if (rd instanceof Connector) {
-					Connector d = (Connector) rd;
-					if (d.getSource() != null) {
-						d.getSource().setValueRepository(p.getNodes());
-					}
-					if (d.getTarget() != null) {
-						d.getTarget().setValueRepository(p.getNodes());
-					}
+					Connector d = rd;
+					d.getSource().setValueRepository(p.getNodes());
+					d.getTarget().setValueRepository(p.getNodes());
 				}
 			}
 		}

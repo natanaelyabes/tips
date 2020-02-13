@@ -21,9 +21,9 @@ import io.iochord.apps.ips.model.ism.v1.impl.DataImpl;
 *
 */
 @JsonDeserialize(as = DataImpl.class)
-@JsonTypeName(Data.TYPE)
+@JsonTypeName(ElementType.ELEMENT_DATA)
 @JsonSubTypes({ @Type(value = DataTable.class), @Type(value = Function.class), @Type(value = Generator.class),
 		@Type(value = ObjectType.class), @Type(value = Queue.class), @Type(value = Resource.class), })
 public interface Data extends Element {
-	public static final String TYPE = "data";
+
 }

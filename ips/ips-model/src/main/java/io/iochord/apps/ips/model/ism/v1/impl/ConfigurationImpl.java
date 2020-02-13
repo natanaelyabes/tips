@@ -6,6 +6,7 @@ import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 import io.iochord.apps.ips.model.ism.v1.Configuration;
+import io.iochord.apps.ips.model.ism.v1.ElementType;
 import io.iochord.apps.ips.model.ism.v1.Page;
 import lombok.Getter;
 import lombok.Setter;
@@ -17,12 +18,15 @@ import lombok.Setter;
 * @since 2019
 *
 */
-@JsonTypeName(Configuration.TYPE)
+@JsonTypeName(ElementType.ELEMENT_CONFIGURATION)
 public class ConfigurationImpl extends ElementImpl implements Configuration {
-	@Getter
-	private final String elementType = Configuration.TYPE;
 
 	@Getter
 	@Setter
 	private Map<String, Page> pages = new LinkedHashMap<>();
+	
+	public String getElementType() {
+		return ElementType.ELEMENT_CONFIGURATION;
+	}
+
 }
