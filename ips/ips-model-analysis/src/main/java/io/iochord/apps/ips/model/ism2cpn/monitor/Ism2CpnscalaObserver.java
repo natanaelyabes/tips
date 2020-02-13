@@ -12,7 +12,6 @@ import io.iochord.apps.ips.common.util.LoggerUtil;
 import io.iochord.apps.ips.model.ism.v1.Element;
 import io.iochord.apps.ips.model.ism.v1.data.Generator;
 import io.iochord.apps.ips.model.ism.v1.nodes.Activity;
-import io.iochord.apps.ips.model.ism2cpn.converter.Ism2CpnscalaModel;
 import io.iochord.apps.ips.model.report.ElementStatistics;
 import lombok.Getter;
 import scala.Some;
@@ -32,13 +31,13 @@ import scala.collection.mutable.HashMap;
 public class Ism2CpnscalaObserver implements Observer {
 	
 	@Getter
-	private final Ism2CpnscalaModel model;
+	Map<String, Element> conversionMap;
 	
 	@Getter
 	private final Map<Element, ElementStatistics> data = new LinkedHashMap<>();
 
-	public Ism2CpnscalaObserver(Ism2CpnscalaModel ism2CpnscalaModel) {
-		model = ism2CpnscalaModel;
+	public Ism2CpnscalaObserver(Map<String, Element> conversionMap) {
+		this.conversionMap = this.conversionMap;
 	}
 
 	@Override
@@ -66,7 +65,7 @@ public class Ism2CpnscalaObserver implements Observer {
 		Map<String, Tuple3> prevStateRole = getStateRole(prevState);			
 		Map<String, Tuple3> currentStateRole = getStateRole(currentState);
 			
-		Element e = getModel().getConversionMap().get(transitionEleId);
+		Element e = getConversionMap().get(transitionEleId);
 		LoggerUtil.logInfo(transitionEleId + " " + transitionEleRole);
 		if (e != null) {
 			if (e instanceof Generator) {
@@ -89,7 +88,7 @@ public class Ism2CpnscalaObserver implements Observer {
 						HashMap dgp2Before2 = (HashMap) prevStateRole.get(respStr)._2();
 						HashMap dgp2After2 = (HashMap) currentStateRole.get(respStr)._2();
 						int newToken2 = dgp2Before2.size() - dgp2After2.size();
-						Element re = getModel().getConversionMap().get((String) prevStateRole.get("_resp")._3());
+						Element re = getConversionMap().get((String) prevStateRole.get("_resp")._3());
 						if (!getData().containsKey(re)) {
 							ElementStatistics es = new ElementStatistics(re.getLabel(), "Resource");
 							getData().put(re, es);

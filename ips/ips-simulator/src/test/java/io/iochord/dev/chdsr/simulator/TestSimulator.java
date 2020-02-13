@@ -1,13 +1,13 @@
 package io.iochord.dev.chdsr.simulator;
 
 import java.util.Observable;
-import java.util.Observer;
 
 import io.iochord.apps.ips.model.cpn.v1.impl.CPNGraph;
 import io.iochord.apps.ips.model.cpn.v1.impl.Place;
 import io.iochord.apps.ips.model.cpn.v1.impl.Transition;
 import io.iochord.apps.ips.simulator.compiler.MemoryScalaFileCompiler;
 import io.iochord.apps.ips.simulator.compiler.Simulation;
+import scala.tools.jline_embedded.internal.Log;
 
 /**
  *
@@ -22,15 +22,10 @@ public class TestSimulator {
 		String pathFile = "simulscala.txt";
 		MemoryScalaFileCompiler msfc = new MemoryScalaFileCompiler(pathFile);
 		Simulation simulation = msfc.getInstance();
-		Observer obs = new Observer() {
-			
-			@Override
-			public void update(Observable o, Object arg) {
-				System.out.println("JAVAOBS: " + o);
-				System.out.println(arg);
-			}
-		};
-		simulation.addObserver(obs);
+		simulation.addObserver((Observable o, Object arg) -> {
+				Log.debug("JAVAOBS: " + o);
+				Log.debug(arg);
+			});
 		
 		simulation.runStep(5);
 		simulation.runStep(3);
@@ -38,12 +33,12 @@ public class TestSimulator {
 		
 		CPNGraph cgraph = simulation.getPetriNet();
 		for(Transition<?> t : cgraph.getTransitions()) {
-			System.out.println(t.getId());
+			Log.debug(t.getId());
 		}
 		
 		for(Place<?> p : cgraph.getPlaces()) {
-			System.out.println(p.getId());
-			System.out.println(p.getCurrentMarking().getMap());
+			Log.debug(p.getId());
+			Log.debug(p.getCurrentMarking().getMap());
 		}
 		
 	}
