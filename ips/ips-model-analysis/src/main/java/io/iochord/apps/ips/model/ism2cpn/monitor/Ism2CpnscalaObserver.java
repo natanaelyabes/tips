@@ -37,7 +37,7 @@ public class Ism2CpnscalaObserver implements Observer {
 	private final Map<Element, ElementStatistics> data = new LinkedHashMap<>();
 
 	public Ism2CpnscalaObserver(Map<String, Element> conversionMap) {
-		this.conversionMap = this.conversionMap;
+		this.conversionMap = conversionMap;
 	}
 
 	@Override
