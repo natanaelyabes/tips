@@ -12,12 +12,12 @@ package io.iochord.apps.ips.model.cpn.v1.impl
 class GlobalTime(var time:Long) {
   
   /**
-   * @return time : get time of the current simulation.
+   * @return time : get current global time of the simulation.
    */
   def getTime():Long = time
   
   /**
-   * @param time : set time of the current simulation.
+   * @param time : assign current global time of the simulation.
    */
   def setTime(time:Long) = this.time = time
 }
