@@ -118,7 +118,7 @@ class CPNGraph {
 	/**
    * @param arc : merge arc from other graph module to this graph.
    * Replace the place and transition of this arc to place and transition that exist in this graph.
-   * (Don't refer to the old of place and transition because this place and transition object only exist in the arc graph module.)
+   * (Don't refer to the old of place and transition because this place and transition object only exist in the arc param in the different graph module.)
    */
 	def addArcMerge[T,B](arc: Arc[T,B]) {
 	  val place:Place[T] = places(arc.getPlace().getId()).asInstanceOf[Place[T]]

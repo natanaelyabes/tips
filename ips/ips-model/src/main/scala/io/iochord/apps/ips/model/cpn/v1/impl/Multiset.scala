@@ -23,7 +23,7 @@ class Multiset[T] (val multiset: Map[(T,Long), Int], val coltype: Class[_] = nul
   type coltype = T
   
   /**
-   * @param elem : token that will be checked if exist in this multiset or not
+   * @param elem : token that will be checked if exist or not
    * @return boolean : true or false, true if it is exist and false if not exist
    */
   def hasToken(elem: T): Boolean = multiset.filter(x => x._1._1 equals(elem)).size > 0

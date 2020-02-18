@@ -6,7 +6,7 @@ package io.iochord.apps.ips.model.cpn.v1
  * @author  Nur Ichsan Utama <nichsan@pusan.ac.kr>
  * @since   2019
  *
- * Element is different with Node. Place, Transition, and Arc is Element. But only Place and Transition is Node.
+ * Node is different with Element. Place, Transition, and Arc is Element. But only Place and Transition is Node.
  *
  */
 
