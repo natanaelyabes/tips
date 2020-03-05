@@ -4,4 +4,4 @@ include 'ips-model'
 include 'ips-model-analysis'
 include 'ips-simulator'
 include 'ips-simulator-web'
-
+include 'ips-phyton-analysis'
