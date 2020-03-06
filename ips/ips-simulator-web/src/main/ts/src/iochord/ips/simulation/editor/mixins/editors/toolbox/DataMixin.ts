@@ -40,11 +40,6 @@ enum DATA {
 const graphModule = getModule(GraphModule);
 const editorState = getModule(EditorState);
 
-/**
- *
- *
-
- */
 @Component<DataMixin>({
   subscriptions: () => {
     return (
@@ -54,6 +49,7 @@ const editorState = getModule(EditorState);
     );
   },
 })
+
 /**
  * The data mixin object.
  *

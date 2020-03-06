@@ -102,11 +102,6 @@ import { AppLayout } from '@/iochord/ips/common/ui/layout/interfaces/AppLayout';
 // Components
 import WrapperComponent from '@/iochord/ips/common/ui/layout/components/WrapperComponent.vue';
 
-/**
- *
- *
-
- */
 @Component({
   components: {
     WrapperComponent,

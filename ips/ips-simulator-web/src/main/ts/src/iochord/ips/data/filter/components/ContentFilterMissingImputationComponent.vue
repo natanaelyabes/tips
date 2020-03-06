@@ -268,14 +268,14 @@ export default class ContentFilterMissingImputationComponent extends BaseCompone
       { name: 'Attribute 1', value: 2, type: 'Case 24' },
       { name: 'Attribute 2', value: 2, type: 'Case 24' },
       { name: 'Timestamp', value: 3, type: 'Case 64' },
-      { name: 'Timestamp', value: 4, type: 'Case 2' }
+      { name: 'Timestamp', value: 4, type: 'Case 2' },
     ];
 
     this.barData1 = [
       { name: 'Case 10', value: 10, type: 'missing event' },
       { name: 'Case 24', value: 8, type: 'missing event' },
       { name: 'Case 64', value: 3, type: 'missing event' },
-      { name: 'Case 2', value: 4, type: 'missing event' }
+      { name: 'Case 2', value: 4, type: 'missing event' },
     ];
 
     this.barData3 = [
@@ -287,7 +287,7 @@ export default class ContentFilterMissingImputationComponent extends BaseCompone
       { name: 'Attribute 1', value: 2, type: 'missing event' },
       { name: 'Attribute 2', value: 2, type: 'missing event' },
       { name: 'Timestamp', value: 3, type: 'missing event' },
-      { name: 'Timestamp', value: 4, type: 'missing event' }
+      { name: 'Timestamp', value: 4, type: 'missing event' },
     ];
 
     // Table data format
