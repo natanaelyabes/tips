@@ -1,5 +1,5 @@
 <!--
-  @package ips
+  @package ts
   @author  Iq Reviessay Pulshashi <pulshashi@ideas.web.id>
   @since   2019
 -->
@@ -33,7 +33,7 @@ import BaseComponent from '../ui/layout/class/BaseComponent';
  * @class IpsTable
  * @extends {BaseComponent}
  *
- * @package ips
+ * @package ts
  * @author  Iq Reviessay Pulshashi <pulshashi@ideas.web.id>
  * @since   2019
  */

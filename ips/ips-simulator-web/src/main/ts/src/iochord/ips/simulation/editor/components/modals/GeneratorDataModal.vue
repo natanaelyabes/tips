@@ -1,6 +1,6 @@
 <!--
-  @package ips
-  @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
+  @package ts
+  @author N. Y. Wirawan <ny4tips@gmail.com>
   @since 2019
 -->
 <template>
@@ -111,8 +111,8 @@ declare const $: any;
  * @extends {SemanticComponent}
  * @implements {Modal<JointGraphPageImpl, GraphDataGeneratorImpl>}
  *
- * @package ips
- * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
+ * @package ts
+ * @author N. Y. Wirawan <ny4tips@gmail.com>
  * @since 2019
  */
 export default class GeneratorDataModal extends SemanticComponent implements Modal<JointGraphPageImpl, GraphDataGeneratorImpl> {

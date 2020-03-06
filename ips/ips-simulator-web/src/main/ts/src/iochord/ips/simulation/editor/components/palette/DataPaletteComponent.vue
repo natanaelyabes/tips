@@ -1,6 +1,6 @@
 <!--
-  @package ips
-  @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
+  @package ts
+  @author N. Y. Wirawan <ny4tips@gmail.com>
   @since 2019
 -->
 <template>
@@ -63,8 +63,8 @@ import PaletteMixin, { TOOLBOX } from '../../mixins/editors/PaletteMixin';
  * @class DataPaletteComponent
  * @extends {Mixins(BaseComponent, PaletteMixin)}
  *
- * @package ips
- * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
+ * @package ts
+ * @author N. Y. Wirawan <ny4tips@gmail.com>
  * @since 2019
  */
 export default class DataPaletteComponent extends Mixins(BaseComponent, PaletteMixin) {

@@ -1,6 +1,6 @@
 <!--
-  @package ips
-  @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
+  @package ts
+  @author N. Y. Wirawan <ny4tips@gmail.com>
   @since 2019
 -->
 <template>
@@ -77,8 +77,8 @@
 <style>
 /**
  *
- * @package ips
- * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
+ * @package ts
+ * @author N. Y. Wirawan <ny4tips@gmail.com>
  * @since 2019
  *
  */
@@ -114,8 +114,8 @@ import WrapperComponent from '@/iochord/ips/common/ui/layout/components/WrapperC
  * @class HomeView
  * @extends {AppLayoutView}
  *
- * @package ips
- * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
+ * @package ts
+ * @author N. Y. Wirawan <ny4tips@gmail.com>
  * @since 2019
  */
 export default class HomeView extends AppLayoutView {

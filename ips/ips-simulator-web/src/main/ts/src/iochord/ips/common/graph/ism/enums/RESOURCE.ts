@@ -2,8 +2,8 @@
  * Enumerations for the types of resource selection.
  *
  * @export
- * @package ips
- * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
+ * @package ts
+ * @author N. Y. Wirawan <ny4tips@gmail.com>
  * @since 2019
  *
  */
@@ -24,8 +24,8 @@ export enum RESOURCE_SELECTION {
  * Enumerations for the types of resource criteria.
  *
  * @export
- * @package ips
- * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
+ * @package ts
+ * @author N. Y. Wirawan <ny4tips@gmail.com>
  * @since 2019
  *
  */

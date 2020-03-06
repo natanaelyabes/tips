@@ -1,6 +1,6 @@
 <!--
-  @package ips
-  @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
+  @package ts
+  @author N. Y. Wirawan <ny4tips@gmail.com>
   @since 2019
 -->
 <template>
@@ -285,8 +285,8 @@ const graphModule = getModule(GraphModule);
  * @extends {SemanticComponent}
  * @implements {Modal<JointGraphPageImpl, GraphActivityNodeImpl>}
  *
- * @package ips
- * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
+ * @package ts
+ * @author N. Y. Wirawan <ny4tips@gmail.com>
  * @since 2019
  */
 export default class ActivityNodeModal extends SemanticComponent implements Modal<JointGraphPageImpl, GraphActivityNodeImpl> {

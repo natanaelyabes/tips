@@ -4,7 +4,7 @@
  * @export
  * @class WebServiceStatus
  *
- * @package ips
+ * @package ts
  * @author  Iq Reviessay Pulshashi <pulshashi@ideas.web.id>
  * @since   2019
  *

@@ -10,7 +10,7 @@ export { ImportCsvConfiguration };
  * @class DataConnectionService
  * @extends {DataService}
  *
- * @package ips
+ * @package ts
  * @author Iq Reviessay Pulshashi <pulshashi@ideas.web.id>
  * @since 2019
  */

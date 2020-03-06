@@ -1,5 +1,5 @@
 <!--
-  @package ips
+  @package ts
   @author Riska Asriana Sutrisnowati <riska@iochord.com>
   @since 2019
 -->
@@ -169,7 +169,7 @@ import BaseComponent from '@/iochord/ips/common/ui/layout/class/BaseComponent';
  * @class ContentHistoryComponent
  * @extends {BaseComponent}
  *
- * @package ips
+ * @package ts
  * @author Riska Asriana Sutrisnowati <riska@iochord.com>
  * @since 2019
  */

@@ -1,5 +1,5 @@
 <!--
-  @package ips
+  @package ts
   @author Riska Asriana Sutrisnowati <riska@iochord.com>
   @since 2019
 -->
@@ -167,7 +167,7 @@ import IpsTable from '../../../common/table/IpsTable.vue';
  * @class ContentFilterFollowerComponent
  * @extends {BaseComponent}
  *
- * @package ips
+ * @package ts
  * @author Riska Asriana Sutrisnowati <riska@iochord.com>
  * @since 2019
  */

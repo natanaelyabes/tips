@@ -1,5 +1,5 @@
 <!--
-  @package ips
+  @package ts
   @author Riska Asriana Sutrisnowati <riska@iochord.com>
   @since 2019
 -->
@@ -33,7 +33,7 @@ import DataConnectionService from '@/iochord/ips/common/service/data/DataConnect
  * @class ItemExistedConnectionComponent
  * @extends {BaseComponent}
  *
- * @package ips
+ * @package ts
  * @author Riska Asriana Sutrisnowati <riska@iochord.com>
  * @since 2019
  */

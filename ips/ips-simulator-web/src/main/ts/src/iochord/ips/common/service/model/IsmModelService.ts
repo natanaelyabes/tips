@@ -11,7 +11,7 @@ import { Observable } from 'rxjs';
  * @class IsmModelService
  * @extends {ModelService}
  *
- * @package ips
+ * @package ts
  * @author  Iq Reviessay Pulshashi <pulshashi@ideas.web.id>
  * @since   2019
  */
