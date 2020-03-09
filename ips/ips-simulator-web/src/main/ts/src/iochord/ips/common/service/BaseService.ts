@@ -11,7 +11,7 @@ import Stomp, { Client, Subscription } from 'webstomp-client';
  * @class BaseService
  *
  * @package ts
- * @author  Iq Reviessay Pulshashi <pulshashi@ideas.web.id>
+ * @author  I. R. Pulshashi <pulshashi@ideas.web.id>
  * @since   2019
  */
 export class BaseService {

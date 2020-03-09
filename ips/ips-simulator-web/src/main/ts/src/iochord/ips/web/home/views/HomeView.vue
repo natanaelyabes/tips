@@ -87,6 +87,14 @@
   background-size: cover;
   height: 100%;
 }
+
+@media only screen and (max-width: 767.99px) {
+  .ui.stackable.cards .card:first-child {
+    margin-top: 0!important;
+    
+  }  
+}
+
 </style>
 
 <script lang="ts">

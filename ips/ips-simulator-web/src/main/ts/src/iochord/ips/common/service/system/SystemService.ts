@@ -9,7 +9,7 @@ import { BaseService } from '../BaseService';
  * @extends {BaseService}
  *
  * @package ts
- * @author  Iq Reviessay Pulshashi <pulshashi@ideas.web.id>
+ * @author  I. R. Pulshashi <pulshashi@ideas.web.id>
  * @since   2019
  */
 export abstract class SystemService extends BaseService {

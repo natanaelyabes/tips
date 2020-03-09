@@ -11,7 +11,7 @@ import { GraphImpl } from '@/iochord/ips/common/graph/ism/class/GraphImpl';
  * @extends {SimulatorService}
  *
  * @package ts
- * @author  Iq Reviessay Pulshashi <pulshashi@ideas.web.id>
+ * @author  I. R. Pulshashi <pulshashi@ideas.web.id>
  * @since   2019
  */
 export class IsmSimulatorService extends SimulatorService {

@@ -95,5 +95,4 @@ public class CsvDataImportService extends AnIpsAsyncService<CsvDataImportConfigu
 			}
 		}
 	}
-	
 }

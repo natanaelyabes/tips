@@ -4,7 +4,7 @@
   @since 2019
 -->
 <template>
-  <div class="item connection component">
+  <div class="connection component">
     <div class="item">
       <div class="ui transparent icon input">
         <input type="text" placeholder="Search connection...">

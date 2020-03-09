@@ -131,8 +131,13 @@ export default class NavigationTopSidebarComponent extends SemanticComponent {
           if (width <= 933 && id !== 'menu-button') this.closeMenu();
         },
       };
-
       browser.handleBreakpoints(browser.width);
+    });
+
+    $(document).on('keypress', (e: KeyboardEvent) => {
+      if (e.keyCode === 2) {
+        this.toggleMenu();
+      }
     });
   }
 
@@ -210,11 +215,8 @@ export default class NavigationTopSidebarComponent extends SemanticComponent {
    * @memberof NavigationTopSidebarComponent
    */
   private toggleMenu(): void {
-    if (this.menuIsOpen) {
-      this.closeMenu();
-    } else {
-      this.openMenu();
-    }
+    if (this.menuIsOpen) this.closeMenu();
+    else this.openMenu();
   }
 
   /**
@@ -254,9 +256,7 @@ export default class NavigationTopSidebarComponent extends SemanticComponent {
         }
       },
     };
-
     browser.handleBreakpoints(browser.width);
-
     this.menuIsOpen = !this.menuIsOpen;
   }
 }
