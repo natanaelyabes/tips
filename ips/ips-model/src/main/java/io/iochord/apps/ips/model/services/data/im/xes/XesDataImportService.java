@@ -2,10 +2,16 @@ package io.iochord.apps.ips.model.services.data.im.xes;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
@@ -13,7 +19,9 @@ import org.apache.commons.lang3.StringUtils;
 import org.deckfour.xes.classification.XEventClassifier;
 import org.deckfour.xes.extension.XExtension;
 import org.deckfour.xes.model.XAttribute;
+import org.deckfour.xes.model.XEvent;
 import org.deckfour.xes.model.XLog;
+import org.deckfour.xes.model.XTrace;
 
 import io.iochord.apps.ips.common.models.Dataset;
 import io.iochord.apps.ips.common.util.LoggerUtil;
@@ -35,7 +43,6 @@ public class XesDataImportService extends AnIpsAsyncService<XesDataImportConfigu
 		XesDataImportResult result = new XesDataImportResult();
 		
 		try (Connection conn = context.getDataSource().getConnection();) {
-			// TODO: split between event log and data attributes, then put into database table.
 			
 			XLog log = config.getLog();
 			
@@ -159,6 +166,7 @@ public class XesDataImportService extends AnIpsAsyncService<XesDataImportConfigu
 				}
 			}
 			
+			// Event log
 			final StringBuilder sql = new StringBuilder();
 			sql.append("DROP TABLE IF EXISTS ").append(name + "_eventlog;");
 			sql.append("CREATE TABLE IF NOT EXISTS ").append(name + "_eventlog")
@@ -185,8 +193,8 @@ public class XesDataImportService extends AnIpsAsyncService<XesDataImportConfigu
 			sqlrows.append("INSERT INTO ").append(name + "_eventlog").append(" VALUES ")
 			   	   .append("(DEFAULT ");
 			log.stream().flatMap(trace -> trace.stream().flatMap(event -> 
-				StreamSupport.stream(((Iterable<Map.Entry<String, XAttribute>>) () 
-					-> event.getAttributes().entrySet().iterator()).spliterator(), false)))
+				StreamSupport.stream(((Iterable<Map.Entry<String, XAttribute>>) () ->
+					event.getAttributes().entrySet().iterator()).spliterator(), false)))
 						.map(attr -> attr.getKey())
 						.filter(key -> key.equals("concept:name")
 							 || key.equals("org:resource") 
@@ -195,35 +203,131 @@ public class XesDataImportService extends AnIpsAsyncService<XesDataImportConfigu
 						.forEach(col -> sqlrows.append(",").append("?"));
 			sqlrows.append(");");
 			
-			try (PreparedStatement st = conn.prepareStatement(sqlrows.toString());) {
-				// TODO: seed data into database
-				log.stream().flatMap(trace -> trace.stream().flatMap(event -> 
-					StreamSupport.stream(((Iterable<Map.Entry<String, XAttribute>>) () 
-						-> event.getAttributes().entrySet().iterator()).spliterator(), false)))
-							.forEach(event -> System.out.println(event.getValue()));
+			List<List<Map<String, String>>> eventlogcols = new ArrayList<>();
+			List<List<Map<String, String>>> datacols = new ArrayList<>();
+			
+			for (XTrace trace : log) {
+				for (int i = 0; i < trace.size(); i++) {
+					XEvent event = trace.get(i);
+					List<Set<Map.Entry<String, XAttribute>>> colsrows = Stream.of(event.getAttributes()
+							.entrySet()).collect(Collectors.toList());
+					for (Set<Entry<String, XAttribute>> cols : colsrows) {
+						Map<String, String> case_id = new HashMap<>();
+						case_id.put("case_id", trace.getAttributes().get("concept:name").toString());
+						
+						List<Map<String, String>> ecols = cols.stream()
+							.filter(keys -> "concept:name".equals(keys.getKey())
+							 || "org:resource".equals(keys.getKey())
+							 || "lifecycle:transition".equals(keys.getKey())
+							 || "time:timestamp".equals(keys.getKey()))
+							.map(keys -> {
+								Map<String, String> k = new HashMap<>();
+								k.put(keys.getKey(), keys.getValue().toString());
+								return k;
+							}).collect(Collectors.toList());
+						Collections.sort(ecols, new Comparator<Map<String, String>>() {
+							@Override
+							public int compare(Map<String, String> o1, Map<String, String> o2) {
+								String k1 = new ArrayList<>(o1.keySet()).get(0).toLowerCase();
+								String k2 = new ArrayList<>(o2.keySet()).get(0).toLowerCase();
+								return k1.compareTo(k2);
+							}
+						});
+						if (ecols.size() > 0) ecols.add(0, case_id);
+						eventlogcols.add(ecols);
+
+						List<Map<String, String>> dcols = cols.stream()
+							.filter(keys -> // !"concept:name".equals(keys.getKey())
+							    !"org:resource".equals(keys.getKey())
+							 && !"lifecycle:transition".equals(keys.getKey())
+							 && !"time:timestamp".equals(keys.getKey()))
+							.map(keys -> {
+								Map<String, String> k = new HashMap<>();
+								k.put(keys.getKey(), keys.getValue().toString());
+								return k;
+							}).collect(Collectors.toList());
+						Collections.sort(dcols, new Comparator<Map<String, String>>() {
+							@Override
+							public int compare(Map<String, String> o1, Map<String, String> o2) {
+								String k1 = new ArrayList<>(o1.keySet()).get(0).toLowerCase();
+								String k2 = new ArrayList<>(o2.keySet()).get(0).toLowerCase();
+								return k1.compareTo(k2);
+							}
+						});
+						
+						if (dcols.size() > 1) { 
+							dcols.add(0, case_id);
+							
+							Map<String, String> targetClass = new HashMap<>();
+							targetClass.put("class", trace.get(i+1).getAttributes().get("concept:name").toString());
+							dcols.add(targetClass);
+						} 
+						datacols.add(dcols);
+					}
+				}
 			}
 			
-			final StringBuilder data = new StringBuilder();
-			data.append("DROP TABLE IF EXISTS ").append(name + "_dataeventlog;");
-			data.append("CREATE TABLE IF NOT EXISTS ").append(name + "_dataeventlog")
-			   .append(" ( ")
-			   .append("   eid SERIAL PRIMARY KEY");
-			log.stream().flatMap(trace -> trace.stream().flatMap(event -> 
-				StreamSupport.stream(((Iterable<Map.Entry<String, XAttribute>>) () -> 
-					event.getAttributes().entrySet().iterator()).spliterator(), false)))
-						.map(attr -> attr.getKey())
-						.filter(key -> !key.equals("concept:name")
-							 && !key.equals("org:resource") 
-							 && !key.equals("lifecycle:transition") 
-							 && !key.equals("time:timestamp")).distinct().sorted()
-						.forEach(col ->
-							data.append(",")
-							    .append("\"").append(col).append("\"")
-							    .append(" VARCHAR(255) NULL"));
-			data.append(");");
-			try (PreparedStatement st = conn.prepareStatement(data.toString());) {
-				st.execute();
+			// TODO: seed data into database
+			for (List<Map<String, String>> row : eventlogcols) {
+				if (row.size() > 0) {
+					System.out.println(row);
+				}
 			}
+			
+			for (List<Map<String, String>> row : datacols) {
+				if (row.size() > 2) {
+					
+					String cname = row.stream().filter(keys -> 
+						keys.containsKey("concept:name"))
+							.map(key -> key.get("concept:name"))
+							.collect(Collectors.toList()).get(0).toLowerCase().replace(" ", "");
+					
+					// Event log data
+					final StringBuilder data = new StringBuilder();
+					data.append("DROP TABLE IF EXISTS ").append(name + "_dataeventlog" + cname  + ";");
+					data.append("CREATE TABLE IF NOT EXISTS ").append(name + "_dataeventlog_" + cname)
+					    .append(" ( ")
+					    .append("   eid SERIAL PRIMARY KEY");
+					for (Map<String, String> col : row) {
+						String[] keys = col.keySet().stream()
+								.filter(k -> !k.equals("concept:name"))
+								.toArray(String[]::new);
+						for (String key : keys) {
+							data.append(",")
+							    .append("\"").append(key).append("\"")
+							    .append(" VARCHAR(255) NULL");
+						}
+					}
+					data.append(", ")
+						.append("   class VARCHAR(255) NULL")
+						.append(");");
+					
+					try (PreparedStatement st = conn.prepareStatement(data.toString());) {
+						st.execute();
+					}
+					
+					List<String> d = row.stream().filter(cols -> !cols.containsKey("concept:name"))
+						.map(cols -> cols.values().iterator().next()).collect(Collectors.toList());
+					
+					final StringBuilder datarows = new StringBuilder();
+					datarows.append("INSERT INTO ").append(name + "_dataeventlog_" + cname).append(" VALUES ")
+					   	    .append("(DEFAULT ");
+					
+					for (String string : d) {
+						datarows.append(",").append("?");
+					}
+					datarows.append(");");
+					
+					try (PreparedStatement st = conn.prepareStatement(datarows.toString());) {
+						for (int i = 0; i < d.size(); i++) {
+							st.setString(i+1, d.get(i));
+						}
+						st.addBatch();
+						st.executeBatch();
+					}
+				}
+			}
+			
 		} catch (Exception e) {
 			LoggerUtil.logError(e);
 		}
