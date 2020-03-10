@@ -1,5 +1,5 @@
 <!--
-  @package ips
+  @package ts
   @author Riska Asriana Sutrisnowati <riska@iochord.com>
   @since 2019
 -->
@@ -74,7 +74,7 @@ import ContentFilterMissingImputationComponent from '../components/ContentFilter
  * @class DataFilter
  * @extends {ExplorerLayoutView}
  *
- * @package ips
+ * @package ts
  * @author Riska Asriana Sutrisnowati <riska@iochord.com>
  * @since 2019
  */

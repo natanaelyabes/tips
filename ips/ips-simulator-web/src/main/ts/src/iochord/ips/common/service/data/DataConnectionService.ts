@@ -10,8 +10,8 @@ export { ImportCsvConfiguration };
  * @class DataConnectionService
  * @extends {DataService}
  *
- * @package ips
- * @author Iq Reviessay Pulshashi <pulshashi@ideas.web.id>
+ * @package ts
+ * @author I. R. Pulshashi <pulshashi@ideas.web.id>
  * @since 2019
  */
 export default class DataConnectionService extends DataService {
@@ -74,6 +74,7 @@ export default class DataConnectionService extends DataService {
   public importCsv(config: ImportCsvConfiguration, file: any, completeCallback: any, progressCallback: any) {
     const req = new FormData();
     req.append('config', JSON.stringify(config));
+    console.log(config);
     req.append('file', file);
     return this.webserviceUpload(DataConnectionService.BASE_URI + '/import/csv', req, completeCallback, progressCallback);
   }

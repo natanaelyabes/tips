@@ -3,7 +3,7 @@ import { RouteConfig } from 'vue-router';
 /**
  * Router properties for the data filter module.
  *
- * @package ips
+ * @package ts
  * @author Riska A. Sutrisnowati <riska@iochord.com>
  * @since 2019
  */

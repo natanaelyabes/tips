@@ -1,5 +1,5 @@
 <!--
-  @package ips
+  @package ts
   @author Riska Asriana Sutrisnowati <riska@iochord.com>
   @since 2019
 -->
@@ -56,7 +56,7 @@ import * as $ from 'jquery';
  * @class ContentFilterPerformanceComponent
  * @extends {BaseComponent}
  *
- * @package ips
+ * @package ts
  * @author Riska Asriana Sutrisnowati <riska@iochord.com>
  * @since 2019
  */

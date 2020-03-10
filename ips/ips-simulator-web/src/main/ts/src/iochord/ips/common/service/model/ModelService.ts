@@ -7,8 +7,8 @@ import { BaseService } from '../BaseService';
  * @class ModelService
  * @extends {BaseService}
  *
- * @package ips
- * @author  Iq Reviessay Pulshashi <pulshashi@ideas.web.id>
+ * @package ts
+ * @author  I. R. Pulshashi <pulshashi@ideas.web.id>
  * @since   2019
  */
 export abstract class ModelService extends BaseService {

@@ -1,6 +1,6 @@
 <!--
-  @package ips
-  @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
+  @package ts
+  @author N. Y. Wirawan <ny4tips@gmail.com>
   @since 2019
 -->
 <template>
@@ -77,8 +77,8 @@
 <style>
 /**
  *
- * @package ips
- * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
+ * @package ts
+ * @author N. Y. Wirawan <ny4tips@gmail.com>
  * @since 2019
  *
  */
@@ -87,6 +87,14 @@
   background-size: cover;
   height: 100%;
 }
+
+@media only screen and (max-width: 767.99px) {
+  .ui.stackable.cards .card:first-child {
+    margin-top: 0!important;
+    
+  }  
+}
+
 </style>
 
 <script lang="ts">
@@ -114,8 +122,8 @@ import WrapperComponent from '@/iochord/ips/common/ui/layout/components/WrapperC
  * @class HomeView
  * @extends {AppLayoutView}
  *
- * @package ips
- * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
+ * @package ts
+ * @author N. Y. Wirawan <ny4tips@gmail.com>
  * @since 2019
  */
 export default class HomeView extends AppLayoutView {

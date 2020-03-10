@@ -1,10 +1,10 @@
 <!--
-  @package ips
+  @package ts
   @author Riska Asriana Sutrisnowati <riska@iochord.com>
   @since 2019
 -->
 <template>
-  <div class="item upload component">
+  <div class="upload component">
     <div class="item">
       <div class="ui transparent icon input">
         <input type="text" placeholder="Browse...">
@@ -37,7 +37,7 @@ import BaseComponent from '@/iochord/ips/common/ui/layout/class/BaseComponent';
  * @class ItemUploadComponent
  * @extends {BaseComponent}
  *
- * @package ips
+ * @package ts
  * @author Riska Asriana Sutrisnowati <riska@iochord.com>
  * @since 2019
  */

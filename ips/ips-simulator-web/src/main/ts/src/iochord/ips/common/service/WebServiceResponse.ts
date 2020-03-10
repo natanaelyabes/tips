@@ -6,11 +6,12 @@ import { WebServiceStatus } from './WebServiceStatus';
  * @export
  * @class WebServiceResponse
  *
- * @package ips
- * @author  Iq Reviessay Pulshashi <pulshashi@ideas.web.id>
+ * @package ts
+ * @author  I. R. Pulshashi <pulshashi@ideas.web.id>
  * @since   2019
  */
 export class WebServiceResponse {
+
   /**
    * Data response from the web socket.
    *

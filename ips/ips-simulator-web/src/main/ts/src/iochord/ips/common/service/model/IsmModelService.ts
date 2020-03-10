@@ -11,8 +11,8 @@ import { Observable } from 'rxjs';
  * @class IsmModelService
  * @extends {ModelService}
  *
- * @package ips
- * @author  Iq Reviessay Pulshashi <pulshashi@ideas.web.id>
+ * @package ts
+ * @author  I. R. Pulshashi <pulshashi@ideas.web.id>
  * @since   2019
  */
 export class IsmModelService extends ModelService {

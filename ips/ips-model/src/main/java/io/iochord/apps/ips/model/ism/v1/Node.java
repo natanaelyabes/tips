@@ -14,12 +14,12 @@ import io.iochord.apps.ips.model.ism.v1.nodes.Start;
 import io.iochord.apps.ips.model.ism.v1.nodes.Stop;
 
 /**
-*
-* @package ips-model
-* @author Iq Reviessay Pulshashi <pulshashi@ideas.web.id>
-* @since 2019
-*
-*/
+ *
+ * @package ips-model
+ * @author Iq Reviessay Pulshashi <pulshashi@ideas.web.id>
+ * @since 2019
+ *
+ */
 @JsonDeserialize(as = NodeImpl.class)
 @JsonTypeName(ElementType.ELEMENT_NODE)
 @JsonSubTypes({ @Type(value = Activity.class), @Type(value = Branch.class), @Type(value = Control.class),
