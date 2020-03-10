@@ -1,7 +1,7 @@
 <!--
-  @package ts
-  @author N. Y. Wirawan <ny4tips@gmail.com>
-  @since 2019
+  @package ips
+  @author Nur Ichsan Utama <ichsan83@gmail.com>
+  @since 2020
 -->
 <template>
   <div class="sandbox analysis resources">
@@ -14,17 +14,23 @@
         <div class="section">Analysis</div>
         <i class="right angle icon divider"></i>
         <div class="active section">{{this.title}}</div>
+        <i class="right angle icon divider"></i>
+        <select v-model="datasetIdRef">
+          <option value="">---</option>
+          <option :selected="datasetId == i" v-for="(ds, i) in datasets" :key="i" class="item" :value="i">{{ds.name}} ({{i}})</option>
+        </select>
+        {{progressMessage}}
       </template>
 
       <!-- Left Sidebar Menu Item -->
       <template slot="left-bar-menu-item">
-        <a href="/#/iochord/ips/analytics/resource/settings" class="item">Settings</a>
-        <a href="/#/iochord/ips/analytics/resource/mining" class="item">Overall</a>
+        <a :href="`/#/iochord/ips/analytics/resource/settings/${datasetId}`" class="item">Settings</a>
+        <a :href="`/#/iochord/ips/analytics/resource/mining/${datasetId}`" class="item active">Overall</a>
       </template>
 
       <!-- Content -->
       <template slot="content">
-        <ContentSettingsComponent></ContentSettingsComponent>
+        <ContentOverallComponent></ContentOverallComponent>
       </template>
     </LeftBarContentWrapperComponent>
   </div>
@@ -46,39 +52,96 @@ a.section {
 </style>
 
 <script lang="ts">
-import { Vue, Component } from 'vue-property-decorator';
+import { Vue, Component, Prop } from 'vue-property-decorator';
 import DiffLayoutView from '@/iochord/ips/common/ui/layout/class/DiffLayoutView';
 import LeftBarContentWrapperComponent from '@/iochord/ips/common/ui/layout/components/LeftBarContentWrapperComponent.vue';
-import ContentSettingsComponent from '../components/ContentSettingsComponent.vue';
+import ContentOverallComponent from '../components/ContentOverallComponent.vue';
+import DataConnectionService from '@/iochord/ips/common/service/data/DataConnectionService';
+import {Route} from 'vue-router';
 
 @Component({
   components: {
     LeftBarContentWrapperComponent,
-    ContentSettingsComponent,
+    ContentOverallComponent,
   },
 })
 
 /**
- * Overall page to provide a side by side
- * view between process model and its fitted distribution.
+ * Overall view to assign resoruce miner parameters or properties.
  *
  * @extends DiffLayoutView
- * @package ts
- * @author N. Y. Wirawan <ny4tips@gmail.com>
- * @since 2019
+ * @package ips
+ * @author Nur Ichsan Utama <ichsan83@gmail.com>
+ * @since 2020
  *
  */
 export default class AnalysisResourceMiningOverall extends DiffLayoutView {
   public title: string = '';
+  
+  /**
+   * Dataset Id retrieved from params for selecting event log dataset.
+   *
+   * @type {string}
+   * @memberof AnalysisResourceMining
+   */
+  @Prop({default: ''})
+  public datasetId!: string;
+  
+  /**
+   * Temporary ref of dataset Id for selecting event log dataset.
+   *
+   * @type {string}
+   * @memberof AnalysisResourceMining
+   */
+  public datasetIdRef: string = '';
 
-  /** @override */
+  /**
+   * Datasets field to receive JSON data from web service.
+   *
+   * @memberof AnalysisResourceMining
+   */
+  public datasets = {};
+
+  /**
+   * Field for message loaders.
+   *
+   * @type {string}
+   * @memberof AnalysisResourceMining
+   */
+  public progressMessage: string = '';
+
+  /**
+   * Override Vue mounted lifecyle
+   *
+   * @memberof AnalysisResourceMining
+   */
+  public mounted(): void {
+    const self = this;
+    DataConnectionService.getInstance().getDataConnections((res: any) => {
+      self.datasets = res.data;
+    }, (tick: any) => {
+    
+    });
+  }
+  
+  /**
+   * Override browser properties for AnalysisResourceMining
+   *
+   * @override
+   * @memberof AnalysisResourceMining
+   */
   public overrideBrowserProperties() {
-    this.setDocumentTitle('Data Analysis: Resources');
+    this.setDocumentTitle('Data Analysis: Resource');
   }
 
-  /** @Override */
+  /**
+   * Override title for AnalysisResourceMining
+   *
+   * @override
+   * @memberof AnalysisResourceMining
+   */
   public setTitle(): void {
-    this.title = `Resources mining`;
+    this.title = `Resource Mining`;
   }
 }
 </script>
