@@ -163,13 +163,13 @@ export class BaseService {
         this.getWsClient((client: Client) => {
           let subProgress: Subscription | null = null;
           if (completeCallback !== null && progressCallback !== null) {
-            subProgress = client.subscribe(BaseService.WS_RESPONSE_PROGRESS_URI + '/' + response.id, (tick) => {
+            subProgress = client.subscribe(BaseService.WS_RESPONSE_PROGRESS_URI + '/' + response.identifier, (tick) => {
               const tickData = JSON.parse(tick.body);
               progressCallback(tickData);
             });
           }
           if (completeCallback !== null) {
-            const subComplete = client.subscribe(BaseService.WS_RESPONSE_COMPLETED_URI + '/' + response.id, (tick) => {
+            const subComplete = client.subscribe(BaseService.WS_RESPONSE_COMPLETED_URI + '/' + response.identifier, (tick) => {
               client.unsubscribe((subProgress as Subscription).id);
               client.unsubscribe((subComplete as Subscription).id);
               completeCallback(tick);
@@ -205,13 +205,13 @@ export class BaseService {
         this.getWsClient((client: Client) => {
           let subProgress: Subscription | null = null;
           if (completeCallback !== null && progressCallback !== null) {
-            subProgress = client.subscribe(BaseService.WS_RESPONSE_PROGRESS_URI + '/' + response.id, (tick) => {
+            subProgress = client.subscribe(BaseService.WS_RESPONSE_PROGRESS_URI + '/' + response.identifier, (tick) => {
               const tickData = JSON.parse(tick.body);
               progressCallback(tickData);
             });
           }
           if (completeCallback !== null) {
-            const subComplete = client.subscribe(BaseService.WS_RESPONSE_COMPLETED_URI + '/' + response.id, (tick) => {
+            const subComplete = client.subscribe(BaseService.WS_RESPONSE_COMPLETED_URI + '/' + response.identifier, (tick) => {
               client.unsubscribe((subProgress as Subscription).id);
               client.unsubscribe((subComplete as Subscription).id);
               completeCallback(tick);
@@ -248,13 +248,13 @@ export class BaseService {
         this.getWsClient((client: Client) => {
           let subProgress: Subscription | null = null;
           if (completeCallback !== null && progressCallback !== null) {
-            subProgress = client.subscribe(BaseService.WS_RESPONSE_PROGRESS_URI + '/' + response.id, (tick) => {
+            subProgress = client.subscribe(BaseService.WS_RESPONSE_PROGRESS_URI + '/' + response.identifier, (tick) => {
               const tickData = JSON.parse(tick.body);
               progressCallback(tickData);
             });
           }
           if (completeCallback !== null) {
-            const subComplete = client.subscribe(BaseService.WS_RESPONSE_COMPLETED_URI + '/' + response.id, (tick) => {
+            const subComplete = client.subscribe(BaseService.WS_RESPONSE_COMPLETED_URI + '/' + response.identifier, (tick) => {
               client.unsubscribe((subProgress as Subscription).id);
               client.unsubscribe((subComplete as Subscription).id);
               completeCallback(tick);
