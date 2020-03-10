@@ -1,11 +1,10 @@
 <!--
-  @package ips
-  @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
+  @package ts
+  @author N. Y. Wirawan <ny4tips@gmail.com>
   @since 2019
 -->
 <template>
   <div class="simulation data management component item" style="display:flex">
-    <!-- <div class="item"><div class="header"><strong>Data Management</strong></div></div> -->
     <div class="ui basic icon buttons">
       <button :class="'ui button' + (isDisabled ? ' disabled' : '')" title="Create new model" :disabled="isDisabled" @click="$emit('create')"><i class="file icon"></i></button>
       <button :class="'ui button' + (isDisabled ? ' disabled' : '')" title="Save model" :disabled="isDisabled" @click="$emit('save')"><i class="save icon"></i></button>
@@ -45,10 +44,6 @@
   </div>
 </template>
 
-<style>
-
-</style>
-
 <script lang="ts">
 import { Prop, Component } from 'vue-property-decorator';
 import { getModule } from 'vuex-module-decorators';
@@ -72,8 +67,8 @@ declare const $: any;
  * @class SimulationDataManagementComponent
  * @extends {BaseComponent}
  *
- * @package ips
- * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
+ * @package ts
+ * @author N. Y. Wirawan <ny4tips@gmail.com>
  * @since 2019
  */
 export default class SimulationDataManagementComponent extends BaseComponent {
@@ -102,16 +97,12 @@ export default class SimulationDataManagementComponent extends BaseComponent {
    * @memberof SimulationDataManagementComponent
    */
   private async doSaveModel(): Promise<void> {
-    console.log('BEFORE: ' + JSON.stringify(graphModule.graph));
-
     const result = await axios.post('http://ips-api.tips.iochord.co.kr/ips/api/v1/model/ism/edit/MODEL', JSON.stringify(graphModule.graph), {
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json',
       },
     });
-
-    console.log('AFTER: ' + JSON.stringify(result.data));
   }
 
   /**

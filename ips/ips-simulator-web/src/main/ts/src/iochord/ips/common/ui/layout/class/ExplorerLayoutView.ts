@@ -12,8 +12,8 @@ import { Component } from 'vue-property-decorator';
  * @extends {PageLayout}
  * @implements {ExplorerLayout}
  *
- * @package ips
- * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
+ * @package ts
+ * @author N. Y. Wirawan <ny4tips@gmail.com>
  * @since 2019
  */
 export default class ExplorerLayoutView extends PageLayout implements ExplorerLayout {
@@ -81,7 +81,7 @@ export default class ExplorerLayoutView extends PageLayout implements ExplorerLa
    * @memberof DiffLayoutView
    */
   public setTitle(): void {
-    console.warn('Method setTitle not implemented.');
+    // console.warn('Method setTitle not implemented.');
   }
 
   /**
@@ -90,7 +90,7 @@ export default class ExplorerLayoutView extends PageLayout implements ExplorerLa
    * @memberof DiffLayoutView
    */
   public setBreadcrumb(): void {
-    console.warn('Method setBreadcrumb not implemented.');
+    // console.warn('Method setBreadcrumb not implemented.');
   }
 
   /**
@@ -99,7 +99,7 @@ export default class ExplorerLayoutView extends PageLayout implements ExplorerLa
    * @memberof DiffLayoutView
    */
   public setTitleMenubar(): void {
-    console.warn('Method setTitleMenubar not implemented.');
+    // console.warn('Method setTitleMenubar not implemented.');
   }
 
   /**
@@ -108,7 +108,7 @@ export default class ExplorerLayoutView extends PageLayout implements ExplorerLa
    * @memberof DiffLayoutView
    */
   public setLeftMenuSidebar(): void {
-    console.warn('Method setLeftMenuSidebar not implemented.');
+    // console.warn('Method setLeftMenuSidebar not implemented.');
   }
 
   /**
@@ -117,7 +117,7 @@ export default class ExplorerLayoutView extends PageLayout implements ExplorerLa
    * @memberof DiffLayoutView
    */
   public setContent(): void {
-    console.warn('Method setContent not implemented.');
+    // console.warn('Method setContent not implemented.');
   }
 
   /**
@@ -126,7 +126,7 @@ export default class ExplorerLayoutView extends PageLayout implements ExplorerLa
    * @memberof ExplorerLayoutView
    */
   public setDepthTwoLeftMenuSidebar(): void {
-    console.warn('Method setDepthTwoMenuSidebar not implemented.');
+    // console.warn('Method setDepthTwoMenuSidebar not implemented.');
   }
 
   /**

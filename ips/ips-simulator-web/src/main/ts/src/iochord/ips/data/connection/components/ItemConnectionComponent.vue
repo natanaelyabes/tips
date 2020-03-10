@@ -1,10 +1,10 @@
 <!--
-  @package ips
+  @package ts
   @author Riska Asriana Sutrisnowati <riska@iochord.com>
   @since 2019
 -->
 <template>
-  <div class="item connection component">
+  <div class="connection component">
     <div class="item">
       <div class="ui transparent icon input">
         <input type="text" placeholder="Search connection...">
@@ -31,7 +31,7 @@ import BaseComponent from '@/iochord/ips/common/ui/layout/class/BaseComponent';
  * @class ItemConnectionComponent
  * @extends {BaseComponent}
  *
- * @package ips
+ * @package ts
  * @author Riska Asriana Sutrisnowati <riska@iochord.com>
  * @since 2019
  */

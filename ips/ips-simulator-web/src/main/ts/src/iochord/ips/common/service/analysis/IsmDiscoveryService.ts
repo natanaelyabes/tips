@@ -9,8 +9,8 @@ export { IsmDiscoveryConfiguration };
  * @class IsmDiscoveryService
  * @extends {AnalysisService}
  *
- * @package ips
- * @author Iq Reviessay Pulshashi <pulshashi@ideas.web.id>
+ * @package ts
+ * @author I. R. Pulshashi <pulshashi@ideas.web.id>
  * @since 2019
  */
 export default class IsmDiscoveryService extends AnalysisService {

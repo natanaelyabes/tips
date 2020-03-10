@@ -8,9 +8,12 @@ springBoot {
 }
 
 dependencies {
+	compile fileTree(dir: 'libs', include: ['*.jar'])
 	compile 'org.springframework.boot:spring-boot-starter-web:2.1.2.RELEASE'
 	compile 'org.springframework.boot:spring-boot-starter-websocket:2.1.2.RELEASE'
 	compile group: 'com.opencsv', name: 'opencsv', version: '4.0'
+	compile group: 'com.google.guava', name: 'guava', version: '28.2-jre'
+	compile group: 'it.unimi.dsi', name: 'fastutil', version: '8.3.1'
 	
 	implementation project(':ips-common')
 	implementation project(':ips-model')

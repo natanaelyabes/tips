@@ -11,8 +11,8 @@ import { SemanticModulesIsUsed } from '@/iochord/ips/common/ui/semantic-componen
  * @class NavigationBarComponent
  * @extends {BaseComponent}
  *
- * @package ips
- * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
+ * @package ts
+ * @author N. Y. Wirawan <ny4tips@gmail.com>
  * @since 2019
  */
 export default class SemanticComponent extends BaseComponent implements SemanticModulesIsUsed {

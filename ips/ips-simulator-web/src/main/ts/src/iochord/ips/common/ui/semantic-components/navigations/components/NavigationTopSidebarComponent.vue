@@ -1,30 +1,24 @@
 <!--
-  @package ips
-  @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
+  @package ts
+  @author N. Y. Wirawan <ny4tips@gmail.com>
   @since 2019
 -->
 <template>
   <div class="navigation-top-sidebar component">
-
-    <!-- Top-bar menu -->
     <div class="ui top fixed menu">
       <div class="item">
-        <div v-on:click="toggleMenu()" class="ui big black icon compact toggle button" data-transition="overlay">
-          <i class="sidebar icon"></i>
+        <div v-on:click="toggleMenu()" id="menu-button" class="ui big black icon compact toggle button" data-transition="overlay">
+          <i id="menu-button" class="sidebar icon"></i>
         </div>
       </div>
       <slot name="top-left-menu-item"></slot>
       <slot name="top-right-menu-item"></slot>
     </div>
-
-    <!-- Vertical sidebar menu -->
     <div class="ui visible inverted left vertical sidebar menu">
       <slot name="app-logo"></slot>
       <slot name="info"></slot>
       <slot name="sidebar-menu"></slot>
     </div>
-
-    <!-- Pusher component -->
     <div class="pusher">
       <router-view/>
     </div>
@@ -34,8 +28,8 @@
 <style scoped>
 /**
  *
- * @package ips
- * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
+ * @package ts
+ * @author N. Y. Wirawan <ny4tips@gmail.com>
  * @since 2019
  *
  */
@@ -98,7 +92,6 @@ import SemanticComponent from '@/iochord/ips/common/ui/semantic-components/Seman
 
 // JQuery Symbol Handler
 declare const $: any;
-
 @Component
 
 /**
@@ -108,8 +101,8 @@ declare const $: any;
  * @class NavigationBarComponent
  * @extends {BaseComponent}
  *
- * @package ips
- * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
+ * @package ts
+ * @author N. Y. Wirawan <ny4tips@gmail.com>
  * @since 2019
  */
 export default class NavigationTopSidebarComponent extends SemanticComponent {
@@ -129,7 +122,23 @@ export default class NavigationTopSidebarComponent extends SemanticComponent {
    * @memberof NavigationTopSidebarComponent
    */
   public mounted(): void {
-    // this.closeMenu();
+    $(document).click((e: MouseEvent) => {
+      const target = e.target as HTMLElement;
+      const id = target.id;
+      const browser: BrowserCanHandleBreakpoints = {
+        width: window.innerWidth,
+        handleBreakpoints: (width) => {
+          if (width <= 933 && id !== 'menu-button') this.closeMenu();
+        },
+      };
+      browser.handleBreakpoints(browser.width);
+    });
+
+    $(document).on('keypress', (e: KeyboardEvent) => {
+      if (e.keyCode === 2) {
+        this.toggleMenu();
+      }
+    });
   }
 
   /**
@@ -149,9 +158,8 @@ export default class NavigationTopSidebarComponent extends SemanticComponent {
    * @memberof NavigationTopSidebarComponent
    */
   private declareSidebar(): void {
-    $('.navigation-top-sidebar.component .ui.sidebar').sidebar({
-      context: '.navigation-top-sidebar.component',
-    });
+    $('.navigation-top-sidebar.component .ui.sidebar')
+      .sidebar({ context: '.navigation-top-sidebar.component' });
     this.adjustTopFixedMenu();
     this.makeResponsive();
   }
@@ -164,11 +172,8 @@ export default class NavigationTopSidebarComponent extends SemanticComponent {
    */
   private makeResponsive(): void {
     this.evaluateBrowserWidth();
-
-    // handle resize
-    window.addEventListener('resize', () => {
-      this.evaluateBrowserWidth();
-    });
+    window.addEventListener('resize', () =>
+      this.evaluateBrowserWidth());
   }
 
   /**
@@ -181,16 +186,11 @@ export default class NavigationTopSidebarComponent extends SemanticComponent {
     const browser: BrowserCanHandleBreakpoints = {
       width: window.innerWidth,
       handleBreakpoints: (width) => {
-        if (width > 933) {
-          this.openMenu();
-        }
-        if (width <= 933) {
-          this.closeMenu();
-        }
+        if (width > 933) this.openMenu();
+        if (width <= 933) this.closeMenu();
       },
     };
 
-    // Execute custom implementation of handleBreakpoints
     browser.handleBreakpoints(browser.width);
   }
 
@@ -215,11 +215,8 @@ export default class NavigationTopSidebarComponent extends SemanticComponent {
    * @memberof NavigationTopSidebarComponent
    */
   private toggleMenu(): void {
-    if (this.menuIsOpen) {
-      this.closeMenu();
-    } else {
-      this.openMenu();
-    }
+    if (this.menuIsOpen) this.closeMenu();
+    else this.openMenu();
   }
 
   /**
@@ -229,17 +226,10 @@ export default class NavigationTopSidebarComponent extends SemanticComponent {
    * @memberof NavigationTopSidebarComponent
    */
   private closeMenu(): void {
-
-    // Close the menu after 200ms
-    setTimeout(() => {
-      $('.ui.left.sidebar').css('width', 0);
-    }, 10);
-
+    setTimeout(() => $('.ui.left.sidebar').css('width', 0), 10);
     $('.ui.left.sidebar').children().css('opacity', 0);
     $('.navigation-top-sidebar .top.fixed.menu').css('padding-left', 0);
     $('.pusher').css('padding-left', 0);
-
-    // The menu is not opened
     this.menuIsOpen = !this.menuIsOpen;
   }
 
@@ -250,38 +240,25 @@ export default class NavigationTopSidebarComponent extends SemanticComponent {
    * @memberof NavigationTopSidebarComponent
    */
   private openMenu(): void {
-
     const browser: BrowserCanHandleBreakpoints = {
       width: window.innerWidth,
       handleBreakpoints: (width) => {
         if (width > 933) {
           $('.ui.left.sidebar').css('width', 260);
-
-          // Display the menu after 200ms
-          setTimeout(() => {
-            $('.ui.left.sidebar').children().css('opacity', 1);
-          }, 10);
-
+          setTimeout(() => $('.ui.left.sidebar').children().css('opacity', 1), 10);
           $('.navigation-top-sidebar .top.fixed.menu').css('padding-left', 260);
           $('.pusher').css('padding-left', 260);
         } else if (width <= 933) {
           $('.ui.left.sidebar').css('width', 260);
-
-          // Display the menu after 200ms
           setTimeout(() => {
             $('.ui.left.sidebar').children().css('opacity', 1);
           }, 10);
-
         }
       },
     };
-
     browser.handleBreakpoints(browser.width);
-
-    // The menu is not closed
     this.menuIsOpen = !this.menuIsOpen;
   }
-
 }
 </script>
 

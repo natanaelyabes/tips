@@ -1,5 +1,5 @@
 <!--
-  @package ips
+  @package ts
   @author Riska Asriana Sutrisnowati <riska@iochord.com>
   @since 2019
 -->
@@ -85,7 +85,7 @@ import ItemConnectionComponent from '../components/ItemConnectionComponent.vue';
  * @class DataConnectionNew
  * @extends {ExplorerLayoutView}
  *
- * @package ips
+ * @package ts
  * @author Riska Asriana Sutrisnowati <riska@iochord.com>
  * @since 2019
  */

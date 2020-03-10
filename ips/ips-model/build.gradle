@@ -1,11 +1,14 @@
 dependencies {
+	compile fileTree(dir: 'libs', include: ['*.jar'])
 	compile group: 'org.springframework.boot', name: 'spring-boot-starter-data-jpa', version: '2.1.2.RELEASE'
 	//compile group: 'org.springframework.boot', name: 'spring-boot-starter-data-mongodb', version: '2.1.2.RELEASE'
 	compile group: 'org.springframework.boot', name: 'spring-boot-starter-test', version: '2.1.2.RELEASE'
 	compile group: 'org.postgresql', name: 'postgresql', version: '42.2.5'
 	//compile group: 'org.mongodb', name: 'mongo-java-driver', version: '3.10.2'
 	compile group: 'com.opencsv', name: 'opencsv', version: '4.0'
-
+	compile group: 'com.google.guava', name: 'guava', version: '28.2-jre'
+	compile group: 'it.unimi.dsi', name: 'fastutil', version: '8.3.1'
+	
 	implementation project(':ips-common')
 	testCompile project(':ips-common')
 }

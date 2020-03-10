@@ -1,6 +1,6 @@
 <!--
-  @package ips
-  @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
+  @package ts
+  @author N. Y. Wirawan <ny4tips@gmail.com>
   @since 2019
 -->
 <template>
@@ -41,8 +41,8 @@
 <style>
 /**
  *
- * @package ips
- * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
+ * @package ts
+ * @author N. Y. Wirawan <ny4tips@gmail.com>
  * @since 2019
  *
  */
@@ -82,8 +82,8 @@ const graphModule = getModule(GraphModule);
  * @extends {SemanticComponent}
  * @implements {Modal<JointGraphPageImpl, GraphStartEventNodeImpl>}
  *
- * @package ips
- * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
+ * @package ts
+ * @author N. Y. Wirawan <ny4tips@gmail.com>
  * @since 2019
  */
 export default class StartNodeModal extends SemanticComponent implements Modal<JointGraphPageImpl, GraphStartEventNodeImpl> {

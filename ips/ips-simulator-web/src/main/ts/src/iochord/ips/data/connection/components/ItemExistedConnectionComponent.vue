@@ -1,10 +1,10 @@
 <!--
-  @package ips
+  @package ts
   @author Riska Asriana Sutrisnowati <riska@iochord.com>
   @since 2019
 -->
 <template>
-  <div class="item existed connection component">
+  <div class="existed connection component">
     <div class="item">
       <div class="ui transparent icon input">
         <input type="text" placeholder="Browse...">
@@ -33,7 +33,7 @@ import DataConnectionService from '@/iochord/ips/common/service/data/DataConnect
  * @class ItemExistedConnectionComponent
  * @extends {BaseComponent}
  *
- * @package ips
+ * @package ts
  * @author Riska Asriana Sutrisnowati <riska@iochord.com>
  * @since 2019
  */
