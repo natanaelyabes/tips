@@ -29,14 +29,14 @@ import ResourceMiningResult from '../models/ResourceMiningResult';
  *
  */
 export default class ContentGraphComponent extends BaseComponent {
-  
+
   /**
    * Object result from resource mining
    *
    * @type {ResourceMiningResult}
    * @memberof AnalysisResourceMining
    */
-  @Prop({default: {}}) 
-  public resMiningResult!:ResourceMiningResult;  
+  @Prop({default: {}})
+  public resMiningResult!: ResourceMiningResult;
 }
 </script>

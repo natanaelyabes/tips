@@ -53,7 +53,7 @@ export default class ContentTableComponent extends BaseComponent {
    * @type {ResourceMiningResult}
    * @memberof AnalysisResourceMining
    */
-  @Prop({default: {}}) 
-  public resMiningResult!:ResourceMiningResult;
+  @Prop({default: {}})
+  public resMiningResult!: ResourceMiningResult;
 }
 </script>

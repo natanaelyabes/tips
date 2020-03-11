@@ -8,19 +8,20 @@ interface StoreType {
 
 const store = new Vuex.Store<StoreType>({});
 
-@Module({ dynamic: true, store: store, namespaced: true, name: 'ResourceMiningResultModule' })
+@Module({ dynamic: true, store, namespaced: true, name: 'ResourceMiningResultModule' })
 
 class ResourceMiningResultModule extends VuexModule {
   public resminresult: ResourceMiningResult = {} as ResourceMiningResult;
-  
+
   @Mutation
   public setResminresult(newResminresult: ResourceMiningResult): void {
     this.resminresult = newResminresult;
   }
-  
+
   @MutationAction({ mutate: ['resminresult'] })
   public async updateResminresult(newResminresult: ResourceMiningResult) {
-    return { 'resminresult': newResminresult };
+    return { resminresult: newResminresult };
   }
 }
-export default ResourceMiningResultModule
+export default ResourceMiningResultModule;
+

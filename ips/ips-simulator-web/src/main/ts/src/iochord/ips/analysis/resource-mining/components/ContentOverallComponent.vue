@@ -68,9 +68,9 @@ const resourceMiningResultModule = getModule(ResourceMiningResultModule);
  *
  */
 export default class ContentOverallComponent extends BaseComponent {
-  
-  public resMiningResult:ResourceMiningResult = {} as ResourceMiningResult;
-  
+
+  public resMiningResult: ResourceMiningResult = {} as ResourceMiningResult;
+
   /**
    * Override Vue mounted lifecyle
    *
@@ -79,12 +79,12 @@ export default class ContentOverallComponent extends BaseComponent {
   public mounted(): void {
     this.resMiningResult = resourceMiningResultModule.resminresult;
     let elem: any;
-	elem = $('.menu .item');
-	elem.tab();
+    elem = $('.menu .item');
+    elem.tab();
   }
-  
-  public isEmpty(obj:any) {
-    for(var key in obj) {
+
+  public isEmpty(obj: any) {
+    for (const key in obj) {
       if (obj.hasOwnProperty(key)) {
         return false;
       }
