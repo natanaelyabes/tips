@@ -35,10 +35,12 @@
 
 .ui.items .item:first-child {
   margin: initial;
+  /* padding: 1rem 1rem!important; */
 }
 
 .ui.items .item:last-child {
   margin: initial;
+  padding: 1rem 1rem!important;
 }
 
 .ui.items .item.hovered:hover {

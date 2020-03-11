@@ -5,57 +5,66 @@
 -->
 <template>
   <div class="item filter component">
-    <form class="ui form">
-      <div class="item">
-        <div class="field">
-          <input type="text" name="connect[name]" placeholder="Filter name">
-        </div>
-        <div class="inline fields">
+    <div class="ui basic segment">
+      <form class="ui form">
+        <div class="item">
           <div class="field">
-            <button class="ui primary button">
-              Save
-            </button>
+            <label for="filter[name]">Create filter</label>
+            <input id="filter[name]" type="text" name="filter[name]" placeholder="Filter name">
           </div>
+          <div class="inline fields">
+            <div class="field">
+              <button class="ui primary button">
+                Save
+              </button>
+            </div>
+            <div class="field">
+              <button class="ui button">
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      </form>
+      <form class="ui form">
+        <div class="item">
           <div class="field">
-            <button class="ui button">
-              Cancel
-            </button>
+            <label for="filter[add]">Select filter</label>
+            <select id="filter[add]" v-model="filterOptions" v-on:change="onFilterChange(filterOptions)" class="ui search dropdown">
+              <option value="1" selected>Add Filter</option>
+              <option value="2">Timeframe</option>
+              <option value="3">Filtered performance</option>
+              <option value="4">Start/end points</option>
+              <option value="5">Attributes</option>
+              <option value="6">Follow relations</option>
+              <option value="7">Missing value imputations</option>
+            </select>
+          </div>
+          <div class="ui message">
+            <div class="ui basic large labels">
+              <a class="ui label">
+                Timeframe
+                <i class="delete icon"></i>
+              </a>
+              <a class="ui label">
+                Performance
+                <i class="delete icon"></i>
+              </a>
+            </div>
           </div>
         </div>
-        <div class="field">
-          <select v-model="filterOptions" v-on:change="onFilterChange(filterOptions)" class="ui search dropdown">
-            <option value="1" selected>Add Filter</option>
-            <option value="2">Timeframe</option>
-            <option value="3">Filtered performance</option>
-            <option value="4">Start/end points</option>
-            <option value="5">Attributes</option>
-            <option value="6">Follow relations</option>
-            <option value="7">Missing value imputations</option>
-          </select>
-        </div>
-      </div>
-    </form>
-    <form class="ui form">
-      <div class="item">
-        <div class="ui basic large labels">
-          <a class="ui label">
-            Timeframe
-            <i class="delete icon"></i>
-          </a>
-          <a class="ui label">
-            Performance
-            <i class="delete icon"></i>
-          </a>
-        </div>
-      </div>
-    </form>
+      </form>
+    </div>
   </div>
 </template>
 
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator';
 import BaseComponent from '@/iochord/ips/common/ui/layout/class/BaseComponent';
-import * as $ from 'jquery';
+import SemanticComponent from '../../../common/ui/semantic-components/SemanticComponent';
+
+// JQuery Handler
+declare const $: any;
 
 @Component
 
@@ -70,7 +79,7 @@ import * as $ from 'jquery';
  * @author Riska Asriana Sutrisnowati <riska@iochord.com>
  * @since 2019
  */
-export default class ItemFilterComponent extends BaseComponent {
+export default class ItemFilterComponent extends SemanticComponent {
 
   /**
    * Current content component.
@@ -120,6 +129,10 @@ export default class ItemFilterComponent extends BaseComponent {
     if (prm !== '1') {
       this.$root.$emit('ebContentComponent', this.currentContentComponent);
     }
+  }
+
+  public declareSemanticModules() {
+    $('dropdown').dropdown();
   }
 }
 </script>
