@@ -25,6 +25,7 @@ import org.deckfour.xes.model.XTrace;
 
 import io.iochord.apps.ips.common.models.Dataset;
 import io.iochord.apps.ips.common.util.LoggerUtil;
+import io.iochord.apps.ips.common.util.SerializationUtil;
 import io.iochord.apps.ips.core.services.AnIpsAsyncService;
 import io.iochord.apps.ips.core.services.ServiceContext;
 
@@ -47,8 +48,8 @@ public class XesDataImportService extends AnIpsAsyncService<XesDataImportConfigu
 			XLog log = config.getLog();
 			
 			String suffix = log.getAttributes().get("concept:name").toString();
-			// suffix = "_" + suffix;
-			String name = Dataset.TABLE_PREFIX /** + context.getId() */ + suffix;
+			suffix = "_" + suffix;
+			String name = Dataset.TABLE_PREFIX + context.getId();
 			
 			result.setConfig(config);
 			result.setName(name);
@@ -189,6 +190,13 @@ public class XesDataImportService extends AnIpsAsyncService<XesDataImportConfigu
 			try (PreparedStatement st = conn.prepareStatement(sql.toString());) {
 				st.execute();
 			}
+			
+			StringBuilder elog_comment = new StringBuilder();
+			elog_comment.append("COMMENT ON TABLE ").append(name + "_eventlog").append(" IS '").append(SerializationUtil.encode(config)).append("';");
+			try (PreparedStatement st = conn.prepareStatement(elog_comment.toString());) {
+				st.execute();
+			}
+			
 			final StringBuilder sqlrows = new StringBuilder();
 			sqlrows.append("INSERT INTO ").append(name + "_eventlog").append(" VALUES ")
 			   	   .append("(DEFAULT ");
@@ -274,6 +282,21 @@ public class XesDataImportService extends AnIpsAsyncService<XesDataImportConfigu
 				}
 			}
 			
+			
+			for (List<Map<String, String>> row : datacols) {
+				String cname = row.stream().filter(keys -> 
+				keys.containsKey("concept:name"))
+					.map(key -> key.get("concept:name"))
+					.collect(Collectors.toList()).get(0).toLowerCase().replace(" ", "");
+				
+				// Event log data
+				final StringBuilder data = new StringBuilder();
+				data.append("DROP TABLE IF EXISTS ").append(name + "_dataeventlog_" + cname  + ";");
+				try (PreparedStatement st = conn.prepareStatement(data.toString());) {
+					st.execute();
+				}
+			}	
+			
 			for (List<Map<String, String>> row : datacols) {
 				if (row.size() > 2) {
 					
@@ -284,7 +307,6 @@ public class XesDataImportService extends AnIpsAsyncService<XesDataImportConfigu
 					
 					// Event log data
 					final StringBuilder data = new StringBuilder();
-					data.append("DROP TABLE IF EXISTS ").append(name + "_dataeventlog" + cname  + ";");
 					data.append("CREATE TABLE IF NOT EXISTS ").append(name + "_dataeventlog_" + cname)
 					    .append(" ( ")
 					    .append("   eid SERIAL PRIMARY KEY");
@@ -298,8 +320,9 @@ public class XesDataImportService extends AnIpsAsyncService<XesDataImportConfigu
 							    .append(" VARCHAR(255) NULL");
 						}
 					}
-					data.append(", ")
-						.append("   class VARCHAR(255) NULL")
+					data
+						//.append(", ")
+						//.append("   class VARCHAR(255) NULL")
 						.append(");");
 					
 					try (PreparedStatement st = conn.prepareStatement(data.toString());) {
