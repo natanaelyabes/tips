@@ -25,7 +25,7 @@ export default class ResourceMiningConfiguration {
    * @memberof ResourceMiningConfiguration
    */
   public resMinAlg: string = '';
-  
+
   /**
    * Selected distance measure algorithm.
    *
@@ -33,7 +33,7 @@ export default class ResourceMiningConfiguration {
    * @memberof ResourceMiningConfiguration
    */
   public distMesAlg: string = '';
-  
+
   /**
    * Threshold of distance measure.
    *
@@ -41,7 +41,7 @@ export default class ResourceMiningConfiguration {
    * @memberof ResourceMiningConfiguration
    */
   public threshold: number = 0.0;
-  
+
   /**
    * The column position for case id.
    *
@@ -65,7 +65,7 @@ export default class ResourceMiningConfiguration {
    * @memberof ResourceMiningConfiguration
    */
   public colEventResource: string = 'c2';
-  
+
   /**
    * The column position for event timestamp start.
    *
@@ -81,7 +81,7 @@ export default class ResourceMiningConfiguration {
    * @memberof ResourceMiningConfiguration
    */
   public colEventTimestampEnd: string = 'c7';
-  
+
   /**
    * Number of rows being skipped.
    *

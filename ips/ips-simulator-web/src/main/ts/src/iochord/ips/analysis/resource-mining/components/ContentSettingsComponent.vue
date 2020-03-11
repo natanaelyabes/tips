@@ -86,16 +86,16 @@ const resourceMiningResultModule = getModule(ResourceMiningResultModule);
  *
  */
 export default class ContentSettingsComponent extends BaseComponent {
- 
-   /**
+
+  /**
    * Dataset Id field for selecting event log dataset.
    *
    * @type {string}
    * @memberof AnalysisResourceMining
    */
-  @Prop({default: ''}) 
+  @Prop({default: ''})
   public datasetId!: string;
-  
+
   /**
    * Slider value tracking
    *
@@ -103,9 +103,7 @@ export default class ContentSettingsComponent extends BaseComponent {
    * @memberof ContentSettingsComponent
    */
   public sliderValue: number = 0;
-  
-  public sliderValueNorm: number = 0;
-  
+
   /**
    * Status to indicate whether current component is in the uploading state. False otherwise.
    *
@@ -129,11 +127,26 @@ export default class ContentSettingsComponent extends BaseComponent {
    * @memberof ContentSettingsComponent
    */
   public config: ResourceMiningConfiguration = new ResourceMiningConfiguration();
-  
+
+  /**
+   * Threshold variable, watch changing of input sliderValue and modify the value
+   *
+   * @type {ResourceMiningConfiguration}
+   * @memberof ContentSettingsComponent
+   */
   get threshold(): number {
-  	return this.sliderValue/100;
+    return this.sliderValue / 100;
   }
-  
+
+  /**
+   * Override Vue mounted lifecyle
+   *
+   * @memberof AnalysisResourceMining
+   */
+  public mounted(): void {
+    this.config.resMinAlg = 'def';
+  }
+
   /**
    * Mining resources from web service.
    *
@@ -141,10 +154,9 @@ export default class ContentSettingsComponent extends BaseComponent {
    */
   public doMining(): void  {
     const self = this;
-    if(self.datasetId == '') {
-      alert("Empty datasetId");
-    }
-    else {
+    if (self.datasetId === '') {
+      alert('Choose datasetId');
+    } else {
       self.isUploading = true;
       this.config.datasetId = self.datasetId;
       this.config.threshold = this.threshold;
@@ -154,10 +166,9 @@ export default class ContentSettingsComponent extends BaseComponent {
           self.isUploading = false;
           self.uploadStatus = 'Finish';
           self.$router.push({
-            path: `/iochord/ips/analytics/resource/mining/${this.datasetId}`
+            path: `/iochord/ips/analytics/resource/mining/${this.datasetId}`,
           });
         }, (tick: any) => {
-          console.log("ini progress dr post "+tick);
           self.uploadStatus = tick.progress;
       });
     }

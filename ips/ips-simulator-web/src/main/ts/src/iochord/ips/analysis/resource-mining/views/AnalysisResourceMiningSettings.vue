@@ -24,8 +24,8 @@
 
       <!-- Left Sidebar Menu Item -->
       <template slot="left-bar-menu-item">
-        <a href="`/#/iochord/ips/analytics/resource/settings/${datasetId}`" class="item active">Settings</a>
-        <a href="`/#/iochord/ips/analytics/resource/mining/${datasetId}`" class="item">Overall</a>
+        <a :href="`/#/iochord/ips/analytics/resource/settings/${datasetId}`" class="item active">Settings</a>
+        <a :href="`/#/iochord/ips/analytics/resource/mining/${datasetId}`" class="item">Overall</a>
       </template>
 
       <!-- Content -->
@@ -85,7 +85,7 @@ export default class AnalysisResourceMiningSettings extends DiffLayoutView {
    */
   @Prop({default: ''})
   public datasetId!: string;
-  
+
   /**
    * Temporary ref of dataset Id for selecting event log dataset.
    *
@@ -94,7 +94,7 @@ export default class AnalysisResourceMiningSettings extends DiffLayoutView {
    */
   public datasetIdRef: string = '';
 
-  
+
   /**
    * Datasets field to receive JSON data from web service.
    *
@@ -109,7 +109,7 @@ export default class AnalysisResourceMiningSettings extends DiffLayoutView {
    * @memberof AnalysisResourceMining
    */
   public progressMessage: string = '';
-    
+
   /**
    * Override Vue mounted lifecyle
    *
@@ -119,11 +119,13 @@ export default class AnalysisResourceMiningSettings extends DiffLayoutView {
     const self = this;
     DataConnectionService.getInstance().getDataConnections((res: any) => {
       self.datasets = res.data;
+      if (this.datasetId !== '')
+        this.datasetIdRef = this.datasetId;
     }, (tick: any) => {
-      console.log("ini progress dr get "+tick);
+      console.log('Checking progress ' + tick);
     });
   }
-  
+
   /**
    * Override browser properties for AnalysisResourceMining
    *

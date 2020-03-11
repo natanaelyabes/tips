@@ -103,8 +103,7 @@ public class ResourceMinerService extends AnIpsAsyncService<ResourceMinerConfig,
 			result.setMactgroup(mActGroup);
 			result.setMgroupres(mGroupRes);
 			
-			context.updateProgress(100, "Selesai kakak");
-			System.out.println(result.getActivities());
+			context.updateProgress(100, "it is finished");
 			
 			return result;
 		} catch (Exception ex) {
