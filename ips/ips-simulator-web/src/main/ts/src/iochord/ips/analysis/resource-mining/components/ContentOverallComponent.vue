@@ -37,8 +37,8 @@ const resourceMiningResultModule = getModule(ResourceMiningResultModule);
  *
  */
 export default class ContentOverallComponent extends BaseComponent {
-  
-  public resMiningResult:ResourceMiningResult = {} as ResourceMiningResult;
+
+  public resMiningResult: ResourceMiningResult = {} as ResourceMiningResult;
   /**
    * Override Vue mounted lifecyle
    *

@@ -85,7 +85,7 @@ export default class AnalysisResourceMiningSettings extends DiffLayoutView {
    */
   @Prop({default: ''})
   public datasetId!: string;
-  
+
   /**
    * Temporary ref of dataset Id for selecting event log dataset.
    *
@@ -94,7 +94,7 @@ export default class AnalysisResourceMiningSettings extends DiffLayoutView {
    */
   public datasetIdRef: string = '';
 
-  
+
   /**
    * Datasets field to receive JSON data from web service.
    *
@@ -109,7 +109,7 @@ export default class AnalysisResourceMiningSettings extends DiffLayoutView {
    * @memberof AnalysisResourceMining
    */
   public progressMessage: string = '';
-    
+
   /**
    * Override Vue mounted lifecyle
    *
@@ -120,10 +120,10 @@ export default class AnalysisResourceMiningSettings extends DiffLayoutView {
     DataConnectionService.getInstance().getDataConnections((res: any) => {
       self.datasets = res.data;
     }, (tick: any) => {
-      console.log("ini progress dr get "+tick);
+      console.log('ini progress dr get ' + tick);
     });
   }
-  
+
   /**
    * Override browser properties for AnalysisResourceMining
    *

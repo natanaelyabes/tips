@@ -77,7 +77,7 @@ import {Route} from 'vue-router';
  */
 export default class AnalysisResourceMiningOverall extends DiffLayoutView {
   public title: string = '';
-  
+
   /**
    * Dataset Id retrieved from params for selecting event log dataset.
    *
@@ -86,7 +86,7 @@ export default class AnalysisResourceMiningOverall extends DiffLayoutView {
    */
   @Prop({default: ''})
   public datasetId!: string;
-  
+
   /**
    * Temporary ref of dataset Id for selecting event log dataset.
    *
@@ -120,10 +120,10 @@ export default class AnalysisResourceMiningOverall extends DiffLayoutView {
     DataConnectionService.getInstance().getDataConnections((res: any) => {
       self.datasets = res.data;
     }, (tick: any) => {
-    
+      //
     });
   }
-  
+
   /**
    * Override browser properties for AnalysisResourceMining
    *
