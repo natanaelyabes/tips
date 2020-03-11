@@ -119,8 +119,10 @@ export default class AnalysisResourceMiningOverall extends DiffLayoutView {
     const self = this;
     DataConnectionService.getInstance().getDataConnections((res: any) => {
       self.datasets = res.data;
+      if (this.datasetId !== '')
+        this.datasetIdRef = this.datasetId;
     }, (tick: any) => {
-      //
+      console.log('Checking progress ' + tick);
     });
   }
 

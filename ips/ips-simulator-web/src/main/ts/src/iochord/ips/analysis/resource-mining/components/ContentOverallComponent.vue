@@ -4,13 +4,37 @@
   @since 2020
 -->
 <template>
-  <div class="content settings component">
+  <div class="content overall component">
     <div class="ui basic segment">
-      <form class="ui form">
-        <div class="field">
-          <pre>{{ resMiningResult }}</pre>
-        </div>
-      </form>
+      <div class="ui top attached tabular menu">
+	    <a class="item active" data-tab="first">JSON</a>
+	    <a class="item" data-tab="second">Graph</a>
+	    <a class="item" data-tab="third">Table</a>
+	  </div>
+	  <div class="ui bottom attached tab segment active" data-tab="first">
+	    <div v-if="isEmpty(this.resMiningResult)">
+  			Please calculate the resource mining in the settings menu to see the result
+		</div>
+		<div v-else>
+  			<pre>{{this.resMiningResult}}</pre>
+		</div>
+	  </div>
+	  <div class="ui bottom attached tab segment" data-tab="second">
+	    <div v-if="isEmpty(this.resMiningResult)">
+  			Please calculate the resource mining in the settings menu to see the result
+		</div>
+	    <div v-else>
+  			<ContentGraphComponent :resMiningResult='this.resMiningResult'></ContentGraphComponent>
+		</div>
+	  </div>
+	  <div class="ui bottom attached tab segment" data-tab="third">
+	    <div v-if="isEmpty(this.resMiningResult)">
+  			Please calculate the resource mining in the settings menu to see the result
+		</div>
+	    <div v-else>
+  			<ContentTableComponent :resMiningResult='this.resMiningResult'></ContentTableComponent>
+		</div>
+	  </div>
     </div>
   </div>
 </template>
@@ -18,13 +42,20 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
 import BaseComponent from '@/iochord/ips/common/ui/layout/class/BaseComponent';
+import ContentGraphComponent from './ContentGraphComponent.vue';
+import ContentTableComponent from './ContentTableComponent.vue';
 import ResourceMiningResultModule from '../store/modules/ResourceMiningResultModule';
 import ResourceMiningResult from '../models/ResourceMiningResult';
 import { getModule } from 'vuex-module-decorators';
 
 const resourceMiningResultModule = getModule(ResourceMiningResultModule);
 
-@Component
+@Component({
+  components: {
+    ContentGraphComponent,
+    ContentTableComponent,
+  },
+})
 
 /**
  * Overall page to provide a side by side
@@ -39,6 +70,10 @@ const resourceMiningResultModule = getModule(ResourceMiningResultModule);
 export default class ContentOverallComponent extends BaseComponent {
 
   public resMiningResult: ResourceMiningResult = {} as ResourceMiningResult;
+<<<<<<< HEAD
+=======
+
+>>>>>>> 72f5f8d9c1529d12560f89d26c5a067d4a091c8c
   /**
    * Override Vue mounted lifecyle
    *
@@ -46,6 +81,18 @@ export default class ContentOverallComponent extends BaseComponent {
    */
   public mounted(): void {
     this.resMiningResult = resourceMiningResultModule.resminresult;
+    let elem: any;
+    elem = $('.menu .item');
+    elem.tab();
+  }
+
+  public isEmpty(obj: any) {
+    for (const key in obj) {
+      if (obj.hasOwnProperty(key)) {
+        return false;
+      }
+    }
+    return true;
   }
 }
 </script>
