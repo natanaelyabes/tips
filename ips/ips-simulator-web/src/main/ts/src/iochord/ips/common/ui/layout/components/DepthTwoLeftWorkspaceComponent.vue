@@ -13,11 +13,15 @@
     </SidebarComponent>
 
     <!-- Depth Two Menu Item -->
-    <SidebarComponent id="depth-two">
+    <div id="depth-two">
+      <slot name="depth-two-menu-item"></slot>
+    </div>
+
+    <!-- <SidebarComponent id="depth-two">
       <template slot="sidebar-menu-item">
         <slot name="depth-two-menu-item"></slot>
       </template>
-    </SidebarComponent>
+    </SidebarComponent> -->
 
     <!-- Content -->
     <div class="ui basic segment">
@@ -37,6 +41,13 @@
 
 #depth-one {
   white-space: nowrap;
+}
+
+#depth-two {
+  padding: 1rem 0;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  min-width: fit-content;
 }
 
 .ui.basic.segment {

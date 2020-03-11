@@ -5,18 +5,50 @@
 -->
 <template>
   <div class="connection component">
-    <div class="item">
-      <div class="ui transparent icon input">
-        <input type="text" placeholder="Search connection...">
-        <i class="search icon"></i>
+    <div class="ui divided items">
+      <div class="item">
+        <div class="ui transparent icon input">
+          <input type="text" placeholder="Search connection...">
+          <i class="search icon"></i>
+        </div>
       </div>
+      <div class="item hovered" v-on:click = "chooseConnection('oracle')">Oracle</div>
+      <div class="item hovered" v-on:click = "chooseConnection('mssql')">MSSQL Server</div>
+      <div class="item hovered" v-on:click = "chooseConnection('mysql')">MySQL</div>
+      <div class="item hovered" v-on:click = "chooseConnection('hadoop')">Hadoop FS</div>
     </div>
-    <a v-on:click = "chooseConnection('oracle')" class="item">Oracle</a>
-    <a v-on:click = "chooseConnection('mssql')" class="item">MSSQL Server</a>
-    <a v-on:click = "chooseConnection('mysql')" class="item">MySQL</a>
-    <a v-on:click = "chooseConnection('hadoop')" class="item">Hadoop FS</a>
   </div>
 </template>
+
+<style scoped>
+.ui.input {
+  width: 100%;
+}
+
+.ui.items {
+  margin: 1rem 0;
+}
+.ui.items .item {
+  padding: 1rem 1rem;
+  cursor: pointer;
+}
+
+.ui.items .item:first-child {
+  margin: initial;
+}
+
+.ui.items .item:last-child {
+  margin: initial;
+}
+
+.ui.items .item.hovered:hover {
+  background: rgba(0,0,0,.03);
+}
+
+a {
+  color: black;
+}
+</style>
 
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator';

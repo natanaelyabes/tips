@@ -9,4 +9,7 @@ public class DecisionMinerConfig {
 	@Setter
 	private String datasetId;
 	
+//	@Getter
+//	@Setter
+	
 }

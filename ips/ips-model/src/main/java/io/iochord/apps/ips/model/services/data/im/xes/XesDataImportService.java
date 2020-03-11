@@ -169,8 +169,8 @@ public class XesDataImportService extends AnIpsAsyncService<XesDataImportConfigu
 			
 			// Event log
 			final StringBuilder sql = new StringBuilder();
-			sql.append("DROP TABLE IF EXISTS ").append(name + "_eventlog;");
-			sql.append("CREATE TABLE IF NOT EXISTS ").append(name + "_eventlog")
+			sql.append("DROP TABLE IF EXISTS ").append(name).append(";");
+			sql.append("CREATE TABLE IF NOT EXISTS ").append(name)
 			   .append(" ( ")
 			   .append("   eid SERIAL PRIMARY KEY,")
 			   .append("   case_id VARCHAR(255) NULL");
@@ -192,13 +192,13 @@ public class XesDataImportService extends AnIpsAsyncService<XesDataImportConfigu
 			}
 			
 			StringBuilder elog_comment = new StringBuilder();
-			elog_comment.append("COMMENT ON TABLE ").append(name + "_eventlog").append(" IS '").append(SerializationUtil.encode(config)).append("';");
+			elog_comment.append("COMMENT ON TABLE ").append(name).append(" IS '").append(SerializationUtil.encode(config)).append("';");
 			try (PreparedStatement st = conn.prepareStatement(elog_comment.toString());) {
 				st.execute();
 			}
 			
 			final StringBuilder sqlrows = new StringBuilder();
-			sqlrows.append("INSERT INTO ").append(name + "_eventlog").append(" VALUES ")
+			sqlrows.append("INSERT INTO ").append(name).append(" VALUES ")
 			   	   .append("(DEFAULT ");
 			log.stream().flatMap(trace -> trace.stream().flatMap(event -> 
 				StreamSupport.stream(((Iterable<Map.Entry<String, XAttribute>>) () ->
@@ -320,10 +320,7 @@ public class XesDataImportService extends AnIpsAsyncService<XesDataImportConfigu
 							    .append(" VARCHAR(255) NULL");
 						}
 					}
-					data
-						//.append(", ")
-						//.append("   class VARCHAR(255) NULL")
-						.append(");");
+					data.append(");");
 					
 					try (PreparedStatement st = conn.prepareStatement(data.toString());) {
 						st.execute();
@@ -350,7 +347,6 @@ public class XesDataImportService extends AnIpsAsyncService<XesDataImportConfigu
 					}
 				}
 			}
-			
 		} catch (Exception e) {
 			LoggerUtil.logError(e);
 		}
