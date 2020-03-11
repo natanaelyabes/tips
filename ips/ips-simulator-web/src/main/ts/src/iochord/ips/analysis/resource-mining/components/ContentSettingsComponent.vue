@@ -104,8 +104,6 @@ export default class ContentSettingsComponent extends BaseComponent {
    */
   public sliderValue: number = 0;
   
-  public sliderValueNorm: number = 0;
-  
   /**
    * Status to indicate whether current component is in the uploading state. False otherwise.
    *
@@ -130,8 +128,23 @@ export default class ContentSettingsComponent extends BaseComponent {
    */
   public config: ResourceMiningConfiguration = new ResourceMiningConfiguration();
   
+  /**
+   * Threshold variable, watch changing of input sliderValue and modify the value
+   *
+   * @type {ResourceMiningConfiguration}
+   * @memberof ContentSettingsComponent
+   */
   get threshold(): number {
   	return this.sliderValue/100;
+  }
+  
+  /**
+   * Override Vue mounted lifecyle
+   *
+   * @memberof AnalysisResourceMining
+   */
+  public mounted(): void {
+    this.config.resMinAlg = "def";
   }
   
   /**
@@ -157,7 +170,6 @@ export default class ContentSettingsComponent extends BaseComponent {
             path: `/iochord/ips/analytics/resource/mining/${this.datasetId}`
           });
         }, (tick: any) => {
-          console.log("ini progress dr post "+tick);
           self.uploadStatus = tick.progress;
       });
     }

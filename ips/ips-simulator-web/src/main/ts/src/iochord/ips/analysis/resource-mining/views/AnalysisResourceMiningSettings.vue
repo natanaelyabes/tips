@@ -24,8 +24,8 @@
 
       <!-- Left Sidebar Menu Item -->
       <template slot="left-bar-menu-item">
-        <a href="`/#/iochord/ips/analytics/resource/settings/${datasetId}`" class="item active">Settings</a>
-        <a href="`/#/iochord/ips/analytics/resource/mining/${datasetId}`" class="item">Overall</a>
+        <a :href="`/#/iochord/ips/analytics/resource/settings/${datasetId}`" class="item active">Settings</a>
+        <a :href="`/#/iochord/ips/analytics/resource/mining/${datasetId}`" class="item">Overall</a>
       </template>
 
       <!-- Content -->
