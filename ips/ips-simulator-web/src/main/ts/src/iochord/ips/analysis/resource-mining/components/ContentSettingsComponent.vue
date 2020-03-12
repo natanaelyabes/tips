@@ -16,7 +16,7 @@
         </div>
         <div class="field" v-if="config.resMinAlg == 'dst'">
           <label>Threshold : <span>{{threshold}}</span></label>
-          <input v-model="sliderValue" type="range" class="slider" min="0" max="100"></input>
+          <input v-model="sliderValue" type="range" class="slider" min="0" max="100" />
         </div>
         <div class="field">
           <button type="button" :disabled="isUploading" class="ui primary button" @click="doMining()">
@@ -50,7 +50,7 @@
   appearance: none;
   width: 25px;
   height: 25px;
-  border-radius: 50%; 
+  border-radius: 50%;
   background: #4CAF50;
   cursor: pointer;
 }

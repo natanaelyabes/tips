@@ -9,19 +9,19 @@
       <div class="column">
         Activity
         <ul>
-          <li v-for="activity in resMiningResult.activities">{{activity}}</li>
+          <li v-for="(activity, i) in resMiningResult.activities" :key="i + activity">{{activity}}</li>
         </ul>
       </div>
       <div class="column">
         Group Unit
         <ul>
-          <li v-for="group in resMiningResult.groups">{{group}}</li>
+          <li v-for="(group, i) in resMiningResult.groups" :key="i + group">{{group}}</li>
         </ul>
       </div>
       <div class="column">
         Resource
         <ul>
-          <li v-for="resource in resMiningResult.resources">{{resource}}</li>
+          <li v-for="(resource, i) in resMiningResult.resources" :key="i + resource">{{resource}}</li>
         </ul>
       </div>
     </div>

@@ -10,7 +10,7 @@ const store = new Vuex.Store<StoreType>({});
 
 @Module({ dynamic: true, store, namespaced: true, name: 'ResourceMiningResultModule' })
 
-class ResourceMiningResultModule extends VuexModule {
+export default class ResourceMiningResultModule extends VuexModule {
   public resminresult: ResourceMiningResult = {} as ResourceMiningResult;
 
   @Mutation
@@ -23,5 +23,3 @@ class ResourceMiningResultModule extends VuexModule {
     return { resminresult: newResminresult };
   }
 }
-export default ResourceMiningResultModule;
-

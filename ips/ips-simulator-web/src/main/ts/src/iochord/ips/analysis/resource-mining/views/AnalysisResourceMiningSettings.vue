@@ -122,7 +122,11 @@ export default class AnalysisResourceMiningSettings extends DiffLayoutView {
       if (this.datasetId !== '')
         this.datasetIdRef = this.datasetId;
     }, (tick: any) => {
+<<<<<<< HEAD
+      console.log('ini progress dr get ' + tick);
+=======
       console.log('Checking progress ' + tick);
+>>>>>>> 72f5f8d9c1529d12560f89d26c5a067d4a091c8c
     });
   }
 

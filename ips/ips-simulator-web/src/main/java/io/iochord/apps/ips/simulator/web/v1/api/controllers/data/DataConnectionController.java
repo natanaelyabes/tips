@@ -69,7 +69,7 @@ public class DataConnectionController extends ADataController {
 	}
 
 	/**
-	 * IPR csv data import action
+	 * IPS csv data import action
 	 * 
 	 * @param jsonConfig data import configuration as JSON string
 	 * @param file csv file
@@ -82,13 +82,16 @@ public class DataConnectionController extends ADataController {
 	public ServiceContext postImportCsv(@RequestPart("config") String jsonConfig,
 			@RequestPart("file") MultipartFile file, @RequestHeader HttpHeaders headers) throws IOException {
 		CsvDataImportConfiguration config = SerializationUtil.decode(jsonConfig, CsvDataImportConfiguration.class);
+		
+		System.out.println(jsonConfig);
+		
 		config.setFilename(file.getOriginalFilename());
 		config.setReader(new InputStreamReader(file.getInputStream()));
 		return run(new CsvDataImportService(), config, CsvDataImportResult.class, headers);
 	}
 	
 	/**
-	 * IPR xes data import action
+	 * IPS xes data import action
 	 * 
 	 * @param jsonConfig data import configuration as JSON string
 	 * @param file xes file
