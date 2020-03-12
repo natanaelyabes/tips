@@ -179,9 +179,9 @@ public class XesDataImportService extends AnIpsAsyncService<XesDataImportConfigu
 					event.getAttributes().entrySet().iterator()).spliterator(), false)))
 						.map(attr -> attr.getKey())
 						.filter(key -> key.equals("concept:name")
-							 || key.equals("org:resource") 
-							 || key.equals("lifecycle:transition") 
-							 || key.equals("time:timestamp")).distinct().sorted()
+						 || key.equals("org:resource") 
+						 || key.equals("lifecycle:transition") 
+						 || key.equals("time:timestamp")).distinct().sorted()
 						.forEach(col ->
 							sql.append(",")
 							   .append("\"").append(col).append("\"")
@@ -205,9 +205,9 @@ public class XesDataImportService extends AnIpsAsyncService<XesDataImportConfigu
 					event.getAttributes().entrySet().iterator()).spliterator(), false)))
 						.map(attr -> attr.getKey())
 						.filter(key -> key.equals("concept:name")
-							 || key.equals("org:resource") 
-							 || key.equals("lifecycle:transition") 
-							 || key.equals("time:timestamp")).distinct().sorted()
+						 || key.equals("org:resource") 
+						 || key.equals("lifecycle:transition") 
+						 || key.equals("time:timestamp")).distinct().sorted()
 						.forEach(col -> sqlrows.append(",").append("?"));
 			sqlrows.append(");");
 			

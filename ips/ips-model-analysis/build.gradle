@@ -11,6 +11,7 @@ dependencies {
 	implementation files('lib/accesscpn/org.cpntools.accesscpn.cosimulation.jar')
 	implementation group: 'org.eclipse.emf', name: 'org.eclipse.emf.ecore', version: '2.12.0'
 	implementation group: 'org.eclipse.emf', name: 'org.eclipse.emf.common', version: '2.12.0'
+	compile group: 'nz.ac.waikato.cms.weka', name: 'weka-stable', version: '3.8.0'
 	testCompile project(':ips-common')
 	testCompile project(':ips-model')
 }
