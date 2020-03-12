@@ -28,4 +28,12 @@ public class ResourceMinerResult {
 	@Getter
 	@Setter
 	private Map<String,List<String>> mgroupres;
+	
+	@Getter
+	@Setter
+	private Map<String,List<String>> mgroupact;
+	
+	@Getter
+	@Setter
+	private Map<String,List<String>> mresgroup;
 }

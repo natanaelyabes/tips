@@ -13,6 +13,8 @@ export default class ResourceMiningResult {
   public resources: string[] = [];
   public activities: string[] = [];
   public groups: string[] = [];
-  public mActgroup: object = {};
-  public mGroupres: object = {};
+  public mactgroup: any = {};
+  public mgroupres: any = {};
+  public mgroupact: any = {};
+  public mresgroup: any = {};
 }
