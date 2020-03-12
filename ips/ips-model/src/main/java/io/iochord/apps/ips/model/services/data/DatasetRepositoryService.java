@@ -27,8 +27,8 @@ public class DatasetRepositoryService extends AnIpsService<String, Map<String, D
 		try (Connection conn = context.getDataSource().getConnection();) {
 			StringBuilder sql = new StringBuilder();
 			sql.append("SELECT tablename, obj_description(tablename::regclass) AS json FROM pg_catalog.pg_tables WHERE tablename LIKE '")
-			.append(Dataset.TABLE_PREFIX)
-			.append("%' AND obj_description(tablename::regclass) IS NOT NULL AND schemaname != 'pg_catalog' AND schemaname != 'information_schema';");
+			   .append(Dataset.TABLE_PREFIX)
+			   .append("%' AND obj_description(tablename::regclass) IS NOT NULL AND schemaname != 'pg_catalog' AND schemaname != 'information_schema';");
 			try (PreparedStatement st = conn.prepareStatement(sql.toString());
 				ResultSet rs = st.executeQuery();) {
 				while (rs.next()) {
