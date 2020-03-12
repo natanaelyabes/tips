@@ -3,8 +3,10 @@ package io.iochord.apps.ips.model.analysis.services.ism;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
@@ -92,9 +94,8 @@ public class IsmDiscoveryService extends AnIpsAsyncService<IsmDiscoveryConfigura
 		for (String ea : nodes.keySet()) {
 			ActivityImpl a = (ActivityImpl) factory.addActivity(p);
 			a.setLabel(ea);
-			a.setId("ACTIVITY" + ni);
+			a.setId("ACTIVITY" + (ni++) + ea);
 			nodes.put(ea, a);
-			ni++;
 		}
 		createConnector(context, factory, nodes, dfMatrix, dpMatrix, p, ni);
 		return result;
@@ -104,11 +105,11 @@ public class IsmDiscoveryService extends AnIpsAsyncService<IsmDiscoveryConfigura
 		int ci = 0;
 		Map<String, Map<String, Long>> ins = new LinkedHashMap<>();
 		Map<String, Map<String, Long>> outs = new LinkedHashMap<>();
-		for (Entry<String, Map<String, Long>> afe : dfMatrix.entrySet()) {
+		for (Entry<String, Map<String, Double>> afe : dpMatrix.entrySet()) {
 			String af = afe.getKey();
-			for (Entry<String, Long> ate : afe.getValue().entrySet()) {
+			for (Entry<String, Double> ate : afe.getValue().entrySet()) {
 				String at = ate.getKey();
-				Long ff = ate.getValue();
+				Long ff = dfMatrix.get(af).get(at);
 				if (!outs.containsKey(af)) {
 					outs.put(af, new LinkedHashMap<>());
 				}
@@ -121,37 +122,18 @@ public class IsmDiscoveryService extends AnIpsAsyncService<IsmDiscoveryConfigura
 		}
 		Map<String, NodeImpl> inNodes = new LinkedHashMap<>();
 		Map<String, NodeImpl> outNodes = new LinkedHashMap<>();
+		Map<String, BranchImpl> bcs = new LinkedHashMap<>();
 		for (Entry<String, Activity> eae : nodes.entrySet()) {
 			String ea = eae.getKey();
 			ActivityImpl a = (ActivityImpl) eae.getValue();
 			inNodes.put(ea, a);
 			outNodes.put(ea, a);
 			//*/
-			double fi = 0;
-			int cfi = 1;
-			if (ins.containsKey(ea)) {
-				for (Entry<String, Long> ina : ins.get(ea).entrySet()) {
-					fi += ina.getValue();
-					cfi++;
-				}
-			}
-			double fo = 0;
-			int cfo = 1;
-			if (outs.containsKey(ea)) {
-				for (Entry<String, Long> oua : outs.get(ea).entrySet()) {
-					fo += oua.getValue();
-				}
-				cfo++;
-			}
-			BranchGate bg = BranchGate.XOR;
-			if (fi * cfo == fo || fo * cfi == fi) {
-				bg = BranchGate.AND;
-			}
 			if (ins.containsKey(ea) && ins.get(ea).size() > 1) {
 				BranchImpl ib = (BranchImpl) factory.addBranch(p);
 				ib.setType(BranchType.JOIN);
-				ib.setId("JOIN-BRANCH-" + a.getId());
-				ib.setGate(bg);
+				ib.setId("JOIN-BRANCH-" + a.getId() + ea);
+				bcs.put(ib.getId(), ib);
 				ConnectorImpl c = (ConnectorImpl) factory.addConnector(p, ib, a);
 				c.setId("CONNECTOR" + ni);
 				c.setLabel("");
@@ -160,8 +142,8 @@ public class IsmDiscoveryService extends AnIpsAsyncService<IsmDiscoveryConfigura
 			if (outs.containsKey(ea) && outs.get(ea).size() > 1) {
 				BranchImpl ob = (BranchImpl) factory.addBranch(p);
 				ob.setType(BranchType.SPLIT);
-				ob.setId("SPLIT-BRANCH-" + a.getId());
-				ob.setGate(bg);
+				ob.setId("SPLIT-BRANCH-" + a.getId() + ea);
+				bcs.put(ob.getId(), ob);
 				ConnectorImpl c = (ConnectorImpl) factory.addConnector(p, a, ob);
 				c.setId("CONNECTOR" + ni);
 				c.setLabel("");
@@ -169,18 +151,63 @@ public class IsmDiscoveryService extends AnIpsAsyncService<IsmDiscoveryConfigura
 			}
 			//*/
 		}
+		Map<String, Map<String, Long>> bcIf = new LinkedHashMap<>();
+		Map<String, Map<String, Long>> bcOf = new LinkedHashMap<>();
 		for (Entry<String, Map<String, Double>> fae : dpMatrix.entrySet()) {
 			String fa = fae.getKey();
 			for (Entry<String, Double> tae : fae.getValue().entrySet()) {
 				String ta = tae.getKey();
 				if (nodes.containsKey(fa) && nodes.containsKey(ta)) {
-					ConnectorImpl c = (ConnectorImpl) factory.addConnector(p, outNodes.get(fa), inNodes.get(ta));
-					c.setId("CONNECTOR" + ni);
-					c.setLabel(String.valueOf(dfMatrix.get(fa).get(ta)) + " (" + String.valueOf(dpMatrix.get(fa).get(ta)) + ")");
+					NodeImpl on = outNodes.get(fa);
+					NodeImpl in = inNodes.get(ta);
+					long ff = dfMatrix.get(fa).get(ta);
+					double dp = dpMatrix.get(fa).get(ta);
+					ConnectorImpl c = (ConnectorImpl) factory.addConnector(p, on, in);
+					c.setId("CONNECTOR" + ci++);
+					c.setLabel(String.valueOf(ff) + " (" + String.valueOf(dp) + ")");
+					if (on instanceof BranchImpl) {
+						if (!bcIf.containsKey(on.getId())) {
+							bcIf.put(on.getId(), new LinkedHashMap<>());
+						}
+						bcIf.get(on.getId()).put(c.getId(), ff);
+						System.out.println("IF " + on.getId() + " " + in.getId() + ": " + ff);
+					}
+					if (in instanceof BranchImpl) {
+						if (!bcOf.containsKey(in.getId())) {
+							bcOf.put(in.getId(), new LinkedHashMap<>());
+						}
+						bcOf.get(in.getId()).put(c.getId(), ff);
+						System.out.println("OF " + on.getId() + " " + in.getId() + ": " + ff);
+					}
 					if (++ci % 100 == 0) {
 						context.updateProgress(75, ci + " connector found.");
 					}
 				}
+			}
+		}
+		for (Entry<String, BranchImpl> bie : bcs.entrySet()) {
+			String bi = bie.getKey();
+			BranchImpl b = bie.getValue();
+			long ic = 1;
+			int icc = 1;
+			if (bcIf.containsKey(bi)) {
+				for (Entry<String, Long> bif : bcIf.get(bi).entrySet()) {
+					ic += bif.getValue();
+					icc++;
+				}
+			}
+			long oc = 1;
+			int occ = 1;
+			if (bcOf.containsKey(bi)) {
+				for (Entry<String, Long> bof : bcOf.get(bi).entrySet()) {
+					oc += bof.getValue();
+					occ++;
+				}
+			}
+			System.out.println(b.getId() + " " + ic + " " + icc + " - " + oc + " " + occ);
+			System.out.println((ic * occ == oc) + " " + (oc * icc == ic));
+			if (ic * occ == oc || oc * icc == ic) {
+				b.setGate(BranchGate.AND);
 			}
 		}
 	}
