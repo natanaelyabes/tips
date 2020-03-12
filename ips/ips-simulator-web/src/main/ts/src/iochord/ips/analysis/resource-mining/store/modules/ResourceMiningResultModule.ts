@@ -3,23 +3,27 @@ import ResourceMiningResult from '../../models/ResourceMiningResult';
 import Vuex from 'vuex';
 
 interface StoreType {
-  ResourceMiningResultModule: ResourceMiningResultModule;
+  resmResult: ResourceMiningResultModule;
 }
 
 const store = new Vuex.Store<StoreType>({});
 
 @Module({ dynamic: true, store, namespaced: true, name: 'ResourceMiningResultModule' })
 
-export default class ResourceMiningResultModule extends VuexModule {
-  public resminresult: ResourceMiningResult = {} as ResourceMiningResult;
+class ResourceMiningResultModule extends VuexModule {
+  public mapResmResult: any = {};
 
   @Mutation
-  public setResminresult(newResminresult: ResourceMiningResult): void {
-    this.resminresult = newResminresult;
+  public addResminresult(newResmResult: any): void {
+    const mergedObj = { ...this.mapResmResult, ...newResmResult };
+    this.mapResmResult = mergedObj;
   }
 
-  @MutationAction({ mutate: ['resminresult'] })
-  public async updateResminresult(newResminresult: ResourceMiningResult) {
-    return { resminresult: newResminresult };
+  @MutationAction({ mutate: ['mapResmResult'] })
+  public async updateResminresult(newResmResult: any) {
+    const mergedObj = { ...this.mapResmResult, ...newResmResult };
+    return { mapResmResult: mergedObj };
   }
 }
+export default ResourceMiningResultModule;
+

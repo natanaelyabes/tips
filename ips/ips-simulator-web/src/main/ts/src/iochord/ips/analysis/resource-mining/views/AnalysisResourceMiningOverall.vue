@@ -30,7 +30,7 @@
 
       <!-- Content -->
       <template slot="content">
-        <ContentOverallComponent></ContentOverallComponent>
+        <ContentOverallComponent :datasetId='datasetId'></ContentOverallComponent>
       </template>
     </LeftBarContentWrapperComponent>
   </div>
