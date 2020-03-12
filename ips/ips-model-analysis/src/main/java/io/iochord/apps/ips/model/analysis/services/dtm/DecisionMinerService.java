@@ -1,37 +1,22 @@
 package io.iochord.apps.ips.model.analysis.services.dtm;
 
-import java.awt.BorderLayout;
-import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileWriter;
-import java.io.InputStream;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
-import java.util.Random;
-
-import javax.swing.JFrame;
-
-import org.apache.commons.io.IOUtils;
-
-import com.opencsv.CSVWriter;
 
 import io.iochord.apps.ips.common.util.LoggerUtil;
 import io.iochord.apps.ips.core.services.AnIpsAsyncService;
 import io.iochord.apps.ips.core.services.ServiceContext;
-import weka.classifiers.evaluation.Evaluation;
+
 import weka.classifiers.trees.J48;
 import weka.core.Instances;
 import weka.core.converters.ArffLoader;
 import weka.core.converters.ArffSaver;
-import weka.core.converters.ArffLoader.ArffReader;
 import weka.filters.Filter;
 import weka.filters.unsupervised.attribute.Remove;
-import weka.gui.treevisualizer.PlaceNode2;
-import weka.gui.treevisualizer.TreeVisualizer;
 import weka.core.converters.CSVLoader;
 
 public class DecisionMinerService extends AnIpsAsyncService<DecisionMinerConfig, DecisionMinerResult> {
