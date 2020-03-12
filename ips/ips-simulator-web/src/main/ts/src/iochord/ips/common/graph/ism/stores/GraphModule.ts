@@ -13,6 +13,7 @@ import { GraphData } from '@/iochord/ips/common/graph/ism/interfaces/GraphData';
 import { GraphPage } from '@/iochord/ips/common/graph/ism/interfaces/GraphPage';
 import { GraphNode } from '@/iochord/ips/common/graph/ism/interfaces/GraphNode';
 import { GraphNodeImpl } from '@/iochord/ips/common/graph/ism/class/GraphNodeImpl';
+import { GraphFactoryImpl } from '@/iochord/ips/common/graph/ism/class/GraphFactoryImpl';
 
 // Services
 import { IsmModelService } from '@/iochord/ips/common/service/model/IsmModelService';
@@ -105,6 +106,10 @@ export default class GraphModule extends VuexModule {
    */
   @MutationAction({ mutate: ['graph'] })
   public async loadGraph(url?: string) {
+    if (url === undefined) {
+      const graph: Graph = await IsmModelService.getInstance().getCreate('1');
+      return { graph };
+    }
     const graph: Graph = await IsmModelService.getInstance().getExampleModel();
     return { graph };
   }

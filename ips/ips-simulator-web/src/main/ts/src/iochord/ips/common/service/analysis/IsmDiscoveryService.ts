@@ -58,6 +58,10 @@ export default class IsmDiscoveryService extends AnalysisService {
    * @memberof IsmDiscoveryService
    */
   public discoverIsmGraph(config: IsmDiscoveryConfiguration, completeCallback: any, progressCallback: any) {
-    return this.webservicePost(IsmDiscoveryService.BASE_URI + '/discover/ism', config, completeCallback, progressCallback);
+    return this.remotePost(IsmDiscoveryService.BASE_URI + '/discover/ism', config)
+      .then((res) => {
+        completeCallback(res);
+      });
+//    return this.webservicePost(IsmDiscoveryService.BASE_URI + '/discover/ism', config, completeCallback, progressCallback);
   }
 }
