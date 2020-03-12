@@ -15,8 +15,16 @@
           </select>
         </div>
         <div class="field" v-if="config.resMinAlg == 'dst'">
-          <label>Threshold : <span>{{threshold}}</span></label>
-          <input v-model="sliderValue" type="range" class="slider" min="0" max="100" />
+          <label>Distance Measure</label>
+          <select v-model="config.distMesAlg">
+            <option value="pcc">Pearson Correlation Coefficient</option>
+            <option value="ham">Hamming Distance</option>
+            <option value="ham">Hamming Distance Binary</option>
+          </select>
+        </div>
+        <div class="field" v-if="config.resMinAlg == 'dst'">
+          <label>Threshold : {{threshold}}</label>
+          <input v-model="sliderValue" type="range" class="slider" min="0" max="100"></input>
         </div>
         <div class="field">
           <button type="button" :disabled="isUploading" class="ui primary button" @click="doMining()">
@@ -50,7 +58,7 @@
   appearance: none;
   width: 25px;
   height: 25px;
-  border-radius: 50%;
+  border-radius: 50%; 
   background: #4CAF50;
   cursor: pointer;
 }
@@ -145,6 +153,7 @@ export default class ContentSettingsComponent extends BaseComponent {
    */
   public mounted(): void {
     this.config.resMinAlg = 'def';
+    this.config.distMesAlg = 'pcc';
   }
 
   /**
@@ -162,7 +171,9 @@ export default class ContentSettingsComponent extends BaseComponent {
       this.config.threshold = this.threshold;
       ResourceMiningService.getInstance().mineResource(this.config,
         (res: any) => {
-          resourceMiningResultModule.setResminresult(res.data);
+          const resmResult: any = {};
+          resmResult[self.datasetId] = res.data;
+          resourceMiningResultModule.addResminresult( resmResult );
           self.isUploading = false;
           self.uploadStatus = 'Finish';
           self.$router.push({
