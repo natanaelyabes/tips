@@ -34,7 +34,7 @@
       <!-- Content -->
       <template slot="content">
         {{ graphJson }}
-        <ModelViewer></ModelViewer>
+        <ModelViewer ref="viewer"></ModelViewer>
       </template>
 
     </SettingsBarWrapperComponent>
@@ -152,7 +152,9 @@ export default class AnalysisPMD extends VisualizerLayoutView {
       const config: IsmDiscoveryConfiguration = new IsmDiscoveryConfiguration();
       config.datasetId = selectedDatasetId;
       IsmDiscoveryService.getInstance().discoverIsmGraph(config, (res: any) => {
-        const graph = JSON.parse(res.body);
+//        const graph = JSON.parse(res.body);
+        const graph = res.data;
+
         let n = 0;
         for (const i of Object.keys(graph.data.pages['0'].nodes)) {
           n++;
@@ -161,14 +163,13 @@ export default class AnalysisPMD extends VisualizerLayoutView {
         for (const i of Object.keys(graph.data.pages['0'].connectors)) {
           c++;
         }
-        console.log(graph.data);
         const g: Graph = GraphImpl.deserialize(graph.data) as Graph;
         graphModule.setGraph(g);
-        // GraphSubject.update(graphModule.graph);
+//        GraphSubject.update(graphModule.graph);
 
-        console.log(g);
         self.graphJson = 'This graph has ' + n + ' nodes and ' + c + ' connectors';
         self.progressMessage = '';
+        (self.$refs['viewer'] as any).forceReRender();
       }, (tick: any) => {
         self.progressMessage = tick.progressData;
       });

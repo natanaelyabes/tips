@@ -40,7 +40,7 @@ export default class IsmDiscoveryConfiguration {
    * @type {string}
    * @memberof IsmDiscoveryConfiguration
    */
-  public colEventTimestamp: string = 'c121';
+  public colEventTimestamp: string = 'c2';
 
   /**
    * Number of rows being skipped.

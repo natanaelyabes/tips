@@ -222,7 +222,8 @@ export default class ModelViewer extends AppLayoutView {
         graphModule.setGraph(graph);
 
         // Print to stdout
-        console.log(JSON.stringify(graph));
+//        console.log(JSON.stringify(graph));
+        console.log("Rendered graph: ", graph);
       });
     } catch (e) {
       console.error(e);
