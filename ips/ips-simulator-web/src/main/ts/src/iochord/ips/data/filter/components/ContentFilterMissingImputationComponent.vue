@@ -1,6 +1,6 @@
 <!--
   @package ts
-  @author Riska Asriana Sutrisnowati <riska@iochord.com>
+  @author R. A. Sutrisnowati <riska@iochord.com>
   @since 2019
 -->
 <template>
@@ -168,7 +168,7 @@ import IpsTable from '../../../common/table/IpsTable.vue';
  * @extends {BaseComponent}
  *
  * @package ts
- * @author Riska Asriana Sutrisnowati <riska@iochord.com>
+ * @author R. A. Sutrisnowati <riska@iochord.com>
  * @since 2019
  */
 export default class ContentFilterMissingImputationComponent extends BaseComponent {

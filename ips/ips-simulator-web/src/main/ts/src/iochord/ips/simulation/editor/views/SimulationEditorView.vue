@@ -140,7 +140,19 @@
   </div>
 </template>
 
+<style>
+.sidebar.component .navigation-bar.component {
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+</style>
+
 <style scoped>
+::-webkit-scrollbar {
+  width: .2em!important;
+  height: .2em!important;
+}
+
 .image-icon .ui.image {
   border-radius: 0;
   margin-bottom: .5em;

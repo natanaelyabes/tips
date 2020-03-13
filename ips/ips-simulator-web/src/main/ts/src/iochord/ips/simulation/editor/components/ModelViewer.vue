@@ -223,7 +223,7 @@ export default class ModelViewer extends AppLayoutView {
 
         // Print to stdout
 //        console.log(JSON.stringify(graph));
-        console.log("Rendered graph: ", graph);
+        console.log('Rendered graph: ', graph);
       });
     } catch (e) {
       console.error(e);

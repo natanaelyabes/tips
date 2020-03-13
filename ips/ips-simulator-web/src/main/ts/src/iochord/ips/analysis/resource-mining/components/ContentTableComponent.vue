@@ -1,6 +1,6 @@
 <!--
   @package ips
-  @author Nur Ichsan Utama <ichsan83@gmail.com>
+  @author N. I. Utama <ichsan83@gmail.com>
   @since 2020
 -->
 <template>
@@ -9,7 +9,7 @@
       <div class="column">
         <h2>Activity</h2>
         <ul class="resmMenu">
-          <li v-for="(activity,i) in activities" :class="{ 'menu-item': !mactivities[activity], lactive: mactivities[activity] }">
+          <li v-for="(activity, i) in activities" :class="{ 'menu-item': !mactivities[activity], lactive: mactivities[activity] }" :key="activity + i">
             <input type="checkbox" v-model="mactivities[activity]" :change="toggleGroup(activity)"/>
             <label>{{activity}}</label>
           </li>
@@ -18,7 +18,7 @@
       <div class="column">
         <h2>Group Unit</h2>
         <ul class="resmMenu">
-          <li v-for="(group,i) in groups" :class="{ 'menu-item': !mgroups[group], lactive: mgroups[group] }">
+          <li v-for="(group,i) in groups" :class="{ 'menu-item': !mgroups[group], lactive: mgroups[group] }" :key="group + i">
             <input v-model="mgroups[group]" type="checkbox" :change="toggleResource(group)"/>
             <label>{{group}}</label> 
           </li>
@@ -27,7 +27,7 @@
       <div class="column">
         <h2>Resource</h2>
         <ul class="resmMenu">
-          <li v-for="(resource,i) in resources" :class="{ 'menu-item': !mresources[resource], lactive: mresources[resource] }">
+          <li v-for="(resource,i) in resources" :class="{ 'menu-item': !mresources[resource], lactive: mresources[resource] }" :key="resource + i">
             <input v-model="mresources[resource]" type="checkbox"/>
             <label>{{resource}}</label>
           </li>
@@ -77,7 +77,7 @@ import ResourceMiningResult from '../models/ResourceMiningResult';
  *
  * @extends BaseComponent
  * @package ips
- * @author Nur Ichsan Utama <ichsan83@gmail.com>
+ * @author N. I. Utama <ichsan83@gmail.com>
  * @since 2020
  *
  */

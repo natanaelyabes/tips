@@ -21,10 +21,7 @@
 
 .sidebar.component .navigation-bar.component .ui.menu {
   border-radius: 0;
-  height: 100%;
-  overflow-y: auto;
-  overflow-x: hidden;
-  max-height: 100%;
+  height: inherit;
   border-top: 0;
 }
 
@@ -33,7 +30,6 @@
   margin-bottom: .25em;
 }
 </style>
-
 
 <script lang="ts">
 // Vue & Libraries

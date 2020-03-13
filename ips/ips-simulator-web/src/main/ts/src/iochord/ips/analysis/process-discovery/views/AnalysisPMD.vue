@@ -15,14 +15,14 @@
         <i class="right angle icon divider"></i>
         <div class="active section">{{this.title}}</div>
         <i class="right angle icon divider"></i>
-        <a class="ui label">
+        <!-- <a class="ui label">
           Select dataset
-        </a>
-        <!-- <select ref="datasetSelector" @change="mine">
+        </a> -->
+        <select ref="datasetSelector" @change="mine">
           <option value="---">---</option>
           <option :selected="datasetId == i" v-for="(ds, i) in datasets" :key="i" class="item" :value="i">{{ds.name}} ({{i}})</option>
         </select>
-        {{progressMessage}} -->
+        {{progressMessage}}
       </template>
 
       <!-- Setting Bar Ribbon -->

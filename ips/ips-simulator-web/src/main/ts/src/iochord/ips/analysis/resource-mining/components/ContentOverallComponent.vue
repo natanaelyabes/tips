@@ -1,6 +1,6 @@
 <!--
   @package ips
-  @author Nur Ichsan Utama <ichsan83@gmail.com>
+  @author N. I. Utama <ichsan83@gmail.com>
   @since 2020
 -->
 <template>
@@ -63,7 +63,7 @@ const resourceMiningResultModule = getModule(ResourceMiningResultModule);
  *
  * @extends BaseComponent
  * @package ips
- * @author Nur Ichsan Utama <ichsan83@gmail.com>
+ * @author N. I. Utama <ichsan83@gmail.com>
  * @since 2020
  *
  */

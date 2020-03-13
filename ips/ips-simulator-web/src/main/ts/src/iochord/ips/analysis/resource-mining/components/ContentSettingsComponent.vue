@@ -1,6 +1,6 @@
 <!--
   @package ips
-  @author Nur Ichsan Utama <ichsan83@gmail.com>
+  @author N. I. Utama <ichsan83@gmail.com>
   @since 2020
 -->
 <template>
@@ -24,7 +24,7 @@
         </div>
         <div class="field" v-if="config.resMinAlg == 'dst'">
           <label>Threshold : {{threshold}}</label>
-          <input v-model="sliderValue" type="range" class="slider" min="0" max="100"></input>
+          <input v-model="sliderValue" type="range" class="slider" min="0" max="100" />
         </div>
         <div class="field">
           <button type="button" :disabled="isUploading" class="ui primary button" @click="doMining()">
@@ -89,7 +89,7 @@ const resourceMiningResultModule = getModule(ResourceMiningResultModule);
  *
  * @extends BaseComponent
  * @package ips
- * @author Nur Ichsan Utama <ichsan83@gmail.com>
+ * @author N. I. Utama <ichsan83@gmail.com>
  * @since 2020
  *
  */

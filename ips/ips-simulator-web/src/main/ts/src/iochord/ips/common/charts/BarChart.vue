@@ -23,7 +23,7 @@ import 'vue-g2';
  * @prop {any} model?
  *
  * @package ts
- * @author Riska Asriana Sutrisnowati <riska@iochord.com>
+ * @author R. A. Sutrisnowati <riska@iochord.com>
  * @since 2019
  *
  */
