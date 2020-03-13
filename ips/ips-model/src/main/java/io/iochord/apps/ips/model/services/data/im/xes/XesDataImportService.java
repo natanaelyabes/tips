@@ -3,7 +3,6 @@ package io.iochord.apps.ips.model.services.data.im.xes;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -281,7 +280,6 @@ public class XesDataImportService extends AnIpsAsyncService<XesDataImportConfigu
 					System.out.println(row);
 				}
 			}
-			
 			
 			for (List<Map<String, String>> row : datacols) {
 				String cname = row.stream().filter(keys -> 

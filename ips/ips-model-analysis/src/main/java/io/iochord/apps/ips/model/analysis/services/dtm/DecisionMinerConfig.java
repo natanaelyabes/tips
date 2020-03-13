@@ -8,8 +8,5 @@ public class DecisionMinerConfig {
 	@Getter
 	@Setter
 	private String datasetId;
-	
-//	@Getter
-//	@Setter
-	
+
 }
