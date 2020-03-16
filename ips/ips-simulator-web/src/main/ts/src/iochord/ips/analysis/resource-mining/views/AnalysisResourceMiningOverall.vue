@@ -56,7 +56,7 @@ import { Vue, Component, Prop } from 'vue-property-decorator';
 import DiffLayoutView from '@/iochord/ips/common/ui/layout/class/DiffLayoutView';
 import LeftBarContentWrapperComponent from '@/iochord/ips/common/ui/layout/components/LeftBarContentWrapperComponent.vue';
 import ContentOverallComponent from '../components/ContentOverallComponent.vue';
-import DataConnectionService from '@/iochord/ips/common/service/data/DataConnectionService';
+import DataConnectionService from '@/iochord/ips/data/connection/services/DataConnectionService';
 import {Route} from 'vue-router';
 
 @Component({

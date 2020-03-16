@@ -52,22 +52,22 @@
 // Vue & Libraries
 import { Component, Prop, Vue, Watch } from 'vue-property-decorator';
 import SemanticComponent from '@/iochord/ips/common/ui/semantic-components/SemanticComponent';
-import GraphModule from '@/iochord/ips/common/graph/ism/stores/GraphModule';
+import GraphModule from '@/iochord/ips/common/graphs/ism/stores/GraphModule';
 import { getModule } from 'vuex-module-decorators';
-import { GraphPageImpl } from '@/iochord/ips/common/graph/ism/class/GraphPageImpl';
-import { GraphPage } from '@/iochord/ips/common/graph/ism/interfaces/GraphPage';
-import { GraphData } from '@/iochord/ips/common/graph/ism/interfaces/GraphData';
+import { GraphPageImpl } from '@/iochord/ips/common/graphs/ism/class/GraphPageImpl';
+import { GraphPage } from '@/iochord/ips/common/graphs/ism/interfaces/GraphPage';
+import { GraphData } from '@/iochord/ips/common/graphs/ism/interfaces/GraphData';
 import { Modal } from '../../interfaces/Modal';
-import { GraphStartEventNodeImpl } from '@/iochord/ips/common/graph/ism/class/components/GraphStartEventNodeImpl';
-import { GraphNodeImpl } from '@/iochord/ips/common/graph/ism/class/GraphNodeImpl';
+import { GraphStartEventNodeImpl } from '@/iochord/ips/common/graphs/ism/class/components/GraphStartEventNodeImpl';
+import { GraphNodeImpl } from '@/iochord/ips/common/graphs/ism/class/GraphNodeImpl';
 
 // JQuery
 declare const $: any;
 
 import { TSMap } from 'typescript-map';
-import { GraphNode } from '../../../../common/graph/ism/interfaces/GraphNode';
-import { JointGraphPageImpl } from '@/iochord/ips/common/graph/ism/rendering-engine/joint/shapes/class/JointGraphPageImpl';
-import GraphSubject from '@/iochord/ips/common/graph/ism/rxjs/GraphSubject';
+import { GraphNode } from '../../../../common/graphs/ism/interfaces/GraphNode';
+import { JointGraphPageImpl } from '@/iochord/ips/common/graphs/ism/rendering-engine/joint/shapes/class/JointGraphPageImpl';
+import GraphSubject from '@/iochord/ips/common/graphs/ism/rxjs/GraphSubject';
 
 // Vuex
 const graphModule = getModule(GraphModule);
