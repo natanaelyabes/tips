@@ -95,15 +95,15 @@
 import { Component, Vue } from 'vue-property-decorator';
 import SemanticComponent from '../../../../common/ui/semantic-components/SemanticComponent';
 import { Modal } from '../../interfaces/Modal';
-import { JointGraphPageImpl } from '../../../../common/graph/ism/rendering-engine/joint/shapes/class/JointGraphPageImpl';
-import { GraphDataTableImpl } from '../../../../common/graph/ism/class/components/GraphDataTableImpl';
+import { JointGraphPageImpl } from '../../../../common/graphs/ism/rendering-engine/joint/shapes/class/JointGraphPageImpl';
+import { GraphDataTableImpl } from '../../../../common/graphs/ism/class/components/GraphDataTableImpl';
 import { TSMap } from 'typescript-map';
-import GraphModule from '@/iochord/ips/common/graph/ism/stores/GraphModule';
-import GraphSubject from '@/iochord/ips/common/graph/ism/rxjs/GraphSubject';
+import GraphModule from '@/iochord/ips/common/graphs/ism/stores/GraphModule';
+import GraphSubject from '@/iochord/ips/common/graphs/ism/rxjs/GraphSubject';
 import { getModule } from 'vuex-module-decorators';
-import { GraphDataImpl } from '@/iochord/ips/common/graph/ism/class/GraphDataImpl';
-import { GraphPage } from '@/iochord/ips/common/graph/ism/interfaces/GraphPage';
-import { GraphData } from '@/iochord/ips/common/graph/ism/interfaces/GraphData';
+import { GraphDataImpl } from '@/iochord/ips/common/graphs/ism/class/GraphDataImpl';
+import { GraphPage } from '@/iochord/ips/common/graphs/ism/interfaces/GraphPage';
+import { GraphData } from '@/iochord/ips/common/graphs/ism/interfaces/GraphData';
 
 declare const $: any;
 

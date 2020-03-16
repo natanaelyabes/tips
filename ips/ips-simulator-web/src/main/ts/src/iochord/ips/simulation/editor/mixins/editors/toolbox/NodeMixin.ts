@@ -4,30 +4,30 @@ import { getModule } from 'vuex-module-decorators';
 
 // Classes
 import BaseComponent from '@/iochord/ips/common/ui/layout/class/BaseComponent';
-import { JointGraphNodeImpl } from '@/iochord/ips/common/graph/ism/rendering-engine/joint/shapes/class/JointGraphNodeImpl';
-import { GraphNodeImpl } from '@/iochord/ips/common/graph/ism/class/GraphNodeImpl';
-import { JointGraphPageImpl } from '@/iochord/ips/common/graph/ism/rendering-engine/joint/shapes/class/JointGraphPageImpl';
+import { JointGraphNodeImpl } from '@/iochord/ips/common/graphs/ism/rendering-engine/joint/shapes/class/JointGraphNodeImpl';
+import { GraphNodeImpl } from '@/iochord/ips/common/graphs/ism/class/GraphNodeImpl';
+import { JointGraphPageImpl } from '@/iochord/ips/common/graphs/ism/rendering-engine/joint/shapes/class/JointGraphPageImpl';
 
 // Interfaces
-import { GraphNode } from '@/iochord/ips/common/graph/ism/interfaces/GraphNode';
+import { GraphNode } from '@/iochord/ips/common/graphs/ism/interfaces/GraphNode';
 
 
 // Vuex & Rxjs
 
 /** Graph */
-import GraphModule from '@/iochord/ips/common/graph/ism/stores/GraphModule';
-import GraphSubject from '@/iochord/ips/common/graph/ism/rxjs/GraphSubject';
+import GraphModule from '@/iochord/ips/common/graphs/ism/stores/GraphModule';
+import GraphSubject from '@/iochord/ips/common/graphs/ism/rxjs/GraphSubject';
 
 /** Graph Editor */
 import EditorState from '../../../stores/editors/EditorState';
 
 
 // Enums
-import { NODE_TYPE } from '@/iochord/ips/common/graph/ism/rendering-engine/joint/shapes/enums/NODE';
-import * as NODE_ENUMS from '@/iochord/ips/common/graph/ism/enums/NODE';
-import * as NODE_FACTORY from '@/iochord/ips/common/graph/ism/enums/NODE';
-import { BRANCH_GATE, BRANCH_TYPE } from '@/iochord/ips/common/graph/ism/enums/BRANCH';
-import { GraphBranchNodeImpl } from '@/iochord/ips/common/graph/ism/class/components/GraphBranchNodeImpl';
+import { NODE_TYPE } from '@/iochord/ips/common/graphs/ism/rendering-engine/joint/shapes/enums/NODE';
+import * as NODE_ENUMS from '@/iochord/ips/common/graphs/ism/enums/NODE';
+import * as NODE_FACTORY from '@/iochord/ips/common/graphs/ism/enums/NODE';
+import { BRANCH_GATE, BRANCH_TYPE } from '@/iochord/ips/common/graphs/ism/enums/BRANCH';
+import { GraphBranchNodeImpl } from '@/iochord/ips/common/graphs/ism/class/components/GraphBranchNodeImpl';
 
 /**
  * Enumerations of types of the node.

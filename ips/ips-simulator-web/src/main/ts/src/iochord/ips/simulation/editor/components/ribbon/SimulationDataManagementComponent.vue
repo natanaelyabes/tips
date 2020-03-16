@@ -48,11 +48,11 @@
 import { Prop, Component } from 'vue-property-decorator';
 import { getModule } from 'vuex-module-decorators';
 import BaseComponent from '@/iochord/ips/common/ui/layout/class/BaseComponent';
-import GraphModule from '@/iochord/ips/common/graph/ism/stores/GraphModule';
-import GraphSubject from '@/iochord/ips/common/graph/ism/rxjs/GraphSubject';
+import GraphModule from '@/iochord/ips/common/graphs/ism/stores/GraphModule';
+import GraphSubject from '@/iochord/ips/common/graphs/ism/rxjs/GraphSubject';
 import axios, { AxiosResponse } from 'axios';
 
-import { IsmModelService } from '@/iochord/ips/common/service/model/IsmModelService';
+import { IsmModelService } from '@/iochord/ips/common/graphs/ism/services/IsmModelService';
 
 const graphModule = getModule(GraphModule);
 

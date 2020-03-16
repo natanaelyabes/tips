@@ -6,12 +6,12 @@ import { getModule } from 'vuex-module-decorators';
 import BaseComponent from '@/iochord/ips/common/ui/layout/class/BaseComponent';
 
 // Interfaces
-import { Graph } from '@/iochord/ips/common/graph/ism/interfaces/Graph';
-import { GraphPage } from '@/iochord/ips/common/graph/ism/interfaces/GraphPage';
-import { GraphNode } from '@/iochord/ips/common/graph/ism/interfaces/GraphNode';
+import { Graph } from '@/iochord/ips/common/graphs/ism/interfaces/Graph';
+import { GraphPage } from '@/iochord/ips/common/graphs/ism/interfaces/GraphPage';
+import { GraphNode } from '@/iochord/ips/common/graphs/ism/interfaces/GraphNode';
 
 // Classes
-import { JointGraphPageImpl } from '@/iochord/ips/common/graph/ism/rendering-engine/joint/shapes/class/JointGraphPageImpl';
+import { JointGraphPageImpl } from '@/iochord/ips/common/graphs/ism/rendering-engine/joint/shapes/class/JointGraphPageImpl';
 
 // Mixins
 import PaletteMixin from './PaletteMixin';

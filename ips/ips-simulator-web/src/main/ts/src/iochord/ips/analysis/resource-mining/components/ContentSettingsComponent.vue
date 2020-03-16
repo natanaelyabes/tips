@@ -75,7 +75,7 @@
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
 import BaseComponent from '@/iochord/ips/common/ui/layout/class/BaseComponent';
-import ResourceMiningService, { ResourceMiningConfiguration } from '../service/ResourceMiningService';
+import ResourceMiningService, { ResourceMiningConfiguration } from '../services/ResourceMiningService';
 import ResourceMiningResultModule from '../store/modules/ResourceMiningResultModule';
 import { getModule } from 'vuex-module-decorators';
 

@@ -102,22 +102,22 @@ import '#root/node_modules/jointjs/dist/joint.css';
 
 // Classes
 import AppLayoutView from '@/iochord/ips/common/ui/layout/class/AppLayoutView';
-import { GraphImpl } from '@/iochord/ips/common/graph/ism/class/GraphImpl';
-import { GraphNodeImpl } from '@/iochord/ips/common/graph/ism/class/GraphNodeImpl';
-import { GraphConnectorImpl } from '@/iochord/ips/common/graph/ism/class/GraphConnectorImpl';
-import { GraphPageImpl } from '@/iochord/ips/common/graph/ism/class/GraphPageImpl';
+import { GraphImpl } from '@/iochord/ips/common/graphs/ism/class/GraphImpl';
+import { GraphNodeImpl } from '@/iochord/ips/common/graphs/ism/class/GraphNodeImpl';
+import { GraphConnectorImpl } from '@/iochord/ips/common/graphs/ism/class/GraphConnectorImpl';
+import { GraphPageImpl } from '@/iochord/ips/common/graphs/ism/class/GraphPageImpl';
 
 // Interfaces
 import { AppLayout } from '@/iochord/ips/common/ui/layout/interfaces/AppLayout';
 import { BrowserHasProperties } from '@/iochord/ips/common/browser/interfaces/BrowserHasProperties';
 import { SemanticModulesIsUsed } from '@/iochord/ips/common/ui/semantic-components/SemanticModulesIsUsed';
-import { Graph } from '@/iochord/ips/common/graph/ism/interfaces/Graph';
+import { Graph } from '@/iochord/ips/common/graphs/ism/interfaces/Graph';
 
 // Enums
 import { ApplicationEnum, BaseUrlEnum } from '@/iochord/ips/common/enums/index';
 
 // Services
-import { IsmModelService } from '@/iochord/ips/common/service/model/IsmModelService';
+import { IsmModelService } from '@/iochord/ips/common/graphs/ism/services/IsmModelService';
 
 // Components
 import WrapperComponent from '@/iochord/ips/common/ui/layout/components/WrapperComponent.vue';
@@ -128,8 +128,8 @@ import SimulationPlayerComponent from '../components/ribbon/SimulationPlayerComp
 import SimulationDataManagementComponent from '../components/ribbon/SimulationDataManagementComponent.vue';
 
 // Vuex & rxjs
-import GraphModule from '@/iochord/ips/common/graph/ism/stores/GraphModule';
-import GraphSubject from '@/iochord/ips/common/graph/ism/rxjs/GraphSubject';
+import GraphModule from '@/iochord/ips/common/graphs/ism/stores/GraphModule';
+import GraphSubject from '@/iochord/ips/common/graphs/ism/rxjs/GraphSubject';
 
 import CanvasComponent from '../components/canvas/CanvasComponent.vue';
 import MinimapComponent from '../components/minimap/MinimapComponent.vue';

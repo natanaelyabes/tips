@@ -57,9 +57,9 @@
 import { Prop, Component, Mixins } from 'vue-property-decorator';
 import BaseComponent from '@/iochord/ips/common/ui/layout/class/BaseComponent';
 import PaletteMixin, { TOOLBOX } from '../../mixins/editors/PaletteMixin';
-import GraphSubject from '@/iochord/ips/common/graph/ism/rxjs/GraphSubject';
-import { Graph } from '@/iochord/ips/common/graph/ism/interfaces/Graph';
-import GraphModule from '@/iochord/ips/common/graph/ism/stores/GraphModule';
+import GraphSubject from '@/iochord/ips/common/graphs/ism/rxjs/GraphSubject';
+import { Graph } from '@/iochord/ips/common/graphs/ism/interfaces/Graph';
+import GraphModule from '@/iochord/ips/common/graphs/ism/stores/GraphModule';
 import { getModule } from 'vuex-module-decorators';
 
 const graphModule = getModule(GraphModule);
