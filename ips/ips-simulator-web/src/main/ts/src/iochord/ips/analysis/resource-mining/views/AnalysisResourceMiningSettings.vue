@@ -1,6 +1,6 @@
 <!--
   @package ips
-  @author Nur Ichsan Utama <ichsan83@gmail.com>
+  @author N. I. Utama <ichsan83@gmail.com>
   @since 2020
 -->
 <template>
@@ -70,7 +70,7 @@ import DataConnectionService from '@/iochord/ips/common/service/data/DataConnect
  *
  * @extends DiffLayoutView
  * @package ips
- * @author Nur Ichsan Utama <ichsan83@gmail.com>
+ * @author N. I. Utama <ichsan83@gmail.com>
  * @since 2020
  *
  */

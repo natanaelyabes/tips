@@ -3,7 +3,6 @@ package io.iochord.apps.ips.model.services.data.im.xes;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -167,50 +166,6 @@ public class XesDataImportService extends AnIpsAsyncService<XesDataImportConfigu
 				}
 			}
 			
-			// Event log
-			final StringBuilder sql = new StringBuilder();
-			sql.append("DROP TABLE IF EXISTS ").append(name).append(";");
-			sql.append("CREATE TABLE IF NOT EXISTS ").append(name)
-			   .append(" ( ")
-			   .append("   eid SERIAL PRIMARY KEY,")
-			   .append("   case_id VARCHAR(255) NULL");
-			log.stream().flatMap(trace -> trace.stream().flatMap(event -> 
-				StreamSupport.stream(((Iterable<Map.Entry<String, XAttribute>>) () -> 
-					event.getAttributes().entrySet().iterator()).spliterator(), false)))
-						.map(attr -> attr.getKey())
-						.filter(key -> key.equals("concept:name")
-						 || key.equals("org:resource") 
-						 || key.equals("lifecycle:transition") 
-						 || key.equals("time:timestamp")).distinct().sorted()
-						.forEach(col ->
-							sql.append(",")
-							   .append("\"").append(col).append("\"")
-							   .append(" VARCHAR(255) NULL"));
-			sql.append(");");
-			try (PreparedStatement st = conn.prepareStatement(sql.toString());) {
-				st.execute();
-			}
-			
-			StringBuilder elog_comment = new StringBuilder();
-			elog_comment.append("COMMENT ON TABLE ").append(name).append(" IS '").append(SerializationUtil.encode(config)).append("';");
-			try (PreparedStatement st = conn.prepareStatement(elog_comment.toString());) {
-				st.execute();
-			}
-			
-			final StringBuilder sqlrows = new StringBuilder();
-			sqlrows.append("INSERT INTO ").append(name).append(" VALUES ")
-			   	   .append("(DEFAULT ");
-			log.stream().flatMap(trace -> trace.stream().flatMap(event -> 
-				StreamSupport.stream(((Iterable<Map.Entry<String, XAttribute>>) () ->
-					event.getAttributes().entrySet().iterator()).spliterator(), false)))
-						.map(attr -> attr.getKey())
-						.filter(key -> key.equals("concept:name")
-						 || key.equals("org:resource") 
-						 || key.equals("lifecycle:transition") 
-						 || key.equals("time:timestamp")).distinct().sorted()
-						.forEach(col -> sqlrows.append(",").append("?"));
-			sqlrows.append(");");
-			
 			List<List<Map<String, String>>> eventlogcols = new ArrayList<>();
 			List<List<Map<String, String>>> datacols = new ArrayList<>();
 			
@@ -222,7 +177,6 @@ public class XesDataImportService extends AnIpsAsyncService<XesDataImportConfigu
 					for (Set<Entry<String, XAttribute>> cols : colsrows) {
 						Map<String, String> case_id = new HashMap<>();
 						case_id.put("case_id", trace.getAttributes().get("concept:name").toString());
-						
 						List<Map<String, String>> ecols = cols.stream()
 							.filter(keys -> "concept:name".equals(keys.getKey())
 							 || "org:resource".equals(keys.getKey())
@@ -242,8 +196,16 @@ public class XesDataImportService extends AnIpsAsyncService<XesDataImportConfigu
 							}
 						});
 						if (ecols.size() > 0) ecols.add(0, case_id);
+						boolean timestampExists = ecols.stream().filter(attr ->
+							attr.containsKey("time:timestamp"))
+								.collect(Collectors.toList()).size() > 0;
+						if (!timestampExists) {
+							Map<String, String> timestamp = new HashMap<>();
+							timestamp.put("time:timestamp", String.valueOf(i + 1));
+							int desiredPosition = ecols.stream().filter(attr -> attr.containsKey("concept:name")).map(attr -> ecols.indexOf(attr)).collect(Collectors.toList()).get(0);
+							ecols.add(desiredPosition + 1, timestamp);
+						}	
 						eventlogcols.add(ecols);
-
 						List<Map<String, String>> dcols = cols.stream()
 							.filter(keys -> // !"concept:name".equals(keys.getKey())
 							    !"org:resource".equals(keys.getKey())
@@ -262,10 +224,8 @@ public class XesDataImportService extends AnIpsAsyncService<XesDataImportConfigu
 								return k1.compareTo(k2);
 							}
 						});
-						
 						if (dcols.size() > 1) { 
 							dcols.add(0, case_id);
-							
 							Map<String, String> targetClass = new HashMap<>();
 							targetClass.put("class", trace.get(i+1).getAttributes().get("concept:name").toString());
 							dcols.add(targetClass);
@@ -275,20 +235,72 @@ public class XesDataImportService extends AnIpsAsyncService<XesDataImportConfigu
 				}
 			}
 			
-			// TODO: seed data into database
-			for (List<Map<String, String>> row : eventlogcols) {
-				if (row.size() > 0) {
-					System.out.println(row);
-				}
+			// Event log
+			final StringBuilder sql = new StringBuilder();
+			sql.append("DROP TABLE IF EXISTS ").append(name).append(";");
+			sql.append("CREATE TABLE IF NOT EXISTS ").append(name)
+			   .append(" ( ")
+			   .append("   eid SERIAL PRIMARY KEY");
+			List<String> colname = log.stream().flatMap(trace -> trace.stream().flatMap(event -> 
+				StreamSupport.stream(((Iterable<Map.Entry<String, XAttribute>>) () -> 
+					event.getAttributes().entrySet().iterator()).spliterator(), false)))
+						.map(attr -> attr.getKey())
+						.filter(key -> key.equals("concept:name")
+						 || key.equals("org:resource") 
+						 || key.equals("lifecycle:transition") 
+						 || key.equals("time:timestamp"))
+						.distinct().sorted()
+						.collect(Collectors.toList());
+			colname.add(0, "case_id");
+			if (!colname.contains("time:timestamp"))
+				colname.add(colname.indexOf("concept:name") + 1, "time:timestamp");
+			List<Map<String, String>> colnamerow = new ArrayList<>();
+			colname.stream().forEach(col -> {
+				sql.append(",")
+				   .append("\"").append("c" + colname.indexOf(col)).append("\"")
+				   .append(" VARCHAR(255) NULL");
+				Map<String, String> c = new HashMap<>();
+				c.put(col, col);
+				colnamerow.add(c); 
+			});
+			eventlogcols.add(0, colnamerow);
+			sql.append(");");
+			try (PreparedStatement st = conn.prepareStatement(sql.toString());) {
+				st.execute();
+			}
+			StringBuilder elog_comment = new StringBuilder();
+			elog_comment.append("COMMENT ON TABLE ").append(name).append(" IS '").append(SerializationUtil.encode(config)).append("';");
+			try (PreparedStatement st = conn.prepareStatement(elog_comment.toString());) {
+				st.execute();
 			}
 			
+			final StringBuilder sqlrows = new StringBuilder();
+			sqlrows.append("INSERT INTO ").append(name).append(" VALUES ")
+			   	   .append("(DEFAULT ");
+			colname.stream().forEach(col -> sqlrows.append(",").append("?"));
+			sqlrows.append(");");
+			
+			// TODO: seed data into database
+			for (int i = 0; i < eventlogcols.size(); i++) {
+				List<Map<String, String>> row = eventlogcols.get(i);
+				if (row.size() > 0) {
+					List<String> d = row.stream().map(cols -> cols.values().iterator().next())
+							.collect(Collectors.toList());
+					try (PreparedStatement st = conn.prepareStatement(sqlrows.toString());) {	
+						for (int j = 0; j < d.size(); j++) {
+							st.setString(j+1, d.get(j));
+						}
+						st.addBatch();
+						st.executeBatch();
+					}
+				}
+			}
 			
 			for (List<Map<String, String>> row : datacols) {
 				String cname = row.stream().filter(keys -> 
 				keys.containsKey("concept:name"))
 					.map(key -> key.get("concept:name"))
 					.collect(Collectors.toList()).get(0).toLowerCase().replace(" ", "");
-				
 				// Event log data
 				final StringBuilder data = new StringBuilder();
 				data.append("DROP TABLE IF EXISTS ").append(name + "_dataeventlog_" + cname  + ";");
@@ -299,12 +311,10 @@ public class XesDataImportService extends AnIpsAsyncService<XesDataImportConfigu
 			
 			for (List<Map<String, String>> row : datacols) {
 				if (row.size() > 2) {
-					
 					String cname = row.stream().filter(keys -> 
 						keys.containsKey("concept:name"))
 							.map(key -> key.get("concept:name"))
 							.collect(Collectors.toList()).get(0).toLowerCase().replace(" ", "");
-					
 					// Event log data
 					final StringBuilder data = new StringBuilder();
 					data.append("CREATE TABLE IF NOT EXISTS ").append(name + "_dataeventlog_" + cname)
@@ -321,23 +331,18 @@ public class XesDataImportService extends AnIpsAsyncService<XesDataImportConfigu
 						}
 					}
 					data.append(");");
-					
 					try (PreparedStatement st = conn.prepareStatement(data.toString());) {
 						st.execute();
 					}
-					
 					List<String> d = row.stream().filter(cols -> !cols.containsKey("concept:name"))
 						.map(cols -> cols.values().iterator().next()).collect(Collectors.toList());
-					
 					final StringBuilder datarows = new StringBuilder();
 					datarows.append("INSERT INTO ").append(name + "_dataeventlog_" + cname).append(" VALUES ")
 					   	    .append("(DEFAULT ");
-					
 					for (String string : d) {
 						datarows.append(",").append("?");
 					}
 					datarows.append(");");
-					
 					try (PreparedStatement st = conn.prepareStatement(datarows.toString());) {
 						for (int i = 0; i < d.size(); i++) {
 							st.setString(i+1, d.get(i));

@@ -17,14 +17,8 @@
       <slot name="depth-two-menu-item"></slot>
     </div>
 
-    <!-- <SidebarComponent id="depth-two">
-      <template slot="sidebar-menu-item">
-        <slot name="depth-two-menu-item"></slot>
-      </template>
-    </SidebarComponent> -->
-
     <!-- Content -->
-    <div class="ui basic segment">
+    <div class="ui basic segment" id="content">
       <slot name="content"></slot>
     </div>
   </div>
@@ -46,12 +40,14 @@
 #depth-two {
   padding: 1rem 0;
   overflow-y: scroll;
-  overflow-x: hidden;
+  overflow-x: auto;
   min-width: fit-content;
 }
 
-.ui.basic.segment {
-  overflow-y: scroll;
+.ui.basic.segment#content {
+  margin-top: 0;
+  padding-top: 2em;
+  overflow-y: auto;
   width: 100%;
 }
 </style>

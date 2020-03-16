@@ -1,6 +1,6 @@
 <!--
   @package ts
-  @author Riska Asriana Sutrisnowati <riska@iochord.com>
+  @author R. A. Sutrisnowati <riska@iochord.com>
   @since 2019
 -->
 <template>
@@ -89,7 +89,7 @@ import DataConnectionService from '@/iochord/ips/common/service/data/DataConnect
  * @extends {BaseComponent}
  *
  * @package ts
- * @author Riska Asriana Sutrisnowati <riska@iochord.com>
+ * @author R. A. Sutrisnowati <riska@iochord.com>
  * @since 2019
  */
 export default class ItemExistedConnectionComponent extends BaseComponent {

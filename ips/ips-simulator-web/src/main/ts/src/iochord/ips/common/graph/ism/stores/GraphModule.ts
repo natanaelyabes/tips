@@ -13,7 +13,6 @@ import { GraphData } from '@/iochord/ips/common/graph/ism/interfaces/GraphData';
 import { GraphPage } from '@/iochord/ips/common/graph/ism/interfaces/GraphPage';
 import { GraphNode } from '@/iochord/ips/common/graph/ism/interfaces/GraphNode';
 import { GraphNodeImpl } from '@/iochord/ips/common/graph/ism/class/GraphNodeImpl';
-import { GraphFactoryImpl } from '@/iochord/ips/common/graph/ism/class/GraphFactoryImpl';
 
 // Services
 import { IsmModelService } from '@/iochord/ips/common/service/model/IsmModelService';
@@ -50,7 +49,6 @@ export default class GraphModule extends VuexModule {
    * The graph state.
    *
    * @State
-   *
    * @type {Graph}
    * @memberof GraphModule
    */
@@ -71,7 +69,6 @@ export default class GraphModule extends VuexModule {
    * To create new graph from the service and store it within graph vuex store.
    *
    * @MutationAction
-   *
    * @param {string} [url]
    * @returns { Graph }
    * @memberof GraphModule
@@ -86,7 +83,6 @@ export default class GraphModule extends VuexModule {
    * Load example graph from the service and store it within graph vuex store.
    *
    * @MutationAction
-   *
    * @returns { Graph }
    * @memberof GraphModule
    */
@@ -100,7 +96,6 @@ export default class GraphModule extends VuexModule {
    * Load graph from the service and store it within graph vuex store.
    *
    * @MutationAction
-   *
    * @returns { Graph }
    * @memberof GraphModule
    */
@@ -109,16 +104,16 @@ export default class GraphModule extends VuexModule {
     if (url === undefined) {
       const graph: Graph = await IsmModelService.getInstance().getCreate('1');
       return { graph };
+    } else {
+      const graph: Graph = await IsmModelService.getInstance().getExampleModel();
+      return { graph };
     }
-    const graph: Graph = await IsmModelService.getInstance().getExampleModel();
-    return { graph };
   }
 
   /**
    * Assigns new item to vuex store.
    *
    * @Mutation
-   *
    * @param {(GraphNodeImpl | GraphDataImpl | GraphConnectorImpl | null)} newItem
    * @memberof GraphModule
    */
@@ -131,7 +126,6 @@ export default class GraphModule extends VuexModule {
    * Assigns graph to vuex store.
    *
    * @Mutation
-   *
    * @param {Graph} graph
    * @memberof GraphModule
    */
@@ -144,7 +138,6 @@ export default class GraphModule extends VuexModule {
    * Assigns pages to vuex store.
    *
    * @Mutation
-   *
    * @param {TSMap<string, GraphPage>} pages
    * @memberof GraphModule
    */
@@ -157,7 +150,6 @@ export default class GraphModule extends VuexModule {
    * Assigns default page and amends vuex store.
    *
    * @Mutation
-   *
    * @param {GraphPage} page
    * @memberof GraphModule
    */
@@ -170,7 +162,6 @@ export default class GraphModule extends VuexModule {
    * Add page to current graph and amends vuex store.
    *
    * @Mutation
-   *
    * @param {GraphPage} page
    * @memberof GraphModule
    */
@@ -190,7 +181,6 @@ export default class GraphModule extends VuexModule {
    * Overrides page to current graph and amends vuex store.
    *
    * @Mutation
-   *
    * @param {GraphPage} page
    * @memberof GraphModule
    */
@@ -211,7 +201,6 @@ export default class GraphModule extends VuexModule {
    * Delete page from current graph and amends vuex store.
    *
    * @Mutation
-   *
    * @param {GraphPage} page
    * @memberof GraphModule
    */
@@ -232,7 +221,6 @@ export default class GraphModule extends VuexModule {
    * Specify node connectors to current page and amends vuex store.
    *
    * @Mutation
-   *
    * @param {{ page: GraphPage, connectors: TSMap<string, GraphConnector> }} { page, connectors }
    * @memberof GraphModule
    */
@@ -253,7 +241,6 @@ export default class GraphModule extends VuexModule {
    * Add connector to page and amends vuex store.
    *
    * @Mutation
-   *
    * @param {{ page: GraphPage, arc: GraphConnector }} { page, arc }
    * @memberof GraphModule
    */
@@ -273,7 +260,6 @@ export default class GraphModule extends VuexModule {
    * Overrides page connector and amends vuex store.
    *
    * @Mutation
-   *
    * @param {{ page: GraphPage, arc: GraphConnector }} { page, arc }
    * @memberof GraphModule
    */
@@ -294,7 +280,6 @@ export default class GraphModule extends VuexModule {
    * Removes page connector and amends vuex store.
    *
    * @Mutation
-   *
    * @param {{ page: GraphPage, arc: GraphConnector }} { page, arc }
    * @memberof GraphModule
    */
@@ -315,7 +300,6 @@ export default class GraphModule extends VuexModule {
    * Assigns data node to the specified graph page and amends vuex store.
    *
    * @Mutation
-   *
    * @param {{ page: GraphPage, data: TSMap<string, GraphData> }} { page, data }
    * @memberof GraphModule
    */
@@ -336,7 +320,6 @@ export default class GraphModule extends VuexModule {
    * Add new data to specified graph page and amends vuex store.
    *
    * @Mutation
-   *
    * @param {{ page: GraphPage, datum: GraphData }} { page, datum }
    * @memberof GraphModule
    */
@@ -356,7 +339,6 @@ export default class GraphModule extends VuexModule {
    * Overrides data node at specified graph page and amends vuex store.
    *
    * @Mutation
-   *
    * @param {{ page: GraphPage, datum: GraphData }} { page, datum }
    * @memberof GraphModule
    */
@@ -377,7 +359,6 @@ export default class GraphModule extends VuexModule {
    * Removes data node at specified graph page and amends vuex store.
    *
    * @Mutation
-   *
    * @param {{ page: GraphPage, datum: GraphData }} { page, datum }
    * @memberof GraphModule
    */
@@ -398,7 +379,6 @@ export default class GraphModule extends VuexModule {
    * Assigns element type to specified page and amends vuex store.
    *
    * @Mutation
-   *
    * @param {{ page: GraphPage, elementType: string }} { page, elementType }
    * @memberof GraphModule
    */
@@ -419,7 +399,6 @@ export default class GraphModule extends VuexModule {
    * Assigns page id to the specified page and amends vuex store.
    *
    * @Mutation
-   *
    * @param {{ page: GraphPage, id: string }} { page, id }
    * @memberof GraphModule
    */
@@ -440,7 +419,6 @@ export default class GraphModule extends VuexModule {
    * Assigns page label to the specified page and amends vuex store.
    *
    * @Mutation
-   *
    * @param {{ page: GraphPage, label: string }} { page, label }
    * @memberof GraphModule
    */
@@ -461,7 +439,6 @@ export default class GraphModule extends VuexModule {
    * Assigns nodes to the specified page and amends vuex store.
    *
    * @Mutation
-   *
    * @param {{ page: GraphPage, nodes: TSMap<string, GraphNode> }} { page, nodes }
    * @memberof GraphModule
    */
@@ -482,7 +459,6 @@ export default class GraphModule extends VuexModule {
    * Add node to the specified page and amends vuex store
    *
    * @Mutation
-   *
    * @param {{ page: GraphPage, node: GraphNode }} { page, node }
    * @memberof GraphModule
    */
@@ -502,7 +478,6 @@ export default class GraphModule extends VuexModule {
    * Overrides node of the specified page and amends vuex store.
    *
    * @Mutation
-   *
    * @param {{ page: GraphPage, node: GraphNode }} { page, node }
    * @memberof GraphModule
    */
@@ -523,7 +498,6 @@ export default class GraphModule extends VuexModule {
    * Removes node from specified page and amends vuex store.
    *
    * @Mutation
-   *
    * @param {{ page: GraphPage, node: GraphNode }} { page, node }
    * @memberof GraphModule
    */
@@ -544,7 +518,6 @@ export default class GraphModule extends VuexModule {
    * Assigns configurations to the specified page and amends vuex store.
    *
    * @Mutation
-   *
    * @param {TSMap<string, GraphConfiguration>} configurations
    * @memberof GraphModule
    */
@@ -557,7 +530,6 @@ export default class GraphModule extends VuexModule {
    * Assigns control to vuex store.
    *
    * @Mutation
-   *
    * @param {GraphControl} control
    * @memberof GraphModule
    */
@@ -570,7 +542,6 @@ export default class GraphModule extends VuexModule {
    * Returns new item state from vuex store.
    *
    * @Getter
-   *
    * @readonly
    * @type {(GraphNodeImpl | GraphDataImpl | GraphConnectorImpl | null)}
    * @memberof GraphModule
@@ -583,7 +554,6 @@ export default class GraphModule extends VuexModule {
    * Returns version state from vuex store.
    *
    * @Getter
-   *
    * @readonly
    * @type {(string | null)}
    * @memberof GraphModule
@@ -596,7 +566,6 @@ export default class GraphModule extends VuexModule {
    * Returns pages from vuex store.
    *
    * @Getter
-   *
    * @readonly
    * @type {(TSMap<string, GraphPage> | null)}
    * @memberof GraphModule
@@ -609,7 +578,6 @@ export default class GraphModule extends VuexModule {
    * Returns the default page from vuex store.
    *
    * @Getter
-   *
    * @readonly
    * @type {(GraphPage | null)}
    * @memberof GraphModule
@@ -622,7 +590,6 @@ export default class GraphModule extends VuexModule {
    * Returns the page from vuex store given pageId.
    *
    * @Getter
-   *
    * @readonly
    * @param {string} pageId
    * @type {(GraphPage | null)}
@@ -637,7 +604,6 @@ export default class GraphModule extends VuexModule {
    * Returns page connectors of specified page from vuex store.
    *
    * @Getter
-   *
    * @readonly
    * @param {GraphPage} page
    * @type {(TSMap<string, GraphConnector> | null)}
@@ -654,7 +620,6 @@ export default class GraphModule extends VuexModule {
    * Returns the connector of the specified page from vuex store given the connectorId.
    *
    * @Getter
-   *
    * @readonly
    * @param {GraphPage} page
    * @param {string} connectorId
@@ -673,7 +638,6 @@ export default class GraphModule extends VuexModule {
    * Returns data nodes from specified graph page and optionally based on their element type.
    *
    * @Getter
-   *
    * @readonly
    * @param {GraphPage} page
    * @param {string} [elementType]
@@ -684,15 +648,12 @@ export default class GraphModule extends VuexModule {
     return (page: GraphPage, elementType?: string) => {
       let result: TSMap<string, GraphData> | null = new TSMap<string, GraphData>();
       const data = page.getData() ? page.getData() : null;
-
       if (elementType) {
         const keys = data ? data.keys() : null;
-
         (keys as string[]).forEach((key) => {
           const elType = key.split('-')[1];
           const dId = key.split('-')[2];
           const id = `${page.getId()}-${elType}-${dId}`;
-
           if (elType === elementType) {
             (result as TSMap<string, GraphData>).set(id, data!.get(id) as GraphData);
           }
@@ -708,7 +669,6 @@ export default class GraphModule extends VuexModule {
    * Returns data node from specified graph page and identified by its id.
    *
    * @Getter
-   *
    * @readonly
    * @param {GraphPage} page
    * @param {string} datumId
@@ -719,24 +679,18 @@ export default class GraphModule extends VuexModule {
     return (page: GraphPage, datumId: string) => {
       const data = this.pageData(page) !== null ? this.pageData(page) : null;
       const keys = (data as TSMap<string, GraphData>).keys();
-
       const findKeyId: (keys: string[]) => string[] | undefined = () => {
         let results = keys;
-
         results.forEach((result) => {
           const elType = result.split('-')[1];
           const dId = result.split('-')[2];
-
           if (result === datumId) {
             results = [elType, dId];
           }
         });
-
         return results;
       };
-
       const keyId = findKeyId(keys);
-
       if (keyId) {
         const datum = (data as TSMap<string, GraphData>).get(`${page.getId()}-${keyId[0]}-${keyId[1]}`);
         return datum !== null || datum !== undefined ? datum as GraphData : null;
@@ -750,7 +704,6 @@ export default class GraphModule extends VuexModule {
    * Returns element type of specified page
    *
    * @Getter
-   *
    * @readonly
    * @param {GraphPage} page
    * @type {(string | null)}
@@ -766,7 +719,6 @@ export default class GraphModule extends VuexModule {
    * Returns the id of current specified page.
    *
    * @Getter
-   *
    * @readonly
    * @param {GraphPage} page
    * @type {(string | null)}
@@ -782,7 +734,6 @@ export default class GraphModule extends VuexModule {
    * Returns the label of specified page.
    *
    * @Getter
-   *
    * @readonly
    * @param {GraphPage} page
    * @type {(string | null)}
@@ -798,7 +749,6 @@ export default class GraphModule extends VuexModule {
    * Returns nodes of current specified page and optionally based on their element types.
    *
    * @Getter
-   *
    * @readonly
    * @param {GraphPage} page
    * @param {string} [elementType]
@@ -809,16 +759,12 @@ export default class GraphModule extends VuexModule {
     return (page: GraphPage, elementType?: string) => {
       let result: TSMap<string, GraphNode> | null = new TSMap<string, GraphNode>();
       const nodes = page.getNodes() ? page.getNodes() : null;
-
       if (elementType) {
         const keys = nodes ? nodes.keys() : null;
-
         (keys as string[]).forEach((key) => {
           const elType = key.split('-')[1];
           const nId = key.split('-')[2];
-
           const id = `${page.getId()}-${elType}-${nId}`;
-
           if (elType === elementType) {
             (result as TSMap<string, GraphNode>).set(id, nodes!.get(id) as GraphNode);
           }
@@ -834,7 +780,6 @@ export default class GraphModule extends VuexModule {
    * Returns node of current specified page based on its id.
    *
    * @Getter
-   *
    * @readonly
    * @param {GraphPage} page
    * @param {string} [nodeId]
@@ -845,24 +790,18 @@ export default class GraphModule extends VuexModule {
     return (page: GraphPage, nodeId: string) => {
       const nodes = this.pageNodes(page) !== null ? this.pageNodes(page) : null;
       const keys = (nodes as TSMap<string, GraphNode>).keys();
-
       const findKeyId: (keys: string[]) => string[] | undefined = () => {
         let results = keys;
-
         results.forEach((result) => {
           const elType = result.split('-')[1];
           const nId = result.split('-')[2];
-
           if (result === nodeId) {
             results = [elType, nId];
           }
         });
-
         return results;
       };
-
       const keyId = findKeyId(keys);
-
       if (keyId) {
         const node = (nodes as TSMap<string, GraphNode>).get(`${page.getId()}-${keyId[0]}-${keyId[1]}`);
         return node !== null || node !== undefined ? node as GraphNode : null;
@@ -876,7 +815,6 @@ export default class GraphModule extends VuexModule {
    * Returns the configuration settings of current graph.
    *
    * @Getter
-   *
    * @readonly
    * @type {(TSMap<string, GraphConfiguration> | null)}
    * @memberof GraphModule
@@ -889,7 +827,6 @@ export default class GraphModule extends VuexModule {
    * Returns the control settings of current graph.
    *
    * @Getter
-   *
    * @readonly
    * @type {(GraphControl | null)}
    * @memberof GraphModule

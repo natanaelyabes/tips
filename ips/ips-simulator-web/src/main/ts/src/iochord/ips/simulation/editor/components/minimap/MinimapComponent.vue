@@ -13,6 +13,9 @@
 </template>
 
 <style>
+.minimap.component {
+  height: 100%; 
+}
 #minimap {
   cursor: pointer;
   border: 1px solid black;

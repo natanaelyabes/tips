@@ -1,6 +1,6 @@
 <!--
   @package ts
-  @author Riska Asriana Sutrisnowati <riska@iochord.com>
+  @author R. A. Sutrisnowati <riska@iochord.com>
   @since 2019
 -->
 <template>
@@ -61,7 +61,7 @@ import DataConnectionService, { ImportCsvConfiguration } from '@/iochord/ips/com
  * @extends {BaseComponent}
  *
  * @package ts
- * @author Riska Asriana Sutrisnowati <riska@iochord.com>
+ * @author R. A. Sutrisnowati <riska@iochord.com>
  * @since 2019
  */
 export default class ContentDataUploadComponent extends BaseComponent {

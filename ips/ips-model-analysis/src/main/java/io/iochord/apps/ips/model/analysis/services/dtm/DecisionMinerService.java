@@ -24,6 +24,13 @@ import weka.filters.Filter;
 import weka.filters.unsupervised.attribute.Remove;
 import weka.core.converters.CSVLoader;
 
+/**
+ *
+ * @package ips-model
+ * @author N. Y. Wirawan <ny4tips@gmail.com>
+ * @since 2020
+ * 
+ */
 public class DecisionMinerService extends AnIpsAsyncService<DecisionMinerConfig, DecisionMinerResult> {
 
 	@Getter
@@ -45,6 +52,8 @@ public class DecisionMinerService extends AnIpsAsyncService<DecisionMinerConfig,
 		sconfig.setDependencyThreshold(0f);
 		sconfig.setPositiveObservationThreshold(0);
 		IsmGraph ismGraph = getDiscoveryService().run(context, sconfig);
+		
+		System.out.println(ismGraph.toString());
 		
 		try (Connection conn = context.getDataSource().getConnection();) {
 			// Get from configuration
@@ -133,5 +142,4 @@ public class DecisionMinerService extends AnIpsAsyncService<DecisionMinerConfig,
 		}
 		return null;
 	}
-
 }

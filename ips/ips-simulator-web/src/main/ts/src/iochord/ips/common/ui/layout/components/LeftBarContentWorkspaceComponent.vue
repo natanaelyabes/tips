@@ -29,7 +29,7 @@
 }
 
 .ui.basic.segment {
-  overflow-y: auto;
+  overflow-y: scroll;
   padding: 0;
   width: 100%;
 }
