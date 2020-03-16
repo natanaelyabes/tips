@@ -6,7 +6,7 @@
 <template>
   <div class="content graph component">
     <div class="ui basic segment">
-     This graph of organization model will coming soon
+     This graph of organization model will coming soon - add
     </div>
   </div>
 </template>
