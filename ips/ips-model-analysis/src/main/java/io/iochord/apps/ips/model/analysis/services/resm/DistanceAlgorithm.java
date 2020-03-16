@@ -6,13 +6,17 @@ import java.util.Optional;
 
 public class DistanceAlgorithm {
 	
+	public static final String METHOD_PCC = "pcc";
+	public static final String METHOD_HAM = "ham";
+	public static final String METHOD_H01 = "h01";
+	
 	public Double calcDist(String distMethod, String resource1, String resource2, List<String> activities, Map<ResourceToActivity, Integer> oacmtrx) {
-		if(distMethod.equals("pcc"))
+		if(distMethod.equals(METHOD_PCC))
 			return calcDistPCC(resource1, resource2, activities, oacmtrx);
-		else if(distMethod.equals("ham"))
+		else if(distMethod.equals(METHOD_HAM))
 			return calcDistHamming(resource1, resource2, activities, oacmtrx);
 		else
-			return DistanceAlgorithm.calcDistHammingOneZero(resource1, resource2, activities, oacmtrx);
+			return calcDistHammingOneZero(resource1, resource2, activities, oacmtrx);
 	}
 	
 	private Double calcDistPCC(String resource1, String resource2, List<String> activities, Map<ResourceToActivity, Integer> oacmtrx) {
@@ -66,7 +70,7 @@ public class DistanceAlgorithm {
 		return (double)sumDist/activities.size();
 	}
 	
-	public static Double calcDistHammingOneZero(String resource1, String resource2, List<String> activities, Map<ResourceToActivity, Integer> oacmtrx) {
+	private Double calcDistHammingOneZero(String resource1, String resource2, List<String> activities, Map<ResourceToActivity, Integer> oacmtrx) {
 		int sumDist = 0;
 		for(String activity : activities) {
 			Optional<ResourceToActivity> orta1 = oacmtrx.keySet().stream().filter(o -> (o.getResource().equals(resource1) && o.getActivity().equals(activity))).findFirst();
@@ -74,10 +78,17 @@ public class DistanceAlgorithm {
 			int freq1 = oacmtrx.getOrDefault(orta1.isPresent() ? orta1.get() : null,0);
 			int freq2 = oacmtrx.getOrDefault(orta2.isPresent() ? orta2.get() : null,0);
 			
-			if(freq1 > 0 == freq2 > 0)
+			if((freq1 > 0) ^ (freq2 > 0))
 				sumDist++;
 		}
 		
 		return (double)sumDist/activities.size();
+	}
+	
+	public boolean evalThreshold(double value, double threshold, String method) {
+		if(method.equals(METHOD_PCC))
+			return value >= threshold;
+		else
+			return value <= threshold;
 	}
 }
