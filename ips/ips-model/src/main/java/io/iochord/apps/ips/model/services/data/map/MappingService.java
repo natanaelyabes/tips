@@ -36,7 +36,7 @@ public class MappingService extends AnIpsService<String, MappingResource> {
 				while (rs.next()) {
 					technical_names.add(rs.getString("column_name"));
 				}
-				resource.setTechnicalName(technical_names);
+				resource.setTechnicalNames(technical_names);
 			}
 			
 			// Return settings
@@ -46,9 +46,9 @@ public class MappingService extends AnIpsService<String, MappingResource> {
 				ResultSet rs = st.executeQuery();) {
 				List<Map<String, String>> map_settings = new LinkedList<>();
 				while(rs.next()) {
-					for (int i = 0; i < resource.getTechnicalName().size(); i++) {
+					for (int i = 0; i < resource.getTechnicalNames().size(); i++) {
 						Map<String, String> map = new LinkedHashMap<>();
-						map.put(resource.getTechnicalName().get(i), rs.getString(i + 1));
+						map.put(resource.getTechnicalNames().get(i), rs.getString(i + 1));
 						map_settings.add(map);
 					}
 				}
@@ -62,11 +62,11 @@ public class MappingService extends AnIpsService<String, MappingResource> {
 				ResultSet rs = st.executeQuery();) {
 				List<Map<String, String>> firstNRows = new LinkedList<>();
 				while(rs.next()) {
-					for (int i = 0; i < resource.getTechnicalName().size(); i++) {
-						Map<String, String> row = new LinkedHashMap<>();
-						row.put(resource.getTechnicalName().get(i), rs.getString(i + 1));
-						firstNRows.add(row);
+					Map<String, String> row = new LinkedHashMap<>();
+					for (int i = 0; i < resource.getTechnicalNames().size(); i++) {
+						row.put(resource.getTechnicalNames().get(i), rs.getString(i + 1));
 					}
+					firstNRows.add(row);
 				}				
 				resource.setFirstNRows(firstNRows);
 			}

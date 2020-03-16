@@ -18,7 +18,7 @@
 
       <!-- Content -->
       <template slot="content">
-        <ContentMappingComponent></ContentMappingComponent>
+        <ContentMappingComponent ref="mapping" id="mapping"></ContentMappingComponent>
       </template>
     </DepthTwoLeftWrapperComponent>
   </div>
@@ -40,6 +40,14 @@ import { Vue, Component } from 'vue-property-decorator';
 import ExplorerLayoutView from '@/iochord/ips/common/ui/layout/class/ExplorerLayoutView';
 import DepthTwoLeftWrapperComponent from '@/iochord/ips/common/ui/layout/components/DepthTwoLeftWrapperComponent.vue';
 import ContentMappingComponent from '../components/ContentMappingComponent.vue';
+import MappingService from '../services/MappingService';
+import IMappingResource from '../interfaces/IMappingResource';
+import MappingResource from '../models/MappingResource';
+import MappingModule from '../stores/MappingModule';
+import { getModule } from 'vuex-module-decorators';
+
+// Vuex module
+const mappingModule = getModule(MappingModule);
 
 @Component({
   components: {

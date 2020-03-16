@@ -21,7 +21,7 @@ public class MappingResource {
 	
 	@Getter
 	@Setter
-	private List<String> technicalName;
+	private List<String> technicalNames;
 	
 	@Getter
 	@Setter
@@ -33,7 +33,7 @@ public class MappingResource {
 			System.out.println(map.entrySet());
 		}
 		
-		for (String row : technicalName) {
+		for (String row : technicalNames) {
 			System.out.println(row);
 		}
 	}
