@@ -84,19 +84,19 @@
 import { Component, Prop, Vue, Watch } from 'vue-property-decorator';
 import SemanticComponent from '@/iochord/ips/common/ui/semantic-components/SemanticComponent';
 import { Modal } from '../../interfaces/Modal';
-import { JointGraphPageImpl } from '@/iochord/ips/common/graph/ism/rendering-engine/joint/shapes/class/JointGraphPageImpl';
-import { GraphBranchNodeImpl } from '@/iochord/ips/common/graph/ism/class/components/GraphBranchNodeImpl';
-import GraphModule from '@/iochord/ips/common/graph/ism/stores/GraphModule';
+import { JointGraphPageImpl } from '@/iochord/ips/common/graphs/ism/rendering-engine/joint/shapes/class/JointGraphPageImpl';
+import { GraphBranchNodeImpl } from '@/iochord/ips/common/graphs/ism/class/components/GraphBranchNodeImpl';
+import GraphModule from '@/iochord/ips/common/graphs/ism/stores/GraphModule';
 import { getModule } from 'vuex-module-decorators';
-import { BRANCH_GATE, BRANCH_TYPE, BRANCH_RULE } from '@/iochord/ips/common/graph/ism/enums/BRANCH';
-import { GraphNode } from '@/iochord/ips/common/graph/ism/interfaces/GraphNode';
+import { BRANCH_GATE, BRANCH_TYPE, BRANCH_RULE } from '@/iochord/ips/common/graphs/ism/enums/BRANCH';
+import { GraphNode } from '@/iochord/ips/common/graphs/ism/interfaces/GraphNode';
 import { TSMap } from 'typescript-map';
-import { GraphPage } from '@/iochord/ips/common/graph/ism/interfaces/GraphPage';
-import { GraphNodeImpl } from '@/iochord/ips/common/graph/ism/class/GraphNodeImpl';
-import GraphSubject from '@/iochord/ips/common/graph/ism/rxjs/GraphSubject';
-import { GraphConnectorImpl } from '@/iochord/ips/common/graph/ism/class/GraphConnectorImpl';
-import { GraphConnector } from '@/iochord/ips/common/graph/ism/interfaces/GraphConnector';
-import { NODE_TYPE } from '@/iochord/ips/common/graph/ism/rendering-engine/joint/shapes/enums/NODE';
+import { GraphPage } from '@/iochord/ips/common/graphs/ism/interfaces/GraphPage';
+import { GraphNodeImpl } from '@/iochord/ips/common/graphs/ism/class/GraphNodeImpl';
+import GraphSubject from '@/iochord/ips/common/graphs/ism/rxjs/GraphSubject';
+import { GraphConnectorImpl } from '@/iochord/ips/common/graphs/ism/class/GraphConnectorImpl';
+import { GraphConnector } from '@/iochord/ips/common/graphs/ism/interfaces/GraphConnector';
+import { NODE_TYPE } from '@/iochord/ips/common/graphs/ism/rendering-engine/joint/shapes/enums/NODE';
 
 const graphModule = getModule(GraphModule);
 

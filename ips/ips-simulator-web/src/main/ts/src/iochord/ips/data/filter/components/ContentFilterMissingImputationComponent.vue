@@ -151,7 +151,7 @@
 import { Vue, Component } from 'vue-property-decorator';
 import BaseComponent from '../../../common/ui/layout/class/BaseComponent';
 import BarChart from '../../../common/charts/BarChart.vue';
-import IpsTable from '../../../common/table/IpsTable.vue';
+import IpsTable from '../../../common/tables/IpsTable.vue';
 
 @Component({
   components: {

@@ -4,26 +4,26 @@ import { getModule } from 'vuex-module-decorators';
 
 // Classes
 import BaseComponent from '@/iochord/ips/common/ui/layout/class/BaseComponent';
-import { JointGraphDataImpl } from '@/iochord/ips/common/graph/ism/rendering-engine/joint/shapes/class/JointGraphDataImpl';
-import { GraphDataImpl } from '@/iochord/ips/common/graph/ism/class/GraphDataImpl';
-import { JointGraphPageImpl } from '@/iochord/ips/common/graph/ism/rendering-engine/joint/shapes/class/JointGraphPageImpl';
+import { JointGraphDataImpl } from '@/iochord/ips/common/graphs/ism/rendering-engine/joint/shapes/class/JointGraphDataImpl';
+import { GraphDataImpl } from '@/iochord/ips/common/graphs/ism/class/GraphDataImpl';
+import { JointGraphPageImpl } from '@/iochord/ips/common/graphs/ism/rendering-engine/joint/shapes/class/JointGraphPageImpl';
 
 // Interfaces
-import { GraphData } from '@/iochord/ips/common/graph/ism/interfaces/GraphData';
+import { GraphData } from '@/iochord/ips/common/graphs/ism/interfaces/GraphData';
 
 // Vuex & Rxjs
 /** Graph */
-import GraphModule from '@/iochord/ips/common/graph/ism/stores/GraphModule';
-import GraphSubject from '@/iochord/ips/common/graph/ism/rxjs/GraphSubject';
+import GraphModule from '@/iochord/ips/common/graphs/ism/stores/GraphModule';
+import GraphSubject from '@/iochord/ips/common/graphs/ism/rxjs/GraphSubject';
 
 /** Graph Editor */
 import EditorState from '../../../stores/editors/EditorState';
 
 
 // Enums
-import { DATA_TYPE } from '@/iochord/ips/common/graph/ism/rendering-engine/joint/shapes/enums/DATA';
-import * as DATA_ENUMS from '@/iochord/ips/common/graph/ism/enums/DATA';
-import * as DATA_FACTORY from '@/iochord/ips/common/graph/ism/enums/DATA';
+import { DATA_TYPE } from '@/iochord/ips/common/graphs/ism/rendering-engine/joint/shapes/enums/DATA';
+import * as DATA_ENUMS from '@/iochord/ips/common/graphs/ism/enums/DATA';
+import * as DATA_FACTORY from '@/iochord/ips/common/graphs/ism/enums/DATA';
 
 
 // Enums of DATA

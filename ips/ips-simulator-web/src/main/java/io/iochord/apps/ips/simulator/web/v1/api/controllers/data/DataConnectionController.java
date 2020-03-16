@@ -1,7 +1,5 @@
 package io.iochord.apps.ips.simulator.web.v1.api.controllers.data;
 
-import java.io.BufferedInputStream;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.List;
@@ -82,9 +80,6 @@ public class DataConnectionController extends ADataController {
 	public ServiceContext postImportCsv(@RequestPart("config") String jsonConfig,
 			@RequestPart("file") MultipartFile file, @RequestHeader HttpHeaders headers) throws IOException {
 		CsvDataImportConfiguration config = SerializationUtil.decode(jsonConfig, CsvDataImportConfiguration.class);
-		
-		System.out.println(jsonConfig);
-		
 		config.setFilename(file.getOriginalFilename());
 		config.setReader(new InputStreamReader(file.getInputStream()));
 		return run(new CsvDataImportService(), config, CsvDataImportResult.class, headers);

@@ -57,13 +57,13 @@ import { getModule } from 'vuex-module-decorators';
 import VisualizerLayoutView from '@/iochord/ips/common/ui/layout/class/VisualizerLayoutView';
 import SettingsBarWrapperComponent from '@/iochord/ips/common/ui/layout/components/SettingsBarWrapperComponent.vue';
 import PMDHeuristicsRibbonComponent from '../components/PMDHeuristicsRibbonComponent.vue';
-import DataConnectionService from '@/iochord/ips/common/service/data/DataConnectionService';
-import IsmDiscoveryService, { IsmDiscoveryConfiguration } from '@/iochord/ips/common/service/analysis/IsmDiscoveryService';
+import DataConnectionService from '@/iochord/ips/data/connection/services/DataConnectionService';
+import IsmDiscoveryService, { IsmDiscoveryConfiguration } from '../services/IsmDiscoveryService';
 import ModelViewer from '@/iochord/ips/simulation/editor/components/ModelViewer.vue';
-import GraphModule from '@/iochord/ips/common/graph/ism/stores/GraphModule';
-import GraphSubject from '@/iochord/ips/common/graph/ism/rxjs/GraphSubject';
-import { Graph } from '@/iochord/ips/common/graph/ism/interfaces/Graph';
-import { GraphImpl } from '@/iochord/ips/common/graph/ism/class/GraphImpl';
+import GraphModule from '@/iochord/ips/common/graphs/ism/stores/GraphModule';
+import GraphSubject from '@/iochord/ips/common/graphs/ism/rxjs/GraphSubject';
+import { Graph } from '@/iochord/ips/common/graphs/ism/interfaces/Graph';
+import { GraphImpl } from '@/iochord/ips/common/graphs/ism/class/GraphImpl';
 
 const graphModule = getModule(GraphModule);
 
@@ -165,8 +165,6 @@ export default class AnalysisPMD extends VisualizerLayoutView {
         }
         const g: Graph = GraphImpl.deserialize(graph.data) as Graph;
         graphModule.setGraph(g);
-//        GraphSubject.update(graphModule.graph);
-
         self.graphJson = 'This graph has ' + n + ' nodes and ' + c + ' connectors';
         self.progressMessage = '';
         (self.$refs['viewer'] as any).forceReRender();
