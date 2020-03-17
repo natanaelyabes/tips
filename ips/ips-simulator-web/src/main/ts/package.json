@@ -16,6 +16,7 @@
     "axios": "^0.18.1",
     "backbone": "^1.4.0",
     "browserfs": "^1.4.3",
+    "dagre": "^0.8.5",
     "dotenv": "^8.0.0",
     "fomantic-ui": "^2.7.7",
     "highlight.js": "^9.15.8",
@@ -44,6 +45,7 @@
   },
   "devDependencies": {
     "@types/backbone": "^1.4.1",
+    "@types/dagre": "^0.7.42",
     "@types/highlight.js": "^9.12.3",
     "@types/jest": "^23.3.14",
     "@types/jointjs": "^2.0.0",

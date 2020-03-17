@@ -51,13 +51,12 @@
 
       <!-- Content -->
       <template slot="content">
-        <CanvasComponent :isDisabled="isDisabled" :key="reRenderKey" v-bind:response="graphData" />
+        <CanvasComponent :isDisabled="isDisabled" :key="reRenderKey" :response="graphData" />
       </template>
 
       <template slot="right-sidebar-menu-item">
-        <MinimapComponent v-bind:response="graphData" />
+        <MinimapComponent :response="graphData" />
       </template>
-
     </WrapperComponent>
 
     <div ref="report" class="ui overlay fullscreen modal">

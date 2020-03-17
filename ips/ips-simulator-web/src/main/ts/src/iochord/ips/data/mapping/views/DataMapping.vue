@@ -14,11 +14,16 @@
         <div class="section">Data Management</div>
         <i class="right angle icon divider"></i>
         <div class="active section">{{this.title}}</div>
+        <i class="right angle icon divider"></i>
+        <select @change="retreiveDataset" ref="datasetSelector" v-model="selectedDatasetId">
+          <option value="---" selected>---</option>
+          <option v-for="(ds, i) in datasets" :key="i" class="item" :value="i">{{ds.name}} ({{i}})</option>
+        </select>
       </template>
 
       <!-- Content -->
       <template slot="content">
-        <ContentMappingComponent></ContentMappingComponent>
+        <ContentMappingComponent :key="reRenderKey" :datasetId="selectedDatasetId" ref="mapping" id="mapping"></ContentMappingComponent>
       </template>
     </DepthTwoLeftWrapperComponent>
   </div>
@@ -36,10 +41,19 @@ a.section {
 </style>
 
 <script lang="ts">
-import { Vue, Component } from 'vue-property-decorator';
+import { Vue, Prop, Component } from 'vue-property-decorator';
 import ExplorerLayoutView from '@/iochord/ips/common/ui/layout/class/ExplorerLayoutView';
 import DepthTwoLeftWrapperComponent from '@/iochord/ips/common/ui/layout/components/DepthTwoLeftWrapperComponent.vue';
 import ContentMappingComponent from '../components/ContentMappingComponent.vue';
+import MappingService from '../services/MappingService';
+import IMappingResource from '../interfaces/IMappingResource';
+import MappingResource from '../models/MappingResource';
+import MappingModule from '../stores/MappingModule';
+import { getModule } from 'vuex-module-decorators';
+import DataConnectionService from '../../connection/services/DataConnectionService';
+
+// Vuex module
+const mappingModule = getModule(MappingModule);
 
 @Component({
   components: {
@@ -62,6 +76,13 @@ import ContentMappingComponent from '../components/ContentMappingComponent.vue';
 export default class DataMapping extends ExplorerLayoutView {
   public title: string = '';
 
+  public datasets = {};
+
+  @Prop(String)
+  public datasetId?: string;
+
+  public selectedDatasetId: string = '---';
+
   /** @override */
   public overrideBrowserProperties() {
     this.setDocumentTitle('Data Management: Data Mapping');
@@ -70,6 +91,26 @@ export default class DataMapping extends ExplorerLayoutView {
   /** @Override */
   public setTitle(): void {
     this.title = `Data Mapping`;
+  }
+
+  public mounted(): void {
+    this.selectedDatasetId = '---';
+    if (this.datasetId) this.selectedDatasetId = this.datasetId;
+    this.retreiveDataset();
+  }
+
+  public retreiveDataset(): void {
+    DataConnectionService.getInstance().getDataConnections((res: any) => {
+      this.datasets = res.data;
+    }, (tick: any) => {
+      // this.datasets = tick;
+    });
+
+    if (this.datasetId) {
+      this.selectedDatasetId = this.datasetId;
+    }
+
+    this.forceReRender();
   }
 }
 </script>

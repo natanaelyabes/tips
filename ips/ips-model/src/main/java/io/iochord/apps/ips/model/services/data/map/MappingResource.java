@@ -17,25 +17,18 @@ public class MappingResource {
 	
 	@Getter
 	@Setter
-	private List<Map<String, String>> mapSettings;
+	private Map<String, String> mapSettings;
 	
 	@Getter
 	@Setter
-	private List<String> technicalName;
+	private List<String> technicalNames;
+	
+	@Getter
+	@Setter
+	private Map<String, String> colHeaders;
 	
 	@Getter
 	@Setter
 	private List<Map<String, String>> firstNRows;
-	
-	public void printToConsole() {
-		for (Map<String, String> map : mapSettings) {
-			System.out.println(map.keySet());
-			System.out.println(map.entrySet());
-		}
-		
-		for (String row : technicalName) {
-			System.out.println(row);
-		}
-	}
 	
 }

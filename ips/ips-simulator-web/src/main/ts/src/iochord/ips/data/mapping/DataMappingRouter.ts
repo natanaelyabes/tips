@@ -16,6 +16,11 @@ export default [
         path: ``,
         component: () => import(/* webpackChunkName: "ips-model-data-filter" */ './views/DataMapping.vue'),
       },
+      {
+        path: `:datasetId`,
+        component: () => import(/* webpackChunkName: "ips-model-data-filter" */ './views/DataMapping.vue'),
+        props: true,
+      },
     ],
   },
 ] as RouteConfig[];
