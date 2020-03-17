@@ -15,15 +15,15 @@
         <i class="right angle icon divider"></i>
         <div class="active section">{{this.title}}</div>
         <i class="right angle icon divider"></i>
-        <select ref="datasetSelector" v-model="datasetId">
-          <option value="---">---</option>
+        <select @change="retreiveDataset" ref="datasetSelector" v-model="selectedDatasetId">
+          <option value="---" selected>---</option>
           <option v-for="(ds, i) in datasets" :key="i" class="item" :value="i">{{ds.name}} ({{i}})</option>
         </select>
       </template>
 
       <!-- Content -->
       <template slot="content">
-        <ContentMappingComponent :datasetId="datasetId" ref="mapping" id="mapping"></ContentMappingComponent>
+        <ContentMappingComponent :key="reRenderKey" :datasetId="selectedDatasetId" ref="mapping" id="mapping"></ContentMappingComponent>
       </template>
     </DepthTwoLeftWrapperComponent>
   </div>
@@ -41,7 +41,7 @@ a.section {
 </style>
 
 <script lang="ts">
-import { Vue, Component } from 'vue-property-decorator';
+import { Vue, Prop, Component } from 'vue-property-decorator';
 import ExplorerLayoutView from '@/iochord/ips/common/ui/layout/class/ExplorerLayoutView';
 import DepthTwoLeftWrapperComponent from '@/iochord/ips/common/ui/layout/components/DepthTwoLeftWrapperComponent.vue';
 import ContentMappingComponent from '../components/ContentMappingComponent.vue';
@@ -78,7 +78,10 @@ export default class DataMapping extends ExplorerLayoutView {
 
   public datasets = {};
 
-  public datasetId: string = '---';
+  @Prop(String)
+  public datasetId?: string;
+
+  public selectedDatasetId: string = '---';
 
   /** @override */
   public overrideBrowserProperties() {
@@ -91,19 +94,23 @@ export default class DataMapping extends ExplorerLayoutView {
   }
 
   public mounted(): void {
-    DataConnectionService.getInstance().getDataConnections((res: any) => {
-      this.datasets = res.data;
-    }, (tick: any) => {
-      // this.datasets = tick;
-    });
+    this.selectedDatasetId = '---';
+    if (this.datasetId) this.selectedDatasetId = this.datasetId;
+    this.retreiveDataset();
   }
 
-  public updated(): void {
+  public retreiveDataset(): void {
     DataConnectionService.getInstance().getDataConnections((res: any) => {
       this.datasets = res.data;
     }, (tick: any) => {
       // this.datasets = tick;
     });
+
+    if (this.datasetId) {
+      this.selectedDatasetId = this.datasetId;
+    }
+
+    this.forceReRender();
   }
 }
 </script>

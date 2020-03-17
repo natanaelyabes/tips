@@ -51,7 +51,10 @@
       </table>
     </div>
     <div class="ui basic segment" style="padding: 1em 0;">
-      <button @click="save" class="ui large blue labeled icon right floated button" v-bind:class="{ disabled : datasetId === '---' }"><i class="save icon"></i> Save</button>
+      <button @click="save" class="ui large blue labeled icon right floated button"
+        v-bind:class="{ disabled : datasetId === '---' }">
+        <i class="save icon"></i> Save
+      </button>
     </div>
   </div>
 </template>
@@ -88,23 +91,18 @@ export default class ContentMappingComponent extends SemanticComponent {
   public mapping: MappingResource = new MappingResource();
   public rowsize: number = 0;
 
-  @Prop({default: '---'})
-  public datasetId: string = '---';
+  @Prop(String)
+  public datasetId?: string;
 
-  public async mounted(): Promise<void> {
-    if (this.datasetId !== '---') {
-      await mappingModule.retreiveMapResource(this.datasetId);
-      this.rowsize = this.firstNRows.length;
-      this.mapping.technicalNames = mappingModule.mapResource.technicalNames;
-      this.mapping.colHeaders = mappingModule.mapResource.colHeaders;
-      this.mapping.mapSettings = mappingModule.mapResource.mapSettings;
-      this.mapping.firstNRows = mappingModule.mapResource.firstNRows;
-    }
+  public mounted(): void {
+    this.$nextTick(() => { this.retreiveMapping(); });
+    this.retreiveMapping();
   }
 
-  public async updated(): Promise<void> {
+  public async retreiveMapping(): Promise<void> {
+    console.log(this.datasetId);
     if (this.datasetId !== '---') {
-      await mappingModule.retreiveMapResource(this.datasetId);
+      await mappingModule.retreiveMapResource(this.datasetId as string);
       this.rowsize = this.firstNRows.length;
       this.mapping.technicalNames = mappingModule.mapResource.technicalNames;
       this.mapping.colHeaders = mappingModule.mapResource.colHeaders;
@@ -147,7 +145,7 @@ export default class ContentMappingComponent extends SemanticComponent {
   }
 
   public save(): void {
-    console.log('TBA');
+    console.log(this.mapping);
   }
 }
 </script>

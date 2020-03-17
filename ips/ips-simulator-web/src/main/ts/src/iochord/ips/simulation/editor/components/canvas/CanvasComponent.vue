@@ -147,7 +147,6 @@ const editorState = getModule(EditorState);
  * @export
  * @class CanvasComponent
  * @extends {Mixins(BaseComponent, CanvasMixin)}
- *
  * @package ts
  * @author N. Y. Wirawan <ny4tips@gmail.com>
  * @since 2019
