@@ -64,7 +64,7 @@ public class DistanceAlgorithm {
 			int freq2 = oacmtrx.getOrDefault(orta2.isPresent() ? orta2.get() : null,0);
 			
 			if(freq1 != freq2)
-				sumDist++;
+				sumDist += Math.abs(freq1 - freq2);
 		}
 		
 		return (double)sumDist/activities.size();

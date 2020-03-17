@@ -161,7 +161,7 @@ export default class ContentSettingsComponent extends BaseComponent {
    *
    * @memberof ContentSettingsComponent
    */
-  public doMining(): void  {
+  public async doMining(): Promise<void>  {
     const self = this;
     if (self.datasetId === '') {
       alert('Choose datasetId');
