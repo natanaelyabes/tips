@@ -149,7 +149,6 @@ public class IsmDiscoveryService extends AnIpsAsyncService<IsmDiscoveryConfigura
 				c.setLabel("");
 				outNodes.put(ea, ob);
 			}
-			//*/
 		}
 		Map<String, Map<String, Long>> bcIf = new LinkedHashMap<>();
 		Map<String, Map<String, Long>> bcOf = new LinkedHashMap<>();
