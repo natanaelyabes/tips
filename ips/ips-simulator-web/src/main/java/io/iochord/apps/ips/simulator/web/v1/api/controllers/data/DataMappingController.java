@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import io.iochord.apps.ips.common.util.LoggerUtil;
 import io.iochord.apps.ips.core.services.ServiceContext;
 import io.iochord.apps.ips.model.services.data.map.MappingResource;
-import io.iochord.apps.ips.model.services.data.map.MappingService;
+import io.iochord.apps.ips.model.services.data.map.MappingRepositoryService;
 
 /**
  *
@@ -41,7 +41,7 @@ public class DataMappingController extends ADataController {
 		MappingResource resource = null;
 		if (datasetId.isPresent()) {
 			try {
-				resource = new MappingService().run(context, datasetId.get());		
+				resource = new MappingRepositoryService().run(context, datasetId.get());		
 			} catch (Exception ex) {
 				LoggerUtil.logError(ex);
 			}

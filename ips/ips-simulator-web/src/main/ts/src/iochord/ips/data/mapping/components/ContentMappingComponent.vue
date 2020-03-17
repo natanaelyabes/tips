@@ -6,8 +6,14 @@
 <template>
   <div class="content mapping component">
     <h4 class="ui dividing header">Map Settings</h4>
+    <div class="ui warning message">
+      The data is a preview. Only the first 100<sup>th</sup> rows is displayed.
+    </div>
+    <div v-if="datasetId === '---'" class="ui error message">
+      Table is not loaded. Please select a dataset.
+    </div>
     <div style="overflow-x: hidden; overflow-y: scroll; border: 1px solid rgba(34,36,38,.15); height: 500px; width: 100%">
-      <table class="ui celled striped table">
+      <table v-if="datasetId !== '---'" class="ui celled striped table">
         <thead>
           <tr>
             <th>Technical Name</th>
@@ -15,12 +21,12 @@
           </tr>
           <tr>
             <th>Column Name</th>
-            <th v-for="(settings, i) in mapSettings" :key="settings + i">{{ settings }}</th>
+            <th v-for="(k, v) of colHeaders" :key="k + v">{{ k[1] }}</th>
           </tr>
           <tr>
             <th>Mapping</th>
-            <th v-for="(settings, i) in mapSettings" :key="settings + i">
-              <select v-model="mapSettings[i]" class="ui fluid search dropdown">
+            <th v-for="(k, v) of mapping.mapSettings" :key="k + v">
+              <select v-model="mapping.mapSettings[v]" class="ui fluid search dropdown">
                 <option value="" disabled>Select Mapping</option>
                 <option value="case_id">case_id</option>
                 <option value="concept:name">concept:name</option>
@@ -45,13 +51,13 @@
       </table>
     </div>
     <div class="ui basic segment" style="padding: 1em 0;">
-      <button class="ui large blue labeled icon right floated button"><i class="save icon"></i> Save</button>
+      <button @click="save" class="ui large blue labeled icon right floated button" v-bind:class="{ disabled : datasetId === '---' }"><i class="save icon"></i> Save</button>
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import { Vue, Component } from 'vue-property-decorator';
+import { Vue, Prop, Component } from 'vue-property-decorator';
 import BaseComponent from '@/iochord/ips/common/ui/layout/class/BaseComponent';
 import ContentDataViewComponent from '../../SandboxDataConnection/components/ContentDataViewComponent.vue';
 import { getModule } from 'vuex-module-decorators';
@@ -79,13 +85,32 @@ declare const $: any;
  * @since 2019
  */
 export default class ContentMappingComponent extends SemanticComponent {
-  public mapping?: IMappingResource;
+  public mapping: MappingResource = new MappingResource();
   public rowsize: number = 0;
-  public async mounted(): Promise<void> {
-    await mappingModule.retreiveMapResource('ips_dataset_1584089402853');
-    this.rowsize = this.firstNRows.length;
 
-    this.declareSemanticModules();
+  @Prop({default: '---'})
+  public datasetId: string = '---';
+
+  public async mounted(): Promise<void> {
+    if (this.datasetId !== '---') {
+      await mappingModule.retreiveMapResource(this.datasetId);
+      this.rowsize = this.firstNRows.length;
+      this.mapping.technicalNames = mappingModule.mapResource.technicalNames;
+      this.mapping.colHeaders = mappingModule.mapResource.colHeaders;
+      this.mapping.mapSettings = mappingModule.mapResource.mapSettings;
+      this.mapping.firstNRows = mappingModule.mapResource.firstNRows;
+    }
+  }
+
+  public async updated(): Promise<void> {
+    if (this.datasetId !== '---') {
+      await mappingModule.retreiveMapResource(this.datasetId);
+      this.rowsize = this.firstNRows.length;
+      this.mapping.technicalNames = mappingModule.mapResource.technicalNames;
+      this.mapping.colHeaders = mappingModule.mapResource.colHeaders;
+      this.mapping.mapSettings = mappingModule.mapResource.mapSettings;
+      this.mapping.firstNRows = mappingModule.mapResource.firstNRows;
+    }
   }
 
   public get technicalNames(): string[] {
@@ -94,21 +119,26 @@ export default class ContentMappingComponent extends SemanticComponent {
     return technicalNames;
   }
 
-  public get mapSettings(): string[] {
-    const mapSettings = mappingModule.mapResource.mapSettings;
-    const settings: string[] = [];
+  public get mapSettings(): Map<string, string> {
+    const mapSettings = this.mapping.mapSettings;
+    let map = new Map<string, string>();
     if (mapSettings) {
-      mapSettings.shift();
-      mapSettings.forEach((value: Map<string, string>) => {
-        const setting = Object.values(value)[0];
-        settings.push(setting);
-      });
+      map = new Map<string, string>(Object.entries(mapSettings));
     }
-    return settings;
+    return map;
+  }
+
+  public get colHeaders(): Map<string, string> {
+    const colHeaders = this.mapping.colHeaders;
+    let map = new Map<string, string>();
+    if (colHeaders) {
+      map = new Map<string, string>(Object.entries(colHeaders));
+    }
+    return map;
   }
 
   public get firstNRows() {
-    return mappingModule.mapResource.firstNRows;
+    return this.mapping.firstNRows;
   }
 
   public shifted(array: string[]) {
@@ -116,8 +146,8 @@ export default class ContentMappingComponent extends SemanticComponent {
     return array;
   }
 
-  public declareSemanticModules(): void {
-    $('.dropdown').dropdown();
+  public save(): void {
+    console.log('TBA');
   }
 }
 </script>

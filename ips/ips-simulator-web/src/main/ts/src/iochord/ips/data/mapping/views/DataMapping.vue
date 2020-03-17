@@ -14,11 +14,16 @@
         <div class="section">Data Management</div>
         <i class="right angle icon divider"></i>
         <div class="active section">{{this.title}}</div>
+        <i class="right angle icon divider"></i>
+        <select ref="datasetSelector" v-model="datasetId">
+          <option value="---">---</option>
+          <option v-for="(ds, i) in datasets" :key="i" class="item" :value="i">{{ds.name}} ({{i}})</option>
+        </select>
       </template>
 
       <!-- Content -->
       <template slot="content">
-        <ContentMappingComponent ref="mapping" id="mapping"></ContentMappingComponent>
+        <ContentMappingComponent :datasetId="datasetId" ref="mapping" id="mapping"></ContentMappingComponent>
       </template>
     </DepthTwoLeftWrapperComponent>
   </div>
@@ -45,6 +50,7 @@ import IMappingResource from '../interfaces/IMappingResource';
 import MappingResource from '../models/MappingResource';
 import MappingModule from '../stores/MappingModule';
 import { getModule } from 'vuex-module-decorators';
+import DataConnectionService from '../../connection/services/DataConnectionService';
 
 // Vuex module
 const mappingModule = getModule(MappingModule);
@@ -70,6 +76,10 @@ const mappingModule = getModule(MappingModule);
 export default class DataMapping extends ExplorerLayoutView {
   public title: string = '';
 
+  public datasets = {};
+
+  public datasetId: string = '---';
+
   /** @override */
   public overrideBrowserProperties() {
     this.setDocumentTitle('Data Management: Data Mapping');
@@ -78,6 +88,22 @@ export default class DataMapping extends ExplorerLayoutView {
   /** @Override */
   public setTitle(): void {
     this.title = `Data Mapping`;
+  }
+
+  public mounted(): void {
+    DataConnectionService.getInstance().getDataConnections((res: any) => {
+      this.datasets = res.data;
+    }, (tick: any) => {
+      // this.datasets = tick;
+    });
+  }
+
+  public updated(): void {
+    DataConnectionService.getInstance().getDataConnections((res: any) => {
+      this.datasets = res.data;
+    }, (tick: any) => {
+      // this.datasets = tick;
+    });
   }
 }
 </script>

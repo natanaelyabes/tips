@@ -23,6 +23,7 @@ export default class MappingService extends DataService {
     const data = response.data.data;
     const mapping: MappingResource = new MappingResource();
     mapping.setTechnicalNames(data.technicalNames);
+    mapping.setColHeaders(data.colHeaders);
     mapping.setMapSettings(data.mapSettings);
     mapping.setFirstNRows(data.firstNRows);
     return mapping;
