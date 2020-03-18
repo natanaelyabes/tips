@@ -43,7 +43,6 @@
 
 <style>
 .removeBox {
-  border-bottom: 0 none !important;
   box-shadow: none;
   padding: 0px !important;
   margin: 0px !important;
@@ -52,9 +51,6 @@
 .containerPanZoom {
   height: 100%;
   width: 100%;
-  border-left: 1px solid #dddd;
-  border-right: 1px solid #dddd;
-  border-bottom: 1px solid #dddd;
 }
 
 .fullHeightMinus {

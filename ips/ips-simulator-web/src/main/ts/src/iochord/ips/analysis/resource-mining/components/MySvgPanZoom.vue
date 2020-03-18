@@ -131,7 +131,6 @@ export default class MySvgPanZoom extends BaseComponent {
   @Watch('layoutDirection')
   public onPropertyChanged(value: string, oldValue: string) {
     joint.layout.DirectedGraph.layout(this.graph, { ranker: 'network-simplex', rankDir: this.layoutDirection });
-    this.svgZoom.center();
   }
 
   public buildActivities(activities: string[], graph: joint.dia.Graph): void {
@@ -142,24 +141,7 @@ export default class MySvgPanZoom extends BaseComponent {
     const mr = 30;
     let i = 0;
     for (const activity of activities) {
-      const wraptext = joint.util.breakText(activity, {
-        width: wd,
-        height: hg,
-      });
-      const rect: joint.shapes.standard.Rectangle = new joint.shapes.standard.Rectangle({ id: 'act_' + activity });
-      // rect.position(x + i * (wd + mr), y);
-      rect.resize(wd, hg);
-      rect.attr({
-        body: {
-          fill: '#85C1E9',
-          strokeWidth: 1,
-        },
-        label: {
-          text: wraptext,
-          fill: 'black',
-        },
-      });
-      rect.addTo(graph);
+      this.createCell(activity, 'ACT', wd, hg, x + i * (wd + mr), y, graph);
       i++;
     }
   }
@@ -172,25 +154,7 @@ export default class MySvgPanZoom extends BaseComponent {
     const mr = 30;
     let i = 0;
     for (const group of groups) {
-      const wraptext = joint.util.breakText(group, {
-        width: wd,
-        height: hg,
-      });
-      const polyline = new joint.shapes.standard.Polyline({ id: 'grp_' + group });
-      // polyline.position(x + i * (wd + mr), y);
-      polyline.resize(wd, hg);
-      polyline.attr({
-        body: {
-          fill: 'yellow',
-          refPoints: '5,0 0,5 0,10 10,10 10,5 5,0',
-          strokeWidth: 1,
-        },
-        label: {
-          text: wraptext,
-          fill: 'black',
-        },
-      });
-      polyline.addTo(graph);
+      this.createCell(group, 'GRP', wd, hg, x + i * (wd + mr), y, graph);
       i++;
     }
   }
@@ -203,24 +167,7 @@ export default class MySvgPanZoom extends BaseComponent {
     const mr = 30;
     let i = 0;
     for (const resource of resources) {
-      const wraptext = joint.util.breakText(resource, {
-        width: wd,
-        height: hg,
-      });
-      const circle: joint.shapes.standard.Rectangle = new joint.shapes.standard.Circle({ id: 'res_' + resource });
-      // circle.position(x + i * (wd + mr), y);
-      circle.resize(wd, hg);
-      circle.attr({
-        body: {
-          fill: 'red',
-          strokeWidth: 1,
-        },
-        label: {
-          text: wraptext,
-          fill: 'white',
-        },
-      });
-      circle.addTo(graph);
+      this.createCell(resource, 'RES', wd, hg, x + i * (wd + mr), y, graph);
       i++;
     }
   }
@@ -228,13 +175,49 @@ export default class MySvgPanZoom extends BaseComponent {
   public buildLinks(map1: any, map2: any, graph: joint.dia.Graph): void {
     for (const activity of Object.keys(map1)) {
       for (const group of map1[activity]) {
-        this.createLink('act_' + activity, 'grp_' + group, graph);
+        this.createLink('ACT_' + activity, 'GRP_' + group, graph);
         for (const resource of map2[group])
-          this.createLink('grp_' + group, 'res_' + resource, graph);
+          this.createLink('GRP_' + group, 'RES_' + resource, graph);
       }
     }
   }
 
+  public createCell(name: string, type: 'ACT' | 'GRP' | 'RES', wd: number, hg: number, x: number, y: number, graph: joint.dia.Graph): void {
+    let cell: any = undefined;
+    let bgCol: string = '#85C1E9';
+    let txCol: string = 'black';
+    const id = type + '_' + name;
+    const wraptext = joint.util.breakText(name, {
+      width: wd,
+      height: hg,
+    });
+    
+    if (type == 'ACT') { 
+      cell = new joint.shapes.standard.Rectangle({ id: id });
+    } else if (type == 'GRP') {
+      cell = new joint.shapes.standard.Polyline({ id: id });
+      bgCol = 'yellow';
+    } else {
+      cell = new joint.shapes.standard.Circle({ id: id });
+      bgCol = 'red';
+      txCol = 'white';
+    }
+    cell.position(x, y);
+    cell.resize(wd, hg);
+    cell.attr({
+      body: {
+        fill: bgCol,
+        refPoints: '5,0 0,5 0,10 10,10 10,5 5,0',
+        strokeWidth: 1,
+      },
+      label: {
+        text: wraptext,
+        fill: txCol,
+      },
+    });
+    cell.addTo(graph);
+  }
+  
   public createLink(id1: string, id2: string, graph: joint.dia.Graph): void {
     const link: any = new joint.shapes.standard.Link();
     link.source({ id: id1 });
