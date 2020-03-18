@@ -141,6 +141,12 @@ export class JointGraphConnectorImpl extends GraphConnectorImpl implements Joint
 
       this.connector = new link();
 
+      this.connector.attr({
+        line: {
+          targetMarker: { d: 'M 10 -10 0 0 10 10 z' },
+        },
+      });
+
       const source = graph.getElements().find((value) => {
         return value.attributes.nodeId === this.getSourceRef();
       }) as joint.dia.Element;

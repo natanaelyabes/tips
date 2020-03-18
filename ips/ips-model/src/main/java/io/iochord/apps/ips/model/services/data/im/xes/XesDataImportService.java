@@ -279,8 +279,7 @@ public class XesDataImportService extends AnIpsAsyncService<XesDataImportConfigu
 			   	   .append("(DEFAULT ");
 			colname.stream().forEach(col -> sqlrows.append(",").append("?"));
 			sqlrows.append(");");
-			
-			// TODO: seed data into database
+
 			for (int i = 0; i < eventlogcols.size(); i++) {
 				List<Map<String, String>> row = eventlogcols.get(i);
 				if (row.size() > 0) {

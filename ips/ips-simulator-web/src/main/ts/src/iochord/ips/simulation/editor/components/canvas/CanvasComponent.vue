@@ -147,7 +147,6 @@ const editorState = getModule(EditorState);
  * @export
  * @class CanvasComponent
  * @extends {Mixins(BaseComponent, CanvasMixin)}
- *
  * @package ts
  * @author N. Y. Wirawan <ny4tips@gmail.com>
  * @since 2019
@@ -383,16 +382,12 @@ export default class CanvasComponent extends Mixins(BaseComponent, CanvasMixin) 
 
       'element:pointerdblclick': (elementView: joint.dia.ElementView) => {
         if (this.isDisabled) return;
-
         resetAll(jointPage.getPaper());
-
         const currentElement = elementView.model;
         const currentElementType: string = currentElement.attributes.type;
         const currentElementCategory: string = currentElement.attributes.category;
-
         let property;
         let currentElementId: string;
-
         if (currentElementCategory === 'node') {
           currentElementId = currentElement.attributes.nodeId.split('-')[2];
           property = graphModule.pageNode(jointPage, currentElement.attributes.nodeId);
@@ -400,18 +395,15 @@ export default class CanvasComponent extends Mixins(BaseComponent, CanvasMixin) 
           currentElementId = currentElement.attributes.dataId.split('-')[2];
           property = graphModule.pageDatum(jointPage, currentElement.attributes.dataId);
         }
-
         if (!this.isProcessModel) {
           (this.$refs[currentElementType] as Modal<JointGraphPageImpl, typeof property>).populateProperties(jointPage, property);
           $(`#${currentElementType}`).modal('setting', 'transition', 'fade up').modal('show');
         }
       },
-
       'cell:highlight': (elementView: joint.dia.ElementView) => {
         const currentElement = elementView.model;
         this.highlightedElement.set(currentElement.id as string, currentElement);
       },
-
       'cell:unhighlight': (elementView: joint.dia.ElementView) => {
         const currentElement = elementView.model;
         this.highlightedElement.delete(currentElement.id as string);

@@ -35,7 +35,6 @@ const store = new Vuex.Store<StoreType>({});
  * @Module
  * @class GraphModule
  * @extends {VuexModule}
- *
  * @package ts
  * @author N. Y. Wirawan <ny4tips@gmail.com>
  * @since 2019

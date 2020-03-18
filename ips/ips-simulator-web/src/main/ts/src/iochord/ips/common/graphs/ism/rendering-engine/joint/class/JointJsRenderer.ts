@@ -11,9 +11,6 @@ import { JointGraphConnectorImpl } from '../shapes/class/JointGraphConnectorImpl
 import { JointGraphNodeImpl } from '../shapes/class/JointGraphNodeImpl';
 import { JointGraphPageImpl } from '../shapes/class/JointGraphPageImpl';
 
-// Utils
-import { Anchors } from '../utils/Anchors';
-
 // Enums
 import { NODE_TYPE } from '@/iochord/ips/common/graphs/ism/rendering-engine/joint/shapes/enums/NODE';
 import { DATA_TYPE } from '@/iochord/ips/common/graphs/ism/rendering-engine/joint/shapes/enums/DATA';
@@ -22,6 +19,8 @@ import { ARC_TYPE } from '../shapes/enums/ARC';
 /** Joint.js */
 // Module
 import * as joint from 'jointjs';
+
+import * as dagre from 'dagre';
 
 // SVG Pan and Zoom
 import SvgPanZoom from 'svg-pan-zoom';
@@ -150,13 +149,13 @@ export default class JointJsRenderer {
         this.renderPage(jointPage);
         this.renderMinimap(jointPage);
 
-        // Render elements and links
-        this.renderNodes(jointPage);
-        this.renderConnectors(jointPage);
-
         if (!isProcessModel) {
           this.renderData(jointPage);
         }
+
+        // Render elements and links
+        this.renderNodes(jointPage);
+        this.renderConnectors(jointPage);
 
         // Automatic layout
         this.autoLayoutGraph(jointPage);
@@ -242,10 +241,8 @@ export default class JointJsRenderer {
       drawGrid: true,
       interactive: true,
       defaultRouter: { name: 'normal' },
-      defaultAnchor: (endView: joint.dia.ElementView, endMagnet: SVGElement, anchorReference: joint.g.Point, args: { [key: string]: any; }) => {
-        return Anchors.skipEndMagnetPerpendicularAnchor(endView, endMagnet, anchorReference, args);
-      },
-      defaultConnectionPoint: { name: 'boundary' },
+      defaultAnchor: { name: 'center' },
+      defaultConnectionPoint: { name: 'bbox' },
       defaultConnector: { name: 'rounded' },
     } as joint.dia.Paper.Options ));
   }
@@ -267,9 +264,9 @@ export default class JointJsRenderer {
       gridSize: 1,
       interactive: false,
       defaultRouter: { name: 'normal' },
-      defaultAnchor: (endView: joint.dia.ElementView, endMagnet: SVGElement, anchorReference: joint.g.Point, args: { [key: string]: any; }) => {
-        return Anchors.skipEndMagnetPerpendicularAnchor(endView, endMagnet, anchorReference, args);
-      },
+      defaultAnchor: { name: 'center' },
+      defaultConnectionPoint: { name: 'bbox' },
+      defaultConnector: { name: 'rounded' },
     } as joint.dia.Paper.Options));
 
     // Scale down minimap
@@ -392,10 +389,13 @@ export default class JointJsRenderer {
    */
   public autoLayoutGraph(jointPage: JointGraphPageImpl): void {
     joint.layout.DirectedGraph.layout(jointPage.getGraph(), {
+      dagre,
+      graphlib: dagre.graphlib,
+      setVertices: true,
       ranker: 'network-simplex',
-      rankDir: 'LR',
-      edgeSep: 300,
-      nodeSep: 200,
+      rankDir: 'TB',
+      edgeSep: 350,
+      nodeSep: 150,
       rankSep: 80,
     } as joint.layout.DirectedGraph.LayoutOptions);
   }
