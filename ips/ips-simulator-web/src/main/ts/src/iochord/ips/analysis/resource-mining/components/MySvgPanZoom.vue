@@ -4,10 +4,10 @@
   @since 2020
 -->
 <template>
-  <div style="position: relative; height: 100%; width: 100%">
-    <div id="containerSvg" style="position: absolute">
+  <div id="parentContainer">
+    <div id="containerSvg">
     </div>
-    <select v-model="layoutDirection" style="position: absolute; top: 10px; right: 10px;">
+    <select id="overlaySelect" v-model="layoutDirection">
       <option value="TB" selected>Vertical</option>
       <option value="LR">Horizontal</option>
     </select>
@@ -15,9 +15,22 @@
 </template>
 
 <style>
+#parentContainer {
+  position: relative;
+  height: 100%;
+  width: 100%;
+}
+
 #containerSvg {
   height: 100%;
   width: 100%;
+  position: absolute;
+}
+
+#overlaySelect {
+  position: absolute;
+  top: 10px;
+  right: 10px;
 }
 </style>
 
@@ -60,6 +73,8 @@ export default class MySvgPanZoom extends BaseComponent {
   public minZoom: number = 0.1;
 
   public graph: joint.dia.Graph = new joint.dia.Graph();
+  public svgZoom: any = null;
+
   /**
    * Override Vue mounted lifecyle
    *
@@ -81,7 +96,7 @@ export default class MySvgPanZoom extends BaseComponent {
 
     joint.layout.DirectedGraph.layout(this.graph, { ranker: 'network-simplex', rankDir: this.layoutDirection });
 
-    const svgZoom = SvgPanZoom('#containerSvg svg',
+    this.svgZoom = SvgPanZoom('#containerSvg svg',
       {
         zoomEnabled: this.zoomEnabled,
         controlIconsEnabled: this.controlIconsEnabled,
@@ -100,12 +115,12 @@ export default class MySvgPanZoom extends BaseComponent {
 
     paper.on('cell:pointerdown', () => {
       document.body.style.cursor = 'grabbing';
-      svgZoom.disablePan();
+      this.svgZoom.disablePan();
     });
 
     paper.on('cell:pointerup', () => {
       document.body.style.cursor = 'default';
-      svgZoom.enablePan();
+      this.svgZoom.enablePan();
     });
 
     paper.on('cell:pointerclick', (e: any) => {
@@ -116,6 +131,7 @@ export default class MySvgPanZoom extends BaseComponent {
   @Watch('layoutDirection')
   public onPropertyChanged(value: string, oldValue: string) {
     joint.layout.DirectedGraph.layout(this.graph, { ranker: 'network-simplex', rankDir: this.layoutDirection });
+    this.svgZoom.center();
   }
 
   public buildActivities(activities: string[], graph: joint.dia.Graph): void {
