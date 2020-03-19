@@ -15,9 +15,8 @@ const store = new Vuex.Store<StoreType>({});
  * @export
  * @class EditorState
  * @extends {VuexModule}
- *
- * @package ips
- * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
+ * @package ts
+ * @author N. Y. Wirawan <ny4tips@gmail.com>
  * @since 2019
  */
 export default class EditorState extends VuexModule {
@@ -26,7 +25,6 @@ export default class EditorState extends VuexModule {
    * Indicates whether an editor is being in the dragging state.
    *
    * @State
-   *
    * @type {boolean}
    * @memberof EditorState
    */
@@ -36,7 +34,6 @@ export default class EditorState extends VuexModule {
    * Indicates whether an editor is being in the drawing state.
    *
    * @State
-   *
    * @type {boolean}
    * @memberof EditorState
    */
@@ -46,7 +43,6 @@ export default class EditorState extends VuexModule {
    * Current active mode for the editor.
    *
    * @State
-   *
    * @type {('node' | 'data' | 'connector')}
    * @memberof EditorState
    */
@@ -56,7 +52,6 @@ export default class EditorState extends VuexModule {
    * Assigns state as dragging mode.
    *
    * @Mutation
-   *
    * @param {boolean} dragging
    * @memberof EditorState
    */
@@ -69,7 +64,6 @@ export default class EditorState extends VuexModule {
    * Assigns state as drawing mode.
    *
    * @Mutation
-   *
    * @param {boolean} drawing
    * @memberof EditorState
    */
@@ -82,7 +76,6 @@ export default class EditorState extends VuexModule {
    * Assigns the mode of the editor.
    *
    * @Mutation
-   *
    * @param {('node' | 'data' | 'connector')} mode
    * @memberof EditorState
    */
@@ -95,7 +88,6 @@ export default class EditorState extends VuexModule {
    * Returns the dragging state.
    *
    * @Getter
-   *
    * @readonly
    * @type {boolean}
    * @memberof EditorState
@@ -108,7 +100,6 @@ export default class EditorState extends VuexModule {
    * Returns the drawing state.
    *
    * @Getter
-   *
    * @readonly
    * @type {boolean}
    * @memberof EditorState
@@ -121,7 +112,6 @@ export default class EditorState extends VuexModule {
    * Returns the drawing mode state.
    *
    * @Getter
-   *
    * @readonly
    * @type {('node' | 'data' | 'connector')}
    * @memberof EditorState

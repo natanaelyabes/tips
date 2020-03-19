@@ -3,9 +3,9 @@ import { ApplicationEnum, BaseUrlEnum } from '@/iochord/ips/common/enums/index';
 
 /**
  * Router registry for the editor.
- * 
- * @package ips
- * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
+ *
+ * @package ts
+ * @author N. Y. Wirawan <ny4tips@gmail.com>
  * @since 2019
  */
 export default [
@@ -16,14 +16,6 @@ export default [
       {
         path: ``,
         component: () => import(/* webpackChunkName: "ips-simulator-editor" */ './views/SimulationEditorView.vue'),
-      },
-      {
-        path: `kpi`,
-        component: () => import(/* webpackChunkName: "ips-simulator-editor-kpi" */ './views/SimulationEditorKpiView.vue'),
-      },
-      {
-        path: `ui`,
-        component: () => import(/* webpackChunkName: "ips-simulator-editor-ui" */ './views/SimulationEditorUIView.vue'),
       },
     ],
   },

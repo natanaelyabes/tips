@@ -39,7 +39,7 @@ class Place[T] (
   def getCurrentMarking():Multiset[T] = currentMarking
   
   /**
-   * @param cm : set new marking for multiset of this place
+   * @param cm : assign new marking for multiset of this place
    */
   def setCurrentMarking(cm:Multiset[T]) { currentMarking = cm }
   
@@ -49,7 +49,7 @@ class Place[T] (
   def getId(): String = id
   
   /**
-   * @param id : set id of this place. (see trait Element for detail explanation)
+   * @param id : assign id of this place. (see trait Element for detail explanation)
    */
   def setId(id: String) { this.id = id }
   
@@ -59,7 +59,7 @@ class Place[T] (
   def getName():String = name
   
   /**
-   * @param name : set name of this place. (see trait Node for detail explanation)
+   * @param name : assign name of this place. (see trait Node for detail explanation)
    */
   def setName(name: String) { this.name = name }
   
@@ -69,7 +69,7 @@ class Place[T] (
   def getOrigin(): Map[String,String] = origin
   
   /**
-   * @param origin : set origin of this place. (see trait Element for detail explanation)
+   * @param origin : assign origin of this place. (see trait Element for detail explanation)
    */
   def setOrigin(origin: Map[String,String]) { this.origin = origin }
   

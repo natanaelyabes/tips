@@ -26,11 +26,18 @@ public class IsmDiscoveryConfiguration {
 
 	@Getter
 	@Setter
-	private String colEventTimestamp = "c121";
+	private String colEventTimestamp = "c2";
 
 	@Getter
 	@Setter
 	private int skipRows = 1;
+
+	@Getter
+	@Setter
+	private int positiveObservationThreshold = 0;
 	
+	@Getter
+	@Setter
+	private float dependencyThreshold = 0.9f;
 	
 }

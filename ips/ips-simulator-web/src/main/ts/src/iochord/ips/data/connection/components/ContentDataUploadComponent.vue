@@ -1,6 +1,6 @@
 <!--
-  @package ips
-  @author Riska Asriana Sutrisnowati <riska@iochord.com>
+  @package ts
+  @author R. A. Sutrisnowati <riska@iochord.com>
   @since 2019
 -->
 <template>
@@ -49,7 +49,7 @@
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator';
 import BaseComponent from '@/iochord/ips/common/ui/layout/class/BaseComponent';
-import DataConnectionService, { ImportCsvConfiguration } from '@/iochord/ips/common/service/data/DataConnectionService';
+import DataConnectionService, { ImportCsvConfiguration } from '@/iochord/ips/data/connection/services/DataConnectionService';
 
 @Component
 
@@ -60,8 +60,8 @@ import DataConnectionService, { ImportCsvConfiguration } from '@/iochord/ips/com
  * @class ContentDataUploadComponent
  * @extends {BaseComponent}
  *
- * @package ips
- * @author Riska Asriana Sutrisnowati <riska@iochord.com>
+ * @package ts
+ * @author R. A. Sutrisnowati <riska@iochord.com>
  * @since 2019
  */
 export default class ContentDataUploadComponent extends BaseComponent {

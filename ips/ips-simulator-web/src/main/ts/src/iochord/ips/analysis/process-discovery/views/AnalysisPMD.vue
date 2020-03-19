@@ -1,6 +1,6 @@
 <!--
-  @package ips
-  @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
+  @package ts
+  @author N. Y. Wirawan <ny4tips@gmail.com>
   @since 2019
 -->
 <template>
@@ -15,6 +15,9 @@
         <i class="right angle icon divider"></i>
         <div class="active section">{{this.title}}</div>
         <i class="right angle icon divider"></i>
+        <!-- <a class="ui label">
+          Select dataset
+        </a> -->
         <select ref="datasetSelector" @change="mine">
           <option value="---">---</option>
           <option :selected="datasetId == i" v-for="(ds, i) in datasets" :key="i" class="item" :value="i">{{ds.name}} ({{i}})</option>
@@ -31,7 +34,7 @@
       <!-- Content -->
       <template slot="content">
         {{ graphJson }}
-        <ModelViewer></ModelViewer>
+        <ModelViewer ref="viewer"></ModelViewer>
       </template>
 
     </SettingsBarWrapperComponent>
@@ -54,13 +57,13 @@ import { getModule } from 'vuex-module-decorators';
 import VisualizerLayoutView from '@/iochord/ips/common/ui/layout/class/VisualizerLayoutView';
 import SettingsBarWrapperComponent from '@/iochord/ips/common/ui/layout/components/SettingsBarWrapperComponent.vue';
 import PMDHeuristicsRibbonComponent from '../components/PMDHeuristicsRibbonComponent.vue';
-import DataConnectionService from '@/iochord/ips/common/service/data/DataConnectionService';
-import IsmDiscoveryService, { IsmDiscoveryConfiguration } from '@/iochord/ips/common/service/analysis/IsmDiscoveryService';
+import DataConnectionService from '@/iochord/ips/data/connection/services/DataConnectionService';
+import IsmDiscoveryService, { IsmDiscoveryConfiguration } from '../services/IsmDiscoveryService';
 import ModelViewer from '@/iochord/ips/simulation/editor/components/ModelViewer.vue';
-import GraphModule from '@/iochord/ips/common/graph/ism/stores/GraphModule';
-import GraphSubject from '@/iochord/ips/common/graph/ism/rxjs/GraphSubject';
-import { Graph } from '@/iochord/ips/common/graph/ism/interfaces/Graph';
-import { GraphImpl } from '@/iochord/ips/common/graph/ism/class/GraphImpl';
+import GraphModule from '@/iochord/ips/common/graphs/ism/stores/GraphModule';
+import GraphSubject from '@/iochord/ips/common/graphs/ism/rxjs/GraphSubject';
+import { Graph } from '@/iochord/ips/common/graphs/ism/interfaces/Graph';
+import { GraphImpl } from '@/iochord/ips/common/graphs/ism/class/GraphImpl';
 
 const graphModule = getModule(GraphModule);
 
@@ -79,8 +82,8 @@ const graphModule = getModule(GraphModule);
  * @class AnalysisPMD
  * @extends {VisualizerLayoutView}
  *
- * @package ips
- * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
+ * @package ts
+ * @author N. Y. Wirawan <ny4tips@gmail.com>
  * @since 2019
  *
  */
@@ -149,7 +152,9 @@ export default class AnalysisPMD extends VisualizerLayoutView {
       const config: IsmDiscoveryConfiguration = new IsmDiscoveryConfiguration();
       config.datasetId = selectedDatasetId;
       IsmDiscoveryService.getInstance().discoverIsmGraph(config, (res: any) => {
-        const graph = JSON.parse(res.body);
+//        const graph = JSON.parse(res.body);
+        const graph = res.data;
+
         let n = 0;
         for (const i of Object.keys(graph.data.pages['0'].nodes)) {
           n++;
@@ -158,14 +163,11 @@ export default class AnalysisPMD extends VisualizerLayoutView {
         for (const i of Object.keys(graph.data.pages['0'].connectors)) {
           c++;
         }
-        console.log(graph.data);
         const g: Graph = GraphImpl.deserialize(graph.data) as Graph;
         graphModule.setGraph(g);
-        // GraphSubject.update(graphModule.graph);
-
-        console.log(g);
         self.graphJson = 'This graph has ' + n + ' nodes and ' + c + ' connectors';
         self.progressMessage = '';
+        (self.$refs['viewer'] as any).forceReRender();
       }, (tick: any) => {
         self.progressMessage = tick.progressData;
       });

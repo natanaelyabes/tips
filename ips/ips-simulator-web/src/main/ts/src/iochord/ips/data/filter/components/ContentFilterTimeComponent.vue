@@ -1,6 +1,6 @@
 <!--
-  @package ips
-  @author Riska Asriana Sutrisnowati <riska@iochord.com>
+  @package ts
+  @author R. A. Sutrisnowati <riska@iochord.com>
   @since 2019
 -->
 <template>
@@ -194,8 +194,8 @@ declare const $: any;
  * @class ContentFilterTimeComponent
  * @extends {BaseComponent}
  *
- * @package ips
- * @author Riska Asriana Sutrisnowati <riska@iochord.com>
+ * @package ts
+ * @author R. A. Sutrisnowati <riska@iochord.com>
  * @since 2019
  */
 export default class ContentFilterTimeComponent extends BaseComponent {

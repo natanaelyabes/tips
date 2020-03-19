@@ -21,7 +21,7 @@ trait Element {
 	
 	
 	/**
-	 * @param inp : set id of this element (any class that extends this trait should implement this method)
+	 * @param inp : assign id of this element (any class that extends this trait should implement this method)
 	 */
 	def setId(inp: String)
 	
@@ -34,7 +34,7 @@ trait Element {
 	
 	
 	/**
-	 * @param inp : set origin of this element (any class that extends this trait should implement this method)
+	 * @param inp : assign origin of this element (any class that extends this trait should implement this method)
 	 */
 	def setOrigin(inp: Map[String,String])
 }

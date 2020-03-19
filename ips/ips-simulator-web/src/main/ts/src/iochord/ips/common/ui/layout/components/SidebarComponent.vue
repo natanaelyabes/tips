@@ -1,6 +1,6 @@
 <!--
-  @package ips
-  @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
+  @package ts
+  @author N. Y. Wirawan <ny4tips@gmail.com>
   @since 2019
 -->
 <template>
@@ -21,10 +21,7 @@
 
 .sidebar.component .navigation-bar.component .ui.menu {
   border-radius: 0;
-  height: 100%;
-  overflow-y: auto;
-  overflow-x: hidden;
-  max-height: 100%;
+  height: inherit;
   border-top: 0;
 }
 
@@ -33,7 +30,6 @@
   margin-bottom: .25em;
 }
 </style>
-
 
 <script lang="ts">
 // Vue & Libraries
@@ -56,8 +52,8 @@ import BaseComponent from '@/iochord/ips/common/ui/layout/class/BaseComponent';
  * @class SidebarComponent
  * @extends {BaseComponent}
  *
- * @package ips
- * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
+ * @package ts
+ * @author N. Y. Wirawan <ny4tips@gmail.com>
  * @since 2019
  */
 export default class SidebarComponent extends BaseComponent {

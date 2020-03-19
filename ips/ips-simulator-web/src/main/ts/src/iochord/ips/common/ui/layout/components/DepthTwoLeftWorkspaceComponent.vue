@@ -1,6 +1,6 @@
 <!--
-  @package ips
-  @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
+  @package ts
+  @author N. Y. Wirawan <ny4tips@gmail.com>
   @since 2019
 -->
 <template>
@@ -13,14 +13,12 @@
     </SidebarComponent>
 
     <!-- Depth Two Menu Item -->
-    <SidebarComponent id="depth-two">
-      <template slot="sidebar-menu-item">
-        <slot name="depth-two-menu-item"></slot>
-      </template>
-    </SidebarComponent>
+    <div id="depth-two">
+      <slot name="depth-two-menu-item"></slot>
+    </div>
 
     <!-- Content -->
-    <div class="ui basic segment">
+    <div class="ui basic segment" id="content">
       <slot name="content"></slot>
     </div>
   </div>
@@ -39,8 +37,17 @@
   white-space: nowrap;
 }
 
-.ui.basic.segment {
+#depth-two {
+  padding: 1rem 0;
   overflow-y: scroll;
+  overflow-x: auto;
+  min-width: fit-content;
+}
+
+.ui.basic.segment#content {
+  margin-top: 0;
+  padding-top: 2em;
+  overflow-y: auto;
   width: 100%;
 }
 </style>
@@ -63,8 +70,8 @@ import SidebarComponent from '@/iochord/ips/common/ui/layout/components/SidebarC
  * @class ContentComponent
  * @extends {BaseComponent}
  *
- * @package ips
- * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
+ * @package ts
+ * @author N. Y. Wirawan <ny4tips@gmail.com>
  * @since 2019
  */
 export default class DepthTwoLeftWorkspaceComponent extends BaseComponent {

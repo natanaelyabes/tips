@@ -11,7 +11,7 @@ build:
   stage: build
   script: 
     - gradle --build-cache build
-    - gradle sonarqube -x test -Dsonar.projectKey=ips -Dsonar.host.url=http://apps-sonarqube-sonarqube:9000 -Dsonar.login=e8008f23a68aa7c49851cd5947a043288453f5af --stacktrace
+    - gradle sonarqube -x test -Dsonar.projectKey=ips -Dsonar.host.url=http://apps-sonarqube-sonarqube:9000 -Dsonar.login=772e702bc2406c2c88573c4cf76481fb739a137a --stacktrace
     - gradle artifactoryPublish
   cache:
     key: "$CI_COMMIT_REF_NAME"
@@ -25,7 +25,7 @@ sonar-ts:
   stage: build
   variables:
     SONAR_HOST_URL: 'http://apps-sonarqube-sonarqube:9000'
-    SONAR_TOKEN: 'e8008f23a68aa7c49851cd5947a043288453f5af'
+    SONAR_TOKEN: '772e702bc2406c2c88573c4cf76481fb739a137a'
   script:
     - cd $CI_PROJECT_DIR/ips/ips-simulator-web/src/main/ts
     - sonar-scanner -Dsonar.projectKey=ips-ui -Dsonar.sources=./src/iochord -Dsonar.host.url=$SONAR_HOST_URL -Dsonar.login=$SONAR_TOKEN

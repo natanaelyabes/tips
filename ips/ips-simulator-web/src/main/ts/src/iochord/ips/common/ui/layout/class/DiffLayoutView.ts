@@ -12,8 +12,8 @@ import { Component } from 'vue-property-decorator';
  * @extends {PageLayout}
  * @implements {DiffLayout}
  *
- * @package ips
- * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
+ * @package ts
+ * @author N. Y. Wirawan <ny4tips@gmail.com>
  * @since 2019
  *
  */
@@ -82,7 +82,7 @@ export default class DiffLayoutView extends PageLayout implements DiffLayout {
    * @memberof DiffLayoutView
    */
   public setTitle(): void {
-    console.warn('Method setTitle not implemented.');
+    // console.warn('Method setTitle not implemented.');
   }
 
   /**
@@ -91,7 +91,7 @@ export default class DiffLayoutView extends PageLayout implements DiffLayout {
    * @memberof DiffLayoutView
    */
   public setBreadcrumb(): void {
-    console.warn('Method setBreadcrumb not implemented.');
+    // console.warn('Method setBreadcrumb not implemented.');
   }
 
   /**
@@ -100,7 +100,7 @@ export default class DiffLayoutView extends PageLayout implements DiffLayout {
    * @memberof DiffLayoutView
    */
   public setTitleMenuBar(): void {
-    console.warn('Method setTitleMenubar not implemented.');
+    // console.warn('Method setTitleMenubar not implemented.');
   }
 
   /**
@@ -109,7 +109,7 @@ export default class DiffLayoutView extends PageLayout implements DiffLayout {
    * @memberof DiffLayoutView
    */
   public setLeftMenuSideBar(): void {
-    console.warn('Method setLeftMenuSidebar not implemented.');
+    // console.warn('Method setLeftMenuSidebar not implemented.');
   }
 
   /**
@@ -118,7 +118,7 @@ export default class DiffLayoutView extends PageLayout implements DiffLayout {
    * @memberof DiffLayoutView
    */
   public setLeftContent(): void {
-    console.warn('Method setContent not implemented.');
+    // console.warn('Method setContent not implemented.');
   }
 
   /**
@@ -127,7 +127,7 @@ export default class DiffLayoutView extends PageLayout implements DiffLayout {
    * @memberof DiffLayoutView
    */
   public setRightContent(): void {
-    console.warn('Method setContent not implemented.');
+    // console.warn('Method setContent not implemented.');
   }
 
   /**

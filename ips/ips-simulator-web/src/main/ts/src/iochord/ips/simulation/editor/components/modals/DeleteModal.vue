@@ -1,6 +1,6 @@
 <!--
-  @package ips
-  @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
+  @package ts
+  @author N. Y. Wirawan <ny4tips@gmail.com>
   @since 2019
 -->
 <template>
@@ -67,18 +67,18 @@ import { getModule } from 'vuex-module-decorators';
 import { DeletableModal } from '../../interfaces/DeletableModal';
 
 // Classes
-import GraphModule from '@/iochord/ips/common/graph/ism/stores/GraphModule';
+import GraphModule from '@/iochord/ips/common/graphs/ism/stores/GraphModule';
 import SemanticComponent from '@/iochord/ips/common/ui/semantic-components/SemanticComponent';
-import { JointGraphPageImpl } from '../../../../common/graph/ism/rendering-engine/joint/shapes/class/JointGraphPageImpl';
+import { JointGraphPageImpl } from '../../../../common/graphs/ism/rendering-engine/joint/shapes/class/JointGraphPageImpl';
 import { TSMap } from 'typescript-map';
-import { GraphPage } from '@/iochord/ips/common/graph/ism/interfaces/GraphPage';
-import { GraphStartEventNodeImpl } from '../../../../common/graph/ism/class/components/GraphStartEventNodeImpl';
-import { GraphActivityNodeImpl } from '../../../../common/graph/ism/class/components/GraphActivityNodeImpl';
-import { GraphDataGeneratorImpl } from '../../../../common/graph/ism/class/components/GraphDataGeneratorImpl';
-import { GraphDataObjectTypeImpl } from '../../../../common/graph/ism/class/components/GraphDataObjectTypeImpl';
-import { GraphDataFunctionImpl } from '../../../../common/graph/ism/class/components/GraphDataFunctionImpl';
-import { GraphDataResourceImpl } from '@/iochord/ips/common/graph/ism/class/components/GraphDataResourceImpl';
-import GraphSubject from '@/iochord/ips/common/graph/ism/rxjs/GraphSubject';
+import { GraphPage } from '@/iochord/ips/common/graphs/ism/interfaces/GraphPage';
+import { GraphStartEventNodeImpl } from '../../../../common/graphs/ism/class/components/GraphStartEventNodeImpl';
+import { GraphActivityNodeImpl } from '../../../../common/graphs/ism/class/components/GraphActivityNodeImpl';
+import { GraphDataGeneratorImpl } from '../../../../common/graphs/ism/class/components/GraphDataGeneratorImpl';
+import { GraphDataObjectTypeImpl } from '../../../../common/graphs/ism/class/components/GraphDataObjectTypeImpl';
+import { GraphDataFunctionImpl } from '../../../../common/graphs/ism/class/components/GraphDataFunctionImpl';
+import { GraphDataResourceImpl } from '@/iochord/ips/common/graphs/ism/class/components/GraphDataResourceImpl';
+import GraphSubject from '@/iochord/ips/common/graphs/ism/rxjs/GraphSubject';
 
 // Vuex
 const graphModule = getModule(GraphModule);
@@ -104,8 +104,8 @@ declare const $: any;
  * @extends {SemanticComponent}
  * @implements {DeletableModal}
  *
- * @package ips
- * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
+ * @package ts
+ * @author N. Y. Wirawan <ny4tips@gmail.com>
  * @since 2019
  */
 export default class DeleteModal extends SemanticComponent implements DeletableModal {

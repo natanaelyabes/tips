@@ -42,7 +42,7 @@ abstract class Simulation(val simulator:Simulator = new Simulator(true)) {
   }
   
   /**
-   * @param n : run the simulation with number of specific defined step
+   * @param n : assign and run the simulation until number of specific step
    */
   def runStep(n:Int): Unit = {
     this.stopCrit = (stop:Any) => stop match { case stop:Boolean => stop }
@@ -52,7 +52,7 @@ abstract class Simulation(val simulator:Simulator = new Simulator(true)) {
   }
   
   /**
-   * @param n : run the simulation by activate concurrent checking of enabled transition with number of specific defined step
+   * @param n : assign and run the simulation by activate concurrent checking of enabled transition until number of specific step
    */
   def runStepWithCon(n:Int): Unit = {
     this.stopCrit = (stop:Any) => stop match { case stop:Boolean => stop }
@@ -62,10 +62,10 @@ abstract class Simulation(val simulator:Simulator = new Simulator(true)) {
   }
   
   /**
-   * @param timeUntil
-   * @param n
+   * @param timeUntil : assign and run the simulation until specific global time is reached
+   * @param n : assign and run the simulation until number of specific step
    * 
-   * Run simulation with specific number of step or stop if current global time exceeds timeUntil
+   * Run simulation with specific number of step or stop if current global time exceeds timeUntil (OR condition)
    */
   def runStepTime(timeUntil:Long, n:Int) = {
     this.stopCrit = (globT:Any) => globT match { case globT:GlobalTime => globT.time >= timeUntil }
@@ -99,8 +99,8 @@ abstract class Simulation(val simulator:Simulator = new Simulator(true)) {
   }
   
   /**
-   * run simulation without any stopping criteria at all.
-   * If max arrival is defined in generator, the simulation will stop if this condicitoon is meet.
+   * run simulation without defined stopping criteria at all.
+   * If max arrival is defined in generator, the simulation will stop if that condition (max arrival) is meet.
    * But if no max arrival is defined, the simulation will run infinitely
    */
   def runUntilMaxArrival(): Unit = {
@@ -111,7 +111,7 @@ abstract class Simulation(val simulator:Simulator = new Simulator(true)) {
   }
   
   /**
-   * @param stopCritLoc : set function for stopping criteria and give default value stop directly if this function is not defined)
+   * @param stopCritLoc : assign function for stopping criteria and give default anonymous function to stop directly if this stopCirtLoc function is not defined)
    * @param inpStopCritLoc : input for function stopCritLoc above
    * 
    * Running simulation until specific criteria defined is meet.

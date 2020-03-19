@@ -1,6 +1,6 @@
 <!--
-  @package ips
-  @author Riska Asriana Sutrisnowati <riska@iochord.com>
+  @package ts
+  @author R. A. Sutrisnowati <riska@iochord.com>
   @since 2019
 -->
 <template>
@@ -19,7 +19,7 @@
       <!-- Depth One Left Sidebar Menu Item -->
       <template slot="depth-one-menu-item">
         <a href="/#/iochord/ips/data/connection" class="item">List of connection</a>
-        <a href="/#/iochord/ips/data/connection/new" class="item">New connection</a>
+        <a href="/#/iochord/ips/data/connection/new" class="item active">New connection</a>
         <a href="/#/iochord/ips/data/connection/upload" class="item">Import</a>
       </template>
 
@@ -85,8 +85,8 @@ import ItemConnectionComponent from '../components/ItemConnectionComponent.vue';
  * @class DataConnectionNew
  * @extends {ExplorerLayoutView}
  *
- * @package ips
- * @author Riska Asriana Sutrisnowati <riska@iochord.com>
+ * @package ts
+ * @author R. A. Sutrisnowati <riska@iochord.com>
  * @since 2019
  */
 export default class DataConnectionNew extends ExplorerLayoutView {

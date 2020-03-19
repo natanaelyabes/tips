@@ -1,6 +1,6 @@
 <!--
-  @package ips
-  @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
+  @package ts
+  @author N. Y. Wirawan <ny4tips@gmail.com>
   @since 2019
 -->
 <template>
@@ -67,8 +67,8 @@
 <style>
 /**
  *
- * @package ips
- * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
+ * @package ts
+ * @author N. Y. Wirawan <ny4tips@gmail.com>
  * @since 2019
  *
  */
@@ -90,11 +90,11 @@ import IndexLayout from '../../layout/class/IndexLayout';
 
 // Components
 import NavigationTopSidebarComponent from '../../semantic-components/navigations/components/NavigationTopSidebarComponent.vue';
-import { Graph } from '../../../graph/ism/interfaces/Graph';
+import { Graph } from '../../../graphs/ism/interfaces/Graph';
 
 // Vuex & Rxjs
-import GraphModule from '../../../graph/ism/stores/GraphModule';
-import GraphSubject from '../../../graph/ism/rxjs/GraphSubject';
+import GraphModule from '../../../graphs/ism/stores/GraphModule';
+import GraphSubject from '../../../graphs/ism/rxjs/GraphSubject';
 
 // JQuery Symbol Handler
 declare const $: any;
@@ -120,8 +120,8 @@ const graphModule = getModule(GraphModule);
  * @class IpsLayout
  * @extends {IndexLayout}
  *
- * @package ips
- * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
+ * @package ts
+ * @author N. Y. Wirawan <ny4tips@gmail.com>
  * @since 2019
  */
 export default class IpsLayout extends IndexLayout {

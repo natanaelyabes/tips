@@ -11,8 +11,8 @@ import { SemanticModulesIsUsed } from '@/iochord/ips/common/ui/semantic-componen
  * @extends {Vue}
  * @implements {SemanticModulesIsUsed}
  *
- * @package ips
- * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
+ * @package ts
+ * @author N. Y. Wirawan <ny4tips@gmail.com>
  * @since 2019
  *
  */

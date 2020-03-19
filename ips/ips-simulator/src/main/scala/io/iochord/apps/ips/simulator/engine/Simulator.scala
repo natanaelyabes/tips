@@ -64,7 +64,10 @@ case class Simulator(calcAvgTimeEnTr:Boolean = false) {
    */
   private def evalGlobalTime(net:CPNGraph, globtime:GlobalTime):(Boolean,List[Transition[_]]) = {
     var times = List[Long]()
-    net.allPlaces.foreach(place => { val multiset = place.getCurrentMarking().multiset; multiset.keys.filter(_._2 > globtime.time).foreach(key => { times = key._2::times }) })
+    net.allPlaces.foreach(place => { 
+      val multiset = place.getCurrentMarking().multiset
+      multiset.keys.filter(_._2 > globtime.time).foreach(key => { times = key._2::times }) 
+    })
     times = times.distinct.sorted
     times.foreach(time => {
       val trans = net.allTransitions.filter(t => {t.isEnabled(time)})
@@ -86,7 +89,10 @@ case class Simulator(calcAvgTimeEnTr:Boolean = false) {
   private def evalAsyncGlobalTime(net:CPNGraph, globtime:GlobalTime):(Boolean,List[Transition[_]]) = {
     var trans:List[Transition[_]] = null
     var times = List[Long]()
-    net.allPlaces.foreach(place => { val multiset = place.getCurrentMarking().multiset; multiset.keys.filter(_._2 > globtime.time).foreach(key => { times = key._2::times }) })
+    net.allPlaces.foreach(place => { 
+      val multiset = place.getCurrentMarking().multiset
+      multiset.keys.filter(_._2 > globtime.time).foreach(key => { times = key._2::times }) 
+    })
     times = times.distinct.sorted
     times.foreach(time => {
       val enF: Future[List[Transition[_]]] = 
@@ -154,7 +160,6 @@ case class Simulator(calcAvgTimeEnTr:Boolean = false) {
           val tnow = System.nanoTime()
           val enTr = tnow - stTimeEnTr
           avgTimeEnTr = if(c == 0) enTr else (avgTimeEnTr + enTr)/2
-          //println(c + " : " + avgTimeEnTr + " , " + enTr + " , " + stTimeEnTr + " , " +tnow)
         }
         
         val r = new java.util.Random();
@@ -165,18 +170,13 @@ case class Simulator(calcAvgTimeEnTr:Boolean = false) {
         
         transition.getIn().foreach(arc => { val multiset = arc.getPlace().getCurrentMarking().multiset; markbefore.put((arc.getPlace().getId(),arc.getPlace().getOrigin()),multiset.clone()) } )
         transition.getOut().foreach(arc => { val multiset = arc.getPlace().getCurrentMarking().multiset; markbefore.put((arc.getPlace().getId(),arc.getPlace().getOrigin()),multiset.clone()) } )
-        //println(markbefore)
-        //println(transition.getName())
         
         val bindingChosen = transition.execute(globtime.time)
         
         transition.getIn().foreach(arc => { val multiset = arc.getPlace().getCurrentMarking().multiset; markafter.put((arc.getPlace().getId(),arc.getPlace().getOrigin()),multiset.clone()) } )
         transition.getOut().foreach(arc => { val multiset = arc.getPlace().getCurrentMarking().multiset; markafter.put((arc.getPlace().getId(),arc.getPlace().getOrigin()),multiset.clone()) } )
-        //println(markafter)
         
         if(subject != null) {
-          //println("================ Step: "+c+" | globtime: "+globtime.time+" ================")
-          //println("Transition: "+transition.getId(),transition.getName())
           subject.setMarking((globtime.getTime(), c+1, (transition.getId(), transition.getOrigin()),markbefore,markafter)) 
         }
         c += 1
@@ -230,7 +230,6 @@ case class Simulator(calcAvgTimeEnTr:Boolean = false) {
           val tnow = System.nanoTime()
           val enTr = tnow - stTimeEnTr
           avgTimeEnTr = if(c == 0) enTr else (avgTimeEnTr + enTr)/2
-          //println(c + " : " + avgTimeEnTr + " , " + enTr + " , " + stTimeEnTr + " , " +tnow)
         }
         
         val r = new java.util.Random()
@@ -244,18 +243,13 @@ case class Simulator(calcAvgTimeEnTr:Boolean = false) {
           markbefore.put((arc.getPlace().getId(), arc.getPlace().getOrigin()), multiset.clone());
         });
         transition.getOut().foreach(arc => { val multiset = arc.getPlace().getCurrentMarking().multiset; markbefore.put((arc.getPlace().getId(),arc.getPlace().getOrigin()),multiset.clone()) } )
-        //println(markbefore)
-        //println(transition.getName())
         
         val bindingChosen = transition.execute(globtime.time)
         
         transition.getIn().foreach(arc => { val multiset = arc.getPlace().getCurrentMarking().multiset; markafter.put((arc.getPlace().getId(),arc.getPlace().getOrigin()),multiset.clone()) } )
         transition.getOut().foreach(arc => { val multiset = arc.getPlace().getCurrentMarking().multiset; markafter.put((arc.getPlace().getId(),arc.getPlace().getOrigin()),multiset.clone()) } )
-        //println(markafter)
         
         if(subject != null) {
-          //println("================ Step: "+c+" | globtime: "+globtime.time+" ================")
-          //println("Transition: "+transition.getId(),transition.getName())
           subject.setMarking((globtime.getTime(), c+1, (transition.getId(), transition.getOrigin()),markbefore,markafter))   
         }
         c += 1

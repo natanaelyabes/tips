@@ -1,6 +1,6 @@
 <!--
-  @package ips
-  @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
+  @package ts
+  @author N. Y. Wirawan <ny4tips@gmail.com>
   @since 2019
 -->
 <template>
@@ -162,11 +162,11 @@
 <script lang="ts">
 import { Prop, Component } from 'vue-property-decorator';
 import BaseComponent from '@/iochord/ips/common/ui/layout/class/BaseComponent';
-import { GraphData } from '@/iochord/ips/common/graph/ism/interfaces/GraphData';
-import GraphModule from '@/iochord/ips/common/graph/ism/stores/GraphModule';
+import { GraphData } from '@/iochord/ips/common/graphs/ism/interfaces/GraphData';
+import GraphModule from '@/iochord/ips/common/graphs/ism/stores/GraphModule';
 import { getModule } from 'vuex-module-decorators';
 import { TSMap } from 'typescript-map';
-import { GraphPage } from '@/iochord/ips/common/graph/ism/interfaces/GraphPage';
+import { GraphPage } from '@/iochord/ips/common/graphs/ism/interfaces/GraphPage';
 
 declare const $: any;
 
@@ -177,8 +177,8 @@ const graphModule = getModule(GraphModule);
 /**
  * The control palette component.
  *
- * @package ips
- * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
+ * @package ts
+ * @author N. Y. Wirawan <ny4tips@gmail.com>
  * @since 2019
  */
 export default class ControlPaletteComponent extends BaseComponent {

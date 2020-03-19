@@ -5,26 +5,26 @@ import { Component } from 'vue-property-decorator';
 import { getModule } from 'vuex-module-decorators';
 
 // Interfaces
-import { GraphConnector } from '@/iochord/ips/common/graph/ism/interfaces/GraphConnector';
-import { GraphNode } from '@/iochord/ips/common/graph/ism/interfaces/GraphNode';
-import { JointGraphPageImpl } from '@/iochord/ips/common/graph/ism/rendering-engine/joint/shapes/class/JointGraphPageImpl';
-import { JointGraphConnectorImpl } from '@/iochord/ips/common/graph/ism/rendering-engine/joint/shapes/class/JointGraphConnectorImpl';
+import { GraphConnector } from '@/iochord/ips/common/graphs/ism/interfaces/GraphConnector';
+import { GraphNode } from '@/iochord/ips/common/graphs/ism/interfaces/GraphNode';
+import { JointGraphPageImpl } from '@/iochord/ips/common/graphs/ism/rendering-engine/joint/shapes/class/JointGraphPageImpl';
+import { JointGraphConnectorImpl } from '@/iochord/ips/common/graphs/ism/rendering-engine/joint/shapes/class/JointGraphConnectorImpl';
 
 // Classes
 import BaseComponent from '@/iochord/ips/common/ui/layout/class/BaseComponent';
-import { GraphConnectorImpl } from '@/iochord/ips/common/graph/ism/class/GraphConnectorImpl';
+import { GraphConnectorImpl } from '@/iochord/ips/common/graphs/ism/class/GraphConnectorImpl';
 
 // Vuex & Rxjs
 
 /** Graph */
-import GraphModule from '@/iochord/ips/common/graph/ism/stores/GraphModule';
-import GraphSubject from '@/iochord/ips/common/graph/ism/rxjs/GraphSubject';
+import GraphModule from '@/iochord/ips/common/graphs/ism/stores/GraphModule';
+import GraphSubject from '@/iochord/ips/common/graphs/ism/rxjs/GraphSubject';
 
 /** Graph Editor */
 import EditorState from '../../../stores/editors/EditorState';
-import { ARC_TYPE } from '@/iochord/ips/common/graph/ism/rendering-engine/joint/shapes/enums/ARC';
-import { NODE_TYPE } from '@/iochord/ips/common/graph/ism/enums/NODE';
-import { GraphNodeImpl } from '@/iochord/ips/common/graph/ism/class/GraphNodeImpl';
+import { ARC_TYPE } from '@/iochord/ips/common/graphs/ism/rendering-engine/joint/shapes/enums/ARC';
+import { NODE_TYPE } from '@/iochord/ips/common/graphs/ism/enums/NODE';
+import { GraphNodeImpl } from '@/iochord/ips/common/graphs/ism/class/GraphNodeImpl';
 
 // Fetch module from stores
 const graphModule = getModule(GraphModule);
@@ -47,8 +47,8 @@ const editorState = getModule(EditorState);
  * @class ConnectorMixin
  * @extends {BaseComponent}
  *
- * @package ips
- * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
+ * @package ts
+ * @author N. Y. Wirawan <ny4tips@gmail.com>
  * @since 2019
  */
 export default class ConnectorMixin extends BaseComponent {

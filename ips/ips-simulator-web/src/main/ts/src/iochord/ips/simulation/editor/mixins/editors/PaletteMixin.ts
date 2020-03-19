@@ -34,8 +34,8 @@ export enum TOOLBOX {
  * @class PaletteMixin
  * @extends {Mixins(BaseComponent, NodeMixin, DataMixin, ConnectorMixin)}
  *
- * @package ips
- * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
+ * @package ts
+ * @author N. Y. Wirawan <ny4tips@gmail.com>
  * @since 2019
  */
 export default class PaletteMixin extends Mixins(BaseComponent, NodeMixin, DataMixin, ConnectorMixin) {

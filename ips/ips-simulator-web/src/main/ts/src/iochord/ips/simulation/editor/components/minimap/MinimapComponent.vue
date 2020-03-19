@@ -1,6 +1,6 @@
 <!--
-  @package ips
-  @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
+  @package ts
+  @author N. Y. Wirawan <ny4tips@gmail.com>
   @since 2019
 -->
 <template>
@@ -13,6 +13,9 @@
 </template>
 
 <style>
+.minimap.component {
+  height: 100%; 
+}
 #minimap {
   cursor: pointer;
   border: 1px solid black;
@@ -48,22 +51,22 @@ import SvgPanZoom from 'svg-pan-zoom';
 
 // Classes
 import BaseComponent from '@/iochord/ips/common/ui/layout/class/BaseComponent';
-import { Graph } from '@/iochord/ips/common/graph/ism/interfaces/Graph';
-import { GraphControlImpl } from '@/iochord/ips/common/graph/ism/class/components/GraphControlImpl';
-import { GraphImpl } from '@/iochord/ips/common/graph/ism/class/GraphImpl';
-import { GraphNode } from '@/iochord/ips/common/graph/ism/interfaces/GraphNode';
-import { GraphPage } from '@/iochord/ips/common/graph/ism/interfaces/GraphPage';
-import { GraphPageImpl } from '@/iochord/ips/common/graph/ism/class/GraphPageImpl';
-import { JointGraphConnectorImpl } from '@/iochord/ips/common/graph/ism/rendering-engine/joint/shapes/class/JointGraphConnectorImpl';
-import { JointGraphNodeImpl } from '@/iochord/ips/common/graph/ism/rendering-engine/joint/shapes/class/JointGraphNodeImpl';
-import { JointGraphPageImpl } from '@/iochord/ips/common/graph/ism/rendering-engine/joint/shapes/class/JointGraphPageImpl';
-import JointJsRenderer from '@/iochord/ips/common/graph/ism/rendering-engine/joint/class/JointJsRenderer';
+import { Graph } from '@/iochord/ips/common/graphs/ism/interfaces/Graph';
+import { GraphControlImpl } from '@/iochord/ips/common/graphs/ism/class/components/GraphControlImpl';
+import { GraphImpl } from '@/iochord/ips/common/graphs/ism/class/GraphImpl';
+import { GraphNode } from '@/iochord/ips/common/graphs/ism/interfaces/GraphNode';
+import { GraphPage } from '@/iochord/ips/common/graphs/ism/interfaces/GraphPage';
+import { GraphPageImpl } from '@/iochord/ips/common/graphs/ism/class/GraphPageImpl';
+import { JointGraphConnectorImpl } from '@/iochord/ips/common/graphs/ism/rendering-engine/joint/shapes/class/JointGraphConnectorImpl';
+import { JointGraphNodeImpl } from '@/iochord/ips/common/graphs/ism/rendering-engine/joint/shapes/class/JointGraphNodeImpl';
+import { JointGraphPageImpl } from '@/iochord/ips/common/graphs/ism/rendering-engine/joint/shapes/class/JointGraphPageImpl';
+import JointJsRenderer from '@/iochord/ips/common/graphs/ism/rendering-engine/joint/class/JointJsRenderer';
 
 // Mixins
 import CanvasMixin from '../../mixins/editors/CanvasMixin';
 
 // Vuex
-import GraphModule from '@/iochord/ips/common/graph/ism/stores/GraphModule';
+import GraphModule from '@/iochord/ips/common/graphs/ism/stores/GraphModule';
 
 // Vuex module instance
 const graphModule = getModule(GraphModule);
@@ -78,8 +81,8 @@ declare const $: any;
  * @class MinimapComponent
  * @extends {Mixins(BaseComponent, CanvasMixin)}
  *
- * @package ips
- * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
+ * @package ts
+ * @author N. Y. Wirawan <ny4tips@gmail.com>
  * @since 2019
  */
 export default class MinimapComponent extends Mixins(BaseComponent, CanvasMixin) {

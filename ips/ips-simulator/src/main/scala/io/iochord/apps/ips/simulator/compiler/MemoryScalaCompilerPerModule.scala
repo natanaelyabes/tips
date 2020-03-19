@@ -12,6 +12,8 @@ import java.util.LinkedHashMap
  * @since   2019
  *
  * Compile class that take Map of scala string as input (per module)
+ * Notice here we use LinkedHashMap from java.util not from scala library directly
+ * Bacause we send LinkedHashMap from class from Java (Converter), we must use LinkedHashMap based on java in this scala class (not LinkHashMap of scala)
  */
 
 class MemoryScalaCompilerPerModule(scalaSource: LinkedHashMap[String,String]) {
@@ -48,7 +50,7 @@ class MemoryScalaCompilerPerModule(scalaSource: LinkedHashMap[String,String]) {
   /**
    * @return instance of simulation class after compiled
    * It compiled incrementally per module. 
-   * You should able to differentiate between getInstance in MemoryScalaCompiler and MemoryScalaFileCompiler
+   * You should able to differentiate between getInstance in here and  (MemoryScalaCompiler and MemoryScalaFileCompiler)
    */
   def getInstance = { 
     val sim = compiledCode().asInstanceOf[Simulation]

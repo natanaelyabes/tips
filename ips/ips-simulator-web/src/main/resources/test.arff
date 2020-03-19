@@ -1,0 +1,16 @@
+@relation test
+
+@attribute eid numeric
+@attribute case_id {'Case 1','Case 2','Case 3','Case 4','Case 5','Case 6'}
+@attribute Amount numeric
+@attribute CustomerID {C567894938,C938609223,C135697567,C568120443,C493823084,C945675110}
+@attribute PolicyType {premium,normal}
+@attribute class {'Check policy only','Check all'}
+
+@data
+1,'Case 1',1000,C567894938,premium,'Check policy only'
+2,'Case 2',700,C938609223,normal,'Check all'
+3,'Case 3',550,C135697567,normal,'Check all'
+4,'Case 4',500,C568120443,normal,'Check policy only'
+5,'Case 5',50,C493823084,normal,'Check policy only'
+6,'Case 6',200,C945675110,premium,'Check policy only'

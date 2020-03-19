@@ -12,8 +12,8 @@ import { Component } from 'vue-property-decorator';
  * @extends {PageLayout}
  * @implements {VisualizerLayout}
  *
- * @package ips
- * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
+ * @package ts
+ * @author N. Y. Wirawan <ny4tips@gmail.com>
  * @since 2019
  */
 export default class VisualizerLayoutView extends PageLayout implements VisualizerLayout {
@@ -74,7 +74,7 @@ export default class VisualizerLayoutView extends PageLayout implements Visualiz
    * @memberof VisualizerLayoutView
    */
   public setTitle(): void {
-    console.warn('Method setTitle not implemented.');
+    // console.warn('Method setTitle not implemented.');
   }
 
   /**
@@ -83,7 +83,7 @@ export default class VisualizerLayoutView extends PageLayout implements Visualiz
    * @memberof VisualizerLayoutView
    */
   public setBreadcrumb(): void {
-    console.warn('Method setBreadcrumb not implemented.');
+    // console.warn('Method setBreadcrumb not implemented.');
   }
 
   /**
@@ -92,7 +92,7 @@ export default class VisualizerLayoutView extends PageLayout implements Visualiz
    * @memberof VisualizerLayoutView
    */
   public setTitleMenubar(): void {
-    console.warn('Method setTitleMenubar not implemented.');
+    // console.warn('Method setTitleMenubar not implemented.');
   }
 
   /**
@@ -101,7 +101,7 @@ export default class VisualizerLayoutView extends PageLayout implements Visualiz
    * @memberof VisualizerLayoutView
    */
   public setSettingsBar(): void {
-    console.warn('Method setTitleMenubar not implemented.');
+    // console.warn('Method setTitleMenubar not implemented.');
   }
 
   /**
@@ -110,7 +110,7 @@ export default class VisualizerLayoutView extends PageLayout implements Visualiz
    * @memberof VisualizerLayoutView
    */
   public setContent(): void {
-    console.warn('Method setContent not implemented.');
+    // console.warn('Method setContent not implemented.');
   }
 
   /**

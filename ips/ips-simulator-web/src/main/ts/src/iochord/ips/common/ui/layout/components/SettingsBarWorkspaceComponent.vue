@@ -1,6 +1,6 @@
 <!--
-  @package ips
-  @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
+  @package ts
+  @author N. Y. Wirawan <ny4tips@gmail.com>
   @since 2019
 -->
 <template>
@@ -33,9 +33,9 @@
 }
 
 .ui.basic.segment {
-  overflow-y: scroll;
+  overflow-y: auto;
   width: 100%;
-  height: 100%;
+  height: auto;
 }
 </style>
 
@@ -57,8 +57,8 @@ import RibbonComponent from '@/iochord/ips/common/ui/layout/components/RibbonCom
  * @class SettingsBarWorkspaceComponent
  * @extends {BaseComponent}
  *
- * @package ips
- * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
+ * @package ts
+ * @author N. Y. Wirawan <ny4tips@gmail.com>
  * @since 2019
  */
 export default class SettingsBarWorkspaceComponent extends BaseComponent {

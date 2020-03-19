@@ -1,6 +1,6 @@
 <!--
-  @package ips
-  @author Riska Asriana Sutrisnowati <riska@iochord.com>
+  @package ts
+  @author R. A. Sutrisnowati <riska@iochord.com>
   @since 2019
 -->
 <template>
@@ -63,8 +63,8 @@ import BaseComponent from '@/iochord/ips/common/ui/layout/class/BaseComponent';
  * @class ContentFileQueryComponent
  * @extends {BaseComponent}
  *
- * @package ips
- * @author Riska Asriana Sutrisnowati <riska@iochord.com>
+ * @package ts
+ * @author R. A. Sutrisnowati <riska@iochord.com>
  * @since 2019
  */
 export default class ContentFileQueryComponent extends BaseComponent {

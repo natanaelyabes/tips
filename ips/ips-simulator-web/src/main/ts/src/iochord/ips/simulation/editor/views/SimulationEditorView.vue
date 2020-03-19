@@ -1,6 +1,6 @@
 <!--
-  @package ips
-  @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
+  @package ts
+  @author N. Y. Wirawan <ny4tips@gmail.com>
   @since 2019
 -->
 <template>
@@ -51,13 +51,12 @@
 
       <!-- Content -->
       <template slot="content">
-        <CanvasComponent :isDisabled="isDisabled" :key="reRenderKey" v-bind:response="graphData" />
+        <CanvasComponent :isDisabled="isDisabled" :key="reRenderKey" :response="graphData" />
       </template>
 
       <template slot="right-sidebar-menu-item">
-        <MinimapComponent v-bind:response="graphData" />
+        <MinimapComponent :response="graphData" />
       </template>
-
     </WrapperComponent>
 
     <div ref="report" class="ui overlay fullscreen modal">
@@ -140,7 +139,19 @@
   </div>
 </template>
 
+<style>
+.sidebar.component .navigation-bar.component {
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+</style>
+
 <style scoped>
+::-webkit-scrollbar {
+  width: .2em!important;
+  height: .2em!important;
+}
+
 .image-icon .ui.image {
   border-radius: 0;
   margin-bottom: .5em;
@@ -187,22 +198,22 @@ import '#root/node_modules/jointjs/dist/joint.css';
 
 // Classes
 import AppLayoutView from '@/iochord/ips/common/ui/layout/class/AppLayoutView';
-import { GraphImpl } from '@/iochord/ips/common/graph/ism/class/GraphImpl';
-import { GraphNodeImpl } from '@/iochord/ips/common/graph/ism/class/GraphNodeImpl';
-import { GraphConnectorImpl } from '@/iochord/ips/common/graph/ism/class/GraphConnectorImpl';
-import { GraphPageImpl } from '@/iochord/ips/common/graph/ism/class/GraphPageImpl';
+import { GraphImpl } from '@/iochord/ips/common/graphs/ism/class/GraphImpl';
+import { GraphNodeImpl } from '@/iochord/ips/common/graphs/ism/class/GraphNodeImpl';
+import { GraphConnectorImpl } from '@/iochord/ips/common/graphs/ism/class/GraphConnectorImpl';
+import { GraphPageImpl } from '@/iochord/ips/common/graphs/ism/class/GraphPageImpl';
 
 // Interfaces
 import { AppLayout } from '@/iochord/ips/common/ui/layout/interfaces/AppLayout';
 import { BrowserHasProperties } from '@/iochord/ips/common/browser/interfaces/BrowserHasProperties';
 import { SemanticModulesIsUsed } from '@/iochord/ips/common/ui/semantic-components/SemanticModulesIsUsed';
-import { Graph } from '@/iochord/ips/common/graph/ism/interfaces/Graph';
+import { Graph } from '@/iochord/ips/common/graphs/ism/interfaces/Graph';
 
 // Enums
 import { ApplicationEnum, BaseUrlEnum } from '@/iochord/ips/common/enums/index';
 
 // Services
-import { IsmModelService } from '@/iochord/ips/common/service/model/IsmModelService';
+import { IsmModelService } from '@/iochord/ips/common/graphs/ism/services/IsmModelService';
 
 // Components
 import WrapperComponent from '@/iochord/ips/common/ui/layout/components/WrapperComponent.vue';
@@ -216,10 +227,10 @@ import CanvasComponent from '../components/canvas/CanvasComponent.vue';
 import MinimapComponent from '../components/minimap/MinimapComponent.vue';
 
 // Vuex & rxjs
-import GraphModule from '@/iochord/ips/common/graph/ism/stores/GraphModule';
-import GraphSubject from '@/iochord/ips/common/graph/ism/rxjs/GraphSubject';
+import GraphModule from '@/iochord/ips/common/graphs/ism/stores/GraphModule';
+import GraphSubject from '@/iochord/ips/common/graphs/ism/rxjs/GraphSubject';
 
-import { IsmSimulatorService } from '@/iochord/ips/common/service/simulator/IsmSimulatorService';
+import { IsmSimulatorService } from '@/iochord/ips/simulation/editor/services/IsmSimulatorService';
 
 // Vuex module
 const graphModule = getModule(GraphModule);
@@ -254,8 +265,8 @@ declare const $: any;
  * @class SimulationEditorView
  * @extends {AppLayoutView}
  *
- * @package ips
- * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
+ * @package ts
+ * @author N. Y. Wirawan <ny4tips@gmail.com>
  * @since 2019
  */
 export default class SimulationEditorView extends AppLayoutView {

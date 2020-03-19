@@ -1,6 +1,6 @@
 <!--
-  @package ips
-  @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
+  @package ts
+  @author N. Y. Wirawan <ny4tips@gmail.com>
   @since 2019
 -->
 <template>
@@ -252,26 +252,26 @@
 <script lang="ts">
 import { Component, Prop, Vue, Watch } from 'vue-property-decorator';
 import SemanticComponent from '@/iochord/ips/common/ui/semantic-components/SemanticComponent';
-import GraphModule from '@/iochord/ips/common/graph/ism/stores/GraphModule';
+import GraphModule from '@/iochord/ips/common/graphs/ism/stores/GraphModule';
 import { getModule } from 'vuex-module-decorators';
-import { GraphData } from '@/iochord/ips/common/graph/ism/interfaces/GraphData';
-import { GraphPage } from '@/iochord/ips/common/graph/ism/interfaces/GraphPage';
-import { GraphStopEventNodeImpl } from '@/iochord/ips/common/graph/ism/class/components/GraphStopEventNodeImpl';
-import { JointGraphPageImpl } from '@/iochord/ips/common/graph/ism/rendering-engine/joint/shapes/class/JointGraphPageImpl';
+import { GraphData } from '@/iochord/ips/common/graphs/ism/interfaces/GraphData';
+import { GraphPage } from '@/iochord/ips/common/graphs/ism/interfaces/GraphPage';
+import { GraphStopEventNodeImpl } from '@/iochord/ips/common/graphs/ism/class/components/GraphStopEventNodeImpl';
+import { JointGraphPageImpl } from '@/iochord/ips/common/graphs/ism/rendering-engine/joint/shapes/class/JointGraphPageImpl';
 import { Modal } from '../../interfaces/Modal';
-import { GraphNodeImpl } from '@/iochord/ips/common/graph/ism/class/GraphNodeImpl';
+import { GraphNodeImpl } from '@/iochord/ips/common/graphs/ism/class/GraphNodeImpl';
 
 declare const $: any;
 
 import { TSMap } from 'typescript-map';
-import { GraphActivityNodeImpl } from '@/iochord/ips/common/graph/ism/class/components/GraphActivityNodeImpl';
-import { GraphNode } from '@/iochord/ips/common/graph/ism/interfaces/GraphNode';
-import { ACTIVITY_TYPE } from '../../../../common/graph/ism/enums/ACTIVITY';
-import { DISTRIBUTION_TYPE } from '../../../../common/graph/ism/enums/DISTRIBUTION';
-import { TIME_UNIT } from '../../../../common/graph/ism/enums/TIME_UNIT';
-import { GraphElement } from '../../../../common/graph/ism/interfaces/GraphElement';
-import GraphSubject from '@/iochord/ips/common/graph/ism/rxjs/GraphSubject';
-import { NODE_TYPE } from '@/iochord/ips/common/graph/ism/rendering-engine/joint/shapes/enums/NODE';
+import { GraphActivityNodeImpl } from '@/iochord/ips/common/graphs/ism/class/components/GraphActivityNodeImpl';
+import { GraphNode } from '@/iochord/ips/common/graphs/ism/interfaces/GraphNode';
+import { ACTIVITY_TYPE } from '../../../../common/graphs/ism/enums/ACTIVITY';
+import { DISTRIBUTION_TYPE } from '../../../../common/graphs/ism/enums/DISTRIBUTION';
+import { TIME_UNIT } from '../../../../common/graphs/ism/enums/TIME_UNIT';
+import { GraphElement } from '../../../../common/graphs/ism/interfaces/GraphElement';
+import GraphSubject from '@/iochord/ips/common/graphs/ism/rxjs/GraphSubject';
+import { NODE_TYPE } from '@/iochord/ips/common/graphs/ism/rendering-engine/joint/shapes/enums/NODE';
 
 const graphModule = getModule(GraphModule);
 
@@ -285,8 +285,8 @@ const graphModule = getModule(GraphModule);
  * @extends {SemanticComponent}
  * @implements {Modal<JointGraphPageImpl, GraphActivityNodeImpl>}
  *
- * @package ips
- * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
+ * @package ts
+ * @author N. Y. Wirawan <ny4tips@gmail.com>
  * @since 2019
  */
 export default class ActivityNodeModal extends SemanticComponent implements Modal<JointGraphPageImpl, GraphActivityNodeImpl> {

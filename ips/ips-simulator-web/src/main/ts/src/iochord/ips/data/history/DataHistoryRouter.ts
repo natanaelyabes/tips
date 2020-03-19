@@ -3,7 +3,7 @@ import { RouteConfig } from 'vue-router';
 /**
  * Router properties for data history.
  *
- * @package ips
+ * @package ts
  * @author Riska A. Sutrisnowati <riska@iochord.com>
  * @since 2019
  */

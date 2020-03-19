@@ -1,6 +1,6 @@
 <!--
-  @package ips
-  @author Riska Asriana Sutrisnowati <riska@iochord.com>
+  @package ts
+  @author R. A. Sutrisnowati <riska@iochord.com>
   @since 2019
 -->
 <template>
@@ -151,7 +151,7 @@
 import { Vue, Component } from 'vue-property-decorator';
 import BaseComponent from '../../../common/ui/layout/class/BaseComponent';
 import BarChart from '../../../common/charts/BarChart.vue';
-import IpsTable from '../../../common/table/IpsTable.vue';
+import IpsTable from '../../../common/tables/IpsTable.vue';
 
 @Component({
   components: {
@@ -167,8 +167,8 @@ import IpsTable from '../../../common/table/IpsTable.vue';
  * @class ContentFilterFollowerComponent
  * @extends {BaseComponent}
  *
- * @package ips
- * @author Riska Asriana Sutrisnowati <riska@iochord.com>
+ * @package ts
+ * @author R. A. Sutrisnowati <riska@iochord.com>
  * @since 2019
  */
 export default class ContentFilterMissingImputationComponent extends BaseComponent {
@@ -268,14 +268,14 @@ export default class ContentFilterMissingImputationComponent extends BaseCompone
       { name: 'Attribute 1', value: 2, type: 'Case 24' },
       { name: 'Attribute 2', value: 2, type: 'Case 24' },
       { name: 'Timestamp', value: 3, type: 'Case 64' },
-      { name: 'Timestamp', value: 4, type: 'Case 2' }
+      { name: 'Timestamp', value: 4, type: 'Case 2' },
     ];
 
     this.barData1 = [
       { name: 'Case 10', value: 10, type: 'missing event' },
       { name: 'Case 24', value: 8, type: 'missing event' },
       { name: 'Case 64', value: 3, type: 'missing event' },
-      { name: 'Case 2', value: 4, type: 'missing event' }
+      { name: 'Case 2', value: 4, type: 'missing event' },
     ];
 
     this.barData3 = [
@@ -287,7 +287,7 @@ export default class ContentFilterMissingImputationComponent extends BaseCompone
       { name: 'Attribute 1', value: 2, type: 'missing event' },
       { name: 'Attribute 2', value: 2, type: 'missing event' },
       { name: 'Timestamp', value: 3, type: 'missing event' },
-      { name: 'Timestamp', value: 4, type: 'missing event' }
+      { name: 'Timestamp', value: 4, type: 'missing event' },
     ];
 
     // Table data format
