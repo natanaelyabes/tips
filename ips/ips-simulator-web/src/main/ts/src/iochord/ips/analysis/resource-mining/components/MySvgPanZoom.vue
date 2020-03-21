@@ -183,7 +183,7 @@ export default class MySvgPanZoom extends BaseComponent {
   }
 
   public createCell(name: string, type: 'ACT' | 'GRP' | 'RES', wd: number, hg: number, x: number, y: number, graph: joint.dia.Graph): void {
-    let cell: any = undefined;
+    let cell: any;
     let bgCol: string = '#85C1E9';
     let txCol: string = 'black';
     const id = type + '_' + name;
@@ -191,14 +191,14 @@ export default class MySvgPanZoom extends BaseComponent {
       width: wd,
       height: hg,
     });
-    
-    if (type == 'ACT') { 
-      cell = new joint.shapes.standard.Rectangle({ id: id });
-    } else if (type == 'GRP') {
-      cell = new joint.shapes.standard.Polyline({ id: id });
+
+    if (type === 'ACT') {
+      cell = new joint.shapes.standard.Rectangle({ id });
+    } else if (type === 'GRP') {
+      cell = new joint.shapes.standard.Polyline({ id });
       bgCol = 'yellow';
     } else {
-      cell = new joint.shapes.standard.Circle({ id: id });
+      cell = new joint.shapes.standard.Circle({ id });
       bgCol = 'red';
       txCol = 'white';
     }
@@ -217,7 +217,7 @@ export default class MySvgPanZoom extends BaseComponent {
     });
     cell.addTo(graph);
   }
-  
+
   public createLink(id1: string, id2: string, graph: joint.dia.Graph): void {
     const link: any = new joint.shapes.standard.Link();
     link.source({ id: id1 });

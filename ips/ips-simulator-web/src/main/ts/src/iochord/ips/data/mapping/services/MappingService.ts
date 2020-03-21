@@ -1,7 +1,5 @@
 import DataService from '../../services/DataService';
-import IMappingResource from '../interfaces/IMappingResource';
 import MappingResource from '../models/MappingResource';
-import MappingConfiguration from '../models/MappingConfiguration';
 
 export default class MappingService extends DataService {
   public static readonly BASE_URI: string = DataService.BASE_URI + '';
