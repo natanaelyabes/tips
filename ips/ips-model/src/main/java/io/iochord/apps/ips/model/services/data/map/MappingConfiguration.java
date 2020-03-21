@@ -14,7 +14,7 @@ public class MappingConfiguration {
 	
 	@Getter
 	@Setter
-	private int rowslimit;
+	private MappingResource resource;
 	
 	@Getter
 	@Setter
