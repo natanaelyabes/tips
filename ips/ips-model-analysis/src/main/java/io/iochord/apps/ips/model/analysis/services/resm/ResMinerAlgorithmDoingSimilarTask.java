@@ -27,7 +27,7 @@ public class ResMinerAlgorithmDoingSimilarTask extends ResMinerAlgorithm {
 		List<String> resources = ModelQuery.getResources(context, config);
 		
 		Map<ResourceToActivity, Integer> oacmtrx = ModelQuery.getOrgActMatrix(context, config);
-		Map<ResourceToResource,Double> distorig = new HashMap<>();
+		Map<ResourceToResource, Double> distorig = new HashMap<>();
 		
 		Map<Integer,Set<String>> mgunitres = new HashMap<>();
 		Map<String,Set<Integer>> mactgunit = new HashMap<>();
@@ -36,6 +36,7 @@ public class ResMinerAlgorithmDoingSimilarTask extends ResMinerAlgorithm {
 			for(String originatorx : resources) {
 				if(originatory.equals(originatorx))
 					continue;
+				
 				ResourceToResource key = new ResourceToResource(originatory,originatorx);
 				ResourceToResource revkey = new ResourceToResource(originatorx,originatory);
 				
@@ -52,7 +53,7 @@ public class ResMinerAlgorithmDoingSimilarTask extends ResMinerAlgorithm {
 					isOrig1Exist = mgunitres.get(entryset.getKey()).contains(originatory);
 					isStop = isOrig1Exist;
 					
-					if(distVal >= config.getThreshold()) {
+					if(distAlg.evalThreshold(distVal, config.getThreshold(), config.getDistMesAlg())) {
 						isOrig2Exist = mgunitres.get(entryset.getKey()).contains(originatorx);
 						isStop = isStop || isOrig2Exist;
 					}
@@ -67,7 +68,7 @@ public class ResMinerAlgorithmDoingSimilarTask extends ResMinerAlgorithm {
 				Set<String> sres = mgunitres.getOrDefault(gunitc,new HashSet<String>());
 				if(!isOrig1Exist)
 					sres.add(originatory);
-				if(distVal >= config.getThreshold() && !isOrig2Exist) {
+				if(distAlg.evalThreshold(distVal, config.getThreshold(), config.getDistMesAlg()) && !isOrig2Exist) {
 					sres.add(originatorx);
 				}
 				
@@ -108,14 +109,6 @@ public class ResMinerAlgorithmDoingSimilarTask extends ResMinerAlgorithm {
 			mapActToGroup.put(activity, groups);
 		}
 		return mapActToGroup;
-	}
-	
-	public Map<String, List<String>> mapGroupToRes(Map<String, List<String>> mapActToGroup, Map<String, List<String>> mapActToRes) {
-		Map<String, List<String>> mapGroupToRes = new HashMap<>();
-		for(String activity : mapActToGroup.keySet()) {
-			mapGroupToRes.put(mapActToGroup.get(activity).get(0), mapActToRes.get(activity));
-		}
-		return mapGroupToRes;
 	}
 	
 	public List<String> mapIntGroupToString(Set<Integer> groups) {

@@ -4,27 +4,29 @@
   @since 2020
 -->
 <template>
-  <div class="content overall component">
-    <div class="ui basic segment">
+  <div class="content overall component fullHeight">
+    <div class="ui basic segment fullHeight">
       <div class="ui top attached tabular menu">
-	    <a class="item active" data-tab="first">JSON</a>
-	    <a class="item" data-tab="second">Diagram</a>
+	    <a class="item active" data-tab="first">Diagram</a>
+	    <a class="item" data-tab="second">JSON</a>
 	    <a class="item" data-tab="third">Table</a>
 	  </div>
-	  <div class="ui bottom attached tab segment active" data-tab="first">
+	  <div class="ui bottom attached tab segment active" data-tab="first" :class="{ removeBox: !isEmpty(this.resMiningResult), fullHeightMinus: !isEmpty(this.resMiningResult) }">
 	    <div v-if="isEmpty(this.resMiningResult)">
   			Please calculate the resource mining in the settings menu to see the result
 		</div>
-		<div v-else>
-  			<pre>{{this.resMiningResult}}</pre>
+		<div class="containerPanZoom" v-else>
+	      <MySvgPanZoom
+    	    :resMiningResult='this.resMiningResult'>
+          </MySvgPanZoom>
 		</div>
 	  </div>
 	  <div class="ui bottom attached tab segment" data-tab="second">
 	    <div v-if="isEmpty(this.resMiningResult)">
   			Please calculate the resource mining in the settings menu to see the result
 		</div>
-	    <div v-else>
-  			<ContentGraphComponent :resMiningResult='this.resMiningResult'></ContentGraphComponent>
+		<div v-else>
+  			<pre>{{this.resMiningResult}}</pre>
 		</div>
 	  </div>
 	  <div class="ui bottom attached tab segment" data-tab="third">
@@ -39,21 +41,43 @@
   </div>
 </template>
 
+<style>
+.removeBox {
+  box-shadow: none;
+  padding: 0px !important;
+  margin: 0px !important;
+}
+
+.containerPanZoom {
+  height: 100%;
+  width: 100%;
+}
+
+.fullHeightMinus {
+  height: calc(100% - 50px);
+}
+
+.content.overall.component.fullHeight, .ui.basic.segment.fullHeight {
+  height: 100%;
+  width: 100%;
+}
+</style>
+
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
 import BaseComponent from '@/iochord/ips/common/ui/layout/class/BaseComponent';
-import ContentGraphComponent from './ContentGraphComponent.vue';
 import ContentTableComponent from './ContentTableComponent.vue';
 import ResourceMiningResultModule from '../store/modules/ResourceMiningResultModule';
 import ResourceMiningResult from '../models/ResourceMiningResult';
 import { getModule } from 'vuex-module-decorators';
+import MySvgPanZoom from './MySvgPanZoom.vue';
 
 const resourceMiningResultModule = getModule(ResourceMiningResultModule);
 
 @Component({
   components: {
-    ContentGraphComponent,
     ContentTableComponent,
+    MySvgPanZoom,
   },
 })
 

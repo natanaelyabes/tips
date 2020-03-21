@@ -1,6 +1,6 @@
 <!--
   @package ips
-  @author N. I. Utama <ichsan83@gmail.com>
+  @author Nur Ichsan Utama <ichsan83@gmail.com>
   @since 2020
 -->
 <template>
@@ -19,12 +19,12 @@
           <select v-model="config.distMesAlg">
             <option value="pcc">Pearson Correlation Coefficient</option>
             <option value="ham">Hamming Distance</option>
-            <option value="ham">Hamming Distance Binary</option>
+            <option value="ho1">Hamming Distance Binary</option>
           </select>
         </div>
         <div class="field" v-if="config.resMinAlg == 'dst'">
           <label>Threshold : {{threshold}}</label>
-          <input v-model="sliderValue" type="range" class="slider" min="0" max="100" />
+          <input v-model="sliderValue" type="range" class="slider" min="0" max="100"></input>
         </div>
         <div class="field">
           <button type="button" :disabled="isUploading" class="ui primary button" @click="doMining()">
@@ -89,7 +89,7 @@ const resourceMiningResultModule = getModule(ResourceMiningResultModule);
  *
  * @extends BaseComponent
  * @package ips
- * @author N. I. Utama <ichsan83@gmail.com>
+ * @author Nur Ichsan Utama <ichsan83@gmail.com>
  * @since 2020
  *
  */
@@ -161,7 +161,7 @@ export default class ContentSettingsComponent extends BaseComponent {
    *
    * @memberof ContentSettingsComponent
    */
-  public doMining(): void  {
+  public async doMining(): Promise<void>  {
     const self = this;
     if (self.datasetId === '') {
       alert('Choose datasetId');
@@ -177,7 +177,7 @@ export default class ContentSettingsComponent extends BaseComponent {
           self.isUploading = false;
           self.uploadStatus = 'Finish';
           self.$router.push({
-            path: `/iochord/ips/analytics/resource/mining/${this.datasetId}`,
+            path: `/iochord/ips/analytics/resource/mining/${self.datasetId}`,
           });
         }, (tick: any) => {
           self.uploadStatus = tick.progress;
