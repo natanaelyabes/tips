@@ -95,12 +95,10 @@ export default class ContentMappingComponent extends SemanticComponent {
   public datasetId?: string;
 
   public mounted(): void {
-    this.$nextTick(() => { this.retreiveMapping(); });
     this.retreiveMapping();
   }
 
   public async retreiveMapping(): Promise<void> {
-    console.log(this.datasetId);
     if (this.datasetId !== '---') {
       await mappingModule.retreiveMapResource(this.datasetId as string);
       this.rowsize = this.firstNRows.length;
@@ -145,7 +143,13 @@ export default class ContentMappingComponent extends SemanticComponent {
   }
 
   public save(): void {
-    console.log(this.mapping);
+    if (this.datasetId) {
+      MappingService.getInstance().postMappingSettings(this.datasetId, JSON.stringify(this.mapping.toJson()), (res: any) => {
+        console.log(res);
+      }, (tick: any) => {
+        console.log(tick);
+      });
+    }
   }
 }
 </script>

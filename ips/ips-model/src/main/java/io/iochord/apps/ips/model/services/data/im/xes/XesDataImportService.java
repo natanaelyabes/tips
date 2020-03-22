@@ -202,7 +202,9 @@ public class XesDataImportService extends AnIpsAsyncService<XesDataImportConfigu
 						if (!timestampExists) {
 							Map<String, String> timestamp = new HashMap<>();
 							timestamp.put("time:timestamp", String.valueOf(i + 1));
-							int desiredPosition = ecols.stream().filter(attr -> attr.containsKey("concept:name")).map(attr -> ecols.indexOf(attr)).collect(Collectors.toList()).get(0);
+							int desiredPosition = ecols.stream().filter(attr ->
+								attr.containsKey("concept:name")).map(attr -> ecols.indexOf(attr))
+									.collect(Collectors.toList()).get(0);
 							ecols.add(desiredPosition + 1, timestamp);
 						}	
 						eventlogcols.add(ecols);

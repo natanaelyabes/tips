@@ -68,15 +68,12 @@ public class DecisionMinerService extends AnIpsAsyncService<DecisionMinerConfig,
 			try (PreparedStatement st = conn.prepareStatement(sql.toString())) {
 				try (ResultSet rs = st.executeQuery();) {
 					ResultSetMetaData rsmt = rs.getMetaData();
-					
 					for (int i = 1; i <= rsmt.getColumnCount(); i++) {
 						String colname = rsmt.getColumnName(i);
 						csv.append(prefix).append(colname);
 						prefix = ",";
 					}
-					
 					csv.append("\n");
-					
 					while (rs.next()) {
 						prefix = "";
 						for (int i = 1; i <= rsmt.getColumnCount(); i++) {
@@ -89,7 +86,7 @@ public class DecisionMinerService extends AnIpsAsyncService<DecisionMinerConfig,
 			}
 			
 			String path = System.getProperty("user.dir") + "\\src\\main\\resources\\test";
-			
+
 			FileWriter writer = new FileWriter(path.concat(".csv"));
 			writer.write(csv.toString());
 			writer.flush();
@@ -126,10 +123,6 @@ public class DecisionMinerService extends AnIpsAsyncService<DecisionMinerConfig,
 			J48 tree = new J48();
 			tree.setOptions(options1);
 			tree.buildClassifier(filtered);
-			
-//			// Evaluation method
-//			Evaluation eval = new Evaluation(filtered);
-//			eval.crossValidateModel(tree, filtered, 10, new Random(1));
 			
 			System.out.println(tree.graph());
 			

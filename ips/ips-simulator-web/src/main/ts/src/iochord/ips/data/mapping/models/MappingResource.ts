@@ -24,17 +24,6 @@ export default class MappingResource implements IMappingResource {
     return this.colHeaders;
   }
 
-  // public getTSColHeaders(): Array<TSMap<string, string>> {
-  //   const tsColHeaders = new Array<TSMap<string, string>>();
-  //   this.colHeaders.forEach((value: Map<string, string>) => {
-  //     const map = new TSMap<string, string>();
-  //     const entry = new Map(Object.entries(value));
-  //     map.set(entry.keys().next().value, entry.values().next().value);
-  //     tsColHeaders.push(map);
-  //   });
-  //   return tsColHeaders;
-  // }
-
   public setColHeaders(colHeaders: Map<string, string>) {
     this.colHeaders = colHeaders;
   }
@@ -42,17 +31,6 @@ export default class MappingResource implements IMappingResource {
   public getMapSettings(): Map<string, string> {
     return this.mapSettings;
   }
-
-  // public getTSMapSettings(): Array<TSMap<string, string>> {
-  //   const tsMapSettings = new Array<TSMap<string, string>>();
-  //   this.mapSettings.forEach((value: Map<string, string>) => {
-  //     const map = new TSMap<string, string>();
-  //     const entry = new Map(Object.entries(value));
-  //     map.set(entry.keys().next().value, entry.values().next().value);
-  //     tsMapSettings.push(map);
-  //   });
-  //   return tsMapSettings;
-  // }
 
   public setMapSettings(mapSettings: Map<string, string>) {
     this.mapSettings = mapSettings;
@@ -62,19 +40,26 @@ export default class MappingResource implements IMappingResource {
     return this.firstNRows;
   }
 
-  // public getTSFirstNRows(): Array<TSMap<string, string>> {
-  //   const tsFirstNRows = new Array<TSMap<string, string>>();
-  //   this.mapSettings.map((value: Map<string, string>) => {
-  //     const map = new TSMap<string, string>();
-  //     const entry = new Map(Object.entries(value));
-  //     map.set(entry.keys().next().value, entry.values().next().value);
-  //     tsFirstNRows.push(map);
-  //   });
-  //   return tsFirstNRows;
-  // }
-
   public setFirstNRows(firstNRows: Array<Map<string, string>>) {
     this.firstNRows = firstNRows;
+  }
+
+  public toJson() {
+    const colHeaders = new TSMap(Object.entries(this.colHeaders)).toJSON();
+    const mapSettings = new TSMap(Object.entries(this.mapSettings)).toJSON();
+    const firstNRows =  new Array<{ [key: string]: any; }>();
+
+    this.firstNRows.forEach((row) => {
+      const map = new TSMap(Object.entries(row));
+      firstNRows.push(map.toJSON());
+    });
+
+    return {
+      technicalNames: this.technicalNames,
+      colHeaders,
+      mapSettings,
+      firstNRows,
+    };
   }
 }
 
