@@ -20,10 +20,15 @@
 </template>
 
 <style scoped>
+.header.component {
+  display: contents;
+}
+
 .header.component .ui.basic.segment {
   margin: 0;
   border-bottom: 1px solid rgba(0,0,0,.2);
   background-color: #81b0c5;
+  display: inline-table;
 }
 
 .breadcrumb.component {

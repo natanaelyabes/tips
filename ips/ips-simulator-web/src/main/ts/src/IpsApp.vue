@@ -23,6 +23,15 @@
 ::-webkit-scrollbar-thumb {
   background: #a5b1c2!important;
 }
+
+.ui.floating.scrolling.dropdown.button {
+  background: rgba(0,0,0,0.2);
+  color: white;
+}
+
+.ui.floating.scrolling.dropdown.button.active.visible .text {
+  color: white;
+}
 </style>
 
 <script lang="ts">

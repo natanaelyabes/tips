@@ -15,7 +15,7 @@
         <i class="right angle icon divider"></i>
         <div class="active section">{{this.title}}</div>
         <i class="right angle icon divider"></i>
-        <select v-model="datasetIdRef">
+        <select class="ui floating scrolling dropdown button" v-model="datasetIdRef">
           <option value="">---</option>
           <option :selected="datasetId == i" v-for="(ds, i) in datasets" :key="i" class="item" :value="i">{{ds.name}} ({{i}})</option>
         </select>
@@ -24,8 +24,9 @@
 
       <!-- Left Sidebar Menu Item -->
       <template slot="left-bar-menu-item">
-        <a :href="`/#/iochord/ips/analytics/resource/settings/${datasetId}`" class="item">Settings</a>
-        <a :href="`/#/iochord/ips/analytics/resource/mining/${datasetId}`" class="item active">Overall</a>
+        <router-link :to="`/iochord/ips/analytics/resource/settings/${datasetId}`" tag="a" class="item">Settings</router-link>
+        <router-link :to="`/iochord/ips/analytics/resource/mining/${datasetId}`" tag="a" class="item active">Overall</router-link>
+
       </template>
 
       <!-- Content -->
@@ -116,6 +117,7 @@ export default class AnalysisResourceMiningOverall extends DiffLayoutView {
    * @memberof AnalysisResourceMining
    */
   public mounted(): void {
+    this.forceReRender();
     const self = this;
     DataConnectionService.getInstance().getDataConnections((res: any) => {
       self.datasets = res.data;

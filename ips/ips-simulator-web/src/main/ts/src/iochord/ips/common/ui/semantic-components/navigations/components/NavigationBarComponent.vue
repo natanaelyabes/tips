@@ -12,6 +12,9 @@
 </template>
 
 <style scoped>
+.navigation-bar.component {
+  display: contents;
+}
 .ui.menu {
   width: 100%;
 }

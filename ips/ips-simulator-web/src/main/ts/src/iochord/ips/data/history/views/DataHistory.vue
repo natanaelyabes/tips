@@ -5,7 +5,7 @@
 -->
 <template>
   <div class="sandbox data management">
-    <DepthTwoLeftWrapperComponent>
+    <WrapperComponent>
 
       <!-- Header -->
       <template slot="header-breadcrumb">
@@ -16,14 +16,11 @@
         <div class="active section">{{this.title}}</div>
       </template>
 
-      <!-- Depth One Left Sidebar Menu Item -->
-      <template slot="depth-one-menu-item"></template>
-
       <!-- Content -->
       <template slot="content">
         <ContentHistoryComponent></ContentHistoryComponent>
       </template>
-    </DepthTwoLeftWrapperComponent>
+    </WrapperComponent>
   </div>
 </template>
 
@@ -41,12 +38,12 @@ a.section {
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator';
 import ExplorerLayoutView from '@/iochord/ips/common/ui/layout/class/ExplorerLayoutView';
-import DepthTwoLeftWrapperComponent from '@/iochord/ips/common/ui/layout/components/DepthTwoLeftWrapperComponent.vue';
+import WrapperComponent from '@/iochord/ips/common/ui/layout/components/WrapperComponent.vue';
 import ContentHistoryComponent from '../components/ContentHistoryComponent.vue';
 
 @Component({
   components: {
-    DepthTwoLeftWrapperComponent,
+    WrapperComponent,
     ContentHistoryComponent,
   },
 })

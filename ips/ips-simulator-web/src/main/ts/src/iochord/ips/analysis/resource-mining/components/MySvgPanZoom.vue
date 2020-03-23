@@ -149,8 +149,8 @@ export default class MySvgPanZoom extends BaseComponent {
   public buildGroups(groups: string[], graph: joint.dia.Graph): void {
     const x = 10;
     const y = 150;
-    const wd = 80;
-    const hg = 30;
+    const wd = 120;
+    const hg = 40;
     const mr = 30;
     let i = 0;
     for (const group of groups) {
@@ -184,7 +184,7 @@ export default class MySvgPanZoom extends BaseComponent {
 
   public createCell(name: string, type: 'ACT' | 'GRP' | 'RES', wd: number, hg: number, x: number, y: number, graph: joint.dia.Graph): void {
     let cell: any;
-    let bgCol: string = '#85C1E9';
+    let bgCol: string = '#f7d794';
     let txCol: string = 'black';
     const id = type + '_' + name;
     const wraptext = joint.util.breakText(name, {
@@ -196,11 +196,11 @@ export default class MySvgPanZoom extends BaseComponent {
       cell = new joint.shapes.standard.Rectangle({ id });
     } else if (type === 'GRP') {
       cell = new joint.shapes.standard.Polyline({ id });
-      bgCol = 'yellow';
+      bgCol = '#2bcbba';
     } else {
       cell = new joint.shapes.standard.Circle({ id });
-      bgCol = 'red';
-      txCol = 'white';
+      bgCol = '#f8a5c2';
+      txCol = 'black';
     }
     cell.position(x, y);
     cell.resize(wd, hg);

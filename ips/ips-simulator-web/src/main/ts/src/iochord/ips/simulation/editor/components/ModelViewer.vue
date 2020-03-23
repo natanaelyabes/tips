@@ -11,7 +11,7 @@
 
       <!-- Content -->
       <template slot="content">
-        <CanvasComponent :isProcessModel="true" :isDisabled="false" :key="reRenderKey" v-bind:response="graphData" style="min-height: 75vh;" />
+        <CanvasComponent :isProcessModel="true" :isDisabled="false" :key="reRenderKey" v-bind:response="graphData" style="min-height: 100%;" />
       </template>
 
       <template slot="right-sidebar-menu-item">
@@ -57,7 +57,7 @@ i.big.icon {
 }
 
 .canvas.component {
-  height: calc(100% - 160px)!important;
+  height: calc(100% - 28.5px)!important;
 }
 
 .canvas.component .editor.canvas {
@@ -75,7 +75,7 @@ i.big.icon {
 
 <style>
 .editor.view {
-  height: 100%;
+  height: calc(100% - 28.5px);
   display: flex;
   flex-direction: column;
 }

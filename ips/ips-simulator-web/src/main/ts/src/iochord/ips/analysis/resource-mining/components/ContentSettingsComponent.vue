@@ -9,22 +9,22 @@
       <form class="ui form">
       	<div class="field">
           <label>Algorithms</label>
-          <select v-model="config.resMinAlg">
-            <option value="def">Default Mining</option>
+          <select class="ui search dropdown" v-model="config.resMinAlg">
+            <option value="def" selected>Default Mining</option>
             <option value="dst">Doing Similar Task</option>
           </select>
         </div>
         <div class="field" v-if="config.resMinAlg == 'dst'">
           <label>Distance Measure</label>
-          <select v-model="config.distMesAlg">
-            <option value="pcc">Pearson Correlation Coefficient</option>
+          <select class="ui search dropdown" v-model="config.distMesAlg">
+            <option value="pcc" selected>Pearson Correlation Coefficient</option>
             <option value="ham">Hamming Distance</option>
             <option value="ho1">Hamming Distance Binary</option>
           </select>
         </div>
         <div class="field" v-if="config.resMinAlg == 'dst'">
           <label>Threshold : {{threshold}}</label>
-          <input v-model="sliderValue" type="range" class="slider" min="0" max="100"></input>
+          <input v-model="sliderValue" type="range" class="slider" min="0" max="100" />
         </div>
         <div class="field">
           <button type="button" :disabled="isUploading" class="ui primary button" @click="doMining()">
@@ -74,10 +74,10 @@
 
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
-import BaseComponent from '@/iochord/ips/common/ui/layout/class/BaseComponent';
 import ResourceMiningService, { ResourceMiningConfiguration } from '../services/ResourceMiningService';
 import ResourceMiningResultModule from '../store/modules/ResourceMiningResultModule';
 import { getModule } from 'vuex-module-decorators';
+import SemanticComponent from '@/iochord/ips/common/ui/semantic-components/SemanticComponent';
 
 const resourceMiningResultModule = getModule(ResourceMiningResultModule);
 
@@ -93,7 +93,7 @@ const resourceMiningResultModule = getModule(ResourceMiningResultModule);
  * @since 2020
  *
  */
-export default class ContentSettingsComponent extends BaseComponent {
+export default class ContentSettingsComponent extends SemanticComponent {
 
   /**
    * Dataset Id field for selecting event log dataset.

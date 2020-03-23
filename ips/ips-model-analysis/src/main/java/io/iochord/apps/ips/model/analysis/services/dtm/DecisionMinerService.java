@@ -21,6 +21,7 @@ import io.iochord.apps.ips.model.ism.v1.Element;
 import io.iochord.apps.ips.model.ism.v1.ElementType;
 import io.iochord.apps.ips.model.ism.v1.IsmGraph;
 import io.iochord.apps.ips.model.ism.v1.Node;
+import io.iochord.apps.ips.model.ism.v1.nodes.enums.BranchType;
 import io.iochord.apps.ips.model.ism.v1.nodes.impl.BranchImpl;
 import lombok.Getter;
 import lombok.Setter;
@@ -45,7 +46,6 @@ public class DecisionMinerService extends AnIpsAsyncService<DecisionMinerConfig,
 		// Parameter tuning should be set from UI
 		// If graph discovery is necessary then DecisionMinerConfig should inherit IsmDiscoveryConfiguration
 		sconfig.setDatasetId(config.getDatasetId());
-		
 		// Perform case mapping against selected event log.
 		// Case mapping should be performed before decision point analysis.
 		Map<String, String> mappings = new LinkedHashMap<>();
@@ -75,11 +75,10 @@ public class DecisionMinerService extends AnIpsAsyncService<DecisionMinerConfig,
 		sconfig.setColCaseId(caseid_col);
 		sconfig.setColEventActivity(evact_col);
 		sconfig.setColEventTimestamp(tsmp_col);
-		sconfig.setDependencyThreshold(0f);
+		sconfig.setDependencyThreshold(0.9f);
 		sconfig.setPositiveObservationThreshold(0);
 		
 		IsmGraph ismGraph = getDiscoveryService().run(context, sconfig);
-		System.out.println(ismGraph.getPages().get("0").getConnectors().entrySet());
 		
 		List<List<Node>> branches = ismGraph.getPages().entrySet().stream()
 				.map(page -> page.getValue())
@@ -88,12 +87,12 @@ public class DecisionMinerService extends AnIpsAsyncService<DecisionMinerConfig,
 						.map(nds -> nds.getValue())
 						.filter(node -> node.getElementType().equals(ElementType.NODE_BRANCH))
 						.collect(Collectors.toList())).collect(Collectors.toList());
-//		System.out.println("==============================");
-//		System.out.println("Branches:");
-//		System.out.println("==============================");
-//		branches.get(0).forEach(branch -> {
-//			System.out.println(branch.getId());
-//		});
+		System.out.println("==============================");
+		System.out.println("Branches:");
+		System.out.println("==============================");
+		branches.get(0).forEach(branch -> {
+			System.out.println(branch.getId());
+		});
 		
 		List<List<Connector>> connectors = ismGraph.getPages().entrySet().stream()
 				.map(page -> page.getValue())
@@ -101,23 +100,13 @@ public class DecisionMinerService extends AnIpsAsyncService<DecisionMinerConfig,
 				.map(css -> css.entrySet().stream()
 						.map(cs -> cs.getValue()).collect(Collectors.toList()))
 						.collect(Collectors.toList());
-//		System.out.println("==============================");
-//		System.out.println("Connectors:");
-//		System.out.println("==============================");
-//		connectors.get(0).forEach(connector -> {
-//			System.out.println(connector.getId());
-//			System.out.print(connector.getSource().getId() + "-");
-//			System.out.println(connector.getTarget().getId());
-//			System.out.println("");
-//		});
-		
-		
-		
-		ismGraph.getPages().get("0").getConnectors().entrySet().forEach(connector -> {
-			System.out.println(connector.getKey());
-			System.out.println(connector.getValue().getId());
-			System.out.println(connector.getValue().getSource().getValue().getId());
-			System.out.println(connector.getValue().getTarget().getValue().getId());
+		System.out.println("==============================");
+		System.out.println("Connectors:");
+		System.out.println("==============================");
+		connectors.get(0).forEach(connector -> {
+			System.out.println(connector.getId());
+			System.out.print(connector.getSource().getId() + "-");
+			System.out.println(connector.getTarget().getId());
 			System.out.println("");
 		});
 		
@@ -131,32 +120,33 @@ public class DecisionMinerService extends AnIpsAsyncService<DecisionMinerConfig,
 		.collect(Collectors.toList());
 		
 		List<List<Map<BranchImpl, Map<List<Element>, List<Element>>>>> decision_point = branches.stream().map(pages -> {
-			return pages.stream().map(branch -> {
-				Map<BranchImpl, Map<List<Element>, List<Element>>> branch_point = new LinkedHashMap<>();
-				List<Element> out = branching_connector.stream().flatMap(p -> 
-					p.stream().filter(cs -> cs.getSource().getValue().equals(branch))
-							  .map(c -> c.getTarget().getValue()).filter(c -> !c.getElementType().equals(ElementType.NODE_BRANCH)))
-						.collect(Collectors.toList());
-				List<Element> in = branching_connector.stream().flatMap(p -> 
-					p.stream().filter(cs -> cs.getTarget().getValue().equals(branch))
-							  .map(c -> c.getSource().getValue()))
-						.collect(Collectors.toList());
-				Map<List<Element>, List<Element>> io = new LinkedHashMap<>();
-				io.put(in, out);
-				branch_point.put((BranchImpl) branch, io);
-				return branch_point;
-			}).collect(Collectors.toList());
+			return pages.stream().filter(br -> (Boolean) ((BranchImpl) br).getType().equals(BranchType.SPLIT)).map(branch -> {
+						Map<BranchImpl, Map<List<Element>, List<Element>>> branch_point = new LinkedHashMap<>();
+						List<Element> out = branching_connector.stream().flatMap(p -> 
+							p.stream().filter(cs -> cs.getSource().getValue().equals(branch))
+									  .map(c -> c.getTarget().getValue()).filter(c -> !c.getElementType().equals(ElementType.NODE_BRANCH)))
+								.collect(Collectors.toList());
+						List<Element> in = branching_connector.stream().flatMap(p -> 
+							p.stream().filter(cs -> cs.getTarget().getValue().equals(branch))
+									  .map(c -> c.getSource().getValue()))
+								.collect(Collectors.toList());
+						Map<List<Element>, List<Element>> io = new LinkedHashMap<>();
+						io.put(in, out);
+						branch_point.put((BranchImpl) branch, io);
+						return branch_point;
+				}).collect(Collectors.toList());
 		}).collect(Collectors.toList());
-		
-//		for (List<Map<BranchImpl, Map<List<Element>, List<Element>>>> page : decision_point) {
-//			for (Map<BranchImpl, Map<List<Element>, List<Element>>> branch_point : page) {
-//				branch_point.keySet().forEach(key -> System.out.println("Branch: " + key.getId()));
-//				branch_point.values().forEach(point -> {
-//					point.keySet().forEach(key -> key.forEach(ins -> System.out.println("Ins: " + ins.getId())));
-//					point.values().forEach(value -> value.forEach(outs -> System.out.println("Outs: " + outs.getId())));
-//				});
-//			}
-//		}
+		for (List<Map<BranchImpl, Map<List<Element>, List<Element>>>> list : decision_point) {
+			for (Map<BranchImpl, Map<List<Element>, List<Element>>> map : list) {
+				map.entrySet().forEach(entry -> {
+					System.out.println("Branch: " + entry.getKey().getId());
+					entry.getValue().entrySet().forEach(e -> {
+						e.getKey().forEach(i -> System.out.println("In: " + i.getId()));
+						e.getValue().forEach(o -> System.out.println("Out: " + o.getId()));
+					});
+				});
+			}
+		}
 		
 		try (Connection conn = context.getDataSource().getConnection();) {
 			String datasetId = config.getDatasetId();
@@ -168,7 +158,7 @@ public class DecisionMinerService extends AnIpsAsyncService<DecisionMinerConfig,
 					while (rs.next()) {
 						StringBuilder dataeventlog_table = new StringBuilder();
 						dataeventlog_table.append("SELECT * FROM ").append(rs.getString(1)).append(";");
-						// performClassLabeling(ismGraph, conn, dataeventlog_table);
+						 performClassLabeling(ismGraph, conn, dataeventlog_table);
 					}
 				}
 			}

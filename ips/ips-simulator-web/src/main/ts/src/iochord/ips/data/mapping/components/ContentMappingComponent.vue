@@ -5,56 +5,58 @@
 -->
 <template>
   <div class="content mapping component">
-    <h4 class="ui dividing header">Map Settings</h4>
-    <div class="ui warning message">
-      The data is a preview. Only the first 100<sup>th</sup> rows is displayed.
-    </div>
-    <div v-if="datasetId === '---'" class="ui error message">
-      Table is not loaded. Please select a dataset.
-    </div>
-    <div style="overflow-x: hidden; overflow-y: scroll; border: 1px solid rgba(34,36,38,.15); height: 500px; width: 100%">
-      <table v-if="datasetId !== '---'" class="ui celled striped table">
-        <thead>
-          <tr>
-            <th>Technical Name</th>
-            <th v-for="(name, i) in technicalNames" :key="name  + i">{{ name }}</th>
-          </tr>
-          <tr>
-            <th>Column Name</th>
-            <th v-for="(k, v) of colHeaders" :key="k + v">{{ k[1] }}</th>
-          </tr>
-          <tr>
-            <th>Mapping</th>
-            <th v-for="(k, v) of mapping.mapSettings" :key="k + v">
-              <select v-model="mapping.mapSettings[v]" class="ui fluid search dropdown">
-                <option value="" disabled>Select Mapping</option>
-                <option value="case_id">case_id</option>
-                <option value="concept:name">concept:name</option>
-                <option value="time:timestamp">time:timestamp</option>
-                <option value="lifecycle:transition">lifecycle:transition</option>
-                <option value="org:resource">org:resource</option>
-              </select>
-            </th>
-          </tr>
-        </thead>
-        <tbody>
-          <colgroup>
-            <col span="1" class="selected">
-          </colgroup>
-          <tr v-for="(row, i) in firstNRows" :key="row + i">
-            <td v-if="i === 0" :rowspan="rowsize"></td>
-            <td v-for="(col, j) in shifted(Object.values(row))" :key="col + j">
-              {{ col }}
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-    <div class="ui basic segment" style="padding: 1em 0;">
-      <button @click="save" class="ui large blue labeled icon right floated button"
-        v-bind:class="{ disabled : datasetId === '---' }">
-        <i class="save icon"></i> Save
-      </button>
+    <div class="ui basic segment">
+      <h4 class="ui dividing header">Map Settings</h4>
+      <div class="ui warning message">
+        The data is a preview. Only the first 100<sup>th</sup> rows is displayed.
+      </div>
+      <div v-if="datasetId === '---'" class="ui error message">
+        Table is not loaded. Please select a dataset.
+      </div>
+      <div style="overflow-x: hidden; overflow-y: scroll; border: 1px solid rgba(34,36,38,.15); height: 500px; width: 100%">
+        <table v-if="datasetId !== '---'" class="ui celled striped table">
+          <thead>
+            <tr>
+              <th>Technical Name</th>
+              <th v-for="(name, i) in technicalNames" :key="name  + i">{{ name }}</th>
+            </tr>
+            <tr>
+              <th>Column Name</th>
+              <th v-for="(k, v) of colHeaders" :key="k + v">{{ k[1] }}</th>
+            </tr>
+            <tr>
+              <th>Mapping</th>
+              <th v-for="(k, v) of mapping.mapSettings" :key="k + v">
+                <select v-model="mapping.mapSettings[v]" class="ui fluid search dropdown">
+                  <option value="" disabled>Select Mapping</option>
+                  <option value="case_id">case_id</option>
+                  <option value="concept:name">concept:name</option>
+                  <option value="time:timestamp">time:timestamp</option>
+                  <option value="lifecycle:transition">lifecycle:transition</option>
+                  <option value="org:resource">org:resource</option>
+                </select>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <colgroup>
+              <col span="1" class="selected">
+            </colgroup>
+            <tr v-for="(row, i) in firstNRows" :key="row + i">
+              <td v-if="i === 0" :rowspan="rowsize"></td>
+              <td v-for="(col, j) in shifted(Object.values(row))" :key="col + j">
+                {{ col }}
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="ui basic segment" style="padding: 1em 0;">
+        <button @click="save" class="ui large blue labeled icon right floated button"
+          v-bind:class="{ disabled : datasetId === '---' }">
+          <i class="save icon"></i> Save
+        </button>
+      </div>
     </div>
   </div>
 </template>

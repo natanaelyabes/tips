@@ -5,58 +5,62 @@
 -->
 <template>
   <div class="item filter component">
-    <div class="ui basic segment">
-      <form class="ui form">
-        <div class="item">
+    <form class="ui form">
+      <div class="item">
+        <div class="field">
+          <label for="filter[name]">Create filter</label>
+          <input id="filter[name]" type="text" name="filter[name]" placeholder="Filter name">
+        </div>
+        <div class="inline fields">
           <div class="field">
-            <label for="filter[name]">Create filter</label>
-            <input id="filter[name]" type="text" name="filter[name]" placeholder="Filter name">
+            <button class="ui primary button">
+              Save
+            </button>
           </div>
-          <div class="inline fields">
-            <div class="field">
-              <button class="ui primary button">
-                Save
-              </button>
-            </div>
-            <div class="field">
-              <button class="ui button">
-                Cancel
-              </button>
-            </div>
+          <div class="field">
+            <button class="ui button">
+              Cancel
+            </button>
           </div>
         </div>
-      </form>
-      <form class="ui form">
-        <div class="item">
-          <div class="field">
-            <label for="filter[add]">Select filter</label>
-            <select id="filter[add]" v-model="filterOptions" v-on:change="onFilterChange(filterOptions)" class="ui search dropdown">
-              <option value="1" selected>Add Filter</option>
-              <option value="2">Timeframe</option>
-              <option value="3">Filtered performance</option>
-              <option value="4">Start/end points</option>
-              <option value="5">Attributes</option>
-              <option value="6">Follow relations</option>
-              <option value="7">Missing value imputations</option>
-            </select>
-          </div>
-          <div class="ui message">
-            <div class="ui basic large labels">
-              <a class="ui label">
-                Timeframe
-                <i class="delete icon"></i>
-              </a>
-              <a class="ui label">
-                Performance
-                <i class="delete icon"></i>
-              </a>
-            </div>
+      </div>
+    </form>
+    <form class="ui form">
+      <div class="item">
+        <div class="field">
+          <label for="filter[add]">Select filter</label>
+          <select id="filter[add]" v-model="filterOptions" v-on:change="onFilterChange(filterOptions)" class="ui search dropdown">
+            <option value="1" selected>Add Filter</option>
+            <option value="2">Timeframe</option>
+            <option value="3">Filtered performance</option>
+            <option value="4">Start/end points</option>
+            <option value="5">Attributes</option>
+            <option value="6">Follow relations</option>
+            <option value="7">Missing value imputations</option>
+          </select>
+        </div>
+        <div class="ui message">
+          <div class="ui basic large labels">
+            <a class="ui label">
+              Timeframe
+              <i class="delete icon"></i>
+            </a>
+            <a class="ui label">
+              Performance
+              <i class="delete icon"></i>
+            </a>
           </div>
         </div>
-      </form>
-    </div>
+      </div>
+    </form>
   </div>
 </template>
+
+<style scoped>
+.ui.form .item {
+  padding: 0;
+}
+</style>
 
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator';

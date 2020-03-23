@@ -15,10 +15,7 @@
         <i class="right angle icon divider"></i>
         <div class="active section">{{this.title}}</div>
         <i class="right angle icon divider"></i>
-        <!-- <a class="ui label">
-          Select dataset
-        </a> -->
-        <select ref="datasetSelector" @change="mine">
+        <select class="ui floating scrolling dropdown button" ref="datasetSelector" @change="mine">
           <option value="---">---</option>
           <option :selected="datasetId == i" v-for="(ds, i) in datasets" :key="i" class="item" :value="i">{{ds.name}} ({{i}})</option>
         </select>
@@ -32,8 +29,10 @@
       </template>
 
       <!-- Content -->
-      <template slot="content">
-        {{ graphJson }}
+      <template slot="content" >
+        <div v-if="graphJson" class="statistics">
+          {{ graphJson }}
+        </div>
         <ModelViewer ref="viewer"></ModelViewer>
       </template>
 
@@ -41,9 +40,23 @@
   </div>
 </template>
 
-<style>
+<style scoped>
 .sandbox.analysis.pmd {
-  height: 100%;
+  height: calc(100% - 150.5px);
+  /* overflow-y: hidden; */
+}
+
+.statistics {
+  background: rgba(0,0,0,0.67);
+  width: 200px;
+  padding: .2em .5em;
+  position: absolute;
+  border: 1px solid black;
+  border-radius: .5em;
+  color: greenyellow;
+  top: 10px;
+  left: 10px;
+  z-index: 9999;
 }
 </style>
 
@@ -83,7 +96,7 @@ const graphModule = getModule(GraphModule);
  * @extends {VisualizerLayoutView}
  *
  * @package ts
- * @author N. Y. Wirawan <ny4tips@gmail.com>
+ * @author I. R. Pulshashi <pulshashi@ideas.web.id>
  * @since 2019
  *
  */
@@ -164,8 +177,7 @@ export default class AnalysisPMD extends VisualizerLayoutView {
         }
         const g: Graph = GraphImpl.deserialize(graph.data) as Graph;
         graphModule.setGraph(g);
-        console.log(g);
-        self.graphJson = 'This graph has ' + n + ' nodes and ' + c + ' connectors';
+        self.graphJson = 'This graph has ' + n + ' nodes and ' + c + ' connectors.';
         self.progressMessage = '';
         (self.$refs['viewer'] as any).forceReRender();
       }, (tick: any) => {
