@@ -94,7 +94,7 @@ public class IsmDiscoveryService extends AnIpsAsyncService<IsmDiscoveryConfigura
 		for (String ea : nodes.keySet()) {
 			ActivityImpl a = (ActivityImpl) factory.addActivity(p);
 			a.setLabel(ea);
-			a.setId("ACTIVITY" + (ni++) + ea);
+			//a.setId("ACTIVITY" + (ni++) + ea);
 			nodes.put(ea, a);
 		}
 		createConnector(context, factory, nodes, dfMatrix, dpMatrix, p, ni);
@@ -132,20 +132,20 @@ public class IsmDiscoveryService extends AnIpsAsyncService<IsmDiscoveryConfigura
 			if (ins.containsKey(ea) && ins.get(ea).size() > 1) {
 				BranchImpl ib = (BranchImpl) factory.addBranch(p);
 				ib.setType(BranchType.JOIN);
-				ib.setId("JOIN-BRANCH-" + a.getId() + ea);
+				//ib.setId("JOIN-BRANCH-" + a.getId() + ea);
 				bcs.put(ib.getId(), ib);
 				ConnectorImpl c = (ConnectorImpl) factory.addConnector(p, ib, a);
-				c.setId("CONNECTOR" + ni);
+				//c.setId("CONNECTOR" + ni);
 				c.setLabel("");
 				inNodes.put(ea, ib);
 			}
 			if (outs.containsKey(ea) && outs.get(ea).size() > 1) {
 				BranchImpl ob = (BranchImpl) factory.addBranch(p);
 				ob.setType(BranchType.SPLIT);
-				ob.setId("SPLIT-BRANCH-" + a.getId() + ea);
+				//ob.setId("SPLIT-BRANCH-" + a.getId() + ea);
 				bcs.put(ob.getId(), ob);
 				ConnectorImpl c = (ConnectorImpl) factory.addConnector(p, a, ob);
-				c.setId("CONNECTOR" + ni);
+				//c.setId("CONNECTOR" + ni);
 				c.setLabel("");
 				outNodes.put(ea, ob);
 			}
@@ -162,7 +162,7 @@ public class IsmDiscoveryService extends AnIpsAsyncService<IsmDiscoveryConfigura
 					long ff = dfMatrix.get(fa).get(ta);
 					double dp = dpMatrix.get(fa).get(ta);
 					ConnectorImpl c = (ConnectorImpl) factory.addConnector(p, on, in);
-					c.setId("CONNECTOR" + ci++);
+					//c.setId("CONNECTOR" + ci++);
 					c.setLabel(String.valueOf(ff) + " (" + String.valueOf(dp) + ")");
 					if (on instanceof BranchImpl) {
 						if (!bcIf.containsKey(on.getId())) {
