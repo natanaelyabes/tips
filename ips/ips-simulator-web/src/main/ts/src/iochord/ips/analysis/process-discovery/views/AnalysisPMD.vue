@@ -152,7 +152,6 @@ export default class AnalysisPMD extends VisualizerLayoutView {
       const config: IsmDiscoveryConfiguration = new IsmDiscoveryConfiguration();
       config.datasetId = selectedDatasetId;
       IsmDiscoveryService.getInstance().discoverIsmGraph(config, (res: any) => {
-//        const graph = JSON.parse(res.body);
         const graph = res.data;
 
         let n = 0;
@@ -165,6 +164,7 @@ export default class AnalysisPMD extends VisualizerLayoutView {
         }
         const g: Graph = GraphImpl.deserialize(graph.data) as Graph;
         graphModule.setGraph(g);
+        console.log(g);
         self.graphJson = 'This graph has ' + n + ' nodes and ' + c + ' connectors';
         self.progressMessage = '';
         (self.$refs['viewer'] as any).forceReRender();

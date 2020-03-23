@@ -1,28 +1,29 @@
 package io.iochord.apps.ips.model.analysis.services.dtm;
 
-import java.io.File;
-import java.io.FileWriter;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
+import java.sql.SQLException;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import io.iochord.apps.ips.common.util.LoggerUtil;
 import io.iochord.apps.ips.core.services.AnIpsAsyncService;
 import io.iochord.apps.ips.core.services.ServiceContext;
 import io.iochord.apps.ips.model.analysis.services.ism.IsmDiscoveryConfiguration;
 import io.iochord.apps.ips.model.analysis.services.ism.IsmDiscoveryService;
+import io.iochord.apps.ips.model.ism.v1.Connector;
+import io.iochord.apps.ips.model.ism.v1.Element;
+import io.iochord.apps.ips.model.ism.v1.ElementType;
 import io.iochord.apps.ips.model.ism.v1.IsmGraph;
+import io.iochord.apps.ips.model.ism.v1.Node;
+import io.iochord.apps.ips.model.ism.v1.nodes.impl.BranchImpl;
 import lombok.Getter;
 import lombok.Setter;
-
-import weka.classifiers.trees.J48;
-import weka.core.Instances;
-import weka.core.converters.ArffLoader;
-import weka.core.converters.ArffSaver;
-import weka.filters.Filter;
-import weka.filters.unsupervised.attribute.Remove;
-import weka.core.converters.CSVLoader;
 
 /**
  *
@@ -43,88 +44,134 @@ public class DecisionMinerService extends AnIpsAsyncService<DecisionMinerConfig,
 		// This is example to get model from some dataset
 		// Parameter tuning should be set from UI
 		// If graph discovery is necessary then DecisionMinerConfig should inherit IsmDiscoveryConfiguration
-		sconfig.setDatasetId("ips_dataset_1583992659865");
-		sconfig.setColCaseId("c1 || c2");
-		sconfig.setColEventActivity("c10");
-		sconfig.setColEventTimestamp("c11");
-		// the heuristics type is non connected heuristics, so if you need all arcs set
-		// dep = 0, posobs = 0
-		sconfig.setDependencyThreshold(0f);
-		sconfig.setPositiveObservationThreshold(0);
-		IsmGraph ismGraph = getDiscoveryService().run(context, sconfig);
+		sconfig.setDatasetId(config.getDatasetId());
 		
-		System.out.println(ismGraph.toString());
-		
+		// Perform case mapping against selected event log.
+		// Case mapping should be performed before decision point analysis.
+		Map<String, String> mappings = new LinkedHashMap<>();
 		try (Connection conn = context.getDataSource().getConnection();) {
-			// Get from configuration
-			String datasetId = config.getDatasetId();
-			// Skeleton to run SQL
-			StringBuilder sql = new StringBuilder();
-			sql.append("SELECT * FROM public.ips_dataset_1583912025620_dataeventlog_registerclaim");
-			
-			StringBuilder csv = new StringBuilder(); 
-			String prefix = "";
-			
-			try (PreparedStatement st = conn.prepareStatement(sql.toString())) {
+			StringBuilder mappingsettings = new StringBuilder();
+			mappingsettings.append("SELECT technical_names, mappings FROM ").append(config.getDatasetId()).append("_mappings;");
+			try (PreparedStatement st = conn.prepareStatement(mappingsettings.toString());) {
 				try (ResultSet rs = st.executeQuery();) {
-					ResultSetMetaData rsmt = rs.getMetaData();
-					for (int i = 1; i <= rsmt.getColumnCount(); i++) {
-						String colname = rsmt.getColumnName(i);
-						csv.append(prefix).append(colname);
-						prefix = ",";
-					}
-					csv.append("\n");
 					while (rs.next()) {
-						prefix = "";
-						for (int i = 1; i <= rsmt.getColumnCount(); i++) {
-							csv.append(prefix).append(rs.getString(i));
-							prefix = ",";
-						}
-						csv.append("\n");
+						mappings.put(rs.getString(1), rs.getString(2));
 					}
 				}
 			}
-			
-			String path = System.getProperty("user.dir") + "\\src\\main\\resources\\test";
-
-			FileWriter writer = new FileWriter(path.concat(".csv"));
-			writer.write(csv.toString());
-			writer.flush();
-			writer.close();
-			
-			CSVLoader csvloader = new CSVLoader();
-			csvloader.setSource(new File(path.concat(".csv")));
-			
-			Instances data = csvloader.getDataSet();
-			
-			ArffSaver arffsaver = new ArffSaver();
-			arffsaver.setInstances(data);
-			arffsaver.setFile(new File(path.concat(".arff")));
-			arffsaver.writeBatch();
-			
-			ArffLoader arffloader = new ArffLoader();
-			arffloader.setFile(new File(path.concat(".arff")));
-			
-			Instances arff = arffloader.getDataSet();
-			arff.setClassIndex(arff.numAttributes()-1);
-			
-			// Filtering
-			String[] options = new String[2];
-			options[0] = "-R";
-			options[1] = "1-2";
-			Remove remove = new Remove();
-			remove.setOptions(options);
-			remove.setInputFormat(arff);
-			Instances filtered = Filter.useFilter(arff, remove);
-			
-			// Build classifier
-			String[] options1 = new String[1];
-			options1[0] = "-U";
-			J48 tree = new J48();
-			tree.setOptions(options1);
-			tree.buildClassifier(filtered);
-			
-			System.out.println(tree.graph());
+		} catch (SQLException e) {
+			LoggerUtil.logError(e);
+		}
+		
+		String caseid_col = mappings.entrySet().stream()
+				.filter(set -> set.getValue().equals("case_id"))
+				.map(set -> set.getKey()).collect(Collectors.toList()).get(0);
+		String evact_col = mappings.entrySet().stream()
+				.filter(set -> set.getValue().equals("concept:name"))
+				.map(set -> set.getKey()).collect(Collectors.toList()).get(0);
+		String tsmp_col = mappings.entrySet().stream()
+				.filter(set -> set.getValue().equals("time:timestamp"))
+				.map(set -> set.getKey()).collect(Collectors.toList()).get(0);
+		sconfig.setColCaseId(caseid_col);
+		sconfig.setColEventActivity(evact_col);
+		sconfig.setColEventTimestamp(tsmp_col);
+		sconfig.setDependencyThreshold(0f);
+		sconfig.setPositiveObservationThreshold(0);
+		
+		IsmGraph ismGraph = getDiscoveryService().run(context, sconfig);
+		System.out.println(ismGraph.getPages().get("0").getConnectors().entrySet());
+		
+		List<List<Node>> branches = ismGraph.getPages().entrySet().stream()
+				.map(page -> page.getValue())
+				.map(page -> page.getNodes())
+				.map(nodes -> nodes.entrySet().stream()
+						.map(nds -> nds.getValue())
+						.filter(node -> node.getElementType().equals(ElementType.NODE_BRANCH))
+						.collect(Collectors.toList())).collect(Collectors.toList());
+//		System.out.println("==============================");
+//		System.out.println("Branches:");
+//		System.out.println("==============================");
+//		branches.get(0).forEach(branch -> {
+//			System.out.println(branch.getId());
+//		});
+		
+		List<List<Connector>> connectors = ismGraph.getPages().entrySet().stream()
+				.map(page -> page.getValue())
+				.map(page -> page.getConnectors())
+				.map(css -> css.entrySet().stream()
+						.map(cs -> cs.getValue()).collect(Collectors.toList()))
+						.collect(Collectors.toList());
+//		System.out.println("==============================");
+//		System.out.println("Connectors:");
+//		System.out.println("==============================");
+//		connectors.get(0).forEach(connector -> {
+//			System.out.println(connector.getId());
+//			System.out.print(connector.getSource().getId() + "-");
+//			System.out.println(connector.getTarget().getId());
+//			System.out.println("");
+//		});
+		
+		
+		
+		ismGraph.getPages().get("0").getConnectors().entrySet().forEach(connector -> {
+			System.out.println(connector.getKey());
+			System.out.println(connector.getValue().getId());
+			System.out.println(connector.getValue().getSource().getValue().getId());
+			System.out.println(connector.getValue().getTarget().getValue().getId());
+			System.out.println("");
+		});
+		
+		List<List<Connector>> branching_connector = connectors.stream().map(cs -> cs.stream()
+			.filter(connector -> 
+				connector.getSource().getValue().getElementType()
+					.equals(ElementType.NODE_BRANCH) 
+			 || connector.getTarget().getValue().getElementType()
+			 	.equals(ElementType.NODE_BRANCH))
+			.collect(Collectors.toList()))
+		.collect(Collectors.toList());
+		
+		List<List<Map<BranchImpl, Map<List<Element>, List<Element>>>>> decision_point = branches.stream().map(pages -> {
+			return pages.stream().map(branch -> {
+				Map<BranchImpl, Map<List<Element>, List<Element>>> branch_point = new LinkedHashMap<>();
+				List<Element> out = branching_connector.stream().flatMap(p -> 
+					p.stream().filter(cs -> cs.getSource().getValue().equals(branch))
+							  .map(c -> c.getTarget().getValue()).filter(c -> !c.getElementType().equals(ElementType.NODE_BRANCH)))
+						.collect(Collectors.toList());
+				List<Element> in = branching_connector.stream().flatMap(p -> 
+					p.stream().filter(cs -> cs.getTarget().getValue().equals(branch))
+							  .map(c -> c.getSource().getValue()))
+						.collect(Collectors.toList());
+				Map<List<Element>, List<Element>> io = new LinkedHashMap<>();
+				io.put(in, out);
+				branch_point.put((BranchImpl) branch, io);
+				return branch_point;
+			}).collect(Collectors.toList());
+		}).collect(Collectors.toList());
+		
+//		for (List<Map<BranchImpl, Map<List<Element>, List<Element>>>> page : decision_point) {
+//			for (Map<BranchImpl, Map<List<Element>, List<Element>>> branch_point : page) {
+//				branch_point.keySet().forEach(key -> System.out.println("Branch: " + key.getId()));
+//				branch_point.values().forEach(point -> {
+//					point.keySet().forEach(key -> key.forEach(ins -> System.out.println("Ins: " + ins.getId())));
+//					point.values().forEach(value -> value.forEach(outs -> System.out.println("Outs: " + outs.getId())));
+//				});
+//			}
+//		}
+		
+		try (Connection conn = context.getDataSource().getConnection();) {
+			String datasetId = config.getDatasetId();
+			StringBuilder sql = new StringBuilder();
+			sql.append("SELECT DISTINCT table_name FROM INFORMATION_SCHEMA.COLUMNS WHERE table_name LIKE '")
+			   .append(datasetId).append("_dataeventlog%'");
+			try (PreparedStatement st = conn.prepareStatement(sql.toString());) {
+				try (ResultSet rs = st.executeQuery();) {
+					while (rs.next()) {
+						StringBuilder dataeventlog_table = new StringBuilder();
+						dataeventlog_table.append("SELECT * FROM ").append(rs.getString(1)).append(";");
+						// performClassLabeling(ismGraph, conn, dataeventlog_table);
+					}
+				}
+			}
 			
 			// Build the result
 			DecisionMinerResult result = new DecisionMinerResult();
@@ -134,5 +181,19 @@ public class DecisionMinerService extends AnIpsAsyncService<DecisionMinerConfig,
 			LoggerUtil.logError(ex);
 		}
 		return null;
+	}
+
+	private void performClassLabeling(IsmGraph ismGraph, Connection conn, StringBuilder dataeventlog_table) throws SQLException {
+		try (PreparedStatement st = conn.prepareStatement(dataeventlog_table.toString());) {
+			try (ResultSet rs = st.executeQuery();) {
+				while (rs.next()) {
+					IsmGraph g = ismGraph;
+					ResultSetMetaData mt = rs.getMetaData();
+					for (int i = 1; i < mt.getColumnCount(); i++) {
+						System.out.println(rs.getString(i));
+					}
+				}
+			}
+		}
 	}
 }

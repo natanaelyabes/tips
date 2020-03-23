@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 
+import io.iochord.apps.ips.common.util.LoggerUtil;
 import io.iochord.apps.ips.core.services.ServiceContext;
 import io.iochord.apps.ips.model.analysis.services.dtm.DecisionMinerConfig;
 import io.iochord.apps.ips.model.analysis.services.dtm.DecisionMinerResult;
@@ -29,14 +30,32 @@ public class IsmAnalysisController extends AnAnalysisController {
 
 	public static final String BASE_URI = AnAnalysisController.BASE_URI + "/discover";
 
+	/**
+	 * Resource Mining action
+	 * 
+	 * @author Nur Ichsan Utama <ichsan83@gmail.com>
+	 * @param datasetId dataset Id
+	 * @param config resource mining configuration
+	 * @param headers autowired http headers
+	 * @return service context instance
+	 * @throws Exception exception
+	 */
 	@PostMapping(value = { BASE_URI + "/resm", BASE_URI + "/resm/{datasetId}" })
-	public ServiceContext getPostResourceMining(@PathVariable Optional<String> datasetId,
+	public ServiceContext mineResource(@PathVariable Optional<String> datasetId,
 			@RequestBody(required = false) ResourceMinerConfig config, @RequestHeader HttpHeaders headers) {
 		if (config == null && datasetId.isPresent()) {
 			config = new ResourceMinerConfig();
 			config.setDatasetId(datasetId.get());
 		}
-		return run(new ResourceMinerService(), config, ResourceMinerResult.class, headers);
+		ServiceContext context = getServiceContext();
+		ResourceMinerResult rmr = null;
+		try {
+			 rmr = new ResourceMinerService().run(context, config);
+		} catch (Exception ex) {
+			LoggerUtil.logError(ex);
+		}
+		context.completeAndDestroy(rmr);		
+		return context;
 	}
 
 	@PostMapping(value = { BASE_URI + "/dtm", BASE_URI + "/dtm/{datasetId}" })

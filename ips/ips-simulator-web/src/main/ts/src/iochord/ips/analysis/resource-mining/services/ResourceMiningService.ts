@@ -22,7 +22,7 @@ export default class ResourceMiningService extends AnalysisService {
    * @type {string}
    * @memberof ResourceMiningService
    */
-  public static readonly BASE_URI: string = AnalysisService.BASE_URI + '';
+  public static readonly BASE_URI: string = AnalysisService.BASE_URI + '/discover';
 
   /**
    * Returns the instance of Resource Mining service.

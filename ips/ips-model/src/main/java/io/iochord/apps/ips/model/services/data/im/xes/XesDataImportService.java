@@ -174,6 +174,7 @@ public class XesDataImportService extends AnIpsAsyncService<XesDataImportConfigu
 					XEvent event = trace.get(i);
 					List<Set<Map.Entry<String, XAttribute>>> colsrows = Stream.of(event.getAttributes()
 							.entrySet()).collect(Collectors.toList());
+					
 					for (Set<Entry<String, XAttribute>> cols : colsrows) {
 						Map<String, String> case_id = new HashMap<>();
 						case_id.put("case_id", trace.getAttributes().get("concept:name").toString());
@@ -281,7 +282,7 @@ public class XesDataImportService extends AnIpsAsyncService<XesDataImportConfigu
 			   	   .append("(DEFAULT ");
 			colname.stream().forEach(col -> sqlrows.append(",").append("?"));
 			sqlrows.append(");");
-
+			
 			for (int i = 0; i < eventlogcols.size(); i++) {
 				List<Map<String, String>> row = eventlogcols.get(i);
 				if (row.size() > 0) {
@@ -335,8 +336,11 @@ public class XesDataImportService extends AnIpsAsyncService<XesDataImportConfigu
 					try (PreparedStatement st = conn.prepareStatement(data.toString());) {
 						st.execute();
 					}
-					List<String> d = row.stream().filter(cols -> !cols.containsKey("concept:name"))
-						.map(cols -> cols.values().iterator().next()).collect(Collectors.toList());
+					List<String> d = row.stream().filter(cols 
+							-> !cols.containsKey("concept:name") 
+							&& !cols.containsKey("class"))
+						.map(cols -> cols.values().iterator().next())
+						.collect(Collectors.toList());
 					final StringBuilder datarows = new StringBuilder();
 					datarows.append("INSERT INTO ").append(name + "_dataeventlog_" + cname).append(" VALUES ")
 					   	    .append("(DEFAULT ");
