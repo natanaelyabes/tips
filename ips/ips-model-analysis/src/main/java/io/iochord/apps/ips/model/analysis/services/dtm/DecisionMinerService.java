@@ -5,11 +5,19 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
+
+import org.apache.commons.lang3.ArrayUtils;
+import org.deckfour.xes.model.XAttribute;
 
 import io.iochord.apps.ips.common.util.LoggerUtil;
 import io.iochord.apps.ips.core.services.AnIpsAsyncService;
@@ -39,6 +47,7 @@ public class DecisionMinerService extends AnIpsAsyncService<DecisionMinerConfig,
 	@Setter
 	private IsmDiscoveryService discoveryService = new IsmDiscoveryService();
 	
+	@SuppressWarnings("unlikely-arg-type")
 	@Override
 	public DecisionMinerResult run(ServiceContext context, DecisionMinerConfig config) {
 		IsmDiscoveryConfiguration sconfig = new IsmDiscoveryConfiguration();
@@ -91,7 +100,7 @@ public class DecisionMinerService extends AnIpsAsyncService<DecisionMinerConfig,
 		System.out.println("Branches:");
 		System.out.println("==============================");
 		branches.get(0).forEach(branch -> {
-			System.out.println(branch.getId());
+			System.out.println(branch.getLabel());
 		});
 		
 		List<List<Connector>> connectors = ismGraph.getPages().entrySet().stream()
@@ -124,7 +133,8 @@ public class DecisionMinerService extends AnIpsAsyncService<DecisionMinerConfig,
 						Map<BranchImpl, Map<List<Element>, List<Element>>> branch_point = new LinkedHashMap<>();
 						List<Element> out = branching_connector.stream().flatMap(p -> 
 							p.stream().filter(cs -> cs.getSource().getValue().equals(branch))
-									  .map(c -> c.getTarget().getValue()).filter(c -> !c.getElementType().equals(ElementType.NODE_BRANCH)))
+									  .map(c -> c.getTarget().getValue()) 
+									  /* .filter(c -> !c.getElementType().equals(ElementType.NODE_BRANCH)) */ )
 								.collect(Collectors.toList());
 						List<Element> in = branching_connector.stream().flatMap(p -> 
 							p.stream().filter(cs -> cs.getTarget().getValue().equals(branch))
@@ -136,21 +146,127 @@ public class DecisionMinerService extends AnIpsAsyncService<DecisionMinerConfig,
 						return branch_point;
 				}).collect(Collectors.toList());
 		}).collect(Collectors.toList());
-		for (List<Map<BranchImpl, Map<List<Element>, List<Element>>>> list : decision_point) {
-			for (Map<BranchImpl, Map<List<Element>, List<Element>>> map : list) {
-				map.entrySet().forEach(entry -> {
-					System.out.println("Branch: " + entry.getKey().getId());
-					entry.getValue().entrySet().forEach(e -> {
-						e.getKey().forEach(i -> System.out.println("In: " + i.getId()));
-						e.getValue().forEach(o -> System.out.println("Out: " + o.getId()));
-					});
-				});
-			}
-		}
 		
 		try (Connection conn = context.getDataSource().getConnection();) {
 			String datasetId = config.getDatasetId();
 			StringBuilder sql = new StringBuilder();
+			
+			sql.append("DROP TABLE IF EXISTS ").append(datasetId).append("_branchpoint;");
+			sql.append("CREATE TABLE IF NOT EXISTS ").append(datasetId).append("_branchpoint")
+			   .append(" ( ")
+			   .append("    eid SERIAL PRIMARY KEY, ")
+			   .append("    page VARCHAR(100) NULL,")
+			   .append("    branch VARCHAR(100) NULL, ")
+			   .append("    input VARCHAR(100) NULL, ")
+			   .append("    output VARCHAR(100) NULL ")
+			   .append(" ); ");
+			try (PreparedStatement st = conn.prepareStatement(sql.toString());) {
+				st.execute();
+			}
+			
+			sql = new StringBuilder();
+			sql.append("INSERT INTO ").append(datasetId).append("_branchpoint").append(" VALUES ")
+			   .append("(DEFAULT, ?, ?, ?, ?);");
+			
+			try (PreparedStatement st = conn.prepareStatement(sql.toString());) {
+				for (int i = 0; i < decision_point.size(); i++) {
+					List<Map<BranchImpl, Map<List<Element>, List<Element>>>> list = decision_point.get(i);
+					for (int j = 0; j < list.size(); j++) {
+						Map<BranchImpl, Map<List<Element>, List<Element>>> map = list.get(j);
+						map.entrySet().forEach(entry -> {
+							entry.getValue().entrySet().forEach(e -> {
+								e.getKey().forEach(input -> {
+									e.getValue().forEach(output -> {
+										try {
+											st.setString(1, String.valueOf(0));
+											st.setString(2, entry.getKey().getLabel());
+											st.setString(3, input.getLabel());
+											st.setString(4, output.getLabel());
+											st.addBatch();
+										} catch (SQLException e1) {
+											// TODO Auto-generated catch block
+											e1.printStackTrace();
+										}
+									});
+								});
+							});
+						});
+					}
+				}
+				st.executeBatch();
+			}
+			
+			List<List<String>> io = new ArrayList<>();
+			sql = new StringBuilder();
+			sql.append("SELECT page, input, output FROM ").append(datasetId).append("_branchpoint;");
+			try (PreparedStatement st = conn.prepareStatement(sql.toString());) {
+				try (ResultSet rs = st.executeQuery();) {
+					while (rs.next()) {
+						List<String> bindings = new ArrayList<>();
+						bindings.add(rs.getString(2));
+						bindings.add(rs.getString(3));
+						io.add(bindings);
+					}
+				}
+			}
+			
+			Map<String, List<String>> iobindings = new LinkedHashMap<>();
+			
+			List<String> val = new ArrayList<>();
+			for (int i = 0; i < io.size(); i++) {
+				if (i == 0) {
+					val.add(io.get(i).get(1));
+				}
+				
+				if (i > 0) {
+					if (io.get(i - 1).get(0).equals(io.get(i).get(0))) {
+						val.add(io.get(i).get(1));
+					} else {
+						val = new ArrayList<>();
+						val.add(io.get(i).get(1));
+					}
+				}
+				iobindings.put(io.get(i).get(0), val);
+			}
+			
+			sql = new StringBuilder();
+			sql.append("SELECT * FROM ").append(datasetId).append(" OFFSET 1;");
+			try (PreparedStatement st = conn.prepareStatement(sql.toString());) {
+				try (ResultSet rs = st.executeQuery();) {
+					
+					List<List<String>> act = new ArrayList<>();
+					while (rs.next()) {
+						String actname = rs.getString(sconfig.getColEventActivity());
+						String caseid = rs.getString(sconfig.getColCaseId());
+						List<String> a = new ArrayList<>();
+						a.add(actname);
+						a.add(caseid);
+						act.add(a);						
+					}
+					
+					sql = new StringBuilder();
+					for (int i = 0; i < act.size(); i++) {
+						if (i < act.size()) {
+							if (iobindings.containsKey(act.get(i).get(0))) {
+								List<String> obindings = iobindings.get(act.get(i).get(0));
+								if (obindings.contains(act.get(i + 1).get(0))) {
+									String label = obindings.get(obindings.indexOf(act.get(i + 1).get(0)));
+									sql.append("UPDATE ").append(datasetId).append("_dataeventlog").append("_").append(act.get(i).get(0).toLowerCase().replace(" ", ""))
+									   .append(" ")
+									   .append("SET class = '").append(label).append("' ")
+									   .append("WHERE case_id = '").append(act.get(i).get(1)).append("';");
+									System.out.println(sql.toString());
+								}
+							}
+						}
+					}
+					try (PreparedStatement ut = conn.prepareStatement(sql.toString());) {
+						ut.execute();
+					}
+				}
+			}
+			
+			sql = new StringBuilder();
 			sql.append("SELECT DISTINCT table_name FROM INFORMATION_SCHEMA.COLUMNS WHERE table_name LIKE '")
 			   .append(datasetId).append("_dataeventlog%'");
 			try (PreparedStatement st = conn.prepareStatement(sql.toString());) {
@@ -158,7 +274,7 @@ public class DecisionMinerService extends AnIpsAsyncService<DecisionMinerConfig,
 					while (rs.next()) {
 						StringBuilder dataeventlog_table = new StringBuilder();
 						dataeventlog_table.append("SELECT * FROM ").append(rs.getString(1)).append(";");
-						 performClassLabeling(ismGraph, conn, dataeventlog_table);
+						
 					}
 				}
 			}
@@ -171,19 +287,5 @@ public class DecisionMinerService extends AnIpsAsyncService<DecisionMinerConfig,
 			LoggerUtil.logError(ex);
 		}
 		return null;
-	}
-
-	private void performClassLabeling(IsmGraph ismGraph, Connection conn, StringBuilder dataeventlog_table) throws SQLException {
-		try (PreparedStatement st = conn.prepareStatement(dataeventlog_table.toString());) {
-			try (ResultSet rs = st.executeQuery();) {
-				while (rs.next()) {
-					IsmGraph g = ismGraph;
-					ResultSetMetaData mt = rs.getMetaData();
-					for (int i = 1; i < mt.getColumnCount(); i++) {
-						System.out.println(rs.getString(i));
-					}
-				}
-			}
-		}
 	}
 }

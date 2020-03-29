@@ -171,10 +171,13 @@ export default class AnalysisPMD extends VisualizerLayoutView {
         for (const i of Object.keys(graph.data.pages['0'].nodes)) {
           n++;
         }
+
         let c = 0;
+
         for (const i of Object.keys(graph.data.pages['0'].connectors)) {
           c++;
         }
+
         const g: Graph = GraphImpl.deserialize(graph.data) as Graph;
         graphModule.setGraph(g);
         self.graphJson = 'This graph has ' + n + ' nodes and ' + c + ' connectors.';
