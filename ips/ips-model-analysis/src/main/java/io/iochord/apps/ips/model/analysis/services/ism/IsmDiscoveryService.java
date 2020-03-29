@@ -166,12 +166,8 @@ public class IsmDiscoveryService extends AnIpsAsyncService<IsmDiscoveryConfigura
 			if (ins.containsKey(ea) && ins.get(ea).size() > 1) {
 				BranchImpl ib = (BranchImpl) factory.addBranch(p);
 				ib.setType(BranchType.JOIN);
-<<<<<<< HEAD
 				ib.setId("JOIN-BRANCH-" + a.getId() + ea);
 				ib.setLabel("jb" + i);
-=======
-				//ib.setId("JOIN-BRANCH-" + a.getId() + ea);
->>>>>>> 19e6d48807e5239c9b7e1f5feb786fdb06386cac
 				bcs.put(ib.getId(), ib);
 				ConnectorImpl c = (ConnectorImpl) factory.addConnector(p, ib, a);
 				//c.setId("CONNECTOR" + ni);
@@ -181,12 +177,8 @@ public class IsmDiscoveryService extends AnIpsAsyncService<IsmDiscoveryConfigura
 			if (outs.containsKey(ea) && outs.get(ea).size() > 1) {
 				BranchImpl ob = (BranchImpl) factory.addBranch(p);
 				ob.setType(BranchType.SPLIT);
-<<<<<<< HEAD
 				ob.setId("SPLIT-BRANCH-" + a.getId() + ea);
 				ob.setLabel("sb" + i);
-=======
-				//ob.setId("SPLIT-BRANCH-" + a.getId() + ea);
->>>>>>> 19e6d48807e5239c9b7e1f5feb786fdb06386cac
 				bcs.put(ob.getId(), ob);
 				ConnectorImpl c = (ConnectorImpl) factory.addConnector(p, a, ob);
 				//c.setId("CONNECTOR" + ni);
