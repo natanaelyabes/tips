@@ -7,24 +7,34 @@
   <div class="content settings component">
     <div class="ui basic segment">
       <form class="ui form">
-      	<div class="field">
-          <label>Algorithms</label>
-          <select class="ui search dropdown" v-model="config.resMinAlg">
-            <option value="def" selected>Default Mining</option>
-            <option value="dst">Doing Similar Task</option>
-          </select>
+        <div class="two fields">
+          <div class="field">
+            <label>Algorithms</label>
+            <select class="ui search dropdown" v-model="config.resMinAlg">
+              <option value="" disabled>Select Algorithm</option>
+              <option value="def" selected>Default Mining</option>
+              <option value="dst">Doing Similar Task</option>
+            </select>
+          </div>
         </div>
-        <div class="field" v-if="config.resMinAlg == 'dst'">
-          <label>Distance Measure</label>
-          <select class="ui search dropdown" v-model="config.distMesAlg">
-            <option value="pcc" selected>Pearson Correlation Coefficient</option>
-            <option value="ham">Hamming Distance</option>
-            <option value="ho1">Hamming Distance Binary</option>
-          </select>
+
+        <div class="two fields">
+          <div class="field" v-show="config.resMinAlg == 'dst'">
+            <label>Distance Measure</label>
+            <select class="ui search dropdown" v-model="config.distMesAlg">
+              <option value="" disabled>Select Distance Measure</option>
+              <option value="pcc" selected>Pearson Correlation Coefficient</option>
+              <option value="ham">Hamming Distance</option>
+              <option value="ho1">Hamming Distance Binary</option>
+            </select>
+          </div>
         </div>
-        <div class="field" v-if="config.resMinAlg == 'dst'">
-          <label>Threshold : {{threshold}}</label>
-          <input v-model="sliderValue" type="range" class="slider" min="0" max="100" />
+
+        <div class="two fields">
+          <div class="field" v-show="config.resMinAlg == 'dst'">
+            <label>Threshold : {{threshold}}</label>
+            <input v-model="sliderValue" type="range" class="slider" min="0" max="100" />
+          </div>
         </div>
         <div class="field">
           <button type="button" :disabled="isUploading" class="ui primary button" @click="doMining()">
@@ -78,6 +88,8 @@ import ResourceMiningService, { ResourceMiningConfiguration } from '../services/
 import ResourceMiningResultModule from '../store/modules/ResourceMiningResultModule';
 import { getModule } from 'vuex-module-decorators';
 import SemanticComponent from '@/iochord/ips/common/ui/semantic-components/SemanticComponent';
+
+declare const $: any;
 
 const resourceMiningResultModule = getModule(ResourceMiningResultModule);
 
@@ -183,6 +195,10 @@ export default class ContentSettingsComponent extends SemanticComponent {
           self.uploadStatus = tick.progress;
       });
     }
+  }
+
+  public declareSemanticModules(): void {
+    $('.dropdown').dropdown();
   }
 }
 </script>

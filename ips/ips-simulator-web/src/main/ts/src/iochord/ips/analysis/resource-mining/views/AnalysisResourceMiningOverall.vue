@@ -87,7 +87,7 @@ export default class AnalysisResourceMiningOverall extends DiffLayoutView {
    * @type {string}
    * @memberof AnalysisResourceMining
    */
-  @Prop({default: '---'})
+  @Prop({default: ''})
   public datasetId!: string;
 
   /**
@@ -96,7 +96,7 @@ export default class AnalysisResourceMiningOverall extends DiffLayoutView {
    * @type {string}
    * @memberof AnalysisResourceMining
    */
-  public datasetIdRef: string = '';
+  public datasetIdRef: string = '---';
 
   /**
    * Datasets field to receive JSON data from web service.

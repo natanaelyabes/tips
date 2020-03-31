@@ -10,7 +10,7 @@
         <div class="two fields">
           <div class="field">
             <label>Algorithms</label>
-            <select>
+            <select class="ui search dropdown">
               <option>Algorithm A</option>
               <option>Algorithm B</option>
             </select>
@@ -184,7 +184,9 @@
 
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator';
-import BaseComponent from '@/iochord/ips/common/ui/layout/class/BaseComponent';
+import SemanticComponent from '@/iochord/ips/common/ui/semantic-components/SemanticComponent';
+
+declare const $: any;
 
 @Component
 
@@ -200,7 +202,9 @@ import BaseComponent from '@/iochord/ips/common/ui/layout/class/BaseComponent';
  * @since 2019
  *
  */
-export default class ContentSettingsComponent extends BaseComponent {
-
+export default class ContentSettingsComponent extends SemanticComponent {
+  public declareSemanticModules(): void {
+    $('.dropdown').dropdown();
+  }
 }
 </script>

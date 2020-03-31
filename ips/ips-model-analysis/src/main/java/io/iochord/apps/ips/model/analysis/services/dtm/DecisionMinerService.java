@@ -96,12 +96,12 @@ public class DecisionMinerService extends AnIpsAsyncService<DecisionMinerConfig,
 						.map(nds -> nds.getValue())
 						.filter(node -> node.getElementType().equals(ElementType.NODE_BRANCH))
 						.collect(Collectors.toList())).collect(Collectors.toList());
-		System.out.println("==============================");
-		System.out.println("Branches:");
-		System.out.println("==============================");
-		branches.get(0).forEach(branch -> {
-			System.out.println(branch.getLabel());
-		});
+//		System.out.println("==============================");
+//		System.out.println("Branches:");
+//		System.out.println("==============================");
+//		branches.get(0).forEach(branch -> {
+//			System.out.println(branch.getLabel());
+//		});
 		
 		List<List<Connector>> connectors = ismGraph.getPages().entrySet().stream()
 				.map(page -> page.getValue())
@@ -109,15 +109,15 @@ public class DecisionMinerService extends AnIpsAsyncService<DecisionMinerConfig,
 				.map(css -> css.entrySet().stream()
 						.map(cs -> cs.getValue()).collect(Collectors.toList()))
 						.collect(Collectors.toList());
-		System.out.println("==============================");
-		System.out.println("Connectors:");
-		System.out.println("==============================");
-		connectors.get(0).forEach(connector -> {
-			System.out.println(connector.getId());
-			System.out.print(connector.getSource().getId() + "-");
-			System.out.println(connector.getTarget().getId());
-			System.out.println("");
-		});
+//		System.out.println("==============================");
+//		System.out.println("Connectors:");
+//		System.out.println("==============================");
+//		connectors.get(0).forEach(connector -> {
+//			System.out.println(connector.getId());
+//			System.out.print(connector.getSource().getId() + "-");
+//			System.out.println(connector.getTarget().getId());
+//			System.out.println("");
+//		});
 		
 		List<List<Connector>> branching_connector = connectors.stream().map(cs -> cs.stream()
 			.filter(connector -> 
@@ -251,8 +251,7 @@ public class DecisionMinerService extends AnIpsAsyncService<DecisionMinerConfig,
 									sql.append("UPDATE ").append(datasetId).append("_dataeventlog").append("_").append(act.get(i).get(0).toLowerCase().replace(" ", ""))
 									   .append(" ")
 									   .append("SET class = '").append(label).append("' ")
-									   .append("WHERE case_id = '").append(act.get(i).get(1)).append("';");
-									System.out.println(sql.toString());
+									   .append("WHERE case_id = '").append(act.get(i).get(1)).append("'; ");
 								}
 							}
 						}
@@ -270,6 +269,7 @@ public class DecisionMinerService extends AnIpsAsyncService<DecisionMinerConfig,
 				try (ResultSet rs = st.executeQuery();) {
 					while (rs.next()) {
 						alterColumnType(conn, sql, rs);
+						inferDecisionTree(conn, config, rs);
 					}
 				}
 			}
@@ -282,6 +282,103 @@ public class DecisionMinerService extends AnIpsAsyncService<DecisionMinerConfig,
 			LoggerUtil.logError(ex);
 		}
 		return null;
+	}
+
+	private void inferDecisionTree(Connection conn, DecisionMinerConfig config, ResultSet rs) throws SQLException {
+		config.setStrategy(DecisionTreeStrategy.ENTROPY);
+		if (config.getStrategy().equals(DecisionTreeStrategy.ENTROPY)) {
+			inferUsingEntropyMeasure(conn, rs);
+		} else if (config.getStrategy().equals(DecisionTreeStrategy.ENTROPY_RATIO)) {
+			inferUsingEntropyRatioMeasure(conn, rs);
+		} else if (config.getStrategy().equals(DecisionTreeStrategy.GINI)) {
+			inferUsingGiniMeasure(conn, rs);
+		}
+	}
+
+	private void inferUsingEntropyMeasure(Connection conn, ResultSet rs) throws SQLException {
+		String tablename = rs.getString(1);
+		
+		double E_information = computeExpectedInformation(conn, tablename);
+		System.out.print(tablename + " E[information]: ");
+		System.out.println(E_information);
+		
+		StringBuilder colname = new StringBuilder();
+		colname.append("SELECT column_name, data_type FROM INFORMATION_SCHEMA.COLUMNS WHERE table_name = '").append(rs.getString(1)).append("';");
+		
+		try (PreparedStatement st1 = conn.prepareStatement(colname.toString());) {
+			try (ResultSet rs1 = st1.executeQuery();) {
+				while (rs1.next()) {
+					StringBuilder measure = new StringBuilder();
+					if (!rs1.getString(1).equals("class")) {
+						if (rs1.getString(2).equals("character varying")) {
+							measure.append("SELECT \"")
+							   	   .append(rs1.getString(1))
+							       .append("\", \"class\", ")
+							       .append("count(\"class\") ")
+							       .append("FROM ")
+							       .append(tablename)
+							       .append(" GROUP BY \"")
+							       .append(rs1.getString(1)).append("\", \"class\"");
+						} else {
+							// System.out.println(rs1.getString(1));
+						}
+					}
+				}
+			}
+		}
+	}
+
+	private double computeExpectedInformation(Connection conn, String tablename) throws SQLException {
+		StringBuilder sql = new StringBuilder();
+		sql.append("SELECT sum(gain) as e_information FROM (")
+		   .append("    WITH compute_gain as (")
+		   .append("        SELECT \"class\", ")
+		   .append("               count(\"class\") over(partition by \"class\") * 1.0 as partitioned, ")
+		   .append("               count(*) over() * 1.0 as total FROM ").append(tablename)
+		   .append("    )")
+		   .append("    SELECT DISTINCT \"class\", partitioned, total, ")
+		   .append("                    -1 * (partitioned / total) * LOG((partitioned / total), 2) as gain")
+		   .append("    FROM compute_gain")
+		   .append(") as E_information;");
+		double E_information = 0;
+		try (PreparedStatement st = conn.prepareStatement(sql.toString());) {
+			try (ResultSet rs = st.executeQuery();) {
+				while (rs.next()) {
+					E_information = rs.getDouble(1);
+				}
+			}
+		}
+		return E_information;
+	}
+	
+	private void inferUsingEntropyRatioMeasure(Connection conn, ResultSet rs) throws SQLException {
+		String tablename = rs.getString(1);
+		StringBuilder colname = new StringBuilder();
+		
+		colname.append("SELECT column_name FROM INFORMATION_SCHEMA.COLUMNS WHERE table_name = '").append(rs.getString(1)).append("';");
+		
+		try (PreparedStatement st1 = conn.prepareStatement(colname.toString());) {
+			try (ResultSet rs1 = st1.executeQuery();) {
+				while (rs1.next()) {
+					
+				}
+			}
+		}
+	}
+
+	private void inferUsingGiniMeasure(Connection conn, ResultSet rs) throws SQLException {
+		String tablename = rs.getString(1);
+		StringBuilder colname = new StringBuilder();
+		colname.append("SELECT column_name FROM INFORMATION_SCHEMA.COLUMNS WHERE table_name = '").append(rs.getString(1)).append("';");
+		
+		try (PreparedStatement st1 = conn.prepareStatement(colname.toString());) {
+			try (ResultSet rs1 = st1.executeQuery();) {
+				List<String> colnames = new ArrayList<>();
+				while (rs1.next()) {
+					
+				}
+			}
+		}
 	}
 
 	private void alterColumnType(Connection conn, StringBuilder sql, ResultSet rs) throws SQLException {

@@ -10,11 +10,11 @@
       <div class="ui warning message">
         The data is a preview. Only the first 100<sup>th</sup> rows is displayed.
       </div>
-      <div v-if="datasetId === '---'" class="ui error message">
+      <div v-show="datasetId === '---'" class="ui error message">
         Table is not loaded. Please select a dataset.
       </div>
       <div style="overflow-x: hidden; overflow-y: scroll; border: 1px solid rgba(34,36,38,.15); height: 500px; width: 100%">
-        <table v-if="datasetId !== '---'" class="ui celled striped table">
+        <table v-show="datasetId !== '---'" class="ui celled striped table">
           <thead>
             <tr>
               <th>Technical Name</th>
@@ -152,6 +152,10 @@ export default class ContentMappingComponent extends SemanticComponent {
         console.log(tick);
       });
     }
+  }
+
+  public declareSemanticModules(): void {
+    $('.dropdown').dropdown();
   }
 }
 </script>

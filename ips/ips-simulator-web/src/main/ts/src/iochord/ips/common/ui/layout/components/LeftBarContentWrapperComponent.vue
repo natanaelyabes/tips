@@ -6,7 +6,7 @@
 <template>
   <div class="wrapper component">
     <!--  Header -->
-    <HeaderComponent>
+    <HeaderComponent v-if="hasHeader">
       <template slot="header-title">
         <slot name="header-title"/>
       </template>
@@ -60,6 +60,18 @@ import LeftBarContentWorkspaceComponent from './LeftBarContentWorkspaceComponent
  * @since 2019
  */
 export default class LeftBarContentWrapperComponent extends BaseComponent {
+
+  /**
+   * Boolean function to evaluate whether current component has header. False otherwise.
+   *
+   * @readonly
+   * @private
+   * @type {boolean}
+   * @memberof WrapperComponent
+   */
+  private get hasHeader(): boolean {
+    return !!this.$slots['header-title'] || !!this.$slots['header-breadcrumb'];
+  }
 
   /**
    * Boolean function to evaluate whether current component has left content component.

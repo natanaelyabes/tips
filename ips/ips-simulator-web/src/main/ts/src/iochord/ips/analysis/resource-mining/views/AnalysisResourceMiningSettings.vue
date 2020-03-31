@@ -85,7 +85,7 @@ export default class AnalysisResourceMiningSettings extends DiffLayoutView {
    * @type {string}
    * @memberof AnalysisResourceMining
    */
-  @Prop({default: '---'})
+  @Prop({default: ''})
   public datasetId!: string;
 
   /**
@@ -94,7 +94,7 @@ export default class AnalysisResourceMiningSettings extends DiffLayoutView {
    * @type {string}
    * @memberof AnalysisResourceMining
    */
-  public datasetIdRef: string = '';
+  public datasetIdRef: string = '---';
 
 
   /**
