@@ -10,8 +10,8 @@
         <h2>Activity</h2>
         <ul class="resmMenu">
           <li v-for="(item, key, index) in mactivities" :class="{ 'menu-item': !mactivities[key], lactive: mactivities[key] }">
-            <input type="checkbox" v-model="mactivities[key]" @change="setActive(true, key)"/>
-            <label>{{key}}</label>
+            <input :id="key" :name="key" type="checkbox" v-model="mactivities[key]" @change="setActive(true, key)"/>
+            <label :for="key">{{key}}</label>
           </li>
         </ul>
       </div>
@@ -19,8 +19,8 @@
         <h2>Group Unit</h2>
         <ul class="resmMenu">
           <li v-for="(item, key, index) in mgroups" :class="{ 'menu-item': !mgroups[key], lactive: mgroups[key] }">
-            <input type="checkbox" v-model="mgroups[key]" @change="setActive(false, key)"/>
-            <label>{{key}}</label> 
+            <input :id="key" :name="key" type="checkbox" v-model="mgroups[key]" @change="setActive(false, key)"/>
+            <label :for="key">{{key}}</label> 
           </li>
         </ul>
       </div>
@@ -28,8 +28,8 @@
         <h2>Resource</h2>
         <ul class="resmMenu">
           <li v-for="(item, key, index) in  mresources" :class="{ 'menu-item': !mresources[key], lactive: mresources[key] }">
-            <input v-model="mresources[key]" type="checkbox"/>
-            <label>{{key}}</label>
+            <input :id="key" :name="key" v-model="mresources[key]" type="checkbox"/>
+            <label :for="key">{{key}}</label>
           </li>
         </ul>
       </div>
@@ -45,6 +45,7 @@ ul.resmMenu {
 
 ul.resmMenu > li {
   padding: 5px;
+  cursor: pointer;
 }
 
 ul.resmMenu > li > input {

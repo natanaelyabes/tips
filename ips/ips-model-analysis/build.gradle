@@ -11,6 +11,7 @@ dependencies {
 	implementation files('lib/accesscpn/org.cpntools.accesscpn.cosimulation.jar')
 	implementation group: 'org.eclipse.emf', name: 'org.eclipse.emf.ecore', version: '2.12.0'
 	implementation group: 'org.eclipse.emf', name: 'org.eclipse.emf.common', version: '2.12.0'
+	compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.10'
 	testCompile project(':ips-common')
 	testCompile project(':ips-model')
 }

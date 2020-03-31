@@ -217,7 +217,6 @@ public class DecisionMinerService extends AnIpsAsyncService<DecisionMinerConfig,
 				if (i == 0) {
 					val.add(io.get(i).get(1));
 				}
-				
 				if (i > 0) {
 					if (io.get(i - 1).get(0).equals(io.get(i).get(0))) {
 						val.add(io.get(i).get(1));
@@ -233,7 +232,6 @@ public class DecisionMinerService extends AnIpsAsyncService<DecisionMinerConfig,
 			sql.append("SELECT * FROM ").append(datasetId).append(" OFFSET 1;");
 			try (PreparedStatement st = conn.prepareStatement(sql.toString());) {
 				try (ResultSet rs = st.executeQuery();) {
-					
 					List<List<String>> act = new ArrayList<>();
 					while (rs.next()) {
 						String actname = rs.getString(sconfig.getColEventActivity());
@@ -243,7 +241,6 @@ public class DecisionMinerService extends AnIpsAsyncService<DecisionMinerConfig,
 						a.add(caseid);
 						act.add(a);						
 					}
-					
 					sql = new StringBuilder();
 					for (int i = 0; i < act.size(); i++) {
 						if (i < act.size()) {
@@ -272,8 +269,9 @@ public class DecisionMinerService extends AnIpsAsyncService<DecisionMinerConfig,
 			try (PreparedStatement st = conn.prepareStatement(sql.toString());) {
 				try (ResultSet rs = st.executeQuery();) {
 					while (rs.next()) {
-						StringBuilder dataeventlog_table = new StringBuilder();
-						dataeventlog_table.append("SELECT * FROM ").append(rs.getString(1)).append(";");
+						alterColumnType(conn, sql, rs);
+						
+						
 						
 					}
 				}
@@ -287,5 +285,55 @@ public class DecisionMinerService extends AnIpsAsyncService<DecisionMinerConfig,
 			LoggerUtil.logError(ex);
 		}
 		return null;
+	}
+
+	private void alterColumnType(Connection conn, StringBuilder sql, ResultSet rs) throws SQLException {
+		StringBuilder colname = new StringBuilder();
+		colname.append("SELECT column_name FROM INFORMATION_SCHEMA.COLUMNS WHERE table_name = '").append(rs.getString(1)).append("';");
+		
+		try (PreparedStatement st1 = conn.prepareStatement(colname.toString());) {
+			try (ResultSet rs1 = st1.executeQuery();) {
+				List<String> colnames = new ArrayList<>();
+				while (rs1.next()) {
+					colnames.add(rs1.getString(1));
+				}
+				StringBuilder colisalterable = new StringBuilder();
+				colisalterable.append("SELECT DISTINCT ");
+				String prefix = "";
+				for (String name : colnames) {
+					colisalterable.append(prefix)
+								  .append("CASE WHEN (\"")
+								  .append(name)
+								  .append("\"::varchar~ '^\\-?(\\d+\\.?\\d*|\\d*\\.?\\d+)$') THEN true ELSE false END as \"")
+								  .append(name).append("\"");
+					prefix = ", ";
+				}
+				colisalterable.append(" FROM ").append(rs.getString(1));
+				applyColType(conn, rs, colnames, colisalterable);
+			}
+		}
+	}
+
+	private void applyColType(Connection conn, ResultSet rs, List<String> colnames, StringBuilder colisalterable) throws SQLException {
+		try (PreparedStatement st2 = conn.prepareStatement(colisalterable.toString());) {
+			try (ResultSet rs2 = st2.executeQuery();) {
+				ResultSetMetaData md = rs2.getMetaData();
+				StringBuilder alteredcols = new StringBuilder();
+				alteredcols.append("ALTER TABLE ").append(rs.getString(1)).append(" ");
+				while (rs2.next()) {
+					String prefix1 = "";
+					for (int i = 1; i <= md.getColumnCount(); i++) {
+						if (rs2.getBoolean(i)) {
+							alteredcols.append(prefix1).append("ALTER COLUMN \"").append(colnames.get(i-1))
+									   .append("\" TYPE NUMERIC (100) USING \"").append(colnames.get(i-1)).append("\"::numeric");
+							prefix1 = ", ";
+						}
+					}
+				}
+				try (PreparedStatement st3 = conn.prepareStatement(alteredcols.toString());) {
+					st3.execute();
+				}
+			}
+		}
 	}
 }

@@ -52,6 +52,8 @@ import MappingModule from '../stores/MappingModule';
 import { getModule } from 'vuex-module-decorators';
 import DataConnectionService from '../../connection/services/DataConnectionService';
 
+declare const $: any;
+
 // Vuex module
 const mappingModule = getModule(MappingModule);
 
@@ -111,6 +113,10 @@ export default class DataMapping extends ExplorerLayoutView {
     }
 
     this.forceReRender();
+  }
+
+  public declareSemanticModules() {
+    $('.dropdown').dropdown();
   }
 }
 </script>

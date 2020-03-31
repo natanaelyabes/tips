@@ -16,8 +16,8 @@
         <div class="active section">{{this.title}}</div>
         <i class="right angle icon divider"></i>
         <select class="ui floating scrolling dropdown button" v-model="datasetIdRef">
-          <option value="">---</option>
-          <option :selected="datasetId == i" v-for="(ds, i) in datasets" :key="i" class="item" :value="i">{{ds.name}} ({{i}})</option>
+          <option value="---" selected>---</option>
+          <option v-for="(ds, i) in datasets" :key="i" class="item" :value="i">{{ds.name}} ({{i}})</option>
         </select>
         {{progressMessage}}
       </template>
@@ -60,6 +60,8 @@ import ContentOverallComponent from '../components/ContentOverallComponent.vue';
 import DataConnectionService from '@/iochord/ips/data/connection/services/DataConnectionService';
 import {Route} from 'vue-router';
 
+declare const $: any;
+
 @Component({
   components: {
     LeftBarContentWrapperComponent,
@@ -85,7 +87,7 @@ export default class AnalysisResourceMiningOverall extends DiffLayoutView {
    * @type {string}
    * @memberof AnalysisResourceMining
    */
-  @Prop({default: ''})
+  @Prop({default: '---'})
   public datasetId!: string;
 
   /**
@@ -146,6 +148,10 @@ export default class AnalysisResourceMiningOverall extends DiffLayoutView {
    */
   public setTitle(): void {
     this.title = `Resource Mining`;
+  }
+
+  public declareSemanticModules() {
+    $('.dropdown').dropdown();
   }
 }
 </script>

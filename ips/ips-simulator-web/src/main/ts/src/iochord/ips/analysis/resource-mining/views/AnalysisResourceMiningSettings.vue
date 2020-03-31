@@ -16,8 +16,8 @@
         <div class="active section">{{this.title}}</div>
         <i class="right angle icon divider"></i>
         <select class="ui floating scrolling dropdown button" v-model="datasetIdRef">
-          <option value="">---</option>
-          <option :selected="datasetId == i" v-for="(ds, i) in datasets" :key="i" class="item" :value="i">{{ds.name}} ({{i}})</option>
+          <option value="---" selected>---</option>
+          <option v-for="(ds, i) in datasets" :key="i" class="item" :value="i">{{ds.name}} ({{i}})</option>
         </select>
         {{progressMessage}}
       </template>
@@ -30,7 +30,7 @@
 
       <!-- Content -->
       <template slot="content">
-        <ContentSettingsComponent :datasetId="datasetIdRef"></ContentSettingsComponent>
+        <ContentSettingsComponent :key="reRenderKey" :datasetId="datasetIdRef"></ContentSettingsComponent>
       </template>
     </LeftBarContentWrapperComponent>
   </div>
@@ -58,6 +58,8 @@ import LeftBarContentWrapperComponent from '@/iochord/ips/common/ui/layout/compo
 import ContentSettingsComponent from '../components/ContentSettingsComponent.vue';
 import DataConnectionService from '@/iochord/ips/data/connection/services/DataConnectionService';
 
+declare const $: any;
+
 @Component({
   components: {
     LeftBarContentWrapperComponent,
@@ -83,7 +85,7 @@ export default class AnalysisResourceMiningSettings extends DiffLayoutView {
    * @type {string}
    * @memberof AnalysisResourceMining
    */
-  @Prop({default: ''})
+  @Prop({default: '---'})
   public datasetId!: string;
 
   /**
@@ -145,6 +147,10 @@ export default class AnalysisResourceMiningSettings extends DiffLayoutView {
    */
   public setTitle(): void {
     this.title = `Resource Mining`;
+  }
+
+  public declareSemanticModules() {
+    $('.dropdown').dropdown();
   }
 }
 </script>
