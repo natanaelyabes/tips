@@ -17,4 +17,6 @@ export default class ResourceMiningResult {
   public mgroupres: any = {};
   public mgroupact: any = {};
   public mresgroup: any = {};
+  public timecluster: any = {};
+  public timeanalysis: any = {};
 }

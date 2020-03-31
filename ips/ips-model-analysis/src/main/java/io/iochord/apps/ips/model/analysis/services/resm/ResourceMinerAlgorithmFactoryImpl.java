@@ -1,6 +1,12 @@
 package io.iochord.apps.ips.model.analysis.services.resm;
 
 import io.iochord.apps.ips.core.services.ServiceContext;
+import io.iochord.apps.ips.model.analysis.services.resm.algorithm.ResMinerAlgorithm;
+import io.iochord.apps.ips.model.analysis.services.resm.algorithm.ResMinerAlgorithmDefaultMining;
+import io.iochord.apps.ips.model.analysis.services.resm.algorithm.ResMinerAlgorithmDoingSimilarTask;
+import io.iochord.apps.ips.model.analysis.services.resm.algorithm.ResourceMinerAlgorithmFactory;
+import io.iochord.apps.ips.model.analysis.services.resm.model.ResourceMinerConfig;
+import io.iochord.apps.ips.model.analysis.services.resm.model.ResourceMinerResult;
 
 public class ResourceMinerAlgorithmFactoryImpl implements ResourceMinerAlgorithmFactory {
 	
@@ -17,6 +23,9 @@ public class ResourceMinerAlgorithmFactoryImpl implements ResourceMinerAlgorithm
 			resMiner = new ResMinerAlgorithmDoingSimilarTask(context, config);
 		
 		resMiner.compute();
+		
+		if(config.isTimeAnalysis())
+			resMiner.timeAnalysis();
 	}
 
 	@Override

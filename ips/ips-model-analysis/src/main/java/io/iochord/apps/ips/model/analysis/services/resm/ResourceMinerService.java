@@ -5,6 +5,8 @@ import java.sql.Connection;
 import io.iochord.apps.ips.common.util.LoggerUtil;
 import io.iochord.apps.ips.core.services.AnIpsAsyncService;
 import io.iochord.apps.ips.core.services.ServiceContext;
+import io.iochord.apps.ips.model.analysis.services.resm.model.ResourceMinerConfig;
+import io.iochord.apps.ips.model.analysis.services.resm.model.ResourceMinerResult;
 
 public class ResourceMinerService extends AnIpsAsyncService<ResourceMinerConfig, ResourceMinerResult> {
 

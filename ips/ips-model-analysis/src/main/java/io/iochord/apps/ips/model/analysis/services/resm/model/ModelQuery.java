@@ -1,4 +1,4 @@
-package io.iochord.apps.ips.model.analysis.services.resm;
+package io.iochord.apps.ips.model.analysis.services.resm.model;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -12,8 +12,14 @@ import io.iochord.apps.ips.common.util.LoggerUtil;
 import io.iochord.apps.ips.core.services.ServiceContext;
 
 public class ModelQuery {
-
-	public static List<String> getResources(ServiceContext context, ResourceMinerConfig config) {
+	
+	private float updateProg;
+	
+	public ModelQuery(float updateProg) {
+		this.updateProg = updateProg;
+	}
+	
+	public List<String> getResources(ServiceContext context, ResourceMinerConfig config) {
 		List<String> resources = new ArrayList<>();
 		try (Connection conn = context.getDataSource().getConnection();) {
 			StringBuilder sql = new StringBuilder();
@@ -27,6 +33,7 @@ public class ModelQuery {
 				while (rs.next()) {
 					String resource = rs.getString(1);
 					resources.add(resource);
+					//context.updateProgress(updateProg++);
 				}
 			}
 		} catch (Exception ex) {
@@ -35,7 +42,7 @@ public class ModelQuery {
 		return resources;
 	}
 	
-	public static List<String> getActivities(ServiceContext context, ResourceMinerConfig config) {
+	public List<String> getActivities(ServiceContext context, ResourceMinerConfig config) {
 		List<String> activities = new ArrayList<>();
 		try (Connection conn = context.getDataSource().getConnection();) {
 			StringBuilder sql = new StringBuilder();
@@ -49,6 +56,7 @@ public class ModelQuery {
 				while (rs.next()) {
 					String activity = rs.getString(1);
 					activities.add(activity);
+					//context.updateProgress(updateProg++);
 				}
 			}
 		} catch (Exception ex) {
@@ -57,7 +65,7 @@ public class ModelQuery {
 		return activities;
 	}
 	
-	public static Map<String, List<String>> getDefOrgUnits(ServiceContext context, ResourceMinerConfig config) {
+	public Map<String, List<String>> getDefOrgUnits(ServiceContext context, ResourceMinerConfig config) {
 		Map<String, List<String>> orgUnits = new LinkedHashMap<>();
 		try (Connection conn = context.getDataSource().getConnection();) {
 			StringBuilder sql = new StringBuilder();
@@ -77,6 +85,7 @@ public class ModelQuery {
 					List<String> listOfRes = orgUnits.getOrDefault(activity, new ArrayList<String>());
 					listOfRes.add(resource);
 					orgUnits.put(activity, listOfRes);
+					//context.updateProgress(updateProg++);
 				}
 			}
 		} catch (Exception ex) {
@@ -85,7 +94,7 @@ public class ModelQuery {
 		return orgUnits;
 	}
 	
-	public static Map<ResourceToActivity, Integer> getOrgActMatrix(ServiceContext context, ResourceMinerConfig config) {
+	public Map<ResourceToActivity, Integer> getOrgActMatrix(ServiceContext context, ResourceMinerConfig config) {
 		Map<ResourceToActivity, Integer> oaMatrix = new LinkedHashMap<>();
 		try (Connection conn = context.getDataSource().getConnection();) {
 			StringBuilder sql = new StringBuilder();
@@ -106,11 +115,16 @@ public class ModelQuery {
 					ResourceToActivity rta = new ResourceToActivity(rs.getString(1),rs.getString(2));
 					Integer frequency = rs.getInt(3);
 					oaMatrix.put(rta, frequency);
+					context.updateProgress(updateProg++);
 				}
 			}
 		} catch (Exception ex) {
 			LoggerUtil.logError(ex);
 		}
 		return oaMatrix;
+	}
+	
+	public float getUpdateProg() {
+		return updateProg;
 	}
 }

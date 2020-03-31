@@ -7,14 +7,48 @@
   <div id="parentContainer">
     <div id="containerSvg">
     </div>
-    <select id="overlaySelect" v-model="layoutDirection">
-      <option value="TB" selected>Vertical</option>
-      <option value="LR">Horizontal</option>
-    </select>
+    <div id="overlaySelect">
+      <select  v-model="layoutDirection">
+        <option value="TB" selected>Vertical</option>
+        <option value="LR">Horizontal</option>
+      </select>
+      <ul class="legend">
+        <li><div id="legendActivity"></div> - activity</li>
+        <li><div id="legendGroup"></div> - group</li>
+        <li><div id="legendResource"></div> - resource</li>
+      </ul>
+    </div>
+    <span id="tooltip"></span>
   </div>
 </template>
 
 <style>
+ul.legend {
+  list-style-type: none;
+  display: contents;
+}
+
+#legendActivity {
+  background-color: #85C1E9;
+  width: 1em;
+  height: 1em;
+  display: inline-block;
+}
+
+#legendGroup {
+  background-color: #CCE2FF;
+  width: 1em;
+  height: 1em;
+  display: inline-block;
+}
+
+#legendResource {
+  background-color: #ABB2B9;
+  width: 1em;
+  height: 1em;
+  display: inline-block;
+}
+
 #parentContainer {
   position: relative;
   height: 100%;
@@ -31,6 +65,18 @@
   position: absolute;
   top: 10px;
   right: 10px;
+}
+
+#tooltip {
+  display: none;
+  background-color: black;
+  color: #fff;
+  text-align: center;
+  border-radius: 5px;
+  padding: 5px;
+  position: absolute;
+  top: 10px;
+  left: 10px;
 }
 </style>
 
@@ -74,6 +120,7 @@ export default class MySvgPanZoom extends BaseComponent {
 
   public graph: joint.dia.Graph = new joint.dia.Graph();
   public svgZoom: any = null;
+  public cells: any = [];
 
   /**
    * Override Vue mounted lifecyle
@@ -87,87 +134,96 @@ export default class MySvgPanZoom extends BaseComponent {
       width: '100%',
       height: '100%',
       gridSize: 1,
+      async: true,
     });
 
-    this.buildActivities(this.resMiningResult.activities, this.graph);
-    this.buildGroups(this.resMiningResult.groups, this.graph);
-    this.buildResources(this.resMiningResult.resources, this.graph);
+    this.buildNodes(this.resMiningResult.activities, 'ACT', this.graph);
+    this.buildNodes(this.resMiningResult.groups, 'GRP', this.graph);
+    this.buildNodes(this.resMiningResult.resources, 'RES', this.graph);
     this.buildLinks(this.resMiningResult.mactgroup, this.resMiningResult.mgroupres, this.graph);
 
-    joint.layout.DirectedGraph.layout(this.graph, { ranker: 'network-simplex', rankDir: this.layoutDirection });
+    this.graph.resetCells(this.cells);
 
-    this.svgZoom = SvgPanZoom('#containerSvg svg',
-      {
-        zoomEnabled: this.zoomEnabled,
-        controlIconsEnabled: this.controlIconsEnabled,
-        fit: this.fit,
-        center: this.center,
-        minZoom: this.minZoom,
-      });
+    paper.on('render:done', () => {
+      joint.layout.DirectedGraph.layout(this.graph, { ranker: 'network-simplex', rankDir: this.layoutDirection });
 
-    paper.on('cell:mouseover', () => {
-      document.body.style.cursor = 'all-scroll';
+      this.svgZoom = SvgPanZoom('#containerSvg svg',
+        {
+          zoomEnabled: this.zoomEnabled,
+          controlIconsEnabled: this.controlIconsEnabled,
+          fit: this.fit,
+          center: this.center,
+          minZoom: this.minZoom,
+        });
     });
 
-    paper.on('cell:mouseout', () => {
-      document.body.style.cursor = 'default';
+    paper.on('cell:mouseover', (cellview: any) => {
+      const id = cellview.model.id;
+      if (!id.startsWith('LNK_')) {
+        const name = cellview.model.attributes.attrs.name.text;
+        const ev: any = event;
+        const tooltip = $('#tooltip');
+        tooltip.text(name);
+        tooltip.css( 'display', 'block' );
+      }
     });
 
-    paper.on('cell:pointerdown', () => {
+    paper.on('cell:mouseout', (cellview: any) => {
+      const id = cellview.model.id;
+      if (!id.startsWith('LNK_')) {
+        const tooltip = $('#tooltip');
+        tooltip.css( 'display', 'none' );
+      }
+    });
+
+    paper.on('cell:pointerdown', (cellview: any) => {
+      const id = cellview.model.id;
+      if (!id.startsWith('LNK_')) {
+        const tooltip = $('#tooltip');
+        tooltip.css( 'display', 'none' );
+      }
       document.body.style.cursor = 'grabbing';
       this.svgZoom.disablePan();
     });
 
-    paper.on('cell:pointerup', () => {
+    paper.on('cell:pointerup', (cellview: any) => {
+      const id = cellview.model.id;
+      if (!id.startsWith('LNK_')) {
+        const tooltip = $('#tooltip');
+        tooltip.css( 'display', 'none' );
+      }
       document.body.style.cursor = 'default';
       this.svgZoom.enablePan();
     });
 
-    paper.on('cell:pointerclick', (e: any) => {
-      console.log('Handle click event of element ' + e);
+    paper.on('cell:pointerclick', (cellview: any) => {
+      console.log('Handle click event of element ' + cellview);
+    });
+
+    this.$nextTick(() => {
+      window.addEventListener('resize', () => {
+        this.svgZoom.resize();
+      });
     });
   }
 
   @Watch('layoutDirection')
   public onPropertyChanged(value: string, oldValue: string) {
     joint.layout.DirectedGraph.layout(this.graph, { ranker: 'network-simplex', rankDir: this.layoutDirection });
+    this.svgZoom.updateBBox();
+    this.svgZoom.center();
+    this.svgZoom.fit();
   }
 
-  public buildActivities(activities: string[], graph: joint.dia.Graph): void {
+  public buildNodes(nodes: string[], type: 'ACT' | 'GRP' | 'RES', graph: joint.dia.Graph): void {
     const x = 10;
     const y = 10;
     const wd = 80;
-    const hg = 30;
+    const hg = type === 'ACT' ? 40 : 80;
     const mr = 30;
     let i = 0;
-    for (const activity of activities) {
-      this.createCell(activity, 'ACT', wd, hg, x + i * (wd + mr), y, graph);
-      i++;
-    }
-  }
-
-  public buildGroups(groups: string[], graph: joint.dia.Graph): void {
-    const x = 10;
-    const y = 150;
-    const wd = 80;
-    const hg = 30;
-    const mr = 30;
-    let i = 0;
-    for (const group of groups) {
-      this.createCell(group, 'GRP', wd, hg, x + i * (wd + mr), y, graph);
-      i++;
-    }
-  }
-
-  public buildResources(resources: string[], graph: joint.dia.Graph): void {
-    const x = 10;
-    const y = 290;
-    const wd = 80;
-    const hg = 80;
-    const mr = 30;
-    let i = 0;
-    for (const resource of resources) {
-      this.createCell(resource, 'RES', wd, hg, x + i * (wd + mr), y, graph);
+    for (const node of nodes) {
+      this.createCell(node, type, wd, hg, x + i * (wd + mr), y, graph);
       i++;
     }
   }
@@ -196,12 +252,13 @@ export default class MySvgPanZoom extends BaseComponent {
       cell = new joint.shapes.standard.Rectangle({ id });
     } else if (type === 'GRP') {
       cell = new joint.shapes.standard.Polyline({ id });
-      bgCol = 'yellow';
+      bgCol = '#CCE2FF';
     } else {
       cell = new joint.shapes.standard.Circle({ id });
-      bgCol = 'red';
+      bgCol = '#ABB2B9';
       txCol = 'white';
     }
+
     cell.position(x, y);
     cell.resize(wd, hg);
     cell.attr({
@@ -214,15 +271,19 @@ export default class MySvgPanZoom extends BaseComponent {
         text: wraptext,
         fill: txCol,
       },
+      name: {
+        text: name,
+      },
     });
-    cell.addTo(graph);
+    this.cells.push(cell);
   }
 
   public createLink(id1: string, id2: string, graph: joint.dia.Graph): void {
-    const link: any = new joint.shapes.standard.Link();
+    const id = 'LNK_' + id1 + id2;
+    const link: any = new joint.shapes.standard.Link({ id });
     link.source({ id: id1 });
     link.target({ id: id2 });
-    link.addTo(graph);
+    this.cells.push(link);
   }
 }
 </script>
