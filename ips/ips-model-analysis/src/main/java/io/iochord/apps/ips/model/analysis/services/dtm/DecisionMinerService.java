@@ -270,9 +270,6 @@ public class DecisionMinerService extends AnIpsAsyncService<DecisionMinerConfig,
 				try (ResultSet rs = st.executeQuery();) {
 					while (rs.next()) {
 						alterColumnType(conn, sql, rs);
-						
-						
-						
 					}
 				}
 			}

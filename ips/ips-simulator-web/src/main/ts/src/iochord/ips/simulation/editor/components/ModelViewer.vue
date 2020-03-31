@@ -14,9 +14,9 @@
         <CanvasComponent :isProcessModel="true" :isDisabled="false" :key="reRenderKey" v-bind:response="graphData" style="min-height: 100%;" />
       </template>
 
-      <template slot="right-sidebar-menu-item">
+      <!-- <template slot="right-sidebar-menu-item">
         <MinimapComponent v-bind:response="graphData" />
-      </template>
+      </template> -->
     </WrapperComponent>
   </div>
 </template>

@@ -54,9 +54,9 @@
         <CanvasComponent :isDisabled="isDisabled" :key="reRenderKey" :response="graphData" />
       </template>
 
-      <template slot="right-sidebar-menu-item">
+      <!-- <template slot="right-sidebar-menu-item">
         <MinimapComponent :response="graphData" />
-      </template>
+      </template> -->
     </WrapperComponent>
 
     <div ref="report" class="ui overlay fullscreen modal">

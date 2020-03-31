@@ -6,7 +6,6 @@
 <template>
   <div class="minimap component">
     <div class="ui basic segment" style="width: 260px">
-      <h2>Model Pane</h2>
       <div id="minimap" class="active"></div>
     </div>
   </div>
@@ -14,13 +13,14 @@
 
 <style>
 .minimap.component {
-  height: 100%; 
+  position: absolute;
+  z-index: 9999;
+  right: 5px;
 }
+
 #minimap {
   cursor: pointer;
   border: 1px solid black;
-  width: 100%;
-  height: 100%;
 }
 
 #minimap:hover {

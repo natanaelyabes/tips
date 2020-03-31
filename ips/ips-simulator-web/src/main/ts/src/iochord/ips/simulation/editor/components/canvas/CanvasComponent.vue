@@ -7,6 +7,8 @@
   <div class="canvas component">
     <div class="editor canvas ui basic segment">
 
+      <MinimapComponent :response="graphData" />
+
       <!-- Canvas to render graph -->
       <div id="canvas"
         @keydown.esc = "handleEscapeButton($event)"
@@ -96,6 +98,7 @@ import GeneratorDataModal from '@/iochord/ips/simulation/editor/components/modal
 import QueueDataModal from '@/iochord/ips/simulation/editor/components/modals/QueueDataModal.vue';
 import ResourceDataModal from '@/iochord/ips/simulation/editor/components/modals/ResourceDataModal.vue';
 import DeleteModal from '@/iochord/ips/simulation/editor/components/modals/DeleteModal.vue';
+import MinimapComponent from '../minimap/MinimapComponent.vue';
 
 // Mixins
 import CanvasMixin from '../../mixins/editors/CanvasMixin';
@@ -138,6 +141,7 @@ const editorState = getModule(EditorState);
     QueueDataModal,
     ResourceDataModal,
     DeleteModal,
+    MinimapComponent,
   },
 })
 
