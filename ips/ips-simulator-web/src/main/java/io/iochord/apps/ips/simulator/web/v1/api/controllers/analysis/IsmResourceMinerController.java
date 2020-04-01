@@ -11,9 +11,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import io.iochord.apps.ips.common.util.LoggerUtil;
 import io.iochord.apps.ips.core.services.ServiceContext;
-import io.iochord.apps.ips.model.analysis.services.resm.ResourceMinerConfig;
 import io.iochord.apps.ips.model.analysis.services.resm.ResourceMinerService;
-import io.iochord.apps.ips.model.analysis.services.resm.ResourceMinerResult;
+import io.iochord.apps.ips.model.analysis.services.resm.model.ResourceMinerConfig;
+import io.iochord.apps.ips.model.analysis.services.resm.model.ResourceMinerResult;
+import io.iochord.apps.ips.model.services.data.im.csv.CsvDataImportResult;
+import io.iochord.apps.ips.model.services.data.im.csv.CsvDataImportService;
 
 /**
  *
@@ -36,13 +38,9 @@ public class IsmResourceMinerController extends AnAnalysisController {
 	 * @return service context instance
 	 * @throws Exception exception
 	 */
-	@PostMapping(value = { BASE_URI + "/mine", BASE_URI + "/mine/{datasetId}" })
+	@PostMapping(value = { BASE_URI + "/mine" })
 	public ServiceContext mineResource(@PathVariable Optional<String> datasetId,
 			@RequestBody(required = false) ResourceMinerConfig config, @RequestHeader HttpHeaders headers) {
-		if (config == null && datasetId.isPresent()) {
-			config = new ResourceMinerConfig();
-			config.setDatasetId(datasetId.get());
-		}
 		ServiceContext context = getServiceContext();
 		ResourceMinerResult rmr = null;
 		try {
@@ -52,6 +50,7 @@ public class IsmResourceMinerController extends AnAnalysisController {
 		}
 		context.completeAndDestroy(rmr);		
 		return context;
+		//return run(new ResourceMinerService(), config, ResourceMinerResult.class, headers);
 	}
 
 }

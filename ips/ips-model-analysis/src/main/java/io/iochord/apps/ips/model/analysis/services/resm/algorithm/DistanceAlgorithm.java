@@ -1,8 +1,9 @@
-package io.iochord.apps.ips.model.analysis.services.resm;
+package io.iochord.apps.ips.model.analysis.services.resm.algorithm;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
+
+import io.iochord.apps.ips.model.analysis.services.resm.model.ResourceToActivity;
 
 public class DistanceAlgorithm {
 	
@@ -23,10 +24,8 @@ public class DistanceAlgorithm {
 		int sumResource1 = 0;
 		int sumResource2 = 0;
 		for(String activity : activities) {
-			Optional<ResourceToActivity> orta1 = oacmtrx.keySet().stream().filter(o -> (o.getResource().equals(resource1) && o.getActivity().equals(activity))).findFirst();
-			Optional<ResourceToActivity> orta2 = oacmtrx.keySet().stream().filter(o -> (o.getResource().equals(resource2) && o.getActivity().equals(activity))).findFirst();
-			int freq1 = oacmtrx.getOrDefault(orta1.isPresent() ? orta1.get() : null,0);
-			int freq2 = oacmtrx.getOrDefault(orta2.isPresent() ? orta2.get() : null,0);
+			int freq1 = oacmtrx.getOrDefault(new ResourceToActivity(resource1,activity),0);
+			int freq2 = oacmtrx.getOrDefault(new ResourceToActivity(resource2,activity),0);
 			
 			sumResource1 += freq1;
 			sumResource2 += freq2;
@@ -38,10 +37,8 @@ public class DistanceAlgorithm {
 		double sumEq2 = 0;
 		double sumEq3 = 0;
 		for(String activity : activities) {
-			Optional<ResourceToActivity> orta1 = oacmtrx.keySet().stream().filter(o -> (o.getResource().equals(resource1) && o.getActivity().equals(activity))).findFirst();
-			Optional<ResourceToActivity> orta2 = oacmtrx.keySet().stream().filter(o -> (o.getResource().equals(resource2) && o.getActivity().equals(activity))).findFirst();
-			int freq1 = oacmtrx.getOrDefault(orta1.isPresent() ? orta1.get() : null,0);
-			int freq2 = oacmtrx.getOrDefault(orta2.isPresent() ? orta2.get() : null,0);
+			int freq1 = oacmtrx.getOrDefault(new ResourceToActivity(resource1,activity),0);
+			int freq2 = oacmtrx.getOrDefault(new ResourceToActivity(resource2,activity),0);
 			
 			double eq1 = (freq1-meanResource1)*(freq2-meanResource2);
 			double eq2 = Math.pow(freq1-meanResource1,2);
@@ -58,10 +55,8 @@ public class DistanceAlgorithm {
 	private Double calcDistHamming(String resource1, String resource2, List<String> activities, Map<ResourceToActivity, Integer> oacmtrx) {
 		int sumDist = 0;
 		for(String activity : activities) {
-			Optional<ResourceToActivity> orta1 = oacmtrx.keySet().stream().filter(o -> (o.getResource().equals(resource1) && o.getActivity().equals(activity))).findFirst();
-			Optional<ResourceToActivity> orta2 = oacmtrx.keySet().stream().filter(o -> (o.getResource().equals(resource2) && o.getActivity().equals(activity))).findFirst();
-			int freq1 = oacmtrx.getOrDefault(orta1.isPresent() ? orta1.get() : null,0);
-			int freq2 = oacmtrx.getOrDefault(orta2.isPresent() ? orta2.get() : null,0);
+			int freq1 = oacmtrx.getOrDefault(new ResourceToActivity(resource1,activity),0);
+			int freq2 = oacmtrx.getOrDefault(new ResourceToActivity(resource2,activity),0);
 			
 			if(freq1 != freq2)
 				sumDist += Math.abs(freq1 - freq2);
@@ -73,10 +68,8 @@ public class DistanceAlgorithm {
 	private Double calcDistHammingOneZero(String resource1, String resource2, List<String> activities, Map<ResourceToActivity, Integer> oacmtrx) {
 		int sumDist = 0;
 		for(String activity : activities) {
-			Optional<ResourceToActivity> orta1 = oacmtrx.keySet().stream().filter(o -> (o.getResource().equals(resource1) && o.getActivity().equals(activity))).findFirst();
-			Optional<ResourceToActivity> orta2 = oacmtrx.keySet().stream().filter(o -> (o.getResource().equals(resource2) && o.getActivity().equals(activity))).findFirst();
-			int freq1 = oacmtrx.getOrDefault(orta1.isPresent() ? orta1.get() : null,0);
-			int freq2 = oacmtrx.getOrDefault(orta2.isPresent() ? orta2.get() : null,0);
+			int freq1 = oacmtrx.getOrDefault(new ResourceToActivity(resource1,activity),0);
+			int freq2 = oacmtrx.getOrDefault(new ResourceToActivity(resource2,activity),0);
 			
 			if((freq1 > 0) ^ (freq2 > 0))
 				sumDist++;

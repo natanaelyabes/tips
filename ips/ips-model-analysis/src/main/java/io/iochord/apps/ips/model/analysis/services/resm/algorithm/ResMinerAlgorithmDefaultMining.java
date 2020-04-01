@@ -1,4 +1,4 @@
-package io.iochord.apps.ips.model.analysis.services.resm;
+package io.iochord.apps.ips.model.analysis.services.resm.algorithm;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -7,20 +7,29 @@ import java.util.Map;
 import java.util.Set;
 
 import io.iochord.apps.ips.core.services.ServiceContext;
+import io.iochord.apps.ips.model.analysis.services.resm.model.ModelQuery;
+import io.iochord.apps.ips.model.analysis.services.resm.model.ResourceMinerConfig;
 
 public class ResMinerAlgorithmDefaultMining extends ResMinerAlgorithm {
+	
+	float updateProg = 0f;
 	
 	public ResMinerAlgorithmDefaultMining(ServiceContext context, ResourceMinerConfig config) {
 		super(context, config);
 	}
 
 	@Override
-	void compute() {
-		List<String> activities = ModelQuery.getActivities(context, config);
-		List<String> resources = ModelQuery.getResources(context, config);
+	public void compute() {
+		ModelQuery mq = new ModelQuery(updateProg);
+		
+		List<String> activities = mq.getActivities(context, config);
+		List<String> resources = mq.getResources(context, config);
+		Map<String, List<String>> mActRes = mq.getDefOrgUnits(context, config);
+		
 		List<String> groups = new ArrayList<>();
 		
-		Map<String, List<String>> mActRes = ModelQuery.getDefOrgUnits(context, config);
+		context.updateProgress(updateProg++);
+		
 		Map<String, List<String>> mActGroup = mapActToGroup(mActRes.keySet());
 		for(List<String> group : mActGroup.values())
 			groups.addAll(group);
@@ -45,6 +54,7 @@ public class ResMinerAlgorithmDefaultMining extends ResMinerAlgorithm {
 			List<String> groups = new ArrayList<>();
 			groups.add("orgUnit-"+(++i));
 			mapActToGroup.put(activity, groups);
+			context.updateProgress(updateProg++);
 		}
 		return mapActToGroup;
 	}
@@ -53,6 +63,7 @@ public class ResMinerAlgorithmDefaultMining extends ResMinerAlgorithm {
 		Map<String, List<String>> mapGroupToRes = new HashMap<>();
 		for(String activity : mapActToGroup.keySet()) {
 			mapGroupToRes.put(mapActToGroup.get(activity).get(0), mapActToRes.get(activity));
+			context.updateProgress(updateProg++);
 		}
 		return mapGroupToRes;
 	}
