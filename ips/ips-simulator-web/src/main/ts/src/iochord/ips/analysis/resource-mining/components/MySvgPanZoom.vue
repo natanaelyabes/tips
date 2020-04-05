@@ -147,12 +147,10 @@ export default class MySvgPanZoom extends BaseComponent {
     paper.on('render:done', () => {
       joint.layout.DirectedGraph.layout(this.graph, { ranker: 'network-simplex', rankDir: this.layoutDirection });
 
-<<<<<<< HEAD
     this.svgZoom.zoom(0.8);
 
     paper.on('cell:mouseover', () => {
       document.body.style.cursor = 'all-scroll';
-=======
       this.svgZoom = SvgPanZoom('#containerSvg svg',
         {
           zoomEnabled: this.zoomEnabled,
@@ -161,7 +159,6 @@ export default class MySvgPanZoom extends BaseComponent {
           center: this.center,
           minZoom: this.minZoom,
         });
->>>>>>> 1d684ff85a93f2b430502e55f18ba1fd31d0b1e3
     });
 
     paper.on('cell:mouseover', (cellview: any) => {
@@ -226,24 +223,7 @@ export default class MySvgPanZoom extends BaseComponent {
     const x = 10;
     const y = 10;
     const wd = 80;
-<<<<<<< HEAD
-    const hg = 30;
-    const mr = 30;
-    let i = 0;
-    for (const activity of activities) {
-      this.createCell(activity, 'ACT', wd, hg, x + i * (wd + mr), y, graph);
-      i++;
-    }
-  }
-
-  public buildGroups(groups: string[], graph: joint.dia.Graph): void {
-    const x = 10;
-    const y = 150;
-    const wd = 120;
-    const hg = 40;
-=======
     const hg = type === 'ACT' ? 40 : 80;
->>>>>>> 1d684ff85a93f2b430502e55f18ba1fd31d0b1e3
     const mr = 30;
     let i = 0;
     for (const node of nodes) {
@@ -276,19 +256,11 @@ export default class MySvgPanZoom extends BaseComponent {
       cell = new joint.shapes.standard.Rectangle({ id });
     } else if (type === 'GRP') {
       cell = new joint.shapes.standard.Polyline({ id });
-<<<<<<< HEAD
       bgCol = '#2bcbba';
     } else {
       cell = new joint.shapes.standard.Circle({ id });
       bgCol = '#f8a5c2';
       txCol = 'black';
-=======
-      bgCol = '#CCE2FF';
-    } else {
-      cell = new joint.shapes.standard.Circle({ id });
-      bgCol = '#ABB2B9';
-      txCol = 'white';
->>>>>>> 1d684ff85a93f2b430502e55f18ba1fd31d0b1e3
     }
 
     cell.position(x, y);
