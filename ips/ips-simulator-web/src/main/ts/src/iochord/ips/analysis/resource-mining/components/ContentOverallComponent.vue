@@ -10,6 +10,7 @@
 	    <a class="item active" data-tab="first">Diagram</a>
 	    <a class="item" data-tab="second">JSON</a>
 	    <a class="item" data-tab="third">Table</a>
+	    <a class="item" data-tab="fourth">Time</a>
 	  </div>
 	  <div class="ui bottom attached tab segment active" data-tab="first" :class="{ removeBox: !isEmpty(this.resMiningResult), fullHeightMinus: !isEmpty(this.resMiningResult) }">
 	    <div v-if="isEmpty(this.resMiningResult)">
@@ -35,6 +36,14 @@
 		</div>
 	    <div v-else>
   			<ContentTableComponent :resMiningResult='this.resMiningResult'></ContentTableComponent>
+		</div>
+	  </div>
+	  <div class="ui bottom attached tab segment" data-tab="fourth">
+	    <div v-if="isEmpty(this.resMiningResult)">
+  			Please calculate the resource mining in the settings menu to see the result
+		</div>
+	    <div v-else>
+  			<ContentTimeAnalysisComponent :resMiningResult='this.resMiningResult'></ContentTimeAnalysisComponent>
 		</div>
 	  </div>
     </div>
@@ -66,11 +75,12 @@
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
 import BaseComponent from '@/iochord/ips/common/ui/layout/class/BaseComponent';
+import MySvgPanZoom from './MySvgPanZoom.vue';
 import ContentTableComponent from './ContentTableComponent.vue';
+import ContentTimeAnalysisComponent from './ContentTimeAnalysisComponent.vue';
 import ResourceMiningResultModule from '../store/modules/ResourceMiningResultModule';
 import ResourceMiningResult from '../models/ResourceMiningResult';
 import { getModule } from 'vuex-module-decorators';
-import MySvgPanZoom from './MySvgPanZoom.vue';
 
 const resourceMiningResultModule = getModule(ResourceMiningResultModule);
 
@@ -78,6 +88,7 @@ const resourceMiningResultModule = getModule(ResourceMiningResultModule);
   components: {
     ContentTableComponent,
     MySvgPanZoom,
+    ContentTimeAnalysisComponent,
   },
 })
 
