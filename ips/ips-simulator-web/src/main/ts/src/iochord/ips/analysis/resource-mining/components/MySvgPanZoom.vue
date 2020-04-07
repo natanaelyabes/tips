@@ -147,8 +147,15 @@ export default class MySvgPanZoom extends BaseComponent {
     paper.on('render:done', () => {
       joint.layout.DirectedGraph.layout(this.graph, { ranker: 'network-simplex', rankDir: this.layoutDirection });
 
-    this.svgZoom.zoom(0.8);
-
+      this.svgZoom = SvgPanZoom('#containerSvg svg',
+        {
+          zoomEnabled: this.zoomEnabled,
+          controlIconsEnabled: this.controlIconsEnabled,
+          fit: this.fit,
+          center: this.center,
+          minZoom: this.minZoom,
+        });
+    });
     paper.on('cell:mouseover', () => {
       document.body.style.cursor = 'all-scroll';
       this.svgZoom = SvgPanZoom('#containerSvg svg',

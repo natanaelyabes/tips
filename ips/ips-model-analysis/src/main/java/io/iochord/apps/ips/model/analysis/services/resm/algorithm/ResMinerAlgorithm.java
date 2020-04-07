@@ -23,6 +23,8 @@ import io.iochord.apps.ips.model.analysis.services.resm.model.EventWorkInfo;
 import io.iochord.apps.ips.model.analysis.services.resm.model.ResourceMinerConfig;
 import io.iochord.apps.ips.model.analysis.services.resm.model.ResourceMinerResult;
 import io.iochord.apps.ips.model.analysis.services.resm.model.ResourceToShiftNumb;
+import io.iochord.apps.ips.model.analysis.services.resm.model.TimeUnit;
+import io.iochord.apps.ips.model.analysis.services.resm.model.UnitDist;
 
 public abstract class ResMinerAlgorithm {
 	ServiceContext context;
@@ -81,10 +83,11 @@ public abstract class ResMinerAlgorithm {
 				
 			}
 		}
-		SOM training = new SOM(datas, 1, 3, 10000);
-        training.train();
+		int numb = (int) Math.sqrt(5*Math.sqrt(datas.length));
+		MyOwnSOM som = new MyOwnSOM(datas, numb, numb, 10000, 0.5, TimeUnit.Hour,new UnitDist[]{UnitDist.Time, UnitDist.Time, UnitDist.NonTime});
+        som.train();
 
-        int[] nodes = training.getNodes();
+        int[] nodes = som.getNode();
         
         i = 0;
         for (int node : nodes) {

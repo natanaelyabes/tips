@@ -14,9 +14,9 @@ import io.iochord.apps.ips.core.services.ServiceContext;
 import io.iochord.apps.ips.model.analysis.services.dtm.DecisionMinerConfig;
 import io.iochord.apps.ips.model.analysis.services.dtm.DecisionMinerResult;
 import io.iochord.apps.ips.model.analysis.services.dtm.DecisionMinerService;
-import io.iochord.apps.ips.model.analysis.services.resm.ResourceMinerConfig;
-import io.iochord.apps.ips.model.analysis.services.resm.ResourceMinerResult;
 import io.iochord.apps.ips.model.analysis.services.resm.ResourceMinerService;
+import io.iochord.apps.ips.model.analysis.services.resm.model.ResourceMinerConfig;
+import io.iochord.apps.ips.model.analysis.services.resm.model.ResourceMinerResult;
 
 /**
  *
