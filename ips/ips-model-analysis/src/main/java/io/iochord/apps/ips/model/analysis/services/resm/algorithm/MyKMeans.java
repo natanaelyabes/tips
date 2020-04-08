@@ -20,11 +20,16 @@ public class MyKMeans {
 	TimeUnit tu;
 	Map<TimeUnit, Double> mapTU;
 	UnitDist[] arUd;
+	List<Double> ssePerK;
+	Map<Integer,List<double[]>> mapDataToClusterFinal;
+	int maxIter;
 	
-	public MyKMeans(double[][] matrix, TimeUnit tu, UnitDist[] arUd) {
+	public MyKMeans(double[][] matrix, TimeUnit tu, UnitDist[] arUd, int maxIter) {
 		this.matrix = matrix;
 		this.tu = tu;
 		this.arUd = arUd;
+		this.maxIter = maxIter;
+		this.ssePerK = new ArrayList<>();
 		this.mapTU = new HashMap<TimeUnit,Double>() {{put(TimeUnit.Hour,24d);put(TimeUnit.Minute,24d*60);put(TimeUnit.Second,24d*60*60);}};
 	}
 	
@@ -54,6 +59,7 @@ public class MyKMeans {
 		
 		boolean isStop = false;
 		
+		int iter = 0;
 		while(!isStop) {
 			mapDataToCluster.clear();
 			List<Integer> pickOrder = Arrays.asList(initArr);
@@ -84,14 +90,24 @@ public class MyKMeans {
 				clusters[nodeNumb] = newCentroid;
 				mapCentroidToCluster.put(nodeNumb, newCentroid);
 			}
+			
+			if(iter == maxIter)
+				isStop = true;
+			
+			if(isStop)
+				mapDataToClusterFinal = mapDataToCluster;
+			
+			iter++;
 		}
 	}
 	
 	public boolean isEqual(double[] oldCentroid, double[] newCentroid) {
 		boolean equal = true;
 		for(int i=0; i< newCentroid.length; i++)
-			if(oldCentroid[i] != newCentroid[i])
+			if(oldCentroid[i] != newCentroid[i]) {
 				equal = false;
+				break;
+			}
 		return equal;
 		
 	}
@@ -104,13 +120,31 @@ public class MyKMeans {
 		return Math.min(Math.max(a, b) - Math.min(a, b),Math.min(a, b)+thresTimeUnit - Math.max(a, b));
 	}
 	
-	public double euclidDistance(double[] el1, double[] el2) {
+	public double sse(double[] el1, double[] el2) {
 		double sumSquare = 0;
 		for(int i=0; i<el1.length; i++) {
 			double unitDist = arUd[i] == UnitDist.NonTime ? minDist(el1[i], el2[i]) : timeDist(el1[i], el2[i], threshold[i]);
 			sumSquare += Math.pow(unitDist, 2);
 		}
-		return Math.sqrt(sumSquare);
+		return sumSquare;
+	}
+	
+	public double calcSSETotal() {
+		double sse = 0;
+		for (int nodeNumb=0; nodeNumb < clusters.length; nodeNumb++) {
+			List<double[]> listData = mapDataToClusterFinal.get(nodeNumb);
+			if(listData != null) {
+				for(double[] dataInRow : listData) {
+					sse += sse(dataInRow, clusters[nodeNumb]);
+				}
+			}
+		}
+
+		return sse;
+	}
+	
+	public double euclidDistance(double[] el1, double[] el2) {
+		return Math.sqrt(sse(el1, el2));
 	}
 	
 	public double[] newCentroid(double[] old, List<double[]> assignedData) {
@@ -137,18 +171,20 @@ public class MyKMeans {
 		return newCentroid;
 	}
 	
-	//method below is used for elbow method (automatic decision for k)
+	// method below is used for elbow method (automatic decision for k)
 	public double shortestDistancePointToLine(double x, double y, double x1, double y1, double x2, double y2) {
+		// equation is based on this tutorial https://www.youtube.com/watch?v=h13wI_gi4GA
 		double A = x - x1;
 		double B = y - y1;
 		double C = x2 - x1;
 		double D = y2 - y1;
-		double E = -D; // orthogonal vector
+		// -D orthogonal vector
 		
-		double dot = A * E + B * C;
-		double len_sq = E * E + C * C;
+		double dot = A * -D + B * C;
+		double len_sq = -D * -D + C * C; // square of distance of direct line between point (x1,y1) and (x2,y2)
 		
-		return Math.abs(dot) / Math.sqrt(len_sq);
+		double sdptl = Math.abs(dot) / Math.sqrt(len_sq);
+		return Double.isNaN(sdptl) ? 0 : sdptl;
 	}
 	
 	public int[] getNode() {
@@ -174,8 +210,9 @@ public class MyKMeans {
 		return dataMapToNode;
 	}
 	
-	/* this method is just for testing / debugging
+	// this method is just for testing / debugging and check automatic clustering of k for k-means
 	public static void main(String[] args) {
+		/*
 		double[][] arr = new double[][]{
 			{8,16,8},
 			{9,17,8},
@@ -184,28 +221,56 @@ public class MyKMeans {
 			{23.30,6,6.30},
 			{0.30,7,6.30},
 		};
-		MyKMeans mos = new MyKMeans(arr,TimeUnit.Hour,new UnitDist[]{UnitDist.Time, UnitDist.Time, UnitDist.NonTime});
-		System.out.println(mos.shortestDistancePointToLine(0, 0, 0, 4, 4, 0));
+		*/
+		double[][] arr = new double[][]{
+			{8},
+			{9},
+			{16},
+			{17},
+			{23},
+			{0},
+		};
+		MyKMeans mos = new MyKMeans(arr,TimeUnit.Hour,new UnitDist[]{UnitDist.Time}, 500);
+		//System.out.println(mos.shortestDistancePointToLine(0, 0, 0, 4, 4, 0));
 		
-		mos.init(3);
-		mos.train();
-		
-		for(int x=0; x<mos.matrix.length; x++) {
-			double[] dataInRow = mos.matrix[x];
+		//automatic clustering : decide when need to stop k automatically
+		int k = 1;
+		int kAtElbow = 1;
+		boolean isRun = true;
+		while(isRun) {
+			mos.init(k);
+			mos.train();
+			mos.ssePerK.add(mos.calcSSETotal());
 			
-			// neuron of nodes lattice
-			int bestNodeIndex = 0;
-			double bestDist = Double.MAX_VALUE;
-			for (int nodeNumb=0; nodeNumb<mos.clusters.length; nodeNumb++) {
-				double dist = mos.euclidDistance(dataInRow, mos.clusters[nodeNumb]);
-				if(dist < bestDist) {
-					bestNodeIndex = nodeNumb;
-					bestDist = dist;
+			double bestSdptl = 0;
+			int cBetter = 0;
+			for(int kr = 1; kr <= mos.ssePerK.size(); kr++) {
+				double sdptl = mos.shortestDistancePointToLine(kr,mos.ssePerK.get(kr-1),1,mos.ssePerK.get(0),mos.ssePerK.size(),mos.ssePerK.get(mos.ssePerK.size()-1));
+				System.out.println("SDPTL "+kr+" = "+sdptl);
+				if(sdptl > bestSdptl) {
+					bestSdptl = sdptl;
+					cBetter = 0;
+					kAtElbow = kr;
+				}
+				else
+					cBetter++;
+				
+				if(cBetter > 5) {
+					isRun = false;
+					break;
 				}
 			}
-			
-			System.out.println("Row "+x+" - "+Arrays.toString(dataInRow)+" : "+bestNodeIndex);
+			System.out.println(k+" : "+mos.calcSSETotal());
+			k++;
+		}
+		
+		System.out.println("Elbow Method stop at "+kAtElbow);
+		mos.init(kAtElbow);
+		mos.train();
+		int idx = 0;
+		for(int node : mos.getNode()) {
+			System.out.println(Arrays.toString(arr[idx])+" : Cluster "+node);
+			idx++;
 		}
 	}
-	*/
 }

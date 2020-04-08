@@ -156,6 +156,7 @@ export default class MySvgPanZoom extends BaseComponent {
           minZoom: this.minZoom,
         });
     });
+
     paper.on('cell:mouseover', () => {
       document.body.style.cursor = 'all-scroll';
       this.svgZoom = SvgPanZoom('#containerSvg svg',

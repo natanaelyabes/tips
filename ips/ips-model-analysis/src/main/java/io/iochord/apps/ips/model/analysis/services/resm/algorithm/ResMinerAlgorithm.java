@@ -3,10 +3,10 @@ package io.iochord.apps.ips.model.analysis.services.resm.algorithm;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.Duration;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -14,7 +14,6 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 import io.iochord.apps.ips.common.util.LoggerUtil;
@@ -45,58 +44,112 @@ public abstract class ResMinerAlgorithm {
 		Map<ResourceToShiftNumb, List<EventWorkInfo>> me = getOriginatorTimeAnalysis(context, config);
 		double[][] datas = new double[me.size()][1];
 		String[] mapdatas = new String[me.size()];
+		UnitDist[] arUd = new UnitDist[config.getPropTimeAnalysis().length];
+		boolean arUdNotSet = true;
+		
 		int i = 0;
-		for(Entry<ResourceToShiftNumb,List<EventWorkInfo>> es : me.entrySet())
-		{ 
-			SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");  
-			String key1 = es.getKey().getResource();
-			int key2 = es.getKey().getShiftnumb();
-			String start = es.getValue().get(0).getStarttime();
-			String end = es.getValue().get(es.getValue().size()-1).getStarttime();
-			try {
+		try {
+			for(Entry<ResourceToShiftNumb,List<EventWorkInfo>> es : me.entrySet())
+			{ 
+				SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+				String key1 = es.getKey().getResource();
+				int key2 = es.getKey().getShiftnumb();
+				String start = es.getValue().get(0).getStarttime();
+				String end = es.getValue().get(es.getValue().size()-1).getStarttime();
+				
 				Date ds = formatter.parse(start);
 				Date de = formatter.parse(end);
 				Duration duration = Duration.between(formatter.parse(start).toInstant(), formatter.parse(end).toInstant());
-				//if(duration.toHours() > 4 && duration.toHours() < 24) {
-					Map<Integer, List<String>> map1 = maptimeanalysisref.getOrDefault(key1, new HashMap<Integer, List<String>>());
-					List<String> listofwork = map1.getOrDefault(key1, new ArrayList<>());
-					listofwork.add(start);
-					listofwork.add(end);
-					long mintotal = duration.toMinutes();
-					//System.out.println(mintotal+" - "+ds.getHours()+" - "+de.getHours());
-					listofwork.add(Math.floor(mintotal/60)+"");
-					listofwork.add((mintotal % 60)+"");
-					map1.put(key2, listofwork);
-					maptimeanalysisref.put(key1, map1);
-					maptimeanalysis.put(key1+":"+key2, listofwork);
-					double[] features = new double[config.getPropTimeAnalysis().length];//{mintotal, ds.getHours(), de.getHours()};
-					int idx = 0;
-					for(String prop : config.getPropTimeAnalysis())
-						features[idx++] = prop.equals("ss") ? ds.getHours() : (prop.equals("es") ? de.getHours() : mintotal);
-					
-					datas[i] = features;
-					mapdatas[i] = key1+":"+key2;
-					i++;
-				//}
-			}
-			catch(ParseException e) {
+
+				Map<Integer, List<String>> map1 = maptimeanalysisref.getOrDefault(key1, new HashMap<Integer, List<String>>());
+				List<String> listofwork = map1.getOrDefault(key1, new ArrayList<>());
+				listofwork.add(start);
+				listofwork.add(end);
+				long mintotal = duration.toMinutes();
+				listofwork.add(Math.floor(mintotal/60)+"");
+				listofwork.add((mintotal % 60)+"");
+				map1.put(key2, listofwork);
+				maptimeanalysisref.put(key1, map1);
+				maptimeanalysis.put(key1+":"+key2, listofwork);
+				double[] features = new double[config.getPropTimeAnalysis().length];//{mintotal, ds.getHours(), de.getHours()};
+				int idx = 0;
 				
+				for(String prop : config.getPropTimeAnalysis()) {
+					if(arUdNotSet)
+						arUd[idx] = prop.equals("ss") || prop.equals("es") ? UnitDist.Time : UnitDist.NonTime;
+					features[idx++] = prop.equals("ss") ? ds.getHours() : (prop.equals("es") ? de.getHours() : mintotal);
+				}
+				arUdNotSet = false;
+				
+				datas[i] = features;
+				mapdatas[i] = key1+":"+key2;
+				i++;
 			}
 		}
-		int numb = (int) Math.sqrt(5*Math.sqrt(datas.length));
-		MyOwnSOM som = new MyOwnSOM(datas, numb, numb, 10000, 0.5, TimeUnit.Hour,new UnitDist[]{UnitDist.Time, UnitDist.Time, UnitDist.NonTime});
-        som.train();
-
-        int[] nodes = som.getNode();
+		catch(Exception e) {
+			e.printStackTrace();
+			System.exit(0);
+		}
+		
+		
+		//int numb = (int) Math.ceil(Math.sqrt(5*Math.sqrt(datas.length)));
+		//MyOwnSOM cluster = new MyOwnSOM(datas, numb, numb, 500, 0.5, TimeUnit.Hour, arUd);
+        
+		//K-Means with automatically k decision
+		//We can let k is growing always and decide which one is the best one but it may cause time computation very long (depend on number of data and number of attribute as well)
+		//Right now we limit k to 5
+		//Based on the experiment, for this problem automatic K-Means clustering perform better than SOM
+		System.out.println("Just in");
+		MyKMeans cluster = new MyKMeans(datas, TimeUnit.Hour, arUd, 500);
+		int k = 1;
+		int kAtElbow = 1;
+		boolean isRun = true;
+		while(isRun) {
+			cluster.init(k);
+			cluster.train();
+			cluster.ssePerK.add(cluster.calcSSETotal());
+			
+			double bestSdptl = 0;
+			int cBetter = 0;
+			for(int kr = 1; kr <= cluster.ssePerK.size(); kr++) {
+				double sdptl = cluster.shortestDistancePointToLine(kr, 
+				  cluster.ssePerK.get(kr-1),1, 
+				  cluster.ssePerK.get(0), 
+				  cluster.ssePerK.size(), 
+				  cluster.ssePerK.get(cluster.ssePerK.size()-1));
+				
+				if(sdptl > bestSdptl) {
+					bestSdptl = sdptl;
+					cBetter = 0;
+					kAtElbow = kr;
+				}
+				else
+					cBetter++;
+				
+				if(cBetter > 5) {
+					isRun = false;
+					break;
+				}
+			}
+			System.out.println("K now "+k);
+			if(k == 6)
+				isRun = false;
+			k++;
+		}
+		
+		cluster.init(kAtElbow);
+		cluster.train();
+        int[] nodes = cluster.getNode();
         
         i = 0;
         for (int node : nodes) {
-            List<String> list = maptimecluster.getOrDefault(node+"", new ArrayList<>());
-            list.add(mapdatas[i]);
+        	List<String> list = maptimecluster.getOrDefault(node+"", new ArrayList<>());
+        	list.add(mapdatas[i]);
             maptimecluster.put(node+"", list);
             i++;
         }
-        
+        System.out.println("Finish automatic clustering");
+        System.out.println("Best k is "+kAtElbow);
         result.setTimecluster(maptimecluster);
 		result.setTimeanalysis(maptimeanalysis);
 	}
@@ -110,27 +163,27 @@ public abstract class ResMinerAlgorithm {
 		Map<ResourceToShiftNumb, List<EventWorkInfo>> oriTimeAnalysis = new LinkedHashMap<>();
 		try (Connection conn = context.getDataSource().getConnection();) {
 			StringBuilder sql = new StringBuilder();
-			sql.append("SELECT starttime, comptimeprev, resource, gapmin, ")
-				.append("TO_CHAR(gapmin::interval, 'HH24:MI') as gapdt ")
-				.append("from (")
-				.append("  select starttime, comptimeprev, resource, ")
-			    .append("  case when gap is not null then concat(gap,' minute') end as gapmin ")
-			    .append("  from (")
-			    .append("    select starttime, comptimeprev, resource, ")
-			    .append("    DATE_PART('day', starttime::timestamp - comptimeprev::timestamp)*24*60 + ")
-				.append("    DATE_PART('hour', starttime::timestamp - comptimeprev::timestamp)*60 + ")
-				.append("    DATE_PART('min', starttime::timestamp - comptimeprev::timestamp) as gap ")
-				.append("    from (")
-				.append("      select ").append(config.getColEventTimestampStart()).append(" as starttime, ")
-				.append("      case ")
-				.append("        when (lag( ").append(config.getColEventResource()).append(" ) over (order by ").append(config.getColEventResource()).append(", ").append(config.getColEventTimestampStart()).append(" )) = ").append(config.getColEventResource()).append(" then ") 
-			    .append("          (lag( ").append(config.getColEventTimestampStart()).append(" ) over (order by ").append(config.getColEventResource()).append(" , ").append(config.getColEventTimestampStart()).append(" )) ") 
-			    .append("        else null ")
-			    .append("      end as comptimeprev , ")
-			    .append("   ").append(config.getColEventResource()).append(" as resource ") 
-				.append("      from ").append(config.getDatasetId()).append(" where ").append(config.getColEventResource()).append(" != '' ")
-				.append("      ) as temp1tab ")
-				.append("    ) as temp2tab ")
+			sql.append("SELECT starttime, comptimeprev, resource, gapmin, \n")
+				.append("TO_CHAR(gapmin::interval, 'HH24:MI') as gapdt \n")
+				.append("from (\n")
+				.append("  select starttime, comptimeprev, resource, \n")
+			    .append("  case when gap is not null then concat(gap,' minute') end as gapmin \n")
+			    .append("  from (\n")
+			    .append("    select starttime, comptimeprev, resource, \n")
+			    .append("    DATE_PART('day', starttime::timestamp - comptimeprev::timestamp)*24*60 + \n")
+				.append("    DATE_PART('hour', starttime::timestamp - comptimeprev::timestamp)*60 + \n")
+				.append("    DATE_PART('min', starttime::timestamp - comptimeprev::timestamp) as gap \n")
+				.append("    from (\n")
+				.append("      select ").append(config.getColEventTimestampStart()).append(" as starttime, \n")
+				.append("      case \n")
+				.append("        when (lag( ").append(config.getColEventResource()).append(" ) over (order by ").append(config.getColEventResource()).append(", ").append(config.getColEventTimestampStart()).append(" )) = ").append(config.getColEventResource()).append(" then \n") 
+			    .append("          (lag( ").append(config.getColEventTimestampStart()).append(" ) over (order by ").append(config.getColEventResource()).append(" , ").append(config.getColEventTimestampStart()).append(" )) \n") 
+			    .append("        else null \n")
+			    .append("      end as comptimeprev , \n")
+			    .append("   ").append(config.getColEventResource()).append(" as resource \n") 
+				.append("      from ").append(config.getDatasetId()).append(" where ").append(config.getColEventResource()).append(" != '' \n")
+				.append("      ) as temp1tab \n")
+				.append("    ) as temp2tab \n")
 				.append("  ) fintab");
 			
 			ResourceToShiftNumb rsn = null;
