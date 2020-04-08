@@ -14,7 +14,7 @@ import java.util.Set;
 public class SOM extends Preprocessing {
 	
 	private Random r = new Random();
-	
+	private boolean isScale = true;
 	private int xD;
 	private int yD;
 	
@@ -25,7 +25,7 @@ public class SOM extends Preprocessing {
 	private int finalNodes[];
 	private double finalDistances[];
 	
-	public SOM(double[][] matrix, int xD, int yD, int epochs)
+	public SOM(double[][] matrix, int xD, int yD, int epochs, boolean isScale)
 	{
 		super(matrix);
 		
@@ -194,7 +194,8 @@ public class SOM extends Preprocessing {
 	
 	private void init()
 	{
-		this.scaleData();
+		if(isScale)
+			this.scaleData();
 		
 		pairArray = new int[this.xD * this.yD][2];
 		int count = 0;
