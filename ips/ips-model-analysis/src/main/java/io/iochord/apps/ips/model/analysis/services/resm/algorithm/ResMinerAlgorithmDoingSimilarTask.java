@@ -1,4 +1,4 @@
-package io.iochord.apps.ips.model.analysis.services.resm;
+package io.iochord.apps.ips.model.analysis.services.resm.algorithm;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -10,24 +10,31 @@ import java.util.Map.Entry;
 import java.util.Set;
 
 import io.iochord.apps.ips.core.services.ServiceContext;
+import io.iochord.apps.ips.model.analysis.services.resm.model.ModelQuery;
+import io.iochord.apps.ips.model.analysis.services.resm.model.ResourceMinerConfig;
+import io.iochord.apps.ips.model.analysis.services.resm.model.ResourceToActivity;
+import io.iochord.apps.ips.model.analysis.services.resm.model.ResourceToResource;
 
 public class ResMinerAlgorithmDoingSimilarTask extends ResMinerAlgorithm {
 	
 	public static final String ORG_UNIT = "orgUnit-";
+	float updateProg = 0f;
 	
 	public ResMinerAlgorithmDoingSimilarTask(ServiceContext context, ResourceMinerConfig config) {
 		super(context, config);
 	}
 
 	@Override
-	void compute() {
+	public void compute() {
 		DistanceAlgorithm distAlg = new DistanceAlgorithm();
 		
-		List<String> activities = ModelQuery.getActivities(context, config);
-		List<String> resources = ModelQuery.getResources(context, config);
+		ModelQuery mq = new ModelQuery(updateProg);
 		
-		Map<ResourceToActivity, Integer> oacmtrx = ModelQuery.getOrgActMatrix(context, config);
-		Map<ResourceToResource,Double> distorig = new HashMap<>();
+		List<String> activities = mq.getActivities(context, config);
+		List<String> resources = mq.getResources(context, config);
+	
+		Map<ResourceToActivity, Integer> oacmtrx = mq.getOrgActMatrix(context, config);
+		Map<ResourceToResource, Double> distorig = new HashMap<>();
 		
 		Map<Integer,Set<String>> mgunitres = new HashMap<>();
 		Map<String,Set<Integer>> mactgunit = new HashMap<>();
@@ -36,6 +43,9 @@ public class ResMinerAlgorithmDoingSimilarTask extends ResMinerAlgorithm {
 			for(String originatorx : resources) {
 				if(originatory.equals(originatorx))
 					continue;
+				
+				context.updateProgress(updateProg++);
+				
 				ResourceToResource key = new ResourceToResource(originatory,originatorx);
 				ResourceToResource revkey = new ResourceToResource(originatorx,originatory);
 				
@@ -52,7 +62,7 @@ public class ResMinerAlgorithmDoingSimilarTask extends ResMinerAlgorithm {
 					isOrig1Exist = mgunitres.get(entryset.getKey()).contains(originatory);
 					isStop = isOrig1Exist;
 					
-					if(distVal >= config.getThreshold()) {
+					if(distAlg.evalThreshold(distVal, config.getThreshold(), config.getDistMesAlg())) {
 						isOrig2Exist = mgunitres.get(entryset.getKey()).contains(originatorx);
 						isStop = isStop || isOrig2Exist;
 					}
@@ -64,10 +74,10 @@ public class ResMinerAlgorithmDoingSimilarTask extends ResMinerAlgorithm {
 				}
 				
 				gunitc = gunitc != null ? gunitc : (mgunitres.size() == 0 ? 1 : Collections.max(mgunitres.keySet())+1); 
-				Set<String> sres = mgunitres.getOrDefault(gunitc,new HashSet<String>());
+				Set<String> sres = mgunitres.getOrDefault(gunitc, new HashSet<String>());
 				if(!isOrig1Exist)
 					sres.add(originatory);
-				if(distVal >= config.getThreshold() && !isOrig2Exist) {
+				if(distAlg.evalThreshold(distVal, config.getThreshold(), config.getDistMesAlg()) && !isOrig2Exist) {
 					sres.add(originatorx);
 				}
 				
@@ -82,6 +92,8 @@ public class ResMinerAlgorithmDoingSimilarTask extends ResMinerAlgorithm {
 				}
 			}
 		}
+		
+		context.updateProgress(updateProg++);
 		
 		List<String> groups = mapIntGroupToString(mgunitres.keySet());
 		Map<String, List<String>> mGroupRes = mapIntGroupToGroupRes(mgunitres);
@@ -106,16 +118,9 @@ public class ResMinerAlgorithmDoingSimilarTask extends ResMinerAlgorithm {
 			List<String> groups = new ArrayList<>();
 			groups.add(ORG_UNIT+(++i));
 			mapActToGroup.put(activity, groups);
+			context.updateProgress(updateProg++);
 		}
 		return mapActToGroup;
-	}
-	
-	public Map<String, List<String>> mapGroupToRes(Map<String, List<String>> mapActToGroup, Map<String, List<String>> mapActToRes) {
-		Map<String, List<String>> mapGroupToRes = new HashMap<>();
-		for(String activity : mapActToGroup.keySet()) {
-			mapGroupToRes.put(mapActToGroup.get(activity).get(0), mapActToRes.get(activity));
-		}
-		return mapGroupToRes;
 	}
 	
 	public List<String> mapIntGroupToString(Set<Integer> groups) {
@@ -129,6 +134,7 @@ public class ResMinerAlgorithmDoingSimilarTask extends ResMinerAlgorithm {
 		Map<String, List<String>> mapGroupToRes = new HashMap<>();
 		for(Integer group : mapIntGroupToRes.keySet()) {
 			mapGroupToRes.put(ORG_UNIT+group, new ArrayList<>(mapIntGroupToRes.get(group)));
+			context.updateProgress(updateProg++);
 		}
 		return mapGroupToRes;
 	}

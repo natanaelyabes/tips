@@ -1,6 +1,6 @@
 <!--
   @package ips
-  @author N. I. Utama <ichsan83@gmail.com>
+  @author Nur Ichsan Utama <ichsan83@gmail.com>
   @since 2020
 -->
 <template>
@@ -9,27 +9,27 @@
       <div class="column">
         <h2>Activity</h2>
         <ul class="resmMenu">
-          <li v-for="(activity, i) in activities" :class="{ 'menu-item': !mactivities[activity], lactive: mactivities[activity] }" :key="activity + i">
-            <input type="checkbox" v-model="mactivities[activity]" :change="toggleGroup(activity)"/>
-            <label>{{activity}}</label>
+          <li v-for="(item, key, index) in mactivities" :class="{ 'menu-item': !mactivities[key], lactive: mactivities[key] }">
+            <input :id="key" :name="key" type="checkbox" v-model="mactivities[key]" @change="setActive(true, key)"/>
+            <label :for="key">{{key}}</label>
           </li>
         </ul>
       </div>
       <div class="column">
         <h2>Group Unit</h2>
         <ul class="resmMenu">
-          <li v-for="(group,i) in groups" :class="{ 'menu-item': !mgroups[group], lactive: mgroups[group] }" :key="group + i">
-            <input v-model="mgroups[group]" type="checkbox" :change="toggleResource(group)"/>
-            <label>{{group}}</label> 
+          <li v-for="(item, key, index) in mgroups" :class="{ 'menu-item': !mgroups[key], lactive: mgroups[key] }">
+            <input :id="key" :name="key" type="checkbox" v-model="mgroups[key]" @change="setActive(false, key)"/>
+            <label :for="key">{{key}}</label> 
           </li>
         </ul>
       </div>
       <div class="column">
         <h2>Resource</h2>
         <ul class="resmMenu">
-          <li v-for="(resource,i) in resources" :class="{ 'menu-item': !mresources[resource], lactive: mresources[resource] }" :key="resource + i">
-            <input v-model="mresources[resource]" type="checkbox"/>
-            <label>{{resource}}</label>
+          <li v-for="(item, key, index) in  mresources" :class="{ 'menu-item': !mresources[key], lactive: mresources[key] }">
+            <input :id="key" :name="key" v-model="mresources[key]" type="checkbox"/>
+            <label :for="key">{{key}}</label>
           </li>
         </ul>
       </div>
@@ -45,6 +45,7 @@ ul.resmMenu {
 
 ul.resmMenu > li {
   padding: 5px;
+  cursor: pointer;
 }
 
 ul.resmMenu > li > input {
@@ -65,7 +66,7 @@ ul.resmMenu > li > input {
 </style>
 
 <script lang="ts">
-import { Component, Vue, Prop } from 'vue-property-decorator';
+import { Component, Vue, Prop, Watch } from 'vue-property-decorator';
 import BaseComponent from '@/iochord/ips/common/ui/layout/class/BaseComponent';
 import ResourceMiningResult from '../models/ResourceMiningResult';
 
@@ -77,15 +78,11 @@ import ResourceMiningResult from '../models/ResourceMiningResult';
  *
  * @extends BaseComponent
  * @package ips
- * @author N. I. Utama <ichsan83@gmail.com>
+ * @author Nur Ichsan Utama <ichsan83@gmail.com>
  * @since 2020
  *
  */
 export default class ContentTableComponent extends BaseComponent {
-
-  public activities: any = {};
-  public groups: any = {};
-  public resources: any = {};
 
   public mactivities: any = {};
   public mgroups: any = {};
@@ -106,42 +103,53 @@ export default class ContentTableComponent extends BaseComponent {
    * @memberof AnalysisResourceMining
    */
   public mounted(): void {
-    this.activities = this.resMiningResult.activities;
-    this.groups = this.resMiningResult.groups;
-    this.resources = this.resMiningResult.resources;
+    const initActivities: any = {};
+    const initGroups: any = {};
+    const initResources: any = {};
+
+    for (const activity of this.resMiningResult.activities)
+       initActivities[activity] = false;
+    for (const group of this.resMiningResult.groups)
+      initGroups[group] = false;
+    for (const resource of this.resMiningResult.resources)
+      initResources[resource] = false;
+
+    this.mactivities = initActivities;
+    this.mgroups = initGroups;
+    this.mresources = initResources;
   }
 
-  public toggleGroup(activity: string): void {
-    for (const group of this.groups) {
-      if (this.resMiningResult.mactgroup[activity].some((x: string) => x === group)) {
-        let needToggle = true;
-        if (!this.mactivities[activity])
-        for (const act of this.resMiningResult.mgroupact[group]) {
-          if (this.mactivities[act]) {
-            needToggle = false;
-            break;
+  protected setActive(isActivity: boolean, value: string) {
+    if (isActivity) {
+      for (const group in this.mgroups) {
+        if (this.resMiningResult.mactgroup[value].some((x: string) => x === group)) {
+          let needToggle = true;
+          if (!this.mactivities[value])
+          for (const act of this.resMiningResult.mgroupact[group]) {
+            if (this.mactivities[act]) {
+              needToggle = false;
+              break;
+            }
+          }
+          if (needToggle) {
+            this.mgroups[group] = this.mactivities[value];
+            this.setActive(false, group);
           }
         }
-        if (needToggle) {
-          this.mgroups[group] = this.mactivities[activity];
-          this.toggleResource(group);
-        }
       }
-    }
-  }
-
-  public toggleResource(group: string): void {
-    for (const resource of this.resources) {
-      if (this.resMiningResult.mgroupres[group].some((x: string) => x === resource)) {
+    } else {
+      for (const resource in this.mresources) {
+      if (this.resMiningResult.mgroupres[value].some((x: string) => x === resource)) {
         let needToggle = true;
-        if (!this.mgroups[group])
+        if (!this.mgroups[value])
         for (const grp of this.resMiningResult.mresgroup[resource]) {
           if (this.mgroups[grp])
             needToggle = false;
         }
         if (needToggle)
-          this.mresources[resource] = this.mgroups[group];
+          this.mresources[resource] = this.mgroups[value];
       }
+    }
     }
   }
 }

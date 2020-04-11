@@ -15,22 +15,22 @@
         <i class="right angle icon divider"></i>
         <div class="active section">{{this.title}}</div>
         <i class="right angle icon divider"></i>
-        <select v-model="datasetIdRef">
-          <option value="">---</option>
-          <option :selected="datasetId == i" v-for="(ds, i) in datasets" :key="i" class="item" :value="i">{{ds.name}} ({{i}})</option>
+        <select class="ui floating scrolling dropdown button" v-model="datasetIdRef">
+          <option value="---" selected>---</option>
+          <option v-for="(ds, i) in datasets" :key="i" class="item" :value="i">{{ds.name}} ({{i}})</option>
         </select>
         {{progressMessage}}
       </template>
 
       <!-- Left Sidebar Menu Item -->
       <template slot="left-bar-menu-item">
-        <a :href="`/#/iochord/ips/analytics/resource/settings/${datasetId}`" class="item active">Settings</a>
-        <a :href="`/#/iochord/ips/analytics/resource/mining/${datasetId}`" class="item">Overall</a>
+        <router-link :to="`/iochord/ips/analytics/resource/settings/${datasetId}`" tag="a" class="item active">Settings</router-link>
+        <router-link :to="`/iochord/ips/analytics/resource/mining/${datasetId}`" tag="a" class="item">Overall</router-link>
       </template>
 
       <!-- Content -->
       <template slot="content">
-        <ContentSettingsComponent :datasetId="datasetIdRef"></ContentSettingsComponent>
+        <ContentSettingsComponent :key="reRenderKey" :datasetId="datasetIdRef"></ContentSettingsComponent>
       </template>
     </LeftBarContentWrapperComponent>
   </div>
@@ -57,6 +57,8 @@ import DiffLayoutView from '@/iochord/ips/common/ui/layout/class/DiffLayoutView'
 import LeftBarContentWrapperComponent from '@/iochord/ips/common/ui/layout/components/LeftBarContentWrapperComponent.vue';
 import ContentSettingsComponent from '../components/ContentSettingsComponent.vue';
 import DataConnectionService from '@/iochord/ips/data/connection/services/DataConnectionService';
+
+declare const $: any;
 
 @Component({
   components: {
@@ -92,7 +94,7 @@ export default class AnalysisResourceMiningSettings extends DiffLayoutView {
    * @type {string}
    * @memberof AnalysisResourceMining
    */
-  public datasetIdRef: string = '';
+  public datasetIdRef: string = '---';
 
 
   /**
@@ -116,6 +118,7 @@ export default class AnalysisResourceMiningSettings extends DiffLayoutView {
    * @memberof AnalysisResourceMining
    */
   public mounted(): void {
+    this.forceReRender();
     const self = this;
     DataConnectionService.getInstance().getDataConnections((res: any) => {
       self.datasets = res.data;
@@ -144,6 +147,10 @@ export default class AnalysisResourceMiningSettings extends DiffLayoutView {
    */
   public setTitle(): void {
     this.title = `Resource Mining`;
+  }
+
+  public declareSemanticModules() {
+    $('.dropdown').dropdown();
   }
 }
 </script>

@@ -5,138 +5,140 @@
 -->
 <template>
   <div class="content filter missing imputation component">
-    <section>
-      <h4 class="ui dividing header">Missing Data Filter</h4>
-      <h5>Data summary</h5>
-      <div class="ui two column grid">
-        <div class="column">
-          <div class="ui fluid card" style="height: 375px">
-            <div class="image">
-              <BarChart :model="barData1"/>
-            </div>
-            <div class="content">
-              <label>Number of missing events by case <br />(Case 별 missing event 수)</label>
-            </div>
-          </div>
-        </div>
-        <div class="column">
-          <div class="ui fluid card" style="height: 375px">
-            <div class="image" style="height: 305px">
-              <div class="ui two statistics">
-                <div class="statistic">
-                  <div class="value">6 %</div>
-                  <div class="label">Timestamp</div>
-                </div>
-                <div class="statistic">
-                  <div class="value">12 %</div>
-                  <div class="label">Resource</div>
-                </div>
-                <div class="statistic">
-                  <div class="value">1 %</div>
-                  <div class="label">Attr A</div>
-                </div>
-                <div class="statistic">
-                  <div class="value">6 %</div>
-                  <div class="label">Attr B</div>
-                </div>
-                <div class="statistic">
-                  <div class="value">1 %</div>
-                  <div class="label">Attr C</div>
-                </div>
-                <div class="statistic">
-                  <div class="value">6 %</div>
-                  <div class="label">Attr D</div>
-                </div>
+    <div class="ui basic segment">
+      <section>
+        <h4 class="ui dividing header">Missing Data Filter</h4>
+        <h5>Data summary</h5>
+        <div class="ui two column grid">
+          <div class="column">
+            <div class="ui fluid card" style="height: 375px">
+              <div class="image">
+                <BarChart :model="barData1"/>
+              </div>
+              <div class="content">
+                <label>Number of missing events by case <br />(Case 별 missing event 수)</label>
               </div>
             </div>
-            <div class="content">
-              <label>Percentage of missing events by attributes <br />(속성별 missing event %)</label>
+          </div>
+          <div class="column">
+            <div class="ui fluid card" style="height: 375px">
+              <div class="image" style="height: 305px">
+                <div class="ui two statistics">
+                  <div class="statistic">
+                    <div class="value">6 %</div>
+                    <div class="label">Timestamp</div>
+                  </div>
+                  <div class="statistic">
+                    <div class="value">12 %</div>
+                    <div class="label">Resource</div>
+                  </div>
+                  <div class="statistic">
+                    <div class="value">1 %</div>
+                    <div class="label">Attr A</div>
+                  </div>
+                  <div class="statistic">
+                    <div class="value">6 %</div>
+                    <div class="label">Attr B</div>
+                  </div>
+                  <div class="statistic">
+                    <div class="value">1 %</div>
+                    <div class="label">Attr C</div>
+                  </div>
+                  <div class="statistic">
+                    <div class="value">6 %</div>
+                    <div class="label">Attr D</div>
+                  </div>
+                </div>
+              </div>
+              <div class="content">
+                <label>Percentage of missing events by attributes <br />(속성별 missing event %)</label>
+              </div>
             </div>
           </div>
         </div>
-      </div>
-    </section>
+      </section>
 
-    <div class="ui hidden divider"></div>
-
-    <section>
-      <h5 class="ui horizontal left aligned divider header">Data handling methods</h5>
-      <div class="ui form">
-        <div class="grouped fields">
-          <div class="field">
-            <div class="ui slider checkbox">
-              <input type="radio" name="method" checked="checked" value="deletion" @change="methodChanged($event)">
-              <label>Simple deletion method (expected data lost rate: <span class="ui red text"> {{ expectedDataLoseRate }}</span> %)</label>
-            </div>
-          </div>
-          <div class="field">
-            <div class="ui slider checkbox checked">
-              <input type="radio" name="method" value="imputation" @change="methodChanged($event)">
-              <label>Event imputation method (expected restoration rate: <span class="ui red text"> {{ expectedRestorationRate }}</span> %)</label>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <div class="ui hidden divider"></div>
-
-    <!-- Data deletion results -->
-    <section  v-if=" selectedMethod == 'deletion'">
-      <form class="ui form">
-        <button class="ui primary button">Analyze</button>
-      </form>
-      <h5 class="ui horizontal left aligned divider header">Simple Deletion Results</h5>
-      <div class="ui three statistics">
-        <div class="statistic">
-          <div class="value">400</div>
-          <div class="label">Number of Events Deleted</div>
-        </div>
-        <div class="statistic">
-          <div class="value">400</div>
-          <div class="label">Number of Cases Deleted</div>
-        </div>
-        <div class="statistic">
-          <div class="value">10 %</div>
-          <div class="label">Data Loss Rate</div>
-        </div>
-      </div>
-      <div class="ui hidden divider" />
-      <IpsTable :dataHeader="headerTest" :model="dataModelTest" :pagination="true"/>
-    </section>
-
-    <!-- Data imputation input parameter & results -->
-    <section v-if=" selectedMethod == 'imputation'">
-      <form class="ui form">
-        <div class="fields">
-          <div class="field">
-            <label>Number of iteration</label>
-            <input type="text" placeholder="1" value="1">
-          </div>
-          <div class="field">
-            <label>Select variables</label>
-            <select class="ui fluid dropdown" v-model="selected" >
-              <option v-for="option in atrOptions" :value="option.id" :key="option.id">{{option.text}} </option>
-            </select>
-          </div>
-        </div>
-        <button class="ui primary button">Analyze</button>
-      </form>
-
-      <h5 class="ui horizontal left aligned divider header">Event Imputation Result</h5>
-      <div class="ui two statistics">
-        <div class="statistic">
-          <div class="value">95 ~ 97 %</div>
-          <div class="label">Expected percentage of repairing rate</div>
-        </div>
-        <div class="statistic">
-          <div class="value">3 ~ 10 min</div>
-          <div class="label">Expected processing time</div>
-        </div>
-      </div>
       <div class="ui hidden divider"></div>
-      <IpsTable :dataHeader="headerTest" :model="dataModelTest" :pagination="true"/>
-    </section>
+
+      <section>
+        <h5 class="ui horizontal left aligned divider header">Data handling methods</h5>
+        <div class="ui form">
+          <div class="grouped fields">
+            <div class="field">
+              <div class="ui slider checkbox">
+                <input type="radio" name="method" checked="checked" value="deletion" @change="methodChanged($event)">
+                <label>Simple deletion method (expected data lost rate: <span class="ui red text"> {{ expectedDataLoseRate }}</span> %)</label>
+              </div>
+            </div>
+            <div class="field">
+              <div class="ui slider checkbox checked">
+                <input type="radio" name="method" value="imputation" @change="methodChanged($event)">
+                <label>Event imputation method (expected restoration rate: <span class="ui red text"> {{ expectedRestorationRate }}</span> %)</label>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <div class="ui hidden divider"></div>
+
+      <!-- Data deletion results -->
+      <section  v-if=" selectedMethod == 'deletion'">
+        <form class="ui form">
+          <button class="ui primary button">Analyze</button>
+        </form>
+        <h5 class="ui horizontal left aligned divider header">Simple Deletion Results</h5>
+        <div class="ui three statistics">
+          <div class="statistic">
+            <div class="value">400</div>
+            <div class="label">Number of Events Deleted</div>
+          </div>
+          <div class="statistic">
+            <div class="value">400</div>
+            <div class="label">Number of Cases Deleted</div>
+          </div>
+          <div class="statistic">
+            <div class="value">10 %</div>
+            <div class="label">Data Loss Rate</div>
+          </div>
+        </div>
+        <div class="ui hidden divider" />
+        <IpsTable :dataHeader="headerTest" :model="dataModelTest" :pagination="true"/>
+      </section>
+
+      <!-- Data imputation input parameter & results -->
+      <section v-if=" selectedMethod == 'imputation'">
+        <form class="ui form">
+          <div class="fields">
+            <div class="field">
+              <label>Number of iteration</label>
+              <input type="text" placeholder="1" value="1">
+            </div>
+            <div class="field">
+              <label>Select variables</label>
+              <select class="ui fluid dropdown" v-model="selected" >
+                <option v-for="option in atrOptions" :value="option.id" :key="option.id">{{option.text}} </option>
+              </select>
+            </div>
+          </div>
+          <button class="ui primary button">Analyze</button>
+        </form>
+
+        <h5 class="ui horizontal left aligned divider header">Event Imputation Result</h5>
+        <div class="ui two statistics">
+          <div class="statistic">
+            <div class="value">95 ~ 97 %</div>
+            <div class="label">Expected percentage of repairing rate</div>
+          </div>
+          <div class="statistic">
+            <div class="value">3 ~ 10 min</div>
+            <div class="label">Expected processing time</div>
+          </div>
+        </div>
+        <div class="ui hidden divider"></div>
+        <IpsTable :dataHeader="headerTest" :model="dataModelTest" :pagination="true"/>
+      </section>
+    </div>
   </div>
 </template>
 

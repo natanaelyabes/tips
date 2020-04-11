@@ -3,12 +3,14 @@ package io.iochord.apps.ips.model.analysis.services.ism;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.stream.Collectors;
 import java.util.Set;
 
 import io.iochord.apps.ips.common.util.LoggerUtil;
@@ -41,6 +43,36 @@ public class IsmDiscoveryService extends AnIpsAsyncService<IsmDiscoveryConfigura
 		context.updateProgress(25, "Discovering DF matrix.");
 		Map<String, Map<String, Long>> dfMatrix = new LinkedHashMap<>();
 		Map<String, Map<String, Double>> dpMatrix = new LinkedHashMap<>();
+		
+		
+		Map<String, String> mappings = new LinkedHashMap<>();
+		try (Connection conn = context.getDataSource().getConnection();) {
+			StringBuilder mappingsettings = new StringBuilder();
+			mappingsettings.append("SELECT technical_names, mappings FROM ").append(config.getDatasetId()).append("_mappings;");
+			try (PreparedStatement st = conn.prepareStatement(mappingsettings.toString());) {
+				try (ResultSet rs = st.executeQuery();) {
+					while (rs.next()) {
+						mappings.put(rs.getString(1), rs.getString(2));
+					}
+				}
+			}
+		} catch (SQLException e) {
+			LoggerUtil.logError(e);
+		}
+		
+		String caseid_col = mappings.entrySet().stream()
+				.filter(set -> set.getValue().equals("case_id"))
+				.map(set -> set.getKey()).collect(Collectors.toList()).get(0);
+		String evact_col = mappings.entrySet().stream()
+				.filter(set -> set.getValue().equals("concept:name"))
+				.map(set -> set.getKey()).collect(Collectors.toList()).get(0);
+		String tsmp_col = mappings.entrySet().stream()
+				.filter(set -> set.getValue().equals("time:timestamp"))
+				.map(set -> set.getKey()).collect(Collectors.toList()).get(0);
+		config.setColCaseId(caseid_col);
+		config.setColEventActivity(evact_col);
+		config.setColEventTimestamp(tsmp_col);
+
 		calculateDfMatrix(context, dfMatrix, config.getDatasetId(), config.getColCaseId(), config.getColEventActivity(), config.getColEventTimestamp(), config.getSkipRows());
 		calculateDpMatrix(config, dpMatrix, dfMatrix);
 		Map<String, Activity> nodes = new LinkedHashMap<>();
@@ -94,7 +126,7 @@ public class IsmDiscoveryService extends AnIpsAsyncService<IsmDiscoveryConfigura
 		for (String ea : nodes.keySet()) {
 			ActivityImpl a = (ActivityImpl) factory.addActivity(p);
 			a.setLabel(ea);
-			a.setId("ACTIVITY" + (ni++) + ea);
+			//a.setId("ACTIVITY" + (ni++) + ea);
 			nodes.put(ea, a);
 		}
 		createConnector(context, factory, nodes, dfMatrix, dpMatrix, p, ni);
@@ -123,6 +155,8 @@ public class IsmDiscoveryService extends AnIpsAsyncService<IsmDiscoveryConfigura
 		Map<String, NodeImpl> inNodes = new LinkedHashMap<>();
 		Map<String, NodeImpl> outNodes = new LinkedHashMap<>();
 		Map<String, BranchImpl> bcs = new LinkedHashMap<>();
+		
+		int i = 0;
 		for (Entry<String, Activity> eae : nodes.entrySet()) {
 			String ea = eae.getKey();
 			ActivityImpl a = (ActivityImpl) eae.getValue();
@@ -133,9 +167,10 @@ public class IsmDiscoveryService extends AnIpsAsyncService<IsmDiscoveryConfigura
 				BranchImpl ib = (BranchImpl) factory.addBranch(p);
 				ib.setType(BranchType.JOIN);
 				ib.setId("JOIN-BRANCH-" + a.getId() + ea);
+				ib.setLabel("jb" + i);
 				bcs.put(ib.getId(), ib);
 				ConnectorImpl c = (ConnectorImpl) factory.addConnector(p, ib, a);
-				c.setId("CONNECTOR" + ni);
+				//c.setId("CONNECTOR" + ni);
 				c.setLabel("");
 				inNodes.put(ea, ib);
 			}
@@ -143,12 +178,14 @@ public class IsmDiscoveryService extends AnIpsAsyncService<IsmDiscoveryConfigura
 				BranchImpl ob = (BranchImpl) factory.addBranch(p);
 				ob.setType(BranchType.SPLIT);
 				ob.setId("SPLIT-BRANCH-" + a.getId() + ea);
+				ob.setLabel("sb" + i);
 				bcs.put(ob.getId(), ob);
 				ConnectorImpl c = (ConnectorImpl) factory.addConnector(p, a, ob);
-				c.setId("CONNECTOR" + ni);
+				//c.setId("CONNECTOR" + ni);
 				c.setLabel("");
 				outNodes.put(ea, ob);
 			}
+			i++;
 		}
 		Map<String, Map<String, Long>> bcIf = new LinkedHashMap<>();
 		Map<String, Map<String, Long>> bcOf = new LinkedHashMap<>();
@@ -162,7 +199,7 @@ public class IsmDiscoveryService extends AnIpsAsyncService<IsmDiscoveryConfigura
 					long ff = dfMatrix.get(fa).get(ta);
 					double dp = dpMatrix.get(fa).get(ta);
 					ConnectorImpl c = (ConnectorImpl) factory.addConnector(p, on, in);
-					c.setId("CONNECTOR" + ci++);
+					//c.setId("CONNECTOR" + ci++);
 					c.setLabel(String.valueOf(ff) + " (" + String.valueOf(dp) + ")");
 					if (on instanceof BranchImpl) {
 						if (!bcIf.containsKey(on.getId())) {

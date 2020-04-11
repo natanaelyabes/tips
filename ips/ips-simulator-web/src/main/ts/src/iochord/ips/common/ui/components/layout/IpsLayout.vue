@@ -39,8 +39,8 @@
           <div class="header" style="text-decoration:underline">Analysis / Algorithm</div>
           <div class="menu">
             <router-link tag="a" class="item" to="/iochord/ips/analytics/process/discovery">Process Model</router-link>
-            <router-link tag="a" class="item" to="/iochord/ips/analytics/branch/mining">Branches Mining</router-link>
-            <router-link tag="a" class="item" to="/iochord/ips/analytics/resource/mining">Resource Mining</router-link>
+            <router-link tag="a" class="item" to="/iochord/ips/analytics/branch/settings">Branches Mining</router-link>
+            <router-link tag="a" class="item" to="/iochord/ips/analytics/resource/settings">Resource Mining</router-link>
             <router-link tag="a" class="item" to="/iochord/ips/analytics/distribution/fitting">Distribution Fitting</router-link>
           </div>
         </div>

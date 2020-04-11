@@ -23,9 +23,14 @@
 </template>
 
 <style scoped>
+.ui.input {
+  width: 100%;
+}
+
 .ui.items {
   margin: 1rem 0;
 }
+
 .ui.items .item {
   padding: 1rem 1rem;
   cursor: pointer;

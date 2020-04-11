@@ -14,6 +14,11 @@
 </template>
 
 <style>
+.sidebar.component {
+  width: fit-content;
+  min-width: fit-content;
+}
+
 .sidebar.component .navigation-bar.component {
   height: 100%;
   max-height: 100%;

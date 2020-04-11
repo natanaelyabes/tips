@@ -11,13 +11,13 @@
         <div class="item">
           <div class="field">
             <label>Dependency threshold</label>
-            <div class="ui labeled ticked range slider" id="slider-range"></div>
+            <input type="number" name="pmd[depthresh]" value="0.9" step="0.1" min="0" max="1">
           </div>
         </div>
         <div class="item">
           <div class="field">
             <label>Minimum frequency</label>
-            <input type="text" name="pmd[minfreq]" placeholder="10">
+            <input type="number" name="pmd[minfreq]" value="10" min="0">
           </div>
         </div>
         <div class="item">
@@ -60,20 +60,20 @@
 
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator';
-import BaseComponent from '@/iochord/ips/common/ui/layout/class/BaseComponent';
+import SemanticComponent from '@/iochord/ips/common/ui/semantic-components/SemanticComponent';
 
 @Component
 
 /**
  * Ribbon component to define heuristic net parameter settings
  *
- * @extends BaseComponent
+ * @extends SemanticComponent
  * @package ts
  * @author N. Y. Wirawan <ny4tips@gmail.com>
  * @since 2019
  *
  */
-export default class PMDHeuristicsRibbonComponent extends BaseComponent {
+export default class PMDHeuristicsRibbonComponent extends SemanticComponent {
   //
 }
 </script>

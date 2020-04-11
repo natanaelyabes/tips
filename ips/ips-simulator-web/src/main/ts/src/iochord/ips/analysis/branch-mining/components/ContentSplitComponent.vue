@@ -5,21 +5,15 @@
 -->
 <template>
   <div class="content split component">
-    <SplitContentWrapperComponent>
-      <template slot="content-left">
-        <div class="ui basic segment">
-          <h4 class="ui dividing header">Process model</h4>
-          process model canvas
-        </div>
+    <LeftBarContentWrapperComponent>
+      <template slot="left-bar-menu-item">
+        <ItemBranchList />
       </template>
 
-      <template slot="content-right">
-        <div class="ui basic segment">
-        <h4 class="ui dividing header">Branching rules</h4>
-          parameters
-        </div>
+      <template slot="content">
+        <ItemProcessModel />
       </template>
-    </SplitContentWrapperComponent>
+    </LeftBarContentWrapperComponent>
   </div>
 </template>
 
@@ -40,12 +34,16 @@
 
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator';
-import BaseComponent from '@/iochord/ips/common/ui/layout/class/BaseComponent';
-import SplitContentWrapperComponent from '@/iochord/ips/common/ui/layout/components/SplitContentWrapperComponent.vue';
+import SemanticComponent from '@/iochord/ips/common/ui/semantic-components/SemanticComponent';
+import LeftBarContentWrapperComponent from '@/iochord/ips/common/ui/layout/components/LeftBarContentWrapperComponent.vue';
+import ItemProcessModel from './ItemProcessModel.vue';
+import ItemBranchList from './ItemBranchList.vue';
 
 @Component({
   components: {
-    SplitContentWrapperComponent,
+    LeftBarContentWrapperComponent,
+    ItemProcessModel,
+    ItemBranchList,
   },
 })
 
@@ -55,14 +53,14 @@ import SplitContentWrapperComponent from '@/iochord/ips/common/ui/layout/compone
  *
  * @export
  * @class ContentSplitComponent
- * @extends BaseComponent
+ * @extends SemanticComponent
  *
  * @package ts
  * @author N. Y. Wirawan <ny4tips@gmail.com>
  * @since 2019
  *
  */
-export default class ContentSplitComponent extends BaseComponent {
-
+export default class ContentSplitComponent extends SemanticComponent {
+  //
 }
 </script>

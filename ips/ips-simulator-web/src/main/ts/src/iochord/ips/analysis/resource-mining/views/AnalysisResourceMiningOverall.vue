@@ -15,17 +15,18 @@
         <i class="right angle icon divider"></i>
         <div class="active section">{{this.title}}</div>
         <i class="right angle icon divider"></i>
-        <select v-model="datasetIdRef">
-          <option value="">---</option>
-          <option :selected="datasetId == i" v-for="(ds, i) in datasets" :key="i" class="item" :value="i">{{ds.name}} ({{i}})</option>
+        <select class="ui floating scrolling dropdown button" v-model="datasetIdRef">
+          <option value="---" selected>---</option>
+          <option v-for="(ds, i) in datasets" :key="i" class="item" :value="i">{{ds.name}} ({{i}})</option>
         </select>
         {{progressMessage}}
       </template>
 
       <!-- Left Sidebar Menu Item -->
       <template slot="left-bar-menu-item">
-        <a :href="`/#/iochord/ips/analytics/resource/settings/${datasetId}`" class="item">Settings</a>
-        <a :href="`/#/iochord/ips/analytics/resource/mining/${datasetId}`" class="item active">Overall</a>
+        <router-link :to="`/iochord/ips/analytics/resource/settings/${datasetId}`" tag="a" class="item">Settings</router-link>
+        <router-link :to="`/iochord/ips/analytics/resource/mining/${datasetId}`" tag="a" class="item active">Overall</router-link>
+
       </template>
 
       <!-- Content -->
@@ -58,6 +59,8 @@ import LeftBarContentWrapperComponent from '@/iochord/ips/common/ui/layout/compo
 import ContentOverallComponent from '../components/ContentOverallComponent.vue';
 import DataConnectionService from '@/iochord/ips/data/connection/services/DataConnectionService';
 import {Route} from 'vue-router';
+
+declare const $: any;
 
 @Component({
   components: {
@@ -93,7 +96,7 @@ export default class AnalysisResourceMiningOverall extends DiffLayoutView {
    * @type {string}
    * @memberof AnalysisResourceMining
    */
-  public datasetIdRef: string = '';
+  public datasetIdRef: string = '---';
 
   /**
    * Datasets field to receive JSON data from web service.
@@ -116,6 +119,7 @@ export default class AnalysisResourceMiningOverall extends DiffLayoutView {
    * @memberof AnalysisResourceMining
    */
   public mounted(): void {
+    this.forceReRender();
     const self = this;
     DataConnectionService.getInstance().getDataConnections((res: any) => {
       self.datasets = res.data;
@@ -144,6 +148,10 @@ export default class AnalysisResourceMiningOverall extends DiffLayoutView {
    */
   public setTitle(): void {
     this.title = `Resource Mining`;
+  }
+
+  public declareSemanticModules() {
+    $('.dropdown').dropdown();
   }
 }
 </script>

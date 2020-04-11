@@ -5,7 +5,7 @@
 -->
 <template>
   <div class="sandbox data management">
-    <DepthTwoLeftWrapperComponent>
+    <WrapperComponent>
 
       <!-- Header -->
       <template slot="header-breadcrumb">
@@ -15,7 +15,7 @@
         <i class="right angle icon divider"></i>
         <div class="active section">{{this.title}}</div>
         <i class="right angle icon divider"></i>
-        <select @change="retreiveDataset" ref="datasetSelector" v-model="selectedDatasetId">
+        <select class="ui floating scrolling dropdown button" @change="retreiveDataset" ref="datasetSelector" v-model="selectedDatasetId">
           <option value="---" selected>---</option>
           <option v-for="(ds, i) in datasets" :key="i" class="item" :value="i">{{ds.name}} ({{i}})</option>
         </select>
@@ -25,7 +25,7 @@
       <template slot="content">
         <ContentMappingComponent :key="reRenderKey" :datasetId="selectedDatasetId" ref="mapping" id="mapping"></ContentMappingComponent>
       </template>
-    </DepthTwoLeftWrapperComponent>
+    </WrapperComponent>
   </div>
 </template>
 
@@ -43,7 +43,7 @@ a.section {
 <script lang="ts">
 import { Vue, Prop, Component } from 'vue-property-decorator';
 import ExplorerLayoutView from '@/iochord/ips/common/ui/layout/class/ExplorerLayoutView';
-import DepthTwoLeftWrapperComponent from '@/iochord/ips/common/ui/layout/components/DepthTwoLeftWrapperComponent.vue';
+import WrapperComponent from '@/iochord/ips/common/ui/layout/components/WrapperComponent.vue';
 import ContentMappingComponent from '../components/ContentMappingComponent.vue';
 import MappingService from '../services/MappingService';
 import IMappingResource from '../interfaces/IMappingResource';
@@ -52,12 +52,14 @@ import MappingModule from '../stores/MappingModule';
 import { getModule } from 'vuex-module-decorators';
 import DataConnectionService from '../../connection/services/DataConnectionService';
 
+declare const $: any;
+
 // Vuex module
 const mappingModule = getModule(MappingModule);
 
 @Component({
   components: {
-    DepthTwoLeftWrapperComponent,
+    WrapperComponent,
     ContentMappingComponent,
   },
 })
@@ -111,6 +113,10 @@ export default class DataMapping extends ExplorerLayoutView {
     }
 
     this.forceReRender();
+  }
+
+  public declareSemanticModules() {
+    $('.dropdown').dropdown();
   }
 }
 </script>

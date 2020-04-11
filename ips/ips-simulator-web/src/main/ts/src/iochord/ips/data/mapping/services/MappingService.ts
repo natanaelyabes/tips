@@ -1,5 +1,4 @@
 import DataService from '../../services/DataService';
-import IMappingResource from '../interfaces/IMappingResource';
 import MappingResource from '../models/MappingResource';
 
 export default class MappingService extends DataService {
@@ -27,5 +26,9 @@ export default class MappingService extends DataService {
     mapping.setMapSettings(data.mapSettings);
     mapping.setFirstNRows(data.firstNRows);
     return mapping;
+  }
+
+  public postMappingSettings(datasetId: string, mapping: string, completeCallback: any, progressCallback: any) {
+    return this.webservicePost(MappingService.BASE_URI + '/mapping/' + datasetId, JSON.parse(mapping), completeCallback, progressCallback);
   }
 }

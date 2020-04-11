@@ -5,7 +5,7 @@
 -->
 <template>
   <div class="sandbox data management">
-    <DepthTwoLeftWrapperComponent>
+    <LeftBarContentWrapperComponent>
       <!-- Header -->
       <template slot="header-breadcrumb">
         <router-link to="/iochord/ips/home" tag="a" class="section">Home</router-link>
@@ -16,10 +16,7 @@
       </template>
 
       <!-- Depth One Left Sidebar Menu Item -->
-      <template slot="depth-one-menu-item"></template>
-
-      <!-- Depth Two Left Sidebar Menu Item -->
-      <template slot="depth-two-menu-item">
+      <template slot="left-bar-menu-item">
         <ItemFilterComponent></ItemFilterComponent>
       </template>
 
@@ -27,7 +24,7 @@
       <template slot="content">
         <component :is="currentContentComponent"></component>
       </template>
-    </DepthTwoLeftWrapperComponent>
+    </LeftBarContentWrapperComponent>
   </div>
 </template>
 
@@ -45,7 +42,7 @@ a.section {
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator';
 import ExplorerLayoutView from '@/iochord/ips/common/ui/layout/class/ExplorerLayoutView';
-import DepthTwoLeftWrapperComponent from '@/iochord/ips/common/ui/layout/components/DepthTwoLeftWrapperComponent.vue';
+import LeftBarContentWrapperComponent from '@/iochord/ips/common/ui/layout/components/LeftBarContentWrapperComponent.vue';
 import ItemFilterComponent from '../components/ItemFilterComponent.vue';
 import ContentFilterTimeComponent from '../components/ContentFilterTimeComponent.vue';
 import ContentFilterPerformanceComponent from '../components/ContentFilterPerformanceComponent.vue';
@@ -56,7 +53,7 @@ import ContentFilterMissingImputationComponent from '../components/ContentFilter
 
 @Component({
   components: {
-    DepthTwoLeftWrapperComponent,
+    LeftBarContentWrapperComponent,
     ItemFilterComponent,
     ContentFilterTimeComponent,
     ContentFilterPerformanceComponent,

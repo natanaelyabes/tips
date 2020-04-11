@@ -1,30 +1,55 @@
 <!--
   @package ips
-  @author N. I. Utama <ichsan83@gmail.com>
+  @author Nur Ichsan Utama <ichsan83@gmail.com>
   @since 2020
 -->
 <template>
   <div class="content settings component">
     <div class="ui basic segment">
       <form class="ui form">
-      	<div class="field">
-          <label>Algorithms</label>
-          <select v-model="config.resMinAlg">
-            <option value="def">Default Mining</option>
-            <option value="dst">Doing Similar Task</option>
-          </select>
+        <div class="two fields">
+          <div class="field">
+            <label>Algorithms</label>
+            <select class="ui search dropdown" v-model="config.resMinAlg">
+              <option value="" disabled>Select Algorithm</option>
+              <option value="def" selected>Default Mining</option>
+              <option value="dst">Doing Similar Task</option>
+            </select>
+          </div>
         </div>
-        <div class="field" v-if="config.resMinAlg == 'dst'">
-          <label>Distance Measure</label>
-          <select v-model="config.distMesAlg">
-            <option value="pcc">Pearson Correlation Coefficient</option>
-            <option value="ham">Hamming Distance</option>
-            <option value="ham">Hamming Distance Binary</option>
-          </select>
+
+        <div class="two fields">
+          <div class="field" v-show="config.resMinAlg == 'dst'">
+            <label>Distance Measure</label>
+            <select class="ui search dropdown" v-model="config.distMesAlg">
+              <option value="" disabled>Select Distance Measure</option>
+              <option value="pcc" selected>Pearson Correlation Coefficient</option>
+              <option value="ham">Hamming Distance</option>
+              <option value="ho1">Hamming Distance Binary</option>
+            </select>
+          </div>
         </div>
-        <div class="field" v-if="config.resMinAlg == 'dst'">
-          <label>Threshold : {{threshold}}</label>
-          <input v-model="sliderValue" type="range" class="slider" min="0" max="100" />
+
+        <div class="two fields">
+          <div class="field" v-show="config.resMinAlg == 'dst'">
+            <label>Threshold : {{threshold}}</label>
+            <input v-model="sliderValue" type="range" class="slider" min="0" max="100" />
+          </div>
+        </div>
+        <div class="field">
+          <label>Time Analysis</label>
+          <input style="vertical-align: middle" type="checkbox"
+            v-model="config.timeAnalysis"
+            value="accepted"
+            unchecked-value="not_accepted"/> activate
+        </div>
+        <div class="field" v-if="config.timeAnalysis">
+          <label>Properties of Shift Time Cluster</label>
+          <select v-model="config.propTimeAnalysis" multiple="true">
+            <option value="ss">Start Shift</option>
+            <option value="es">End Shift</option>
+            <option value="dur">Duration</option>
+          </select>
         </div>
         <div class="field">
           <button type="button" :disabled="isUploading" class="ui primary button" @click="doMining()">
@@ -74,10 +99,12 @@
 
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
-import BaseComponent from '@/iochord/ips/common/ui/layout/class/BaseComponent';
 import ResourceMiningService, { ResourceMiningConfiguration } from '../services/ResourceMiningService';
 import ResourceMiningResultModule from '../store/modules/ResourceMiningResultModule';
 import { getModule } from 'vuex-module-decorators';
+import SemanticComponent from '@/iochord/ips/common/ui/semantic-components/SemanticComponent';
+
+declare const $: any;
 
 const resourceMiningResultModule = getModule(ResourceMiningResultModule);
 
@@ -89,11 +116,11 @@ const resourceMiningResultModule = getModule(ResourceMiningResultModule);
  *
  * @extends BaseComponent
  * @package ips
- * @author N. I. Utama <ichsan83@gmail.com>
+ * @author Nur Ichsan Utama <ichsan83@gmail.com>
  * @since 2020
  *
  */
-export default class ContentSettingsComponent extends BaseComponent {
+export default class ContentSettingsComponent extends SemanticComponent {
 
   /**
    * Dataset Id field for selecting event log dataset.
@@ -161,7 +188,7 @@ export default class ContentSettingsComponent extends BaseComponent {
    *
    * @memberof ContentSettingsComponent
    */
-  public doMining(): void  {
+  public doMining()  {
     const self = this;
     if (self.datasetId === '') {
       alert('Choose datasetId');
@@ -171,18 +198,23 @@ export default class ContentSettingsComponent extends BaseComponent {
       this.config.threshold = this.threshold;
       ResourceMiningService.getInstance().mineResource(this.config,
         (res: any) => {
+          self.isUploading = false;
+          self.uploadStatus = 'Finish';
           const resmResult: any = {};
           resmResult[self.datasetId] = res.data;
           resourceMiningResultModule.addResminresult( resmResult );
-          self.isUploading = false;
-          self.uploadStatus = 'Finish';
           self.$router.push({
-            path: `/iochord/ips/analytics/resource/mining/${this.datasetId}`,
+            path: `/iochord/ips/analytics/resource/mining/${self.datasetId}`,
           });
         }, (tick: any) => {
           self.uploadStatus = tick.progress;
+          console.log(self.uploadStatus);
       });
     }
+  }
+
+  public declareSemanticModules(): void {
+    $('.dropdown').dropdown();
   }
 }
 </script>

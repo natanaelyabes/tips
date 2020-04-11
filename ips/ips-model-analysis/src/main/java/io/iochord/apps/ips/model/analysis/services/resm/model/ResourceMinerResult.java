@@ -1,6 +1,5 @@
-package io.iochord.apps.ips.model.analysis.services.resm;
+package io.iochord.apps.ips.model.analysis.services.resm.model;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -36,4 +35,12 @@ public class ResourceMinerResult {
 	@Getter
 	@Setter
 	private Map<String,List<String>> mresgroup;
+	
+	@Getter
+	@Setter
+	private Map<String,List<String>> timecluster;
+	
+	@Getter
+	@Setter
+	private Map<String,List<String>> timeanalysis;
 }

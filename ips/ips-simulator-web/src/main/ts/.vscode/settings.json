@@ -5,5 +5,7 @@
     "ips",
     "deserialize",
     "jointjs"
-  ]
+  ],
+  "FSharp.suggestGitignore": false,
+  "FSharp.suggestSdkScripts": false
 }

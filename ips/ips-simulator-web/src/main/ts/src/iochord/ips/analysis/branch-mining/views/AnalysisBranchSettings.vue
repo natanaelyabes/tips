@@ -14,6 +14,11 @@
         <div class="section">Analysis</div>
         <i class="right angle icon divider"></i>
         <div class="active section">{{this.title}}</div>
+        <i class="right angle icon divider"></i>
+        <select class="ui floating scrolling dropdown button" @change="retreiveDataset" ref="datasetSelector" v-model="selectedDatasetId">
+          <option value="---" selected>---</option>
+          <option v-for="(ds, i) in datasets" :key="i" class="item" :value="i">{{ds.name}} ({{i}})</option>
+        </select>
       </template>
 
       <!-- Left Sidebar Menu Item -->
@@ -46,11 +51,14 @@ a.section {
 </style>
 
 <script lang="ts">
-import { Vue, Component } from 'vue-property-decorator';
+import { Vue, Prop, Component } from 'vue-property-decorator';
 import DiffLayoutView from '@/iochord/ips/common/ui/layout/class/DiffLayoutView';
 import LeftBarContentWrapperComponent from '@/iochord/ips/common/ui/layout/components/LeftBarContentWrapperComponent.vue';
 import ContentSettingsComponent from '../components/ContentSettingsComponent.vue';
 import ContentSplitComponent from '../components/ContentSplitComponent.vue';
+import DataConnectionService from '@/iochord/ips/data/connection/services/DataConnectionService';
+
+declare const $: any;
 
 @Component({
   components: {
@@ -82,6 +90,14 @@ export default class AnalysisBranchSettings extends DiffLayoutView {
    */
   public title: string = '';
 
+  public datasets = {};
+
+  @Prop(String)
+  public datasetId?: string;
+
+  public selectedDatasetId: string = '---';
+
+
   /**
    * Override browser properties for AnalysisBranchSettings
    *
@@ -92,6 +108,26 @@ export default class AnalysisBranchSettings extends DiffLayoutView {
     this.setDocumentTitle('Data Analysis: Branch');
   }
 
+  public mounted(): void {
+    this.selectedDatasetId = '---';
+    if (this.datasetId) this.selectedDatasetId = this.datasetId;
+    this.retreiveDataset();
+  }
+
+  public retreiveDataset(): void {
+    DataConnectionService.getInstance().getDataConnections((res: any) => {
+      this.datasets = res.data;
+    }, (tick: any) => {
+      // this.datasets = tick;
+    });
+
+    if (this.datasetId) {
+      this.selectedDatasetId = this.datasetId;
+    }
+
+    this.forceReRender();
+  }
+
   /**
    * Override title for AnalysisBranchSettings
    *
@@ -100,6 +136,10 @@ export default class AnalysisBranchSettings extends DiffLayoutView {
    */
   public setTitle(): void {
     this.title = `Branch mining`;
+  }
+
+  public declareSemanticModules() {
+    $('.dropdown').dropdown();
   }
 }
 </script>

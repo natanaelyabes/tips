@@ -1,4 +1,4 @@
-package io.iochord.apps.ips.model.analysis.services.resm;
+package io.iochord.apps.ips.model.analysis.services.resm.model;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -21,6 +21,14 @@ public class ResourceMinerConfig {
 	@Setter 
 	private float threshold;
 	  
+	@Getter
+	@Setter 
+	private boolean timeAnalysis;
+	
+	@Getter
+	@Setter 
+	private String[] propTimeAnalysis;
+	
 	@Getter
 	@Setter 
 	private String colCaseId;

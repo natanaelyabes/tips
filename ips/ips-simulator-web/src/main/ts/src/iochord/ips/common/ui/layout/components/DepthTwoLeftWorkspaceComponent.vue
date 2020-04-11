@@ -40,8 +40,9 @@
 #depth-two {
   padding: 1rem 0;
   overflow-y: scroll;
-  overflow-x: auto;
   min-width: fit-content;
+  max-width: fit-content;
+  width: 260px;
 }
 
 .ui.basic.segment#content {
