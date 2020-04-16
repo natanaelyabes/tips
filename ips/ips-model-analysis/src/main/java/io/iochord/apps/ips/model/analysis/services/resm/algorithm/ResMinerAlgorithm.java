@@ -14,7 +14,6 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 import io.iochord.apps.ips.common.util.LoggerUtil;
@@ -85,8 +84,8 @@ public abstract class ResMinerAlgorithm {
 		}
 		int numb = (int) Math.sqrt(5*Math.sqrt(datas.length));
 		MyOwnSOM som = new MyOwnSOM(datas, numb, numb, 10000, 0.5, TimeUnit.Hour,new UnitDist[]{UnitDist.Time, UnitDist.Time, UnitDist.NonTime});
-        som.train();
-
+		som.train();
+		
         int[] nodes = som.getNode();
         
         i = 0;

@@ -285,10 +285,6 @@ public class DecisionMinerService extends AnIpsAsyncService<DecisionMinerConfig,
 		config.setStrategy(DecisionTreeStrategy.ENTROPY);
 		if (config.getStrategy().equals(DecisionTreeStrategy.ENTROPY)) {
 			inferUsingEntropyMeasure(conn, rs);
-		} else if (config.getStrategy().equals(DecisionTreeStrategy.ENTROPY_RATIO)) {
-			inferUsingEntropyRatioMeasure(conn, rs);
-		} else if (config.getStrategy().equals(DecisionTreeStrategy.GINI)) {
-			inferUsingGiniMeasure(conn, rs);
 		}
 	}
 
@@ -365,7 +361,7 @@ public class DecisionMinerService extends AnIpsAsyncService<DecisionMinerConfig,
 						}
 					}
 				}
-				Map<String, Map<String, List<String>>> node = new LinkedHashMap<>();
+				Map<String, Map<String, Map<String, String>>> node = new LinkedHashMap<>();
 				String conditions = "";
 				String curr = null;
 				traverseTree(conn, tablename, E_INFO, colcandidate, node, curr, conditions);
@@ -373,352 +369,157 @@ public class DecisionMinerService extends AnIpsAsyncService<DecisionMinerConfig,
 		}
 	}
 
-	@SuppressWarnings("unchecked")
-	private void traverseTree(Connection conn, String tablename, double E_INFO, Map<String, Map<String, List<String>>> colcandidate, Map<String, Map<String, List<String>>> node, String curr, String conditions)
+	private void traverseTree(Connection conn, String tablename, double E_INFO, Map<String, Map<String, List<String>>> colcandidate, Map<String, Map<String, Map<String, String>>> node, String curr, String conditions)
 			throws SQLException {
-		if (colcandidate.isEmpty()) {
+		Map<String, Double> node_candidate = new TreeMap<>();
+		for (Entry<String, Map<String, List<String>>> col : colcandidate.entrySet()) {
+			String colname = col.getKey();
+			String coltype = col.getValue().entrySet().stream()
+					.map(entry -> entry.getKey())
+					.collect(Collectors.toList()).get(0);
 			StringBuilder sql = new StringBuilder();
-			sql.append("SELECT DISTINCT \"class\" FROM ").append(tablename).append(" AS r WHERE 1 = 1 ");
-			System.out.println(sql);
-			try (PreparedStatement st = conn.prepareStatement(sql.toString())) {
-				try (ResultSet rs = st.executeQuery()) {
-					while (rs.next()) {
-						Map<String, List<String>> ac = new LinkedHashMap<>();
-						ac.put(curr, null);
-						node.put(rs.getString(1), ac);
+			if (!colname.equals("class")) {
+				if (coltype.equals("character varying")) {
+					sql.append("SELECT SUM((ca / tot) * ((-1.0 * prob) * LOG(2, prob))) AS gain ")
+					   .append("FROM (")
+					   .append("    WITH computed_gain AS (")
+					   .append("        SELECT \"").append(colname).append("\",")
+					   .append("               \"class\",")
+					   .append("               COUNT(\"").append(colname).append("\") OVER(PARTITION BY \"")
+					                                     .append(colname).append("\") * 1.0 AS ca,")
+					   .append("               COUNT(\"class\") OVER(PARTITION BY (\"class\")) * 1.0 AS cc,")
+					   .append("               COUNT(\"").append(colname).append("\") OVER(PARTITION BY \"")
+					                                     .append(colname).append("\", \"class\") * 1.0 AS cac,")
+					   .append("               COUNT(*) OVER() * 1.0 AS tot")
+					   .append("        FROM ").append(tablename).append(" AS r ").append(" WHERE 1 = 1 ").append(conditions)
+					   .append("    ) SELECT DISTINCT \"").append(colname).append("\",")
+					   .append("                      \"class\",")
+					   .append("                      ca,")
+					   .append("                      cc,")
+					   .append("                      cac,")
+					   .append("                      cac / ca AS prob,")
+					   .append("                      tot")
+					   .append("    FROM computed_gain")
+					   .append(") AS eagain;");
+					try (PreparedStatement st = conn.prepareStatement(sql.toString())) {
+						try (ResultSet rs2 = st.executeQuery()) {
+							while (rs2.next()) {
+								double E_INFO_ATTR = rs2.getDouble(1);
+								double GAIN_ATTR = E_INFO - E_INFO_ATTR;
+								System.out.println("Information gain over attribute " + colname + ": " + GAIN_ATTR);
+								node_candidate.put(colname, GAIN_ATTR);
+							}
+						}
+					} catch (SQLException e) {
+						LoggerUtil.logError(e);
 					}
-				}
-			}
-			System.out.println(node);
-		} else {
-			Map<String, Double> node_candidate = new TreeMap<>();
-			Set<Entry<String, Map<String, List<String>>>> entries = colcandidate.entrySet();
-			for (Entry<String, Map<String, List<String>>> col : entries) {
-				String colname = col.getKey();
-				String coltype = col.getValue().entrySet().stream()
-						.map(entry -> entry.getKey())
-						.collect(Collectors.toList()).get(0);
-				StringBuilder sql = new StringBuilder();
-				if (!colname.equals("class")) {
-					if (coltype.equals("character varying")) {
-						sql.append("SELECT SUM((ca / tot) * ((-1.0 * prob) * LOG(2, prob))) AS gain ")
-						   .append("FROM (")
-						   .append("    WITH computed_gain AS (")
-						   .append("        SELECT \"").append(colname).append("\",")
-						   .append("               \"class\",")
-						   .append("               COUNT(\"").append(colname).append("\") OVER(PARTITION BY \"")
-						                                     .append(colname).append("\") * 1.0 AS ca,")
-						   .append("               COUNT(\"class\") OVER(PARTITION BY (\"class\")) * 1.0 AS cc,")
-						   .append("               COUNT(\"").append(colname).append("\") OVER(PARTITION BY \"")
-						                                     .append(colname).append("\", \"class\") * 1.0 AS cac,")
-						   .append("               COUNT(*) OVER() * 1.0 AS tot")
-						   .append("        FROM ").append(tablename).append(" AS r ").append(" WHERE 1 = 1 ").append(conditions)
-						   .append("    ) SELECT DISTINCT \"").append(colname).append("\",")
-						   .append("                      \"class\",")
-						   .append("                      ca,")
-						   .append("                      cc,")
-						   .append("                      cac,")
-						   .append("                      cac / ca AS prob,")
-						   .append("                      tot")
-						   .append("    FROM computed_gain")
-						   .append(") AS eagain;");
-						try (PreparedStatement st = conn.prepareStatement(sql.toString())) {
-							try (ResultSet rs2 = st.executeQuery()) {
-								while (rs2.next()) {
-									double E_INFO_ATTR = rs2.getDouble(1);
-									double GAIN_ATTR = E_INFO - E_INFO_ATTR;
-									System.out.println("Information gain over attribute " + colname + ": " + GAIN_ATTR);
-									node_candidate.put(colname, GAIN_ATTR);
-								}
+				} else {
+					sql = new StringBuilder();
+					sql.append("SELECT superjacent_gain.midpoint,")
+					   .append("       superjacent_gain.gain AS superjacent,")
+					   .append("       subjacent_gain.gain AS subjacent,")
+					   .append("       (superjacent_gain.gain + subjacent_gain.gain) AS midpoint_gain ")
+					   .append("FROM (")
+					   .append("    SELECT midpoint, SUM((cc / tot) * (-1.0 * prob * LOG(2, prob))) AS gain FROM (")
+					   .append("        WITH superjacent_computed_gain AS (")
+					   .append("            SELECT DISTINCT mid.midpoint,")
+					   .append("                r.\"class\",")
+					   .append("                COUNT(r.\"").append(colname).append("\") OVER(PARTITION BY mid.midpoint) * 1.0 AS ca,")
+					   .append("                COUNT(r.\"class\") OVER(PARTITION BY mid.midpoint, r.\"class\") * 1.0 AS cc,")
+					   .append("                mid.tot * 1.0 AS tot")
+					   .append("            FROM ").append(tablename).append(" AS r")
+					   .append("            JOIN (")
+					   .append("                SELECT (x + y) / 2 as midpoint, COUNT(x + y) OVER() + 1 AS tot FROM (")
+					   .append("                    WITH candidate_pair AS (")
+					   .append("                        SELECT X.eid, X.\"").append(colname).append("\" AS x, Y.\"").append(colname).append("\" AS y")
+					   .append("                        FROM ").append(tablename).append(" AS X,")
+					   .append("                             ").append(tablename).append(" AS Y")
+					   .append("                        WHERE X.\"").append(colname).append("\" > ").append("Y.\"").append(colname).append("\" ")
+					   .append("                        ORDER BY X.\"").append(colname).append("\" DESC, Y.\"").append(colname).append("\" DESC")
+					   .append("                    ) SELECT eid, MAX(x) AS x, MAX(y) AS y FROM candidate_pair GROUP BY eid ORDER BY eid")
+					   .append("                ) AS midpoint")
+					   .append("            ) AS mid ON r.\"").append(colname).append("\" > mid.midpoint").append(" WHERE 1 = 1 ").append(conditions)
+					   .append("            ORDER BY mid.midpoint DESC")
+					   .append("        ) SELECT DISTINCT midpoint, \"class\", ca, cc, tot, cc / ca AS prob FROM superjacent_computed_gain ORDER BY midpoint DESC")
+					   .append("    ) AS eagain GROUP BY midpoint ORDER BY midpoint DESC")
+					   .append(") AS superjacent_gain JOIN (")
+					   .append("    SELECT * FROM (")
+					   .append("        SELECT midpoint, SUM((cc / tot) * (-1.0 * prob * LOG(2, prob))) AS gain FROM (")
+					   .append("            WITH subjacent_computed_gain AS (")
+					   .append("                SELECT DISTINCT mid.midpoint,")
+					   .append("                    r.\"class\",")
+					   .append("                    COUNT(r.\"").append(colname).append("\") OVER(PARTITION BY mid.midpoint) * 1.0 AS ca,")
+					   .append("                    COUNT(r.\"class\") OVER (PARTITION BY mid.midpoint, r.\"class\") * 1.0 AS cc,")
+					   .append("                    mid.tot * 1.0 AS tot")
+					   .append("                FROM ").append(tablename).append(" AS r")
+					   .append("                JOIN (")
+					   .append("                    SELECT (x + y) / 2 as midpoint, COUNT(x + y) OVER() + 1 as tot FROM (")
+					   .append("                        WITH candidate_pair AS (")
+					   .append("                            SELECT X.eid, X.\"").append(colname).append("\" AS x, Y.\"").append(colname).append("\" AS y")
+					   .append("                            FROM ").append(tablename).append(" AS X,")
+					   .append("                                 ").append(tablename).append(" AS Y")
+					   .append("                            WHERE X.\"").append(colname).append("\" > Y.\"").append(colname).append("\" ")
+					   .append("                            ORDER BY X.\"").append(colname).append("\" DESC, Y.\"").append(colname).append("\" DESC")
+					   .append("                        ) SELECT eid, MAX(x) AS x, MAX(y) AS y FROM candidate_pair GROUP BY eid ORDER BY eid")
+					   .append("                    ) AS midpoint")
+					   .append("                ) AS mid ON r.\"").append(colname).append("\" <= mid.midpoint").append(" WHERE 1 = 1 ").append(conditions)
+					   .append("                ORDER BY mid.midpoint DESC")
+					   .append("            )")
+					   .append("            SELECT DISTINCT midpoint, \"class\", ca, cc, tot, cc / ca AS prob")
+					   .append("            FROM subjacent_computed_gain")
+					   .append("            ORDER BY midpoint DESC")
+					   .append("        ) AS eagain")
+					   .append("        GROUP BY midpoint")
+					   .append("        ORDER BY midpoint DESC")
+					   .append("    ) AS subjacent_gain")
+					   .append(") AS subjacent_gain ON superjacent_gain.midpoint = subjacent_gain.midpoint ")
+					   .append("ORDER BY superjacent_gain.midpoint;");
+					try (PreparedStatement st = conn.prepareStatement(sql.toString())) {
+						try (ResultSet rs3 = st.executeQuery()) {
+							List<List<Double>> gain_candidates = new ArrayList<>();
+							while (rs3.next()) {
+								double E_INFO_ATTR = rs3.getDouble(4);
+								double GAIN_ATTR = E_INFO - E_INFO_ATTR;
+								List<Double> gain = new ArrayList<>();
+								gain.add(GAIN_ATTR);
+								gain.add(rs3.getDouble(1));
+								gain_candidates.add(gain);
 							}
-						} catch (SQLException e) {
-							LoggerUtil.logError(e);
+							double GAIN_ATTR = gain_candidates.stream().map(candidates -> candidates.get(0))
+									.mapToDouble(d -> d)
+									.max().orElseThrow(NoSuchElementException::new);
+							double midpoint = gain_candidates.stream()
+									.filter(candidate -> candidate.get(0) == GAIN_ATTR)
+									.map(candidate -> candidate.get(1))
+									.collect(Collectors.toList()).get(0);
+							System.out.println("Information gain over attribute " + colname + " with " + midpoint + " as midpoint: " + GAIN_ATTR);
+							node_candidate.put(colname + "-" + midpoint, GAIN_ATTR);
 						}
-					} else {
-						sql = new StringBuilder();
-						sql.append("SELECT superjacent_gain.midpoint,")
-						   .append("       superjacent_gain.gain AS superjacent,")
-						   .append("       subjacent_gain.gain AS subjacent,")
-						   .append("       (superjacent_gain.gain + subjacent_gain.gain) AS midpoint_gain ")
-						   .append("FROM (")
-						   .append("    SELECT midpoint, SUM((cc / tot) * (-1.0 * prob * LOG(2, prob))) AS gain FROM (")
-						   .append("        WITH superjacent_computed_gain AS (")
-						   .append("            SELECT DISTINCT mid.midpoint,")
-						   .append("                r.\"class\",")
-						   .append("                COUNT(r.\"").append(colname).append("\") OVER(PARTITION BY mid.midpoint) * 1.0 AS ca,")
-						   .append("                COUNT(r.\"class\") OVER(PARTITION BY mid.midpoint, r.\"class\") * 1.0 AS cc,")
-						   .append("                mid.tot * 1.0 AS tot")
-						   .append("            FROM ").append(tablename).append(" AS r")
-						   .append("            JOIN (")
-						   .append("                SELECT (x + y) / 2 as midpoint, COUNT(x + y) OVER() + 1 AS tot FROM (")
-						   .append("                    WITH candidate_pair AS (")
-						   .append("                        SELECT X.eid, X.\"").append(colname).append("\" AS x, Y.\"").append(colname).append("\" AS y")
-						   .append("                        FROM ").append(tablename).append(" AS X,")
-						   .append("                             ").append(tablename).append(" AS Y")
-						   .append("                        WHERE X.\"").append(colname).append("\" > ").append("Y.\"").append(colname).append("\" ")
-						   .append("                        ORDER BY X.\"").append(colname).append("\" DESC, Y.\"").append(colname).append("\" DESC")
-						   .append("                    ) SELECT eid, MAX(x) AS x, MAX(y) AS y FROM candidate_pair GROUP BY eid ORDER BY eid")
-						   .append("                ) AS midpoint")
-						   .append("            ) AS mid ON r.\"").append(colname).append("\" > mid.midpoint").append(" WHERE 1 = 1 ").append(conditions)
-						   .append("            ORDER BY mid.midpoint DESC")
-						   .append("        ) SELECT DISTINCT midpoint, \"class\", ca, cc, tot, cc / ca AS prob FROM superjacent_computed_gain ORDER BY midpoint DESC")
-						   .append("    ) AS eagain GROUP BY midpoint ORDER BY midpoint DESC")
-						   .append(") AS superjacent_gain JOIN (")
-						   .append("    SELECT * FROM (")
-						   .append("        SELECT midpoint, SUM((cc / tot) * (-1.0 * prob * LOG(2, prob))) AS gain FROM (")
-						   .append("            WITH subjacent_computed_gain AS (")
-						   .append("                SELECT DISTINCT mid.midpoint,")
-						   .append("                    r.\"class\",")
-						   .append("                    COUNT(r.\"").append(colname).append("\") OVER(PARTITION BY mid.midpoint) * 1.0 AS ca,")
-						   .append("                    COUNT(r.\"class\") OVER (PARTITION BY mid.midpoint, r.\"class\") * 1.0 AS cc,")
-						   .append("                    mid.tot * 1.0 AS tot")
-						   .append("                FROM ").append(tablename).append(" AS r")
-						   .append("                JOIN (")
-						   .append("                    SELECT (x + y) / 2 as midpoint, COUNT(x + y) OVER() + 1 as tot FROM (")
-						   .append("                        WITH candidate_pair AS (")
-						   .append("                            SELECT X.eid, X.\"").append(colname).append("\" AS x, Y.\"").append(colname).append("\" AS y")
-						   .append("                            FROM ").append(tablename).append(" AS X,")
-						   .append("                                 ").append(tablename).append(" AS Y")
-						   .append("                            WHERE X.\"").append(colname).append("\" > Y.\"").append(colname).append("\" ")
-						   .append("                            ORDER BY X.\"").append(colname).append("\" DESC, Y.\"").append(colname).append("\" DESC")
-						   .append("                        ) SELECT eid, MAX(x) AS x, MAX(y) AS y FROM candidate_pair GROUP BY eid ORDER BY eid")
-						   .append("                    ) AS midpoint")
-						   .append("                ) AS mid ON r.\"").append(colname).append("\" <= mid.midpoint").append(" WHERE 1 = 1 ").append(conditions)
-						   .append("                ORDER BY mid.midpoint DESC")
-						   .append("            )")
-						   .append("            SELECT DISTINCT midpoint, \"class\", ca, cc, tot, cc / ca AS prob")
-						   .append("            FROM subjacent_computed_gain")
-						   .append("            ORDER BY midpoint DESC")
-						   .append("        ) AS eagain")
-						   .append("        GROUP BY midpoint")
-						   .append("        ORDER BY midpoint DESC")
-						   .append("    ) AS subjacent_gain")
-						   .append(") AS subjacent_gain ON superjacent_gain.midpoint = subjacent_gain.midpoint ")
-						   .append("ORDER BY superjacent_gain.midpoint;");
-						try (PreparedStatement st = conn.prepareStatement(sql.toString())) {
-							try (ResultSet rs3 = st.executeQuery()) {
-								List<List<Double>> gain_candidates = new ArrayList<>();
-								while (rs3.next()) {
-									double E_INFO_ATTR = rs3.getDouble(4);
-									double GAIN_ATTR = E_INFO - E_INFO_ATTR;
-									List<Double> gain = new ArrayList<>();
-									gain.add(GAIN_ATTR);
-									gain.add(rs3.getDouble(1));
-									gain_candidates.add(gain);
-								}
-								if (gain_candidates.size() == 0) {
-									String removed = node.entrySet().stream().map(entry -> entry.getKey()).reduce((first, last) -> last).get();
-									node.remove(removed);
-									curr = node.entrySet().stream().map(entry -> entry.getKey()).reduce((first, last) -> last).get();
-									String lastcond = conditions.split("AND")[conditions.split("AND").length - 1];
-									conditions = conditions.replace("AND" + lastcond, "");
-									String flag = lastcond.split(" ")[2];
-									String midpoint = lastcond.split(" ")[3];
-									colcandidate = (Map<String, Map<String,List<String>>>)(Map<?, ?>) colcandidate.entrySet().stream()
-											.collect(Collectors.toMap(
-													Entry::getKey, 
-													entry -> (Map<String, List<String>>) entry.getValue().entrySet().stream()
-															.collect(Collectors.toMap(
-																	Entry::getKey, 
-																	ent -> (List<String>) ent.getValue()
-																		.stream()
-																		.filter(l -> !l.equals(flag + " " + midpoint + "000000000000000"))
-																		.collect(Collectors.toList())))));
-									List<String> candidates = colcandidate.entrySet().stream()
-											.flatMap(entry -> entry.getValue().entrySet().stream()
-											.flatMap(ent -> ent.getValue().stream()))
-											.collect(Collectors.toList());
-									if (candidates.contains(flag + " " + midpoint + "000000000000000")) {
-										traverseTree(conn, tablename, E_INFO, colcandidate, node, curr, conditions);
-									} else {
-										if (flag.equals("<=")) {
-											colcandidate = (Map<String, Map<String,List<String>>>)(Map<?, ?>) colcandidate.entrySet().stream()
-													.collect(Collectors.toMap(
-															Entry::getKey, 
-															entry -> (Map<String, List<String>>) entry.getValue().entrySet().stream()
-																	.collect(Collectors.toMap(
-																			Entry::getKey, 
-																			ent -> (List<String>) ent.getValue()
-																				.stream()
-																				.filter(l -> !l.equals(">" + " " + midpoint + "000000000000000"))
-																				.collect(Collectors.toList())))));
-											traverseTree(conn, tablename, E_INFO, colcandidate, node, curr, conditions);
-										} else {
-											colcandidate = (Map<String, Map<String,List<String>>>)(Map<?, ?>) colcandidate.entrySet().stream()
-													.collect(Collectors.toMap(
-															Entry::getKey, 
-															entry -> (Map<String, List<String>>) entry.getValue().entrySet().stream()
-																	.collect(Collectors.toMap(
-																			Entry::getKey, 
-																			ent -> (List<String>) ent.getValue()
-																				.stream()
-																				.filter(l -> !l.equals("<=" + " " + midpoint + "000000000000000"))
-																				.collect(Collectors.toList())))));
-											traverseTree(conn, tablename, E_INFO, colcandidate, node, curr, conditions);
-										}
-									}
-								} else {
-									double GAIN_ATTR = gain_candidates.stream().map(candidates -> candidates.get(0))
-											.mapToDouble(d -> d)
-											.max().orElseThrow(NoSuchElementException::new);
-									double midpoint = gain_candidates.stream()
-											.filter(candidate -> candidate.get(0) == GAIN_ATTR)
-											.map(candidate -> candidate.get(1))
-											.collect(Collectors.toList()).get(0);
-									System.out.println("Information gain over attribute " + colname + " with " + midpoint + " as midpoint: " + GAIN_ATTR);
-									node_candidate.put(colname + "-" + midpoint, GAIN_ATTR);
-								}
-							}
-						} catch (SQLException e) {
-							// TODO Auto-generated catch block
-							LoggerUtil.logError(e);
-						}
-					}
-				}
-			}
-			double parent_value = node_candidate.entrySet().stream()
-					.map(entry -> entry.getValue())
-					.mapToDouble(d -> d)
-					.max().orElseThrow(NoSuchElementException::new);
-			Map<String, Double> parent = node_candidate.entrySet().stream()
-					.filter(entry -> entry.getValue() == parent_value)
-					.map(entry -> {
-						Map<String, Double> n = new LinkedHashMap<>();
-						n.put(entry.getKey(), entry.getValue());
-						return n;
-					}).collect(Collectors.toList()).get(0);
-			boolean isContinous = parent.entrySet().stream().allMatch(p -> p.getKey().contains("-"));
-			String attr = parent.entrySet().stream().map(entry -> entry.getKey()).collect(Collectors.toList()).get(0);
-			Map<String, List<String>> ancestor = new LinkedHashMap<>();
-			if (!isContinous) {
-				StringBuilder sql = new StringBuilder();
-				sql.append("SELECT DISTINCT \"").append(attr).append("\" FROM ").append(tablename).append(" AS r;");
-				try (PreparedStatement st = conn.prepareStatement(sql.toString())) {
-					try (ResultSet rs = st.executeQuery()) {
-						List<String> v = new ArrayList<>();
-						while (rs.next()) {
-							v.add(rs.getString(1));
-						}
-						ancestor.put(curr, v);
-					}
-				}
-				for (String cond : ancestor.get(curr)) {
-					List<String> candidates = colcandidate.entrySet().stream()
-							.flatMap(entry -> entry.getValue().entrySet().stream()
-							.flatMap(ent -> ent.getValue().stream()))
-							.collect(Collectors.toList());
-					if (!candidates.contains(cond)) {
-						continue;
-					} else {
-						String cond1 = "";
-						cond1 += conditions;
-						sql = new StringBuilder();
-						sql.append("SELECT DISTINCT \"class\" FROM ").append(tablename).append(" AS r WHERE 1 = 1 ");
-						try (PreparedStatement st = conn.prepareStatement(sql.toString())) {
-							try (ResultSet rs = st.executeQuery()) {
-								while (rs.next()) {
-									String removed = "AND r.\"" + attr + "\" = '" + rs.getString(1) + "' ";
-									cond1 = cond1.replace(removed, "");
-								}
-							}
-						}
-						cond1 += "AND r.\"" + attr + "\" = '" + cond + "' ";
-						node.put(attr, ancestor);
-						curr = attr;
-						colcandidate = (Map<String, Map<String,List<String>>>)(Map<?, ?>) colcandidate.entrySet().stream()
-								.collect(Collectors.toMap(
-										Entry::getKey, 
-										entry -> (Map<String, List<String>>) entry.getValue().entrySet().stream()
-												.collect(Collectors.toMap(
-														Entry::getKey, 
-														ent -> (List<String>) ent.getValue()
-															.stream()
-															.filter(l -> !l.equals(cond))
-															.collect(Collectors.toList())))));
-						List<String> candidate = colcandidate.get(attr).entrySet().stream().map(entry -> entry.getValue()).collect(Collectors.toList()).get(0);
-						if (candidate.size() == 0) {
-							colcandidate.remove(attr);
-						}
-						traverseTree(conn, tablename, E_INFO, colcandidate, node, curr, cond1);
-					}
-				}
-			} else {
-				String name = attr.split("-")[0];
-				double val = parent.entrySet().stream().map(entry -> Double.parseDouble(entry.getKey().split("-")[1])).mapToDouble(d -> d).max().getAsDouble();
-				List<String> v = new ArrayList<>();
-				v.add("<= " + val);
-				v.add("> " + val);
-				ancestor.put(curr, v);
-				for (String cond : v) {
-					String flag = cond.split(" ")[0];
-					double midpoint = Double.parseDouble(cond.split(" ")[1]);
-					if (flag.equals("<=")) {
-						List<String> candidates = colcandidate.entrySet().stream()
-								.flatMap(entry -> entry.getValue().entrySet().stream()
-								.flatMap(ent -> ent.getValue().stream()))
-								.collect(Collectors.toList());
-						if (!candidates.contains(flag + " " + String.valueOf(midpoint) + "000000000000000")) {
-							continue;
-						} else {
-							String cond1 = "";
-							cond1 += conditions;
-							cond1 += "AND r.\"" + name + "\" " + cond + " ";
-							node.put(attr, ancestor);
-							curr = attr;
-
-							@SuppressWarnings("unchecked")
-							Map<String, Map<String, List<String>>> newcolcandidate = (Map<String, Map<String,List<String>>>)(Map<?, ?>) colcandidate.entrySet().stream()
-									.collect(Collectors.toMap(
-											Entry::getKey, 
-											entry -> (Map<String, List<String>>) entry.getValue().entrySet().stream()
-													.collect(Collectors.toMap(
-															Entry::getKey, 
-															ent -> (List<String>) ent.getValue()
-																.stream()
-																.filter(l -> !l.equals(flag + " " + midpoint + "000000000000000"))
-																.collect(Collectors.toList())))));
-							List<String> candidate = newcolcandidate.get(name).entrySet().stream().map(entry -> entry.getValue()).collect(Collectors.toList()).get(0);
-							if (candidate.size() == 0) {
-								newcolcandidate.remove(name);
-							}
-							traverseTree(conn, tablename, E_INFO, newcolcandidate, node, curr, cond1);
-						}
-					} else if (flag.equals(">") ) {
-						List<String> candidates = colcandidate.entrySet().stream()
-								.flatMap(entry -> entry.getValue().entrySet().stream()
-								.flatMap(ent -> ent.getValue().stream()))
-								.collect(Collectors.toList());
-						
-						if (!candidates.contains(flag + " " + String.valueOf(midpoint) + "000000000000000")) {
-							continue;
-						} else {
-							String cond2 = "";
-							cond2 += conditions;
-							cond2 += "AND r.\"" + name + "\" " + cond + " ";
-							node.put(attr, ancestor);
-							curr = attr;
-
-							@SuppressWarnings("unchecked")
-							Map<String, Map<String, List<String>>> newcolcandidate = (Map<String, Map<String,List<String>>>)(Map<?, ?>) colcandidate.entrySet().stream()
-									.collect(Collectors.toMap(
-											Entry::getKey, 
-											entry -> (Map<String, List<String>>) entry.getValue().entrySet().stream()
-													.collect(Collectors.toMap(
-															Entry::getKey, 
-															ent -> (List<String>) ent.getValue()
-																.stream()
-																.filter(l -> !l.equals(flag + " " + midpoint + "000000000000000"))
-																.collect(Collectors.toList())))));
-							List<String> candidate = newcolcandidate.get(name).entrySet().stream().map(entry -> entry.getValue()).collect(Collectors.toList()).get(0);
-							if (candidate.size() == 0) {
-								newcolcandidate.remove(name);
-							}
-							traverseTree(conn, tablename, E_INFO, newcolcandidate, node, curr, cond2);
-						}
+					} catch (SQLException e) {
+						// TODO Auto-generated catch block
+						LoggerUtil.logError(e);
 					}
 				}
 			}
 		}
+		
+		double max_entropy = node_candidate.entrySet().stream()
+				.map(entry -> entry.getValue())
+				.mapToDouble(d -> d)
+				.max().orElseThrow(NoSuchElementException::new);
+		Map<String, Double> winner = node_candidate.entrySet().stream()
+				.filter(entry -> entry.getValue() == max_entropy)
+				.map(entry -> {
+					Map<String, Double> n = new LinkedHashMap<>();
+					n.put(entry.getKey(), entry.getValue());
+					return n;
+				}).collect(Collectors.toList()).get(0);
+		boolean isContinous = winner.entrySet().stream().allMatch(p -> p.getKey().contains("-"));
+		String attr_name = winner.entrySet().stream().map(entry -> entry.getKey()).collect(Collectors.toList()).get(0);
+		System.out.println(isContinous);
+		System.out.println(attr_name);
+		System.out.println(node_candidate);
+		System.out.println(colcandidate);
 	}
 
 	private double computeExpectedInformation(Connection conn, String tablename) throws SQLException {
@@ -742,36 +543,6 @@ public class DecisionMinerService extends AnIpsAsyncService<DecisionMinerConfig,
 			}
 		}
 		return E_information;
-	}
-	
-	private void inferUsingEntropyRatioMeasure(Connection conn, ResultSet rs) throws SQLException {
-		String tablename = rs.getString(1);
-		StringBuilder colname = new StringBuilder();
-		
-		colname.append("SELECT column_name FROM INFORMATION_SCHEMA.COLUMNS WHERE table_name = '").append(rs.getString(1)).append("';");
-		
-		try (PreparedStatement st1 = conn.prepareStatement(colname.toString());) {
-			try (ResultSet rs1 = st1.executeQuery();) {
-				while (rs1.next()) {
-					
-				}
-			}
-		}
-	}
-
-	private void inferUsingGiniMeasure(Connection conn, ResultSet rs) throws SQLException {
-		String tablename = rs.getString(1);
-		StringBuilder colname = new StringBuilder();
-		colname.append("SELECT column_name FROM INFORMATION_SCHEMA.COLUMNS WHERE table_name = '").append(rs.getString(1)).append("';");
-		
-		try (PreparedStatement st1 = conn.prepareStatement(colname.toString());) {
-			try (ResultSet rs1 = st1.executeQuery();) {
-				List<String> colnames = new ArrayList<>();
-				while (rs1.next()) {
-					
-				}
-			}
-		}
 	}
 
 	private void alterColumnType(Connection conn, StringBuilder sql, ResultSet rs) throws SQLException {
