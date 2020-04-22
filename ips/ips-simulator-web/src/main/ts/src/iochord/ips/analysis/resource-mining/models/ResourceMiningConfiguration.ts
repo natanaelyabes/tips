@@ -74,6 +74,7 @@ export default class ResourceMiningConfiguration {
    */
   // public colEventActivity: string = 'c1';
   public colEventActivity: string = 'c6';
+  // public colEventActivity: string = 'c1';
 
   /**
    * The column position for event resource.
@@ -83,6 +84,7 @@ export default class ResourceMiningConfiguration {
    */
   // public colEventResource: string = 'c2';
   public colEventResource: string = 'c12';
+  // public colEventResource: string = 'c2';
 
   /**
    * The column position for event timestamp start.
@@ -92,6 +94,7 @@ export default class ResourceMiningConfiguration {
    */
   // public colEventTimestampStart: string = 'c6';
   public colEventTimestampStart: string = 'c2';
+  // public colEventTimestampStart: string = 'c3';
 
   /**
    * The column position for event timestamp end.
@@ -101,6 +104,7 @@ export default class ResourceMiningConfiguration {
    */
   // public colEventTimestampEnd: string = 'c7';
   public colEventTimestampEnd: string = 'c2';
+  // public colEventTimestampEnd: string = 'c4';
 
   /**
    * Number of rows being skipped.

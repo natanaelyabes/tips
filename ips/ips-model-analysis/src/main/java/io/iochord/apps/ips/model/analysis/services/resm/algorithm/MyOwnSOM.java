@@ -184,18 +184,17 @@ public class MyOwnSOM {
 		return dataMapToNode;
 	}
 	
-	// this method is just for testing
+	/* this method is just for testing
 	public static void main(String[] args) {
-		/*
-		double[][] arr = new double[][]{
-			{8,16,8},
-			{9,17,8},
-			{16,22,6},
-			{17,23,6},
-			{23.30,6,6.30},
-			{0.30,7,6.30},
-		};
-		*/
+		//double[][] arr = new double[][]{
+		//	{8,16,8},
+		//	{9,17,8},
+		//	{16,22,6},
+		//	{17,23,6},
+		//	{23.30,6,6.30},
+		//	{0.30,7,6.30},
+		//};
+		
 		double[][] arr = new double[][]{
 			{8},
 			{9},
@@ -227,4 +226,5 @@ public class MyOwnSOM {
 			System.out.println("Row "+x+" - "+Arrays.toString(dataInRow)+" : "+bmuIndex);
 		}
 	}
+	*/
 }

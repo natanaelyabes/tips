@@ -6,13 +6,13 @@
 <template>
   <div id="parentContainer">
     <div id="containerSvg">
-      <svg :view-box.camel="viewbox">
-        <text :x="-20+(xMax-xZero)/2" y="5" class="title">Cluster : {{ curCluster }}</text>
+      <svg class="svg" :view-box.camel="viewbox" preserveAspectRatio="none">
+        <text x="50%" y="15" dominant-baseline="middle" text-anchor="middle" class="title">Cluster : {{ curCluster }}</text>
         <line :x1="xZero" :y1="yMax" :x2="xZero" :y2="yZero" class="lineCoor"/>
         <line :x1="xZero" :y1="yZero" :x2="xMax" :y2="yZero" class="lineCoor"/>
         <text v-for="(n,i) in maxHourEx" x="0" :y="5+i*heightPerHour" class="small">{{ insp(maxHourEx-1-i) }}</text>
         <g v-for="(item, i) in resMiningResult.timecluster[curCluster]">
-          <line :x1="startBinX+widthBin*i" :y1="toY(getHourStart(resMiningResult.timeanalysis[item]))" :x2="startBinX+widthBin*i" :y2="toY(getHourStart(resMiningResult.timeanalysis[item])+getDuration(resMiningResult.timeanalysis[item]))" class="binClass" :style="{ 'stroke-width': widthBin-1 }"/>
+          <line :x1="startBinX+widthBin*i" :y1="toY(getHourStart(resMiningResult.timeanalysis[item]))" :x2="startBinX+widthBin*i" :y2="toY(getHourStart(resMiningResult.timeanalysis[item])+getDuration(resMiningResult.timeanalysis[item]))" :style="{ 'stroke': resMiningResult.timeanalysis[item][4], 'stroke-width': widthBin-1 }" v-on:click="disp(item,resMiningResult.timeanalysis[item][4])"/>
           <text :x="startBinX+widthBin*i" :y="yZero+1" class="small txtVertical">{{ i+1 }}</text>
         </g>
       </svg>
@@ -27,9 +27,15 @@
 </template>
 
 <style>
+.svg {
+  height: 100%;
+  width: 100%;
+}
+
 .title { 
   font: 6px sans-serif;
-  font-weight: bold; 
+  font-weight: bold;
+  font-size: small;
 }
 
 .small { 
@@ -43,10 +49,6 @@
 .lineCoor {
   stroke:rgb(174,214,241);
   stroke-width:1
-}
-
-.binClass {
-  stroke:rgb(88,214,141);
 }
 
 .containerSvg {
@@ -86,18 +88,19 @@ import ResourceMiningResult from '../models/ResourceMiningResult';
  *
  */
 export default class ContentTimeAnalysisComponent extends BaseComponent {
-
-  public size: number = 460;
+  public sizeX: number = 1000;
+  public sizeY: number = 600;
   public curCluster: number = 0;
   public clusters: any = [];
-  public heightPerHour = 5;
-  public yZero = 240;
+  public yZero = this.sizeY - 15;
   public xZero = 15;
   public yMax = 0;
-  public xMax = 460;
+  public xMax = this.sizeX;
   public maxHourEx = 48;
-  public startBinX = 20;
+  public heightPerHour = (this.yZero - this.yMax) / this.maxHourEx;
+  public startBinX = this.xZero + 10;
   public widthBin = 5;
+  public wind2: boolean = false;
 
   /**
    * Object result from resource mining
@@ -114,11 +117,14 @@ export default class ContentTimeAnalysisComponent extends BaseComponent {
    * @memberof AnalysisResourceMining
    */
   public mounted(): void {
-    console.log(this.resMiningResult);
     const objectkeys: any = Object.keys(this.resMiningResult.timecluster);
     if (objectkeys.length > 0)
       this.curCluster = objectkeys[0];
     this.clusters = objectkeys;
+  }
+
+  public disp(resource: string, color: string): void {
+    alert(resource + ' - ' + color);
   }
 
   public insp(i: any): string {
@@ -127,7 +133,16 @@ export default class ContentTimeAnalysisComponent extends BaseComponent {
   }
 
   public getHourStart(workinfo: string): number {
-    return Number(workinfo[0].split(' ', 2)[1].split(':', 3)[0]);
+    const stHour = Number(workinfo[0].split(' ', 2)[1].split(':', 3)[0]);
+    const edHour = Number(workinfo[1].split(' ', 2)[1].split(':', 3)[0]);
+    console.log(stHour + ' - ' + edHour);
+    if (this.wind2) {
+      if (stHour < edHour)
+        return stHour + 24;
+      else
+        return stHour;
+    } else
+      return stHour;
   }
 
   public getDuration(workinfo: string): number {
@@ -139,16 +154,28 @@ export default class ContentTimeAnalysisComponent extends BaseComponent {
   }
 
   get viewbox(): string {
-    return '0 0 ' + this.size + ' ' + this.size;
+    return '0 0 ' + this.sizeX + ' ' + this.sizeY;
   }
 
   @Watch('curCluster')
   public onPropertyChanged(value: string, oldValue: string) {
+    this.wind2 = false;
+    for (const te of this.resMiningResult.timecluster[value]) {
+      const workinfo = this.resMiningResult.timeanalysis[te];
+      const st = Number(workinfo[0].split(' ', 2)[1].split(':', 3)[0]);
+      const ed = Number(workinfo[1].split(' ', 2)[1].split(':', 3)[0]);
+      if (ed < st && st > 20) {
+        this.wind2 = true;
+        break;
+      }
+    }
+    /*
     console.log(value);
     console.log(this.resMiningResult.timecluster[value]);
     for (const te of this.resMiningResult.timecluster[value]) {
       console.log(this.resMiningResult.timeanalysis[te]);
     }
+    */
   }
 }
 </script>

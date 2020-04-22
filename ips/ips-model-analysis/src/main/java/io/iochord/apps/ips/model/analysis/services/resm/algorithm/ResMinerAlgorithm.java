@@ -38,6 +38,18 @@ public abstract class ResMinerAlgorithm {
 	public abstract void compute();
 	
 	public void timeAnalysis() {
+		int icol = 0;
+		String[] colValues = new String[] { 
+	        "FF0000", "00FF00", "0000FF", "FFFF00", "FF00FF", "00FFFF", "000000", 
+	        "800000", "008000", "000080", "808000", "800080", "008080", "808080", 
+	        "C00000", "00C000", "0000C0", "C0C000", "C000C0", "00C0C0", "C0C0C0", 
+	        "400000", "004000", "000040", "404000", "400040", "004040", "404040", 
+	        "200000", "002000", "000020", "202000", "200020", "002020", "202020", 
+	        "600000", "006000", "000060", "606000", "600060", "006060", "606060", 
+	        "A00000", "00A000", "0000A0", "A0A000", "A000A0", "00A0A0", "A0A0A0", 
+	        "E00000", "00E000", "0000E0", "E0E000", "E000E0", "00E0E0", "E0E0E0", 
+	    };
+		Map<String, String> mapColor = new HashMap<>();
 		Map<String, Map<Integer, List<String>>> maptimeanalysisref = new HashMap<>();
 		Map<String, List<String>> maptimeanalysis = new HashMap<>();
 		Map<String, List<String>> maptimecluster = new HashMap<>();
@@ -57,6 +69,12 @@ public abstract class ResMinerAlgorithm {
 				String start = es.getValue().get(0).getStarttime();
 				String end = es.getValue().get(es.getValue().size()-1).getStarttime();
 				
+				if(icol == colValues.length)
+					icol = 0;
+				
+				String colorBin = mapColor.getOrDefault(key1, "#"+colValues[icol++]);
+				mapColor.put(key1, colorBin);
+				
 				Date ds = formatter.parse(start);
 				Date de = formatter.parse(end);
 				Duration duration = Duration.between(formatter.parse(start).toInstant(), formatter.parse(end).toInstant());
@@ -68,6 +86,7 @@ public abstract class ResMinerAlgorithm {
 				long mintotal = duration.toMinutes();
 				listofwork.add(Math.floor(mintotal/60)+"");
 				listofwork.add((mintotal % 60)+"");
+				listofwork.add(colorBin);
 				map1.put(key2, listofwork);
 				maptimeanalysisref.put(key1, map1);
 				maptimeanalysis.put(key1+":"+key2, listofwork);
@@ -77,7 +96,7 @@ public abstract class ResMinerAlgorithm {
 				for(String prop : config.getPropTimeAnalysis()) {
 					if(arUdNotSet)
 						arUd[idx] = prop.equals("ss") || prop.equals("es") ? UnitDist.Time : UnitDist.NonTime;
-					features[idx++] = prop.equals("ss") ? ds.getHours() : (prop.equals("es") ? de.getHours() : mintotal);
+					features[idx++] = prop.equals("ss") ? ds.getHours() : (prop.equals("es") ? de.getHours() : mintotal/60d);
 				}
 				arUdNotSet = false;
 				
@@ -181,11 +200,11 @@ public abstract class ResMinerAlgorithm {
 			    .append("        else null \n")
 			    .append("      end as comptimeprev , \n")
 			    .append("   ").append(config.getColEventResource()).append(" as resource \n") 
-				.append("      from ").append(config.getDatasetId()).append(" where ").append(config.getColEventResource()).append(" != '' \n")
+				.append("      from ").append(config.getDatasetId()).append(" where ").append(config.getColEventResource()).append(" != '' and c2 >= '2018-12-15'\n")//append(" != '' \n")
 				.append("      ) as temp1tab \n")
 				.append("    ) as temp2tab \n")
 				.append("  ) fintab");
-			
+			System.out.println(sql.toString());
 			ResourceToShiftNumb rsn = null;
 			try (PreparedStatement st = conn.prepareStatement(sql.toString());
 				ResultSet rs = st.executeQuery();) {

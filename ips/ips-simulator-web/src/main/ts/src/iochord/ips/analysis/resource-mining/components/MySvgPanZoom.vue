@@ -155,67 +155,59 @@ export default class MySvgPanZoom extends BaseComponent {
           center: this.center,
           minZoom: this.minZoom,
         });
+
+      paper.on('cell:mouseover', (cellview: any) => {
+        const id = cellview.model.id;
+        if (!id.startsWith('LNK_')) {
+          const name = cellview.model.attributes.attrs.name.text;
+          const ev: any = event;
+          const tooltip = $('#tooltip');
+          tooltip.text(name);
+          tooltip.css( 'display', 'block' );
+        }
+      });
+
+      paper.on('cell:mouseout', (cellview: any) => {
+        const id = cellview.model.id;
+        if (!id.startsWith('LNK_')) {
+          const tooltip = $('#tooltip');
+          tooltip.css( 'display', 'none' );
+        }
+      });
+
+      paper.on('cell:pointerdown', (cellview: any) => {
+        const id = cellview.model.id;
+        if (!id.startsWith('LNK_')) {
+          const tooltip = $('#tooltip');
+          tooltip.css( 'display', 'none' );
+        }
+        document.body.style.cursor = 'grabbing';
+        this.svgZoom.disablePan();
+      });
+
+      paper.on('cell:pointerup', (cellview: any) => {
+        const id = cellview.model.id;
+        if (!id.startsWith('LNK_')) {
+          const tooltip = $('#tooltip');
+          tooltip.css( 'display', 'none' );
+        }
+        document.body.style.cursor = 'default';
+        this.svgZoom.enablePan();
+      });
+
+      this.$nextTick(() => {
+        window.addEventListener('resize', () => {
+          this.svgZoom.resize();
+        });
+      });
     });
 
     paper.on('cell:mouseover', () => {
       document.body.style.cursor = 'all-scroll';
-      this.svgZoom = SvgPanZoom('#containerSvg svg',
-        {
-          zoomEnabled: this.zoomEnabled,
-          controlIconsEnabled: this.controlIconsEnabled,
-          fit: this.fit,
-          center: this.center,
-          minZoom: this.minZoom,
-        });
-    });
-
-    paper.on('cell:mouseover', (cellview: any) => {
-      const id = cellview.model.id;
-      if (!id.startsWith('LNK_')) {
-        const name = cellview.model.attributes.attrs.name.text;
-        const ev: any = event;
-        const tooltip = $('#tooltip');
-        tooltip.text(name);
-        tooltip.css( 'display', 'block' );
-      }
-    });
-
-    paper.on('cell:mouseout', (cellview: any) => {
-      const id = cellview.model.id;
-      if (!id.startsWith('LNK_')) {
-        const tooltip = $('#tooltip');
-        tooltip.css( 'display', 'none' );
-      }
-    });
-
-    paper.on('cell:pointerdown', (cellview: any) => {
-      const id = cellview.model.id;
-      if (!id.startsWith('LNK_')) {
-        const tooltip = $('#tooltip');
-        tooltip.css( 'display', 'none' );
-      }
-      document.body.style.cursor = 'grabbing';
-      this.svgZoom.disablePan();
-    });
-
-    paper.on('cell:pointerup', (cellview: any) => {
-      const id = cellview.model.id;
-      if (!id.startsWith('LNK_')) {
-        const tooltip = $('#tooltip');
-        tooltip.css( 'display', 'none' );
-      }
-      document.body.style.cursor = 'default';
-      this.svgZoom.enablePan();
     });
 
     paper.on('cell:pointerclick', (cellview: any) => {
       console.log('Handle click event of element ' + cellview);
-    });
-
-    this.$nextTick(() => {
-      window.addEventListener('resize', () => {
-        this.svgZoom.resize();
-      });
     });
   }
 
