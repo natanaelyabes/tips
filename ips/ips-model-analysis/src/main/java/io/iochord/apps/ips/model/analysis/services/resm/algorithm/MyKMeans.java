@@ -18,11 +18,6 @@ import java.util.Properties;
 import java.util.Random;
 import java.util.Map.Entry;
 
-import org.postgresql.ds.PGPoolingDataSource;
-import org.springframework.beans.factory.annotation.Autowired;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import io.iochord.apps.ips.common.util.LoggerUtil;
 import io.iochord.apps.ips.core.services.ServiceContext;
 import io.iochord.apps.ips.model.analysis.services.resm.model.EventWorkInfo;
@@ -234,6 +229,7 @@ public class MyKMeans {
 		return dataMapToNode;
 	}
 	
+	/*
 	// this method is just for testing / debugging and check automatic clustering of k for k-means
 	public static void main(String[] args) {
 		//double[][] arr = new double[][]{
@@ -253,7 +249,6 @@ public class MyKMeans {
 			{0},
 		};
 
-		/*
 		MyKMeans mos = new MyKMeans(arr,TimeUnit.Hour,new UnitDist[]{UnitDist.Time}, 500);
 		//System.out.println(mos.shortestDistancePointToLine(0, 0, 0, 4, 4, 0));
 		
@@ -296,7 +291,7 @@ public class MyKMeans {
 			System.out.println(Arrays.toString(arr[idx])+" : Cluster "+node);
 			idx++;
 		}
-		*/
+		
 		ResourceMinerConfig rmc = new ResourceMinerConfig();
 		rmc.setDatasetId("ips_dataset_1587431534448");
 		rmc.setColCaseId("c0");
@@ -375,6 +370,7 @@ public class MyKMeans {
             i++;
         }
 	}
+	*/
 	
 	public static Map<ResourceToShiftNumb, List<EventWorkInfo>> getOriginatorTimeAnalysis(String url, Properties props, ResourceMinerConfig config) {
 		Map<String, Integer> maporishiftnumb = new LinkedHashMap<>();
