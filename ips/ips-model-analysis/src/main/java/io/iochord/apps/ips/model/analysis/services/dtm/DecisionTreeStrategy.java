@@ -9,4 +9,6 @@ package io.iochord.apps.ips.model.analysis.services.dtm;
  */
 public enum DecisionTreeStrategy {
 	ENTROPY,
+	ENTROPY_RATIO,
+	GINI,
 }

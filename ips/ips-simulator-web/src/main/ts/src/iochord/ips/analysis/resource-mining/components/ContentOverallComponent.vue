@@ -16,7 +16,7 @@
 	    <div v-if="isEmpty(this.resMiningResult)">
   			Please calculate the resource mining in the settings menu to see the result
 		</div>
-		<div class="containerPanZoom" v-else>
+		<div class="containerExpand" v-else>
 	      <MySvgPanZoom
     	    :resMiningResult='this.resMiningResult'>
           </MySvgPanZoom>
@@ -38,11 +38,11 @@
   			<ContentTableComponent :resMiningResult='this.resMiningResult'></ContentTableComponent>
 		</div>
 	  </div>
-	  <div class="ui bottom attached tab segment" data-tab="fourth">
+	  <div class="ui bottom attached tab segment" data-tab="fourth" :class="{ fullHeightMinus: !isEmpty(this.resMiningResult) }">
 	    <div v-if="isEmpty(this.resMiningResult)">
   			Please calculate the resource mining in the settings menu to see the result
 		</div>
-	    <div v-else>
+	    <div class="containerExpand" v-else>
   			<ContentTimeAnalysisComponent :resMiningResult='this.resMiningResult'></ContentTimeAnalysisComponent>
 		</div>
 	  </div>
@@ -57,7 +57,7 @@
   margin: 0px !important;
 }
 
-.containerPanZoom {
+.containerExpand {
   height: 100%;
   width: 100%;
 }
