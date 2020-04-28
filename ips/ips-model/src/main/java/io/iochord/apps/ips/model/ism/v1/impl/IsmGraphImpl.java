@@ -70,9 +70,12 @@ public class IsmGraphImpl extends ElementImpl implements IsmGraph {
 			for (Node rd : p.getNodes().values()) {
 				if (rd instanceof Activity) {
 					Activity d = (Activity) rd;
-					d.getResource().setValueRepository(p.getData());
-					d.getQueue().setValueRepository(p.getData());
-					d.getFunction().setValueRepository(p.getData());
+					if(d.getResource() != null)
+						d.getResource().setValueRepository(p.getData());
+					if(d.getQueue() != null)
+						d.getQueue().setValueRepository(p.getData());
+					if(d.getFunction() != null)
+						d.getFunction().setValueRepository(p.getData());
 				} else if (rd instanceof Start) {
 					Start d = (Start) rd;
 					d.getGenerator().setValueRepository(p.getData());
