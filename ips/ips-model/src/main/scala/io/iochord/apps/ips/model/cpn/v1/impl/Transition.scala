@@ -310,7 +310,7 @@ class Transition[B] (
         val nConsume = 0
         breakable{
           for(tChosenComp <- lTchosenComp) {
-            val tWt = tChosenComp._1.asInstanceOf
+            val tWt = tChosenComp._1.asInstanceOf[arc.coltype]
             val nAvail = tChosenComp._2
             val tConsume = Math.min(arc.noTokArcExp - nConsume, nAvail)
             arc.getPlace().removeTokenWithTime(tWt, tConsume)

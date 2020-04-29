@@ -47,10 +47,14 @@ public class MyOwnSOM {
 		// initialize weight from random data in dataset, if weights length > data length then use random int 
 		initArr = new Integer[matrix.length];
 		Arrays.setAll(initArr, i -> i + 1);
+		
+		List<Integer> pickOrder = Arrays.asList(initArr);
+		Collections.shuffle(pickOrder);
+		
 		Random r = new Random();
 		for (int u=0; u<weights.length; u++)
 		    for(int d=0; d<weights[0].length; d++)
-		    	weights[u][d] = u < matrix.length ? matrix[initArr[u]-1][d] : r.nextInt(10);
+		    	weights[u][d] = u < matrix.length ? matrix[pickOrder.get(u)-1][d] : r.nextInt(10);
 		
 		for(int i=0; i<numbAttr; i++) {
 			if(arUd[i] == UnitDist.Time)
@@ -64,6 +68,7 @@ public class MyOwnSOM {
 			List<Integer> pickOrder = Arrays.asList(initArr);
 			Collections.shuffle(pickOrder);
 			
+			//System.out.println("Iter "+i);
 			for(int row : pickOrder) {
 				double[] dataInRow = matrix[row-1];
 				// neuron of nodes lattice
@@ -71,6 +76,7 @@ public class MyOwnSOM {
 				double bestDist = Double.MAX_VALUE;
 				for (int nodeNumb=0; nodeNumb<weights.length; nodeNumb++) {
 					double dist = euclidDistance(dataInRow, weights[nodeNumb]);
+					//System.out.println("Node "+Arrays.toString(weights[nodeNumb])+" "+nodeNumb+" : "+dist+" - bestDist "+bestDist+" - data "+Arrays.toString(dataInRow));
 					if(dist < bestDist) {
 						bmuIndex = nodeNumb;
 						bestDist = dist;
@@ -78,10 +84,10 @@ public class MyOwnSOM {
 				}
 				
 				double[] bmu = weights[bmuIndex];
-				
 				for (int nodeNumb=0; nodeNumb<weights.length; nodeNumb++) {
 					weights[nodeNumb] = newWeight(weights[nodeNumb], bmu, dataInRow);
 				}
+				//System.out.println(row-1+" : "+Arrays.toString(dataInRow)+" - Node"+bmuIndex+" : "+Arrays.toString(bmu));
 			}
 		}
 	}
@@ -107,6 +113,10 @@ public class MyOwnSOM {
 	}
 	
 	public double timeDist(double a, double b, double thresTimeUnit) {
+		return Math.min(Math.max(a, b) - Math.min(a, b),Math.min(a, b)+thresTimeUnit - Math.max(a, b));
+	}
+	
+	public double timeDelta(double a, double b, double thresTimeUnit) {
 		if(a >= b) {
 			if((a - b) <= (b + thresTimeUnit - a))
 				return a - b;
@@ -140,7 +150,7 @@ public class MyOwnSOM {
 		int arLength = old.length;
 		double[] newWeight = new double[arLength];
 		for(int i=0; i<arLength; i++) {
-			newWeight[i] = old[i] + learningRate()*topologicalNeighbourhood(bmu, old)*(arUd[i] == UnitDist.NonTime ? minDist(inpVec[i], old[i]) : timeDist(inpVec[i], old[i], threshold[i]));
+			newWeight[i] = old[i] + learningRate()*topologicalNeighbourhood(bmu, old)*(arUd[i] == UnitDist.NonTime ? minDist(inpVec[i], old[i]) : timeDelta(inpVec[i], old[i], threshold[i]));
 			if(arUd[i] == UnitDist.Time && (newWeight[i] >= threshold[i] || newWeight[i] < 0)) {
 				if(newWeight[i] < 0)
 					newWeight[i] = threshold[i] + newWeight[i];
@@ -176,18 +186,27 @@ public class MyOwnSOM {
 	
 	/* this method is just for testing
 	public static void main(String[] args) {
+		//double[][] arr = new double[][]{
+		//	{8,16,8},
+		//	{9,17,8},
+		//	{16,22,6},
+		//	{17,23,6},
+		//	{23.30,6,6.30},
+		//	{0.30,7,6.30},
+		//};
+		
 		double[][] arr = new double[][]{
-			{8,16,8},
-			{9,17,8},
-			{16,22,6},
-			{17,23,6},
-			{23.30,6,6.30},
-			{0.30,7,6.30},
+			{8},
+			{9},
+			{16},
+			{17},
+			{23},
+			{0},
 		};
 		int numbOfNeuron = (int) Math.round(5*Math.sqrt(arr.length));
 		int lengthPerSide = (int) Math.round(Math.sqrt(numbOfNeuron));
 		
-		MyOwnSOM mos = new MyOwnSOM(arr,lengthPerSide,lengthPerSide,500,0.2,TimeUnit.Hour,new UnitDist[]{UnitDist.Time, UnitDist.Time, UnitDist.NonTime});
+		MyOwnSOM mos = new MyOwnSOM(arr,lengthPerSide,lengthPerSide,100,0.6,TimeUnit.Hour,new UnitDist[]{UnitDist.Time});
 		mos.train();
 		
 		for(int x=0; x<mos.matrix.length; x++) {
