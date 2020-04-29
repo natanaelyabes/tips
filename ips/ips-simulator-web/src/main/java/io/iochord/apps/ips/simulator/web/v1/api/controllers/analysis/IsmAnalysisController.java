@@ -58,14 +58,14 @@ public class IsmAnalysisController extends AnAnalysisController {
 		return context;
 	}
 
-	@PostMapping(value = { BASE_URI + "/dtm", BASE_URI + "/dtm/{datasetId}" })
-	public ServiceContext getPostDecisionMiner(@PathVariable Optional<String> datasetId,
-			@RequestBody(required = false) DecisionMinerConfig config, @RequestHeader HttpHeaders headers) {
-		if (config == null && datasetId.isPresent()) {
-			config = new DecisionMinerConfig();
-			config.setDatasetId(datasetId.get());
-		}
-		return run(new DecisionMinerService(), config, DecisionMinerResult.class, headers);
-	}
+//	@PostMapping(value = { BASE_URI + "/dtm", BASE_URI + "/dtm/{datasetId}" })
+//	public ServiceContext getPostDecisionMiner(@PathVariable Optional<String> datasetId,
+//			@RequestBody(required = false) DecisionMinerConfig config, @RequestHeader HttpHeaders headers) {
+//		if (config == null && datasetId.isPresent()) {
+//			config = new DecisionMinerConfig();
+//			config.setDatasetId(datasetId.get());
+//		}
+//		return run(new DecisionMinerService(), config, DecisionMinerResult.class, headers);
+//	}
 
 }
