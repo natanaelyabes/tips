@@ -7,7 +7,7 @@
   <div class="canvas component">
     <div class="editor canvas ui basic segment">
 
-      <MinimapComponent :response="graphData" />
+      <MinimapComponent :response="graph" />
 
       <!-- Canvas to render graph -->
       <div id="canvas"
@@ -372,10 +372,10 @@ export default class CanvasComponent extends Mixins(BaseComponent, CanvasMixin) 
 
           if (this.source && !this.target) {
             this.setTargetNode(this.activePage as JointGraphPageImpl, currentElement);
+            jointPage.getPaper().setInteractivity(true);
             break;
           }
         }
-        jointPage.getPaper().setInteractivity(true);
       },
 
       'element:pointerclick': (elementView: joint.dia.ElementView) => {

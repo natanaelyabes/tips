@@ -269,14 +269,6 @@ public class DecisionMinerService extends AnIpsAsyncService<DecisionMinerConfig,
 		config.setStrategy(DecisionTreeStrategy.ENTROPY);
 		if (config.getStrategy().equals(DecisionTreeStrategy.ENTROPY))
 			inferUsingEntropyMeasure(conn, rs);
-<<<<<<< HEAD
-=======
-		} else if (config.getStrategy().equals(DecisionTreeStrategy.ENTROPY_RATIO)) {
-			inferUsingEntropyRatioMeasure(conn, rs);
-		} else if (config.getStrategy().equals(DecisionTreeStrategy.GINI)) {
-			inferUsingGiniMeasure(conn, rs);
-		}
->>>>>>> b03d0e59db3a76d6f1b7f16b9391580d67cdfc5a
 	}
 
 	private void inferUsingEntropyMeasure(Connection conn, ResultSet rs) throws SQLException {
@@ -361,13 +353,9 @@ public class DecisionMinerService extends AnIpsAsyncService<DecisionMinerConfig,
 	}
 
 	@SuppressWarnings("unchecked")
-<<<<<<< HEAD
 	private void traverseTree(Connection conn, String tablename,
 			                  double E_INFO, Map<String, Map<String, List<String>>> colcandidate, 
 			                  Map<String, Map<String, Map<String, String>>> node, String curr, String conditions)
-=======
-	private void traverseTree(Connection conn, String tablename, double E_INFO, Map<String, Map<String, List<String>>> colcandidate, Map<String, Map<String, List<String>>> node, String curr, String conditions)
->>>>>>> b03d0e59db3a76d6f1b7f16b9391580d67cdfc5a
 			throws SQLException {
 		if (colcandidate.isEmpty()) {
 			StringBuilder sql = new StringBuilder();
@@ -706,18 +694,13 @@ public class DecisionMinerService extends AnIpsAsyncService<DecisionMinerConfig,
 							if (candidate.size() == 0) {
 								newcolcandidate.remove(name);
 							}
-<<<<<<< HEAD
 							// extract to method
 							handleEmptyGainCandidate(conn, tablename, E_INFO, colcandidate, node, curr, conditions, node_candidate, gain_candidates, colname);
-=======
-							traverseTree(conn, tablename, E_INFO, newcolcandidate, node, curr, cond2);
->>>>>>> b03d0e59db3a76d6f1b7f16b9391580d67cdfc5a
 						}
 					}
 				}
 			}
 		}
-<<<<<<< HEAD
 		
 		// min or max value of continuous amount is less favorable
 		double max_entropy = node_candidate.entrySet().stream()
@@ -823,8 +806,6 @@ public class DecisionMinerService extends AnIpsAsyncService<DecisionMinerConfig,
 				}
 			}
 		}
-=======
->>>>>>> b03d0e59db3a76d6f1b7f16b9391580d67cdfc5a
 	}
 
 	private double computeExpectedInformation(Connection conn, String tablename) throws SQLException {
