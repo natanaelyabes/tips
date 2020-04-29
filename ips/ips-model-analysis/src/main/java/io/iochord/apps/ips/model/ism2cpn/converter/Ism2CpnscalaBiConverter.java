@@ -13,6 +13,7 @@ import io.iochord.apps.ips.model.ism.v1.nodes.Branch;
 import io.iochord.apps.ips.model.ism.v1.nodes.enums.BranchGate;
 import io.iochord.apps.ips.model.ism.v1.nodes.enums.BranchRule;
 import io.iochord.apps.ips.model.ism.v1.nodes.enums.BranchType;
+import io.iochord.apps.ips.model.ism2cpn.converter.KeyElement;
 import io.iochord.apps.ips.model.ism.v1.data.DataTable;
 import io.iochord.apps.ips.model.ism.v1.data.Function;
 import io.iochord.apps.ips.model.ism.v1.data.Generator;

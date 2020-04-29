@@ -68,7 +68,6 @@ public class DecisionMinerService extends AnIpsAsyncService<DecisionMinerConfig,
 		} catch (SQLException e) {
 			LoggerUtil.logError(e);
 		}
-		
 		String caseid_col = mappings.entrySet().stream()
 				.filter(set -> set.getValue().equals("case_id"))
 				.map(set -> set.getKey()).collect(Collectors.toList()).get(0);
@@ -83,9 +82,7 @@ public class DecisionMinerService extends AnIpsAsyncService<DecisionMinerConfig,
 		sconfig.setColEventTimestamp(tsmp_col);
 		sconfig.setDependencyThreshold(0.9f);
 		sconfig.setPositiveObservationThreshold(0);
-		
 		IsmGraph ismGraph = getDiscoveryService().run(context, sconfig);
-		
 		List<List<Node>> branches = ismGraph.getPages().entrySet().stream()
 				.map(page -> page.getValue())
 				.map(page -> page.getNodes())
@@ -99,7 +96,6 @@ public class DecisionMinerService extends AnIpsAsyncService<DecisionMinerConfig,
 		branches.get(0).forEach(branch -> {
 			System.out.println(branch.getLabel());
 		});
-		
 		List<List<Connector>> connectors = ismGraph.getPages().entrySet().stream()
 				.map(page -> page.getValue())
 				.map(page -> page.getConnectors())
@@ -115,7 +111,6 @@ public class DecisionMinerService extends AnIpsAsyncService<DecisionMinerConfig,
 			System.out.println(connector.getTarget().getId());
 			System.out.println("");
 		});
-		
 		List<List<Connector>> branching_connector = connectors.stream().map(cs -> cs.stream()
 			.filter(connector -> 
 				connector.getSource().getValue().getElementType()
@@ -124,7 +119,6 @@ public class DecisionMinerService extends AnIpsAsyncService<DecisionMinerConfig,
 			 	.equals(ElementType.NODE_BRANCH))
 			.collect(Collectors.toList()))
 		.collect(Collectors.toList());
-		
 		List<List<Map<BranchImpl, Map<List<Element>, List<Element>>>>> decision_point = branches.stream().map(pages -> {
 			return pages.stream().filter(br -> (Boolean) ((BranchImpl) br).getType().equals(BranchType.SPLIT)).map(branch -> {
 						Map<BranchImpl, Map<List<Element>, List<Element>>> branch_point = new LinkedHashMap<>();
@@ -143,11 +137,9 @@ public class DecisionMinerService extends AnIpsAsyncService<DecisionMinerConfig,
 						return branch_point;
 				}).collect(Collectors.toList());
 		}).collect(Collectors.toList());
-		
 		try (Connection conn = context.getDataSource().getConnection();) {
 			String datasetId = config.getDatasetId();
 			StringBuilder sql = new StringBuilder();
-			
 			sql.append("DROP TABLE IF EXISTS ").append(datasetId).append("_branchpoint;");
 			sql.append("CREATE TABLE IF NOT EXISTS ").append(datasetId).append("_branchpoint")
 			   .append(" ( ")
@@ -160,11 +152,9 @@ public class DecisionMinerService extends AnIpsAsyncService<DecisionMinerConfig,
 			try (PreparedStatement st = conn.prepareStatement(sql.toString());) {
 				st.execute();
 			}
-			
 			sql = new StringBuilder();
 			sql.append("INSERT INTO ").append(datasetId).append("_branchpoint").append(" VALUES ")
 			   .append("(DEFAULT, ?, ?, ?, ?);");
-			
 			try (PreparedStatement st = conn.prepareStatement(sql.toString());) {
 				for (int i = 0; i < decision_point.size(); i++) {
 					List<Map<BranchImpl, Map<List<Element>, List<Element>>>> list = decision_point.get(i);
@@ -192,7 +182,6 @@ public class DecisionMinerService extends AnIpsAsyncService<DecisionMinerConfig,
 				}
 				st.executeBatch();
 			}
-			
 			List<List<String>> io = new ArrayList<>();
 			sql = new StringBuilder();
 			sql.append("SELECT page, input, output FROM ").append(datasetId).append("_branchpoint;");
@@ -206,9 +195,7 @@ public class DecisionMinerService extends AnIpsAsyncService<DecisionMinerConfig,
 					}
 				}
 			}
-			
 			Map<String, List<String>> iobindings = new LinkedHashMap<>();
-			
 			List<String> val = new ArrayList<>();
 			for (int i = 0; i < io.size(); i++) {
 				if (i == 0) {
@@ -224,7 +211,6 @@ public class DecisionMinerService extends AnIpsAsyncService<DecisionMinerConfig,
 				}
 				iobindings.put(io.get(i).get(0), val);
 			}
-			
 			sql = new StringBuilder();
 			sql.append("SELECT * FROM ").append(datasetId).append(" OFFSET 1;");
 			try (PreparedStatement st = conn.prepareStatement(sql.toString());) {
@@ -236,7 +222,7 @@ public class DecisionMinerService extends AnIpsAsyncService<DecisionMinerConfig,
 						List<String> a = new ArrayList<>();
 						a.add(actname);
 						a.add(caseid);
-						act.add(a);						
+						act.add(a);
 					}
 					sql = new StringBuilder();
 					for (int i = 0; i < act.size(); i++) {
@@ -258,7 +244,6 @@ public class DecisionMinerService extends AnIpsAsyncService<DecisionMinerConfig,
 					}
 				}
 			}
-			
 			sql = new StringBuilder();
 			sql.append("SELECT DISTINCT table_name FROM INFORMATION_SCHEMA.COLUMNS WHERE table_name LIKE '")
 			   .append(datasetId).append("_dataeventlog%'");
@@ -270,7 +255,6 @@ public class DecisionMinerService extends AnIpsAsyncService<DecisionMinerConfig,
 					}
 				}
 			}
-			
 			// Build the result
 			DecisionMinerResult result = new DecisionMinerResult();
 			result.setConfig(config);
@@ -283,9 +267,8 @@ public class DecisionMinerService extends AnIpsAsyncService<DecisionMinerConfig,
 
 	private void inferDecisionTree(Connection conn, DecisionMinerConfig config, ResultSet rs) throws SQLException {
 		config.setStrategy(DecisionTreeStrategy.ENTROPY);
-		if (config.getStrategy().equals(DecisionTreeStrategy.ENTROPY)) {
+		if (config.getStrategy().equals(DecisionTreeStrategy.ENTROPY))
 			inferUsingEntropyMeasure(conn, rs);
-		}
 	}
 
 	private void inferUsingEntropyMeasure(Connection conn, ResultSet rs) throws SQLException {
@@ -351,7 +334,7 @@ public class DecisionMinerService extends AnIpsAsyncService<DecisionMinerConfig,
 									flags.add(">");
 									while (rs2.next()) {
 										for (String flag : flags) {
-											v.add(flag + " " + rs2.getString(1));
+											v.add(flag + " " + rs2.getDouble(1));
 										}
 									}
 								}
@@ -369,7 +352,10 @@ public class DecisionMinerService extends AnIpsAsyncService<DecisionMinerConfig,
 		}
 	}
 
-	private void traverseTree(Connection conn, String tablename, double E_INFO, Map<String, Map<String, List<String>>> colcandidate, Map<String, Map<String, Map<String, String>>> node, String curr, String conditions)
+	@SuppressWarnings("unchecked")
+	private void traverseTree(Connection conn, String tablename,
+			                  double E_INFO, Map<String, Map<String, List<String>>> colcandidate, 
+			                  Map<String, Map<String, Map<String, String>>> node, String curr, String conditions)
 			throws SQLException {
 		Map<String, Double> node_candidate = new TreeMap<>();
 		for (Entry<String, Map<String, List<String>>> col : colcandidate.entrySet()) {
@@ -485,15 +471,8 @@ public class DecisionMinerService extends AnIpsAsyncService<DecisionMinerConfig,
 								gain.add(rs3.getDouble(1));
 								gain_candidates.add(gain);
 							}
-							double GAIN_ATTR = gain_candidates.stream().map(candidates -> candidates.get(0))
-									.mapToDouble(d -> d)
-									.max().orElseThrow(NoSuchElementException::new);
-							double midpoint = gain_candidates.stream()
-									.filter(candidate -> candidate.get(0) == GAIN_ATTR)
-									.map(candidate -> candidate.get(1))
-									.collect(Collectors.toList()).get(0);
-							System.out.println("Information gain over attribute " + colname + " with " + midpoint + " as midpoint: " + GAIN_ATTR);
-							node_candidate.put(colname + "-" + midpoint, GAIN_ATTR);
+							// extract to method
+							handleEmptyGainCandidate(conn, tablename, E_INFO, colcandidate, node, curr, conditions, node_candidate, gain_candidates, colname);
 						}
 					} catch (SQLException e) {
 						// TODO Auto-generated catch block
@@ -503,6 +482,7 @@ public class DecisionMinerService extends AnIpsAsyncService<DecisionMinerConfig,
 			}
 		}
 		
+		// min or max value of continuous amount is less favorable
 		double max_entropy = node_candidate.entrySet().stream()
 				.map(entry -> entry.getValue())
 				.mapToDouble(d -> d)
@@ -516,10 +496,96 @@ public class DecisionMinerService extends AnIpsAsyncService<DecisionMinerConfig,
 				}).collect(Collectors.toList()).get(0);
 		boolean isContinous = winner.entrySet().stream().allMatch(p -> p.getKey().contains("-"));
 		String attr_name = winner.entrySet().stream().map(entry -> entry.getKey()).collect(Collectors.toList()).get(0);
-		System.out.println(isContinous);
-		System.out.println(attr_name);
-		System.out.println(node_candidate);
-		System.out.println(colcandidate);
+		StringBuilder sql;
+		if (!isContinous) {
+			colcandidate.remove(attr_name);
+			sql = new StringBuilder();
+			sql.append("SELECT DISTINCT \"").append(attr_name).append("\" FROM ").append(tablename);
+			try (PreparedStatement st = conn.prepareStatement(sql.toString());) {
+				try (ResultSet rs = st.executeQuery();) {
+					Map<String, Map<String, String>> parent = new LinkedHashMap<>();
+					Map<String, String> leaf = new LinkedHashMap<>();
+					while (rs.next()) {
+						if (node.isEmpty()) leaf.put(rs.getString(1), null);
+						if (colcandidate.size() == 0) {
+							String cond = "\"" + attr_name + "\"" + " = '" + rs.getString(1) + "'";
+							sql = new StringBuilder();
+							sql.append("SELECT DISTINCT \"class\" FROM ")
+								.append(tablename).append(" WHERE ")
+								.append(cond).append(";");
+							try (PreparedStatement st1 = conn.prepareStatement(sql.toString());) {
+								try (ResultSet rs1 = st1.executeQuery();) {
+									StringBuilder result = new StringBuilder();
+									String prefix = "";
+									while (rs1.next()) {
+										result.append(prefix).append(rs1.getString(1));
+										prefix = "^";
+									}
+									leaf.put(rs.getString(1), result.toString());
+								}
+							}
+						} else {
+//							System.out.println("traverse tree");
+						}
+					}
+					parent.put(curr, leaf);
+					node.put(attr_name, parent);
+				}
+			}
+			System.out.println(node);
+		} else {
+			String name = attr_name.split("-")[0];
+			double midpoint = Double.parseDouble(attr_name.split("-")[1]);
+			String flags[] = new String[] { "<=", ">" };
+			Map<String, Map<String, String>> parent = new LinkedHashMap<>();
+			Map<String, String> leaf = new LinkedHashMap<>();
+			for (String flag : flags) {
+				if (node.isEmpty()) leaf.put(flag + " " + midpoint, null);
+				if (colcandidate.size() == 0) {
+					String cond = "\"" + name + "\" " + flag + " '" + midpoint + "'";
+					sql = new StringBuilder();
+					sql.append("SELECT DISTINCT \"class\" FROM ")
+						.append(tablename).append(" WHERE ")
+						.append(cond).append(";");
+					try (PreparedStatement st1 = conn.prepareStatement(sql.toString());) {
+						try (ResultSet rs1 = st1.executeQuery();) {
+							StringBuilder result = new StringBuilder();
+							String prefix = "";
+							while (rs1.next()) {
+								result.append(prefix).append(rs1.getString(1));
+								prefix = "^";
+							}
+							leaf.put(flag + " " + midpoint, result.toString());
+						}
+					}
+				} else {
+//					System.out.println("traverse tree");
+				}
+			}
+			parent.put(curr, leaf);
+			node.put(attr_name, parent);
+			System.out.println(node);
+			curr = attr_name;
+			for (String flag : flags) {
+				boolean colcandidate_exists = colcandidate.entrySet().stream()
+						.flatMap(entry -> entry.getValue().entrySet().stream())
+						.flatMap(entry1 -> entry1.getValue().stream())
+						.anyMatch(item -> item.equals(flag + " " + midpoint));
+				if (colcandidate.size() > 0 && colcandidate_exists) {
+					colcandidate = (Map<String, Map<String,List<String>>>)(Map<?, ?>) colcandidate.entrySet().stream()
+							.collect(Collectors.toMap(
+									Entry::getKey, 
+									entry -> (Map<String, List<String>>) entry.getValue().entrySet().stream()
+											.collect(Collectors.toMap(
+													Entry::getKey, 
+													ent -> (List<String>) ent.getValue().stream()
+														.filter(l -> !l.equals(flag + " " + midpoint))
+														.collect(Collectors.toList())))));
+					conditions += " AND \"" + name + "\" " + flag + " '" + midpoint + "'";
+					traverseTree(conn, tablename, E_INFO, colcandidate, node, curr, conditions);
+				}
+			}
+		}
 	}
 
 	private double computeExpectedInformation(Connection conn, String tablename) throws SQLException {
@@ -547,21 +613,18 @@ public class DecisionMinerService extends AnIpsAsyncService<DecisionMinerConfig,
 
 	private void alterColumnType(Connection conn, StringBuilder sql, ResultSet rs) throws SQLException {
 		StringBuilder colname = new StringBuilder();
-		colname.append("SELECT column_name FROM INFORMATION_SCHEMA.COLUMNS WHERE table_name = '").append(rs.getString(1)).append("';");
-		
+		colname.append("SELECT column_name FROM INFORMATION_SCHEMA.COLUMNS WHERE table_name = '")
+			   .append(rs.getString(1)).append("';");
 		try (PreparedStatement st1 = conn.prepareStatement(colname.toString());) {
 			try (ResultSet rs1 = st1.executeQuery();) {
 				List<String> colnames = new ArrayList<>();
-				while (rs1.next()) {
-					colnames.add(rs1.getString(1));
-				}
+				while (rs1.next()) colnames.add(rs1.getString(1));
 				StringBuilder colisalterable = new StringBuilder();
 				colisalterable.append("SELECT DISTINCT ");
 				String prefix = "";
 				for (String name : colnames) {
 					colisalterable.append(prefix)
-								  .append("CASE WHEN (\"")
-								  .append(name)
+								  .append("CASE WHEN (\"").append(name)
 								  .append("\"::varchar~ '^\\-?(\\d+\\.?\\d*|\\d*\\.?\\d+)$') THEN true ELSE false END as \"")
 								  .append(name).append("\"");
 					prefix = ", ";
@@ -579,18 +642,129 @@ public class DecisionMinerService extends AnIpsAsyncService<DecisionMinerConfig,
 				StringBuilder alteredcols = new StringBuilder();
 				alteredcols.append("ALTER TABLE ").append(rs.getString(1)).append(" ");
 				while (rs2.next()) {
-					String prefix1 = "";
+					String prefix = "";
 					for (int i = 1; i <= md.getColumnCount(); i++) {
 						if (rs2.getBoolean(i)) {
-							alteredcols.append(prefix1).append("ALTER COLUMN \"").append(colnames.get(i-1))
-									   .append("\" TYPE NUMERIC (100) USING \"").append(colnames.get(i-1)).append("\"::numeric");
-							prefix1 = ", ";
+							alteredcols.append(prefix).append("ALTER COLUMN \"").append(colnames.get(i-1))
+									   .append("\" TYPE NUMERIC (100) USING \"").append(colnames.get(i-1))
+									   .append("\"::numeric");
+							prefix = ", ";
 						}
 					}
 				}
 				try (PreparedStatement st3 = conn.prepareStatement(alteredcols.toString());) {
 					st3.execute();
 				}
+			}
+		}
+	}
+	
+	@SuppressWarnings("unchecked")
+	private void handleEmptyGainCandidate(Connection conn, String tablename, double E_INFO, 
+			Map<String, Map<String, List<String>>> colcandidate, Map<String, Map<String, Map<String, String>>> node, 
+			String curr, String conditions, Map<String, Double> node_candidate, List<List<Double>> gain_candidates, String colname) 
+		throws SQLException {
+		if (gain_candidates.size() == 0) {
+			String removed = node.entrySet().stream()
+					.map(entry -> entry.getKey()).reduce((first, last) -> last).get();
+			if (node.size() > 1) {
+				node.remove(removed);
+			}
+			curr = node.entrySet().stream()
+					.map(entry -> entry.getKey()).reduce((first, last) -> last).get();
+			String lastcond = conditions.split("AND")[conditions.split("AND").length - 1];
+			conditions = conditions.replace("AND" + lastcond, "");
+			String flag = lastcond.split(" ")[2];
+			double midpoint = Double.parseDouble(lastcond.split(" ")[3].replace("'", ""));
+			List<String> candidates = colcandidate.entrySet().stream()
+					.flatMap(entry -> entry.getValue().entrySet().stream()
+					.flatMap(ent -> ent.getValue().stream()))
+					.collect(Collectors.toList());
+			String key = curr.split("-")[0];
+			if (candidates.contains(flag + " " + midpoint)) {
+				// if gain candidates is empty, prune all candidate <flag> <midpoint>
+				Map<String, Map<String, List<String>>> replacement = (Map<String, Map<String,List<String>>>)(Map<?, ?>) colcandidate.entrySet().stream()
+						.filter(p -> p.getKey().equals(key))
+						.collect(Collectors.toMap(
+								Entry::getKey, 
+								entry -> (Map<String, List<String>>) entry.getValue().entrySet().stream()
+										.filter(e -> e.getKey().equals("numeric"))
+										.collect(Collectors.toMap(Entry::getKey, Entry::getValue))));
+				replacement = (Map<String, Map<String,List<String>>>)(Map<?, ?>) colcandidate.entrySet().stream()
+						.filter(p -> p.getKey().equals(key))
+						.collect(Collectors.toMap(
+								Entry::getKey, 
+								entry -> (Map<String, List<String>>) entry.getValue().entrySet().stream()
+										.filter(e -> e.getKey().equals("numeric"))
+										.collect(Collectors.toMap(
+												Entry::getKey, 
+												ent -> (List<String>) ent.getValue()
+													.stream()
+													.filter(l -> Double.parseDouble(l.split(" ")[1]) != midpoint)
+													.collect(Collectors.toList())))));
+				colcandidate.put(key, replacement.get(key));
+				traverseTree(conn, tablename, E_INFO, colcandidate, node, curr, conditions);
+			} else {
+				if (flag.equals("<=")) {
+					if (conditions.equals(" ")) {
+						conditions = "AND \"" + key + "\" > " + midpoint;
+						traverseTree(conn, tablename, E_INFO, colcandidate, node, curr, conditions);
+					} else {
+						colcandidate = (Map<String, Map<String,List<String>>>)(Map<?, ?>) colcandidate.entrySet().stream()
+								.collect(Collectors.toMap(
+										Entry::getKey, 
+										entry -> (Map<String, List<String>>) entry.getValue().entrySet().stream()
+												.collect(Collectors.toMap(
+														Entry::getKey, 
+														ent -> (List<String>) ent.getValue()
+															.stream()
+															.filter(l -> !l.equals(">" + " " + midpoint))
+															.collect(Collectors.toList())))));
+						traverseTree(conn, tablename, E_INFO, colcandidate, node, curr, conditions);
+					}
+				} else {
+					if (conditions.isEmpty()) {
+						conditions = "AND " + key + " <= " + midpoint;
+						traverseTree(conn, tablename, E_INFO, colcandidate, node, curr, conditions);
+					} else {
+						colcandidate = (Map<String, Map<String,List<String>>>)(Map<?, ?>) colcandidate.entrySet().stream()
+								.collect(Collectors.toMap(
+										Entry::getKey, 
+										entry -> (Map<String, List<String>>) entry.getValue().entrySet().stream()
+												.collect(Collectors.toMap(
+														Entry::getKey, 
+														ent -> (List<String>) ent.getValue()
+															.stream()
+															.filter(l -> !l.equals("<=" + " " + midpoint))
+															.collect(Collectors.toList())))));
+						traverseTree(conn, tablename, E_INFO, colcandidate, node, curr, conditions);
+					}
+				}
+			}
+		} else {
+			List<Double> colcandidateflat = colcandidate.entrySet().stream()
+					.flatMap(entry -> entry.getValue().entrySet().stream())
+					.filter(p -> p.getKey().equals("numeric"))
+					.flatMap(entry1 -> entry1.getValue().stream())
+					.map(s -> s.split(" ")[1])
+					.map(d -> Double.parseDouble(d))
+					.collect(Collectors.toList());
+			System.out.println(colcandidateflat);
+			// error here, and why Amount-125.0 is always picked?
+			gain_candidates = gain_candidates.stream()
+					.filter(p -> colcandidateflat.contains(p.get(1)))
+					.collect(Collectors.toList());
+			if (gain_candidates.size() == 0) {
+				handleEmptyGainCandidate(conn, tablename, E_INFO, colcandidate, node, curr, conditions, node_candidate, gain_candidates, colname);
+			} else {
+				double GAIN_ATTR = gain_candidates.stream().map(candidates -> candidates.get(0))
+						.mapToDouble(d -> d).max().orElseThrow(NoSuchElementException::new);
+				double midpoint = gain_candidates.stream()
+						.filter(candidate -> candidate.get(0) == GAIN_ATTR)
+						.map(candidate -> candidate.get(1))
+						.collect(Collectors.toList()).get(0);
+				System.out.println("Information gain over attribute " + colname + " with " + midpoint + " as midpoint: " + GAIN_ATTR);
+				node_candidate.put(colname + "-" + midpoint, GAIN_ATTR);
 			}
 		}
 	}
