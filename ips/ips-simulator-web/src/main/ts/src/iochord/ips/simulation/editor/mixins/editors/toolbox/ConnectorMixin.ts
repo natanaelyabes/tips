@@ -90,7 +90,7 @@ export default class ConnectorMixin extends BaseComponent {
     this.newConnector = new JointGraphConnectorImpl();
 
     // Set properties for the newly created item
-    this.newConnector.setId(`0-${GraphConnectorImpl.instance.size() + Math.ceil(Math.random())}`);
+    this.newConnector.setId(`0-${GraphConnectorImpl.instance.size() + Math.ceil(Math.random() * 9999)}`);
     this.newConnector.setType('connector');
     this.newConnector.setAttr(ARC_TYPE.connector.attr);
 
