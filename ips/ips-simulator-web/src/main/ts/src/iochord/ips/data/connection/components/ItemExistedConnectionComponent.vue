@@ -110,7 +110,7 @@ export default class ItemExistedConnectionComponent extends BaseComponent {
    */
   public async mounted(): Promise<void> {
     const self = this;
-    DataConnectionService.getInstance().getDataConnections((res: any) => {
+    DataConnectionService.getInstance().getFilteredDataConnections('dataset', (res: any) => {
       self.datasets = res.data;
     }, (tick: any) => {
       console.log('AAAAAAAA', tick);

@@ -1,13 +1,26 @@
 package io.iochord.apps.ips.model.services.data.map;
 
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
 
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+
+import io.iochord.apps.ips.common.models.Dataset;
+import io.iochord.apps.ips.common.util.JsonDataCodec;
 import io.iochord.apps.ips.common.util.LoggerUtil;
+import io.iochord.apps.ips.common.util.SerializationUtil;
 import io.iochord.apps.ips.core.services.AnIpsService;
 import io.iochord.apps.ips.core.services.ServiceContext;
+import io.iochord.apps.ips.model.services.data.im.csv.CsvDataImportConfiguration;
 
 /**
  *
@@ -23,8 +36,97 @@ public class MappingService extends AnIpsService<MappingConfiguration, MappingRe
 		// TODO Auto-generated method stub
 		MappingResult result = new MappingResult();
 		
-		try (Connection conn = context.getDataSource().getConnection();) {
+		try (Connection conn = context.getDataSource().getConnection()) {
+			CsvDataImportConfiguration imConfig = null;
+			StringBuilder sql = new StringBuilder();
+			sql.append("SELECT tablename, obj_description(tablename::regclass) AS json FROM pg_catalog.pg_tables WHERE ")
+			   .append("tablename = '").append(config.getDatasetId()).append("'");
+			try (PreparedStatement st = conn.prepareStatement(sql.toString())) {
+				ResultSet rs = st.executeQuery();
+				if (rs.next()) {
+					String tableJson = rs.getString("json");
+					if (tableJson != null) {
+						imConfig = JsonDataCodec.getDeserializer().readValue(tableJson, CsvDataImportConfiguration.class);
+					}
+				}
+			}
 			
+			if (imConfig != null) {
+				sql = new StringBuilder();
+				sql.append("SELECT COUNT(*) FROM pg_catalog.pg_views WHERE viewname LIKE '")
+				   .append(config.getDatasetId()).append("_repo")
+				   .append("%' AND obj_description(viewname::regclass) IS NOT NULL AND schemaname != 'pg_catalog' AND schemaname != 'information_schema'");
+				int repoCount = 0; 
+				try (PreparedStatement st = conn.prepareStatement(sql.toString())) {
+					ResultSet rs = st.executeQuery();
+					rs.next();
+					repoCount = rs.getInt(1);
+				}
+				
+				String repoId = config.getDatasetId() + "_repo" + (repoCount + 1);
+				Map<String, List<String>> maps = new LinkedHashMap<>();
+				for (Entry<String, String> colEnt : config.getResource().getMapSettings().entrySet()) {
+					String col = colEnt.getKey();
+					String map = colEnt.getValue();
+					if (!maps.containsKey(map)) {
+						maps.put(map, new ArrayList<>());
+					}
+					maps.get(map).add(col);
+				}
+	
+				if (!maps.containsKey("ec") && maps.containsKey("es")) {
+					maps.put("ec", maps.get("es"));
+				}
+				
+				sql = new StringBuilder();
+				sql.append("CREATE VIEW ").append(repoId).append(" AS \r\n")
+					.append("SELECT eid");
+				for (Entry<String, List<String>> mapEnt : maps.entrySet()) {
+					String map = mapEnt.getKey();
+					List<String> cols = mapEnt.getValue();
+					sql.append(", \r\n");
+					if (cols.size() > 1) {
+						sql.append("CONCAT(").append(String.join(",'|',", cols)).append(")");
+					} else {
+						sql.append(cols.get(0));
+					}
+					sql.append(" AS ").append(map);
+				}
+				sql.append(" FROM ").append(config.getDatasetId()); 
+				if (imConfig.getHeaderRowIdx() > -1) {
+					sql.append(" WHERE eid > ").append(imConfig.getHeaderRowIdx() + 1);
+				}
+				try (PreparedStatement st = conn.prepareStatement(sql.toString())) {
+					st.execute();
+				}
+				
+				Dataset repo = new Dataset();
+				repo.setId(repoId);
+				repo.setParentId(config.getDatasetId());
+				repo.setName(imConfig.getName());
+				sql = new StringBuilder();
+				sql.append("COMMENT ON VIEW ").append(repoId).append(" IS '")
+					.append(SerializationUtil.encode(repo)).append("'");
+				try (PreparedStatement st = conn.prepareStatement(sql.toString())) {
+					st.execute();
+				}
+			}
+			
+//			
+//			CREATE VIEW ips_dataset_1589206445917_repo1 AS 
+//			 SELECT 
+//				c0 AS ci,
+//			   c6 AS ea,
+//			   c12 AS eo,
+//			   c12 AS er,
+//			   c2 AS es,
+//			   c2 AS ec, *
+//			   FROM ips_dataset_1589206445917
+//			;
+//			COMMENT ON VIEW ips_dataset_1589206445917_repo1 IS '{"name":"BPT2018 Repo","parentId":"ips_dataset_1589206445917"}';
+//
+//			
+			/*
 			// Build tables
 			StringBuilder mapsettingstable = new StringBuilder();
 			mapsettingstable.append("DROP TABLE IF EXISTS ")
@@ -52,8 +154,8 @@ public class MappingService extends AnIpsService<MappingConfiguration, MappingRe
 				}
 				st.executeBatch();
 			}
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
+			*/
+		} catch (Exception e) {
 			LoggerUtil.logError(e);
 		}
 		return result;
