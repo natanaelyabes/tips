@@ -43,35 +43,6 @@ public class IsmDiscoveryService extends AnIpsAsyncService<IsmDiscoveryConfigura
 		context.updateProgress(25, "Discovering DF matrix.");
 		Map<String, Map<String, Long>> dfMatrix = new LinkedHashMap<>();
 		Map<String, Map<String, Double>> dpMatrix = new LinkedHashMap<>();
-		
-		
-		Map<String, String> mappings = new LinkedHashMap<>();
-		try (Connection conn = context.getDataSource().getConnection();) {
-			StringBuilder mappingsettings = new StringBuilder();
-			mappingsettings.append("SELECT technical_names, mappings FROM ").append(config.getDatasetId()).append("_mappings;");
-			try (PreparedStatement st = conn.prepareStatement(mappingsettings.toString());) {
-				try (ResultSet rs = st.executeQuery();) {
-					while (rs.next()) {
-						mappings.put(rs.getString(1), rs.getString(2));
-					}
-				}
-			}
-		} catch (SQLException e) {
-			LoggerUtil.logError(e);
-		}
-		
-		String caseid_col = mappings.entrySet().stream()
-				.filter(set -> set.getValue().equals("case_id"))
-				.map(set -> set.getKey()).collect(Collectors.toList()).get(0);
-		String evact_col = mappings.entrySet().stream()
-				.filter(set -> set.getValue().equals("concept:name"))
-				.map(set -> set.getKey()).collect(Collectors.toList()).get(0);
-		String tsmp_col = mappings.entrySet().stream()
-				.filter(set -> set.getValue().equals("time:timestamp"))
-				.map(set -> set.getKey()).collect(Collectors.toList()).get(0);
-		config.setColCaseId(caseid_col);
-		config.setColEventActivity(evact_col);
-		config.setColEventTimestamp(tsmp_col);
 
 		calculateDfMatrix(context, dfMatrix, config.getDatasetId(), config.getColCaseId(), config.getColEventActivity(), config.getColEventTimestamp(), config.getSkipRows());
 		calculateDpMatrix(config, dpMatrix, dfMatrix);

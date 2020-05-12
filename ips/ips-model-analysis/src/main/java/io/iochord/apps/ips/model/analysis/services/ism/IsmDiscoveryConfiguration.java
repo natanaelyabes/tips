@@ -18,15 +18,15 @@ public class IsmDiscoveryConfiguration {
 
 	@Getter
 	@Setter
-	private String colCaseId = "c0";
+	private String colCaseId = "ci";
 
 	@Getter
 	@Setter
-	private String colEventActivity = "c1";
+	private String colEventActivity = "ea";
 
 	@Getter
 	@Setter
-	private String colEventTimestamp = "c2";
+	private String colEventTimestamp = "ec";
 
 	@Getter
 	@Setter

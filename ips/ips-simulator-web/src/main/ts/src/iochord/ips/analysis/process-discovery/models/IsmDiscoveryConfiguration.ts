@@ -24,7 +24,7 @@ export default class IsmDiscoveryConfiguration {
    * @type {string}
    * @memberof IsmDiscoveryConfiguration
    */
-  public colCaseId: string = 'c0';
+  public colCaseId: string = 'ci';
 
   /**
    * The column position for event activity.
@@ -32,7 +32,7 @@ export default class IsmDiscoveryConfiguration {
    * @type {string}
    * @memberof IsmDiscoveryConfiguration
    */
-  public colEventActivity: string = 'c1';
+  public colEventActivity: string = 'ea';
 
   /**
    * The column position for event timestamp.
@@ -40,13 +40,6 @@ export default class IsmDiscoveryConfiguration {
    * @type {string}
    * @memberof IsmDiscoveryConfiguration
    */
-  public colEventTimestamp: string = 'c2';
+  public colEventTimestamp: string = 'ec';
 
-  /**
-   * Number of rows being skipped.
-   *
-   * @type {number}
-   * @memberof IsmDiscoveryConfiguration
-   */
-  public skipRows: number = 1;
 }
