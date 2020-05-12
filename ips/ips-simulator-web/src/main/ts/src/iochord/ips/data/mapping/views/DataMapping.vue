@@ -102,7 +102,7 @@ export default class DataMapping extends ExplorerLayoutView {
   }
 
   public retreiveDataset(): void {
-    DataConnectionService.getInstance().getDataConnections((res: any) => {
+    DataConnectionService.getInstance().getFilteredDataConnections('dataset', (res: any) => {
       this.datasets = res.data;
     }, (tick: any) => {
       // this.datasets = tick;

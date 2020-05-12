@@ -10,6 +10,7 @@ import org.deckfour.xes.factory.XFactoryRegistry;
 import org.deckfour.xes.model.XLog;
 import org.springframework.http.HttpHeaders;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestPart;
@@ -53,12 +54,14 @@ public class DataConnectionController extends ADataController {
 	 * @param headers autowired http headers
 	 * @return service context
 	 */
-	@GetMapping(value = BASE_URI + "/connection/list")
-	public ServiceContext getDataConnectionsList(@RequestHeader HttpHeaders headers) {
+	@GetMapping(value = { BASE_URI + "/connection/list", BASE_URI + "/connection/list/{type}" })
+	public ServiceContext getDataConnectionsList(
+			@PathVariable(required = false) String type,
+			@RequestHeader HttpHeaders headers) {
 		ServiceContext context = getServiceContext();
 		Map<String, Dataset> datasets = null;
 		try {
-			datasets = new DatasetRepositoryService().run(context, "");
+			datasets = new DatasetRepositoryService().run(context, type);
 		} catch (Exception ex) {
 			LoggerUtil.logError(ex);
 		}

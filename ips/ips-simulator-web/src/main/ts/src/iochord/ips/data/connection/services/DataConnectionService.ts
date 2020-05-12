@@ -61,6 +61,10 @@ export default class DataConnectionService extends DataService {
     return this.webserviceGet(DataConnectionService.BASE_URI + '/connection/list', completeCallback, progressCallback);
   }
 
+  public getFilteredDataConnections(type: any, completeCallback: any, progressCallback: any) {
+    return this.webserviceGet(DataConnectionService.BASE_URI + '/connection/list/' + type, completeCallback, progressCallback);
+  }
+
   /**
    * Import CSV to the web service.
    *

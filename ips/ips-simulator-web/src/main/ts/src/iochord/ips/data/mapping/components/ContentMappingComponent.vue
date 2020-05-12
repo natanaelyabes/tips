@@ -29,11 +29,20 @@
               <th v-for="(k, v) of mapping.mapSettings" :key="k + v">
                 <select v-model="mapping.mapSettings[v]" class="ui fluid search dropdown">
                   <option value="" disabled>Select Mapping</option>
+                  <option value="ci">Case ID</option>
+                  <option value="ea">Activity</option>
+                  <option value="et">Lifecycle</option>
+                  <option value="eo">Originator</option>
+                  <option value="er">Resource</option>
+                  <option value="es">Start Time</option>
+                  <option value="ec">Complete Time</option>
+                  <!--
                   <option value="case_id">case_id</option>
                   <option value="concept:name">concept:name</option>
                   <option value="time:timestamp">time:timestamp</option>
                   <option value="lifecycle:transition">lifecycle:transition</option>
                   <option value="org:resource">org:resource</option>
+                  -->
                 </select>
               </th>
             </tr>
