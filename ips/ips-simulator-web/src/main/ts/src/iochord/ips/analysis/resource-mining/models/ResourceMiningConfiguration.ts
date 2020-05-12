@@ -64,7 +64,8 @@ export default class ResourceMiningConfiguration {
    * @type {string}
    * @memberof ResourceMiningConfiguration
    */
-  public colCaseId: string = 'c0';
+  public colCaseId: string = 'ci';
+  // 'c0';
 
   /**
    * The column position for event activity.
@@ -73,7 +74,8 @@ export default class ResourceMiningConfiguration {
    * @memberof ResourceMiningConfiguration
    */
   // public colEventActivity: string = 'c1';
-  public colEventActivity: string = 'c6';
+  public colEventActivity: string = 'ea';
+  // 'c6'
   // public colEventActivity: string = 'c1';
 
   /**
@@ -83,7 +85,9 @@ export default class ResourceMiningConfiguration {
    * @memberof ResourceMiningConfiguration
    */
   // public colEventResource: string = 'c2';
-  public colEventResource: string = 'c12';
+  public colEventResource: string = 'eo';
+  // 'c12'
+  // eo originator (human) er resource
   // public colEventResource: string = 'c2';
 
   /**
@@ -93,7 +97,8 @@ export default class ResourceMiningConfiguration {
    * @memberof ResourceMiningConfiguration
    */
   // public colEventTimestampStart: string = 'c6';
-  public colEventTimestampStart: string = 'c2';
+  public colEventTimestampStart: string = 'es';
+  // 'c2';
   // public colEventTimestampStart: string = 'c3';
 
   /**
@@ -103,7 +108,8 @@ export default class ResourceMiningConfiguration {
    * @memberof ResourceMiningConfiguration
    */
   // public colEventTimestampEnd: string = 'c7';
-  public colEventTimestampEnd: string = 'c2';
+  public colEventTimestampEnd: string = 'ec';
+  // 'c2';
   // public colEventTimestampEnd: string = 'c4';
 
   /**
