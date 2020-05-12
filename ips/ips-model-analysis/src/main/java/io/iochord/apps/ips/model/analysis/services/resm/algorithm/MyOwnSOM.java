@@ -13,6 +13,7 @@ import io.iochord.apps.ips.model.analysis.services.resm.model.UnitDist;
 public class MyOwnSOM {
 	
 	double[][] matrix;
+	Map<Integer,double[]> coord;
 	double[][] weights;
 	double[] threshold;
 	Integer[] initArr;
@@ -39,8 +40,17 @@ public class MyOwnSOM {
 	}
 	
 	public void init() {
+		coord = new HashMap<Integer,double[]>();
 		int numbAttr = matrix[0].length; // number of attributes or column length
 		int numbNode = xD*yD; // number of neuron as nodes (not input vector)
+		for(int p=0; p<xD; p++) {
+			for(int q=0; q<yD; q++) {
+				double[] c_c = new double[2];
+				c_c[0] = p;
+				c_c[1] = q;
+				coord.put(p, c_c);
+			}
+		}
 		weights = new double[numbNode][numbAttr];
 		threshold = new double[numbAttr];
 		
@@ -49,9 +59,9 @@ public class MyOwnSOM {
 		Arrays.setAll(initArr, i -> i + 1);
 		
 		List<Integer> pickOrder = Arrays.asList(initArr);
-		Collections.shuffle(pickOrder);
+		Collections.shuffle(pickOrder, new Random(98L));
 		
-		Random r = new Random();
+		Random r = new Random(100L);
 		for (int u=0; u<weights.length; u++)
 		    for(int d=0; d<weights[0].length; d++)
 		    	weights[u][d] = u < matrix.length ? matrix[pickOrder.get(u)-1][d] : r.nextInt(10);
@@ -66,7 +76,7 @@ public class MyOwnSOM {
 		for(int i=1; i<=numIter; i++) {
 			curIter = i;
 			List<Integer> pickOrder = Arrays.asList(initArr);
-			Collections.shuffle(pickOrder);
+			Collections.shuffle(pickOrder, new Random(99L));
 			
 			//System.out.println("Iter "+i);
 			for(int row : pickOrder) {
@@ -85,7 +95,7 @@ public class MyOwnSOM {
 				
 				double[] bmu = weights[bmuIndex];
 				for (int nodeNumb=0; nodeNumb<weights.length; nodeNumb++) {
-					weights[nodeNumb] = newWeight(weights[nodeNumb], bmu, dataInRow);
+					weights[nodeNumb] = newWeight(weights[nodeNumb], bmu, dataInRow, coord.get(nodeNumb), coord.get(bmuIndex));
 				}
 				//System.out.println(row-1+" : "+Arrays.toString(dataInRow)+" - Node"+bmuIndex+" : "+Arrays.toString(bmu));
 			}
@@ -101,7 +111,7 @@ public class MyOwnSOM {
 	}
 	
 	public double timeConst() {
-		return numIter/Math.log(initRad());
+		return numIter;///Math.log(initRad());
 	}
 	
 	public double neighbourhoodRad() {
@@ -142,15 +152,22 @@ public class MyOwnSOM {
 		return Math.sqrt(sumSquare);
 	}
 	
-	public double topologicalNeighbourhood(double[] bmu, double[] nb) {
-		return Math.exp(-Math.pow(euclidDistance(bmu, nb),2)/(2*Math.pow(neighbourhoodRad(), 2)));
+	public double topologicalNeighbourhood(double[] co_bmu, double[] co_nb) {
+		return Math.exp(-Math.pow(euclidDistance(co_bmu, co_nb),2)/(2*Math.pow(neighbourhoodRad(), 2)));
 	}
 	
-	public double[] newWeight(double[] old, double[] bmu, double[] inpVec) {
+	/*
+	 public double topologicalNeighbourhood(double[] bmu, double[] nb) {
+	 
+		return Math.exp(-Math.pow(euclidDistance(bmu, nb),2)/(2*Math.pow(neighbourhoodRad(), 2)));
+	}
+	*/
+	
+	public double[] newWeight(double[] old, double[] bmu, double[] inpVec, double[] c_old, double[] c_bmu) {
 		int arLength = old.length;
 		double[] newWeight = new double[arLength];
 		for(int i=0; i<arLength; i++) {
-			newWeight[i] = old[i] + learningRate()*topologicalNeighbourhood(bmu, old)*(arUd[i] == UnitDist.NonTime ? minDist(inpVec[i], old[i]) : timeDelta(inpVec[i], old[i], threshold[i]));
+			newWeight[i] = old[i] + learningRate()*topologicalNeighbourhood(c_bmu, c_old)*(arUd[i] == UnitDist.NonTime ? minDist(inpVec[i], old[i]) : timeDelta(inpVec[i], old[i], threshold[i]));
 			if(arUd[i] == UnitDist.Time && (newWeight[i] >= threshold[i] || newWeight[i] < 0)) {
 				if(newWeight[i] < 0)
 					newWeight[i] = threshold[i] + newWeight[i];

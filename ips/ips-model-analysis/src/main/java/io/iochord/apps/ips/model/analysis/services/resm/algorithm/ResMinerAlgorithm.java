@@ -6,7 +6,6 @@ import java.sql.ResultSet;
 import java.text.SimpleDateFormat;
 import java.time.Duration;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -59,6 +58,9 @@ public abstract class ResMinerAlgorithm {
 		UnitDist[] arUd = new UnitDist[config.getPropTimeAnalysis().length];
 		boolean arUdNotSet = true;
 		
+		double maxDur = 0, minDur = Double.MAX_VALUE;
+		int idxnontime = -1;
+		
 		int i = 0;
 		try {
 			for(Entry<ResourceToShiftNumb,List<EventWorkInfo>> es : me.entrySet())
@@ -94,9 +96,21 @@ public abstract class ResMinerAlgorithm {
 				int idx = 0;
 				
 				for(String prop : config.getPropTimeAnalysis()) {
-					if(arUdNotSet)
-						arUd[idx] = prop.equals("ss") || prop.equals("es") ? UnitDist.Time : UnitDist.NonTime;
-					features[idx++] = prop.equals("ss") ? ds.getHours() : (prop.equals("es") ? de.getHours() : mintotal/60d);
+					if(arUdNotSet) {
+						if(prop.equals("ss") || prop.equals("es"))
+							arUd[idx] = UnitDist.Time;
+						else {
+							arUd[idx] = UnitDist.NonTime;
+							idxnontime = idx;
+						}
+					}
+					double durInHour = mintotal/60d;
+					features[idx++] = prop.equals("ss") ? ds.getHours() : (prop.equals("es") ? de.getHours() : durInHour);
+					
+					if(durInHour > maxDur)
+						maxDur = durInHour;
+					if(durInHour < minDur)
+						minDur = durInHour;
 				}
 				arUdNotSet = false;
 				
@@ -110,7 +124,6 @@ public abstract class ResMinerAlgorithm {
 			System.exit(0);
 		}
 		
-		
 		//int numb = (int) Math.ceil(Math.sqrt(5*Math.sqrt(datas.length)));
 		//MyOwnSOM cluster = new MyOwnSOM(datas, numb, numb, 500, 0.5, TimeUnit.Hour, arUd);
         
@@ -118,6 +131,14 @@ public abstract class ResMinerAlgorithm {
 		//We can let k is growing always and decide which one is the best one but it may cause time computation very long (depend on number of data and number of attribute as well)
 		//Right now we limit k to 5
 		//Based on the experiment, for this problem automatic K-Means clustering perform better than SOM
+		
+		if(idxnontime != -1)
+		for(int cc=0; cc<datas.length; cc++) {
+			double[] feature = datas[cc];
+			feature[idxnontime] = 12*(feature[idxnontime] - minDur)/(maxDur - minDur);
+			datas[cc] = feature;
+		}
+		
 		System.out.println("Just in");
 		MyKMeans cluster = new MyKMeans(datas, TimeUnit.Hour, arUd, 500);
 		int k = 1;
@@ -221,7 +242,7 @@ public abstract class ResMinerAlgorithm {
 					work.setGapmin(gapmin);
 					work.setGapdt(gapdt);
 					
-					if(rsn == null || gapdt == null || Integer.parseInt(gapdt.split(":")[0]) > 8)
+					if(rsn == null || gapdt == null || Integer.parseInt(gapdt.split(":")[0]) >= 8)
 					{
 						int newShiftNumb = maporishiftnumb.getOrDefault(resource, 0) + 1;
 						rsn = new ResourceToShiftNumb(resource, newShiftNumb);

@@ -60,7 +60,7 @@ public class MyKMeans {
 		initArr = new Integer[matrix.length];
 		Arrays.setAll(initArr, i -> i + 1);
 		
-		Random r = new Random();
+		Random r = new Random(100L);
 		for (int u=0; u<clusters.length; u++)
 		    for(int d=0; d<clusters[0].length; d++)
 		    	clusters[u][d] = u < matrix.length ? matrix[initArr[u]-1][d] : r.nextInt(10);
@@ -82,7 +82,7 @@ public class MyKMeans {
 		while(!isStop) {
 			mapDataToCluster.clear();
 			List<Integer> pickOrder = Arrays.asList(initArr);
-			Collections.shuffle(pickOrder);
+			Collections.shuffle(pickOrder, new Random(99L));
 			
 			for(int row : pickOrder) {
 				double[] dataInRow = matrix[row-1];
