@@ -15,13 +15,13 @@ warnings.filterwarnings("ignore")
 
 import ips_py.ips.analysis.distfit.DataLoader as DL
 import ips_py.ips.analysis.distfit.FitDistribution as FD
-#import Module.Progress as Progress
 
 
 # Configuration Class
 class DistributionFittingConfig(object):
     datasetId = None
     repositoryId = None
+   
 
     # Decoding from JSON Object
     def fromJson(self, json):
