@@ -31,12 +31,14 @@ class Run(APIView):
         # Reading Config from Web Request
         config = MissingImputationConfig()
         config.fromJson(json.loads(request.body.decode('utf-8')))
+        result = self.missingImputation(config)
+        return Response(result.toJson())
+
+    def missingImputation(self, config):
+        # REAL ALGORITHM HERE
 
         # Write Result as Object
         result = MissingImputationModel()
         result.config = config
-
-        # REAL ALGORITHM HERE
         result.data = 'EXAMPLE RESULT'
-
-        return Response(result.toJson())
+        return result
