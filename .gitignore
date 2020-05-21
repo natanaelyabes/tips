@@ -72,3 +72,4 @@ yarn-error.log*
 /chdsr/chdsr-simulator-web/src/main/ts/dist
 /.metadata
 .scannerwork
+__pycache__
