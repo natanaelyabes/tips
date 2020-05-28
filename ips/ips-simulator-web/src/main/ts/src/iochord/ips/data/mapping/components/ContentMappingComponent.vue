@@ -154,9 +154,11 @@ export default class ContentMappingComponent extends SemanticComponent {
   }
 
   public save(): void {
+    const self = this;
     if (this.datasetId) {
       MappingService.getInstance().postMappingSettings(this.datasetId, JSON.stringify(this.mapping.toJson()), (res: any) => {
         console.log(res);
+        self.$router.push('/iochord/ips/analytics/process/discovery');
       }, (tick: any) => {
         console.log(tick);
       });
