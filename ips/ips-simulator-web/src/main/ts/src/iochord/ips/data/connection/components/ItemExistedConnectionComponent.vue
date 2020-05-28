@@ -26,7 +26,7 @@
           </div>
         </div>
         <div class="content">
-          <router-link tag="a" :to="'/iochord/ips/analytics/process/discovery/' + i">
+          <router-link tag="a" :to="'/iochord/ips/data/mapping/' + i">
             <h4 class="ui header">{{ds.name}}</h4> 
             <a class="ui label">({{i}})</a>
           </router-link>
