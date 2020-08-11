@@ -199,13 +199,21 @@ public class IsmDiscoveryService extends AnIpsAsyncService<IsmDiscoveryConfigura
 			for (String ea : snNodes.get(et)) {
 				if (et.equals("start")) {
 					if (inNode.containsKey(ea)) {
-						ConnectorImpl c = (ConnectorImpl) factory.addConnector(p, sn, inNode.get(ea));
-						c.toString();
+						NodeImpl a = (NodeImpl) inNode.get(ea);
+						ConnectorImpl c = (ConnectorImpl) factory.addConnector(p, sn, a);
+						c.setSourceIndex(sn.getOutputConnectors().size());
+						c.setTargetIndex(a.getInputConnectors().size());
+						a.getInputConnectors().add(c);
+						sn.getOutputConnectors().add(c);
 					}
 				} else {
 					if (outNode.containsKey(ea)) {
-						ConnectorImpl c = (ConnectorImpl) factory.addConnector(p, outNode.get(ea), tn);
-						c.toString();
+						NodeImpl a = (NodeImpl) outNode.get(ea);
+						ConnectorImpl c = (ConnectorImpl) factory.addConnector(p, a, tn);
+						c.setSourceIndex(a.getOutputConnectors().size());
+						c.setTargetIndex(tn.getInputConnectors().size());
+						a.getOutputConnectors().add(c);
+						tn.getInputConnectors().add(c);
 					}
 				}
 			}
@@ -218,11 +226,15 @@ public class IsmDiscoveryService extends AnIpsAsyncService<IsmDiscoveryConfigura
 			for (Entry<String, Double> tae : fae.getValue().entrySet()) {
 				String ta = tae.getKey();
 				if (nodes.containsKey(fa) && nodes.containsKey(ta)) {
-					Node on = outNode.get(fa);
-					Node in = inNode.get(ta);
+					NodeImpl on = (NodeImpl) outNode.get(fa);
+					NodeImpl in = (NodeImpl) inNode.get(ta);
 					long ff = dfMatrix.get(fa).get(ta);
 					double dp = dpMatrix.get(fa).get(ta);
 					ConnectorImpl c = (ConnectorImpl) factory.addConnector(p, on, in);
+					c.setSourceIndex(on.getOutputConnectors().size());
+					c.setTargetIndex(in.getInputConnectors().size());
+					on.getOutputConnectors().add(c);
+					in.getInputConnectors().add(c);
 					//c.setId("CONNECTOR" + ci++);
 					c.setLabel(String.valueOf(ff) + " (" + String.valueOf(dp) + ")");
 					if (on instanceof BranchImpl) {
