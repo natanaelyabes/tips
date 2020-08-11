@@ -17,6 +17,7 @@ import io.iochord.apps.ips.common.util.LoggerUtil;
 import io.iochord.apps.ips.core.services.AnIpsAsyncService;
 import io.iochord.apps.ips.core.services.ServiceContext;
 import io.iochord.apps.ips.model.ism.v1.IsmGraph;
+import io.iochord.apps.ips.model.ism.v1.Node;
 import io.iochord.apps.ips.model.ism.v1.IsmFactory;
 import io.iochord.apps.ips.model.ism.v1.Page;
 import io.iochord.apps.ips.model.ism.v1.impl.ConnectorImpl;
@@ -27,6 +28,8 @@ import io.iochord.apps.ips.model.ism.v1.nodes.enums.BranchGate;
 import io.iochord.apps.ips.model.ism.v1.nodes.enums.BranchType;
 import io.iochord.apps.ips.model.ism.v1.nodes.impl.ActivityImpl;
 import io.iochord.apps.ips.model.ism.v1.nodes.impl.BranchImpl;
+import io.iochord.apps.ips.model.ism.v1.nodes.impl.StartImpl;
+import io.iochord.apps.ips.model.ism.v1.nodes.impl.StopImpl;
 
 /**
 *
@@ -43,17 +46,19 @@ public class IsmDiscoveryService extends AnIpsAsyncService<IsmDiscoveryConfigura
 		context.updateProgress(25, "Discovering DF matrix.");
 		Map<String, Map<String, Long>> dfMatrix = new LinkedHashMap<>();
 		Map<String, Map<String, Double>> dpMatrix = new LinkedHashMap<>();
+		Map<String, Set<String>> snNodes = new LinkedHashMap<>();
 
 		calculateDfMatrix(context, dfMatrix, config.getDatasetId(), config.getColCaseId(), config.getColEventActivity(), config.getColEventTimestamp(), config.getSkipRows());
 		calculateDpMatrix(config, dpMatrix, dfMatrix);
-		Map<String, Activity> nodes = new LinkedHashMap<>();
+		calculateSNNodes(context, snNodes, config.getDatasetId(), config.getColCaseId(), config.getColEventActivity(), config.getColEventTimestamp(), config.getSkipRows());
+		Map<String, Node> nodes = new LinkedHashMap<>();
 		for (Entry<String, Map<String, Long>> fae : dfMatrix.entrySet()) {
 			nodes.put(fae.getKey(), null);
 			for (String ta : fae.getValue().keySet()) {
 				nodes.put(ta, null);
 			}
 		}
-		return createGraph(context, factory, nodes, dfMatrix, dpMatrix);
+		return createGraph(context, factory, nodes, snNodes, dfMatrix, dpMatrix);
 	}
 	
 	private double calculateDpMatrix(IsmDiscoveryConfiguration config, Map<String, Map<String, Double>> dpMatrix, Map<String, Map<String, Long>> dfMatrix) {
@@ -90,74 +95,122 @@ public class IsmDiscoveryService extends AnIpsAsyncService<IsmDiscoveryConfigura
 		return fitness;
 	}
 
-	public IsmGraph createGraph(ServiceContext context, IsmFactory factory, Map<String, Activity> nodes, Map<String, Map<String, Long>> dfMatrix, Map<String, Map<String, Double>> dpMatrix) {
+	public IsmGraph createGraph(ServiceContext context, IsmFactory factory, Map<String, Node> nodes, Map<String, Set<String>> snNodes, Map<String, Map<String, Long>> dfMatrix, Map<String, Map<String, Double>> dpMatrix) {
 		IsmGraph result = factory.create();
 		Page p = result.getPages().values().iterator().next();
 		int ni = 0;
+		StartImpl sn = (StartImpl) factory.addStart(p);
+		StopImpl tn = (StopImpl) factory.addStop(p);
 		for (String ea : nodes.keySet()) {
 			ActivityImpl a = (ActivityImpl) factory.addActivity(p);
 			a.setLabel(ea);
 			//a.setId("ACTIVITY" + (ni++) + ea);
 			nodes.put(ea, a);
 		}
-		createConnector(context, factory, nodes, dfMatrix, dpMatrix, p, ni);
+		createConnector(context, factory, nodes, sn, tn, snNodes, dfMatrix, dpMatrix, p, ni);
 		return result;
 	}
 
-	private void createConnector(ServiceContext context, IsmFactory factory, Map<String, Activity> nodes, Map<String, Map<String, Long>> dfMatrix, Map<String, Map<String, Double>> dpMatrix, Page p, int ni) {
+	private void createConnector(ServiceContext context, IsmFactory factory, Map<String, Node> nodes, StartImpl sn, StopImpl tn, Map<String, Set<String>> snNodes, Map<String, Map<String, Long>> dfMatrix, Map<String, Map<String, Double>> dpMatrix, Page p, int ni) {
 		int ci = 0;
-		Map<String, Map<String, Long>> ins = new LinkedHashMap<>();
-		Map<String, Map<String, Long>> outs = new LinkedHashMap<>();
-		for (Entry<String, Map<String, Double>> afe : dpMatrix.entrySet()) {
-			String af = afe.getKey();
-			for (Entry<String, Double> ate : afe.getValue().entrySet()) {
-				String at = ate.getKey();
-				Long ff = dfMatrix.get(af).get(at);
-				if (!outs.containsKey(af)) {
-					outs.put(af, new LinkedHashMap<>());
+
+		Map<String, Set<Node>> inNodes = new LinkedHashMap<>();
+		Map<String, Set<Node>> outNodes = new LinkedHashMap<>();
+
+		for (String et : snNodes.keySet()) {
+			for (String ea : snNodes.get(et)) {
+				Node an = nodes.get(ea);
+				if (et.equals("start")) {
+					if (!inNodes.containsKey(ea)) {
+						inNodes.put(ea, new LinkedHashSet<>());
+					}
+					inNodes.get(ea).add(sn);
+				} else {
+					if (!outNodes.containsKey(ea)) {
+						outNodes.put(ea, new LinkedHashSet<>());
+					}
+					outNodes.get(ea).add(tn);
 				}
-				outs.get(af).put(at, ff);
-				if (!ins.containsKey(at)) {
-					ins.put(at, new LinkedHashMap<>());
-				}
-				ins.get(at).put(af, ff);
 			}
 		}
-		Map<String, NodeImpl> inNodes = new LinkedHashMap<>();
-		Map<String, NodeImpl> outNodes = new LinkedHashMap<>();
+		
+		for (Entry<String, Map<String, Double>> fae : dpMatrix.entrySet()) {
+			String fa = fae.getKey();
+			for (Entry<String, Double> tae : fae.getValue().entrySet()) {
+				String ta = tae.getKey();
+				if (nodes.containsKey(fa) && nodes.containsKey(ta)) {
+					if (!inNodes.containsKey(ta)) {
+						inNodes.put(ta, new LinkedHashSet<>());
+					}
+					inNodes.get(ta).add(nodes.get(fa));
+					if (!outNodes.containsKey(fa)) {
+						outNodes.put(fa, new LinkedHashSet<>());
+					}
+					outNodes.get(fa).add(nodes.get(ta));
+				}
+			}
+		}
+
+		Map<String, Node> inNode = new LinkedHashMap<>();
+		Map<String, Node> outNode = new LinkedHashMap<>();
 		Map<String, BranchImpl> bcs = new LinkedHashMap<>();
 		
+		for (Entry<String, Node> ea : nodes.entrySet()) {
+			inNode.put(ea.getKey(), ea.getValue());
+			outNode.put(ea.getKey(), ea.getValue());
+		}
+		
 		int i = 0;
-		for (Entry<String, Activity> eae : nodes.entrySet()) {
+		for (Entry<String, Set<Node>> eae : inNodes.entrySet()) {
 			String ea = eae.getKey();
-			ActivityImpl a = (ActivityImpl) eae.getValue();
-			inNodes.put(ea, a);
-			outNodes.put(ea, a);
-			//*/
-			if (ins.containsKey(ea) && ins.get(ea).size() > 1) {
+			Node a = nodes.get(ea);
+			Set<Node> rn = eae.getValue();
+			if (rn.size() > 1) {
 				BranchImpl ib = (BranchImpl) factory.addBranch(p);
 				ib.setType(BranchType.JOIN);
 				ib.setId("JOIN-BRANCH-" + a.getId() + ea);
-				ib.setLabel("jb" + i);
+				ib.setLabel("jb" + i++);
+				ib.setGate(BranchGate.XOR);
 				bcs.put(ib.getId(), ib);
-				ConnectorImpl c = (ConnectorImpl) factory.addConnector(p, ib, a);
-				//c.setId("CONNECTOR" + ni);
-				c.setLabel("");
-				inNodes.put(ea, ib);
+				//ConnectorImpl c = (ConnectorImpl)
+				factory.addConnector(p, ib, a);
+				inNode.put(ea, ib);
 			}
-			if (outs.containsKey(ea) && outs.get(ea).size() > 1) {
+		}
+		int j = 0;
+		for (Entry<String, Set<Node>> eae : outNodes.entrySet()) {
+			String ea = eae.getKey();
+			Node a = nodes.get(ea);
+			Set<Node> rn = eae.getValue();
+			if (rn.size() > 1) {
 				BranchImpl ob = (BranchImpl) factory.addBranch(p);
 				ob.setType(BranchType.SPLIT);
 				ob.setId("SPLIT-BRANCH-" + a.getId() + ea);
-				ob.setLabel("sb" + i);
+				ob.setLabel("sb" + j++);
+				ob.setGate(BranchGate.XOR);
 				bcs.put(ob.getId(), ob);
-				ConnectorImpl c = (ConnectorImpl) factory.addConnector(p, a, ob);
-				//c.setId("CONNECTOR" + ni);
-				c.setLabel("");
-				outNodes.put(ea, ob);
+				//ConnectorImpl c = (ConnectorImpl) 
+				factory.addConnector(p, a, ob);
+				outNode.put(ea, ob);
 			}
-			i++;
 		}
+		
+		for (String et : snNodes.keySet()) {
+			for (String ea : snNodes.get(et)) {
+				if (et.equals("start")) {
+					if (inNode.containsKey(ea)) {
+						ConnectorImpl c = (ConnectorImpl) factory.addConnector(p, sn, inNode.get(ea));
+						c.toString();
+					}
+				} else {
+					if (outNode.containsKey(ea)) {
+						ConnectorImpl c = (ConnectorImpl) factory.addConnector(p, outNode.get(ea), tn);
+						c.toString();
+					}
+				}
+			}
+		}
+
 		Map<String, Map<String, Long>> bcIf = new LinkedHashMap<>();
 		Map<String, Map<String, Long>> bcOf = new LinkedHashMap<>();
 		for (Entry<String, Map<String, Double>> fae : dpMatrix.entrySet()) {
@@ -165,8 +218,8 @@ public class IsmDiscoveryService extends AnIpsAsyncService<IsmDiscoveryConfigura
 			for (Entry<String, Double> tae : fae.getValue().entrySet()) {
 				String ta = tae.getKey();
 				if (nodes.containsKey(fa) && nodes.containsKey(ta)) {
-					NodeImpl on = outNodes.get(fa);
-					NodeImpl in = inNodes.get(ta);
+					Node on = outNode.get(fa);
+					Node in = inNode.get(ta);
 					long ff = dfMatrix.get(fa).get(ta);
 					double dp = dpMatrix.get(fa).get(ta);
 					ConnectorImpl c = (ConnectorImpl) factory.addConnector(p, on, in);
@@ -226,7 +279,7 @@ public class IsmDiscoveryService extends AnIpsAsyncService<IsmDiscoveryConfigura
 				.append("	CASE  ")
 				.append("		WHEN ce.c = ne.c ")
 				.append("			THEN ce.a  ")
-				.append("		ELSE 'start' ")
+				.append("		ELSE '--start--' ")
 				.append("	END AS af, ")
 				.append("	ne.a AS at, ")
 				.append("	count(*) AS f ")
@@ -250,6 +303,7 @@ public class IsmDiscoveryService extends AnIpsAsyncService<IsmDiscoveryConfigura
 				.append("	ORDER BY ").append(colCaseId).append(", ").append(colTs).append(" ")
 				.append(") AS ne ")
 				.append("ON ne.ri = ce.ri + 1 ")
+				.append("AND ne.c = ce.c ")
 				.append("GROUP BY af, at");
 			try (PreparedStatement st = conn.prepareStatement(sql.toString());
 				ResultSet rs = st.executeQuery();) {
@@ -267,5 +321,54 @@ public class IsmDiscoveryService extends AnIpsAsyncService<IsmDiscoveryConfigura
 			LoggerUtil.logError(ex);
 		}
 		return dfMatrix;
+	}
+	
+	public Map<String, Set<String>> calculateSNNodes(ServiceContext context, Map<String, Set<String>> snNodes, String tabName, String colCaseId, String colActivity, String colTs,  int skip) {
+		try (Connection conn = context.getDataSource().getConnection();) {
+			StringBuilder sql = new StringBuilder();
+			sql.append("SELECT 'start' AS t, ").append(colActivity).append(" ")
+				.append("FROM ( ")
+				.append("  SELECT row_number() over (ORDER BY ").append(colCaseId).append(", ").append(colTs).append(") AS ri, * ")
+				.append("  FROM ").append(tabName).append(" AS LI1 ")
+				.append("   WHERE eid > ").append(skip)
+				.append(") AS L1 ")
+				.append("WHERE L1.ri IN ( ")
+				.append("  SELECT MIN(ri) ")
+				.append("  FROM ( ")
+				.append("    SELECT row_number() over (ORDER BY ").append(colCaseId).append(", ").append(colTs).append(") AS ri, ci ")
+				.append("    FROM ").append(tabName).append(" AS LI2 ")
+				.append("  ) AS L2 ")
+				.append("  GROUP BY ci ")
+				.append(") ")
+				.append("UNION ")
+				.append("SELECT 'stop' AS t, ").append(colActivity).append(" ")
+				.append("FROM ( ")
+				.append("  SELECT row_number() over (ORDER BY ").append(colCaseId).append(", ").append(colTs).append(") AS ri, * ")
+				.append("  FROM ").append(tabName).append(" AS LI1 ")
+				.append("   WHERE eid > ").append(skip)
+				.append(") AS L1 ")
+				.append("WHERE L1.ri IN ( ")
+				.append("  SELECT MAX(ri) ")
+				.append("  FROM ( ")
+				.append("    SELECT row_number() over (ORDER BY ").append(colCaseId).append(", ").append(colTs).append(") AS ri, ci ")
+				.append("    FROM ").append(tabName).append(" AS LI2 ")
+				.append("  ) AS L2 ")
+				.append("  GROUP BY ci ")
+				.append(")");
+			try (PreparedStatement st = conn.prepareStatement(sql.toString());
+				ResultSet rs = st.executeQuery();) {
+				while (rs.next()) {
+					String actFrom = rs.getString(1);
+					String actTo = rs.getString(2);
+					if (!snNodes.containsKey(actFrom)) {
+						snNodes.put(actFrom, new LinkedHashSet<>());
+					}
+					snNodes.get(actFrom).add(actTo);
+				}
+			}
+		} catch (Exception ex) {
+			LoggerUtil.logError(ex);
+		}
+		return snNodes;
 	}
 }
