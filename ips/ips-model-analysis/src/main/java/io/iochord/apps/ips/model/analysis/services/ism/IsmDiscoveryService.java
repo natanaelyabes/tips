@@ -99,8 +99,26 @@ public class IsmDiscoveryService extends AnIpsAsyncService<IsmDiscoveryConfigura
 		IsmGraph result = factory.create();
 		Page p = result.getPages().values().iterator().next();
 		int ni = 0;
-		StartImpl sn = (StartImpl) factory.addStart(p);
-		StopImpl tn = (StopImpl) factory.addStop(p);
+		NodeImpl sn = (NodeImpl) factory.addStart(p);
+		NodeImpl tn = (NodeImpl) factory.addStop(p);
+		if (snNodes.containsKey("start") && snNodes.get("start").size() > 1) {
+			BranchImpl ob = (BranchImpl) factory.addBranch(p);
+			ob.setType(BranchType.SPLIT);
+			ob.setId("split-branch-start");
+			ob.setLabel("sb-start");
+			ob.setGate(BranchGate.XOR);
+			factory.addConnector(p, sn, ob);
+			sn = ob;
+		}
+		if (snNodes.containsKey("stop") && snNodes.get("stop").size() > 1) {
+			BranchImpl ib = (BranchImpl) factory.addBranch(p);
+			ib.setType(BranchType.JOIN);
+			ib.setId("join-branch-stop");
+			ib.setLabel("jb-stop");
+			ib.setGate(BranchGate.XOR);
+			factory.addConnector(p, ib, tn);
+			tn = ib;
+		}
 		for (String ea : nodes.keySet()) {
 			ActivityImpl a = (ActivityImpl) factory.addActivity(p);
 			a.setLabel(ea);
@@ -111,7 +129,7 @@ public class IsmDiscoveryService extends AnIpsAsyncService<IsmDiscoveryConfigura
 		return result;
 	}
 
-	private void createConnector(ServiceContext context, IsmFactory factory, Map<String, Node> nodes, StartImpl sn, StopImpl tn, Map<String, Set<String>> snNodes, Map<String, Map<String, Long>> dfMatrix, Map<String, Map<String, Double>> dpMatrix, Page p, int ni) {
+	private void createConnector(ServiceContext context, IsmFactory factory, Map<String, Node> nodes, NodeImpl sn, NodeImpl tn, Map<String, Set<String>> snNodes, Map<String, Map<String, Long>> dfMatrix, Map<String, Map<String, Double>> dpMatrix, Page p, int ni) {
 		int ci = 0;
 
 		Map<String, Set<Node>> inNodes = new LinkedHashMap<>();
@@ -242,14 +260,14 @@ public class IsmDiscoveryService extends AnIpsAsyncService<IsmDiscoveryConfigura
 							bcIf.put(on.getId(), new LinkedHashMap<>());
 						}
 						bcIf.get(on.getId()).put(c.getId(), ff);
-						System.out.println("IF " + on.getId() + " " + in.getId() + ": " + ff);
+//						System.out.println("IF " + on.getId() + " " + in.getId() + ": " + ff);
 					}
 					if (in instanceof BranchImpl) {
 						if (!bcOf.containsKey(in.getId())) {
 							bcOf.put(in.getId(), new LinkedHashMap<>());
 						}
 						bcOf.get(in.getId()).put(c.getId(), ff);
-						System.out.println("OF " + on.getId() + " " + in.getId() + ": " + ff);
+//						System.out.println("OF " + on.getId() + " " + in.getId() + ": " + ff);
 					}
 					if (++ci % 100 == 0) {
 						context.updateProgress(75, ci + " connector found.");
@@ -276,8 +294,8 @@ public class IsmDiscoveryService extends AnIpsAsyncService<IsmDiscoveryConfigura
 					occ++;
 				}
 			}
-			System.out.println(b.getId() + " " + ic + " " + icc + " - " + oc + " " + occ);
-			System.out.println((ic * occ == oc) + " " + (oc * icc == ic));
+//			System.out.println(b.getId() + " " + ic + " " + icc + " - " + oc + " " + occ);
+//			System.out.println((ic * occ == oc) + " " + (oc * icc == ic));
 			if (ic * occ == oc || oc * icc == ic) {
 				b.setGate(BranchGate.AND);
 			}
@@ -287,35 +305,31 @@ public class IsmDiscoveryService extends AnIpsAsyncService<IsmDiscoveryConfigura
 	public Map<String, Map<String, Long>> calculateDfMatrix(ServiceContext context, Map<String, Map<String, Long>> dfMatrix, String tabName, String colCaseId, String colActivity, String colTs,  int skip) {
 		try (Connection conn = context.getDataSource().getConnection();) {
 			StringBuilder sql = new StringBuilder();
-			sql.append("SELECT ")
-				.append("	CASE  ")
-				.append("		WHEN ce.c = ne.c ")
-				.append("			THEN ce.a  ")
-				.append("		ELSE '--start--' ")
-				.append("	END AS af, ")
-				.append("	ne.a AS at, ")
-				.append("	count(*) AS f ")
-				.append("FROM ( ")
-				.append("	SELECT  ")
-				.append("		row_number() over () AS ri,  ")
-				.append("		").append(colCaseId).append(" AS c,  ")
-				.append("		").append(colActivity).append(" AS a  ")
-				.append("	FROM ").append(tabName)
-				.append("   WHERE eid > ").append(skip)
-				.append("	ORDER BY ").append(colCaseId).append(", ").append(colTs).append(" ")
-				.append(") AS ce ")
-				.append("JOIN ")
-				.append("( ")
-				.append("	SELECT  ")
-				.append("		row_number() over () AS ri,  ")
-				.append("		").append(colCaseId).append(" AS c,  ")
-				.append("		").append(colActivity).append(" AS a  ")
-				.append("	FROM ").append(tabName)
-				.append("  WHERE eid > ").append(skip)
-				.append("	ORDER BY ").append(colCaseId).append(", ").append(colTs).append(" ")
-				.append(") AS ne ")
-				.append("ON ne.ri = ce.ri + 1 ")
-				.append("AND ne.c = ce.c ")
+			sql.append("SELECT ").append("\r\n")
+				.append("	ce.a AS af, ").append("\r\n")
+				.append("	ne.a AS at, ").append("\r\n")
+				.append("	count(*) AS f ").append("\r\n")
+				.append("FROM ( ").append("\r\n")
+				.append("	SELECT  ").append("\r\n")
+				.append("		row_number() over (ORDER BY ").append(colCaseId).append(", ").append(colTs).append(") AS ri,  ").append("\r\n")
+				.append("		").append(colCaseId).append(" AS c,  ").append("\r\n")
+				.append("		").append(colActivity).append(" AS a  ").append("\r\n")
+				.append("	FROM ").append(tabName).append("\r\n")
+				.append("   WHERE eid > ").append(skip).append("\r\n")
+				.append("	ORDER BY ").append(colCaseId).append(", ").append(colTs).append(" ").append("\r\n")
+				.append(") AS ce ").append("\r\n")
+				.append("JOIN ").append("\r\n")
+				.append("( ").append("\r\n")
+				.append("	SELECT  ").append("\r\n")
+				.append("		row_number() over (ORDER BY ").append(colCaseId).append(", ").append(colTs).append(") AS ri,  ").append("\r\n")
+				.append("		").append(colCaseId).append(" AS c,  ").append("\r\n")
+				.append("		").append(colActivity).append(" AS a  ").append("\r\n")
+				.append("	FROM ").append(tabName).append("\r\n")
+				.append("  WHERE eid > ").append(skip).append("\r\n")
+				.append("	ORDER BY ").append(colCaseId).append(", ").append(colTs).append(" ").append("\r\n")
+				.append(") AS ne ").append("\r\n")
+				.append("ON ne.ri = ce.ri + 1 ").append("\r\n")
+				.append("AND ne.c = ce.c ").append("\r\n")
 				.append("GROUP BY af, at");
 			try (PreparedStatement st = conn.prepareStatement(sql.toString());
 				ResultSet rs = st.executeQuery();) {
