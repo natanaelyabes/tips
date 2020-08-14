@@ -1,6 +1,6 @@
 <!--
   @package ts
-  @author R. A. Sutrisnowati <riska@iochord.com>
+  @author Riska Asriana Sutrisnowati <riska@iochord.com>
   @since 2019
 -->
 <template>
@@ -88,7 +88,7 @@ import ItemExistedConnectionComponent from '../components/ItemExistedConnectionC
  * @extends {ExplorerLayoutView}
  *
  * @package ts
- * @author R. A. Sutrisnowati <riska@iochord.com>
+ * @author Riska Asriana Sutrisnowati <riska@iochord.com>
  * @since 2019
  */
 export default class DataConnectionList extends ExplorerLayoutView {

@@ -1,6 +1,6 @@
 <!--
   @package ts
-  @author N. Y. Wirawan <ny4tips@gmail.com>
+  @author Natanael Yabes Wirawan <yabes.wirawan@pusan.ac.kr>
   @since 2019
 -->
 <template>
@@ -47,7 +47,7 @@ import IndexLayout from '@/iochord/ips/common/ui/layout/class/IndexLayout';
  * Index entry for IPS root view.
  *
  * @package ts
- * @author N. Y. Wirawan <ny4tips@gmail.com>
+ * @author Natanael Yabes Wirawan <yabes.wirawan@pusan.ac.kr>
  * @since 2019
  *
  */

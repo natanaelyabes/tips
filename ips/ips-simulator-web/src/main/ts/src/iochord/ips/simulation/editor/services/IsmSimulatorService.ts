@@ -11,7 +11,7 @@ import { GraphImpl } from '@/iochord/ips/common/graphs/ism/class/GraphImpl';
  * @extends {SimulatorService}
  *
  * @package ts
- * @author  I. R. Pulshashi <pulshashi@ideas.web.id>
+ * @author  Iq Reviessay Pulshashi <pulshashi@ideas.web.id>
  * @since   2019
  */
 export class IsmSimulatorService extends SimulatorService {
@@ -80,6 +80,9 @@ export class IsmSimulatorService extends SimulatorService {
    * @memberof IsmSimulatorService
    */
   public async postLoadNPlay(graph: Graph|GraphImpl): Promise<string> {
+
+    console.log(graph)
+
     const page = (graph as any).pages.get('0');
     (page as any).connectors = page.connectors;
     const response = await this.remotePost(IsmSimulatorService.BASE_URI + '/loadnplay', graph);

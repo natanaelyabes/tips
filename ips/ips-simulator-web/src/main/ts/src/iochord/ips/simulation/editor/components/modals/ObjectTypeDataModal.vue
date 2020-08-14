@@ -1,6 +1,6 @@
 <!--
   @package ts
-  @author N. Y. Wirawan <ny4tips@gmail.com>
+  @author Natanael Yabes Wirawan <yabes.wirawan@pusan.ac.kr>
   @since 2019
 -->
 <template>
@@ -66,7 +66,7 @@ const graphModule = getModule(GraphModule);
  * @implements {Modal<JointGraphPageImpl, GraphDataObjectTypeImpl>}
  *
  * @package ts
- * @author N. Y. Wirawan <ny4tips@gmail.com>
+ * @author Natanael Yabes Wirawan <yabes.wirawan@pusan.ac.kr>
  * @since 2019
  */
 export default class ObjectTypeDataModal extends SemanticComponent implements Modal<JointGraphPageImpl, GraphDataObjectTypeImpl> {

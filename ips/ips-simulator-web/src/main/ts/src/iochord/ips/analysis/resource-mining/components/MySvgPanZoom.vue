@@ -1,6 +1,6 @@
 <!--
   @package ips
-  @author N. I. Utama <ichsan83@gmail.com>
+  @author Nur Ichsan Utama <ichsan83@gmail.com>
   @since 2020
 -->
 <template>
@@ -95,7 +95,7 @@ import * as joint from 'jointjs';
  *
  * @extends BaseComponent
  * @package ips
- * @author N. I. Utama <ichsan83@gmail.com>
+ * @author Nur Ichsan Utama <ichsan83@gmail.com>
  * @since 2020
  *
  */
@@ -244,7 +244,7 @@ export default class MySvgPanZoom extends BaseComponent {
 
   public createCell(name: string, type: 'ACT' | 'GRP' | 'RES', wd: number, hg: number, x: number, y: number, graph: joint.dia.Graph): void {
     let cell: any;
-    let bgCol: string = '#f7d794';
+    let bgCol: string = '#85C1E9';
     let txCol: string = 'black';
     const id = type + '_' + name;
     const wraptext = joint.util.breakText(name, {
@@ -256,10 +256,10 @@ export default class MySvgPanZoom extends BaseComponent {
       cell = new joint.shapes.standard.Rectangle({ id });
     } else if (type === 'GRP') {
       cell = new joint.shapes.standard.Polyline({ id });
-      bgCol = '#2bcbba';
+      bgCol = '#CCE2FF';
     } else {
       cell = new joint.shapes.standard.Circle({ id });
-      bgCol = '#f8a5c2';
+      bgCol = '#ABB2B9';
       txCol = 'black';
     }
 

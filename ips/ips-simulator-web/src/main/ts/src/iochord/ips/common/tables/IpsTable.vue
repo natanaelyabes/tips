@@ -1,6 +1,6 @@
 <!--
   @package ts
-  @author  I. R. Pulshashi <pulshashi@ideas.web.id>
+  @author  Iq Reviessay Pulshashi <pulshashi@ideas.web.id>
   @since   2019
 -->
 <template>
@@ -34,7 +34,7 @@ import BaseComponent from '../ui/layout/class/BaseComponent';
  * @extends {BaseComponent}
  *
  * @package ts
- * @author  I. R. Pulshashi <pulshashi@ideas.web.id>
+ * @author  Iq Reviessay Pulshashi <pulshashi@ideas.web.id>
  * @since   2019
  */
 export default class IpsTable extends BaseComponent {

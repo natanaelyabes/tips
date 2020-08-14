@@ -4,7 +4,7 @@ import { RouteConfig } from 'vue-router';
  * Router registry for Resource Mining module.
  *
  * @package ips
- * @author N. I. Utama <ichsan83@gmail.com>
+ * @author Nur Ichsan Utama <ichsan83@gmail.com>
  * @since 2020
  *
  */

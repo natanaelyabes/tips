@@ -1,6 +1,6 @@
 <!--
   @package ts
-  @author R. A. Sutrisnowati <riska@iochord.com>
+  @author Riska Asriana Sutrisnowati <riska@iochord.com>
   @since 2019
 -->
 <template>
@@ -86,7 +86,7 @@ import ItemConnectionComponent from '../components/ItemConnectionComponent.vue';
  * @extends {ExplorerLayoutView}
  *
  * @package ts
- * @author R. A. Sutrisnowati <riska@iochord.com>
+ * @author Riska Asriana Sutrisnowati <riska@iochord.com>
  * @since 2019
  */
 export default class DataConnectionUpload extends ExplorerLayoutView {

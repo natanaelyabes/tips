@@ -1,6 +1,6 @@
 <!--
   @package ts
-  @author N. Y. Wirawan <ny4tips@gmail.com>
+  @author Natanael Yabes Wirawan <yabes.wirawan@pusan.ac.kr>
   @since 2019
 -->
 <template>
@@ -136,7 +136,7 @@
                   <td>Setup Time</td>
                   <td contenteditable>{{ ele.setupTime }}</td>
                   <td>Processing Time (처리 시간)</td>
-                  <td contenteditable>{{ ele.processingTime }}</td>
+                  <td contenteditable>{{ ele.processingTimeDistribution }}</td>
                   <td colspan="2">&nbsp;</td>
                 </tr>
               </template>
@@ -178,7 +178,7 @@ const graphModule = getModule(GraphModule);
  * The control palette component.
  *
  * @package ts
- * @author N. Y. Wirawan <ny4tips@gmail.com>
+ * @author Natanael Yabes Wirawan <yabes.wirawan@pusan.ac.kr>
  * @since 2019
  */
 export default class ControlPaletteComponent extends BaseComponent {

@@ -16,7 +16,7 @@ import { GraphNode } from '../GraphNode';
  * @extends {GraphNode}
  *
  * @package ts
- * @author N. Y. Wirawan <ny4tips@gmail.com>
+ * @author Natanael Yabes Wirawan <yabes.wirawan@pusan.ac.kr>
  * @since 2019
  *
  */
@@ -129,10 +129,10 @@ export interface GraphActivityNode extends GraphNode {
   /**
    * Assigns processing time of current activity node following to the specified distribution model.
    *
-   * @param {DISTRIBUTION_TYPE} processingTime
+   * @param {DISTRIBUTION_TYPE} processingTimeDistribution
    * @memberof GraphActivityNodeImpl
    */
-  setProcessingTime(processingTime: DISTRIBUTION_TYPE): void;
+  setProcessingTime(processingTimeDistribution: DISTRIBUTION_TYPE): void;
 
   /**
    * Returns the processing time parameter according to the selected distribution type.
@@ -145,10 +145,10 @@ export interface GraphActivityNode extends GraphNode {
   /**
    * Assigns the processing time parameter according to the selected distribution type.
    *
-   * @param {string} processingTimeParameter
+   * @param {string} processingTimeExpression
    * @memberof GraphActivityNodeImpl
    */
-  setProcessingTimeParameter(processingTimeParameter: string): void;
+  setProcessingTimeParameter(processingTimeExpression: string): void;
 
   /**
    * Returns the object type variable of current activity node.
@@ -265,7 +265,7 @@ export interface GraphActivityNode extends GraphNode {
   setUnit(unit: TIME_UNIT): void;
 
   /**
-   * Returns the cost as a capital associated to current activity node.
+   * Returns the cost associated to current activity node.
    *
    * @returns {(number | null)}
    * @memberof GraphActivityNodeImpl
@@ -273,7 +273,7 @@ export interface GraphActivityNode extends GraphNode {
   getCost(): number | null;
 
   /**
-   * Assigns a cost as a capital to current activity node.
+   * Assigns a cost to current activity node.
    *
    * @param {number} cost
    * @memberof GraphActivityNodeImpl

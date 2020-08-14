@@ -7,7 +7,7 @@ import { WebServiceStatus } from './WebServiceStatus';
  * @class WebServiceResponse
  *
  * @package ts
- * @author  I. R. Pulshashi <pulshashi@ideas.web.id>
+ * @author  Iq Reviessay Pulshashi <pulshashi@ideas.web.id>
  * @since   2019
  */
 export class WebServiceResponse {

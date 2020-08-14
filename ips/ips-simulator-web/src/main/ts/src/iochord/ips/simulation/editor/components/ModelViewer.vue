@@ -1,6 +1,6 @@
 <!--
   @package ts
-  @author N. Y. Wirawan <ny4tips@gmail.com>
+  @author Natanael Yabes Wirawan <yabes.wirawan@pusan.ac.kr>
   @since 2019
 -->
 <template>
@@ -167,7 +167,7 @@ declare const $: any;
  * @extends {AppLayoutView}
  *
  * @package ts
- * @author N. Y. Wirawan <ny4tips@gmail.com>
+ * @author Natanael Yabes Wirawan <yabes.wirawan@pusan.ac.kr>
  * @since 2019
  */
 export default class ModelViewer extends AppLayoutView {

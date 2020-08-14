@@ -18,5 +18,17 @@ public class DecisionMinerConfig {
 
 	@Getter
 	@Setter
+	private int pdPositiveObservationThreshold = 0;
+	
+	@Getter
+	@Setter
+	private float pdDependencyThreshold = 0.9f;
+	
+	@Getter
+	@Setter
 	private DecisionTreeStrategy strategy;
+	
+	@Getter
+	@Setter
+	private int skipRows = 1;
 }

@@ -1,6 +1,6 @@
 <!--
   @package ts
-  @author R. A. Sutrisnowati <riska@iochord.com>
+  @author Riska Asriana Sutrisnowati <riska@iochord.com>
   @since 2019
 -->
 <template>
@@ -72,7 +72,7 @@ const mappingModule = getModule(MappingModule);
  * @extends {BaseComponent}
  *
  * @package ts
- * @author R. A. Sutrisnowati <riska@iochord.com>
+ * @author Riska Asriana Sutrisnowati <riska@iochord.com>
  * @since 2019
  */
 export default class DataMapping extends ExplorerLayoutView {

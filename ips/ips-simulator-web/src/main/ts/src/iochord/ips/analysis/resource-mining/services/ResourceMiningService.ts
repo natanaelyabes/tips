@@ -10,7 +10,7 @@ export { ResourceMiningConfiguration };
  * @extends {AnalysisService}
  *
  * @package ips
- * @author N. I. Utama <ichsan83@gmail.com>
+ * @author Nur Ichsan Utama <ichsan83@gmail.com>
  * @since 2020
  */
 export default class ResourceMiningService extends AnalysisService {

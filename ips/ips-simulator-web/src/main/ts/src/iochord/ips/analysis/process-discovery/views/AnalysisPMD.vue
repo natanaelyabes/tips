@@ -1,6 +1,6 @@
 <!--
   @package ts
-  @author N. Y. Wirawan <ny4tips@gmail.com>
+  @author Natanael Yabes Wirawan <yabes.wirawan@pusan.ac.kr>
   @since 2019
 -->
 <template>
@@ -96,7 +96,7 @@ const graphModule = getModule(GraphModule);
  * @extends {VisualizerLayoutView}
  *
  * @package ts
- * @author I. R. Pulshashi <pulshashi@ideas.web.id>
+ * @author Iq Reviessay Pulshashi <pulshashi@ideas.web.id>
  * @since 2019
  *
  */

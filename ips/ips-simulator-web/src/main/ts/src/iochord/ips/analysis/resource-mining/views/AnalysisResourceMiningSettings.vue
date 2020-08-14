@@ -1,6 +1,6 @@
 <!--
   @package ips
-  @author N. I. Utama <ichsan83@gmail.com>
+  @author Nur Ichsan Utama <ichsan83@gmail.com>
   @since 2020
 -->
 <template>
@@ -72,7 +72,7 @@ declare const $: any;
  *
  * @extends DiffLayoutView
  * @package ips
- * @author N. I. Utama <ichsan83@gmail.com>
+ * @author Nur Ichsan Utama <ichsan83@gmail.com>
  * @since 2020
  *
  */

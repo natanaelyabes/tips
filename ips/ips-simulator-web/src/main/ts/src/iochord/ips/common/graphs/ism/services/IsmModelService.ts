@@ -12,7 +12,7 @@ import { Observable } from 'rxjs';
  * @extends {ModelService}
  *
  * @package ts
- * @author  I. R. Pulshashi <pulshashi@ideas.web.id>
+ * @author  Iq Reviessay Pulshashi <pulshashi@ideas.web.id>
  * @since   2019
  */
 export class IsmModelService extends ModelService {
@@ -110,8 +110,8 @@ export class IsmModelService extends ModelService {
             elementType: 'activity',
             id: '0-activity-1',
             label: 'Teller Service',
-            processingTime: 'CONSTANT',
-            processingTimeParameter: 'constant(5,35)',
+            processingTimeDistribution: 'CONSTANT',
+            processingTimeExpression: 'constant(5,35)',
             queueRef: '0-queue-2',
             reportScrap: false,
             reportStatistics: false,
@@ -136,8 +136,8 @@ export class IsmModelService extends ModelService {
               elementType: 'activity',
               id: nin,
               label: na,
-              processingTime: 'CONSTANT',
-              processingTimeParameter: 'constant(5,35)',
+              processingTimeDistribution: 'CONSTANT',
+              processingTimeExpression: 'constant(5,35)',
               queueRef: null,
               reportScrap: false,
               reportStatistics: false,
