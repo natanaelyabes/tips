@@ -26,7 +26,7 @@ public class IsmDiscoveryConfiguration {
 
 	@Getter
 	@Setter
-	private String colEventTimestamp = "ec";
+	private String colEventTimestamp = "es";
 
 	@Getter
 	@Setter
