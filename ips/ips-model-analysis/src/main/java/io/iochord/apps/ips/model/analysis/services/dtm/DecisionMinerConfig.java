@@ -30,5 +30,5 @@ public class DecisionMinerConfig {
 	
 	@Getter
 	@Setter
-	private int skipRows = 1;
+	private int skipRow = 1;
 }

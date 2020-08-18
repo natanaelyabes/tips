@@ -32,6 +32,19 @@ public class DecisionMinerService extends AnIpsAsyncService<DecisionMinerConfig,
 	
 	@Override
 	public DecisionMinerResult run(ServiceContext context, DecisionMinerConfig config) {
+		IsmGraph ismGraph = discoverProcessModel(context, config);
+		
+		
+		
+		return null;
+	}
+
+	/**
+	 * @param context
+	 * @param config
+	 * @return 
+	 */
+	private IsmGraph discoverProcessModel(ServiceContext context, DecisionMinerConfig config) {
 		IsmDiscoveryConfiguration dConfig = new IsmDiscoveryConfiguration();
 		// This is example to get model from some dataset
 		// Parameter tuning should be set from UI
@@ -55,7 +68,8 @@ public class DecisionMinerService extends AnIpsAsyncService<DecisionMinerConfig,
 		dConfig.setPositiveObservationThreshold(config.getPdPositiveObservationThreshold());
 		// Discover process model from the given configuration.
 		IsmGraph ismGraph = getDiscoveryService().run(context, dConfig);
-		return null;
+		
+		return ismGraph;
 	}
 
 	private Map<String, String> getMappings(ServiceContext context, DecisionMinerConfig config) {

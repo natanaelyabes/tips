@@ -65,7 +65,6 @@ export default class ResourceMiningConfiguration {
    * @memberof ResourceMiningConfiguration
    */
   public colCaseId: string = 'ci';
-  // 'c0';
 
   /**
    * The column position for event activity.
@@ -73,10 +72,7 @@ export default class ResourceMiningConfiguration {
    * @type {string}
    * @memberof ResourceMiningConfiguration
    */
-  // public colEventActivity: string = 'c1';
   public colEventActivity: string = 'ea';
-  // 'c6'
-  // public colEventActivity: string = 'c1';
 
   /**
    * The column position for event resource.
@@ -84,11 +80,7 @@ export default class ResourceMiningConfiguration {
    * @type {string}
    * @memberof ResourceMiningConfiguration
    */
-  // public colEventResource: string = 'c2';
   public colEventResource: string = 'eo';
-  // 'c12'
-  // eo originator (human) er resource
-  // public colEventResource: string = 'c2';
 
   /**
    * The column position for event timestamp start.
@@ -96,10 +88,7 @@ export default class ResourceMiningConfiguration {
    * @type {string}
    * @memberof ResourceMiningConfiguration
    */
-  // public colEventTimestampStart: string = 'c6';
   public colEventTimestampStart: string = 'es';
-  // 'c2';
-  // public colEventTimestampStart: string = 'c3';
 
   /**
    * The column position for event timestamp end.
@@ -107,13 +96,10 @@ export default class ResourceMiningConfiguration {
    * @type {string}
    * @memberof ResourceMiningConfiguration
    */
-  // public colEventTimestampEnd: string = 'c7';
   public colEventTimestampEnd: string = 'ec';
-  // 'c2';
-  // public colEventTimestampEnd: string = 'c4';
 
   /**
-   * Number of rows being skipped.
+   * Number of rows to be skipped.
    *
    * @type {number}
    * @memberof IsmDiscoveryConfiguration
