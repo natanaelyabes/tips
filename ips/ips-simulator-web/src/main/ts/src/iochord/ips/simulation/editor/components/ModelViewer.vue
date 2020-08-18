@@ -1,6 +1,6 @@
 <!--
   @package ts
-  @author N. Y. Wirawan <ny4tips@gmail.com>
+  @author Natanael Yabes Wirawan <yabes.wirawan@pusan.ac.kr>
   @since 2019
 -->
 <template>
@@ -11,12 +11,10 @@
 
       <!-- Content -->
       <template slot="content">
-        <CanvasComponent :isProcessModel="true" :isDisabled="false" :key="reRenderKey" v-bind:response="graphData" style="min-height: 100%;" />
+        <CanvasComponent :isProcessModel="true" :isDisabled="false" :key="reRenderKey" 
+          v-bind:response="graphData" style="min-height: 100%;" />
       </template>
 
-      <!-- <template slot="right-sidebar-menu-item">
-        <MinimapComponent v-bind:response="graphData" />
-      </template> -->
     </WrapperComponent>
   </div>
 </template>
@@ -167,7 +165,7 @@ declare const $: any;
  * @extends {AppLayoutView}
  *
  * @package ts
- * @author N. Y. Wirawan <ny4tips@gmail.com>
+ * @author Natanael Yabes Wirawan <yabes.wirawan@pusan.ac.kr>
  * @since 2019
  */
 export default class ModelViewer extends AppLayoutView {
@@ -202,15 +200,11 @@ export default class ModelViewer extends AppLayoutView {
   public async mounted(): Promise<void> {
     try {
 
-      // TODO: Refractor to singleton pattern
-      if (graphModule.graph.getVersion === undefined) {
+      // Fetch graph to Vuex state
+      await graphModule.loadGraph();
 
-        // Fetch graph to Vuex state
-        await graphModule.loadGraph();
-
-        // Print to stdout
-        console.log(graphModule.graph);
-      }
+      // Print to stdout
+      console.log(graphModule.graph);
 
       // Update rxjs subject
       GraphSubject.update(graphModule.graph);
@@ -222,7 +216,7 @@ export default class ModelViewer extends AppLayoutView {
         graphModule.setGraph(graph);
 
         // Print to stdout
-//        console.log(JSON.stringify(graph));
+        // console.log(JSON.stringify(graph));
         console.log('Rendered graph: ', graph);
       });
     } catch (e) {

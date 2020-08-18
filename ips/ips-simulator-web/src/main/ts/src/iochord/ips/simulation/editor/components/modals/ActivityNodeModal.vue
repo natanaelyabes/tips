@@ -1,6 +1,6 @@
 <!--
   @package ts
-  @author N. Y. Wirawan <ny4tips@gmail.com>
+  @author Natanael Yabes Wirawan <yabes.wirawan@pusan.ac.kr>
   @since 2019
 -->
 <template>
@@ -141,7 +141,7 @@
                   <div class="row">
                     <div class="four wide column">Processing Time</div>
                     <div class="twelve wide column">
-                      <select id="act_txtprocessing" class="ui fluid search dropdown" v-model="processingTime">
+                      <select id="act_txtprocessing" class="ui fluid search dropdown" v-model="processingTimeDistribution">
                         <option value="RANDOM">Random</option>
                         <option value="CONSTANT">Constant</option>
                       </select>
@@ -150,7 +150,7 @@
                   <div class="row">
                     <div class="four wide column">Processing Time Parameter</div>
                     <div class="twelve wide column">
-                      <input type="text" v-model="processingTimeParameter">
+                      <input type="text" v-model="processingTimeExpression">
                     </div>
                   </div>
                 </div>
@@ -286,7 +286,7 @@ const graphModule = getModule(GraphModule);
  * @implements {Modal<JointGraphPageImpl, GraphActivityNodeImpl>}
  *
  * @package ts
- * @author N. Y. Wirawan <ny4tips@gmail.com>
+ * @author Natanael Yabes Wirawan <yabes.wirawan@pusan.ac.kr>
  * @since 2019
  */
 export default class ActivityNodeModal extends SemanticComponent implements Modal<JointGraphPageImpl, GraphActivityNodeImpl> {
@@ -361,7 +361,7 @@ export default class ActivityNodeModal extends SemanticComponent implements Moda
    * @type {DISTRIBUTION_TYPE}
    * @memberof ActivityNodeModal
    */
-  private processingTime: DISTRIBUTION_TYPE = DISTRIBUTION_TYPE.RANDOM;
+  private processingTimeDistribution: DISTRIBUTION_TYPE = DISTRIBUTION_TYPE.RANDOM;
 
   /**
    * The parameter setup for the specified distribution model of processing time.
@@ -370,7 +370,7 @@ export default class ActivityNodeModal extends SemanticComponent implements Moda
    * @type {string}
    * @memberof ActivityNodeModal
    */
-  private processingTimeParameter: string = '';
+  private processingTimeExpression: string = '';
 
   /**
    * The distribution model of setup time.
@@ -464,8 +464,8 @@ export default class ActivityNodeModal extends SemanticComponent implements Moda
     this.activityType = object.getActivityType() as ACTIVITY_TYPE;
     this.resource = object.getResourceRef() as string;
     this.report = object.isReportStatistics() as boolean;
-    this.processingTime = object.getProcessingTime() as DISTRIBUTION_TYPE;
-    this.processingTimeParameter = object.getProcessingTimeParameter() as string;
+    this.processingTimeDistribution = object.getProcessingTime() as DISTRIBUTION_TYPE;
+    this.processingTimeExpression = object.getProcessingTimeParameter() as string;
     this.setupTime = object.getSetupTime() as DISTRIBUTION_TYPE;
     this.setupTimeParameter = object.getSetupTimeParameter() as string;
     this.timeUnit = object.getUnit() as TIME_UNIT;
@@ -495,10 +495,10 @@ export default class ActivityNodeModal extends SemanticComponent implements Moda
     ;
 
     $('#act_txtprocessing')
-      .dropdown('set selected', this.processingTime)
+      .dropdown('set selected', this.processingTimeDistribution)
       .dropdown({
         onChange: (val: DISTRIBUTION_TYPE) => {
-          this.processingTime = val;
+          this.processingTimeDistribution = val;
         },
       })
     ;
@@ -561,8 +561,8 @@ export default class ActivityNodeModal extends SemanticComponent implements Moda
     node.setActivityType(this.activityType as ACTIVITY_TYPE);
     node.setResourceRef(this.resource);
     node.setReportStatistics(this.report);
-    node.setProcessingTime(this.processingTime);
-    node.setProcessingTimeParameter(this.processingTimeParameter);
+    node.setProcessingTime(this.processingTimeDistribution);
+    node.setProcessingTimeParameter(this.processingTimeExpression);
     node.setSetupTime(this.setupTime);
     node.setSetupTimeParameter(this.setupTimeParameter);
     node.setUnit(this.timeUnit);

@@ -5,7 +5,7 @@
  * @class WebServiceStatus
  *
  * @package ts
- * @author  I. R. Pulshashi <pulshashi@ideas.web.id>
+ * @author  Iq Reviessay Pulshashi <pulshashi@ideas.web.id>
  * @since   2019
  *
  */

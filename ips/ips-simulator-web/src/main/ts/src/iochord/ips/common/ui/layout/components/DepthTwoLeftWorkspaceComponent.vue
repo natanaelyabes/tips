@@ -1,6 +1,6 @@
 <!--
   @package ts
-  @author N. Y. Wirawan <ny4tips@gmail.com>
+  @author Natanael Yabes Wirawan <yabes.wirawan@pusan.ac.kr>
   @since 2019
 -->
 <template>
@@ -35,6 +35,7 @@
 
 #depth-one {
   white-space: nowrap;
+  min-width: 200px;
 }
 
 #depth-two {
@@ -72,7 +73,7 @@ import SidebarComponent from '@/iochord/ips/common/ui/layout/components/SidebarC
  * @extends {BaseComponent}
  *
  * @package ts
- * @author N. Y. Wirawan <ny4tips@gmail.com>
+ * @author Natanael Yabes Wirawan <yabes.wirawan@pusan.ac.kr>
  * @since 2019
  */
 export default class DepthTwoLeftWorkspaceComponent extends BaseComponent {

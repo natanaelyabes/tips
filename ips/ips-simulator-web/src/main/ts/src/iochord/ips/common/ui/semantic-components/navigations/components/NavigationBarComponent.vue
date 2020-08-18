@@ -1,6 +1,6 @@
 <!--
   @package ts
-  @author N. Y. Wirawan <ny4tips@gmail.com>
+  @author Natanael Yabes Wirawan <yabes.wirawan@pusan.ac.kr>
   @since 2019
 -->
 <template>
@@ -17,6 +17,7 @@
 }
 .ui.menu {
   width: 100%;
+  overflow-y: auto;
 }
 </style>
 
@@ -34,7 +35,7 @@ import SemanticComponent from '@/iochord/ips/common/ui/semantic-components/Seman
  * @extends {SemanticComponent}
  *
  * @package ts
- * @author N. Y. Wirawan <ny4tips@gmail.com>
+ * @author Natanael Yabes Wirawan <yabes.wirawan@pusan.ac.kr>
  * @since 2019
  */
 export default class NavigationBarComponent extends SemanticComponent {

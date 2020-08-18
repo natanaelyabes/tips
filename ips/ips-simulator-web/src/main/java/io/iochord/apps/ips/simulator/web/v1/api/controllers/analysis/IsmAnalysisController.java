@@ -58,14 +58,31 @@ public class IsmAnalysisController extends AnAnalysisController {
 		return context;
 	}
 
-//	@PostMapping(value = { BASE_URI + "/dtm", BASE_URI + "/dtm/{datasetId}" })
-//	public ServiceContext getPostDecisionMiner(@PathVariable Optional<String> datasetId,
-//			@RequestBody(required = false) DecisionMinerConfig config, @RequestHeader HttpHeaders headers) {
-//		if (config == null && datasetId.isPresent()) {
-//			config = new DecisionMinerConfig();
-//			config.setDatasetId(datasetId.get());
-//		}
-//		return run(new DecisionMinerService(), config, DecisionMinerResult.class, headers);
-//	}
-
+	/**
+	 * Decision Point Analysis
+	 * 
+	 * @author Natanael Yabes Wirawan <yabes.wirawan@pusan.ac.kr>
+	 * @param datasetId dataset identifier
+	 * @param config decision point analysis configuration
+	 * @param headers autowired http headers
+	 * @return service context instance
+	 * @throws Exception exception
+	 */
+	@PostMapping(value = { BASE_URI + "/dtm", BASE_URI + "/dtm/{datasetId}" })
+	public ServiceContext getPostDecisionMiner(@PathVariable Optional<String> datasetId,
+			@RequestBody(required = false) DecisionMinerConfig config, @RequestHeader HttpHeaders headers) {
+		if (config == null && datasetId.isPresent()) {
+			config = new DecisionMinerConfig();
+			config.setDatasetId(datasetId.get());
+		}
+		ServiceContext context = getServiceContext();
+		DecisionMinerResult dmr = null;
+		try {
+			 dmr = new DecisionMinerService().run(context, config);
+		} catch (Exception ex) {
+			LoggerUtil.logError(ex);
+		}
+		context.completeAndDestroy(dmr);		
+		return context;
+	}
 }

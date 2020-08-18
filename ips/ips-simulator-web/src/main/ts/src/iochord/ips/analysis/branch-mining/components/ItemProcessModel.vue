@@ -1,9 +1,6 @@
 <template>
   <div class="item process model component">
-    <div class="ui basic segment">
-      <h4 class="ui dividing header">Process model</h4>
-      process model canvas
-    </div>
+    <ModelViewer ref="viewer"></ModelViewer>
   </div>
 </template>
 
@@ -14,8 +11,18 @@
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
 import SemanticComponent from '@/iochord/ips/common/ui/semantic-components/SemanticComponent';
+import ModelViewer from '@/iochord/ips/simulation/editor/components/ModelViewer.vue';
+import GraphModule from '@/iochord/ips/common/graphs/ism/stores/GraphModule';
+import { getModule } from 'vuex-module-decorators';
 
-@Component
+// Vuex module
+const graphModule = getModule(GraphModule);
+
+@Component({
+  components: {
+    ModelViewer,
+  },
+})
 export default class ItemProcessModel extends SemanticComponent {
   //
 }

@@ -11,7 +11,7 @@ import { GraphImpl } from '@/iochord/ips/common/graphs/ism/class/GraphImpl';
  * @extends {SimulatorService}
  *
  * @package ts
- * @author  I. R. Pulshashi <pulshashi@ideas.web.id>
+ * @author  Iq Reviessay Pulshashi <pulshashi@ideas.web.id>
  * @since   2019
  */
 export class IsmSimulatorService extends SimulatorService {
@@ -64,7 +64,6 @@ export class IsmSimulatorService extends SimulatorService {
         method: wsUri,
         params: JSON.stringify(graph),
       };
-      console.log(JSON.stringify(graph));
       wsc.subscribe('/response/simulation/step', (tick: any) => {
         callback(tick);
       });

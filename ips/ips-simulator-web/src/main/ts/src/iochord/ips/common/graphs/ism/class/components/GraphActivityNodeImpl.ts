@@ -21,7 +21,7 @@ import { GraphConnector } from '../../interfaces/GraphConnector';
  * @implements {GraphActivityNode}
  *
  * @package ts
- * @author N. Y. Wirawan <ny4tips@gmail.com>
+ * @author Natanael Yabes Wirawan <yabes.wirawan@pusan.ac.kr>
  * @since 2019
  *
  */
@@ -55,8 +55,8 @@ export class GraphActivityNodeImpl extends GraphNodeImpl implements GraphActivit
     graphActivityNode.setReportStatistics(object.reportStatistics);
     graphActivityNode.setActivityType(object.type);
     graphActivityNode.setResourceSelectionMethod(object.resourceSelectionMethod);
-    graphActivityNode.setProcessingTime(object.processingTime);
-    graphActivityNode.setProcessingTimeParameter(object.processingTimeParameter);
+    graphActivityNode.setProcessingTime(object.processingTimeDistribution);
+    graphActivityNode.setProcessingTimeParameter(object.processingTimeExpression);
     graphActivityNode.setSetupTime(object.setupTime);
     graphActivityNode.setSetupTimeParameter(object.setupTimeParameter);
     graphActivityNode.setUnit(object.unit);
@@ -113,7 +113,7 @@ export class GraphActivityNodeImpl extends GraphNodeImpl implements GraphActivit
    * @type {(DISTRIBUTION_TYPE | null)}
    * @memberof GraphActivityNodeImpl
    */
-  private processingTime?: DISTRIBUTION_TYPE | null = DISTRIBUTION_TYPE.CONSTANT;
+  private processingTimeDistribution?: DISTRIBUTION_TYPE | null = DISTRIBUTION_TYPE.CONSTANT;
 
   /**
    * The parameter settings for activity processing time according to the selected distribution type.
@@ -122,7 +122,7 @@ export class GraphActivityNodeImpl extends GraphNodeImpl implements GraphActivit
    * @type {(string | null)}
    * @memberof GraphActivityNodeImpl
    */
-  private processingTimeParameter?: string | null = '0';
+  private processingTimeExpression?: string | null = '0';
 
   /**
    * The length of setup time for current activity node following a distribution model.
@@ -350,17 +350,17 @@ export class GraphActivityNodeImpl extends GraphNodeImpl implements GraphActivit
    * @memberof GraphActivityNodeImpl
    */
   public getProcessingTime(): DISTRIBUTION_TYPE | null {
-    return this.processingTime as DISTRIBUTION_TYPE | null;
+    return this.processingTimeDistribution as DISTRIBUTION_TYPE | null;
   }
 
   /**
    * Assigns processing time of current activity node following to the specified distribution model.
    *
-   * @param {DISTRIBUTION_TYPE} processingTime
+   * @param {DISTRIBUTION_TYPE} processingTimeDistribution
    * @memberof GraphActivityNodeImpl
    */
-  public setProcessingTime(processingTime: DISTRIBUTION_TYPE): void {
-    this.processingTime = processingTime || this.processingTime;
+  public setProcessingTime(processingTimeDistribution: DISTRIBUTION_TYPE): void {
+    this.processingTimeDistribution = processingTimeDistribution || this.processingTimeDistribution;
   }
 
   /**
@@ -370,17 +370,17 @@ export class GraphActivityNodeImpl extends GraphNodeImpl implements GraphActivit
    * @memberof GraphActivityNodeImpl
    */
   public getProcessingTimeParameter(): string | null {
-    return this.processingTimeParameter as string | null;
+    return this.processingTimeExpression as string | null;
   }
 
   /**
    * Assigns the processing time parameter according to the selected distribution type.
    *
-   * @param {string} processingTimeParameter
+   * @param {string} processingTimeExpression
    * @memberof GraphActivityNodeImpl
    */
-  public setProcessingTimeParameter(processingTimeParameter: string): void {
-    this.processingTimeParameter = processingTimeParameter || this.processingTimeParameter;
+  public setProcessingTimeParameter(processingTimeExpression: string): void {
+    this.processingTimeExpression = processingTimeExpression || this.processingTimeExpression;
   }
 
   /**
@@ -406,7 +406,7 @@ export class GraphActivityNodeImpl extends GraphNodeImpl implements GraphActivit
   }
 
   /**
-   * Boolean function to To attest that the whether activity scrap is reported.
+   * Boolean function to attest whether activity scrap is reported.
    *
    * @returns {(boolean | null)}
    * @memberof GraphActivityNodeImpl
@@ -426,7 +426,7 @@ export class GraphActivityNodeImpl extends GraphNodeImpl implements GraphActivit
   }
 
   /**
-   * Returns the cost as a capital associated to current activity node.
+   * Returns the cost associated to current activity node.
    *
    * @returns {(number | null)}
    * @memberof GraphActivityNodeImpl
@@ -436,7 +436,7 @@ export class GraphActivityNodeImpl extends GraphNodeImpl implements GraphActivit
   }
 
   /**
-   * Assigns a cost as a capital to current activity node.
+   * Assigns a cost to current activity node.
    *
    * @param {number} cost
    * @memberof GraphActivityNodeImpl
@@ -546,7 +546,7 @@ export class GraphActivityNodeImpl extends GraphNodeImpl implements GraphActivit
   }
 
   /**
-   * To attest that the input nodes have adhered the simulation model rule.
+   * To attest the input nodes adhere the simulation model rule.
    *
    * @override
    * @returns {(Error | null)}
@@ -570,12 +570,11 @@ export class GraphActivityNodeImpl extends GraphNodeImpl implements GraphActivit
       return new Error('Activity node should not have more than one input node.');
     }
 
-    // Otherwise return nothing
     return null;
   }
 
   /**
-   * To attest that the output nodes have adhered the simulation model rule.
+   * To attest the output nodes adhere the simulation model rule.
    *
    * @override
    * @returns {(Error | null)}
@@ -599,7 +598,6 @@ export class GraphActivityNodeImpl extends GraphNodeImpl implements GraphActivit
       return new Error('Activity node should not have more than one output node.');
     }
 
-    // Otherwise return nothing
     return null;
   }
 

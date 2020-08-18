@@ -1,6 +1,6 @@
 <!--
   @package ts
-  @author N. Y. Wirawan <ny4tips@gmail.com>
+  @author Natanael Yabes Wirawan <yabes.wirawan@pusan.ac.kr>
   @since 2019
 -->
 <template>
@@ -18,8 +18,8 @@
 
       <!-- Left Sidebar Menu Item -->
       <template slot="left-bar-menu-item">
-        <a href="/#/iochord/ips/analytics/distribution/settings" class="item">Settings</a>
-        <a href="/#/iochord/ips/analytics/distribution/fitting" class="item">Overall</a>
+        <a href="/#/iochord/ips/analytics/distribution/settings" class="item active"><i class="cog icon"></i>Settings</a>
+        <a href="/#/iochord/ips/analytics/distribution/fitting" class="item"><i class="bar chart icon"></i>Overall</a>
       </template>
 
       <!-- Content -->
@@ -69,7 +69,7 @@ import DiffLayoutView from '@/iochord/ips/common/ui/layout/class/DiffLayoutView'
  *
  * @extends BaseComponent
  * @package ts
- * @author N. Y. Wirawan <ny4tips@gmail.com>
+ * @author Natanael Yabes Wirawan <yabes.wirawan@pusan.ac.kr>
  * @since 2019
  *
  */

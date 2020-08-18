@@ -1,6 +1,6 @@
 <!--
   @package ts
-  @author R. A. Sutrisnowati <riska@iochord.com>
+  @author Riska Asriana Sutrisnowati <riska@iochord.com>
   @since 2019
 -->
 <template>
@@ -118,7 +118,9 @@
 </template>
 
 <style scoped>
-
+.ui.celled.table:last-child {
+  margin-bottom: 0.5em;
+}
 </style>
 
 <style>
@@ -139,7 +141,7 @@ import BaseComponent from '@/iochord/ips/common/ui/layout/class/BaseComponent';
  * @extends {BaseComponent}
  *
  * @package ts
- * @author R. A. Sutrisnowati <riska@iochord.com>
+ * @author Riska Asriana Sutrisnowati <riska@iochord.com>
  * @since 2019
  */
 export default class ContentOraclePropertiesComponent extends BaseComponent {

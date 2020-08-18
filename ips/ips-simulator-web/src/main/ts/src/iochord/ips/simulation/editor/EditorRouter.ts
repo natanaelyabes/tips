@@ -5,7 +5,7 @@ import { ApplicationEnum, BaseUrlEnum } from '@/iochord/ips/common/enums/index';
  * Router registry for the editor.
  *
  * @package ts
- * @author N. Y. Wirawan <ny4tips@gmail.com>
+ * @author Natanael Yabes Wirawan <yabes.wirawan@pusan.ac.kr>
  * @since 2019
  */
 export default [

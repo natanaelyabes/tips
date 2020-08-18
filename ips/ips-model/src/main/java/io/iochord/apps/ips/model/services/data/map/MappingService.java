@@ -111,22 +111,7 @@ public class MappingService extends AnIpsService<MappingConfiguration, MappingRe
 					st.execute();
 				}
 			}
-			
-//			
-//			CREATE VIEW ips_dataset_1589206445917_repo1 AS 
-//			 SELECT 
-//				c0 AS ci,
-//			   c6 AS ea,
-//			   c12 AS eo,
-//			   c12 AS er,
-//			   c2 AS es,
-//			   c2 AS ec, *
-//			   FROM ips_dataset_1589206445917
-//			;
-//			COMMENT ON VIEW ips_dataset_1589206445917_repo1 IS '{"name":"BPT2018 Repo","parentId":"ips_dataset_1589206445917"}';
-//
-//			
-			/*
+				
 			// Build tables
 			StringBuilder mapsettingstable = new StringBuilder();
 			mapsettingstable.append("DROP TABLE IF EXISTS ")
@@ -154,7 +139,7 @@ public class MappingService extends AnIpsService<MappingConfiguration, MappingRe
 				}
 				st.executeBatch();
 			}
-			*/
+			
 		} catch (Exception e) {
 			LoggerUtil.logError(e);
 		}

@@ -1,6 +1,6 @@
 <!--
   @package ts
-  @author N. Y. Wirawan <ny4tips@gmail.com>
+  @author Natanael Yabes Wirawan <yabes.wirawan@pusan.ac.kr>
   @since 2019
 -->
 <template>
@@ -54,9 +54,6 @@
         <CanvasComponent :isDisabled="isDisabled" :key="reRenderKey" :response="graphData" />
       </template>
 
-      <!-- <template slot="right-sidebar-menu-item">
-        <MinimapComponent :response="graphData" />
-      </template> -->
     </WrapperComponent>
 
     <div ref="report" class="ui overlay fullscreen modal">
@@ -83,12 +80,12 @@
           </thead>
           <tbody>
             <template v-for="(gs, gsi) in report.groups" >
-              <tr :key="gsi + 100">
+              <tr :key="gsi + '-' + 100">
                 <td colspan="8">{{ gs.name }}</td>
               </tr>
               <template v-for="(es, esi) in gs.elements">
                 <template v-if="es.subElements && es.subElements != null">
-                  <tr v-for="(ess, essi) in es.subElements" :key="essi + 1000">
+                  <tr v-for="(ess, essi) in es.subElements" :key="gsi + '-' + esi + '-' + essi + '-' + 1000">
                     <td v-if="essi == 1" :rowspan="Object.keys(es.subElements).length">{{ esi }}.</td>
                     <td v-if="essi == 1" :rowspan="Object.keys(es.subElements).length">{{ es.name }}</td>
                     <td>{{ ess.description }}</td>
@@ -107,7 +104,7 @@
                     </template>
                   </tr>
                 </template>
-                <tr :key="esi + 1000" v-else>
+                <tr :key="esi + '-' + 10000" v-else>
                   <td>{{ esi }}.</td>
                   <td>{{ es.name }}</td>
                   <td>{{ es.description }}</td>
@@ -266,7 +263,7 @@ declare const $: any;
  * @extends {AppLayoutView}
  *
  * @package ts
- * @author N. Y. Wirawan <ny4tips@gmail.com>
+ * @author Natanael Yabes Wirawan <yabes.wirawan@pusan.ac.kr>
  * @since 2019
  */
 export default class SimulationEditorView extends AppLayoutView {
@@ -348,15 +345,11 @@ export default class SimulationEditorView extends AppLayoutView {
   public async mounted(): Promise<void> {
     try {
 
-      // TODO: Refractor to singleton pattern
-      if (graphModule.graph.getVersion === undefined) {
+      // Fetch graph to Vuex state
+      await this.modelCreate();
 
-        // Fetch graph to Vuex state
-        await this.modelCreate();
-
-        // Print to stdout
-        console.log(graphModule.graph);
-      }
+      // Print to stdout
+      console.log(graphModule.graph);
 
       // Update rxjs subject
       GraphSubject.update(graphModule.graph);

@@ -1,6 +1,6 @@
 <!--
   @package ts
-  @author N. Y. Wirawan <ny4tips@gmail.com>
+  @author Natanael Yabes Wirawan <yabes.wirawan@pusan.ac.kr>
   @since 2019
 -->
 <template>
@@ -152,7 +152,7 @@ const editorState = getModule(EditorState);
  * @class CanvasComponent
  * @extends {Mixins(BaseComponent, CanvasMixin)}
  * @package ts
- * @author N. Y. Wirawan <ny4tips@gmail.com>
+ * @author Natanael Yabes Wirawan <yabes.wirawan@pusan.ac.kr>
  * @since 2019
  */
 export default class CanvasComponent extends Mixins(BaseComponent, CanvasMixin) {
@@ -268,7 +268,7 @@ export default class CanvasComponent extends Mixins(BaseComponent, CanvasMixin) 
 
     document.addEventListener('keydown', (e) => {
       switch (e.which) {
-        case 8: case 46:
+        case 8: case 46: // delete or backspace
           if (this.highlightedElement.length > 0) {
             this.highlightedElement.forEach((element) => {
               (this.$refs['delete'] as DeletableModal).populateNode({

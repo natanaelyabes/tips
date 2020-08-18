@@ -1,13 +1,13 @@
 <!--
   @package ts
-  @author N. Y. Wirawan <ny4tips@gmail.com>
+  @author Natanael Yabes Wirawan <yabes.wirawan@pusan.ac.kr>
   @since 2019
 -->
 <template>
   <div class="navigation-top-sidebar component">
     <div class="ui top fixed menu">
       <div class="item">
-        <div v-on:click="toggleMenu()" id="menu-button" class="ui big black icon compact toggle button" data-transition="overlay">
+        <div v-on:click="toggleMenu()" id="menu-button" class="ui basic icon compact toggle button" data-transition="overlay">
           <i id="menu-button" class="sidebar icon"></i>
         </div>
       </div>
@@ -29,7 +29,7 @@
 /**
  *
  * @package ts
- * @author N. Y. Wirawan <ny4tips@gmail.com>
+ * @author Natanael Yabes Wirawan <yabes.wirawan@pusan.ac.kr>
  * @since 2019
  *
  */
@@ -102,7 +102,7 @@ declare const $: any;
  * @extends {BaseComponent}
  *
  * @package ts
- * @author N. Y. Wirawan <ny4tips@gmail.com>
+ * @author Natanael Yabes Wirawan <yabes.wirawan@pusan.ac.kr>
  * @since 2019
  */
 export default class NavigationTopSidebarComponent extends SemanticComponent {

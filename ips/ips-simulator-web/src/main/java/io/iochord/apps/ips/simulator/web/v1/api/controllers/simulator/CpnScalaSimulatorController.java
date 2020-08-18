@@ -62,6 +62,7 @@ public class CpnScalaSimulatorController extends ASimulatorController {
 	@PostMapping(value = BASE_URI + "/loadnplay")
 	public Report postLoadNPlay(@RequestBody IsmGraphImpl graph) {
 		graph.loadReferences();
+
 		Ism2CpnscalaBiConverter converter = new Ism2CpnscalaBiConverter();
 		Ism2CpnscalaModel conversionResult = converter.convert(graph);
 		Report report = new Report();

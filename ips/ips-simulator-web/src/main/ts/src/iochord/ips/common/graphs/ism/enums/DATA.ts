@@ -14,7 +14,7 @@ import { GraphDataResourceImpl } from '../class/components/GraphDataResourceImpl
  * @implements {GraphPage}
  *
  * @package ts
- * @author N. Y. Wirawan <ny4tips@gmail.com>
+ * @author Natanael Yabes Wirawan <yabes.wirawan@pusan.ac.kr>
  * @since 2019
  *
  */
@@ -36,7 +36,7 @@ export const DATA_TYPE = {
  * @implements {GraphPage}
  *
  * @package ts
- * @author N. Y. Wirawan <ny4tips@gmail.com>
+ * @author Natanael Yabes Wirawan <yabes.wirawan@pusan.ac.kr>
  * @since 2019
  *
  */
