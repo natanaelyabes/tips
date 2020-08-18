@@ -10,17 +10,19 @@
         <text x="50%" y="15" dominant-baseline="middle" text-anchor="middle" class="title">Cluster : {{ curCluster }}</text>
         <line :x1="xZero" :y1="yMax" :x2="xZero" :y2="yZero" class="lineCoor"/>
         <line :x1="xZero" :y1="yZero" :x2="xMax" :y2="yZero" class="lineCoor"/>
-        <text v-for="(n,i) in maxHourEx" x="0" :y="5+i*heightPerHour" class="small">{{ insp(maxHourEx-1-i) }}</text>
-        <g v-for="(item, i) in resMiningResult.timecluster[curCluster]">
-          <line :x1="startBinX+widthBin*i" :y1="toY(getHourStart(resMiningResult.timeanalysis[item]))" :x2="startBinX+widthBin*i" :y2="toY(getHourStart(resMiningResult.timeanalysis[item])+getDuration(resMiningResult.timeanalysis[item]))" :style="{ 'stroke': resMiningResult.timeanalysis[item][4], 'stroke-width': widthBin-1 }" v-on:click="disp(item,resMiningResult.timeanalysis[item][4])"/>
-          <text :x="startBinX+widthBin*i" :y="yZero+1" class="small txtVertical">{{ i+1 }}</text>
-        </g>
+        <text v-for="(n,i) in maxHourEx" :key="'maxHour-' + i" x="0" :y="5+i*heightPerHour" class="small">{{ insp(maxHourEx-1-i) }}</text>
+        <template v-if="resMiningResult.timecluster !== null">
+          <g v-for="(item, i) in resMiningResult.timecluster[curCluster]" :key="'cluster-' + i">
+            <line :x1="startBinX+widthBin*i" :y1="toY(getHourStart(resMiningResult.timeanalysis[item]))" :x2="startBinX+widthBin*i" :y2="toY(getHourStart(resMiningResult.timeanalysis[item])+getDuration(resMiningResult.timeanalysis[item]))" :style="{ 'stroke': resMiningResult.timeanalysis[item][4], 'stroke-width': widthBin-1 }" v-on:click="disp(item,resMiningResult.timeanalysis[item][4])"/>
+            <text :x="startBinX+widthBin*i" :y="yZero+1" class="small txtVertical">{{ i+1 }}</text>
+          </g>
+        </template>
       </svg>
     </div>
     <div id="overlaySelect">
       Choose Cluster
       <select v-model="curCluster">
-        <option v-for="option in clusters" :value="option">Cluster {{option}}</option>
+        <option v-for="option in clusters" :key="'clusterOption-' + option" :value="option">Cluster {{option}}</option>
       </select>
     </div>
   </div>
@@ -117,10 +119,12 @@ export default class ContentTimeAnalysisComponent extends BaseComponent {
    * @memberof AnalysisResourceMining
    */
   public mounted(): void {
-    const objectkeys: any = Object.keys(this.resMiningResult.timecluster);
-    if (objectkeys.length > 0)
-      this.curCluster = objectkeys[0];
-    this.clusters = objectkeys;
+    if (this.resMiningResult.timecluster !== null) {
+      const objectkeys: any = Object.keys(this.resMiningResult.timecluster);
+      if (objectkeys.length > 0)
+        this.curCluster = objectkeys[0];
+      this.clusters = objectkeys;
+    }
   }
 
   public disp(resource: string, color: string): void {
@@ -160,22 +164,17 @@ export default class ContentTimeAnalysisComponent extends BaseComponent {
   @Watch('curCluster')
   public onPropertyChanged(value: string, oldValue: string) {
     this.wind2 = false;
-    for (const te of this.resMiningResult.timecluster[value]) {
-      const workinfo = this.resMiningResult.timeanalysis[te];
-      const st = Number(workinfo[0].split(' ', 2)[1].split(':', 3)[0]);
-      const ed = Number(workinfo[1].split(' ', 2)[1].split(':', 3)[0]);
-      if (ed < st && st > 20) {
-        this.wind2 = true;
-        break;
+    if (this.resMiningResult.timecluster !== null) {
+      for (const te of this.resMiningResult.timecluster[value]) {
+        const workinfo = this.resMiningResult.timeanalysis[te];
+        const st = Number(workinfo[0].split(' ', 2)[1].split(':', 3)[0]);
+        const ed = Number(workinfo[1].split(' ', 2)[1].split(':', 3)[0]);
+        if (ed < st && st > 20) {
+          this.wind2 = true;
+          break;
+        }
       }
     }
-    /*
-    console.log(value);
-    console.log(this.resMiningResult.timecluster[value]);
-    for (const te of this.resMiningResult.timecluster[value]) {
-      console.log(this.resMiningResult.timeanalysis[te]);
-    }
-    */
   }
 }
 </script>

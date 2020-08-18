@@ -58,6 +58,6 @@ export default class ResourceMiningService extends AnalysisService {
    * @memberof ResourceMiningService
    */
   public mineResource(config: ResourceMiningConfiguration, completeCallback: any, progressCallback: any) {
-    return this.webservicePost(ResourceMiningService.BASE_URI + '/resm/mine', config, completeCallback, progressCallback);
+    return this.webservicePost(ResourceMiningService.BASE_URI + '/resm', config, completeCallback, progressCallback);
   }
 }

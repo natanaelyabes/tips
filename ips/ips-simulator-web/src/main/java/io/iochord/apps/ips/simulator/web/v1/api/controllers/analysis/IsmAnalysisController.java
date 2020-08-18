@@ -78,7 +78,7 @@ public class IsmAnalysisController extends AnAnalysisController {
 		ServiceContext context = getServiceContext();
 		DecisionMinerResult dmr = null;
 		try {
-			 dmr = new DecisionMinerService().run(context, config);
+			dmr = new DecisionMinerService().run(context, config);
 		} catch (Exception ex) {
 			LoggerUtil.logError(ex);
 		}

@@ -8,7 +8,7 @@
     <div class="ui basic segment">
       <h4 class="ui dividing header">Map Settings</h4>
       <div class="ui warning message">
-        The data is a preview. Only the first 100<sup>th</sup> rows is displayed.
+        The data is a preview. Only the first 100<sup>th</sup> rows are displayed.
       </div>
       <div v-show="datasetId === 'Select a dataset'" class="ui error message">
         Table is not loaded. Please select a dataset.
@@ -36,13 +36,6 @@
                   <option value="er">Resource</option>
                   <option value="es">Start Time</option>
                   <option value="ec">Complete Time</option>
-                  <!--
-                  <option value="case_id">case_id</option>
-                  <option value="concept:name">concept:name</option>
-                  <option value="time:timestamp">time:timestamp</option>
-                  <option value="lifecycle:transition">lifecycle:transition</option>
-                  <option value="org:resource">org:resource</option>
-                  -->
                 </select>
               </th>
             </tr>
