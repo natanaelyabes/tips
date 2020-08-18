@@ -16,16 +16,18 @@
         <div class="active section">{{this.title}}</div>
         <i class="right angle icon divider"></i>
         <select class="ui floating scrolling dropdown button" v-model="datasetIdRef">
-          <option value="---" selected>---</option>
+          <option value="Select a dataset" selected>Select a dataset</option>
           <option v-for="(ds, i) in datasets" :key="i" class="item" :value="i">{{ds.name}} ({{i}})</option>
         </select>
         {{progressMessage}}
       </template>
 
       <!-- Left Sidebar Menu Item -->
-      <template slot="left-bar-menu-item">
-        <router-link :to="`/iochord/ips/analytics/resource/settings/${datasetId}`" tag="a" class="item active">Settings</router-link>
-        <router-link :to="`/iochord/ips/analytics/resource/mining/${datasetId}`" tag="a" class="item">Overall</router-link>
+      <template slot="left-bar-menu-item" id="left-menu">
+        <router-link :to="`/iochord/ips/analytics/resource/settings/${datasetId}`" 
+          tag="a" class="item active"><i class="cog icon"></i>Settings</router-link>
+        <router-link :to="`/iochord/ips/analytics/resource/mining/${datasetId}`" 
+          tag="a" class="item"><i class="chart bar icon"></i>Overall</router-link>
       </template>
 
       <!-- Content -->
@@ -94,7 +96,7 @@ export default class AnalysisResourceMiningSettings extends DiffLayoutView {
    * @type {string}
    * @memberof AnalysisResourceMining
    */
-  public datasetIdRef: string = '---';
+  public datasetIdRef: string = 'Select a dataset';
 
 
   /**

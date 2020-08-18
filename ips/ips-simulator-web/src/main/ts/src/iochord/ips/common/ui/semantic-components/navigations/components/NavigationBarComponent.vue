@@ -17,6 +17,7 @@
 }
 .ui.menu {
   width: 100%;
+  overflow-y: auto;
 }
 </style>
 

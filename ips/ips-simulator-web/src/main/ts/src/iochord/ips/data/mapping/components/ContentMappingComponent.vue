@@ -10,11 +10,11 @@
       <div class="ui warning message">
         The data is a preview. Only the first 100<sup>th</sup> rows is displayed.
       </div>
-      <div v-show="datasetId === '---'" class="ui error message">
+      <div v-show="datasetId === 'Select a dataset'" class="ui error message">
         Table is not loaded. Please select a dataset.
       </div>
       <div style="overflow-x: hidden; overflow-y: scroll; border: 1px solid rgba(34,36,38,.15); height: 500px; width: 100%">
-        <table v-show="datasetId !== '---'" class="ui celled striped table">
+        <table v-show="datasetId !== 'Select a dataset'" class="ui celled striped table">
           <thead>
             <tr>
               <th>Technical Name</th>
@@ -62,7 +62,7 @@
       </div>
       <div class="ui basic segment" style="padding: 1em 0;">
         <button @click="save" class="ui large blue labeled icon right floated button"
-          v-bind:class="{ disabled : datasetId === '---' }">
+          v-bind:class="{ disabled : datasetId === 'Select a dataset' }">
           <i class="save icon"></i> Save
         </button>
       </div>
@@ -110,7 +110,7 @@ export default class ContentMappingComponent extends SemanticComponent {
   }
 
   public async retreiveMapping(): Promise<void> {
-    if (this.datasetId !== '---') {
+    if (this.datasetId !== 'Select a dataset') {
       await mappingModule.retreiveMapResource(this.datasetId as string);
       this.rowsize = this.firstNRows.length;
       this.mapping.technicalNames = mappingModule.mapResource.technicalNames;

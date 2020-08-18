@@ -16,7 +16,7 @@
         <div class="active section">{{this.title}}</div>
         <i class="right angle icon divider"></i>
         <select class="ui floating scrolling dropdown button" @change="retreiveDataset" ref="datasetSelector" v-model="selectedDatasetId">
-          <option value="---" selected>---</option>
+          <option value="Select a dataset" selected>Select a dataset</option>
           <option v-for="(ds, i) in datasets" :key="i" class="item" :value="i">{{ds.name}} ({{i}})</option>
         </select>
       </template>
@@ -83,7 +83,7 @@ export default class DataMapping extends ExplorerLayoutView {
   @Prop(String)
   public datasetId?: string;
 
-  public selectedDatasetId: string = '---';
+  public selectedDatasetId: string = 'Select a dataset';
 
   /** @override */
   public overrideBrowserProperties() {
@@ -96,7 +96,7 @@ export default class DataMapping extends ExplorerLayoutView {
   }
 
   public mounted(): void {
-    this.selectedDatasetId = '---';
+    this.selectedDatasetId = 'Select a dataset';
     if (this.datasetId) this.selectedDatasetId = this.datasetId;
     this.retreiveDataset();
   }

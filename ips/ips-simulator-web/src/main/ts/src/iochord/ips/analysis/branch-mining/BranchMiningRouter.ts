@@ -14,11 +14,11 @@ export default [
     component: () => import(/* webpackChunkName: "ips-common-layout-base" */ '@/iochord/ips/common/ui/components/layout/BaseLayout.vue'),
     children: [
       {
-        path: `mining`,
+        path: `mining/:datasetId?`,
         component: () => import(/* webpackChunkName: "ips-model-analysis-analytics-branch-mining" */ './views/AnalysisBranchOverall.vue'),
       },
       {
-        path: `settings`,
+        path: `settings/:datasetId?`,
         component: () => import(/* webpackChunkName: "ips-model-analysis-analytics-branch-settings" */ './views/AnalysisBranchSettings.vue'),
       },
     ],

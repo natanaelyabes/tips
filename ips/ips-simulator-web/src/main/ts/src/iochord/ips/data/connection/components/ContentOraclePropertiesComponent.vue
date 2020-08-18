@@ -118,7 +118,9 @@
 </template>
 
 <style scoped>
-
+.ui.celled.table:last-child {
+  margin-bottom: 0.5em;
+}
 </style>
 
 <style>

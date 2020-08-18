@@ -35,6 +35,7 @@
 
 #depth-one {
   white-space: nowrap;
+  min-width: 200px;
 }
 
 #depth-two {

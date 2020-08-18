@@ -5,7 +5,7 @@
 -->
 <template>
   <div class="sandbox analysis branch">
-    <LeftBarContentWrapperComponent>
+    <DepthTwoLeftWrapperComponent>
 
       <!-- Header -->
       <template slot="header-breadcrumb">
@@ -16,22 +16,28 @@
         <div class="active section">{{this.title}}</div>
         <i class="right angle icon divider"></i>
         <select class="ui floating scrolling dropdown button" @change="retreiveDataset" ref="datasetSelector" v-model="selectedDatasetId">
-          <option value="---" selected>---</option>
+          <option value="Select a dataset" selected>Select a dataset</option>
           <option v-for="(ds, i) in datasets" :key="i" class="item" :value="i">{{ds.name}} ({{i}})</option>
         </select>
       </template>
 
       <!-- Left Sidebar Menu Item -->
-      <template slot="left-bar-menu-item">
-        <a href="/#/iochord/ips/analytics/branch/settings" class="item">Settings</a>
-        <a href="/#/iochord/ips/analytics/branch/mining" class="item">Overall</a>
+      <template slot="depth-one-menu-item">
+        <router-link :to="`/iochord/ips/analytics/branch/settings/${datasetId}`" 
+          tag="a" class="item"><i class="cog icon"></i>Settings</router-link>
+        <router-link :to="`/iochord/ips/analytics/branch/mining/${datasetId}`" 
+          tag="a" class="item active"><i class="chart bar icon"></i>Overall</router-link>
       </template>
 
       <!-- Content -->
-      <template slot="content">
-        <ContentSplitComponent></ContentSplitComponent>
+      <template slot="depth-two-menu-item">
+        <ItemBranchList />
       </template>
-    </LeftBarContentWrapperComponent>
+
+      <template slot="content">
+        <ItemProcessModel />
+      </template>
+    </DepthTwoLeftWrapperComponent>
   </div>
 </template>
 
@@ -52,20 +58,22 @@ a.section {
 
 <script lang="ts">
 import { Vue, Prop, Component } from 'vue-property-decorator';
-import DiffLayoutView from '@/iochord/ips/common/ui/layout/class/DiffLayoutView';
-import LeftBarContentWrapperComponent from '@/iochord/ips/common/ui/layout/components/LeftBarContentWrapperComponent.vue';
+import ExplorerLayoutView from '@/iochord/ips/common/ui/layout/class/ExplorerLayoutView';
+import DepthTwoLeftWrapperComponent from '@/iochord/ips/common/ui/layout/components/DepthTwoLeftWrapperComponent.vue';
 import ContentSettingsComponent from '../components/ContentSettingsComponent.vue';
 import ContentSplitComponent from '../components/ContentSplitComponent.vue';
 import { getModule } from 'vuex-module-decorators';
 import DataConnectionService from '../../../data/connection/services/DataConnectionService';
+import ItemProcessModel from '../components/ItemProcessModel.vue';
+import ItemBranchList from '../components/ItemBranchList.vue';
 
 declare const $: any;
 
 @Component({
   components: {
-    LeftBarContentWrapperComponent,
-    ContentSplitComponent,
-    ContentSettingsComponent,
+    DepthTwoLeftWrapperComponent,
+    ItemProcessModel,
+    ItemBranchList,
   },
 })
 
@@ -82,7 +90,7 @@ declare const $: any;
  * @since 2019
  *
  */
-export default class AnalysisBranchOverall extends DiffLayoutView {
+export default class AnalysisBranchOverall extends ExplorerLayoutView {
 
   /**
    * Title field of AnalysisBranchOverall
@@ -94,10 +102,10 @@ export default class AnalysisBranchOverall extends DiffLayoutView {
 
   public datasets = {};
 
-  @Prop(String)
-  public datasetId?: string;
+  @Prop({default: ''})
+  public datasetId!: string;
 
-  public selectedDatasetId: string = '---';
+  public selectedDatasetId: string = 'Select a dataset';
 
   /**
    * Override browser properties for AnalysisBranchOverall
@@ -120,7 +128,7 @@ export default class AnalysisBranchOverall extends DiffLayoutView {
   }
 
   public mounted(): void {
-    this.selectedDatasetId = '---';
+    this.selectedDatasetId = 'Select a dataset';
     if (this.datasetId) this.selectedDatasetId = this.datasetId;
     this.retreiveDataset();
   }

@@ -64,7 +64,6 @@ export class IsmSimulatorService extends SimulatorService {
         method: wsUri,
         params: JSON.stringify(graph),
       };
-      console.log(JSON.stringify(graph));
       wsc.subscribe('/response/simulation/step', (tick: any) => {
         callback(tick);
       });
@@ -80,9 +79,6 @@ export class IsmSimulatorService extends SimulatorService {
    * @memberof IsmSimulatorService
    */
   public async postLoadNPlay(graph: Graph|GraphImpl): Promise<string> {
-
-    console.log(graph)
-
     const page = (graph as any).pages.get('0');
     (page as any).connectors = page.connectors;
     const response = await this.remotePost(IsmSimulatorService.BASE_URI + '/loadnplay', graph);

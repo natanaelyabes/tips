@@ -7,7 +7,7 @@
   <div class="navigation-top-sidebar component">
     <div class="ui top fixed menu">
       <div class="item">
-        <div v-on:click="toggleMenu()" id="menu-button" class="ui big black icon compact toggle button" data-transition="overlay">
+        <div v-on:click="toggleMenu()" id="menu-button" class="ui basic icon compact toggle button" data-transition="overlay">
           <i id="menu-button" class="sidebar icon"></i>
         </div>
       </div>

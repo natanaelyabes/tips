@@ -18,8 +18,8 @@
 
       <!-- Left Sidebar Menu Item -->
       <template slot="left-bar-menu-item">
-        <a href="/#/iochord/ips/analytics/distribution/settings" class="item">Settings</a>
-        <a href="/#/iochord/ips/analytics/distribution/fitting" class="item">Overall</a>
+        <a href="/#/iochord/ips/analytics/distribution/settings" class="item active"><i class="cog icon"></i>Settings</a>
+        <a href="/#/iochord/ips/analytics/distribution/fitting" class="item"><i class="bar chart icon"></i>Overall</a>
       </template>
 
       <!-- Content -->

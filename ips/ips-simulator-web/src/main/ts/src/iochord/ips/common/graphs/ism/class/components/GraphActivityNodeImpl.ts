@@ -406,7 +406,7 @@ export class GraphActivityNodeImpl extends GraphNodeImpl implements GraphActivit
   }
 
   /**
-   * Boolean function to attest that the whether activity scrap is reported.
+   * Boolean function to attest whether activity scrap is reported.
    *
    * @returns {(boolean | null)}
    * @memberof GraphActivityNodeImpl
@@ -546,7 +546,7 @@ export class GraphActivityNodeImpl extends GraphNodeImpl implements GraphActivit
   }
 
   /**
-   * To attest the input nodes have adhered the simulation model rule.
+   * To attest the input nodes adhere the simulation model rule.
    *
    * @override
    * @returns {(Error | null)}
@@ -570,12 +570,11 @@ export class GraphActivityNodeImpl extends GraphNodeImpl implements GraphActivit
       return new Error('Activity node should not have more than one input node.');
     }
 
-    // Otherwise return nothing
     return null;
   }
 
   /**
-   * To attest the output nodes have adhered the simulation model rule.
+   * To attest the output nodes adhere the simulation model rule.
    *
    * @override
    * @returns {(Error | null)}
@@ -599,7 +598,6 @@ export class GraphActivityNodeImpl extends GraphNodeImpl implements GraphActivit
       return new Error('Activity node should not have more than one output node.');
     }
 
-    // Otherwise return nothing
     return null;
   }
 

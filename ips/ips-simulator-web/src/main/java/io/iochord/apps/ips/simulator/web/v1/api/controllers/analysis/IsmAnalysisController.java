@@ -62,10 +62,11 @@ public class IsmAnalysisController extends AnAnalysisController {
 	 * Decision Point Analysis
 	 * 
 	 * @author Natanael Yabes Wirawan <yabes.wirawan@pusan.ac.kr>
-	 * @param datasetId
-	 * @param config
-	 * @param headers
-	 * @return
+	 * @param datasetId dataset identifier
+	 * @param config decision point analysis configuration
+	 * @param headers autowired http headers
+	 * @return service context instance
+	 * @throws Exception exception
 	 */
 	@PostMapping(value = { BASE_URI + "/dtm", BASE_URI + "/dtm/{datasetId}" })
 	public ServiceContext getPostDecisionMiner(@PathVariable Optional<String> datasetId,

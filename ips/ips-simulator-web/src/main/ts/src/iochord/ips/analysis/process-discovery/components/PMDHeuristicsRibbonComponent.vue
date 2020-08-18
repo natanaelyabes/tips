@@ -48,8 +48,9 @@
         </div>
         <div class="item">
           <div class="field">
+            <label>&nbsp;</label>
             <button class="ui primary button">
-              Mine
+              Apply
             </button>
           </div>
         </div>

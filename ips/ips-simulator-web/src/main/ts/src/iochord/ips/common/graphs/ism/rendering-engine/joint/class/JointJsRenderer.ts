@@ -138,7 +138,7 @@ export default class JointJsRenderer {
 
     try {
 
-      // Loop all model pages
+      // Iterate over model pages
       (this.graph.getPages() as TSMap<string, GraphPage>).forEach((page: GraphPage) => {
         const jointPage: JointGraphPageImpl = new JointGraphPageImpl();
 

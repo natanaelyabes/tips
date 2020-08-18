@@ -16,20 +16,22 @@
         <div class="active section">{{this.title}}</div>
         <i class="right angle icon divider"></i>
         <select class="ui floating scrolling dropdown button" @change="retreiveDataset" ref="datasetSelector" v-model="selectedDatasetId">
-          <option value="---" selected>---</option>
+          <option value="Select a dataset" selected>Select a dataset</option>
           <option v-for="(ds, i) in datasets" :key="i" class="item" :value="i">{{ds.name}} ({{i}})</option>
         </select>
       </template>
 
       <!-- Left Sidebar Menu Item -->
       <template slot="left-bar-menu-item">
-        <a href="/#/iochord/ips/analytics/branch/settings" class="item">Settings</a>
-        <a href="/#/iochord/ips/analytics/branch/mining" class="item">Overall</a>
+        <router-link :to="`/iochord/ips/analytics/branch/settings/${datasetId}`" 
+          tag="a" class="item active"><i class="cog icon"></i>Settings</router-link>
+        <router-link :to="`/iochord/ips/analytics/branch/mining/${datasetId}`" 
+          tag="a" class="item"><i class="chart bar icon"></i>Overall</router-link>
       </template>
 
       <!-- Content -->
       <template slot="content">
-        <ContentSettingsComponent></ContentSettingsComponent>
+        <ContentSettingsComponent :datasetId="selectedDatasetId"></ContentSettingsComponent>
       </template>
     </LeftBarContentWrapperComponent>
   </div>
@@ -92,10 +94,10 @@ export default class AnalysisBranchSettings extends DiffLayoutView {
 
   public datasets = {};
 
-  @Prop(String)
-  public datasetId?: string;
+  @Prop({default: ''})
+  public datasetId!: string;
 
-  public selectedDatasetId: string = '---';
+  public selectedDatasetId: string = 'Select a dataset';
 
 
   /**
@@ -109,7 +111,7 @@ export default class AnalysisBranchSettings extends DiffLayoutView {
   }
 
   public mounted(): void {
-    this.selectedDatasetId = '---';
+    this.selectedDatasetId = 'Select a dataset';
     if (this.datasetId) this.selectedDatasetId = this.datasetId;
     this.retreiveDataset();
   }

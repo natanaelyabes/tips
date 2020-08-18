@@ -18,9 +18,9 @@
 
       <!-- Depth One Left Sidebar Menu Item -->
       <template slot="depth-one-menu-item">
-        <a href="/#/iochord/ips/data/connection" class="item">List of connection</a>
-        <a href="/#/iochord/ips/data/connection/new" class="item">New connection</a>
-        <a href="/#/iochord/ips/data/connection/upload" class="item active">Import</a>
+        <a href="/#/iochord/ips/data/connection" class="item"><i class="list icon"></i>List of connections</a>
+        <a href="/#/iochord/ips/data/connection/new" class="item"><i class="database icon"></i>New connection</a>
+        <a href="/#/iochord/ips/data/connection/upload" class="item active"><i class="upload icon"></i>File upload</a>
       </template>
 
       <!-- Depth Two Left Sidebar Menu Item -->
@@ -105,7 +105,7 @@ export default class DataConnectionUpload extends ExplorerLayoutView {
    * @memberof DataConnectionUpload
    */
   public overrideBrowserProperties() {
-    this.setDocumentTitle('Data Management: Import File');
+    this.setDocumentTitle('Data Management: File upload');
   }
 
   /**

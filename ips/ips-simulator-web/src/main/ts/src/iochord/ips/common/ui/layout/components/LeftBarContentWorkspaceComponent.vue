@@ -33,6 +33,10 @@
   padding: 0;
   width: 100%;
 }
+
+#left-bar {
+  min-width: 200px;
+}
 </style>
 
 <script lang="ts">

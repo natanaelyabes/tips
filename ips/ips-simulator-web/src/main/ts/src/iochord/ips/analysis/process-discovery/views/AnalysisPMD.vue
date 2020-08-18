@@ -16,7 +16,7 @@
         <div class="active section">{{this.title}}</div>
         <i class="right angle icon divider"></i>
         <select class="ui floating scrolling dropdown button" ref="datasetSelector" @change="mine">
-          <option value="---">---</option>
+          <option value="Select a dataset">Select a dataset</option>
           <option :selected="datasetId == i" v-for="(ds, i) in datasets" :key="i" class="item" :value="i">{{ds.name}} ({{i}})</option>
         </select>
         {{progressMessage}}
@@ -161,23 +161,17 @@ export default class AnalysisPMD extends VisualizerLayoutView {
    */
   public runMine(selectedDatasetId: string): void {
     const self = this;
-    if (selectedDatasetId !== '---') {
+    if (selectedDatasetId !== 'Select a dataset') {
       const config: IsmDiscoveryConfiguration = new IsmDiscoveryConfiguration();
       config.datasetId = selectedDatasetId;
       IsmDiscoveryService.getInstance().discoverIsmGraph(config, (res: any) => {
         const graph = res.data;
-
-        let n = 0;
-        for (const i of Object.keys(graph.data.pages['0'].nodes)) {
+        let n = 0; for (const i of Object.keys(graph.data.pages['0'].nodes)) {
           n++;
         }
-
-        let c = 0;
-
-        for (const i of Object.keys(graph.data.pages['0'].connectors)) {
+        let c = 0; for (const i of Object.keys(graph.data.pages['0'].connectors)) {
           c++;
         }
-
         const g: Graph = GraphImpl.deserialize(graph.data) as Graph;
         graphModule.setGraph(g);
         self.graphJson = 'This graph has ' + n + ' nodes and ' + c + ' connectors.';
@@ -185,6 +179,7 @@ export default class AnalysisPMD extends VisualizerLayoutView {
         (self.$refs['viewer'] as any).forceReRender();
       }, (tick: any) => {
         self.progressMessage = tick.progressData;
+        console.log(tick.progressData);
       });
     } else {
       self.graphJson = '';
@@ -205,9 +200,7 @@ export default class AnalysisPMD extends VisualizerLayoutView {
       if (self.datasetId !== '') {
         self.runMine(self.datasetId);
       }
-    }, (tick: any) => {
-      // self.datasets = tick;
-    });
+    }, null);
   }
 
   /**
