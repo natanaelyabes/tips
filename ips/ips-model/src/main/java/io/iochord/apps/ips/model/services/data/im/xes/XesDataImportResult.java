@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 /**
+ * XES import result object.
  *
  * @package ips-model
  * @author N. Y. Wirawan <ny4tips@gmail.com>

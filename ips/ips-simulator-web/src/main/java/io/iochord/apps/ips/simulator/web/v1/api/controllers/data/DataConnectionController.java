@@ -115,5 +115,4 @@ public class DataConnectionController extends ADataController {
 		}
 		return run(new XesDataImportService(), config, XesDataImportResult.class, headers);
 	}
-
 }

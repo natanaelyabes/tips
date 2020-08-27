@@ -15,7 +15,7 @@
         <i class="right angle icon divider"></i>
         <div class="active section">{{this.title}}</div>
         <i class="right angle icon divider"></i>
-        <select class="ui floating scrolling dropdown button" @change="retreiveDataset" ref="datasetSelector" v-model="selectedDatasetId">
+        <select class="ui floating scrolling dropdown button" ref="datasetSelector" v-model="selectedDatasetId">
           <option value="Select a dataset" selected>Select a dataset</option>
           <option v-for="(ds, i) in datasets" :key="i" class="item" :value="i">{{ds.name}} ({{i}})</option>
         </select>
@@ -23,9 +23,9 @@
 
       <!-- Left Sidebar Menu Item -->
       <template slot="depth-one-menu-item">
-        <router-link :to="`/iochord/ips/analytics/branch/settings/${datasetId}`" 
+        <router-link :to="`/iochord/ips/analytics/branch/settings/${datasetId}`"
           tag="a" class="item"><i class="cog icon"></i>Settings</router-link>
-        <router-link :to="`/iochord/ips/analytics/branch/mining/${datasetId}`" 
+        <router-link :to="`/iochord/ips/analytics/branch/mining/${datasetId}`"
           tag="a" class="item active"><i class="chart bar icon"></i>Overall</router-link>
       </template>
 
@@ -127,24 +127,22 @@ export default class AnalysisBranchOverall extends ExplorerLayoutView {
     this.title = `Branch mining`;
   }
 
+  /**
+   * Override Vue mounted lifecyle
+   *
+   * @memberof AnalysisResourceMining
+   */
   public mounted(): void {
-    this.selectedDatasetId = 'Select a dataset';
-    if (this.datasetId) this.selectedDatasetId = this.datasetId;
-    this.retreiveDataset();
-  }
-
-  public retreiveDataset(): void {
-    DataConnectionService.getInstance().getDataConnections((res: any) => {
-      this.datasets = res.data;
-    }, (tick: any) => {
-      // this.datasets = tick;
-    });
-
-    if (this.datasetId) {
-      this.selectedDatasetId = this.datasetId;
-    }
-
     this.forceReRender();
+    console.log(this.datasetId);
+    const self = this;
+    DataConnectionService.getInstance().getDataConnections((res: any) => {
+      self.datasets = res.data;
+      if (this.datasetId !== '')
+        this.selectedDatasetId = this.datasetId;
+    }, (tick: any) => {
+      console.log('Checking progress ' + tick);
+    });
   }
 
   public declareSemanticModules() {

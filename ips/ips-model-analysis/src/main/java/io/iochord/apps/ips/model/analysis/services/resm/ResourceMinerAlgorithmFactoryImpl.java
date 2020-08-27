@@ -21,9 +21,7 @@ public class ResourceMinerAlgorithmFactoryImpl implements ResourceMinerAlgorithm
 			resMiner = new ResMinerAlgorithmDefaultMining(context, config);
 		if(config.getResMinAlg().equals(ALGORITHM_DOING_SIMILAR_TASK))
 			resMiner = new ResMinerAlgorithmDoingSimilarTask(context, config);
-		
 		resMiner.compute();
-		
 		if(config.isTimeAnalysis())
 			resMiner.timeAnalysis();
 	}
@@ -32,5 +30,4 @@ public class ResourceMinerAlgorithmFactoryImpl implements ResourceMinerAlgorithm
 	public ResourceMinerResult getResult() {
 		return resMiner.getResult();
 	}
-
 }

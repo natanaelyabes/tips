@@ -31,9 +31,8 @@ public class IsmAnalysisController extends AnAnalysisController {
 	public static final String BASE_URI = AnAnalysisController.BASE_URI + "/discover";
 
 	/**
-	 * Resource Mining action
+	 * Resource Mining action.
 	 * 
-	 * @author Nur Ichsan Utama <ichsan83@gmail.com>
 	 * @param datasetId dataset Id
 	 * @param config resource mining configuration
 	 * @param headers autowired http headers
@@ -59,9 +58,8 @@ public class IsmAnalysisController extends AnAnalysisController {
 	}
 
 	/**
-	 * Decision Point Analysis
+	 * Decision Point Analysis.
 	 * 
-	 * @author Natanael Yabes Wirawan <yabes.wirawan@pusan.ac.kr>
 	 * @param datasetId dataset identifier
 	 * @param config decision point analysis configuration
 	 * @param headers autowired http headers
@@ -82,7 +80,7 @@ public class IsmAnalysisController extends AnAnalysisController {
 		} catch (Exception ex) {
 			LoggerUtil.logError(ex);
 		}
-		context.completeAndDestroy(dmr);		
+		context.completeAndDestroy(dmr);
 		return context;
 	}
 }

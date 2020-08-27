@@ -14,6 +14,8 @@
 <script lang="ts">
 import { Vue, Component, Prop } from 'vue-property-decorator';
 import SemanticComponent from '@/iochord/ips/common/ui/semantic-components/SemanticComponent';
+import BranchMiningService from '../services/BranchMiningService';
+import BranchMiningConfiguration from '../models/BranchMiningConfiguration';
 
 declare const $: any;
 
@@ -32,6 +34,7 @@ declare const $: any;
  *
  */
 export default class ContentSettingsComponent extends SemanticComponent {
+
   /**
    * Dataset Id field for selecting event log dataset.
    *
@@ -41,10 +44,25 @@ export default class ContentSettingsComponent extends SemanticComponent {
   @Prop({default: ''})
   public datasetId!: string;
 
+  /**
+   * Branch mining configuration.
+   *
+   * @type {BranchMiningConfiguration}
+   * @memberof ContentSettingsComponent
+   */
+  public config: BranchMiningConfiguration = new BranchMiningConfiguration();
+
   public doBranchMining() {
     if (this.datasetId !== 'Select a dataset') {
+
+      this.config.datasetId = this.datasetId;
+
+      BranchMiningService.getInstance().mineDecision(this.config, (res: any) => {
+        console.log(res);
+      }, null);
+
       const route = { path: `/iochord/ips/analytics/branch/mining/${this.datasetId}` };
-      this.$router.push(route);
+      this.$router.push(route); // Redirect to overall page
     }
   }
 

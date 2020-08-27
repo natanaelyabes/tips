@@ -21,6 +21,4 @@ public class ResourceMinerService extends AnIpsAsyncService<ResourceMinerConfig,
 		}
 		return null;
 	}
-	
-	
 }

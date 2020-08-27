@@ -190,7 +190,7 @@ export default class ContentSettingsComponent extends SemanticComponent {
    */
   public doMining()  {
     const self = this;
-    if (self.datasetId === '') {
+    if (self.datasetId === 'Select a dataset') {
       alert('Choose datasetId');
     } else {
       self.isUploading = true;
