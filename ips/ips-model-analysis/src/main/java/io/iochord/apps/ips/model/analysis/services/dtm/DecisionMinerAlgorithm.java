@@ -6,6 +6,7 @@ package io.iochord.apps.ips.model.analysis.services.dtm;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.Statement;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -61,13 +62,20 @@ public class DecisionMinerAlgorithm implements DecisionMiner {
 		q.append("-- Enable extensions\n");
 		q.append("CREATE EXTENSION IF NOT EXISTS plpython3u;\n");
 		q.append("\n"); // Create UDFs.
+		try (Connection conn = context.getDataSource().getConnection()) {
+			String query = q.toString();
+			try (PreparedStatement st = conn.prepareStatement(query)) {
+				st.execute();
+			}
+		} catch (Exception e) {
+			LoggerUtil.logError(e);
+		}
 		predictDecisionTreeUDF(context, config, q);
 		branches.stream().forEach(node -> getInputOutputNodes(context, config, node, q));
-		System.out.println(q);
 	}
 
 	/**
-	 * Returns the set of pairs of input and output nodes of a branch.
+	 * Returns pair of input and output nodes of a branch.
 	 * 
 	 * @param context
 	 * @param config
@@ -75,6 +83,7 @@ public class DecisionMinerAlgorithm implements DecisionMiner {
 	 * @param q
 	 */
 	private void getInputOutputNodes(ServiceContext context, DecisionMinerConfig config, Node node, StringBuilder q) {
+		q.setLength(0);
 		Branch branch = (Branch) node; // Retrieve the branch node object.
 		Supplier<Stream<Entry<String, Page>>> pageEntrySet = () -> result.getProcessmodel().getPages().entrySet().stream();
 		Stream<String> pageKeys = pageEntrySet.get().map(page -> page.getKey());
@@ -110,7 +119,7 @@ public class DecisionMinerAlgorithm implements DecisionMiner {
 
 	/**
 	 * User-Defined-Function (UDF) to predict outcome based on
-	 * an input (feature vector) using decision tree classifier.
+	 * an input (feature tuple) using decision tree classifier.
 	 * 
 	 * [param] model_table
 	 * [param] model_colname
@@ -282,8 +291,6 @@ public class DecisionMinerAlgorithm implements DecisionMiner {
 				+ "WHERE ea = %s;' % (plpy.quote_literal(s), plpy.quote_literal('" + input.get(0).getLabel() + "')))\n");
 		q.append("$$ LANGUAGE plpython3u;\n");
 		q.append("\n");
-		q.append("-- Return the decision rules.\n");
-		q.append("SELECT * FROM r;\n\n");
 		execQuery(context,config, q);
 	}
 
@@ -299,21 +306,29 @@ public class DecisionMinerAlgorithm implements DecisionMiner {
 	 */
 	private void execQuery(ServiceContext context, DecisionMinerConfig config, StringBuilder q) {
 		try (Connection conn = context.getDataSource().getConnection()) {
+			String procedure = q.toString();
+			try (Statement st = conn.createStatement()) {
+				st.execute(procedure); // It works!
+			}
+			q.setLength(0);
+			q.append("-- Return the decision rules.\n");
+			q.append("SELECT * FROM r;"); // ERROR: No results were returned by the query.
 			String query = q.toString();
 			try (PreparedStatement st = conn.prepareStatement(query)) {
 				ResultSet rs = st.executeQuery();
 				while (rs.next()) {
+					DecisionRule rule = new DecisionRule();
 					String ea = rs.getString(1);
 					double ac = rs.getDouble(2);
 					String ru = rs.getString(3);
-					System.out.println(ea);
-					System.out.println(ac);
-					System.out.println(ru);
+					rule.setEventName(ea);
+					rule.setModelAccuracy(ac);
+					rule.setDecisionRule(ru);
+					result.getRule().add(rule);
 				}
 			}
 		} catch (Exception e) {
 			LoggerUtil.logError(e);
 		}
-		q = new StringBuilder();
 	}
 }

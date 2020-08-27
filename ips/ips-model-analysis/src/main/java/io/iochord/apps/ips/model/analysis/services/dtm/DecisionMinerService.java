@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -88,6 +89,7 @@ public class DecisionMinerService extends AnIpsAsyncService<DecisionMinerConfig,
 				.filter(node -> ElementType.NODE_BRANCH.equals(node.getElementType()) 
 						&& BranchType.SPLIT.equals(((Branch) node).getType()))
 				.collect(Collectors.toList())).flatMap(Collection::stream).collect(Collectors.toList());
+		result.setRule(new ArrayList<DecisionRule>());
 		DecisionMinerAlgorithm miner = new DecisionMinerAlgorithm(context, config, branchNodes, result);
 		return miner.getResult();
 	}
