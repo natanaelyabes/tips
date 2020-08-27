@@ -16,10 +16,12 @@ export default [
       {
         path: `mining/:datasetId?`,
         component: () => import(/* webpackChunkName: "ips-model-analysis-analytics-branch-mining" */ './views/AnalysisBranchOverall.vue'),
+        props: true,
       },
       {
         path: `settings/:datasetId?`,
         component: () => import(/* webpackChunkName: "ips-model-analysis-analytics-branch-settings" */ './views/AnalysisBranchSettings.vue'),
+        props: true,
       },
     ],
   },

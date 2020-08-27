@@ -5,19 +5,17 @@
 -->
 <template>
   <div class="upload component">
+    <div class="ui basic segment" id="header">
+      <h4>File type</h4>
+    </div>
+    <div class="ui divider"></div>
     <div class="ui divided items">
-      <div class="item">
-        <div class="ui transparent icon input">
-          <input type="text" placeholder="Browse...">
-          <i class="search icon"></i>
-        </div>
-      </div>
-      <div class="item hovered">Import CSV</div>
-      <div class="item hovered">Import XES</div>
-      <div class="item hovered">Import MXML</div>
-      <div class="item hovered">Import Simulation Model</div>
-      <div class="item hovered">Import CPN</div>
-      <div class="item hovered">Import Process Model</div>
+      <div class="item hovered">CSV</div>
+      <div class="item hovered">XES</div>
+      <div class="item hovered">MXML</div>
+      <div class="item hovered">Simulation Model</div>
+      <div class="item hovered">CPN</div>
+      <div class="item hovered">Process Model</div>
     </div>
   </div>
 </template>
@@ -29,6 +27,23 @@
 
 .ui.items {
   margin: 1rem 0;
+}
+
+.ui.basic.segment {
+  padding: 0 1em;
+}
+
+.ui.divided.items {
+  min-width: 180px;
+  margin: 0;
+}
+
+.ui.divider {
+  margin: 0;
+}
+
+.ui.ui.divided.items>.item:first-child {
+  padding-top: 1rem!important;
 }
 
 .ui.items .item {

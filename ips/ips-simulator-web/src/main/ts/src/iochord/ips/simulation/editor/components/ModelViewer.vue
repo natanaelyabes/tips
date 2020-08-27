@@ -203,9 +203,6 @@ export default class ModelViewer extends AppLayoutView {
       // Fetch graph to Vuex state
       await graphModule.loadGraph();
 
-      // Print to stdout
-      console.log(graphModule.graph);
-
       // Update rxjs subject
       GraphSubject.update(graphModule.graph);
 
@@ -215,12 +212,9 @@ export default class ModelViewer extends AppLayoutView {
         // Update its Vuex state
         graphModule.setGraph(graph);
 
-        // Print to stdout
-        // console.log(JSON.stringify(graph));
-        console.log('Rendered graph: ', graph);
       });
     } catch (e) {
-      console.error(e);
+      // console.error(e);
     }
 
     // Force re-render page component

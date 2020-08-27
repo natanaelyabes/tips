@@ -25,6 +25,7 @@ import lombok.Getter;
  *
  */
 public abstract class AServiceController extends AController {
+
 	/**
 	 * Base URI prefix for API
 	 */

@@ -1,8 +1,8 @@
 package io.iochord.apps.ips.model.analysis.services.dtm;
 
-import io.iochord.apps.ips.model.analysis.services.dtm.model.DecisionEdge;
-import io.iochord.apps.ips.model.analysis.services.dtm.model.DecisionNode;
-import io.iochord.apps.ips.model.analysis.services.dtm.model.DecisionTree;
+import java.util.List;
+
+import io.iochord.apps.ips.model.ism.v1.IsmGraph;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -14,7 +14,10 @@ import lombok.Setter;
  * 
  */
 public class DecisionMinerResult {
-
+	
 	@Getter @Setter
-	private DecisionTree<DecisionEdge, DecisionNode> tree;
+	private IsmGraph processmodel;
+	
+	@Getter @Setter
+	private List<DecisionRule> rule;
 }

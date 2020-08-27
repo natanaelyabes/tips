@@ -14,6 +14,10 @@ public class DecisionMinerConfig {
 
 	@Getter
 	@Setter
+	private String schemaName;
+	
+	@Getter
+	@Setter
 	private String datasetId;
 
 	@Getter

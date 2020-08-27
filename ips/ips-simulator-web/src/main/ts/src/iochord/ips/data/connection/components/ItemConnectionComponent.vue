@@ -5,13 +5,11 @@
 -->
 <template>
   <div class="connection component">
+    <div class="ui basic segment" id="header">
+      <h4>Event source environment</h4>
+    </div>
+    <div class="ui divider"></div>
     <div class="ui divided items">
-      <div class="item">
-        <div class="ui transparent icon input">
-          <input type="text" placeholder="Search connection...">
-          <i class="search icon"></i>
-        </div>
-      </div>
       <div class="item hovered" v-on:click = "chooseConnection('oracle')">Oracle</div>
       <div class="item hovered" v-on:click = "chooseConnection('mssql')">MSSQL Server</div>
       <div class="item hovered" v-on:click = "chooseConnection('mysql')">MySQL</div>
@@ -21,8 +19,25 @@
 </template>
 
 <style scoped>
+.ui.basic.segment {
+  padding: 0 1em;
+}
+
+.ui.divider {
+  margin: 0;
+}
+
 .ui.input {
   width: 100%;
+}
+
+.ui.divided.items {
+  min-width: 180px;
+  margin: 0;
+}
+
+.ui.divided.items>.item:first-child {
+  padding-top: 1rem!important;
 }
 
 .ui.items {

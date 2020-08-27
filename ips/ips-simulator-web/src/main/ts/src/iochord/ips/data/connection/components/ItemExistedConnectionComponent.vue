@@ -5,8 +5,12 @@
 -->
 <template>
   <div class="existed connection component">
+    <div class="ui basic segment" id="header">
+      <h4>Event logs</h4>
+    </div>
+    <div class="ui divider"></div>
     <div class="ui divided items">
-      <div class="item">
+      <!-- <div class="item">
         <div class="ui transparent icon input">
           <input type="text" placeholder="Browse...">
           <i class="search icon"></i>
@@ -17,36 +21,19 @@
           <input id="select[all]" type="checkbox" name="select[all]">
           <label for="select[all]">Select all</label>
         </div>
-      </div>
+      </div> -->
       <div class="item" v-for="(ds, i) in datasets" :key="i">
-        <div class="content">
+        <!-- <div class="content">
           <div class="ui checkbox">
             <input id="select[all]" type="checkbox" name="select[all]">
             <label for=""></label>
           </div>
-        </div>
+        </div> -->
         <div class="content">
           <router-link tag="a" :to="'/iochord/ips/data/mapping/' + i">
             <h4 class="ui header">{{ds.name}}</h4> 
             <a class="ui label">({{i}})</a>
           </router-link>
-
-          <div class="extra">
-            <div class="ui right floated icon buttons">
-              <button class="ui disabled yellow button">
-                <i class="star icon"></i>
-              </button>
-              <button class="ui disabled green button">
-                <i class="eye icon"></i>
-              </button>
-              <button class="ui disabled blue button">
-                <i class="filter icon"></i>
-              </button>
-              <button class="ui disabled black button">
-                <i class="usb icon"></i>
-              </button>
-            </div>
-          </div>
         </div>
 
         <div class="bottom aligned content">
@@ -62,6 +49,10 @@
 </template>
 
 <style scoped>
+.ui.basic.segment {
+  padding: 0 1em;
+}
+
 .ui.input {
   width: 100%;
 }
