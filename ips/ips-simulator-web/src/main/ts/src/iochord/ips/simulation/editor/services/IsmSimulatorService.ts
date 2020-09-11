@@ -2,6 +2,8 @@ import { SimulatorService } from '../../services/SimulatorService';
 import { Client } from 'webstomp-client';
 import { Graph } from '@/iochord/ips/common/graphs/ism/interfaces/Graph';
 import { GraphImpl } from '@/iochord/ips/common/graphs/ism/class/GraphImpl';
+import IsmDiscoveryConfiguration from '@/iochord/ips/analysis/process-discovery/models/IsmDiscoveryConfiguration';
+
 
 /**
  * The ISM simulator service class.
@@ -82,6 +84,12 @@ export class IsmSimulatorService extends SimulatorService {
     const page = (graph as any).pages.get('0');
     (page as any).connectors = page.connectors;
     const response = await this.remotePost(IsmSimulatorService.BASE_URI + '/loadnplay', graph);
+    return response.data;
+  }
+
+  public async postLoadNPlayWithDataset(config: IsmDiscoveryConfiguration, datasetId: string): Promise<string> {
+    config.datasetId = datasetId;
+    const response = await this.remotePost(IsmSimulatorService.BASE_URI + '/loadnplay/' + datasetId, config);
     return response.data;
   }
 }

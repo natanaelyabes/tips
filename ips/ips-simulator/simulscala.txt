@@ -1,1049 +1,1100 @@
-case class CaseData(name:String,age:Int)
+case class CaseData(atr1:String,atr2:Int)
 
-type colset01 = (Int,String)
+type colset01 = ((Int,String),CaseData)
 
-type colset02 = List[(Int,String)]
+type colset02 = (Int,String)
 
-type colset03 = (Int,String,CaseData)
-
-case class Binding01(entity:Option[colset01], queue:Option[colset02])
+case class Binding01(entity:Option[colset02])
 val Eval01 = (b1:Binding01, b2:Binding01) => {
-	(b1.entity == b2.entity || b1.entity == None || b2.entity == None) && (b1.queue == b2.queue || b1.queue == None || b2.queue == None)
-}
-val Merge01 = (b1:Binding01, b2:Binding01) => {
-	val entity = if(b1.entity == None) b2.entity else b1.entity;val queue = if(b1.queue == None) b2.queue else b1.queue;
-	Binding01(entity,queue)
-}
-case class Binding02(entity:Option[colset01])
-val Eval02 = (b1:Binding02, b2:Binding02) => {
 	(b1.entity == b2.entity || b1.entity == None || b2.entity == None)
 }
-val Merge02 = (b1:Binding02, b2:Binding02) => {
+val Merge01 = (b1:Binding01, b2:Binding01) => {
 	val entity = if(b1.entity == None) b2.entity else b1.entity;
-	Binding02(entity)
+	Binding01(entity)
 }
-type colset04 = ((Int,String),Resource)
+type colset03 = ((Int,String),Double)
 
-case class Binding03(entity:Option[colset01], resource:Option[Resource])
+case class Binding02(entity:Option[colset02],cond:Option[Double])
+val Eval02 = (b1:Binding02, b2:Binding02) => {
+	(b1.entity == b2.entity || b1.entity == None || b2.entity == None) && (b1.cond == b2.cond || b1.cond == None || b2.cond == None)
+}
+val Merge02 = (b1:Binding02, b2:Binding02) => {
+	val entity = if(b1.entity == None) b2.entity else b1.entity; val cond = if(b1.cond == None) b2.cond else b1.cond;
+	Binding02(entity,cond)
+}
+type colset04 = List[colset02]
+
+case class Binding03(entity:Option[colset02], queue:Option[colset04])
 val Eval03 = (b1:Binding03, b2:Binding03) => {
-	(b1.entity == b2.entity || b1.entity == None || b2.entity == None) && (b1.resource == b2.resource || b1.resource == None || b2.resource == None)
+	(b1.entity == b2.entity || b1.entity == None || b2.entity == None) && (b1.queue == b2.queue || b1.queue == None || b2.queue == None)
 }
 val Merge03 = (b1:Binding03, b2:Binding03) => {
-	val entity = if(b1.entity == None) b2.entity else b1.entity; val resource = if(b1.resource == None) b2.resource else b1.resource;
-	Binding03(entity,resource)
+	val entity = if(b1.entity == None) b2.entity else b1.entity;val queue = if(b1.queue == None) b2.queue else b1.queue;
+	Binding03(entity,queue)
 }
-type colset05 = Int
+type colset05 = (colset02,Resource[colset02])
 
-val map01 = Map[(colset05,Long),Int]( ((1,0),1) )
-val ms01 = new Multiset[colset05](map01)
-val place01 = new Place("place01","_dgp1",ms01)
-place01.setOrigin(Map[String,String](("origin","0-generator-1"),("role","_dgp1")))
-cgraph.addPlace(place01)
-
-val map02 = Map[(colset01,Long),Int](  )
-val ms02 = new Multiset[colset01](map02)
-val place02 = new Place("place02","_dgp2",ms02)
-place02.setOrigin(Map[String,String](("origin","0-generator-1"),("role","_dgp2")))
-cgraph.addPlace(place02)
-
-val map03 = Map[(colset03,Long),Int](  )
-val ms03 = new Multiset[colset03](map03)
-val place03 = new Place("place03","_dgpData",ms03)
-place03.setOrigin(Map[String,String](("origin","0-generator-1"),("role","_dgpData")))
-cgraph.addPlace(place03)
-
-case class Binding04(tid:Option[Int],gid:Option[String],data:Option[CaseData])
+case class Binding04(entity:Option[colset02], resource:Option[Resource[colset02]])
 val Eval04 = (b1:Binding04, b2:Binding04) => {
-	(b1.tid == b2.tid || b1.tid == None || b2.tid == None) && (b1.gid == b2.gid || b1.gid == None || b2.gid == None) && (b1.data == b2.data || b1.data == None || b2.data == None)
+	(b1.entity == b2.entity || b1.entity == None || b2.entity == None) && (b1.resource == b2.resource || b1.resource == None || b2.resource == None)
 }
 val Merge04 = (b1:Binding04, b2:Binding04) => {
-	val tid = if(b1.tid == None) b2.tid else b1.tid;val gid = if(b1.gid == None) b2.gid else b1.gid;val data = if(b1.data == None) b2.data else b1.data;
-	Binding04(tid,gid,data)
+	val entity = if(b1.entity == None) b2.entity else b1.entity; val resource = if(b1.resource == None) b2.resource else b1.resource;
+	Binding04(entity,resource)
 }
-val Guard01 = new Guard[Binding04]()
-val BindGuard01 = (b:Binding04) => {b.tid.get <= 100}
-Guard01.setGuardBind(BindGuard01)
-def actionFun01(b:Binding04):Binding04 = { val r = new java.util.Random()
-val rint = r.nextInt();val gid = "0-generator-1"
-val data = CaseData("nama"+rint,rint)
-Binding04(b.tid,Some(gid),Some(data)) }
+type colset06 = (colset02,Resource[colset02], List[colset02])
 
-val action01 = new Action[Binding04]()
+case class Binding05(entity:Option[colset02], resource:Option[Resource[colset02]], queue:Option[List[colset02]])
+val Eval05 = (b1:Binding05, b2:Binding05) => {
+	(b1.entity == b2.entity || b1.entity == None || b2.entity == None) && (b1.resource == b2.resource || b1.resource == None || b2.resource == None) && (b1.queue == b2.queue || b1.queue == None || b2.queue == None)
+}
+val Merge05 = (b1:Binding05, b2:Binding05) => {
+	val entity = if(b1.entity == None) b2.entity else b1.entity; val resource = if(b1.resource == None) b2.resource else b1.resource; val queue = if(b1.queue == None) b2.queue else b1.queue;
+	Binding05(entity,resource,queue)
+}
+type colset07 = Int
+
+val map01 = Map[(colset07,Long),Int]( ((1,0),1) )
+val ms01 = new Multiset[colset07](map01)
+val p_01 = new Place("p_01","_dgp1",ms01)
+p_01.setOrigin(Map[String,String](("origin","0-generator-1"),("role","_dgp1")))
+cgraph.addPlace(p_01)
+
+val map02 = Map[(colset02,Long),Int](  )
+val ms02 = new Multiset[colset02](map02)
+val p_02 = new Place("p_02","_dgp2",ms02)
+p_02.setOrigin(Map[String,String](("origin","0-generator-1"),("role","_dgp2")))
+cgraph.addPlace(p_02)
+
+val map03 = Map[(colset01,Long),Int](  )
+val ms03 = new Multiset[colset01](map03)
+val p_03 = new Place("p_03","_dgpData",ms03)
+p_03.setOrigin(Map[String,String](("origin","0-generator-1"),("role","_dgpData")))
+cgraph.addPlace(p_03)
+
+case class Binding06(tid:Option[Int],gid:Option[String],data:Option[CaseData])
+val Eval06 = (b1:Binding06, b2:Binding06) => {
+	(b1.tid == b2.tid || b1.tid == None || b2.tid == None) && (b1.gid == b2.gid || b1.gid == None || b2.gid == None) && (b1.data == b2.data || b1.data == None || b2.data == None)
+}
+val Merge06 = (b1:Binding06, b2:Binding06) => {
+	val tid = if(b1.tid == None) b2.tid else b1.tid;val gid = if(b1.gid == None) b2.gid else b1.gid;val data = if(b1.data == None) b2.data else b1.data;
+	Binding06(tid,gid,data)
+}
+val Guard01 = new Guard[Binding06]()
+val BindGuard01 = (b:Binding06) => {b.tid.get <= 100}
+Guard01.setGuardBind(BindGuard01)
+def actionFun01(b:Binding06):Binding06 = { val r = new java.util.Random()
+val rint = r.nextInt();val gid = "0-generator-1"
+val data = CaseData("atr"+rint,rint)
+Binding06(b.tid,Some(gid),Some(data)) }
+
+val action01 = new Action[Binding06]()
 action01.setActionFun(actionFun01)
 
-val trans01 = new Transition[Binding04]("trans01","_dgt1",Guard01,action01)
-trans01.setEval(Eval04)
-trans01.setMerge(Merge04)
-trans01.setOrigin(Map[String,String](("origin","0-generator-1"),("role","_dgt1")))
-cgraph.addTransition(trans01)
+val t_01 = new Transition[Binding06]("t_01","_dgt1",Guard01,action01)
+t_01.setEval(Eval06)
+t_01.setMerge(Merge06)
+t_01.setOrigin(Map[String,String](("origin","0-generator-1"),("role","_dgt1")))
+cgraph.addTransition(t_01)
 
-val tTb01 = (t:colset05) => { val tid = t;Binding04(Some(tid), None, None) }
-val bTt01 = (b:Binding04) => {b.tid.get}:colset05
-val arc01 = new Arc[colset05,Binding04]("arc01",place01,trans01,Direction.PtT)
+val tTb01 = (t:colset07) => { try { val tid = t;Some(Binding06(Some(tid), None, None)) } catch { case e: Exception => None } }
+val bTt01 = (b:Binding06) => {b.tid.get}:colset07
+val arc01 = new Arc[colset07,Binding06]("arc01",p_01,t_01,Direction.PtT)
 arc01.setIsBase(true)
 arc01.setTokenToBind(tTb01)
 arc01.setBindToToken(bTt01)
 arc01.setOrigin(Map[String,String](("origin","0-generator-1"),("role","arc01")))
 cgraph.addArc(arc01)
 
-val bTt02 = (b:Binding04) => {b.tid.get + 1}:colset05
-val addTime01 = (b:Binding04) => {Math.round(Gaussian(100,10).draw())}
-val arc02 = new Arc[colset05,Binding04]("arc02",place01,trans01,Direction.TtP)
+val bTt02 = (b:Binding06) => {b.tid.get + 1}:colset07
+val addTime01 = (b:Binding06) => {Math.round(Gaussian(100,10).draw())}
+val arc02 = new Arc[colset07,Binding06]("arc02",p_01,t_01,Direction.TtP)
 arc02.setIsBase(false)
 arc02.setBindToToken(bTt02)
 arc02.setAddTime(addTime01)
 arc02.setOrigin(Map[String,String](("origin","0-generator-1"),("role","arc02")))
 cgraph.addArc(arc02)
 
-val bTt03 = (b:Binding04) => {(b.tid.get,b.gid.get)}:colset01
-val arc03 = new Arc[colset01,Binding04]("arc03",place02,trans01,Direction.TtP)
+val bTt03 = (b:Binding06) => {(b.tid.get,b.gid.get)}:colset02
+val arc03 = new Arc[colset02,Binding06]("arc03",p_02,t_01,Direction.TtP)
 arc03.setIsBase(false)
 arc03.setBindToToken(bTt03)
 arc03.setOrigin(Map[String,String](("origin","0-generator-1"),("role","arc03")))
 cgraph.addArc(arc03)
 
-val bTt04 = (b:Binding04) => {(b.tid.get,b.gid.get,b.data.get)}:colset03
-val arc04 = new Arc[colset03,Binding04]("arc04",place03,trans01,Direction.TtP)
+val bTt04 = (b:Binding06) => {((b.tid.get,b.gid.get),b.data.get)}:colset01
+val arc04 = new Arc[colset01,Binding06]("arc04",p_03,t_01,Direction.TtP)
 arc04.setIsBase(false)
 arc04.setBindToToken(bTt04)
 arc04.setOrigin(Map[String,String](("origin","0-generator-1"),("role","arc04")))
 cgraph.addArc(arc04)
 
-val mapplace_0resource2 = Map[(Resource,Long),Int]()
-val msplace_0resource2 = new Multiset[Resource](mapplace_0resource2)
-val place_0resource2 = new Place("place_0resource2","Resource Place",msplace_0resource2)
-cgraph.addPlace(place_0resource2)
+val mapr_0resource2 = Map[(Resource[colset02],Long),Int]()
+val msr_0resource2 = new Multiset[Resource[colset02]](mapr_0resource2)
+val r_0resource2 = new Place("r_0resource2","Resource Place",msr_0resource2)
+r_0resource2.setOrigin(Map[String,String](("origin","0-resource-2"),("role","_resp")))
+cgraph.addPlace(r_0resource2)
 
-val res0_resource_2_1 = new Resource("res0_resource_2_1", "야드 트럭", 0L)
-place_0resource2.addTokenWithTime( (res0_resource_2_1,0L), 1)
-val res0_resource_2_2 = new Resource("res0_resource_2_2", "야드 트럭", 0L)
-place_0resource2.addTokenWithTime( (res0_resource_2_2,0L), 1)
-val res0_resource_2_3 = new Resource("res0_resource_2_3", "야드 트럭", 0L)
-place_0resource2.addTokenWithTime( (res0_resource_2_3,0L), 1)
-val res0_resource_2_4 = new Resource("res0_resource_2_4", "야드 트럭", 0L)
-place_0resource2.addTokenWithTime( (res0_resource_2_4,0L), 1)
-val res0_resource_2_5 = new Resource("res0_resource_2_5", "야드 트럭", 0L)
-place_0resource2.addTokenWithTime( (res0_resource_2_5,0L), 1)
-val res0_resource_2_6 = new Resource("res0_resource_2_6", "야드 트럭", 0L)
-place_0resource2.addTokenWithTime( (res0_resource_2_6,0L), 1)
-val res0_resource_2_7 = new Resource("res0_resource_2_7", "야드 트럭", 0L)
-place_0resource2.addTokenWithTime( (res0_resource_2_7,0L), 1)
-val res0_resource_2_8 = new Resource("res0_resource_2_8", "야드 트럭", 0L)
-place_0resource2.addTokenWithTime( (res0_resource_2_8,0L), 1)
-val res0_resource_2_9 = new Resource("res0_resource_2_9", "야드 트럭", 0L)
-place_0resource2.addTokenWithTime( (res0_resource_2_9,0L), 1)
-val res0_resource_2_10 = new Resource("res0_resource_2_10", "야드 트럭", 0L)
-place_0resource2.addTokenWithTime( (res0_resource_2_10,0L), 1)
-val mapplace_0resource3 = Map[(Resource,Long),Int]()
-val msplace_0resource3 = new Multiset[Resource](mapplace_0resource3)
-val place_0resource3 = new Place("place_0resource3","Resource Place",msplace_0resource3)
-cgraph.addPlace(place_0resource3)
+val r_0resource2_1 = new Resource("r_0resource2_1", "야드 트럭 (Yard Trucks)", 0L)
+r_0resource2.addTokenWithTime( (r_0resource2_1,0L), 1)
+val r_0resource2_2 = new Resource("r_0resource2_2", "야드 트럭 (Yard Trucks)", 0L)
+r_0resource2.addTokenWithTime( (r_0resource2_2,0L), 1)
+val r_0resource2_3 = new Resource("r_0resource2_3", "야드 트럭 (Yard Trucks)", 0L)
+r_0resource2.addTokenWithTime( (r_0resource2_3,0L), 1)
+val r_0resource2_4 = new Resource("r_0resource2_4", "야드 트럭 (Yard Trucks)", 0L)
+r_0resource2.addTokenWithTime( (r_0resource2_4,0L), 1)
+val r_0resource2_5 = new Resource("r_0resource2_5", "야드 트럭 (Yard Trucks)", 0L)
+r_0resource2.addTokenWithTime( (r_0resource2_5,0L), 1)
+val r_0resource2_6 = new Resource("r_0resource2_6", "야드 트럭 (Yard Trucks)", 0L)
+r_0resource2.addTokenWithTime( (r_0resource2_6,0L), 1)
+val r_0resource2_7 = new Resource("r_0resource2_7", "야드 트럭 (Yard Trucks)", 0L)
+r_0resource2.addTokenWithTime( (r_0resource2_7,0L), 1)
+val r_0resource2_8 = new Resource("r_0resource2_8", "야드 트럭 (Yard Trucks)", 0L)
+r_0resource2.addTokenWithTime( (r_0resource2_8,0L), 1)
+val r_0resource2_9 = new Resource("r_0resource2_9", "야드 트럭 (Yard Trucks)", 0L)
+r_0resource2.addTokenWithTime( (r_0resource2_9,0L), 1)
+val r_0resource2_10 = new Resource("r_0resource2_10", "야드 트럭 (Yard Trucks)", 0L)
+r_0resource2.addTokenWithTime( (r_0resource2_10,0L), 1)
+val mapr_0resource3 = Map[(Resource[colset02],Long),Int]()
+val msr_0resource3 = new Multiset[Resource[colset02]](mapr_0resource3)
+val r_0resource3 = new Place("r_0resource3","Resource Place",msr_0resource3)
+r_0resource3.setOrigin(Map[String,String](("origin","0-resource-3"),("role","_resp")))
+cgraph.addPlace(r_0resource3)
 
-val res0_resource_3_1 = new Resource("res0_resource_3_1", "야드 크레인", 0L)
-place_0resource3.addTokenWithTime( (res0_resource_3_1,0L), 1)
-val res0_resource_3_2 = new Resource("res0_resource_3_2", "야드 크레인", 0L)
-place_0resource3.addTokenWithTime( (res0_resource_3_2,0L), 1)
-val res0_resource_3_3 = new Resource("res0_resource_3_3", "야드 크레인", 0L)
-place_0resource3.addTokenWithTime( (res0_resource_3_3,0L), 1)
-val res0_resource_3_4 = new Resource("res0_resource_3_4", "야드 크레인", 0L)
-place_0resource3.addTokenWithTime( (res0_resource_3_4,0L), 1)
-val res0_resource_3_5 = new Resource("res0_resource_3_5", "야드 크레인", 0L)
-place_0resource3.addTokenWithTime( (res0_resource_3_5,0L), 1)
-val res0_resource_3_6 = new Resource("res0_resource_3_6", "야드 크레인", 0L)
-place_0resource3.addTokenWithTime( (res0_resource_3_6,0L), 1)
-val res0_resource_3_7 = new Resource("res0_resource_3_7", "야드 크레인", 0L)
-place_0resource3.addTokenWithTime( (res0_resource_3_7,0L), 1)
-val res0_resource_3_8 = new Resource("res0_resource_3_8", "야드 크레인", 0L)
-place_0resource3.addTokenWithTime( (res0_resource_3_8,0L), 1)
-val res0_resource_3_9 = new Resource("res0_resource_3_9", "야드 크레인", 0L)
-place_0resource3.addTokenWithTime( (res0_resource_3_9,0L), 1)
-val res0_resource_3_10 = new Resource("res0_resource_3_10", "야드 크레인", 0L)
-place_0resource3.addTokenWithTime( (res0_resource_3_10,0L), 1)
-val mapplace_0resource4 = Map[(Resource,Long),Int]()
-val msplace_0resource4 = new Multiset[Resource](mapplace_0resource4)
-val place_0resource4 = new Place("place_0resource4","Resource Place",msplace_0resource4)
-cgraph.addPlace(place_0resource4)
+val r_0resource3_1 = new Resource("r_0resource3_1", "야드 크레인 (Yard Cranes)", 0L)
+r_0resource3.addTokenWithTime( (r_0resource3_1,0L), 1)
+val r_0resource3_2 = new Resource("r_0resource3_2", "야드 크레인 (Yard Cranes)", 0L)
+r_0resource3.addTokenWithTime( (r_0resource3_2,0L), 1)
+val r_0resource3_3 = new Resource("r_0resource3_3", "야드 크레인 (Yard Cranes)", 0L)
+r_0resource3.addTokenWithTime( (r_0resource3_3,0L), 1)
+val r_0resource3_4 = new Resource("r_0resource3_4", "야드 크레인 (Yard Cranes)", 0L)
+r_0resource3.addTokenWithTime( (r_0resource3_4,0L), 1)
+val r_0resource3_5 = new Resource("r_0resource3_5", "야드 크레인 (Yard Cranes)", 0L)
+r_0resource3.addTokenWithTime( (r_0resource3_5,0L), 1)
+val r_0resource3_6 = new Resource("r_0resource3_6", "야드 크레인 (Yard Cranes)", 0L)
+r_0resource3.addTokenWithTime( (r_0resource3_6,0L), 1)
+val r_0resource3_7 = new Resource("r_0resource3_7", "야드 크레인 (Yard Cranes)", 0L)
+r_0resource3.addTokenWithTime( (r_0resource3_7,0L), 1)
+val r_0resource3_8 = new Resource("r_0resource3_8", "야드 크레인 (Yard Cranes)", 0L)
+r_0resource3.addTokenWithTime( (r_0resource3_8,0L), 1)
+val r_0resource3_9 = new Resource("r_0resource3_9", "야드 크레인 (Yard Cranes)", 0L)
+r_0resource3.addTokenWithTime( (r_0resource3_9,0L), 1)
+val r_0resource3_10 = new Resource("r_0resource3_10", "야드 크레인 (Yard Cranes)", 0L)
+r_0resource3.addTokenWithTime( (r_0resource3_10,0L), 1)
+val mapr_0resource4 = Map[(Resource[colset02],Long),Int]()
+val msr_0resource4 = new Multiset[Resource[colset02]](mapr_0resource4)
+val r_0resource4 = new Place("r_0resource4","Resource Place",msr_0resource4)
+r_0resource4.setOrigin(Map[String,String](("origin","0-resource-4"),("role","_resp")))
+cgraph.addPlace(r_0resource4)
 
-val res0_resource_4_1 = new Resource("res0_resource_4_1", "키 크레인", 0L)
-place_0resource4.addTokenWithTime( (res0_resource_4_1,0L), 1)
-val res0_resource_4_2 = new Resource("res0_resource_4_2", "키 크레인", 0L)
-place_0resource4.addTokenWithTime( (res0_resource_4_2,0L), 1)
-val res0_resource_4_3 = new Resource("res0_resource_4_3", "키 크레인", 0L)
-place_0resource4.addTokenWithTime( (res0_resource_4_3,0L), 1)
-val res0_resource_4_4 = new Resource("res0_resource_4_4", "키 크레인", 0L)
-place_0resource4.addTokenWithTime( (res0_resource_4_4,0L), 1)
-val res0_resource_4_5 = new Resource("res0_resource_4_5", "키 크레인", 0L)
-place_0resource4.addTokenWithTime( (res0_resource_4_5,0L), 1)
-val res0_resource_4_6 = new Resource("res0_resource_4_6", "키 크레인", 0L)
-place_0resource4.addTokenWithTime( (res0_resource_4_6,0L), 1)
-val res0_resource_4_7 = new Resource("res0_resource_4_7", "키 크레인", 0L)
-place_0resource4.addTokenWithTime( (res0_resource_4_7,0L), 1)
-val res0_resource_4_8 = new Resource("res0_resource_4_8", "키 크레인", 0L)
-place_0resource4.addTokenWithTime( (res0_resource_4_8,0L), 1)
-val res0_resource_4_9 = new Resource("res0_resource_4_9", "키 크레인", 0L)
-place_0resource4.addTokenWithTime( (res0_resource_4_9,0L), 1)
-val res0_resource_4_10 = new Resource("res0_resource_4_10", "키 크레인", 0L)
-place_0resource4.addTokenWithTime( (res0_resource_4_10,0L), 1)
-val map04 = Map[(colset01,Long),Int](  )
-val ms04 = new Multiset[colset01](map04)
-val place04 = new Place("place04","_nap1",ms04)
-place04.setOrigin(Map[String,String](("origin","0-start-0"),("role","_nap1")))
-cgraph.addPlace(place04)
+val r_0resource4_1 = new Resource("r_0resource4_1", "키 크레인 (Quay Cranes)", 0L)
+r_0resource4.addTokenWithTime( (r_0resource4_1,0L), 1)
+val r_0resource4_2 = new Resource("r_0resource4_2", "키 크레인 (Quay Cranes)", 0L)
+r_0resource4.addTokenWithTime( (r_0resource4_2,0L), 1)
+val r_0resource4_3 = new Resource("r_0resource4_3", "키 크레인 (Quay Cranes)", 0L)
+r_0resource4.addTokenWithTime( (r_0resource4_3,0L), 1)
+val r_0resource4_4 = new Resource("r_0resource4_4", "키 크레인 (Quay Cranes)", 0L)
+r_0resource4.addTokenWithTime( (r_0resource4_4,0L), 1)
+val r_0resource4_5 = new Resource("r_0resource4_5", "키 크레인 (Quay Cranes)", 0L)
+r_0resource4.addTokenWithTime( (r_0resource4_5,0L), 1)
+val r_0resource4_6 = new Resource("r_0resource4_6", "키 크레인 (Quay Cranes)", 0L)
+r_0resource4.addTokenWithTime( (r_0resource4_6,0L), 1)
+val r_0resource4_7 = new Resource("r_0resource4_7", "키 크레인 (Quay Cranes)", 0L)
+r_0resource4.addTokenWithTime( (r_0resource4_7,0L), 1)
+val r_0resource4_8 = new Resource("r_0resource4_8", "키 크레인 (Quay Cranes)", 0L)
+r_0resource4.addTokenWithTime( (r_0resource4_8,0L), 1)
+val r_0resource4_9 = new Resource("r_0resource4_9", "키 크레인 (Quay Cranes)", 0L)
+r_0resource4.addTokenWithTime( (r_0resource4_9,0L), 1)
+val r_0resource4_10 = new Resource("r_0resource4_10", "키 크레인 (Quay Cranes)", 0L)
+r_0resource4.addTokenWithTime( (r_0resource4_10,0L), 1)
+val map04 = Map[(colset02,Long),Int](  )
+val ms04 = new Multiset[colset02](map04)
+val p_04 = new Place("p_04","_nap1",ms04)
+p_04.setOrigin(Map[String,String](("origin","0-start-0"),("role","_nap1")))
+cgraph.addPlace(p_04)
 
-val trans02 = new Transition[Binding02]("trans02","silent",null,null)
-trans02.setEval(Eval02)
-trans02.setMerge(Merge02)
-trans02.setOrigin(Map[String,String](("origin","0-generator-1"),("role","silent")))
-cgraph.addTransition(trans02)
+val t_0generator1_mergegen = new Transition[Binding01]("t_0generator1_mergegen","_start",null,null)
+t_0generator1_mergegen.setEval(Eval01)
+t_0generator1_mergegen.setMerge(Merge01)
+t_0generator1_mergegen.setOrigin(Map[String,String](("origin","0-start-0"),("role","_start")))
+cgraph.addTransition(t_0generator1_mergegen)
 
-val tTb02 = (t:colset01) => { val entity = t;Binding02(Some(entity)) }
-val bTt05 = (b:Binding02) => {b.entity.get}:colset01
-val arc05 = new Arc[colset01,Binding02]("arc05",place02,trans02,Direction.PtT)
-arc05.setIsBase(false)
+val tTb02 = (t:colset02) => { try { val entity = t;Some(Binding01(Some(entity))) } catch { case e: Exception => None } }
+val bTt05 = (b:Binding01) => {b.entity.get}:colset02
+val arc05 = new Arc[colset02,Binding01]("arc05",p_02,t_0generator1_mergegen,Direction.PtT)
+arc05.setIsBase(true)
+arc05.setTokenToBind(tTb02)
 arc05.setBindToToken(bTt05)
 arc05.setOrigin(Map[String,String](("origin","0-generator-1"),("role","arc05")))
 cgraph.addArc(arc05)
 
-val bTt06 = (b:Binding02) => {b.entity.get}:colset01
-val arc06 = new Arc[colset01,Binding02]("arc06",place04,trans02,Direction.TtP)
-arc06.setIsBase(true)
+val bTt06 = (b:Binding01) => {b.entity.get}:colset02
+val arc06 = new Arc[colset02,Binding01]("arc06",p_04,t_0generator1_mergegen,Direction.TtP)
+arc06.setIsBase(false)
 arc06.setBindToToken(bTt06)
 arc06.setOrigin(Map[String,String](("origin","0-generator-1"),("role","arc06")))
 cgraph.addArc(arc06)
 
-val map05 = Map[(colset01,Long),Int](  )
-val ms05 = new Multiset[colset01](map05)
-val place05 = new Place("place05","_nap1",ms05)
-place05.setOrigin(Map[String,String](("origin","0-activity-1"),("role","_nap1")))
-cgraph.addPlace(place05)
+val map05 = Map[(colset02,Long),Int](  )
+val ms05 = new Multiset[colset02](map05)
+val p_05 = new Place("p_05","_nap1",ms05)
+p_05.setOrigin(Map[String,String](("origin","0-activity-1"),("role","_nap1")))
+cgraph.addPlace(p_05)
 
-place_0resource4.setOrigin(Map[String,String](("origin","0-resource-4"),("role","_resp")))
-val trans03 = new Transition[Binding03]("trans03","_natstart",null,null)
-trans03.setEval(Eval03)
-trans03.setMerge(Merge03)
-trans03.setOrigin(Map[String,String](("origin","0-activity-1"),("role","_natstart")))
-cgraph.addTransition(trans03)
+val t_03 = new Transition[Binding04]("t_03","_natstart",null,null)
+t_03.setEval(Eval04)
+t_03.setMerge(Merge04)
+t_03.setOrigin(Map[String,String](("origin","0-activity-1"),("role","_natstart")))
+cgraph.addTransition(t_03)
 
-val tTb03 = (t:colset01) => { val entity = t;Binding03(Some(entity), None) }
-val bTt07 = (b:Binding03) => {b.entity.get}:colset01
-val arc07 = new Arc[colset01,Binding03]("arc07",place05,trans03,Direction.PtT)
+val tTb03 = (t:colset02) => { try { val entity = t;Some(Binding04(Some(entity), None)) } catch { case e: Exception => None } }
+val bTt07 = (b:Binding04) => {b.entity.get}:colset02
+val arc07 = new Arc[colset02,Binding04]("arc07",p_05,t_03,Direction.PtT)
 arc07.setIsBase(true)
 arc07.setTokenToBind(tTb03)
 arc07.setBindToToken(bTt07)
 arc07.setOrigin(Map[String,String](("origin","0-activity-1"),("role","arc07")))
 cgraph.addArc(arc07)
 
-val map06 = Map[(colset04,Long),Int](  )
-val ms06 = new Multiset[colset04](map06)
-val place06 = new Place("place06","_nap2",ms06)
-place06.setOrigin(Map[String,String](("origin","0-activity-1"),("role","_nap2")))
-cgraph.addPlace(place06)
+val map06 = Map[(colset05,Long),Int](  )
+val ms06 = new Multiset[colset05](map06)
+val p_06 = new Place("p_06","_nap2",ms06)
+p_06.setOrigin(Map[String,String](("origin","0-activity-1"),("role","_nap2")))
+cgraph.addPlace(p_06)
 
-val bTt08 = (b:Binding03) => {(b.entity.get,b.resource.get)}:colset04
-val addTime02 = (b:Binding03) => {Math.round(Gaussian(400, 70).draw())}
-val arc08 = new Arc[colset04,Binding03]("arc08",place06,trans03,Direction.TtP)
+val bTt08 = (b:Binding04) => {(b.entity.get,b.resource.get)}:colset05
+val addTime02 = (b:Binding04) => {Math.round(Gaussian(400, 70).draw())}
+val arc08 = new Arc[colset05,Binding04]("arc08",p_06,t_03,Direction.TtP)
 arc08.setIsBase(false)
 arc08.setBindToToken(bTt08)
 arc08.setAddTime(addTime02)
 arc08.setOrigin(Map[String,String](("origin","0-activity-1"),("role","arc08")))
 cgraph.addArc(arc08)
 
-val trans04 = new Transition[Binding03]("trans04","_natend",null,null)
-trans04.setEval(Eval03)
-trans04.setMerge(Merge03)
-trans04.setOrigin(Map[String,String](("origin","0-activity-1"),("role","_natend")))
-cgraph.addTransition(trans04)
+val t_04 = new Transition[Binding04]("t_04","_natend",null,null)
+t_04.setEval(Eval04)
+t_04.setMerge(Merge04)
+t_04.setOrigin(Map[String,String](("origin","0-activity-1"),("role","_natend")))
+cgraph.addTransition(t_04)
 
-val tTb04 = (t:colset04) => { val (entity, resource) = t;Binding03(Some(entity), Some(resource)) }
-val bTt09 = (b:Binding03) => {(b.entity.get, b.resource.get)}:colset04
-val arc09 = new Arc[colset04,Binding03]("arc09",place06,trans04,Direction.PtT)
+val tTb04 = (t:colset05) => { try { val (entity, resource) = t;Some(Binding04(Some(entity), Some(resource))) } catch { case e: Exception => None } }
+val bTt09 = (b:Binding04) => {(b.entity.get, b.resource.get)}:colset05
+val arc09 = new Arc[colset05,Binding04]("arc09",p_06,t_04,Direction.PtT)
 arc09.setIsBase(true)
 arc09.setTokenToBind(tTb04)
 arc09.setBindToToken(bTt09)
 arc09.setOrigin(Map[String,String](("origin","0-activity-1"),("role","arc09")))
 cgraph.addArc(arc09)
 
-val map07 = Map[(colset01,Long),Int](  )
-val ms07 = new Multiset[colset01](map07)
-val place07 = new Place("place07","_nap3",ms07)
-place07.setOrigin(Map[String,String](("origin","0-activity-1"),("role","_nap3")))
-cgraph.addPlace(place07)
+val map07 = Map[(colset02,Long),Int](  )
+val ms07 = new Multiset[colset02](map07)
+val p_07 = new Place("p_07","_nap3",ms07)
+p_07.setOrigin(Map[String,String](("origin","0-activity-1"),("role","_nap3")))
+cgraph.addPlace(p_07)
 
-val bTt10 = (b:Binding03) => {b.entity.get}:colset01
-val arc10 = new Arc[colset01,Binding03]("arc10",place07,trans04,Direction.TtP)
+val bTt10 = (b:Binding04) => {b.entity.get}:colset02
+val arc10 = new Arc[colset02,Binding04]("arc10",p_07,t_04,Direction.TtP)
 arc10.setIsBase(false)
 arc10.setBindToToken(bTt10)
 arc10.setOrigin(Map[String,String](("origin","0-activity-1"),("role","arc10")))
 cgraph.addArc(arc10)
 
-val tTb05 = (t:Resource) => { val resource = t;Binding03(None, Some(resource)) }
-val bTt11 = (b:Binding03) => {b.resource.get}:Resource
-val arc11 = new Arc[Resource,Binding03]("arc11",place_0resource4,trans03,Direction.PtT)
+val tTb05 = (t:Resource[colset02]) => { try { val resource = t;Some(Binding04(None, Some(resource))) } catch { case e: Exception => None } }
+val bTt11 = (b:Binding04) => {b.resource.get}:Resource[colset02]
+val arc11 = new Arc[Resource[colset02],Binding04]("arc11",r_0resource4,t_03,Direction.PtT)
 arc11.setIsBase(true)
 arc11.setTokenToBind(tTb05)
 arc11.setBindToToken(bTt11)
 arc11.setOrigin(Map[String,String](("origin","0-activity-1"),("role","arc11")))
 cgraph.addArc(arc11)
 
-val bTt12 = (b:Binding03) => {b.resource.get}:Resource
-val arc12 = new Arc[Resource,Binding03]("arc12",place_0resource4,trans04,Direction.TtP)
+val bTt12 = (b:Binding04) => {b.resource.get}:Resource[colset02]
+val arc12 = new Arc[Resource[colset02],Binding04]("arc12",r_0resource4,t_04,Direction.TtP)
 arc12.setIsBase(false)
 arc12.setBindToToken(bTt12)
 arc12.setOrigin(Map[String,String](("origin","0-activity-1"),("role","arc12")))
 cgraph.addArc(arc12)
 
-val map08 = Map[(colset01,Long),Int](  )
-val ms08 = new Multiset[colset01](map08)
-val place08 = new Place("place08","_nap1",ms08)
-place08.setOrigin(Map[String,String](("origin","0-activity-2"),("role","_nap1")))
-cgraph.addPlace(place08)
+val map08 = Map[(colset02,Long),Int](  )
+val ms08 = new Multiset[colset02](map08)
+val p_08 = new Place("p_08","_nap1",ms08)
+p_08.setOrigin(Map[String,String](("origin","0-activity-2"),("role","_nap1")))
+cgraph.addPlace(p_08)
 
-place_0resource2.setOrigin(Map[String,String](("origin","0-resource-2"),("role","_resp")))
-val trans05 = new Transition[Binding03]("trans05","_natstart",null,null)
-trans05.setEval(Eval03)
-trans05.setMerge(Merge03)
-trans05.setOrigin(Map[String,String](("origin","0-activity-2"),("role","_natstart")))
-cgraph.addTransition(trans05)
+val t_05 = new Transition[Binding04]("t_05","_natstart",null,null)
+t_05.setEval(Eval04)
+t_05.setMerge(Merge04)
+t_05.setOrigin(Map[String,String](("origin","0-activity-2"),("role","_natstart")))
+cgraph.addTransition(t_05)
 
-val tTb06 = (t:colset01) => { val entity = t;Binding03(Some(entity), None) }
-val bTt13 = (b:Binding03) => {b.entity.get}:colset01
-val arc13 = new Arc[colset01,Binding03]("arc13",place08,trans05,Direction.PtT)
+val tTb06 = (t:colset02) => { try { val entity = t;Some(Binding04(Some(entity), None)) } catch { case e: Exception => None } }
+val bTt13 = (b:Binding04) => {b.entity.get}:colset02
+val arc13 = new Arc[colset02,Binding04]("arc13",p_08,t_05,Direction.PtT)
 arc13.setIsBase(true)
 arc13.setTokenToBind(tTb06)
 arc13.setBindToToken(bTt13)
 arc13.setOrigin(Map[String,String](("origin","0-activity-2"),("role","arc13")))
 cgraph.addArc(arc13)
 
-val map09 = Map[(colset04,Long),Int](  )
-val ms09 = new Multiset[colset04](map09)
-val place09 = new Place("place09","_nap2",ms09)
-place09.setOrigin(Map[String,String](("origin","0-activity-2"),("role","_nap2")))
-cgraph.addPlace(place09)
+val map09 = Map[(colset05,Long),Int](  )
+val ms09 = new Multiset[colset05](map09)
+val p_09 = new Place("p_09","_nap2",ms09)
+p_09.setOrigin(Map[String,String](("origin","0-activity-2"),("role","_nap2")))
+cgraph.addPlace(p_09)
 
-val bTt14 = (b:Binding03) => {(b.entity.get,b.resource.get)}:colset04
-val addTime03 = (b:Binding03) => {Math.round(Gaussian(400, 70).draw())}
-val arc14 = new Arc[colset04,Binding03]("arc14",place09,trans05,Direction.TtP)
+val bTt14 = (b:Binding04) => {(b.entity.get,b.resource.get)}:colset05
+val addTime03 = (b:Binding04) => {Math.round(Gaussian(400, 70).draw())}
+val arc14 = new Arc[colset05,Binding04]("arc14",p_09,t_05,Direction.TtP)
 arc14.setIsBase(false)
 arc14.setBindToToken(bTt14)
 arc14.setAddTime(addTime03)
 arc14.setOrigin(Map[String,String](("origin","0-activity-2"),("role","arc14")))
 cgraph.addArc(arc14)
 
-val trans06 = new Transition[Binding03]("trans06","_natend",null,null)
-trans06.setEval(Eval03)
-trans06.setMerge(Merge03)
-trans06.setOrigin(Map[String,String](("origin","0-activity-2"),("role","_natend")))
-cgraph.addTransition(trans06)
+val t_06 = new Transition[Binding04]("t_06","_natend",null,null)
+t_06.setEval(Eval04)
+t_06.setMerge(Merge04)
+t_06.setOrigin(Map[String,String](("origin","0-activity-2"),("role","_natend")))
+cgraph.addTransition(t_06)
 
-val tTb07 = (t:colset04) => { val (entity, resource) = t;Binding03(Some(entity), Some(resource)) }
-val bTt15 = (b:Binding03) => {(b.entity.get, b.resource.get)}:colset04
-val arc15 = new Arc[colset04,Binding03]("arc15",place09,trans06,Direction.PtT)
+val tTb07 = (t:colset05) => { try { val (entity, resource) = t;Some(Binding04(Some(entity), Some(resource))) } catch { case e: Exception => None } }
+val bTt15 = (b:Binding04) => {(b.entity.get, b.resource.get)}:colset05
+val arc15 = new Arc[colset05,Binding04]("arc15",p_09,t_06,Direction.PtT)
 arc15.setIsBase(true)
 arc15.setTokenToBind(tTb07)
 arc15.setBindToToken(bTt15)
 arc15.setOrigin(Map[String,String](("origin","0-activity-2"),("role","arc15")))
 cgraph.addArc(arc15)
 
-val map10 = Map[(colset01,Long),Int](  )
-val ms10 = new Multiset[colset01](map10)
-val place10 = new Place("place10","_nap3",ms10)
-place10.setOrigin(Map[String,String](("origin","0-activity-2"),("role","_nap3")))
-cgraph.addPlace(place10)
+val map10 = Map[(colset02,Long),Int](  )
+val ms10 = new Multiset[colset02](map10)
+val p_10 = new Place("p_10","_nap3",ms10)
+p_10.setOrigin(Map[String,String](("origin","0-activity-2"),("role","_nap3")))
+cgraph.addPlace(p_10)
 
-val bTt16 = (b:Binding03) => {b.entity.get}:colset01
-val arc16 = new Arc[colset01,Binding03]("arc16",place10,trans06,Direction.TtP)
+val bTt16 = (b:Binding04) => {b.entity.get}:colset02
+val arc16 = new Arc[colset02,Binding04]("arc16",p_10,t_06,Direction.TtP)
 arc16.setIsBase(false)
 arc16.setBindToToken(bTt16)
 arc16.setOrigin(Map[String,String](("origin","0-activity-2"),("role","arc16")))
 cgraph.addArc(arc16)
 
-val tTb08 = (t:Resource) => { val resource = t;Binding03(None, Some(resource)) }
-val bTt17 = (b:Binding03) => {b.resource.get}:Resource
-val arc17 = new Arc[Resource,Binding03]("arc17",place_0resource2,trans05,Direction.PtT)
+val tTb08 = (t:Resource[colset02]) => { try { val resource = t;Some(Binding04(None, Some(resource))) } catch { case e: Exception => None } }
+val bTt17 = (b:Binding04) => {b.resource.get}:Resource[colset02]
+val arc17 = new Arc[Resource[colset02],Binding04]("arc17",r_0resource2,t_05,Direction.PtT)
 arc17.setIsBase(true)
 arc17.setTokenToBind(tTb08)
 arc17.setBindToToken(bTt17)
 arc17.setOrigin(Map[String,String](("origin","0-activity-2"),("role","arc17")))
 cgraph.addArc(arc17)
 
-val bTt18 = (b:Binding03) => {b.resource.get}:Resource
-val arc18 = new Arc[Resource,Binding03]("arc18",place_0resource2,trans06,Direction.TtP)
+val bTt18 = (b:Binding04) => {b.resource.get}:Resource[colset02]
+val arc18 = new Arc[Resource[colset02],Binding04]("arc18",r_0resource2,t_06,Direction.TtP)
 arc18.setIsBase(false)
 arc18.setBindToToken(bTt18)
 arc18.setOrigin(Map[String,String](("origin","0-activity-2"),("role","arc18")))
 cgraph.addArc(arc18)
 
-val map11 = Map[(colset01,Long),Int](  )
-val ms11 = new Multiset[colset01](map11)
-val place11 = new Place("place11","_nap1",ms11)
-place11.setOrigin(Map[String,String](("origin","0-activity-3"),("role","_nap1")))
-cgraph.addPlace(place11)
+val map11 = Map[(colset02,Long),Int](  )
+val ms11 = new Multiset[colset02](map11)
+val p_11 = new Place("p_11","_nap1",ms11)
+p_11.setOrigin(Map[String,String](("origin","0-activity-3"),("role","_nap1")))
+cgraph.addPlace(p_11)
 
-place_0resource3.setOrigin(Map[String,String](("origin","0-resource-3"),("role","_resp")))
-val trans07 = new Transition[Binding03]("trans07","_natstart",null,null)
-trans07.setEval(Eval03)
-trans07.setMerge(Merge03)
-trans07.setOrigin(Map[String,String](("origin","0-activity-3"),("role","_natstart")))
-cgraph.addTransition(trans07)
+val t_07 = new Transition[Binding04]("t_07","_natstart",null,null)
+t_07.setEval(Eval04)
+t_07.setMerge(Merge04)
+t_07.setOrigin(Map[String,String](("origin","0-activity-3"),("role","_natstart")))
+cgraph.addTransition(t_07)
 
-val tTb09 = (t:colset01) => { val entity = t;Binding03(Some(entity), None) }
-val bTt19 = (b:Binding03) => {b.entity.get}:colset01
-val arc19 = new Arc[colset01,Binding03]("arc19",place11,trans07,Direction.PtT)
+val tTb09 = (t:colset02) => { try { val entity = t;Some(Binding04(Some(entity), None)) } catch { case e: Exception => None } }
+val bTt19 = (b:Binding04) => {b.entity.get}:colset02
+val arc19 = new Arc[colset02,Binding04]("arc19",p_11,t_07,Direction.PtT)
 arc19.setIsBase(true)
 arc19.setTokenToBind(tTb09)
 arc19.setBindToToken(bTt19)
 arc19.setOrigin(Map[String,String](("origin","0-activity-3"),("role","arc19")))
 cgraph.addArc(arc19)
 
-val map12 = Map[(colset04,Long),Int](  )
-val ms12 = new Multiset[colset04](map12)
-val place12 = new Place("place12","_nap2",ms12)
-place12.setOrigin(Map[String,String](("origin","0-activity-3"),("role","_nap2")))
-cgraph.addPlace(place12)
+val map12 = Map[(colset05,Long),Int](  )
+val ms12 = new Multiset[colset05](map12)
+val p_12 = new Place("p_12","_nap2",ms12)
+p_12.setOrigin(Map[String,String](("origin","0-activity-3"),("role","_nap2")))
+cgraph.addPlace(p_12)
 
-val bTt20 = (b:Binding03) => {(b.entity.get,b.resource.get)}:colset04
-val addTime04 = (b:Binding03) => {Math.round(Gaussian(400, 70).draw())}
-val arc20 = new Arc[colset04,Binding03]("arc20",place12,trans07,Direction.TtP)
+val bTt20 = (b:Binding04) => {(b.entity.get,b.resource.get)}:colset05
+val addTime04 = (b:Binding04) => {Math.round(Gaussian(400, 70).draw())}
+val arc20 = new Arc[colset05,Binding04]("arc20",p_12,t_07,Direction.TtP)
 arc20.setIsBase(false)
 arc20.setBindToToken(bTt20)
 arc20.setAddTime(addTime04)
 arc20.setOrigin(Map[String,String](("origin","0-activity-3"),("role","arc20")))
 cgraph.addArc(arc20)
 
-val trans08 = new Transition[Binding03]("trans08","_natend",null,null)
-trans08.setEval(Eval03)
-trans08.setMerge(Merge03)
-trans08.setOrigin(Map[String,String](("origin","0-activity-3"),("role","_natend")))
-cgraph.addTransition(trans08)
+val t_08 = new Transition[Binding04]("t_08","_natend",null,null)
+t_08.setEval(Eval04)
+t_08.setMerge(Merge04)
+t_08.setOrigin(Map[String,String](("origin","0-activity-3"),("role","_natend")))
+cgraph.addTransition(t_08)
 
-val tTb10 = (t:colset04) => { val (entity, resource) = t;Binding03(Some(entity), Some(resource)) }
-val bTt21 = (b:Binding03) => {(b.entity.get, b.resource.get)}:colset04
-val arc21 = new Arc[colset04,Binding03]("arc21",place12,trans08,Direction.PtT)
+val tTb10 = (t:colset05) => { try { val (entity, resource) = t;Some(Binding04(Some(entity), Some(resource))) } catch { case e: Exception => None } }
+val bTt21 = (b:Binding04) => {(b.entity.get, b.resource.get)}:colset05
+val arc21 = new Arc[colset05,Binding04]("arc21",p_12,t_08,Direction.PtT)
 arc21.setIsBase(true)
 arc21.setTokenToBind(tTb10)
 arc21.setBindToToken(bTt21)
 arc21.setOrigin(Map[String,String](("origin","0-activity-3"),("role","arc21")))
 cgraph.addArc(arc21)
 
-val map13 = Map[(colset01,Long),Int](  )
-val ms13 = new Multiset[colset01](map13)
-val place13 = new Place("place13","_nap3",ms13)
-place13.setOrigin(Map[String,String](("origin","0-activity-3"),("role","_nap3")))
-cgraph.addPlace(place13)
+val map13 = Map[(colset02,Long),Int](  )
+val ms13 = new Multiset[colset02](map13)
+val p_13 = new Place("p_13","_nap3",ms13)
+p_13.setOrigin(Map[String,String](("origin","0-activity-3"),("role","_nap3")))
+cgraph.addPlace(p_13)
 
-val bTt22 = (b:Binding03) => {b.entity.get}:colset01
-val arc22 = new Arc[colset01,Binding03]("arc22",place13,trans08,Direction.TtP)
+val bTt22 = (b:Binding04) => {b.entity.get}:colset02
+val arc22 = new Arc[colset02,Binding04]("arc22",p_13,t_08,Direction.TtP)
 arc22.setIsBase(false)
 arc22.setBindToToken(bTt22)
 arc22.setOrigin(Map[String,String](("origin","0-activity-3"),("role","arc22")))
 cgraph.addArc(arc22)
 
-val tTb11 = (t:Resource) => { val resource = t;Binding03(None, Some(resource)) }
-val bTt23 = (b:Binding03) => {b.resource.get}:Resource
-val arc23 = new Arc[Resource,Binding03]("arc23",place_0resource3,trans07,Direction.PtT)
+val tTb11 = (t:Resource[colset02]) => { try { val resource = t;Some(Binding04(None, Some(resource))) } catch { case e: Exception => None } }
+val bTt23 = (b:Binding04) => {b.resource.get}:Resource[colset02]
+val arc23 = new Arc[Resource[colset02],Binding04]("arc23",r_0resource3,t_07,Direction.PtT)
 arc23.setIsBase(true)
 arc23.setTokenToBind(tTb11)
 arc23.setBindToToken(bTt23)
 arc23.setOrigin(Map[String,String](("origin","0-activity-3"),("role","arc23")))
 cgraph.addArc(arc23)
 
-val bTt24 = (b:Binding03) => {b.resource.get}:Resource
-val arc24 = new Arc[Resource,Binding03]("arc24",place_0resource3,trans08,Direction.TtP)
+val bTt24 = (b:Binding04) => {b.resource.get}:Resource[colset02]
+val arc24 = new Arc[Resource[colset02],Binding04]("arc24",r_0resource3,t_08,Direction.TtP)
 arc24.setIsBase(false)
 arc24.setBindToToken(bTt24)
 arc24.setOrigin(Map[String,String](("origin","0-activity-3"),("role","arc24")))
 cgraph.addArc(arc24)
 
-val map14 = Map[(colset01,Long),Int](  )
-val ms14 = new Multiset[colset01](map14)
-val place14 = new Place("place14","_nap1",ms14)
-place14.setOrigin(Map[String,String](("origin","0-activity-4"),("role","_nap1")))
-cgraph.addPlace(place14)
+val map14 = Map[(colset02,Long),Int](  )
+val ms14 = new Multiset[colset02](map14)
+val p_14 = new Place("p_14","_nap1",ms14)
+p_14.setOrigin(Map[String,String](("origin","0-activity-4"),("role","_nap1")))
+cgraph.addPlace(p_14)
 
-place_0resource3.setOrigin(Map[String,String](("origin","0-resource-3"),("role","_resp")))
-val trans09 = new Transition[Binding03]("trans09","_natstart",null,null)
-trans09.setEval(Eval03)
-trans09.setMerge(Merge03)
-trans09.setOrigin(Map[String,String](("origin","0-activity-4"),("role","_natstart")))
-cgraph.addTransition(trans09)
+val t_09 = new Transition[Binding04]("t_09","_natstart",null,null)
+t_09.setEval(Eval04)
+t_09.setMerge(Merge04)
+t_09.setOrigin(Map[String,String](("origin","0-activity-4"),("role","_natstart")))
+cgraph.addTransition(t_09)
 
-val tTb12 = (t:colset01) => { val entity = t;Binding03(Some(entity), None) }
-val bTt25 = (b:Binding03) => {b.entity.get}:colset01
-val arc25 = new Arc[colset01,Binding03]("arc25",place14,trans09,Direction.PtT)
+val tTb12 = (t:colset02) => { try { val entity = t;Some(Binding04(Some(entity), None)) } catch { case e: Exception => None } }
+val bTt25 = (b:Binding04) => {b.entity.get}:colset02
+val arc25 = new Arc[colset02,Binding04]("arc25",p_14,t_09,Direction.PtT)
 arc25.setIsBase(true)
 arc25.setTokenToBind(tTb12)
 arc25.setBindToToken(bTt25)
 arc25.setOrigin(Map[String,String](("origin","0-activity-4"),("role","arc25")))
 cgraph.addArc(arc25)
 
-val map15 = Map[(colset04,Long),Int](  )
-val ms15 = new Multiset[colset04](map15)
-val place15 = new Place("place15","_nap2",ms15)
-place15.setOrigin(Map[String,String](("origin","0-activity-4"),("role","_nap2")))
-cgraph.addPlace(place15)
+val map15 = Map[(colset05,Long),Int](  )
+val ms15 = new Multiset[colset05](map15)
+val p_15 = new Place("p_15","_nap2",ms15)
+p_15.setOrigin(Map[String,String](("origin","0-activity-4"),("role","_nap2")))
+cgraph.addPlace(p_15)
 
-val bTt26 = (b:Binding03) => {(b.entity.get,b.resource.get)}:colset04
-val addTime05 = (b:Binding03) => {Math.round(Gaussian(400, 70).draw())}
-val arc26 = new Arc[colset04,Binding03]("arc26",place15,trans09,Direction.TtP)
+val bTt26 = (b:Binding04) => {(b.entity.get,b.resource.get)}:colset05
+val addTime05 = (b:Binding04) => {Math.round(Gaussian(400, 70).draw())}
+val arc26 = new Arc[colset05,Binding04]("arc26",p_15,t_09,Direction.TtP)
 arc26.setIsBase(false)
 arc26.setBindToToken(bTt26)
 arc26.setAddTime(addTime05)
 arc26.setOrigin(Map[String,String](("origin","0-activity-4"),("role","arc26")))
 cgraph.addArc(arc26)
 
-val trans10 = new Transition[Binding03]("trans10","_natend",null,null)
-trans10.setEval(Eval03)
-trans10.setMerge(Merge03)
-trans10.setOrigin(Map[String,String](("origin","0-activity-4"),("role","_natend")))
-cgraph.addTransition(trans10)
+val t_10 = new Transition[Binding04]("t_10","_natend",null,null)
+t_10.setEval(Eval04)
+t_10.setMerge(Merge04)
+t_10.setOrigin(Map[String,String](("origin","0-activity-4"),("role","_natend")))
+cgraph.addTransition(t_10)
 
-val tTb13 = (t:colset04) => { val (entity, resource) = t;Binding03(Some(entity), Some(resource)) }
-val bTt27 = (b:Binding03) => {(b.entity.get, b.resource.get)}:colset04
-val arc27 = new Arc[colset04,Binding03]("arc27",place15,trans10,Direction.PtT)
+val tTb13 = (t:colset05) => { try { val (entity, resource) = t;Some(Binding04(Some(entity), Some(resource))) } catch { case e: Exception => None } }
+val bTt27 = (b:Binding04) => {(b.entity.get, b.resource.get)}:colset05
+val arc27 = new Arc[colset05,Binding04]("arc27",p_15,t_10,Direction.PtT)
 arc27.setIsBase(true)
 arc27.setTokenToBind(tTb13)
 arc27.setBindToToken(bTt27)
 arc27.setOrigin(Map[String,String](("origin","0-activity-4"),("role","arc27")))
 cgraph.addArc(arc27)
 
-val map16 = Map[(colset01,Long),Int](  )
-val ms16 = new Multiset[colset01](map16)
-val place16 = new Place("place16","_nap3",ms16)
-place16.setOrigin(Map[String,String](("origin","0-activity-4"),("role","_nap3")))
-cgraph.addPlace(place16)
+val map16 = Map[(colset02,Long),Int](  )
+val ms16 = new Multiset[colset02](map16)
+val p_16 = new Place("p_16","_nap3",ms16)
+p_16.setOrigin(Map[String,String](("origin","0-activity-4"),("role","_nap3")))
+cgraph.addPlace(p_16)
 
-val bTt28 = (b:Binding03) => {b.entity.get}:colset01
-val arc28 = new Arc[colset01,Binding03]("arc28",place16,trans10,Direction.TtP)
+val bTt28 = (b:Binding04) => {b.entity.get}:colset02
+val arc28 = new Arc[colset02,Binding04]("arc28",p_16,t_10,Direction.TtP)
 arc28.setIsBase(false)
 arc28.setBindToToken(bTt28)
 arc28.setOrigin(Map[String,String](("origin","0-activity-4"),("role","arc28")))
 cgraph.addArc(arc28)
 
-val tTb14 = (t:Resource) => { val resource = t;Binding03(None, Some(resource)) }
-val bTt29 = (b:Binding03) => {b.resource.get}:Resource
-val arc29 = new Arc[Resource,Binding03]("arc29",place_0resource3,trans09,Direction.PtT)
+val tTb14 = (t:Resource[colset02]) => { try { val resource = t;Some(Binding04(None, Some(resource))) } catch { case e: Exception => None } }
+val bTt29 = (b:Binding04) => {b.resource.get}:Resource[colset02]
+val arc29 = new Arc[Resource[colset02],Binding04]("arc29",r_0resource3,t_09,Direction.PtT)
 arc29.setIsBase(true)
 arc29.setTokenToBind(tTb14)
 arc29.setBindToToken(bTt29)
 arc29.setOrigin(Map[String,String](("origin","0-activity-4"),("role","arc29")))
 cgraph.addArc(arc29)
 
-val bTt30 = (b:Binding03) => {b.resource.get}:Resource
-val arc30 = new Arc[Resource,Binding03]("arc30",place_0resource3,trans10,Direction.TtP)
+val bTt30 = (b:Binding04) => {b.resource.get}:Resource[colset02]
+val arc30 = new Arc[Resource[colset02],Binding04]("arc30",r_0resource3,t_10,Direction.TtP)
 arc30.setIsBase(false)
 arc30.setBindToToken(bTt30)
 arc30.setOrigin(Map[String,String](("origin","0-activity-4"),("role","arc30")))
 cgraph.addArc(arc30)
 
-val map17 = Map[(colset01,Long),Int](  )
-val ms17 = new Multiset[colset01](map17)
-val place17 = new Place("place17","_nap1",ms17)
-place17.setOrigin(Map[String,String](("origin","0-activity-5"),("role","_nap1")))
-cgraph.addPlace(place17)
+val map17 = Map[(colset02,Long),Int](  )
+val ms17 = new Multiset[colset02](map17)
+val p_17 = new Place("p_17","_nap1",ms17)
+p_17.setOrigin(Map[String,String](("origin","0-activity-5"),("role","_nap1")))
+cgraph.addPlace(p_17)
 
-place_0resource2.setOrigin(Map[String,String](("origin","0-resource-2"),("role","_resp")))
-val trans11 = new Transition[Binding03]("trans11","_natstart",null,null)
-trans11.setEval(Eval03)
-trans11.setMerge(Merge03)
-trans11.setOrigin(Map[String,String](("origin","0-activity-5"),("role","_natstart")))
-cgraph.addTransition(trans11)
+val t_11 = new Transition[Binding04]("t_11","_natstart",null,null)
+t_11.setEval(Eval04)
+t_11.setMerge(Merge04)
+t_11.setOrigin(Map[String,String](("origin","0-activity-5"),("role","_natstart")))
+cgraph.addTransition(t_11)
 
-val tTb15 = (t:colset01) => { val entity = t;Binding03(Some(entity), None) }
-val bTt31 = (b:Binding03) => {b.entity.get}:colset01
-val arc31 = new Arc[colset01,Binding03]("arc31",place17,trans11,Direction.PtT)
+val tTb15 = (t:colset02) => { try { val entity = t;Some(Binding04(Some(entity), None)) } catch { case e: Exception => None } }
+val bTt31 = (b:Binding04) => {b.entity.get}:colset02
+val arc31 = new Arc[colset02,Binding04]("arc31",p_17,t_11,Direction.PtT)
 arc31.setIsBase(true)
 arc31.setTokenToBind(tTb15)
 arc31.setBindToToken(bTt31)
 arc31.setOrigin(Map[String,String](("origin","0-activity-5"),("role","arc31")))
 cgraph.addArc(arc31)
 
-val map18 = Map[(colset04,Long),Int](  )
-val ms18 = new Multiset[colset04](map18)
-val place18 = new Place("place18","_nap2",ms18)
-place18.setOrigin(Map[String,String](("origin","0-activity-5"),("role","_nap2")))
-cgraph.addPlace(place18)
+val map18 = Map[(colset05,Long),Int](  )
+val ms18 = new Multiset[colset05](map18)
+val p_18 = new Place("p_18","_nap2",ms18)
+p_18.setOrigin(Map[String,String](("origin","0-activity-5"),("role","_nap2")))
+cgraph.addPlace(p_18)
 
-val bTt32 = (b:Binding03) => {(b.entity.get,b.resource.get)}:colset04
-val addTime06 = (b:Binding03) => {Math.round(Gaussian(400, 70).draw())}
-val arc32 = new Arc[colset04,Binding03]("arc32",place18,trans11,Direction.TtP)
+val bTt32 = (b:Binding04) => {(b.entity.get,b.resource.get)}:colset05
+val addTime06 = (b:Binding04) => {Math.round(Gaussian(400, 70).draw())}
+val arc32 = new Arc[colset05,Binding04]("arc32",p_18,t_11,Direction.TtP)
 arc32.setIsBase(false)
 arc32.setBindToToken(bTt32)
 arc32.setAddTime(addTime06)
 arc32.setOrigin(Map[String,String](("origin","0-activity-5"),("role","arc32")))
 cgraph.addArc(arc32)
 
-val trans12 = new Transition[Binding03]("trans12","_natend",null,null)
-trans12.setEval(Eval03)
-trans12.setMerge(Merge03)
-trans12.setOrigin(Map[String,String](("origin","0-activity-5"),("role","_natend")))
-cgraph.addTransition(trans12)
+val t_12 = new Transition[Binding04]("t_12","_natend",null,null)
+t_12.setEval(Eval04)
+t_12.setMerge(Merge04)
+t_12.setOrigin(Map[String,String](("origin","0-activity-5"),("role","_natend")))
+cgraph.addTransition(t_12)
 
-val tTb16 = (t:colset04) => { val (entity, resource) = t;Binding03(Some(entity), Some(resource)) }
-val bTt33 = (b:Binding03) => {(b.entity.get, b.resource.get)}:colset04
-val arc33 = new Arc[colset04,Binding03]("arc33",place18,trans12,Direction.PtT)
+val tTb16 = (t:colset05) => { try { val (entity, resource) = t;Some(Binding04(Some(entity), Some(resource))) } catch { case e: Exception => None } }
+val bTt33 = (b:Binding04) => {(b.entity.get, b.resource.get)}:colset05
+val arc33 = new Arc[colset05,Binding04]("arc33",p_18,t_12,Direction.PtT)
 arc33.setIsBase(true)
 arc33.setTokenToBind(tTb16)
 arc33.setBindToToken(bTt33)
 arc33.setOrigin(Map[String,String](("origin","0-activity-5"),("role","arc33")))
 cgraph.addArc(arc33)
 
-val map19 = Map[(colset01,Long),Int](  )
-val ms19 = new Multiset[colset01](map19)
-val place19 = new Place("place19","_nap3",ms19)
-place19.setOrigin(Map[String,String](("origin","0-activity-5"),("role","_nap3")))
-cgraph.addPlace(place19)
+val map19 = Map[(colset02,Long),Int](  )
+val ms19 = new Multiset[colset02](map19)
+val p_19 = new Place("p_19","_nap3",ms19)
+p_19.setOrigin(Map[String,String](("origin","0-activity-5"),("role","_nap3")))
+cgraph.addPlace(p_19)
 
-val bTt34 = (b:Binding03) => {b.entity.get}:colset01
-val arc34 = new Arc[colset01,Binding03]("arc34",place19,trans12,Direction.TtP)
+val bTt34 = (b:Binding04) => {b.entity.get}:colset02
+val arc34 = new Arc[colset02,Binding04]("arc34",p_19,t_12,Direction.TtP)
 arc34.setIsBase(false)
 arc34.setBindToToken(bTt34)
 arc34.setOrigin(Map[String,String](("origin","0-activity-5"),("role","arc34")))
 cgraph.addArc(arc34)
 
-val tTb17 = (t:Resource) => { val resource = t;Binding03(None, Some(resource)) }
-val bTt35 = (b:Binding03) => {b.resource.get}:Resource
-val arc35 = new Arc[Resource,Binding03]("arc35",place_0resource2,trans11,Direction.PtT)
+val tTb17 = (t:Resource[colset02]) => { try { val resource = t;Some(Binding04(None, Some(resource))) } catch { case e: Exception => None } }
+val bTt35 = (b:Binding04) => {b.resource.get}:Resource[colset02]
+val arc35 = new Arc[Resource[colset02],Binding04]("arc35",r_0resource2,t_11,Direction.PtT)
 arc35.setIsBase(true)
 arc35.setTokenToBind(tTb17)
 arc35.setBindToToken(bTt35)
 arc35.setOrigin(Map[String,String](("origin","0-activity-5"),("role","arc35")))
 cgraph.addArc(arc35)
 
-val bTt36 = (b:Binding03) => {b.resource.get}:Resource
-val arc36 = new Arc[Resource,Binding03]("arc36",place_0resource2,trans12,Direction.TtP)
+val bTt36 = (b:Binding04) => {b.resource.get}:Resource[colset02]
+val arc36 = new Arc[Resource[colset02],Binding04]("arc36",r_0resource2,t_12,Direction.TtP)
 arc36.setIsBase(false)
 arc36.setBindToToken(bTt36)
 arc36.setOrigin(Map[String,String](("origin","0-activity-5"),("role","arc36")))
 cgraph.addArc(arc36)
 
-val map20 = Map[(colset01,Long),Int](  )
-val ms20 = new Multiset[colset01](map20)
-val place20 = new Place("place20","_nap1",ms20)
-place20.setOrigin(Map[String,String](("origin","0-activity-6"),("role","_nap1")))
-cgraph.addPlace(place20)
+val map20 = Map[(colset02,Long),Int](  )
+val ms20 = new Multiset[colset02](map20)
+val p_20 = new Place("p_20","_nap1",ms20)
+p_20.setOrigin(Map[String,String](("origin","0-activity-6"),("role","_nap1")))
+cgraph.addPlace(p_20)
 
-place_0resource4.setOrigin(Map[String,String](("origin","0-resource-4"),("role","_resp")))
-val trans13 = new Transition[Binding03]("trans13","_natstart",null,null)
-trans13.setEval(Eval03)
-trans13.setMerge(Merge03)
-trans13.setOrigin(Map[String,String](("origin","0-activity-6"),("role","_natstart")))
-cgraph.addTransition(trans13)
+val t_13 = new Transition[Binding04]("t_13","_natstart",null,null)
+t_13.setEval(Eval04)
+t_13.setMerge(Merge04)
+t_13.setOrigin(Map[String,String](("origin","0-activity-6"),("role","_natstart")))
+cgraph.addTransition(t_13)
 
-val tTb18 = (t:colset01) => { val entity = t;Binding03(Some(entity), None) }
-val bTt37 = (b:Binding03) => {b.entity.get}:colset01
-val arc37 = new Arc[colset01,Binding03]("arc37",place20,trans13,Direction.PtT)
+val tTb18 = (t:colset02) => { try { val entity = t;Some(Binding04(Some(entity), None)) } catch { case e: Exception => None } }
+val bTt37 = (b:Binding04) => {b.entity.get}:colset02
+val arc37 = new Arc[colset02,Binding04]("arc37",p_20,t_13,Direction.PtT)
 arc37.setIsBase(true)
 arc37.setTokenToBind(tTb18)
 arc37.setBindToToken(bTt37)
 arc37.setOrigin(Map[String,String](("origin","0-activity-6"),("role","arc37")))
 cgraph.addArc(arc37)
 
-val map21 = Map[(colset04,Long),Int](  )
-val ms21 = new Multiset[colset04](map21)
-val place21 = new Place("place21","_nap2",ms21)
-place21.setOrigin(Map[String,String](("origin","0-activity-6"),("role","_nap2")))
-cgraph.addPlace(place21)
+val map21 = Map[(colset05,Long),Int](  )
+val ms21 = new Multiset[colset05](map21)
+val p_21 = new Place("p_21","_nap2",ms21)
+p_21.setOrigin(Map[String,String](("origin","0-activity-6"),("role","_nap2")))
+cgraph.addPlace(p_21)
 
-val bTt38 = (b:Binding03) => {(b.entity.get,b.resource.get)}:colset04
-val addTime07 = (b:Binding03) => {Math.round(Gaussian(400, 70).draw())}
-val arc38 = new Arc[colset04,Binding03]("arc38",place21,trans13,Direction.TtP)
+val bTt38 = (b:Binding04) => {(b.entity.get,b.resource.get)}:colset05
+val addTime07 = (b:Binding04) => {Math.round(Gaussian(400, 70).draw())}
+val arc38 = new Arc[colset05,Binding04]("arc38",p_21,t_13,Direction.TtP)
 arc38.setIsBase(false)
 arc38.setBindToToken(bTt38)
 arc38.setAddTime(addTime07)
 arc38.setOrigin(Map[String,String](("origin","0-activity-6"),("role","arc38")))
 cgraph.addArc(arc38)
 
-val trans14 = new Transition[Binding03]("trans14","_natend",null,null)
-trans14.setEval(Eval03)
-trans14.setMerge(Merge03)
-trans14.setOrigin(Map[String,String](("origin","0-activity-6"),("role","_natend")))
-cgraph.addTransition(trans14)
+val t_14 = new Transition[Binding04]("t_14","_natend",null,null)
+t_14.setEval(Eval04)
+t_14.setMerge(Merge04)
+t_14.setOrigin(Map[String,String](("origin","0-activity-6"),("role","_natend")))
+cgraph.addTransition(t_14)
 
-val tTb19 = (t:colset04) => { val (entity, resource) = t;Binding03(Some(entity), Some(resource)) }
-val bTt39 = (b:Binding03) => {(b.entity.get, b.resource.get)}:colset04
-val arc39 = new Arc[colset04,Binding03]("arc39",place21,trans14,Direction.PtT)
+val tTb19 = (t:colset05) => { try { val (entity, resource) = t;Some(Binding04(Some(entity), Some(resource))) } catch { case e: Exception => None } }
+val bTt39 = (b:Binding04) => {(b.entity.get, b.resource.get)}:colset05
+val arc39 = new Arc[colset05,Binding04]("arc39",p_21,t_14,Direction.PtT)
 arc39.setIsBase(true)
 arc39.setTokenToBind(tTb19)
 arc39.setBindToToken(bTt39)
 arc39.setOrigin(Map[String,String](("origin","0-activity-6"),("role","arc39")))
 cgraph.addArc(arc39)
 
-val map22 = Map[(colset01,Long),Int](  )
-val ms22 = new Multiset[colset01](map22)
-val place22 = new Place("place22","_nap3",ms22)
-place22.setOrigin(Map[String,String](("origin","0-activity-6"),("role","_nap3")))
-cgraph.addPlace(place22)
+val map22 = Map[(colset02,Long),Int](  )
+val ms22 = new Multiset[colset02](map22)
+val p_22 = new Place("p_22","_nap3",ms22)
+p_22.setOrigin(Map[String,String](("origin","0-activity-6"),("role","_nap3")))
+cgraph.addPlace(p_22)
 
-val bTt40 = (b:Binding03) => {b.entity.get}:colset01
-val arc40 = new Arc[colset01,Binding03]("arc40",place22,trans14,Direction.TtP)
+val bTt40 = (b:Binding04) => {b.entity.get}:colset02
+val arc40 = new Arc[colset02,Binding04]("arc40",p_22,t_14,Direction.TtP)
 arc40.setIsBase(false)
 arc40.setBindToToken(bTt40)
 arc40.setOrigin(Map[String,String](("origin","0-activity-6"),("role","arc40")))
 cgraph.addArc(arc40)
 
-val tTb20 = (t:Resource) => { val resource = t;Binding03(None, Some(resource)) }
-val bTt41 = (b:Binding03) => {b.resource.get}:Resource
-val arc41 = new Arc[Resource,Binding03]("arc41",place_0resource4,trans13,Direction.PtT)
+val tTb20 = (t:Resource[colset02]) => { try { val resource = t;Some(Binding04(None, Some(resource))) } catch { case e: Exception => None } }
+val bTt41 = (b:Binding04) => {b.resource.get}:Resource[colset02]
+val arc41 = new Arc[Resource[colset02],Binding04]("arc41",r_0resource4,t_13,Direction.PtT)
 arc41.setIsBase(true)
 arc41.setTokenToBind(tTb20)
 arc41.setBindToToken(bTt41)
 arc41.setOrigin(Map[String,String](("origin","0-activity-6"),("role","arc41")))
 cgraph.addArc(arc41)
 
-val bTt42 = (b:Binding03) => {b.resource.get}:Resource
-val arc42 = new Arc[Resource,Binding03]("arc42",place_0resource4,trans14,Direction.TtP)
+val bTt42 = (b:Binding04) => {b.resource.get}:Resource[colset02]
+val arc42 = new Arc[Resource[colset02],Binding04]("arc42",r_0resource4,t_14,Direction.TtP)
 arc42.setIsBase(false)
 arc42.setBindToToken(bTt42)
 arc42.setOrigin(Map[String,String](("origin","0-activity-6"),("role","arc42")))
 cgraph.addArc(arc42)
 
-val map23 = Map[(colset01,Long),Int](  )
-val ms23 = new Multiset[colset01](map23)
-val place23 = new Place("place23","_bpi0s",ms23)
-place23.setOrigin(Map[String,String](("origin","0-branch-7"),("role","_bpi0s")))
-cgraph.addPlace(place23)
+val map23 = Map[(colset02,Long),Int](  )
+val ms23 = new Multiset[colset02](map23)
+val p_23 = new Place("p_23","_bpi0s",ms23)
+p_23.setOrigin(Map[String,String](("origin","0-branch-7"),("role","_bpi0s")))
+cgraph.addPlace(p_23)
 
-val map24 = Map[(colset01,Long),Int](  )
-val ms24 = new Multiset[colset01](map24)
-val place24 = new Place("place24","_bpo0s",ms24)
-place24.setOrigin(Map[String,String](("origin","0-branch-7"),("role","_bpo0s")))
-cgraph.addPlace(place24)
+def actionFun02(b:Binding02):Binding02 = { val newb = b.copy(cond = Some(scala.util.Random.nextDouble()));newb }
 
-val trans15 = new Transition[Binding02]("trans15","_temps_0",null,null)
-trans15.setEval(Eval02)
-trans15.setMerge(Merge02)
-trans15.setOrigin(Map[String,String](("origin","0-branch-7"),("role","_temps_0")))
-cgraph.addTransition(trans15)
+val action02 = new Action[Binding02]()
+action02.setActionFun(actionFun02)
 
-val tTb21 = (t:colset01) => { val entity = t;Binding02(Some(entity)) }
-val bTt43 = (b:Binding02) => {b.entity.get}:colset01
-val arc43 = new Arc[colset01,Binding02]("arc43",place23,trans15,Direction.PtT)
+val t_15 = new Transition[Binding02]("t_15","_condGen",null,action02)
+t_15.setEval(Eval02)
+t_15.setMerge(Merge02)
+t_15.setOrigin(Map[String,String](("origin","0-branch-7"),("role","_condGen")))
+cgraph.addTransition(t_15)
+
+val map24 = Map[(colset03,Long),Int](  )
+val ms24 = new Multiset[colset03](map24)
+val p_24 = new Place("p_24","_bpt",ms24)
+p_24.setOrigin(Map[String,String](("origin","0-branch-7"),("role","_bpt")))
+cgraph.addPlace(p_24)
+
+val tTb21 = (t:colset02) => { try { val entity = t;Some(Binding02(Some(entity),None)) } catch { case e: Exception => None } }
+val bTt43 = (b:Binding02) => {b.entity.get}:colset02
+val arc43 = new Arc[colset02,Binding02]("arc43",p_23,t_15,Direction.PtT)
 arc43.setIsBase(true)
 arc43.setTokenToBind(tTb21)
 arc43.setBindToToken(bTt43)
 arc43.setOrigin(Map[String,String](("origin","0-branch-7"),("role","arc43")))
 cgraph.addArc(arc43)
 
-val bTt44 = (b:Binding02) => {b.entity.get}:colset01
-val arc44 = new Arc[colset01,Binding02]("arc44",place24,trans15,Direction.TtP)
+val tTb22 = (t:colset03) => { try { val (entity,cond) = t;Some(Binding02(Some(entity),Some(cond))) } catch { case e: Exception => None } }
+val bTt44 = (b:Binding02) => {(b.entity.get,b.cond.get)}:colset03
+val arc44 = new Arc[colset03,Binding02]("arc44",p_24,t_15,Direction.TtP)
 arc44.setIsBase(false)
 arc44.setBindToToken(bTt44)
 arc44.setOrigin(Map[String,String](("origin","0-branch-7"),("role","arc44")))
 cgraph.addArc(arc44)
 
-val map25 = Map[(colset01,Long),Int](  )
-val ms25 = new Multiset[colset01](map25)
-val place25 = new Place("place25","_bpo1s",ms25)
-place25.setOrigin(Map[String,String](("origin","0-branch-7"),("role","_bpo1s")))
-cgraph.addPlace(place25)
+val map25 = Map[(colset02,Long),Int](  )
+val ms25 = new Multiset[colset02](map25)
+val p_25 = new Place("p_25","_bpo0s",ms25)
+p_25.setOrigin(Map[String,String](("origin","0-branch-7"),("role","_bpo0s")))
+cgraph.addPlace(p_25)
 
-val trans16 = new Transition[Binding02]("trans16","_temps_1",null,null)
-trans16.setEval(Eval02)
-trans16.setMerge(Merge02)
-trans16.setOrigin(Map[String,String](("origin","0-branch-7"),("role","_temps_1")))
-cgraph.addTransition(trans16)
+val t_16 = new Transition[Binding02]("t_16","_temps_0",null,null)
+t_16.setEval(Eval02)
+t_16.setMerge(Merge02)
+t_16.setOrigin(Map[String,String](("origin","0-branch-7"),("role","_temps_0")))
+cgraph.addTransition(t_16)
 
-val tTb22 = (t:colset01) => { val entity = t;Binding02(Some(entity)) }
-val bTt45 = (b:Binding02) => {b.entity.get}:colset01
-val arc45 = new Arc[colset01,Binding02]("arc45",place23,trans16,Direction.PtT)
+val tTb23 = (t:colset03) => { try { val (entity,cond) = t;Some(Binding02(Some(entity),Some(cond))) } catch { case e: Exception => None } }
+val bTt45 = (b:Binding02) => {(b.entity.get,b.cond.get)}:colset03
+val arc45 = new Arc[colset03,Binding02]("arc45",p_24,t_16,Direction.PtT)
 arc45.setIsBase(true)
-arc45.setTokenToBind(tTb22)
+arc45.setTokenToBind(tTb23)
 arc45.setBindToToken(bTt45)
 arc45.setOrigin(Map[String,String](("origin","0-branch-7"),("role","arc45")))
 cgraph.addArc(arc45)
 
-val bTt46 = (b:Binding02) => {b.entity.get}:colset01
-val arc46 = new Arc[colset01,Binding02]("arc46",place25,trans16,Direction.TtP)
+val bTt46 = (b:Binding02) => {b.entity.get}:colset02
+val arc46 = new Arc[colset02,Binding02]("arc46",p_25,t_16,Direction.TtP)
 arc46.setIsBase(false)
 arc46.setBindToToken(bTt46)
 arc46.setOrigin(Map[String,String](("origin","0-branch-7"),("role","arc46")))
 cgraph.addArc(arc46)
 
-val map26 = Map[(colset01,Long),Int](  )
-val ms26 = new Multiset[colset01](map26)
-val place26 = new Place("place26","_bpo0s",ms26)
-place26.setOrigin(Map[String,String](("origin","0-branch-8"),("role","_bpo0s")))
-cgraph.addPlace(place26)
+val map26 = Map[(colset02,Long),Int](  )
+val ms26 = new Multiset[colset02](map26)
+val p_26 = new Place("p_26","_bpo1s",ms26)
+p_26.setOrigin(Map[String,String](("origin","0-branch-7"),("role","_bpo1s")))
+cgraph.addPlace(p_26)
 
-val map27 = Map[(colset01,Long),Int](  )
-val ms27 = new Multiset[colset01](map27)
-val place27 = new Place("place27","_bpi0s",ms27)
-place27.setOrigin(Map[String,String](("origin","0-branch-8"),("role","_bpi0s")))
-cgraph.addPlace(place27)
+val t_17 = new Transition[Binding02]("t_17","_temps_1",null,null)
+t_17.setEval(Eval02)
+t_17.setMerge(Merge02)
+t_17.setOrigin(Map[String,String](("origin","0-branch-7"),("role","_temps_1")))
+cgraph.addTransition(t_17)
 
-val trans17 = new Transition[Binding02]("trans17","_temps_0",null,null)
-trans17.setEval(Eval02)
-trans17.setMerge(Merge02)
-trans17.setOrigin(Map[String,String](("origin","0-branch-8"),("role","_temps_0")))
-cgraph.addTransition(trans17)
-
-val tTb23 = (t:colset01) => { val entity = t;Binding02(Some(entity)) }
-val bTt47 = (b:Binding02) => {b.entity.get}:colset01
-val arc47 = new Arc[colset01,Binding02]("arc47",place27,trans17,Direction.PtT)
+val tTb24 = (t:colset03) => { try { val (entity,cond) = t;Some(Binding02(Some(entity),Some(cond))) } catch { case e: Exception => None } }
+val bTt47 = (b:Binding02) => {(b.entity.get,b.cond.get)}:colset03
+val arc47 = new Arc[colset03,Binding02]("arc47",p_24,t_17,Direction.PtT)
 arc47.setIsBase(true)
-arc47.setTokenToBind(tTb23)
+arc47.setTokenToBind(tTb24)
 arc47.setBindToToken(bTt47)
-arc47.setOrigin(Map[String,String](("origin","0-branch-8"),("role","arc47")))
+arc47.setOrigin(Map[String,String](("origin","0-branch-7"),("role","arc47")))
 cgraph.addArc(arc47)
 
-val bTt48 = (b:Binding02) => {b.entity.get}:colset01
-val arc48 = new Arc[colset01,Binding02]("arc48",place26,trans17,Direction.TtP)
+val bTt48 = (b:Binding02) => {b.entity.get}:colset02
+val arc48 = new Arc[colset02,Binding02]("arc48",p_26,t_17,Direction.TtP)
 arc48.setIsBase(false)
 arc48.setBindToToken(bTt48)
-arc48.setOrigin(Map[String,String](("origin","0-branch-8"),("role","arc48")))
+arc48.setOrigin(Map[String,String](("origin","0-branch-7"),("role","arc48")))
 cgraph.addArc(arc48)
 
-val map28 = Map[(colset01,Long),Int](  )
-val ms28 = new Multiset[colset01](map28)
-val place28 = new Place("place28","_bpi1s",ms28)
-place28.setOrigin(Map[String,String](("origin","0-branch-8"),("role","_bpi1s")))
-cgraph.addPlace(place28)
+val map27 = Map[(colset02,Long),Int](  )
+val ms27 = new Multiset[colset02](map27)
+val p_27 = new Place("p_27","_bpo0s",ms27)
+p_27.setOrigin(Map[String,String](("origin","0-branch-8"),("role","_bpo0s")))
+cgraph.addPlace(p_27)
 
-val trans18 = new Transition[Binding02]("trans18","_temps_1",null,null)
-trans18.setEval(Eval02)
-trans18.setMerge(Merge02)
-trans18.setOrigin(Map[String,String](("origin","0-branch-8"),("role","_temps_1")))
-cgraph.addTransition(trans18)
+val map28 = Map[(colset02,Long),Int](  )
+val ms28 = new Multiset[colset02](map28)
+val p_28 = new Place("p_28","_bpi0s",ms28)
+p_28.setOrigin(Map[String,String](("origin","0-branch-8"),("role","_bpi0s")))
+cgraph.addPlace(p_28)
 
-val tTb24 = (t:colset01) => { val entity = t;Binding02(Some(entity)) }
-val bTt49 = (b:Binding02) => {b.entity.get}:colset01
-val arc49 = new Arc[colset01,Binding02]("arc49",place28,trans18,Direction.PtT)
+val t_18 = new Transition[Binding01]("t_18","_temps_0",null,null)
+t_18.setEval(Eval01)
+t_18.setMerge(Merge01)
+t_18.setOrigin(Map[String,String](("origin","0-branch-8"),("role","_temps_0")))
+cgraph.addTransition(t_18)
+
+val tTb25 = (t:colset02) => { try { val entity = t;Some(Binding01(Some(entity))) } catch { case e: Exception => None } }
+val bTt49 = (b:Binding01) => {b.entity.get}:colset02
+val arc49 = new Arc[colset02,Binding01]("arc49",p_28,t_18,Direction.PtT)
 arc49.setIsBase(true)
-arc49.setTokenToBind(tTb24)
+arc49.setTokenToBind(tTb25)
 arc49.setBindToToken(bTt49)
 arc49.setOrigin(Map[String,String](("origin","0-branch-8"),("role","arc49")))
 cgraph.addArc(arc49)
 
-val bTt50 = (b:Binding02) => {b.entity.get}:colset01
-val arc50 = new Arc[colset01,Binding02]("arc50",place26,trans18,Direction.TtP)
+val bTt50 = (b:Binding01) => {b.entity.get}:colset02
+val arc50 = new Arc[colset02,Binding01]("arc50",p_27,t_18,Direction.TtP)
 arc50.setIsBase(false)
 arc50.setBindToToken(bTt50)
 arc50.setOrigin(Map[String,String](("origin","0-branch-8"),("role","arc50")))
 cgraph.addArc(arc50)
 
-val map29 = Map[(colset01,Long),Int](  )
-val ms29 = new Multiset[colset01](map29)
-val place29 = new Place("place29","_nop1",ms29)
-place29.setOrigin(Map[String,String](("origin","0-stop-9"),("role","_nop1")))
-cgraph.addPlace(place29)
+val map29 = Map[(colset02,Long),Int](  )
+val ms29 = new Multiset[colset02](map29)
+val p_29 = new Place("p_29","_bpi1s",ms29)
+p_29.setOrigin(Map[String,String](("origin","0-branch-8"),("role","_bpi1s")))
+cgraph.addPlace(p_29)
 
-val trans19 = new Transition[Binding02]("trans19","silent",null,null)
-trans19.setEval(Eval02)
-trans19.setMerge(Merge02)
-trans19.setOrigin(Map[String,String](("origin","0-0"),("role","silent")))
-cgraph.addTransition(trans19)
+val t_19 = new Transition[Binding01]("t_19","_temps_1",null,null)
+t_19.setEval(Eval01)
+t_19.setMerge(Merge01)
+t_19.setOrigin(Map[String,String](("origin","0-branch-8"),("role","_temps_1")))
+cgraph.addTransition(t_19)
 
-val tTb25 = (t:colset01) => { val entity = t;Binding02(Some(entity)) }
-val bTt51 = (b:Binding02) => {b.entity.get}:colset01
-val arc51 = new Arc[colset01,Binding02]("arc51",place02,trans19,Direction.PtT)
+val tTb26 = (t:colset02) => { try { val entity = t;Some(Binding01(Some(entity))) } catch { case e: Exception => None } }
+val bTt51 = (b:Binding01) => {b.entity.get}:colset02
+val arc51 = new Arc[colset02,Binding01]("arc51",p_29,t_19,Direction.PtT)
 arc51.setIsBase(true)
-arc51.setTokenToBind(tTb25)
+arc51.setTokenToBind(tTb26)
 arc51.setBindToToken(bTt51)
-arc51.setOrigin(Map[String,String](("origin","0-0"),("role","arc51")))
+arc51.setOrigin(Map[String,String](("origin","0-branch-8"),("role","arc51")))
 cgraph.addArc(arc51)
 
-val bTt52 = (b:Binding02) => {b.entity.get}:colset01
-val arc52 = new Arc[colset01,Binding02]("arc52",place23,trans19,Direction.TtP)
+val bTt52 = (b:Binding01) => {b.entity.get}:colset02
+val arc52 = new Arc[colset02,Binding01]("arc52",p_27,t_19,Direction.TtP)
 arc52.setIsBase(false)
 arc52.setBindToToken(bTt52)
-arc52.setOrigin(Map[String,String](("origin","0-0"),("role","arc52")))
+arc52.setOrigin(Map[String,String](("origin","0-branch-8"),("role","arc52")))
 cgraph.addArc(arc52)
 
-val trans20 = new Transition[Binding02]("trans20","silent",null,null)
-trans20.setEval(Eval02)
-trans20.setMerge(Merge02)
-trans20.setOrigin(Map[String,String](("origin","0-1"),("role","silent")))
-cgraph.addTransition(trans20)
+val map30 = Map[(colset02,Long),Int](  )
+val ms30 = new Multiset[colset02](map30)
+val p_30 = new Place("p_30","_nop1",ms30)
+p_30.setOrigin(Map[String,String](("origin","0-stop-9"),("role","_nop1")))
+cgraph.addPlace(p_30)
 
-val tTb26 = (t:colset01) => { val entity = t;Binding02(Some(entity)) }
-val bTt53 = (b:Binding02) => {b.entity.get}:colset01
-val arc53 = new Arc[colset01,Binding02]("arc53",place24,trans20,Direction.PtT)
+val t_20 = new Transition[Binding01]("t_20","silent",null,null)
+t_20.setEval(Eval01)
+t_20.setMerge(Merge01)
+t_20.setOrigin(Map[String,String](("origin","0-0"),("role","silent")))
+cgraph.addTransition(t_20)
+
+val tTb27 = (t:colset02) => { try { val entity = t;Some(Binding01(Some(entity))) } catch { case e: Exception => None } }
+val bTt53 = (b:Binding01) => {b.entity.get}:colset02
+val arc53 = new Arc[colset02,Binding01]("arc53",p_04,t_20,Direction.PtT)
 arc53.setIsBase(true)
-arc53.setTokenToBind(tTb26)
+arc53.setTokenToBind(tTb27)
 arc53.setBindToToken(bTt53)
-arc53.setOrigin(Map[String,String](("origin","0-1"),("role","arc53")))
+arc53.setOrigin(Map[String,String](("origin","0-0"),("role","arc53")))
 cgraph.addArc(arc53)
 
-val bTt54 = (b:Binding02) => {b.entity.get}:colset01
-val arc54 = new Arc[colset01,Binding02]("arc54",place05,trans20,Direction.TtP)
+val bTt54 = (b:Binding01) => {b.entity.get}:colset02
+val arc54 = new Arc[colset02,Binding01]("arc54",p_23,t_20,Direction.TtP)
 arc54.setIsBase(false)
 arc54.setBindToToken(bTt54)
-arc54.setOrigin(Map[String,String](("origin","0-1"),("role","arc54")))
+arc54.setOrigin(Map[String,String](("origin","0-0"),("role","arc54")))
 cgraph.addArc(arc54)
 
-val trans21 = new Transition[Binding02]("trans21","silent",null,null)
-trans21.setEval(Eval02)
-trans21.setMerge(Merge02)
-trans21.setOrigin(Map[String,String](("origin","0-2"),("role","silent")))
-cgraph.addTransition(trans21)
+val t_21 = new Transition[Binding01]("t_21","silent",null,null)
+t_21.setEval(Eval01)
+t_21.setMerge(Merge01)
+t_21.setOrigin(Map[String,String](("origin","0-1"),("role","silent")))
+cgraph.addTransition(t_21)
 
-val tTb27 = (t:colset01) => { val entity = t;Binding02(Some(entity)) }
-val bTt55 = (b:Binding02) => {b.entity.get}:colset01
-val arc55 = new Arc[colset01,Binding02]("arc55",place07,trans21,Direction.PtT)
+val tTb28 = (t:colset02) => { try { val entity = t;Some(Binding01(Some(entity))) } catch { case e: Exception => None } }
+val bTt55 = (b:Binding01) => {b.entity.get}:colset02
+val arc55 = new Arc[colset02,Binding01]("arc55",p_25,t_21,Direction.PtT)
 arc55.setIsBase(true)
-arc55.setTokenToBind(tTb27)
+arc55.setTokenToBind(tTb28)
 arc55.setBindToToken(bTt55)
-arc55.setOrigin(Map[String,String](("origin","0-2"),("role","arc55")))
+arc55.setOrigin(Map[String,String](("origin","0-1"),("role","arc55")))
 cgraph.addArc(arc55)
 
-val bTt56 = (b:Binding02) => {b.entity.get}:colset01
-val arc56 = new Arc[colset01,Binding02]("arc56",place08,trans21,Direction.TtP)
+val bTt56 = (b:Binding01) => {b.entity.get}:colset02
+val arc56 = new Arc[colset02,Binding01]("arc56",p_05,t_21,Direction.TtP)
 arc56.setIsBase(false)
 arc56.setBindToToken(bTt56)
-arc56.setOrigin(Map[String,String](("origin","0-2"),("role","arc56")))
+arc56.setOrigin(Map[String,String](("origin","0-1"),("role","arc56")))
 cgraph.addArc(arc56)
 
-val trans22 = new Transition[Binding02]("trans22","silent",null,null)
-trans22.setEval(Eval02)
-trans22.setMerge(Merge02)
-trans22.setOrigin(Map[String,String](("origin","0-3"),("role","silent")))
-cgraph.addTransition(trans22)
+val t_22 = new Transition[Binding01]("t_22","silent",null,null)
+t_22.setEval(Eval01)
+t_22.setMerge(Merge01)
+t_22.setOrigin(Map[String,String](("origin","0-2"),("role","silent")))
+cgraph.addTransition(t_22)
 
-val tTb28 = (t:colset01) => { val entity = t;Binding02(Some(entity)) }
-val bTt57 = (b:Binding02) => {b.entity.get}:colset01
-val arc57 = new Arc[colset01,Binding02]("arc57",place10,trans22,Direction.PtT)
+val tTb29 = (t:colset02) => { try { val entity = t;Some(Binding01(Some(entity))) } catch { case e: Exception => None } }
+val bTt57 = (b:Binding01) => {b.entity.get}:colset02
+val arc57 = new Arc[colset02,Binding01]("arc57",p_07,t_22,Direction.PtT)
 arc57.setIsBase(true)
-arc57.setTokenToBind(tTb28)
+arc57.setTokenToBind(tTb29)
 arc57.setBindToToken(bTt57)
-arc57.setOrigin(Map[String,String](("origin","0-3"),("role","arc57")))
+arc57.setOrigin(Map[String,String](("origin","0-2"),("role","arc57")))
 cgraph.addArc(arc57)
 
-val bTt58 = (b:Binding02) => {b.entity.get}:colset01
-val arc58 = new Arc[colset01,Binding02]("arc58",place11,trans22,Direction.TtP)
+val bTt58 = (b:Binding01) => {b.entity.get}:colset02
+val arc58 = new Arc[colset02,Binding01]("arc58",p_08,t_22,Direction.TtP)
 arc58.setIsBase(false)
 arc58.setBindToToken(bTt58)
-arc58.setOrigin(Map[String,String](("origin","0-3"),("role","arc58")))
+arc58.setOrigin(Map[String,String](("origin","0-2"),("role","arc58")))
 cgraph.addArc(arc58)
 
-val trans23 = new Transition[Binding02]("trans23","silent",null,null)
-trans23.setEval(Eval02)
-trans23.setMerge(Merge02)
-trans23.setOrigin(Map[String,String](("origin","0-4"),("role","silent")))
-cgraph.addTransition(trans23)
+val t_23 = new Transition[Binding01]("t_23","silent",null,null)
+t_23.setEval(Eval01)
+t_23.setMerge(Merge01)
+t_23.setOrigin(Map[String,String](("origin","0-3"),("role","silent")))
+cgraph.addTransition(t_23)
 
-val tTb29 = (t:colset01) => { val entity = t;Binding02(Some(entity)) }
-val bTt59 = (b:Binding02) => {b.entity.get}:colset01
-val arc59 = new Arc[colset01,Binding02]("arc59",place13,trans23,Direction.PtT)
+val tTb30 = (t:colset02) => { try { val entity = t;Some(Binding01(Some(entity))) } catch { case e: Exception => None } }
+val bTt59 = (b:Binding01) => {b.entity.get}:colset02
+val arc59 = new Arc[colset02,Binding01]("arc59",p_10,t_23,Direction.PtT)
 arc59.setIsBase(true)
-arc59.setTokenToBind(tTb29)
+arc59.setTokenToBind(tTb30)
 arc59.setBindToToken(bTt59)
-arc59.setOrigin(Map[String,String](("origin","0-4"),("role","arc59")))
+arc59.setOrigin(Map[String,String](("origin","0-3"),("role","arc59")))
 cgraph.addArc(arc59)
 
-val bTt60 = (b:Binding02) => {b.entity.get}:colset01
-val arc60 = new Arc[colset01,Binding02]("arc60",place27,trans23,Direction.TtP)
+val bTt60 = (b:Binding01) => {b.entity.get}:colset02
+val arc60 = new Arc[colset02,Binding01]("arc60",p_11,t_23,Direction.TtP)
 arc60.setIsBase(false)
 arc60.setBindToToken(bTt60)
-arc60.setOrigin(Map[String,String](("origin","0-4"),("role","arc60")))
+arc60.setOrigin(Map[String,String](("origin","0-3"),("role","arc60")))
 cgraph.addArc(arc60)
 
-val trans24 = new Transition[Binding02]("trans24","silent",null,null)
-trans24.setEval(Eval02)
-trans24.setMerge(Merge02)
-trans24.setOrigin(Map[String,String](("origin","0-5"),("role","silent")))
-cgraph.addTransition(trans24)
+val t_24 = new Transition[Binding01]("t_24","silent",null,null)
+t_24.setEval(Eval01)
+t_24.setMerge(Merge01)
+t_24.setOrigin(Map[String,String](("origin","0-4"),("role","silent")))
+cgraph.addTransition(t_24)
 
-val tTb30 = (t:colset01) => { val entity = t;Binding02(Some(entity)) }
-val bTt61 = (b:Binding02) => {b.entity.get}:colset01
-val arc61 = new Arc[colset01,Binding02]("arc61",place25,trans24,Direction.PtT)
+val tTb31 = (t:colset02) => { try { val entity = t;Some(Binding01(Some(entity))) } catch { case e: Exception => None } }
+val bTt61 = (b:Binding01) => {b.entity.get}:colset02
+val arc61 = new Arc[colset02,Binding01]("arc61",p_13,t_24,Direction.PtT)
 arc61.setIsBase(true)
-arc61.setTokenToBind(tTb30)
+arc61.setTokenToBind(tTb31)
 arc61.setBindToToken(bTt61)
-arc61.setOrigin(Map[String,String](("origin","0-5"),("role","arc61")))
+arc61.setOrigin(Map[String,String](("origin","0-4"),("role","arc61")))
 cgraph.addArc(arc61)
 
-val bTt62 = (b:Binding02) => {b.entity.get}:colset01
-val arc62 = new Arc[colset01,Binding02]("arc62",place14,trans24,Direction.TtP)
+val bTt62 = (b:Binding01) => {b.entity.get}:colset02
+val arc62 = new Arc[colset02,Binding01]("arc62",p_28,t_24,Direction.TtP)
 arc62.setIsBase(false)
 arc62.setBindToToken(bTt62)
-arc62.setOrigin(Map[String,String](("origin","0-5"),("role","arc62")))
+arc62.setOrigin(Map[String,String](("origin","0-4"),("role","arc62")))
 cgraph.addArc(arc62)
 
-val trans25 = new Transition[Binding02]("trans25","silent",null,null)
-trans25.setEval(Eval02)
-trans25.setMerge(Merge02)
-trans25.setOrigin(Map[String,String](("origin","0-6"),("role","silent")))
-cgraph.addTransition(trans25)
+val t_25 = new Transition[Binding01]("t_25","silent",null,null)
+t_25.setEval(Eval01)
+t_25.setMerge(Merge01)
+t_25.setOrigin(Map[String,String](("origin","0-5"),("role","silent")))
+cgraph.addTransition(t_25)
 
-val tTb31 = (t:colset01) => { val entity = t;Binding02(Some(entity)) }
-val bTt63 = (b:Binding02) => {b.entity.get}:colset01
-val arc63 = new Arc[colset01,Binding02]("arc63",place16,trans25,Direction.PtT)
+val tTb32 = (t:colset02) => { try { val entity = t;Some(Binding01(Some(entity))) } catch { case e: Exception => None } }
+val bTt63 = (b:Binding01) => {b.entity.get}:colset02
+val arc63 = new Arc[colset02,Binding01]("arc63",p_26,t_25,Direction.PtT)
 arc63.setIsBase(true)
-arc63.setTokenToBind(tTb31)
+arc63.setTokenToBind(tTb32)
 arc63.setBindToToken(bTt63)
-arc63.setOrigin(Map[String,String](("origin","0-6"),("role","arc63")))
+arc63.setOrigin(Map[String,String](("origin","0-5"),("role","arc63")))
 cgraph.addArc(arc63)
 
-val bTt64 = (b:Binding02) => {b.entity.get}:colset01
-val arc64 = new Arc[colset01,Binding02]("arc64",place17,trans25,Direction.TtP)
+val bTt64 = (b:Binding01) => {b.entity.get}:colset02
+val arc64 = new Arc[colset02,Binding01]("arc64",p_14,t_25,Direction.TtP)
 arc64.setIsBase(false)
 arc64.setBindToToken(bTt64)
-arc64.setOrigin(Map[String,String](("origin","0-6"),("role","arc64")))
+arc64.setOrigin(Map[String,String](("origin","0-5"),("role","arc64")))
 cgraph.addArc(arc64)
 
-val trans26 = new Transition[Binding02]("trans26","silent",null,null)
-trans26.setEval(Eval02)
-trans26.setMerge(Merge02)
-trans26.setOrigin(Map[String,String](("origin","0-7"),("role","silent")))
-cgraph.addTransition(trans26)
+val t_26 = new Transition[Binding01]("t_26","silent",null,null)
+t_26.setEval(Eval01)
+t_26.setMerge(Merge01)
+t_26.setOrigin(Map[String,String](("origin","0-6"),("role","silent")))
+cgraph.addTransition(t_26)
 
-val tTb32 = (t:colset01) => { val entity = t;Binding02(Some(entity)) }
-val bTt65 = (b:Binding02) => {b.entity.get}:colset01
-val arc65 = new Arc[colset01,Binding02]("arc65",place19,trans26,Direction.PtT)
+val tTb33 = (t:colset02) => { try { val entity = t;Some(Binding01(Some(entity))) } catch { case e: Exception => None } }
+val bTt65 = (b:Binding01) => {b.entity.get}:colset02
+val arc65 = new Arc[colset02,Binding01]("arc65",p_16,t_26,Direction.PtT)
 arc65.setIsBase(true)
-arc65.setTokenToBind(tTb32)
+arc65.setTokenToBind(tTb33)
 arc65.setBindToToken(bTt65)
-arc65.setOrigin(Map[String,String](("origin","0-7"),("role","arc65")))
+arc65.setOrigin(Map[String,String](("origin","0-6"),("role","arc65")))
 cgraph.addArc(arc65)
 
-val bTt66 = (b:Binding02) => {b.entity.get}:colset01
-val arc66 = new Arc[colset01,Binding02]("arc66",place20,trans26,Direction.TtP)
+val bTt66 = (b:Binding01) => {b.entity.get}:colset02
+val arc66 = new Arc[colset02,Binding01]("arc66",p_17,t_26,Direction.TtP)
 arc66.setIsBase(false)
 arc66.setBindToToken(bTt66)
-arc66.setOrigin(Map[String,String](("origin","0-7"),("role","arc66")))
+arc66.setOrigin(Map[String,String](("origin","0-6"),("role","arc66")))
 cgraph.addArc(arc66)
 
-val trans27 = new Transition[Binding02]("trans27","silent",null,null)
-trans27.setEval(Eval02)
-trans27.setMerge(Merge02)
-trans27.setOrigin(Map[String,String](("origin","0-8"),("role","silent")))
-cgraph.addTransition(trans27)
+val t_27 = new Transition[Binding01]("t_27","silent",null,null)
+t_27.setEval(Eval01)
+t_27.setMerge(Merge01)
+t_27.setOrigin(Map[String,String](("origin","0-7"),("role","silent")))
+cgraph.addTransition(t_27)
 
-val tTb33 = (t:colset01) => { val entity = t;Binding02(Some(entity)) }
-val bTt67 = (b:Binding02) => {b.entity.get}:colset01
-val arc67 = new Arc[colset01,Binding02]("arc67",place22,trans27,Direction.PtT)
+val tTb34 = (t:colset02) => { try { val entity = t;Some(Binding01(Some(entity))) } catch { case e: Exception => None } }
+val bTt67 = (b:Binding01) => {b.entity.get}:colset02
+val arc67 = new Arc[colset02,Binding01]("arc67",p_19,t_27,Direction.PtT)
 arc67.setIsBase(true)
-arc67.setTokenToBind(tTb33)
+arc67.setTokenToBind(tTb34)
 arc67.setBindToToken(bTt67)
-arc67.setOrigin(Map[String,String](("origin","0-8"),("role","arc67")))
+arc67.setOrigin(Map[String,String](("origin","0-7"),("role","arc67")))
 cgraph.addArc(arc67)
 
-val bTt68 = (b:Binding02) => {b.entity.get}:colset01
-val arc68 = new Arc[colset01,Binding02]("arc68",place28,trans27,Direction.TtP)
+val bTt68 = (b:Binding01) => {b.entity.get}:colset02
+val arc68 = new Arc[colset02,Binding01]("arc68",p_20,t_27,Direction.TtP)
 arc68.setIsBase(false)
 arc68.setBindToToken(bTt68)
-arc68.setOrigin(Map[String,String](("origin","0-8"),("role","arc68")))
+arc68.setOrigin(Map[String,String](("origin","0-7"),("role","arc68")))
 cgraph.addArc(arc68)
 
-val trans28 = new Transition[Binding02]("trans28","silent",null,null)
-trans28.setEval(Eval02)
-trans28.setMerge(Merge02)
-trans28.setOrigin(Map[String,String](("origin","0-9"),("role","silent")))
-cgraph.addTransition(trans28)
+val t_28 = new Transition[Binding01]("t_28","silent",null,null)
+t_28.setEval(Eval01)
+t_28.setMerge(Merge01)
+t_28.setOrigin(Map[String,String](("origin","0-8"),("role","silent")))
+cgraph.addTransition(t_28)
 
-val tTb34 = (t:colset01) => { val entity = t;Binding02(Some(entity)) }
-val bTt69 = (b:Binding02) => {b.entity.get}:colset01
-val arc69 = new Arc[colset01,Binding02]("arc69",place26,trans28,Direction.PtT)
+val tTb35 = (t:colset02) => { try { val entity = t;Some(Binding01(Some(entity))) } catch { case e: Exception => None } }
+val bTt69 = (b:Binding01) => {b.entity.get}:colset02
+val arc69 = new Arc[colset02,Binding01]("arc69",p_22,t_28,Direction.PtT)
 arc69.setIsBase(true)
-arc69.setTokenToBind(tTb34)
+arc69.setTokenToBind(tTb35)
 arc69.setBindToToken(bTt69)
-arc69.setOrigin(Map[String,String](("origin","0-9"),("role","arc69")))
+arc69.setOrigin(Map[String,String](("origin","0-8"),("role","arc69")))
 cgraph.addArc(arc69)
 
-val bTt70 = (b:Binding02) => {b.entity.get}:colset01
-val arc70 = new Arc[colset01,Binding02]("arc70",place29,trans28,Direction.TtP)
+val bTt70 = (b:Binding01) => {b.entity.get}:colset02
+val arc70 = new Arc[colset02,Binding01]("arc70",p_29,t_28,Direction.TtP)
 arc70.setIsBase(false)
 arc70.setBindToToken(bTt70)
-arc70.setOrigin(Map[String,String](("origin","0-9"),("role","arc70")))
+arc70.setOrigin(Map[String,String](("origin","0-8"),("role","arc70")))
 cgraph.addArc(arc70)
 
+val t_29 = new Transition[Binding01]("t_29","silent",null,null)
+t_29.setEval(Eval01)
+t_29.setMerge(Merge01)
+t_29.setOrigin(Map[String,String](("origin","0-9"),("role","silent")))
+cgraph.addTransition(t_29)
+
+val tTb36 = (t:colset02) => { try { val entity = t;Some(Binding01(Some(entity))) } catch { case e: Exception => None } }
+val bTt71 = (b:Binding01) => {b.entity.get}:colset02
+val arc71 = new Arc[colset02,Binding01]("arc71",p_27,t_29,Direction.PtT)
+arc71.setIsBase(true)
+arc71.setTokenToBind(tTb36)
+arc71.setBindToToken(bTt71)
+arc71.setOrigin(Map[String,String](("origin","0-9"),("role","arc71")))
+cgraph.addArc(arc71)
+
+val bTt72 = (b:Binding01) => {b.entity.get}:colset02
+val arc72 = new Arc[colset02,Binding01]("arc72",p_30,t_29,Direction.TtP)
+arc72.setIsBase(false)
+arc72.setBindToToken(bTt72)
+arc72.setOrigin(Map[String,String](("origin","0-9"),("role","arc72")))
+cgraph.addArc(arc72)
