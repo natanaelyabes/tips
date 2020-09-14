@@ -81,9 +81,9 @@ import SemanticComponent from '@/iochord/ips/common/ui/semantic-components/Seman
  *
  */
 export default class PMDHeuristicsRibbonComponent extends SemanticComponent {
-  //
+
   public depTh = -1;
-  
+
   public freqTh = 0;
 
 }

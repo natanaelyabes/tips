@@ -81,7 +81,7 @@ export default class ResourceMiningConfiguration {
    * @memberof OriginatorMiningConfiguration
    */
   public colEventOriginator: string = 'eo';
-  
+
   /**
    * The column position for event resource.
    *

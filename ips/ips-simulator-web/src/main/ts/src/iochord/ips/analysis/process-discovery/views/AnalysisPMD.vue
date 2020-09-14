@@ -142,9 +142,9 @@ export default class AnalysisPMD extends VisualizerLayoutView {
    * @memberof AnalysisPMD
    */
   public progressMessage: string = '';
-  
+
   public message = '';
-  
+
   /**
    * Perform analysis upon selected dataset by executing process mining algorithm.
    *
@@ -185,7 +185,7 @@ export default class AnalysisPMD extends VisualizerLayoutView {
               + graph.data.attributes.trFitness;
           }
           if (graph.data.attributes.hasOwnProperty('fpFitness')) {
-            this.message += '<br />Footprint-based Fitness: ' 
+            this.message += '<br />Footprint-based Fitness: '
               + graph.data.attributes.fpFitness;
           }
         }
