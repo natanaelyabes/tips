@@ -5,21 +5,26 @@
 -->
 <template>
   <div class="pmd heuristics ribbon component">
-    <div class="item"><div class="header"><strong>Heuristics Miner</strong></div></div>
+    <div class="item">
+      <div class="header">
+        <strong>Heuristics Miner</strong>
+      </div>
+    </div>
     <form class="ui form">
     <div class="ui secondary menu">
         <div class="item">
           <div class="field">
             <label>Dependency threshold</label>
-            <input type="number" name="pmd[depthresh]" value="0.9" step="0.1" min="0" max="1">
+            <input type="number" name="pmd[depthresh]" v-model="depTh" step="0.1" min="-1" max="1">
           </div>
         </div>
         <div class="item">
           <div class="field">
             <label>Minimum frequency</label>
-            <input type="number" name="pmd[minfreq]" value="10" min="0">
+            <input type="number" name="pmd[minfreq]" v-model="freqTh" min="0">
           </div>
         </div>
+        <!--
         <div class="item">
           <div class="field">
             <label>Node Color Category</label>
@@ -46,10 +51,11 @@
             </select>
           </div>
         </div>
+        -->
         <div class="item">
           <div class="field">
             <label>&nbsp;</label>
-            <button class="ui primary button">
+            <button type="button" @click="$emit('onRun')" class="ui primary button">
               Apply
             </button>
           </div>
@@ -60,7 +66,7 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component } from 'vue-property-decorator';
+import { Vue, Component, Prop } from 'vue-property-decorator';
 import SemanticComponent from '@/iochord/ips/common/ui/semantic-components/SemanticComponent';
 
 @Component
@@ -76,5 +82,9 @@ import SemanticComponent from '@/iochord/ips/common/ui/semantic-components/Seman
  */
 export default class PMDHeuristicsRibbonComponent extends SemanticComponent {
   //
+  public depTh = -1;
+  
+  public freqTh = 0;
+
 }
 </script>
