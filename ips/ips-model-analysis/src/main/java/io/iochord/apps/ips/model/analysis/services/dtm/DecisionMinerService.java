@@ -91,6 +91,7 @@ public class DecisionMinerService extends AnIpsAsyncService<DecisionMinerConfig,
 				.collect(Collectors.toList())).flatMap(Collection::stream).collect(Collectors.toList());
 		result.setRule(new ArrayList<DecisionRule>());
 		DecisionMinerAlgorithm miner = new DecisionMinerAlgorithm(context, config, branchNodes, result);
+		System.out.println(miner.getResult().getRule().size());
 		return miner.getResult();
 	}
 

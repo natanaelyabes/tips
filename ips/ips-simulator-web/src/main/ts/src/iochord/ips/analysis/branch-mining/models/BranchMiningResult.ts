@@ -1,3 +1,4 @@
+import { BranchMiningRule } from './BranchMiningRule';
 /**
  * Object to retreive branch mining result.
  *
@@ -24,5 +25,5 @@ export default class BranchMiningResult {
    * @type {*}
    * @memberof BranchMiningResult
    */
-  public decisiontree: any = {};
+  public rule: BranchMiningRule[] = [];
 }

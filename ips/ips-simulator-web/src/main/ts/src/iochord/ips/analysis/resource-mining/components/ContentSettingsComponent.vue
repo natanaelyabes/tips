@@ -208,7 +208,6 @@ export default class ContentSettingsComponent extends SemanticComponent {
           });
         }, (tick: any) => {
           self.uploadStatus = tick.progress;
-          console.log(self.uploadStatus);
       });
     }
   }
