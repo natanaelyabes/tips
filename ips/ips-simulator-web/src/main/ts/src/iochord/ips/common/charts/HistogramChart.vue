@@ -39,9 +39,5 @@ export default class HistogramChart extends BaseComponent {
   public created(): void {
     const self = this;
   }
-
-  public mounted(): void {
-    console.log(this.$children[0]);
-  }
 }
 </script>

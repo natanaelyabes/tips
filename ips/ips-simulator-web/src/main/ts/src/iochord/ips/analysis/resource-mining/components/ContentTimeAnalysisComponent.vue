@@ -139,7 +139,6 @@ export default class ContentTimeAnalysisComponent extends BaseComponent {
   public getHourStart(workinfo: string): number {
     const stHour = Number(workinfo[0].split(' ', 2)[1].split(':', 3)[0]);
     const edHour = Number(workinfo[1].split(' ', 2)[1].split(':', 3)[0]);
-    console.log(stHour + ' - ' + edHour);
     if (this.wind2) {
       if (stHour < edHour)
         return stHour + 24;

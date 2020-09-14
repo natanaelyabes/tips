@@ -241,7 +241,6 @@ export class BaseService {
       },
     }).then((rawResponse) => {
       const response = rawResponse.data;
-      console.log(rawResponse);
       if (response.info.state === 'COMPLETED') {
         completeCallback(response);
       } else {
@@ -283,10 +282,9 @@ export class BaseService {
         (frame: any) => {
           self.wsConnected = true;
           callback(self.wsClient);
-          console.log(frame);
         },
         (error: any) => {
-          console.log(error);
+          console.error(error);
         },
       );
     }

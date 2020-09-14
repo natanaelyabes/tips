@@ -102,7 +102,6 @@ export class IsmModelService extends ModelService {
             }
           }
         }
-        console.log(ni, ai);
         const graphNodes: any = {
           /*/
           '0-activity-1': {
@@ -170,7 +169,6 @@ export class IsmModelService extends ModelService {
             }
           }
         }
-        console.log(nc + ' nodes', ac + ' connectors', (nc + ac) + ' objects');
         const graphJson = {
           configurations: {},
           control: {},

@@ -433,9 +433,6 @@ export default class SimulationEditorView extends AppLayoutView {
       // Fetch graph to Vuex state
       await this.modelCreate();
 
-      // Print to stdout
-      console.log(graphModule.graph);
-
       // Update rxjs subject
       GraphSubject.update(graphModule.graph);
 
@@ -445,8 +442,6 @@ export default class SimulationEditorView extends AppLayoutView {
         // Update its Vuex state
         graphModule.setGraph(graph);
 
-        // Print to stdout
-        console.log(graph);
       });
     } catch (e) {
       console.error(e);

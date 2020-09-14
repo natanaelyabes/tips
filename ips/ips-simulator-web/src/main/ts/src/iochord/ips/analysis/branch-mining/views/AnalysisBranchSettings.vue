@@ -57,7 +57,6 @@ import { Vue, Prop, Component } from 'vue-property-decorator';
 import DiffLayoutView from '@/iochord/ips/common/ui/layout/class/DiffLayoutView';
 import LeftBarContentWrapperComponent from '@/iochord/ips/common/ui/layout/components/LeftBarContentWrapperComponent.vue';
 import ContentSettingsComponent from '../components/ContentSettingsComponent.vue';
-import ContentSplitComponent from '../components/ContentSplitComponent.vue';
 import DataConnectionService from '@/iochord/ips/data/connection/services/DataConnectionService';
 
 declare const $: any;
@@ -65,7 +64,6 @@ declare const $: any;
 @Component({
   components: {
     LeftBarContentWrapperComponent,
-    ContentSplitComponent,
     ContentSettingsComponent,
   },
 })

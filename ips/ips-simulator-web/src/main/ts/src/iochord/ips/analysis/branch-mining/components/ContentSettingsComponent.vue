@@ -16,8 +16,12 @@ import { Vue, Component, Prop } from 'vue-property-decorator';
 import SemanticComponent from '@/iochord/ips/common/ui/semantic-components/SemanticComponent';
 import BranchMiningService from '../services/BranchMiningService';
 import BranchMiningConfiguration from '../models/BranchMiningConfiguration';
+import BranchMiningModule from '../stores/BranchMiningModule';
+import { getModule } from 'vuex-module-decorators';
 
 declare const $: any;
+
+const branchMiningModule = getModule(BranchMiningModule);
 
 @Component
 
@@ -54,15 +58,13 @@ export default class ContentSettingsComponent extends SemanticComponent {
 
   public doBranchMining() {
     if (this.datasetId !== 'Select a dataset') {
-
       this.config.datasetId = this.datasetId;
-
+      branchMiningModule.clearBranch();
       BranchMiningService.getInstance().mineDecision(this.config, (res: any) => {
-        console.log(res);
+        branchMiningModule.addBranch(res);
+        const route = { path: `/iochord/ips/analytics/branch/mining/${this.datasetId}` };
+        this.$router.push(route); // Redirect to overall page
       }, null);
-
-      const route = { path: `/iochord/ips/analytics/branch/mining/${this.datasetId}` };
-      this.$router.push(route); // Redirect to overall page
     }
   }
 

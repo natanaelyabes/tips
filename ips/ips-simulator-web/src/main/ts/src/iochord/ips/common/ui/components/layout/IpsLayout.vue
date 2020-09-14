@@ -10,7 +10,7 @@
         <!-- Right menu item -->
         <div class="right menu">
           <div class="ui dropdown item">
-            <img class="ui avatar image" src="@/assets/images/avatars/steve.jpg">
+            <!-- <img class="ui avatar image" src="@/assets/images/avatars/steve.jpg"> -->
               Administrator
             <i class="dropdown icon"></i>
             <div class="menu">
