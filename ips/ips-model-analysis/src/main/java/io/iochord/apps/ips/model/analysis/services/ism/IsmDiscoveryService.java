@@ -3,14 +3,10 @@ package io.iochord.apps.ips.model.analysis.services.ism;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
-import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.stream.Collectors;
 import java.util.Set;
 
 import io.iochord.apps.ips.common.util.LoggerUtil;
@@ -23,13 +19,10 @@ import io.iochord.apps.ips.model.ism.v1.Page;
 import io.iochord.apps.ips.model.ism.v1.impl.ConnectorImpl;
 import io.iochord.apps.ips.model.ism.v1.impl.IsmFactoryImpl;
 import io.iochord.apps.ips.model.ism.v1.impl.NodeImpl;
-import io.iochord.apps.ips.model.ism.v1.nodes.Activity;
 import io.iochord.apps.ips.model.ism.v1.nodes.enums.BranchGate;
 import io.iochord.apps.ips.model.ism.v1.nodes.enums.BranchType;
 import io.iochord.apps.ips.model.ism.v1.nodes.impl.ActivityImpl;
 import io.iochord.apps.ips.model.ism.v1.nodes.impl.BranchImpl;
-import io.iochord.apps.ips.model.ism.v1.nodes.impl.StartImpl;
-import io.iochord.apps.ips.model.ism.v1.nodes.impl.StopImpl;
 
 /**
 *
@@ -58,7 +51,11 @@ public class IsmDiscoveryService extends AnIpsAsyncService<IsmDiscoveryConfigura
 				nodes.put(ta, null);
 			}
 		}
-		return createGraph(context, factory, nodes, snNodes, dfMatrix, dpMatrix);
+		IsmGraph graph = createGraph(context, factory, nodes, snNodes, dfMatrix, dpMatrix);
+		IsmReplayService replayer = new IsmReplayService();
+		double trFitness = replayer.run(context, config, graph);
+		System.out.println("TRFitness: " + trFitness);
+		return graph;
 	}
 	
 	private double calculateDpMatrix(IsmDiscoveryConfiguration config, Map<String, Map<String, Double>> dpMatrix, Map<String, Map<String, Long>> dfMatrix) {
@@ -100,7 +97,9 @@ public class IsmDiscoveryService extends AnIpsAsyncService<IsmDiscoveryConfigura
 		Page p = result.getPages().values().iterator().next();
 		int ni = 0;
 		NodeImpl sn = (NodeImpl) factory.addStart(p);
+		sn.setLabel("START");
 		NodeImpl tn = (NodeImpl) factory.addStop(p);
+		tn.setLabel("STOP");
 		if (snNodes.containsKey("start") && snNodes.get("start").size() > 1) {
 			BranchImpl ob = (BranchImpl) factory.addBranch(p);
 			ob.setType(BranchType.SPLIT);
@@ -137,7 +136,7 @@ public class IsmDiscoveryService extends AnIpsAsyncService<IsmDiscoveryConfigura
 
 		for (String et : snNodes.keySet()) {
 			for (String ea : snNodes.get(et)) {
-				Node an = nodes.get(ea);
+				// Node an = nodes.get(ea);
 				if (et.equals("start")) {
 					if (!inNodes.containsKey(ea)) {
 						inNodes.put(ea, new LinkedHashSet<>());
