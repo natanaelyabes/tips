@@ -39,5 +39,5 @@ public class ElementImpl implements Element {
 	public String getElementType() {
 		return ElementType.ELEMENT;
 	}
-
+	
 }

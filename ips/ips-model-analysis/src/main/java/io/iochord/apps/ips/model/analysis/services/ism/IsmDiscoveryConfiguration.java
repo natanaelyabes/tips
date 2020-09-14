@@ -38,6 +38,6 @@ public class IsmDiscoveryConfiguration {
 	
 	@Getter
 	@Setter
-	private float dependencyThreshold = 0.9f;
+	private float dependencyThreshold = -1f;
 	
 }
