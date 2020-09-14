@@ -42,7 +42,7 @@ export default class IsmDiscoveryConfiguration {
    */
   public colEventTimestamp: string = 'ec';
 
-  public positiveObservationThreshold = 0;
+  public positiveObservationThreshold: number = 0;
 
   /**
    * The column position for default dependency threshold
