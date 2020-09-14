@@ -31,11 +31,36 @@
 
       <!-- Content -->
       <template slot="depth-two-menu-item">
-        <ItemBranchList />
+        <div class="ui basic segment" id="header">
+          <h4>Branching rules</h4>
+        </div>
+        <div class="ui divider"></div>
+        <div class="ui divided items">
+          <template v-if="branchMining">
+            <a v-for="(branch, i) in branchMining.rule" :key="i" class="item" 
+              @click="showDecisionRule(branch.eventName)">{{branch.eventName}}</a>
+          </template>
+          <template v-else>
+            <div class="item">
+              <div class="ui basic segment">
+                Branch is not exists.
+              </div>
+            </div>
+          </template>
+        </div>
       </template>
-
       <template slot="content">
-        <ItemProcessModel />
+        <template v-if="branchMining">
+          <template v-if="selectedBranchRule === ''">
+            <p>Select branch to display the decision model.</p>
+          </template>
+          <template v-else>
+            <ItemProcessModel :branchRule="selectedBranchRule"/>
+          </template>
+        </template>
+        <template v-else>
+          <p>Select dataset id and perform branch mining in the settings panel.</p>
+        </template>
       </template>
     </DepthTwoLeftWrapperComponent>
   </div>
@@ -54,6 +79,31 @@ a.section {
 .ui.segment {
   margin: 0;
 }
+
+#depth-two #header {
+  min-width: 260px;
+}
+
+#depth-two .ui.divider {
+  margin: 0;
+}
+
+#depth-two .ui.divided.items {
+  margin: 0;
+}
+
+#depth-two .item {
+  padding: 0;
+}
+
+#depth-two a.item {
+  color: black;
+  padding: 1rem!important;
+}
+
+#depth-two a.item:hover {
+  background: rgba(0,0,0,.03);
+}
 </style>
 
 <script lang="ts">
@@ -61,11 +111,14 @@ import { Vue, Prop, Component } from 'vue-property-decorator';
 import ExplorerLayoutView from '@/iochord/ips/common/ui/layout/class/ExplorerLayoutView';
 import DepthTwoLeftWrapperComponent from '@/iochord/ips/common/ui/layout/components/DepthTwoLeftWrapperComponent.vue';
 import ContentSettingsComponent from '../components/ContentSettingsComponent.vue';
-import ContentSplitComponent from '../components/ContentSplitComponent.vue';
 import { getModule } from 'vuex-module-decorators';
 import DataConnectionService from '../../../data/connection/services/DataConnectionService';
 import ItemProcessModel from '../components/ItemProcessModel.vue';
 import ItemBranchList from '../components/ItemBranchList.vue';
+import BranchMiningResult from '../models/BranchMiningResult';
+import BranchMiningModule from '../stores/BranchMiningModule';
+
+const branchMiningModule = getModule(BranchMiningModule);
 
 declare const $: any;
 
@@ -93,19 +146,53 @@ declare const $: any;
 export default class AnalysisBranchOverall extends ExplorerLayoutView {
 
   /**
-   * Title field of AnalysisBranchOverall
+   * Title field of AnalysisBranchOverall.
    *
    * @type {string}
    * @memberof AnalysisBranchOverall
    */
   public title: string = '';
 
+  /**
+   * List of available datasets.
+   *
+   * @type {any}
+   * @memberof AnalysisBranchOverall
+   */
   public datasets = {};
 
+  /**
+   * The dataset id as retreived from router prop.
+   *
+   * @type {string}
+   * @memberof AnalysisBranchOverall
+   */
   @Prop({default: ''})
   public datasetId!: string;
 
+  /**
+   * Selected branch rule.
+   *
+   * @type {string}
+   * @memberof AnalysisBranchOverall
+   */
+  public selectedBranchRule: any = '';
+
+  /**
+   * Selected dataset id.
+   *
+   * @type {string}
+   * @memberof AnalysisBranchOverall
+   */
   public selectedDatasetId: string = 'Select a dataset';
+
+  /**
+   * Branch mining result.
+   *
+   * @type {any}
+   * @memberof AnalysisBranchOverall
+   */
+  public branchMining: BranchMiningResult = {} as BranchMiningResult;
 
   /**
    * Override browser properties for AnalysisBranchOverall
@@ -130,22 +217,26 @@ export default class AnalysisBranchOverall extends ExplorerLayoutView {
   /**
    * Override Vue mounted lifecyle
    *
-   * @memberof AnalysisResourceMining
+   * @memberof AnalysisBranchOverall
    */
   public mounted(): void {
     this.forceReRender();
-    console.log(this.datasetId);
-    const self = this;
+    this.branchMining = new BranchMiningResult();
     DataConnectionService.getInstance().getDataConnections((res: any) => {
-      self.datasets = res.data;
-      if (this.datasetId !== '')
+      this.datasets = res.data;
+      if (this.datasetId !== '') {
         this.selectedDatasetId = this.datasetId;
-    }, (tick: any) => {
-      console.log('Checking progress ' + tick);
-    });
+        this.branchMining = branchMiningModule.branches.data as BranchMiningResult;
+      }
+    }, null);
   }
 
-  public declareSemanticModules() {
+  public showDecisionRule(branchId: string): void {
+    this.selectedBranchRule = this.branchMining.rule
+      .filter((branch) => branch.eventName === branchId);
+  }
+
+  public declareSemanticModules(): void {
     $('.dropdown').dropdown();
   }
 }

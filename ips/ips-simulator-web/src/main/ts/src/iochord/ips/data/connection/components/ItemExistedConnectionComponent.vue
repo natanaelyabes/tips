@@ -103,9 +103,7 @@ export default class ItemExistedConnectionComponent extends BaseComponent {
     const self = this;
     DataConnectionService.getInstance().getFilteredDataConnections('dataset', (res: any) => {
       self.datasets = res.data;
-    }, (tick: any) => {
-      console.log('AAAAAAAA', tick);
-    });
+    }, null);
   }
 }
 </script>

@@ -206,10 +206,6 @@ export default class MySvgPanZoom extends BaseComponent {
     paper.on('cell:mouseover', () => {
       document.body.style.cursor = 'all-scroll';
     });
-
-    paper.on('cell:pointerclick', (cellview: any) => {
-      console.log('Handle click event of element ' + cellview);
-    });
   }
 
   @Watch('layoutDirection')

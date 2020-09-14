@@ -7,6 +7,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -40,10 +41,10 @@ public class DecisionMinerAlgorithm implements DecisionMiner {
 	private DecisionMinerResult result = new DecisionMinerResult();
 	
 	/**
-	 * Class constructor. Existing table were dropped to reset the environment. 
-	 * Necessary extension to execute PL/Python script is enabled.
+	 * Tables were dropped to reset the environment. 
+	 * Extension to execute PL/Python script is enabled.
 	 * Then, it learns a decision tree model that best-fit the data (observation matrix).
-	 * UDF to predict decision among input is created based upon the learned model.
+	 * Also, two UDF to predict decision and its target class probability given input is created based upon the learned model.
 	 * 
 	 * @param context
 	 * @param config
@@ -62,6 +63,8 @@ public class DecisionMinerAlgorithm implements DecisionMiner {
 		q.append("-- Enable extensions\n");
 		q.append("CREATE EXTENSION IF NOT EXISTS plpython3u;\n");
 		q.append("\n"); // Create UDFs.
+		q.append(predictDecisionTreeUDF(context, config, q));
+		q.append(predictProbabilityDecisionTreeUDF(context, config, q));
 		try (Connection conn = context.getDataSource().getConnection()) {
 			String query = q.toString();
 			try (PreparedStatement st = conn.prepareStatement(query)) {
@@ -70,7 +73,6 @@ public class DecisionMinerAlgorithm implements DecisionMiner {
 		} catch (Exception e) {
 			LoggerUtil.logError(e);
 		}
-		predictDecisionTreeUDF(context, config, q);
 		branches.stream().forEach(node -> getInputOutputNodes(context, config, node, q));
 	}
 
@@ -121,6 +123,16 @@ public class DecisionMinerAlgorithm implements DecisionMiner {
 	 * User-Defined-Function (UDF) to predict outcome based on
 	 * an input (feature tuple) using decision tree classifier.
 	 * 
+	 * <<USAGE>>
+	 * 
+	 * -- CALL predict_dt example. INPUT: [amount, status, policytype], OUTPUT: {Issue payment, Send approval letter}
+	 * SELECT ips_dataset_1598329190376_predict_dt('ips_dataset_1598329190376_dt_model', 'model', 'Evaluate claim', ARRAY[[500.0, 0, 0]]);
+	 * 
+	 * -- CALL predict_dt example: INPUT: [amount, status, policytype], OUTPUT: {Send rejection letter}
+	 * SELECT ips_dataset_1598329190376_predict_dt('ips_dataset_1598329190376_dt_model', 'model', 'Evaluate claim', ARRAY[[50.0, 1, 0]]);
+	 * 
+	 * -- INPUT columns are lexically ordered.
+	 * 
 	 * [param] model_table
 	 * [param] model_colname
 	 * [param] model_name
@@ -129,8 +141,9 @@ public class DecisionMinerAlgorithm implements DecisionMiner {
 	 * @param context
 	 * @param config
 	 * @param q
+	 * @return 
 	 */
-	private void predictDecisionTreeUDF(ServiceContext context, DecisionMinerConfig config, StringBuilder q) {
+	private StringBuilder predictDecisionTreeUDF(ServiceContext context, DecisionMinerConfig config, StringBuilder q) {
 		String splittedId[] = config.getDatasetId().split("_");
 		String datasetId = splittedId[0] + "_" + splittedId[1] + "_" + splittedId[2];
 		q.append("CREATE OR REPLACE FUNCTION ").append(datasetId).append("_").append("predict_dt(model_table text, model_colname text, "
@@ -146,6 +159,41 @@ public class DecisionMinerAlgorithm implements DecisionMiner {
 		q.append("    return prediction\n");
 		q.append("$$ LANGUAGE plpython3u;\n");
 		q.append("\n");
+		return q;
+	}
+	
+	/**
+	 * User-Defined-Function (UDF) to predict outcome probability
+	 * based on input (feature tuple) using decision tree classifier.
+	 * 
+	 * [param] model_table
+	 * [param] model_colname
+	 * [param] model_name
+	 * [param] input_val
+	 * 
+	 * @param context
+	 * @param config
+	 * @param q
+	 * @return
+	 */
+	private StringBuilder predictProbabilityDecisionTreeUDF(ServiceContext context, DecisionMinerConfig config,
+			StringBuilder q) {
+		String splittedId[] = config.getDatasetId().split("_");
+		String datasetId = splittedId[0] + "_" + splittedId[1] + "_" + splittedId[2];
+		q.append("CREATE OR REPLACE FUNCTION ").append(datasetId).append("_").append("predict_prob_dt(model_table text, model_colname text, "
+				+ "model_name varchar, input_val real[])\n");
+		q.append("RETURNS varchar[] AS $$\n");
+		q.append("    from _pickle import loads\n");
+		q.append("\n");
+		q.append("    resultset = plpy.execute('SELECT %s FROM %s WHERE ea = %s;' % (plpy.quite_ident(model_colname), "
+							   + "plpy.quote_ident(model_table), plpy.quote_literal(model_name)))\n");
+		q.append("    model = loads(resultset[0][model_colname])\n");
+		q.append("    prediction = model.predict_proba(input_val)\n");
+		q.append("    plpy.info(prediction)\n");
+		q.append("    return prediction\n");
+		q.append("$$ LANGUAGE plpython3u;\n");
+		q.append("\n");
+		return q;
 	}
 	
 	/**
@@ -231,6 +279,7 @@ public class DecisionMinerAlgorithm implements DecisionMiner {
 		q.append("DO $$\n");
 		q.append("    from sklearn.model_selection import train_test_split\n");
 		q.append("    from sklearn.tree import DecisionTreeClassifier\n");
+		q.append("    from sklearn.tree import export_graphviz\n");
 		q.append("    from sklearn.tree import export_text\n");
 		q.append("    from sklearn import metrics\n");
 		q.append("    from _pickle import dumps\n");
@@ -256,7 +305,7 @@ public class DecisionMinerAlgorithm implements DecisionMiner {
 		q.append("\n");
 		q.append("    def inducedt(obs, feature_cols):\n");
 		q.append("        X = pd.get_dummies(obs[feature_cols],drop_first=True)\n");
-		q.append("        plpy.info(X)\n");
+		q.append("        plpy.info(X)\n"); // one-hot encoded feature matrix.
 		q.append("        y = obs.label\n");
 		q.append("        plpy.info(y)\n");
 		q.append("        X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=test_size,\n");
@@ -267,17 +316,17 @@ public class DecisionMinerAlgorithm implements DecisionMiner {
 		q.append("        y_pred = clf.predict(X_test)\n");
 		q.append("        acc = metrics.accuracy_score(y_test, y_pred)\n");
 		q.append("        plpy.info(\"Accuracy:\", acc)\n");
-		q.append("        createtable  = 'CREATE TABLE IF NOT EXISTS ips_dataset_1598329190376_dt_model ('\n");
+		q.append("        createtable  = 'CREATE TABLE IF NOT EXISTS " + config.getSchemaName() + "." + config.getDatasetId() + "_dt_model ('\n");
 		q.append("        createtable += '    ea VARCHAR(255),'\n");
 		q.append("        createtable += '    model BYTEA NOT NULL,'\n");
 		q.append("        createtable += '    accuracy NUMERIC'\n");
 		q.append("        createtable += ');'\n");
 		q.append("        plpy.execute(createtable)\n");
-		q.append("        querysentence  = 'INSERT INTO ips_dataset_1598329190376_dt_model(ea, model, accuracy) \\n'\n");
+		q.append("        querysentence  = 'INSERT INTO " + config.getSchemaName() + "." + config.getDatasetId() + "_dt_model(ea, model, accuracy) \\n'\n");
 		q.append("        querysentence += 'SELECT \\'" + input.get(0).getLabel() + "\\' AS ea, $1 AS model , $2 AS accuracy;'\n");
 		q.append("        queryplan = plpy.prepare(querysentence, ['BYTEA', 'numeric'])\n");
 		q.append("        plpy.execute(queryplan, [dumps(clf), acc])\n");
-		q.append("        r = export_text(clf, feature_names=feature_cols)\n");
+		q.append("        r = export_graphviz(clf, feature_names=feature_cols, class_names=y.unique(), filled=True, rounded=True, special_characters=True)\n");
 		q.append("        return r\n");
 		q.append("\n");
 		q.append("    obs = pd.DataFrame.from_records(plpy.execute('SELECT * FROM observation'))\n");
@@ -285,20 +334,16 @@ public class DecisionMinerAlgorithm implements DecisionMiner {
 		q.append("    feature_cols = obs.columns.tolist()\n");
 		q.append("    feature_cols.remove('label')\n");
 		q.append("    s = inducedt(obs, feature_cols)\n");
-		q.append("    s = s.encode('unicode-escape').decode().replace('\\\\\\\\', '\\\\')\n");
 		q.append("    plpy.execute('DROP TABLE IF EXISTS r;')\n");
-		q.append("    plpy.execute('CREATE TEMPORARY TABLE r AS SELECT ea, accuracy, %s AS rule FROM ips_dataset_1598329190376_dt_model "
+		q.append("    plpy.execute('CREATE TEMPORARY TABLE r AS SELECT ea, accuracy, %s AS rule FROM " + config.getSchemaName() + "." + config.getDatasetId() + "_dt_model "
 				+ "WHERE ea = %s;' % (plpy.quote_literal(s), plpy.quote_literal('" + input.get(0).getLabel() + "')))\n");
 		q.append("$$ LANGUAGE plpython3u;\n");
 		q.append("\n");
-		execQuery(context,config, q);
+		execQuery(context, config, q);
 	}
 
 	/**
 	 * Execute query and return decision rules.
-	 * TODO: <<BUG>>
-	 * Still not working properly. No result set were returned from the query. 
-	 * Need to find a way how to execute PL script in Java.
 	 * 
 	 * @param context
 	 * @param config
@@ -312,7 +357,7 @@ public class DecisionMinerAlgorithm implements DecisionMiner {
 			}
 			q.setLength(0);
 			q.append("-- Return the decision rules.\n");
-			q.append("SELECT * FROM r;"); // ERROR: No results were returned by the query.
+			q.append("SELECT * FROM r LIMIT 1;"); // ERROR: No results were returned by the query.
 			String query = q.toString();
 			try (PreparedStatement st = conn.prepareStatement(query)) {
 				ResultSet rs = st.executeQuery();
@@ -326,6 +371,7 @@ public class DecisionMinerAlgorithm implements DecisionMiner {
 					rule.setDecisionRule(ru);
 					result.getRule().add(rule);
 				}
+				rs.close();
 			}
 		} catch (Exception e) {
 			LoggerUtil.logError(e);

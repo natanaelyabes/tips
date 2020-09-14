@@ -78,7 +78,6 @@ export default class DataConnectionService extends DataService {
   public importCsv(config: ImportCsvConfiguration, file: any, completeCallback: any, progressCallback: any) {
     const req = new FormData();
     req.append('config', JSON.stringify(config));
-    console.log(config);
     req.append('file', file);
     return this.webserviceUpload(DataConnectionService.BASE_URI + '/import/csv', req, completeCallback, progressCallback);
   }

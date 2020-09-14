@@ -48,13 +48,13 @@
 }
 
 .statistics {
-  background: rgba(0,0,0,0.67);
+  background: rgba(255,255,255,0.67);
   width: 200px;
   padding: .2em .5em;
   position: absolute;
-  border: 1px solid black;
+  border: 1px solid white;
   border-radius: .5em;
-  color: greenyellow;
+  color: #03628c;
   top: 10px;
   left: 10px;
   z-index: 9999;
@@ -196,7 +196,6 @@ export default class AnalysisPMD extends VisualizerLayoutView {
         (self.$refs['viewer'] as any).forceReRender();
       }, (tick: any) => {
         self.progressMessage = tick.progressData;
-        console.log(tick.progressData);
       });
     } else {
       self.graphJson = '';
