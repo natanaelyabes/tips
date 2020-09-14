@@ -24,6 +24,6 @@ class MarkingObserver extends Observer {
   def update(o:Observable, marking:Object):Unit =
   {
     val m = marking.asInstanceOf[(Long, Int, String, Map[(String,Map[String,String]),Any],Map[(String,Map[String,String]),Any])]
-    println("JALAN", m)
+    println("RUN", m)
   }
 }

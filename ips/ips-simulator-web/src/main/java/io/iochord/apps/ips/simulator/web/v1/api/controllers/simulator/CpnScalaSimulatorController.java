@@ -4,27 +4,53 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.concurrent.TimeUnit;
 import java.util.Observer;
+import java.util.Optional;
 
+import org.springframework.http.HttpHeaders;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 
+import io.iochord.apps.ips.common.models.Referenceable;
 import io.iochord.apps.ips.common.util.LoggerUtil;
+import io.iochord.apps.ips.common.util.SerializationUtil;
+import io.iochord.apps.ips.core.services.ServiceContext;
+import io.iochord.apps.ips.model.analysis.services.ism.IsmDiscoveryConfiguration;
+import io.iochord.apps.ips.model.analysis.services.ism.IsmDiscoveryService;
+import io.iochord.apps.ips.model.analysis.services.resm.algorithm.ResMinerAlgorithm;
+import io.iochord.apps.ips.model.analysis.services.resm.algorithm.ResMinerAlgorithmDefaultMining;
+import io.iochord.apps.ips.model.analysis.services.resm.algorithm.ResMinerAlgorithmDoingSimilarTask;
+import io.iochord.apps.ips.model.ism.v1.Connector;
+import io.iochord.apps.ips.model.ism.v1.Data;
 import io.iochord.apps.ips.model.ism.v1.Element;
+import io.iochord.apps.ips.model.ism.v1.IsmFactory;
+import io.iochord.apps.ips.model.ism.v1.IsmGraph;
+import io.iochord.apps.ips.model.ism.v1.Node;
+import io.iochord.apps.ips.model.ism.v1.Page;
 import io.iochord.apps.ips.model.ism.v1.data.Generator;
 import io.iochord.apps.ips.model.ism.v1.data.Resource;
+import io.iochord.apps.ips.model.ism.v1.data.impl.GeneratorImpl;
+import io.iochord.apps.ips.model.ism.v1.data.impl.ObjectTypeImpl;
+import io.iochord.apps.ips.model.ism.v1.impl.IsmFactoryImpl;
 import io.iochord.apps.ips.model.ism.v1.impl.IsmGraphImpl;
 import io.iochord.apps.ips.model.ism.v1.nodes.Activity;
 import io.iochord.apps.ips.model.ism.v1.nodes.Start;
 import io.iochord.apps.ips.model.ism.v1.nodes.Stop;
+import io.iochord.apps.ips.model.ism.v1.nodes.impl.StartImpl;
 import io.iochord.apps.ips.model.ism2cpn.converter.Ism2CpnscalaBiConverter;
 import io.iochord.apps.ips.model.ism2cpn.converter.Ism2CpnscalaModel;
+import io.iochord.apps.ips.model.ism2cpn.converter.Ism2CpnscalaModelPerModule;
+import io.iochord.apps.ips.model.ism2cpn.converter.Ism2CpnscalaPerModuleBiConverter;
 import io.iochord.apps.ips.model.report.ElementStatistics;
 import io.iochord.apps.ips.model.report.GroupStatistics;
 import io.iochord.apps.ips.model.report.Report;
 import io.iochord.apps.ips.simulator.compiler.MemoryScalaCompiler;
+import io.iochord.apps.ips.simulator.compiler.MemoryScalaCompilerPerModule;
 import io.iochord.apps.ips.simulator.compiler.Simulation;
 import lombok.Getter;
 
@@ -57,16 +83,58 @@ public class CpnScalaSimulatorController extends ASimulatorController {
 	private List<Observer> simulationObservers = new ArrayList<>();
 
 	/**
+	 * 
+	 * Load and simulate ISM model with datasetId param
+	 */
+	@PostMapping(value = { BASE_URI + "/loadnplay/{datasetId}" })
+	public Report getPostDiscoverIsm(@PathVariable Optional<String> datasetId,
+			@RequestBody(required = false) IsmDiscoveryConfiguration config, @RequestHeader HttpHeaders headers) {
+		if (config == null && datasetId.isPresent()) {
+			config = new IsmDiscoveryConfiguration();
+			config.setDatasetId(datasetId.get());
+		}
+		
+		ServiceContext context = run(new IsmDiscoveryService(), config, IsmGraph.class, headers);
+		IsmGraphImpl graph = (IsmGraphImpl) context.getData();
+		
+		IsmFactory factory = IsmFactoryImpl.getInstance();
+		
+		for (Page p : graph.getPages().values()) {
+			for (Node rd : p.getNodes().values()) {
+				if (rd instanceof Start) {
+					StartImpl d = (StartImpl) rd;
+	
+					ObjectTypeImpl obj = (ObjectTypeImpl) factory.addObjectType(p);
+					obj.setLabel("Unit");
+					
+					GeneratorImpl gen = (GeneratorImpl) factory.addGenerator(p);
+					gen.setLabel("Generator");
+					gen.setObjectType(new Referenceable<>(obj));
+					gen.setExpression("10L");
+					gen.setUnit(TimeUnit.MINUTES);
+					gen.setMaxArrival(100);
+					
+					d.setGenerator(new Referenceable<>(gen));
+				}
+			}
+		}
+		
+		return postLoadNPlay(graph);
+	}
+	
+	/**
 	 * Load and simulate ISM model
 	 */
 	@PostMapping(value = BASE_URI + "/loadnplay")
 	public Report postLoadNPlay(@RequestBody IsmGraphImpl graph) {
 		graph.loadReferences();
-
-		Ism2CpnscalaBiConverter converter = new Ism2CpnscalaBiConverter();
-		Ism2CpnscalaModel conversionResult = converter.convert(graph);
+		
+		Ism2CpnscalaPerModuleBiConverter converter = new Ism2CpnscalaPerModuleBiConverter();
+		Ism2CpnscalaModelPerModule conversionResult = converter.convert(graph);
+		//Ism2CpnscalaBiConverter converter = new Ism2CpnscalaBiConverter();
+		//Ism2CpnscalaModel conversionResult = converter.convert(graph);
 		Report report = new Report();
-		GroupStatistics gs; 
+		GroupStatistics gs;
 		GroupStatistics gsg;
 		GroupStatistics gsa;
 		GroupStatistics gsr;
@@ -80,12 +148,14 @@ public class CpnScalaSimulatorController extends ASimulatorController {
 		gsr = gs;
 		report.getGroups().put(String.valueOf(report.getGroups().size() + 1), gs);
 		setupObservers(conversionResult, gsg, gsa, gsr);
+		 
 		return report;
 	}
 
-	private void setupObservers(Ism2CpnscalaModel conversionResult, GroupStatistics gsg, GroupStatistics gsa, GroupStatistics gsr) {
+	private void setupObservers(/*Ism2CpnscalaModel*/Ism2CpnscalaModelPerModule conversionResult, GroupStatistics gsg, GroupStatistics gsa, GroupStatistics gsr) {
 		try {
-			MemoryScalaCompiler msfc = new MemoryScalaCompiler(conversionResult.getConvertedModel());
+			MemoryScalaCompilerPerModule msfc = new MemoryScalaCompilerPerModule(conversionResult.getConvertedModel());
+			//MemoryScalaCompiler msfc = new MemoryScalaCompiler(conversionResult.getConvertedModel());
 			Simulation simulationInstance = msfc.getInstance();
 			simulationInstance.addObserver(conversionResult.getKpiObserver());
 			simulationInstances.add(simulationInstance);

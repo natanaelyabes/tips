@@ -909,7 +909,7 @@ public class Ism2CpnscalaPerModuleBiConverter implements Converter<IsmGraph, Ism
 							String[] pBpis = addPlace(b.getId()+KeyElement.ENDSTRCONC+c.getTargetIndex(), "_bpi" + i + "s", entTypeId, "", b.getId(), null);
 							strBr.append(pBpis[1]);
 							
-							String[] tTb1 = addTtB(bEntType[0], entTypeId, "entitiy", KeyElement.SOMECONC);
+							String[] tTb1 = addTtB(bEntType[0], entTypeId, "entity", KeyElement.SOMECONC);
 							String[] bTt1 = addBtT(bEntType[0], entTypeId, KeyElement.BENTTGETCONC);
 							strBr.append(tTb1[1]);
 							strBr.append(bTt1[1]);
