@@ -25,7 +25,8 @@
       <!-- Setting Bar Ribbon -->
       <template slot="ribbon-bar-menu-item">
         <!-- Slots for parameters of each process model discovery algorithms -->
-        <PMDHeuristicsRibbonComponent></PMDHeuristicsRibbonComponent>
+        <PMDHeuristicsRibbonComponent ref="configurer" @onRun="mine"></PMDHeuristicsRibbonComponent>
+        <div style="float: right;" v-html="message"></div>
       </template>
 
       <!-- Content -->
@@ -141,7 +142,9 @@ export default class AnalysisPMD extends VisualizerLayoutView {
    * @memberof AnalysisPMD
    */
   public progressMessage: string = '';
-
+  
+  public message = '';
+  
   /**
    * Perform analysis upon selected dataset by executing process mining algorithm.
    *
@@ -162,8 +165,11 @@ export default class AnalysisPMD extends VisualizerLayoutView {
   public runMine(selectedDatasetId: string): void {
     const self = this;
     if (selectedDatasetId !== 'Select a dataset') {
+      const configurer = this.$refs['configurer'] as any;
       const config: IsmDiscoveryConfiguration = new IsmDiscoveryConfiguration();
       config.datasetId = selectedDatasetId;
+      config.positiveObservationThreshold = configurer.freqTh;
+      config.dependencyThreshold = configurer.depTh;
       IsmDiscoveryService.getInstance().discoverIsmGraph(config, (res: any) => {
         const graph = res.data;
         let n = 0; for (const i of Object.keys(graph.data.pages['0'].nodes)) {
@@ -171,6 +177,17 @@ export default class AnalysisPMD extends VisualizerLayoutView {
         }
         let c = 0; for (const i of Object.keys(graph.data.pages['0'].connectors)) {
           c++;
+        }
+        this.message = '';
+        if (graph.data.hasOwnProperty('attributes')) {
+          if (graph.data.attributes.hasOwnProperty('trFitness')) {
+            this.message += '<br />Token-based Replay Fitness: '
+              + graph.data.attributes.trFitness;
+          }
+          if (graph.data.attributes.hasOwnProperty('fpFitness')) {
+            this.message += '<br />Footprint-based Fitness: ' 
+              + graph.data.attributes.fpFitness;
+          }
         }
         const g: Graph = GraphImpl.deserialize(graph.data) as Graph;
         graphModule.setGraph(g);

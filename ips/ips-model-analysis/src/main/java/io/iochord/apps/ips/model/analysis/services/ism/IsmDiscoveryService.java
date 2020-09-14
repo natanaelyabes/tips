@@ -42,7 +42,7 @@ public class IsmDiscoveryService extends AnIpsAsyncService<IsmDiscoveryConfigura
 		Map<String, Set<String>> snNodes = new LinkedHashMap<>();
 
 		calculateDfMatrix(context, dfMatrix, config.getDatasetId(), config.getColCaseId(), config.getColEventActivity(), config.getColEventTimestamp(), config.getSkipRows());
-		calculateDpMatrix(config, dpMatrix, dfMatrix);
+		double fpFitness = calculateDpMatrix(config, dpMatrix, dfMatrix);
 		calculateSNNodes(context, snNodes, config.getDatasetId(), config.getColCaseId(), config.getColEventActivity(), config.getColEventTimestamp(), config.getSkipRows());
 		Map<String, Node> nodes = new LinkedHashMap<>();
 		for (Entry<String, Map<String, Long>> fae : dfMatrix.entrySet()) {
@@ -55,6 +55,8 @@ public class IsmDiscoveryService extends AnIpsAsyncService<IsmDiscoveryConfigura
 		IsmReplayService replayer = new IsmReplayService();
 		double trFitness = replayer.run(context, config, graph);
 		System.out.println("TRFitness: " + trFitness);
+		graph.getAttributes().put("fpFitness", String.valueOf(fpFitness));
+		graph.getAttributes().put("trFitness", String.valueOf(trFitness));
 		return graph;
 	}
 	
