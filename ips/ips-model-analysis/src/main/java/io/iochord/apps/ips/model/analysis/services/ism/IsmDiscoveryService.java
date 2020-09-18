@@ -105,7 +105,7 @@ public class IsmDiscoveryService extends AnIpsAsyncService<IsmDiscoveryConfigura
 		if (snNodes.containsKey("start") && snNodes.get("start").size() > 1) {
 			BranchImpl ob = (BranchImpl) factory.addBranch(p);
 			ob.setType(BranchType.SPLIT);
-			ob.setId("split-branch-start");
+			//ob.setId("split-branch-start");
 			ob.setLabel("sb-start");
 			ob.setGate(BranchGate.XOR);
 			factory.addConnector(p, sn, ob);
@@ -114,7 +114,7 @@ public class IsmDiscoveryService extends AnIpsAsyncService<IsmDiscoveryConfigura
 		if (snNodes.containsKey("stop") && snNodes.get("stop").size() > 1) {
 			BranchImpl ib = (BranchImpl) factory.addBranch(p);
 			ib.setType(BranchType.JOIN);
-			ib.setId("join-branch-stop");
+			//ib.setId("join-branch-stop");
 			ib.setLabel("jb-stop");
 			ib.setGate(BranchGate.XOR);
 			factory.addConnector(p, ib, tn);
@@ -187,7 +187,7 @@ public class IsmDiscoveryService extends AnIpsAsyncService<IsmDiscoveryConfigura
 			if (rn.size() > 1) {
 				BranchImpl ib = (BranchImpl) factory.addBranch(p);
 				ib.setType(BranchType.JOIN);
-				ib.setId("JOIN-BRANCH-" + a.getId() + ea);
+				//ib.setId("JOIN-BRANCH-" + a.getId() + ea);
 				ib.setLabel("jb" + i++);
 				ib.setGate(BranchGate.XOR);
 				bcs.put(ib.getId(), ib);
@@ -204,7 +204,7 @@ public class IsmDiscoveryService extends AnIpsAsyncService<IsmDiscoveryConfigura
 			if (rn.size() > 1) {
 				BranchImpl ob = (BranchImpl) factory.addBranch(p);
 				ob.setType(BranchType.SPLIT);
-				ob.setId("SPLIT-BRANCH-" + a.getId() + ea);
+				//ob.setId("SPLIT-BRANCH-" + a.getId() + ea);
 				ob.setLabel("sb" + j++);
 				ob.setGate(BranchGate.XOR);
 				bcs.put(ob.getId(), ob);

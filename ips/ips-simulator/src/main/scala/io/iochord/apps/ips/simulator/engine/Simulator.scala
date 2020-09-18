@@ -162,7 +162,7 @@ case class Simulator(calcAvgTimeEnTr:Boolean = false) {
           avgTimeEnTr = if(c == 0) enTr else (avgTimeEnTr + enTr)/2
         }
         
-        val r = new java.util.Random(1000L);
+        val r = new java.util.Random();
         val transition = transitions(r.nextInt(transitions.length))
         
         val markbefore = Map[(String,Map[String,String]),Any]()

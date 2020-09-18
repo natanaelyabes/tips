@@ -282,7 +282,7 @@ export default class SimulationEditorView extends AppLayoutView {
    * @type {*}
    * @memberof AnalysisPMD
    */
-  public datasetId: any = '';
+  public datasetId: string = '';
 
   /**
    * Datasets field to receive JSON data from web service.
@@ -362,6 +362,7 @@ export default class SimulationEditorView extends AppLayoutView {
   public mine(): void {
     const self = this;
     const selectedDatasetId = (this.$refs['datasetSelector'] as any).value;
+    self.datasetId = selectedDatasetId;
     self.runMine(selectedDatasetId);
   }
 
@@ -389,7 +390,6 @@ export default class SimulationEditorView extends AppLayoutView {
         self.graphJson = 'This graph has ' + n + ' nodes and ' + c + ' connectors.';
         self.progressMessage = '';
         self.forceReRender();
-        self.datasetId = selectedDatasetId;
       }, (tick: any) => {
         self.progressMessage = tick.progressData;
         console.log(tick.progressData);
@@ -433,6 +433,9 @@ export default class SimulationEditorView extends AppLayoutView {
       // Fetch graph to Vuex state
       await this.modelCreate();
 
+      // Print to stdout
+      console.log(graphModule.graph);
+
       // Update rxjs subject
       GraphSubject.update(graphModule.graph);
 
@@ -442,6 +445,8 @@ export default class SimulationEditorView extends AppLayoutView {
         // Update its Vuex state
         graphModule.setGraph(graph);
 
+        // Print to stdout
+        console.log(graph);
       });
     } catch (e) {
       console.error(e);
@@ -480,7 +485,7 @@ export default class SimulationEditorView extends AppLayoutView {
 
     let rep: any;
 
-    if (this.datasetId !== '') {
+    if (this.datasetId !== 'Select a dataset' && this.datasetId !== '') {
       const config: IsmDiscoveryConfiguration = new IsmDiscoveryConfiguration();
       rep = await IsmSimulatorService.getInstance().postLoadNPlayWithDataset(config, this.datasetId);
     } else {
@@ -510,6 +515,7 @@ export default class SimulationEditorView extends AppLayoutView {
    * @memberof SimulationEditorView
    */
   public async modelLoadExample() {
+    this.datasetId = '';
     await graphModule.loadExampleGraph();
     this.forceReRender();
   }
