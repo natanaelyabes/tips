@@ -181,7 +181,10 @@ public class IsmDiscoveryTokenService extends AnIpsAsyncService<IsmDiscoveryConf
 					String td = String.format("%.2f", (tsRange == 0 ? 1 : (((atc - afs) / tsRange) * config.getAnimatorLength())) / tis.size());
 					double tbs = Double.parseDouble(tb);
 					double tds = Double.parseDouble(td);
-					if (tds <= 0) continue;
+					// if (tds <= 0) continue;
+					if (tds <= 0) {
+						tds = 1;
+					}
 					System.out.println(arcId + " " + tis.size() + " " + tbs + " " + (tds * tis.size()));
 					int i = 0;
 					for (String ti : tis) {
