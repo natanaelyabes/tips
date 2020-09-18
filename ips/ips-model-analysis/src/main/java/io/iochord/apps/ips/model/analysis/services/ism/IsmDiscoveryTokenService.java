@@ -6,7 +6,6 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
-import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -182,6 +181,7 @@ public class IsmDiscoveryTokenService extends AnIpsAsyncService<IsmDiscoveryConf
 					String td = String.format("%.2f", (tsRange == 0 ? 1 : (((atc - afs) / tsRange) * config.getAnimatorLength())) / tis.size());
 					double tbs = Double.parseDouble(tb);
 					double tds = Double.parseDouble(td);
+					if (tds <= 0) continue;
 					System.out.println(arcId + " " + tis.size() + " " + tbs + " " + (tds * tis.size()));
 					int i = 0;
 					for (String ti : tis) {
