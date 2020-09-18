@@ -1,4 +1,6 @@
 import { GraphPageImpl } from '@/iochord/ips/common/graphs/ism/class/GraphPageImpl';
+import { JointGraphConnectorImpl } from './JointGraphConnectorImpl';
+import { TSMap } from 'typescript-map';
 import * as joint from 'jointjs';
 
 /**
@@ -14,6 +16,8 @@ import * as joint from 'jointjs';
  *
  */
 export class JointGraphPageImpl extends GraphPageImpl {
+
+  public jointConnectors: TSMap<string, JointGraphConnectorImpl> = new TSMap<string, JointGraphConnectorImpl>();
 
   /**
    * The graph of current page.
