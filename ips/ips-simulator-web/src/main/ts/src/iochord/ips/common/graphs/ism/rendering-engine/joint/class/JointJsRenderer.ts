@@ -19,6 +19,7 @@ import { ARC_TYPE } from '../shapes/enums/ARC';
 /** Joint.js */
 // Module
 import * as joint from 'jointjs';
+import { V } from 'jointjs';
 
 import * as dagre from 'dagre';
 
@@ -378,6 +379,9 @@ export default class JointJsRenderer {
 
       // render connector
       arc.render(jointPage.getGraph());
+
+      jointPage.jointConnectors.set(arc.getId()!, arc);
+
     });
   }
 

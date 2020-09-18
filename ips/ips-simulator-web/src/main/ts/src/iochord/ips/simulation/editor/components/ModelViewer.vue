@@ -11,8 +11,8 @@
 
       <!-- Content -->
       <template slot="content">
-        <CanvasComponent :isProcessModel="true" :isDisabled="false" :key="reRenderKey" 
-          v-bind:response="graphData" style="min-height: 100%;" />
+        <CanvasComponent ref="canvas" :isProcessModel="true" :isDisabled="false" :key="reRenderKey" 
+          v-bind:response="graphData" style="min-height: 100%;" @graphLoaded="onGraphLoaded" />
       </template>
 
     </WrapperComponent>
@@ -235,6 +235,10 @@ export default class ModelViewer extends AppLayoutView {
    */
   public get graphData(): Graph | undefined {
     return graphModule.graph;
+  }
+
+  public onGraphLoaded(renderer: any) {
+    this.$emit('graphLoaded', renderer);
   }
 }
 </script>
