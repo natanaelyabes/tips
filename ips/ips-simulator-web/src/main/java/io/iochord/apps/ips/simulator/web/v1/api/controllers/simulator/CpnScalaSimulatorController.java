@@ -25,6 +25,7 @@ import io.iochord.apps.ips.model.analysis.services.ism.IsmDiscoveryService;
 import io.iochord.apps.ips.model.analysis.services.resm.algorithm.ResMinerAlgorithm;
 import io.iochord.apps.ips.model.analysis.services.resm.algorithm.ResMinerAlgorithmDefaultMining;
 import io.iochord.apps.ips.model.analysis.services.resm.algorithm.ResMinerAlgorithmDoingSimilarTask;
+import io.iochord.apps.ips.model.example.IsmExample;
 import io.iochord.apps.ips.model.ism.v1.Connector;
 import io.iochord.apps.ips.model.ism.v1.Data;
 import io.iochord.apps.ips.model.ism.v1.Element;
@@ -39,8 +40,11 @@ import io.iochord.apps.ips.model.ism.v1.data.impl.ObjectTypeImpl;
 import io.iochord.apps.ips.model.ism.v1.impl.IsmFactoryImpl;
 import io.iochord.apps.ips.model.ism.v1.impl.IsmGraphImpl;
 import io.iochord.apps.ips.model.ism.v1.nodes.Activity;
+import io.iochord.apps.ips.model.ism.v1.nodes.Branch;
 import io.iochord.apps.ips.model.ism.v1.nodes.Start;
 import io.iochord.apps.ips.model.ism.v1.nodes.Stop;
+import io.iochord.apps.ips.model.ism.v1.nodes.enums.BranchGate;
+import io.iochord.apps.ips.model.ism.v1.nodes.enums.BranchType;
 import io.iochord.apps.ips.model.ism.v1.nodes.impl.StartImpl;
 import io.iochord.apps.ips.model.ism2cpn.converter.Ism2CpnscalaBiConverter;
 import io.iochord.apps.ips.model.ism2cpn.converter.Ism2CpnscalaModel;
@@ -94,6 +98,8 @@ public class CpnScalaSimulatorController extends ASimulatorController {
 			config.setDatasetId(datasetId.get());
 		}
 		
+		//IsmGraphImpl graph = (IsmGraphImpl) IsmExample.createPortExample();
+		
 		ServiceContext context = run(new IsmDiscoveryService(), config, IsmGraph.class, headers);
 		IsmGraphImpl graph = (IsmGraphImpl) context.getData();
 		
@@ -112,14 +118,50 @@ public class CpnScalaSimulatorController extends ASimulatorController {
 					gen.setObjectType(new Referenceable<>(obj));
 					gen.setExpression("10L");
 					gen.setUnit(TimeUnit.MINUTES);
-					gen.setMaxArrival(100);
+					gen.setMaxArrival(50);
 					
 					d.setGenerator(new Referenceable<>(gen));
 				}
 			}
+			/*
+			for (Connector rd : p.getConnectors().values()) {
+				if (rd instanceof Connector) {
+					Connector d = rd;
+					if(d.getSource().getValue() instanceof Branch && ((Branch) d.getSource().getValue()).getGate() == BranchGate.XOR && ((Branch) d.getSource().getValue()).getType() == BranchType.SPLIT) {
+						System.out.println("Ini cabang "+d.getSource().getValue().getId()+" - "+d.getSource().getValue().getLabel());
+						System.out.println("Ini arc "+d.getSourceIndex()+", "+d.getTargetIndex());
+						System.out.println("Ini Destination "+d.getTarget().getValue().getId()+" - "+d.getTarget().getValue().getLabel());
+					}
+				}
+			}
+			*/
 		}
 		
-		return postLoadNPlay(graph);
+		return postLoadNPlayDirect(graph);
+	}
+	
+	public Report postLoadNPlayDirect(IsmGraphImpl graph) {
+		Ism2CpnscalaPerModuleBiConverter converter = new Ism2CpnscalaPerModuleBiConverter();
+		Ism2CpnscalaModelPerModule conversionResult = converter.convert(graph);
+		//Ism2CpnscalaBiConverter converter = new Ism2CpnscalaBiConverter();
+		//Ism2CpnscalaModel conversionResult = converter.convert(graph);
+		Report report = new Report();
+		GroupStatistics gs;
+		GroupStatistics gsg;
+		GroupStatistics gsa;
+		GroupStatistics gsr;
+		gs = new GroupStatistics("GENERAL");
+		gsg = gs;
+		report.getGroups().put(String.valueOf(report.getGroups().size() + 1), gs);
+		gs = new GroupStatistics("ACTIVITIES");
+		gsa = gs;
+		report.getGroups().put(String.valueOf(report.getGroups().size() + 1), gs);
+		gs = new GroupStatistics("RESOURCES");
+		gsr = gs;
+		report.getGroups().put(String.valueOf(report.getGroups().size() + 1), gs);
+		setupObservers(conversionResult, gsg, gsa, gsr);
+		 
+		return report;
 	}
 	
 	/**

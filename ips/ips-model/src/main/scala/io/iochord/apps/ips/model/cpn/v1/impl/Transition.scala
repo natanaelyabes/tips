@@ -299,7 +299,7 @@ class Transition[B] (
    * This function will consume or generate new token in input and output arc respectively.  
    */
   def execute(globtime:Long):B = {
-    val r = new java.util.Random(10L)
+    val r = new java.util.Random()
     val bChosen = lbeBase(r.nextInt(lbeBase.length))
     
     in.foreach(arc => { 
