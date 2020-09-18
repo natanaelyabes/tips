@@ -23,6 +23,8 @@ import io.iochord.apps.ips.model.ism.v1.nodes.enums.BranchGate;
 import io.iochord.apps.ips.model.ism.v1.nodes.enums.BranchType;
 import io.iochord.apps.ips.model.ism.v1.nodes.impl.ActivityImpl;
 import io.iochord.apps.ips.model.ism.v1.nodes.impl.BranchImpl;
+import lombok.Getter;
+import lombok.Setter;
 
 /**
 *
@@ -33,6 +35,10 @@ import io.iochord.apps.ips.model.ism.v1.nodes.impl.BranchImpl;
 */
 public class IsmDiscoveryService extends AnIpsAsyncService<IsmDiscoveryConfiguration, IsmGraph> {
 
+	@Getter
+	@Setter
+	Map<String, Map<String, Double>> dpMatrixMemory;
+	
 	@Override
 	public IsmGraph run(ServiceContext context, IsmDiscoveryConfiguration config) {
 		IsmFactory factory = IsmFactoryImpl.getInstance();
@@ -86,6 +92,7 @@ public class IsmDiscoveryService extends AnIpsAsyncService<IsmDiscoveryConfigura
 				}
 			}
 		}
+		setDpMatrixMemory(dpMatrix);
 		double fitness = 0; 
 		if (totalArcs > 0) {
 			fitness = incArcs / totalArcs;

@@ -9,13 +9,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-
-import io.iochord.apps.ips.common.util.JsonDataCodec;
-import io.iochord.apps.ips.common.util.SerializationUtil;
 import io.iochord.apps.ips.core.services.ServiceContext;
 import io.iochord.apps.ips.model.analysis.services.ism.IsmDiscoveryConfiguration;
 import io.iochord.apps.ips.model.analysis.services.ism.IsmDiscoveryService;
+import io.iochord.apps.ips.model.analysis.services.ism.IsmDiscoveryTokenService;
 import io.iochord.apps.ips.model.ism.v1.IsmGraph;
 
 /**
@@ -48,6 +45,26 @@ public class IsmDiscoveryController extends AnAnalysisController {
 		}
 		
 		return run(new IsmDiscoveryService(), config, IsmGraph.class, headers);
+	}
+
+	/**
+	 * Process discovery action
+	 * 
+	 * @param datasetId dataset Id
+	 * @param config process discovery configuration
+	 * @param headers autowired http headers
+	 * @return service context instance
+	 * @throws Exception exception
+	 */
+	@PostMapping(value = { BASE_URI + "/ism/animate/{datasetId}" })
+	public ServiceContext getPostDiscoverIsmAnimStr(@PathVariable Optional<String> datasetId,
+			@RequestBody(required = false) IsmDiscoveryConfiguration config, @RequestHeader HttpHeaders headers) {
+		if (config == null && datasetId.isPresent()) {
+			config = new IsmDiscoveryConfiguration();
+			config.setDatasetId(datasetId.get());
+		}
+		
+		return run(new IsmDiscoveryTokenService(), config, String.class, headers);
 	}
 
 }
