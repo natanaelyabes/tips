@@ -205,6 +205,8 @@ export default class CanvasComponent extends Mixins(BaseComponent, CanvasMixin) 
    */
   public isShiftKey: boolean = false;
 
+  public renderer?: JointJsRenderer;
+
   /**
    * Vue mounted lifecycle.
    *
@@ -243,6 +245,9 @@ export default class CanvasComponent extends Mixins(BaseComponent, CanvasMixin) 
       if (this.activePage)
         this.activePage = renderer.activeJointPage(
           this.activePage.getId() as string) as JointGraphPageImpl;
+
+      this.renderer = renderer;
+      this.$emit('graphLoaded', this.renderer);
 
     } catch (e) {
       // console.error(e);
