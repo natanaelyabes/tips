@@ -20,6 +20,7 @@
           <option :selected="datasetId == i" v-for="(ds, i) in datasets" :key="i" class="item" :value="i">{{ds.name}} ({{i}})</option>
         </select>
         {{progressMessage}}
+        <button @click="startReplay" type="button">START</button>
       </template>
 
       <!-- Setting Bar Ribbon -->
@@ -34,7 +35,7 @@
         <div v-if="graphJson" class="statistics">
           {{ graphJson }}
         </div>
-        <ModelViewer ref="viewer"></ModelViewer>
+        <ModelViewer ref="viewer" @graphLoaded="onGraphLoaded"></ModelViewer>
       </template>
 
     </SettingsBarWrapperComponent>
@@ -78,6 +79,9 @@ import GraphModule from '@/iochord/ips/common/graphs/ism/stores/GraphModule';
 import GraphSubject from '@/iochord/ips/common/graphs/ism/rxjs/GraphSubject';
 import { Graph } from '@/iochord/ips/common/graphs/ism/interfaces/Graph';
 import { GraphImpl } from '@/iochord/ips/common/graphs/ism/class/GraphImpl';
+import { TSMap } from 'typescript-map';
+import * as joint from 'jointjs';
+import { V } from 'jointjs';
 
 const graphModule = getModule(GraphModule);
 
@@ -145,6 +149,12 @@ export default class AnalysisPMD extends VisualizerLayoutView {
 
   public message = '';
 
+  public config: IsmDiscoveryConfiguration | null = null;
+
+  public renderer: any = null;
+
+  public animStr: any = null;
+
   /**
    * Perform analysis upon selected dataset by executing process mining algorithm.
    *
@@ -170,6 +180,7 @@ export default class AnalysisPMD extends VisualizerLayoutView {
       config.datasetId = selectedDatasetId;
       config.positiveObservationThreshold = configurer.freqTh;
       config.dependencyThreshold = configurer.depTh;
+      this.config = config;
       IsmDiscoveryService.getInstance().discoverIsmGraph(config, (res: any) => {
         const graph = res.data;
         let n = 0; for (const i of Object.keys(graph.data.pages['0'].nodes)) {
@@ -237,6 +248,38 @@ export default class AnalysisPMD extends VisualizerLayoutView {
    */
   public setTitle(): void {
     this.title = `Process Model Discovery`;
+  }
+
+  public onGraphLoaded(renderer: any) {
+    this.renderer = renderer;
+    this.animStr = null;
+  }
+
+  public startReplay() {
+    if (this.renderer == null) return;
+    if (this.animStr == null && this.config != null) {
+      this.renderer.jointPages.map((jointPage: any, jointPageId: any) => {
+        const cPaths: any = {};
+        jointPage.jointConnectors.map((arc: any, arcId: any) => {
+          const p = jointPage.getPaper().findViewByModel(arc.getConnector()).$('.connection')[0];
+          cPaths[arcId] = p.id;
+        });
+        this.config!.connectorPaths = cPaths;
+        IsmDiscoveryService.getInstance().discoverIsmGraphAnimation(this.config!, (res: any) => {
+          if (res.data.data !== '') {
+            this.animStr = res.data.data;
+            // it only works on 1 jointpage
+            jointPage.getPaper().viewport.innerHTML += this.animStr;
+          }
+        }, (tick: any) => {
+          console.log(tick);
+        });
+      });
+    } else {
+      this.renderer.jointPages.map((jointPage: any, jointPageId: any) => {
+        jointPage.getPaper().svg.setCurrentTime(0);
+      });
+    }
   }
 }
 </script>

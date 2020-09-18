@@ -52,4 +52,8 @@ export default class IsmDiscoveryConfiguration {
    */
   public dependencyThreshold: number = -1;
 
+  public connectorPaths: any = {};
+
+  public animatorLength: number = 30;
+
 }

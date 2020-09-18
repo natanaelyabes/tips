@@ -3,10 +3,8 @@ package io.iochord.apps.ips.model.ism.v1.nodes.impl;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-import io.iochord.apps.ips.model.ism.v1.Connector;
 import io.iochord.apps.ips.model.ism.v1.ElementType;
 import io.iochord.apps.ips.model.ism.v1.impl.NodeImpl;
 import io.iochord.apps.ips.model.ism.v1.nodes.Branch;
