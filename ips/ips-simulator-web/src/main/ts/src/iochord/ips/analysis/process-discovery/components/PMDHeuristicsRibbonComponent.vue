@@ -91,7 +91,7 @@
             <button v-if="replayState == 2" type="button" @click="$emit('pauseReplay')" class="ui primary button">
               Unpause Replay
             </button>
-            <button v-if="replayState > 0" type="button" @click="$emit('stopReplay')" class="ui primary button">
+            <button v-if="replayState == 2" type="button" @click="$emit('stopReplay')" class="ui primary button">
               Stop Replay
             </button>
           </div>

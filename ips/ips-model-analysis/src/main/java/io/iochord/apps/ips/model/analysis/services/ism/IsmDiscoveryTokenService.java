@@ -189,11 +189,15 @@ public class IsmDiscoveryTokenService extends AnIpsAsyncService<IsmDiscoveryConf
 					int i = 0;
 					for (String ti : tis) {
 						String tz = String.format("%.0f", fRange == 0 ? config.getTokenMinSize() : Math.max(config.getTokenMinSize(), Math.floor(config.getTokenMinSize() + (((f - fMin) / fRange) * tzRange))));
+						double tzs = Double.parseDouble(tz);
+						double tzsh = tzs / 2;
 						animStr.append("<g id=\"token" + tid + "\" style=\"opacity: 0;\">\r\n");
 						animStr.append("\t<animateMotion id=\"token" + tid + "motion\" begin=\"" + (tbs + (i * tds)) + "s\" dur=\"" + tds + "s\" repeatCount=\"0\"><mpath xlink:href=\"#" + ti + "\"></mpath></animateMotion>\r\n");
 						animStr.append("\t<animate begin=\"" + (tbs + (i * tds) + 0.01) + "s\" dur=\"0.01s\" attributeName=\"opacity\" from=\"0\" to=\"1\" repeatCount=\"0\" fill=\"freeze\" />\r\n");
 						animStr.append("\t<animate begin=\"token" + tid + "motion.end\" dur=\"0.01s\" attributeName=\"opacity\" from=\"1\" to=\"0\" repeatCount=\"0\" fill=\"freeze\" />\r\n");
-						animStr.append("\t<circle r=\"" + tz + "\" fill=\"red\">\r\n");
+						// <image joint-selector="image" id="v-610" x="0.5" y="0.5" xlink:href="/icons/port_icons/quay.png" width="63" height="63"></image>
+						animStr.append("\t<image x=\"-" + tzsh + "\" y=\"-" + tzsh + "\" xlink:href=\"/icons/port_icons/move-red.png\" width=\"" + tzs + "\" height=\"" + tzs + "\"></image>\r\n");
+						// animStr.append("\t<circle r=\"" + tzsh + "\" stroke=\"red\" stroke-width=\"3\" fill=\"transparent\">\r\n");
 						animStr.append("</g>\r\n");
 						i++;
 						tid++;

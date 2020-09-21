@@ -60,10 +60,10 @@ public class IsmDiscoveryConfiguration {
 	
 	@Getter
 	@Setter
-	private int tokenMinSize = 5;
+	private int tokenMinSize = 32;
 	
 	@Getter
 	@Setter
-	private int tokenMaxSize = 10;
+	private int tokenMaxSize = 64;
 
 }
