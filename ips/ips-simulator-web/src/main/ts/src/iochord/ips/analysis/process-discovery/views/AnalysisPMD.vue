@@ -20,13 +20,19 @@
           <option :selected="datasetId == i" v-for="(ds, i) in datasets" :key="i" class="item" :value="i">{{ds.name}} ({{i}})</option>
         </select>
         {{progressMessage}}
-        <button @click="startReplay" type="button">START</button>
       </template>
 
       <!-- Setting Bar Ribbon -->
       <template slot="ribbon-bar-menu-item">
         <!-- Slots for parameters of each process model discovery algorithms -->
-        <PMDHeuristicsRibbonComponent ref="configurer" @onRun="mine"></PMDHeuristicsRibbonComponent>
+        <PMDHeuristicsRibbonComponent ref="configurer" :replayOnly2="true" 
+          @onRun="mine" 
+          @startReplay="startReplay"
+          @pauseReplay="pauseReplay"
+          @stopReplay="stopReplay"
+          :replayState="replayState"
+          :fpBasedFitness="fpBasedFitness"
+          :trBasedFitness="trBasedFitness"></PMDHeuristicsRibbonComponent>
         <div style="float: right;" v-html="message"></div>
       </template>
 
@@ -155,6 +161,16 @@ export default class AnalysisPMD extends VisualizerLayoutView {
 
   public animStr: any = null;
 
+  public replaySvg: any = null;
+
+  public replayState = -1;
+
+  public replayTime = 0;
+
+  public fpBasedFitness: any = -1;
+
+  public trBasedFitness: any = -1;
+
   /**
    * Perform analysis upon selected dataset by executing process mining algorithm.
    *
@@ -192,12 +208,10 @@ export default class AnalysisPMD extends VisualizerLayoutView {
         this.message = '';
         if (graph.data.hasOwnProperty('attributes')) {
           if (graph.data.attributes.hasOwnProperty('trFitness')) {
-            this.message += '<br />Token-based Replay Fitness: '
-              + graph.data.attributes.trFitness;
+            this.trBasedFitness = parseFloat(graph.data.attributes.trFitness).toFixed(2);
           }
           if (graph.data.attributes.hasOwnProperty('fpFitness')) {
-            this.message += '<br />Footprint-based Fitness: '
-              + graph.data.attributes.fpFitness;
+            this.fpBasedFitness = parseFloat(graph.data.attributes.fpFitness).toFixed(2);
           }
         }
         const g: Graph = GraphImpl.deserialize(graph.data) as Graph;
@@ -253,11 +267,8 @@ export default class AnalysisPMD extends VisualizerLayoutView {
   public onGraphLoaded(renderer: any) {
     this.renderer = renderer;
     this.animStr = null;
-  }
-
-  public startReplay() {
-    if (this.renderer == null) return;
-    if (this.animStr == null && this.config != null) {
+    this.replayState = -1;
+    if (this.config != null) {
       this.renderer.jointPages.map((jointPage: any, jointPageId: any) => {
         const cPaths: any = {};
         jointPage.jointConnectors.map((arc: any, arcId: any) => {
@@ -269,16 +280,46 @@ export default class AnalysisPMD extends VisualizerLayoutView {
           if (res.data.data !== '') {
             this.animStr = res.data.data;
             // it only works on 1 jointpage
+            this.replaySvg = jointPage.getPaper().svg;
             jointPage.getPaper().viewport.innerHTML += this.animStr;
+            this.stopReplay();
           }
         }, (tick: any) => {
           console.log(tick);
         });
       });
+    }
+  }
+
+  public startReplay() {
+    if (this.renderer == null || this.animStr == null || this.replaySvg == null || this.replayState === 2) return;
+    this.replayState = 1;
+    this.replayTime += 10 / 1000;
+    if (this.replayTime > this.config!.animatorLength) {
+      this.stopReplay();
+      return;
+    }
+    this.replaySvg.setCurrentTime(this.replayTime);
+    setTimeout(this.startReplay, 10);
+  }
+
+  public pauseReplay() {
+    if (this.renderer == null || this.animStr == null || this.replaySvg == null) return;
+    if (this.replayState === 1) {
+      this.replayState = 2;
     } else {
-      this.renderer.jointPages.map((jointPage: any, jointPageId: any) => {
-        jointPage.getPaper().svg.setCurrentTime(0);
-      });
+      this.replayState = 1;
+      this.startReplay();
+    }
+  }
+
+  public stopReplay() {
+    if (this.renderer == null || this.animStr == null) return;
+    if (this.replaySvg != null) {
+      this.replayState = 0;
+      this.replayTime = 0;
+      this.replaySvg.pauseAnimations();
+      this.replaySvg.setCurrentTime(0);
     }
   }
 }

@@ -398,9 +398,9 @@ export default class JointJsRenderer {
       setVertices: true,
       ranker: 'network-simplex',
       rankDir: 'TB',
-      edgeSep: 350,
-      nodeSep: 150,
-      rankSep: 80,
+      edgeSep: 100,
+      nodeSep: 100,
+      rankSep: 100,
     } as joint.layout.DirectedGraph.LayoutOptions);
   }
 
