@@ -71,7 +71,7 @@
           </div>
           <div class="item">
             <div class="field">
-              <label>Footprint-based Fitness</label>
+              <label>Token Replay-based Fitness</label>
               <input type="number" :value="trBasedFitness" readonly="readonly" />
             </div>
           </div>
