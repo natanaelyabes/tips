@@ -109,14 +109,16 @@ public class CpnScalaSimulatorController extends ASimulatorController {
 			for (Node rd : p.getNodes().values()) {
 				if (rd instanceof Start) {
 					StartImpl d = (StartImpl) rd;
-	
+					
+					String MATH_ROUND_GEN = "Math.round(Gaussian(18.45924453280318,38.20021323603019).draw())";
+					
 					ObjectTypeImpl obj = (ObjectTypeImpl) factory.addObjectType(p);
 					obj.setLabel("Unit");
 					
 					GeneratorImpl gen = (GeneratorImpl) factory.addGenerator(p);
 					gen.setLabel("Generator");
 					gen.setObjectType(new Referenceable<>(obj));
-					gen.setExpression("10L");
+					gen.setExpression(MATH_ROUND_GEN);
 					gen.setUnit(TimeUnit.MINUTES);
 					gen.setMaxArrival(50);
 					
