@@ -148,6 +148,13 @@ case class Simulator(calcAvgTimeEnTr:Boolean = false) {
     
     import java.io.PrintWriter
     import java.io.File
+    import java.util.Date
+    import java.text.SimpleDateFormat
+
+    val unitMilis = 1000L
+    val formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    val stDateSim = formatter.parse("2020-01-01 00:00:00")
+    
     val report = new PrintWriter(new File(fileReportPath))
     report.write("ci|eo|ea|er|es|ec\n")
     
@@ -207,7 +214,9 @@ case class Simulator(calcAvgTimeEnTr:Boolean = false) {
                   if(tm != None){ 
                     mapActTokMon.remove((token,origin))
                     val tokenTP = token.asInstanceOf[(_,_)]
-                    report.write(tokenTP._1+"|"+ tokenTP._2+"|"+ origin+"|"+ resource.id+"|"+ tm.get+"|"+ timeEnd+"\n")
+                    val stDate = stDateSim.getTime + tm.get * unitMilis
+                    val edDate = stDateSim.getTime + timeEnd * unitMilis
+                    report.write(tokenTP._1+"|"+ tokenTP._2+"|"+ origin+"|"+ resource.id+"|"+ formatter.format(stDate)+"|"+ formatter.format(edDate)+"\n")
                     // println(token+" : "+origin+" - "+tm.get+" - "+timeEnd+" - "+resource.name)
                   }
                 }
@@ -217,7 +226,9 @@ case class Simulator(calcAvgTimeEnTr:Boolean = false) {
                   if(tm != None){ 
                     mapActTokMon.remove((token,origin))
                     val tokenTP = token.asInstanceOf[(_,_)]
-                    report.write(tokenTP._1+"|"+ tokenTP._2+"|"+ origin+"|No Resource,"+ tm.get+"|"+ timeEnd+"\n")
+                    val stDate = stDateSim.getTime + tm.get * unitMilis
+                    val edDate = stDateSim.getTime + timeEnd * unitMilis
+                    report.write(tokenTP._1+"|"+ tokenTP._2+"|"+ origin+"|No Resource|"+ formatter.format(stDate)+"|"+ formatter.format(edDate)+"\n")
                     // println(token+" : "+origin+" - "+tm.get+" - "+timeEnd+" - no Resource")
                   }
                 } 
