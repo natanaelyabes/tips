@@ -1,6 +1,11 @@
 package io.iochord.apps.ips.simulator.web.v1.api.controllers.simulator;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -53,9 +58,17 @@ import io.iochord.apps.ips.model.ism2cpn.converter.Ism2CpnscalaPerModuleBiConver
 import io.iochord.apps.ips.model.report.ElementStatistics;
 import io.iochord.apps.ips.model.report.GroupStatistics;
 import io.iochord.apps.ips.model.report.Report;
+import io.iochord.apps.ips.model.services.data.im.csv.CsvDataImportConfiguration;
+import io.iochord.apps.ips.model.services.data.im.csv.CsvDataImportResult;
+import io.iochord.apps.ips.model.services.data.im.csv.CsvDataImportService;
+import io.iochord.apps.ips.model.services.data.map.MappingConfiguration;
+import io.iochord.apps.ips.model.services.data.map.MappingResource;
+import io.iochord.apps.ips.model.services.data.map.MappingResult;
+import io.iochord.apps.ips.model.services.data.map.MappingService;
 import io.iochord.apps.ips.simulator.compiler.MemoryScalaCompiler;
 import io.iochord.apps.ips.simulator.compiler.MemoryScalaCompilerPerModule;
 import io.iochord.apps.ips.simulator.compiler.Simulation;
+import io.iochord.apps.ips.simulator.web.v1.api.controllers.data.DataConnectionController;
 import lombok.Getter;
 
 /**
@@ -85,7 +98,7 @@ public class CpnScalaSimulatorController extends ASimulatorController {
 	 */
 	@Getter
 	private List<Observer> simulationObservers = new ArrayList<>();
-
+	
 	/**
 	 * 
 	 * Load and simulate ISM model with datasetId param
@@ -191,9 +204,41 @@ public class CpnScalaSimulatorController extends ASimulatorController {
 		gs = new GroupStatistics("RESOURCES");
 		gsr = gs;
 		report.getGroups().put(String.valueOf(report.getGroups().size() + 1), gs);
-		setupObservers(conversionResult, gsg, gsa, gsr);
-		 
+		String filePath = setupObservers(conversionResult, gsg, gsa, gsr);
+		String replayId = parseReport(filePath);
+		report.setReplayId(replayId);
+		System.out.println(replayId);
+		
 		return report;
+	}
+	
+	public String parseReport(String filePath) {
+		try {
+			ServiceContext context = getServiceContext();
+			CsvDataImportConfiguration imConf = new CsvDataImportConfiguration();
+			File file = new File(filePath);
+			imConf.setFilename(file.getName());
+			imConf.setReader(new FileReader(filePath));
+			imConf.setDelimeter('|');
+			CsvDataImportResult imRes = new CsvDataImportService().run(context, imConf);
+			MappingConfiguration mapConf = new MappingConfiguration();
+			mapConf.setDatasetId(imRes.getName());
+			MappingResource mapRsc = new MappingResource();
+			// ci,eo,ea,er,es,ec
+			mapRsc.setMapSettings(new LinkedHashMap<>());
+			mapRsc.getMapSettings().put("c0", "ci");
+			mapRsc.getMapSettings().put("c1", "eo");
+			mapRsc.getMapSettings().put("c2", "ea");
+			mapRsc.getMapSettings().put("c3", "er");
+			mapRsc.getMapSettings().put("c4", "es");
+			mapRsc.getMapSettings().put("c5", "ec");
+			mapConf.setResource(mapRsc);
+			MappingResult mapRes = new MappingService().run(context, mapConf);
+			return mapRes.getId();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 
 	private String setupObservers(/*Ism2CpnscalaModel*/Ism2CpnscalaModelPerModule conversionResult, GroupStatistics gsg, GroupStatistics gsa, GroupStatistics gsr) {

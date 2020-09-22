@@ -45,8 +45,8 @@ public class Ism2CpnscalaObserver implements Observer {
 	public void update(Observable o, Object arg) {
 		observe(o, arg);
 		try {
-			System.out.println(JsonDataCodec.getSerializer().writeValueAsString(arg));
-		} catch (JsonProcessingException ex) {
+//			System.out.println(JsonDataCodec.getSerializer().writeValueAsString(arg));
+		} catch (Exception ex) {
 			LoggerUtil.logError(ex);
 		}
 	}
