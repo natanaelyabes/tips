@@ -5,7 +5,7 @@
 -->
 <template>
   <div class="pmd heuristics ribbon component">
-    <template v-if="!replayOnly">
+    <template v-if="!replayId">
       <div class="item">
         <div class="header">
           <strong>Heuristics Miner</strong>
@@ -14,7 +14,7 @@
     </template>
     <form class="ui form">
       <div class="ui secondary menu">
-        <template v-if="!replayOnly">
+        <template v-if="!replayId">
           <div class="item">
             <div class="field">
               <label>Dependency threshold</label>
@@ -65,13 +65,13 @@
           </div>
           <div class="item">
             <div class="field">
-              <label>Footprint-based Fitness</label>
+              <label>Footprint-based Fitness (%)</label>
               <input type="number" :value="fpBasedFitness" readonly="readonly" />
             </div>
           </div>
           <div class="item">
             <div class="field">
-              <label>Token Replay-based Fitness</label>
+              <label>Token Replay-based Fitness (%)</label>
               <input type="number" :value="trBasedFitness" readonly="readonly" />
             </div>
           </div>
@@ -85,13 +85,13 @@
             <button v-if="replayState == 0" type="button" @click="$emit('startReplay')" class="ui primary button">
               Start Replay
             </button>
-            <button v-if="replayState == 1" type="button" @click="$emit('pauseReplay')" class="ui primary button">
+            <button v-if="replayState == 1" type="button" @click="$emit('pauseReplay')" class="ui orange button">
               Pause Replay
             </button>
             <button v-if="replayState == 2" type="button" @click="$emit('pauseReplay')" class="ui primary button">
               Unpause Replay
             </button>
-            <button v-if="replayState == 2" type="button" @click="$emit('stopReplay')" class="ui primary button">
+            <button v-if="replayState == 2" type="button" @click="$emit('stopReplay')" class="ui red button">
               Stop Replay
             </button>
           </div>
@@ -123,7 +123,7 @@ export default class PMDHeuristicsRibbonComponent extends SemanticComponent {
   public freqTh = 0;
 
   @Prop()
-  public replayOnly?: number;
+  public replayId?: any;
 
   @Prop({
     default: -1,

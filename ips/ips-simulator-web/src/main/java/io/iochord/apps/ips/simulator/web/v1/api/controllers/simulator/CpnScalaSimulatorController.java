@@ -1,9 +1,7 @@
 package io.iochord.apps.ips.simulator.web.v1.api.controllers.simulator;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -23,16 +21,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import io.iochord.apps.ips.common.models.Referenceable;
 import io.iochord.apps.ips.common.util.LoggerUtil;
-import io.iochord.apps.ips.common.util.SerializationUtil;
 import io.iochord.apps.ips.core.services.ServiceContext;
 import io.iochord.apps.ips.model.analysis.services.ism.IsmDiscoveryConfiguration;
 import io.iochord.apps.ips.model.analysis.services.ism.IsmDiscoveryService;
-import io.iochord.apps.ips.model.analysis.services.resm.algorithm.ResMinerAlgorithm;
-import io.iochord.apps.ips.model.analysis.services.resm.algorithm.ResMinerAlgorithmDefaultMining;
-import io.iochord.apps.ips.model.analysis.services.resm.algorithm.ResMinerAlgorithmDoingSimilarTask;
-import io.iochord.apps.ips.model.example.IsmExample;
-import io.iochord.apps.ips.model.ism.v1.Connector;
-import io.iochord.apps.ips.model.ism.v1.Data;
 import io.iochord.apps.ips.model.ism.v1.Element;
 import io.iochord.apps.ips.model.ism.v1.IsmFactory;
 import io.iochord.apps.ips.model.ism.v1.IsmGraph;
@@ -45,14 +36,9 @@ import io.iochord.apps.ips.model.ism.v1.data.impl.ObjectTypeImpl;
 import io.iochord.apps.ips.model.ism.v1.impl.IsmFactoryImpl;
 import io.iochord.apps.ips.model.ism.v1.impl.IsmGraphImpl;
 import io.iochord.apps.ips.model.ism.v1.nodes.Activity;
-import io.iochord.apps.ips.model.ism.v1.nodes.Branch;
 import io.iochord.apps.ips.model.ism.v1.nodes.Start;
 import io.iochord.apps.ips.model.ism.v1.nodes.Stop;
-import io.iochord.apps.ips.model.ism.v1.nodes.enums.BranchGate;
-import io.iochord.apps.ips.model.ism.v1.nodes.enums.BranchType;
 import io.iochord.apps.ips.model.ism.v1.nodes.impl.StartImpl;
-import io.iochord.apps.ips.model.ism2cpn.converter.Ism2CpnscalaBiConverter;
-import io.iochord.apps.ips.model.ism2cpn.converter.Ism2CpnscalaModel;
 import io.iochord.apps.ips.model.ism2cpn.converter.Ism2CpnscalaModelPerModule;
 import io.iochord.apps.ips.model.ism2cpn.converter.Ism2CpnscalaPerModuleBiConverter;
 import io.iochord.apps.ips.model.report.ElementStatistics;
@@ -65,10 +51,8 @@ import io.iochord.apps.ips.model.services.data.map.MappingConfiguration;
 import io.iochord.apps.ips.model.services.data.map.MappingResource;
 import io.iochord.apps.ips.model.services.data.map.MappingResult;
 import io.iochord.apps.ips.model.services.data.map.MappingService;
-import io.iochord.apps.ips.simulator.compiler.MemoryScalaCompiler;
 import io.iochord.apps.ips.simulator.compiler.MemoryScalaCompilerPerModule;
 import io.iochord.apps.ips.simulator.compiler.Simulation;
-import io.iochord.apps.ips.simulator.web.v1.api.controllers.data.DataConnectionController;
 import lombok.Getter;
 
 /**
@@ -185,11 +169,12 @@ public class CpnScalaSimulatorController extends ASimulatorController {
 	@PostMapping(value = BASE_URI + "/loadnplay")
 	public Report postLoadNPlay(@RequestBody IsmGraphImpl graph) {
 		graph.loadReferences();
-		
+		System.out.println("SIM: Convert to CPNScala");
 		Ism2CpnscalaPerModuleBiConverter converter = new Ism2CpnscalaPerModuleBiConverter();
 		Ism2CpnscalaModelPerModule conversionResult = converter.convert(graph);
 		//Ism2CpnscalaBiConverter converter = new Ism2CpnscalaBiConverter();
 		//Ism2CpnscalaModel conversionResult = converter.convert(graph);
+		System.out.println("SIM: Subscribe Reporter");
 		Report report = new Report();
 		GroupStatistics gs;
 		GroupStatistics gsg;
@@ -205,6 +190,7 @@ public class CpnScalaSimulatorController extends ASimulatorController {
 		gsr = gs;
 		report.getGroups().put(String.valueOf(report.getGroups().size() + 1), gs);
 		String filePath = setupObservers(conversionResult, gsg, gsa, gsr);
+		System.out.println("SIM: Generate Replay");
 		String replayId = parseReport(filePath);
 		report.setReplayId(replayId);
 		System.out.println(replayId);
@@ -242,9 +228,14 @@ public class CpnScalaSimulatorController extends ASimulatorController {
 	}
 
 	private String setupObservers(/*Ism2CpnscalaModel*/Ism2CpnscalaModelPerModule conversionResult, GroupStatistics gsg, GroupStatistics gsa, GroupStatistics gsr) {
-		String filePath = String.valueOf("Simulation_"+System.currentTimeMillis()+".csv");
+		File f = new File("replay");
+		if (!f.exists()) {
+			f.mkdirs();
+		}
+		String filePath = String.valueOf("replay/sim_"+System.currentTimeMillis()+".csv");
 		
 		try {
+			System.out.println("SIM: Compiling Simulation Module");
 			MemoryScalaCompilerPerModule msfc = new MemoryScalaCompilerPerModule(conversionResult.getConvertedModel());
 			//MemoryScalaCompiler msfc = new MemoryScalaCompiler(conversionResult.getConvertedModel());
 			Simulation simulationInstance = msfc.getInstance();
@@ -252,6 +243,7 @@ public class CpnScalaSimulatorController extends ASimulatorController {
 			simulationInstance.addObserver(conversionResult.getKpiObserver());
 			simulationInstances.add(simulationInstance);
 			simulationObservers.add(conversionResult.getKpiObserver());
+			System.out.println("SIM: Start Simulation");
 			simulationInstance.runUntilMaxArrival();
 			Map<Element, ElementStatistics> stats = conversionResult.getKpiObserver().getData();
 			for (Entry<Element, ElementStatistics> es : stats.entrySet()) {

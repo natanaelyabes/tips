@@ -137,6 +137,9 @@
         <div class="ui black deny button">
           Close
         </div>
+        <router-link tag="a" :to="'/iochord/ips/analytics/process/discovery/' + report.replayId + '/1'" target="_blank" class="ui primary button">
+          Replay
+        </router-link>
       </div>
     </div>
   </div>
@@ -331,6 +334,7 @@ export default class SimulationEditorView extends AppLayoutView {
    * @memberof SimulationEditorView
    */
   private report: any = {
+    replayId: '',
     groups: {},
   };
 

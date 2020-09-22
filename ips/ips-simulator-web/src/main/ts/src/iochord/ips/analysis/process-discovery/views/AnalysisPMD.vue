@@ -8,7 +8,7 @@
     <SettingsBarWrapperComponent>
 
       <!-- Header -->
-      <template slot="header-breadcrumb">
+      <template v-if="!replayId" slot="header-breadcrumb">
         <router-link to="/iochord/ips/home" tag="a" class="section">Home</router-link>
         <i class="right angle icon divider"></i>
         <div class="section">Data Analysis</div>
@@ -21,6 +21,9 @@
         </select>
         {{progressMessage}}
       </template>
+      <template v-else slot="header-breadcrumb">
+        {{ datasetId }} {{ replayId }}
+      </template>
 
       <!-- Setting Bar Ribbon -->
       <template slot="ribbon-bar-menu-item">
@@ -30,6 +33,7 @@
           @startReplay="startReplay"
           @pauseReplay="pauseReplay"
           @stopReplay="stopReplay"
+          :replayId="replayId"
           :replayState="replayState"
           :fpBasedFitness="fpBasedFitness"
           :trBasedFitness="trBasedFitness"></PMDHeuristicsRibbonComponent>
@@ -130,6 +134,9 @@ export default class AnalysisPMD extends VisualizerLayoutView {
   @Prop({default: ''})
   public datasetId!: any;
 
+  @Prop()
+  public replayId?: any;
+
   /**
    * Datasets field to receive JSON data from web service.
    *
@@ -208,10 +215,10 @@ export default class AnalysisPMD extends VisualizerLayoutView {
         this.message = '';
         if (graph.data.hasOwnProperty('attributes')) {
           if (graph.data.attributes.hasOwnProperty('trFitness')) {
-            this.trBasedFitness = parseFloat(graph.data.attributes.trFitness).toFixed(2);
+            this.trBasedFitness = (parseFloat(graph.data.attributes.trFitness) * 100).toFixed(2);
           }
           if (graph.data.attributes.hasOwnProperty('fpFitness')) {
-            this.fpBasedFitness = parseFloat(graph.data.attributes.fpFitness).toFixed(2);
+            this.fpBasedFitness = (parseFloat(graph.data.attributes.fpFitness) * 100).toFixed(2);
           }
         }
         const g: Graph = GraphImpl.deserialize(graph.data) as Graph;
