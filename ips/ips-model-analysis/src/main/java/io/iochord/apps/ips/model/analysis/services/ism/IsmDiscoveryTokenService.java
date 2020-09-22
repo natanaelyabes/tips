@@ -185,7 +185,7 @@ public class IsmDiscoveryTokenService extends AnIpsAsyncService<IsmDiscoveryConf
 					if (tds <= 0) {
 						tds = 1;
 					}
-					System.out.println(arcId + " " + tis.size() + " " + tbs + " " + (tds * tis.size()));
+					// System.out.println(arcId + " " + tis.size() + " " + tbs + " " + (tds * tis.size()));
 					int i = 0;
 					for (String ti : tis) {
 						String tz = String.format("%.0f", fRange == 0 ? config.getTokenMinSize() : Math.max(config.getTokenMinSize(), Math.floor(config.getTokenMinSize() + (((f - fMin) / fRange) * tzRange))));

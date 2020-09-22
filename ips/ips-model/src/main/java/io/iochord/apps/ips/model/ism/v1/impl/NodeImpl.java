@@ -15,6 +15,7 @@ import io.iochord.apps.ips.model.ism.v1.Connector;
 import io.iochord.apps.ips.model.ism.v1.ElementType;
 import io.iochord.apps.ips.model.ism.v1.Node;
 import io.iochord.apps.ips.model.ism.v1.nodes.impl.ActivityImpl;
+import io.iochord.apps.ips.model.ism.v1.nodes.impl.StartImpl;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -112,28 +113,37 @@ public class NodeImpl extends ElementImpl implements Node {
 	
 	@JsonIgnore
 	public void rConsumeToken(String type, int i) {
-		getRToken().put(SELF, getRToken().get(SELF) - i);
+		int rconsumed = getRToken().get(SELF) - i;
+		if (rconsumed > 0) {
+			getRToken().put(SELF, rconsumed);
+		} else {
+			getRToken().remove(SELF);
+		}
 		setRConsumed(getRConsumed() + i);
 	}
 	
 	@JsonIgnore
 	public void rProduceToken(String type, int i) {
+		if (!getRToken().containsKey(SELF)) {
+			getRToken().put(SELF, 0);
+		}
 		getRToken().put(SELF, getRToken().get(SELF) + i);
 		setRProduced(getRProduced() + i);
 	}
 	
 	@JsonIgnore
 	public void rFire(NodeImpl ns) {
-		System.out.println("Firing " + getId() + " " + getLabel());
+		// System.out.println("Hit " + getId() + " " + getLabel());
 		if (!rIsNodeEnabled()) {
 			if (getRInputNodes() != null) {
 				for (NodeImpl n : getRInputNodes()) {
-					if (!(n instanceof ActivityImpl)) {
+					if (!(n instanceof ActivityImpl) && !(n instanceof StartImpl)) {
 						n.rFire(this);
 					}
 				}
 			}
 		}
+		// System.out.println("Firing " + getId() + " " + getLabel());
 		if (getRRemaining() > 0) {
 			rConsumeToken(SELF, 1);
 		} else {
@@ -141,7 +151,7 @@ public class NodeImpl extends ElementImpl implements Node {
 		}
 		if (getROutputNodes() != null) {
 			for (NodeImpl n : getROutputNodes()) {
-				n.rProduceToken(n.getId(), 1);
+				n.rProduceToken(getId(), 1);
 			}
 		}
 	}

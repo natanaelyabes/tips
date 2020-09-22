@@ -59,7 +59,12 @@ public class BranchImpl extends NodeImpl implements Branch {
 				getRToken().put(type, 0);
 			}
 			int consumed = Math.min(getRToken().get(type), i);
-			getRToken().put(type, getRToken().get(type) - consumed);
+			int rconsumed = (getRToken().get(type) - consumed); 
+			if (rconsumed > 0) { 
+				getRToken().put(type, rconsumed);
+			} else {
+				getRToken().remove(type);
+			}
 			setRConsumed(getRConsumed() + consumed);
 		}
 	}
@@ -109,17 +114,18 @@ public class BranchImpl extends NodeImpl implements Branch {
 	
 	@Override
 	public void rFire(NodeImpl ns) {
+		// System.out.println("Hit " + getId() + " " + getLabel() + " " + getGate());
 		if (!rIsNodeEnabled()) {
 			if (getRInputNodes() != null) {
 				for (NodeImpl n : getRInputNodes()) {
-					if (!(n instanceof ActivityImpl)) {
+					if (!(n instanceof ActivityImpl) && !(n instanceof StartImpl)) {
 						n.rFire(this);
 					}
 				}
 			}
 		}
 		if (rIsNodeEnabled()) {
-			System.out.println("Firing " + getId() + " " + getLabel() + " " + getGate());
+			// System.out.println("Firing " + getId() + " " + getLabel() + " " + getGate());
 			if (getType() == BranchType.SPLIT) {
 				rConsumeToken(SELF, 1);
 				if (getGate() == BranchGate.XOR) {
