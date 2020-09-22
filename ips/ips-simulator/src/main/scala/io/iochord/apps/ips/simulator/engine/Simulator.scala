@@ -5,6 +5,8 @@ import scala.util.control.Breaks._
 import io.iochord.apps.ips.model.cpn.v1.impl.CPNGraph
 import io.iochord.apps.ips.model.cpn.v1.impl.Transition
 import io.iochord.apps.ips.model.cpn.v1.impl.GlobalTime
+import io.iochord.apps.ips.model.cpn.v1.impl.token.Resource
+
 import io.iochord.apps.ips.simulator.engine.subject._
 
 import scala.collection.mutable._
@@ -32,6 +34,8 @@ case class Simulator(calcAvgTimeEnTr:Boolean = false) {
   
   var stTimeEnTr = 0L
   var avgTimeEnTr = 0L
+  
+  var mapActTokMon = Map[Any,Long]()
   
   /**
    * @param transitions : list of transition exist in the graph
@@ -142,6 +146,11 @@ case class Simulator(calcAvgTimeEnTr:Boolean = false) {
     
     var transitions:List[Transition[_]] = null
     
+    import java.io.PrintWriter
+    import java.io.File
+    val report = new PrintWriter(new File("reportCSV.csv" ))
+    report.write("CaseId, Generator, Activity, Resource, Start, End\n")
+    
     breakable {
       while ((stepsRef < 0 || steps > c) && !stopCrit(inpStopCrit)) {
         
@@ -176,6 +185,48 @@ case class Simulator(calcAvgTimeEnTr:Boolean = false) {
         transition.getIn().foreach(arc => { val multiset = arc.getPlace().getCurrentMarking().multiset; markafter.put((arc.getPlace().getId(),arc.getPlace().getOrigin()),multiset.clone()) } )
         transition.getOut().foreach(arc => { val multiset = arc.getPlace().getCurrentMarking().multiset; markafter.put((arc.getPlace().getId(),arc.getPlace().getOrigin()),multiset.clone()) } )
         
+        if(transition.getOrigin().get("origin").get.startsWith("0-activity-") && transition.getOrigin().get("role").get.equals("_natstart"))
+        {
+          val origin = transition.getOrigin().get("origin").get
+          try {
+            val _ptmpwait = markbefore.filter(_._1._2.get("role").get.equals("_ptmpwait")).head._2.asInstanceOf[Map[(Any,Long),Int]].foreach(
+              tokenWTNum => { 
+                val tokenWT = tokenWTNum._1
+                val tm = mapActTokMon.get((tokenWT._1,origin))
+                if(tm == None){ mapActTokMon.put((tokenWT._1,origin), tokenWT._2)
+              } 
+            })
+            val _nap2 = markafter.filter(_._1._2.get("role").get.equals("_nap2")).head._2.asInstanceOf[Map[(Any,Long),Int]].foreach(
+              tokenResWTNum => { 
+                val timeEnd = tokenResWTNum._1._2
+                val tokenComplex = tokenResWTNum._1._1.asInstanceOf[(_,_)]
+                if(tokenComplex._2.isInstanceOf[Resource[_]]) {
+                  val token = tokenComplex._1
+                  val resource:Resource[_] =  tokenComplex._2.asInstanceOf[Resource[_]]
+                  val tm = mapActTokMon.get((token,origin))
+                  if(tm != None){ 
+                    mapActTokMon.remove((token,origin))
+                    val tokenTP = token.asInstanceOf[(_,_)]
+                    report.write(tokenTP._1+","+ tokenTP._2+","+ origin+","+ resource.name+","+ tm.get+","+ timeEnd+"\n")
+                    // println(token+" : "+origin+" - "+tm.get+" - "+timeEnd+" - "+resource.name)
+                  }
+                }
+                else {
+                  val token = tokenComplex
+                  val tm = mapActTokMon.get((token,origin))
+                  if(tm != None){ 
+                    mapActTokMon.remove((token,origin))
+                    val tokenTP = token.asInstanceOf[(_,_)]
+                    report.write(tokenTP._1+","+ tokenTP._2+","+ origin+", No Resource,"+ tm.get+","+ timeEnd+"\n")
+                    // println(token+" : "+origin+" - "+tm.get+" - "+timeEnd+" - no Resource")
+                  }
+                } 
+            })
+          } catch {
+            case e: Exception => e.printStackTrace()
+          }
+        }
+        
         if(subject != null) {
           subject.setMarking((globtime.getTime(), c+1, (transition.getId(), transition.getOrigin()),markbefore,markafter)) 
         }
@@ -187,6 +238,7 @@ case class Simulator(calcAvgTimeEnTr:Boolean = false) {
       println("stop criteria meet in step : "+c)
     else
       println("stop - at step "+c)
+    report.close()
   }
   
   /**
