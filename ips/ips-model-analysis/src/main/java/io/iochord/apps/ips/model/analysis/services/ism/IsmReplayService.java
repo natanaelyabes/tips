@@ -16,6 +16,7 @@ import io.iochord.apps.ips.model.ism.v1.Node;
 import io.iochord.apps.ips.model.ism.v1.Page;
 import io.iochord.apps.ips.model.ism.v1.impl.NodeImpl;
 import io.iochord.apps.ips.model.ism.v1.nodes.impl.ActivityImpl;
+import io.iochord.apps.ips.model.ism.v1.nodes.impl.BranchImpl;
 import io.iochord.apps.ips.model.ism.v1.nodes.impl.StartImpl;
 import io.iochord.apps.ips.model.ism.v1.nodes.impl.StopImpl;
 import lombok.Getter;
@@ -75,7 +76,9 @@ public class IsmReplayService extends AnIpsAsyncService<IsmDiscoveryConfiguratio
 			StringBuilder sql = new StringBuilder();
 			sql.append("SELECT t, COUNT(*) AS m\r\n" + 
 					"FROM (\r\n" + 
-					"	SELECT " + config.getColCaseId() + ", STRING_AGG(" + config.getColEventActivity() + ", '|' ORDER BY " + config.getColCaseId() + ", " + config.getColEventTimestamp() + ", " + config.getColEventActivity() + ") AS t\r\n" + 
+					"	SELECT " + config.getColCaseId() + " AS ci, STRING_AGG(" + config.getColEventActivity() + ", '|' ORDER BY " + config.getColCaseId() + ", " + config.getColEventTimestamp() + 
+					// ", " + config.getColEventActivity() + 
+					") AS t\r\n" + 
 					"	FROM " + config.getDatasetId() + " \r\n" + 
 					"	GROUP BY ci\r\n" + 
 					") AS tv\r\n" + 
@@ -103,13 +106,25 @@ public class IsmReplayService extends AnIpsAsyncService<IsmDiscoveryConfiguratio
 					}
 					tNode.rFire(null);
 					// Calculate Fitness
+					boolean tError = false;
 					for (Entry<String, Node> ne : p.getNodes().entrySet()) {
 						NodeImpl n = (NodeImpl) ne.getValue();
 						tProduced += tMultiplier * n.getRProduced();
 						tConsumed += tMultiplier * n.getRConsumed();
 						tMissing += tMultiplier * n.getRMissing();
 						tRemaining += tMultiplier * n.getRRemaining();
-						System.out.println(n.getId() + " " + n.getLabel() + ": p=" + n.getRProduced() + ", c=" + n.getRConsumed() + ", m=" + n.getRMissing() + ", r=" + n.getRToken());
+						if (n.getRMissing() > 0 || n.getRRemaining() > 0) {
+							tError = true;
+							if (n instanceof BranchImpl) {
+								BranchImpl b = (BranchImpl) n;
+								System.out.println(n.getId() + " " + n.getLabel() + " " + b.getGate() + " " + b.getType() + " : p=" + n.getRProduced() + ", c=" + n.getRConsumed() + ", m=" + n.getRMissing() + ", r=" + n.getRToken());
+							} else {
+								System.out.println(n.getId() + " " + n.getLabel() + ": p=" + n.getRProduced() + ", c=" + n.getRConsumed() + ", m=" + n.getRMissing() + ", r=" + n.getRToken());
+							}
+						}
+					}
+					if (tError) {
+						System.out.println("MISSING/REMAINING: " + tActsStr + " (x " + tMultiplier + ")");
 					}
 				}
 			}
