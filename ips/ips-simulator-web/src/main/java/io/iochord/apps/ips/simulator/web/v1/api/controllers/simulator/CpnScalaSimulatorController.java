@@ -196,11 +196,14 @@ public class CpnScalaSimulatorController extends ASimulatorController {
 		return report;
 	}
 
-	private void setupObservers(/*Ism2CpnscalaModel*/Ism2CpnscalaModelPerModule conversionResult, GroupStatistics gsg, GroupStatistics gsa, GroupStatistics gsr) {
+	private String setupObservers(/*Ism2CpnscalaModel*/Ism2CpnscalaModelPerModule conversionResult, GroupStatistics gsg, GroupStatistics gsa, GroupStatistics gsr) {
+		String filePath = String.valueOf("Simulation_"+System.currentTimeMillis()+".csv");
+		
 		try {
 			MemoryScalaCompilerPerModule msfc = new MemoryScalaCompilerPerModule(conversionResult.getConvertedModel());
 			//MemoryScalaCompiler msfc = new MemoryScalaCompiler(conversionResult.getConvertedModel());
 			Simulation simulationInstance = msfc.getInstance();
+			simulationInstance.setFileReportPath(filePath);
 			simulationInstance.addObserver(conversionResult.getKpiObserver());
 			simulationInstances.add(simulationInstance);
 			simulationObservers.add(conversionResult.getKpiObserver());
@@ -223,6 +226,8 @@ public class CpnScalaSimulatorController extends ASimulatorController {
 		} catch (Exception ex) {
 			LoggerUtil.logError(ex);
 		}
+		
+		return filePath;
 	}
 
 	private void generateSubElementReport(ElementStatistics s, Element e) {
