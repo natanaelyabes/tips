@@ -139,8 +139,8 @@ case class Simulator(calcAvgTimeEnTr:Boolean = false) {
    * @param globtime : current global time of simulation
    * @param subject : subject in observer pattern to publish the event
    */
-  def run(net: CPNGraph, stopCrit:Any => Boolean, inpStopCrit:Any, stepsRef:Int = 0, globtime:GlobalTime = new GlobalTime(0), subject:MarkingObservable = null) {
-    val steps = c+stepsRef;
+  def run(net: CPNGraph, stopCrit:Any => Boolean, inpStopCrit:Any, stepsRef:Int = 0, globtime:GlobalTime = new GlobalTime(0), subject:MarkingObservable = null, fileReportPath:String = "ReportCSV.csv") {
+    val steps = c+stepsRef
     
     val allTransitions = net.allTransitions
     
@@ -148,8 +148,8 @@ case class Simulator(calcAvgTimeEnTr:Boolean = false) {
     
     import java.io.PrintWriter
     import java.io.File
-    val report = new PrintWriter(new File("reportCSV.csv" ))
-    report.write("CaseId, Generator, Activity, Resource, Start, End\n")
+    val report = new PrintWriter(new File(fileReportPath))
+    report.write("ci|eo|ea|er|es|ec\n")
     
     breakable {
       while ((stepsRef < 0 || steps > c) && !stopCrit(inpStopCrit)) {
@@ -207,7 +207,7 @@ case class Simulator(calcAvgTimeEnTr:Boolean = false) {
                   if(tm != None){ 
                     mapActTokMon.remove((token,origin))
                     val tokenTP = token.asInstanceOf[(_,_)]
-                    report.write(tokenTP._1+","+ tokenTP._2+","+ origin+","+ resource.name+","+ tm.get+","+ timeEnd+"\n")
+                    report.write(tokenTP._1+"|"+ tokenTP._2+"|"+ origin+"|"+ resource.id+"|"+ tm.get+"|"+ timeEnd+"\n")
                     // println(token+" : "+origin+" - "+tm.get+" - "+timeEnd+" - "+resource.name)
                   }
                 }
@@ -217,7 +217,7 @@ case class Simulator(calcAvgTimeEnTr:Boolean = false) {
                   if(tm != None){ 
                     mapActTokMon.remove((token,origin))
                     val tokenTP = token.asInstanceOf[(_,_)]
-                    report.write(tokenTP._1+","+ tokenTP._2+","+ origin+", No Resource,"+ tm.get+","+ timeEnd+"\n")
+                    report.write(tokenTP._1+"|"+ tokenTP._2+"|"+ origin+"|No Resource,"+ tm.get+"|"+ timeEnd+"\n")
                     // println(token+" : "+origin+" - "+tm.get+" - "+timeEnd+" - no Resource")
                   }
                 } 

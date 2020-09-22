@@ -26,6 +26,11 @@ abstract class Simulation(val simulator:Simulator = new Simulator(true)) {
   var stopCrit:Any => Boolean = null
   var inpStopCrit:Any = null
   var subject:MarkingObservable = new MarkingObservable()
+  var fileReportPath:String = "ReportCSV.csv"
+  
+  def setFileReportPath(fileReportPath:String) = { this.fileReportPath = fileReportPath }
+  
+  def getFileReportPath():String = this.fileReportPath
   
   /**
    * @return graph of petri net this current simulation object
@@ -48,7 +53,7 @@ abstract class Simulation(val simulator:Simulator = new Simulator(true)) {
     this.stopCrit = (stop:Any) => stop match { case stop:Boolean => stop }
     this.inpStopCrit = false
     
-    simulator.run(cgraph, stopCrit, inpStopCrit, n, globtime, subject)
+    simulator.run(cgraph, stopCrit, inpStopCrit, n, globtime, subject, fileReportPath)
   }
   
   /**
@@ -72,9 +77,9 @@ abstract class Simulation(val simulator:Simulator = new Simulator(true)) {
     this.inpStopCrit = globtime
     
     if(n <= 0)
-      simulator.run(cgraph, stopCrit, inpStopCrit, -1, globtime, subject)
+      simulator.run(cgraph, stopCrit, inpStopCrit, -1, globtime, subject, fileReportPath)
     else
-      simulator.run(cgraph, stopCrit, inpStopCrit, n, globtime, subject)
+      simulator.run(cgraph, stopCrit, inpStopCrit, n, globtime, subject, fileReportPath)
   }
   
   /**
@@ -107,7 +112,7 @@ abstract class Simulation(val simulator:Simulator = new Simulator(true)) {
     this.stopCrit = (stop:Any) => stop match { case stop:Boolean => stop }
     this.inpStopCrit = false
     
-    simulator.run(cgraph, stopCrit, inpStopCrit, -1, globtime, subject)
+    simulator.run(cgraph, stopCrit, inpStopCrit, -1, globtime, subject, fileReportPath)
   }
   
   /**
@@ -119,6 +124,6 @@ abstract class Simulation(val simulator:Simulator = new Simulator(true)) {
   def runStopCriteria(stopCritLoc:Any => Boolean = (stop:Any) => stop match { case stop:Boolean => stop }, inpStopCritLoc:Any = false): Unit = {
     this.stopCrit = stopCritLoc
     this.inpStopCrit = inpStopCritLoc
-    simulator.run(cgraph, stopCrit, inpStopCrit, -1, globtime, subject)
+    simulator.run(cgraph, stopCrit, inpStopCrit, -1, globtime, subject, fileReportPath)
   }
 }
