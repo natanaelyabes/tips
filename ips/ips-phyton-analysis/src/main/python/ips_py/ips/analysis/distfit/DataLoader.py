@@ -9,8 +9,8 @@ import pandas as pd
 
 """
 PostgreSQL
-spring.datasource.url=jdbc:postgresql://19.45.8.222:5432/chdsr
-#spring.datasource.url=jdbc:postgresql://apps-postgres-postgresql:5432/ips
+#spring.datasource.url=jdbc:postgresql://19.45.8.222:5432/chdsr
+spring.datasource.url=jdbc:postgresql://apps-postgres-postgresql:5432/ips
 spring.datasource.username=postgres
 spring.datasource.password=tipspsql
 """
