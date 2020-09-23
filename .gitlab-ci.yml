@@ -12,7 +12,6 @@ build:
   script: 
     - tar -czvf ips-phyton-analysis-0.0.1-SNAPSHOT.tgz $CI_PROJECT_DIR/ips/ips-phyton-analysis/src/main/python
     - curl -X PUT -u admin:password -T ips-phyton-analysis-0.0.1-SNAPSHOT.tgz "http://artifactory.tips.iochord.co.kr/artifactory/generic-local/io/iochord/apps/ips/ips-phyton-analysis-0.0.1-SNAPSHOT.tgz"
-    - cd $CI_PROJECT_DIR
     - gradle --build-cache build
     - gradle sonarqube -x test -Dsonar.projectKey=ips -Dsonar.host.url=http://apps-sonarqube-sonarqube:9000 -Dsonar.login=772e702bc2406c2c88573c4cf76481fb739a137a --stacktrace
     - gradle artifactoryPublish
