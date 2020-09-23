@@ -51,15 +51,15 @@
       </template>
       <template slot="content">
         <template v-if="branchMining">
-          <template v-if="selectedBranchRule === ''">
+          <template v-if="datasetId === ''">
+            <p>Select dataset id and perform branch mining in the settings panel.</p>
+          </template>
+          <template v-else-if="selectedBranchRule === ''">
             <p>Select branch to display the decision model.</p>
           </template>
           <template v-else>
             <ItemProcessModel :branchRule="selectedBranchRule"/>
           </template>
-        </template>
-        <template v-else>
-          <p>Select dataset id and perform branch mining in the settings panel.</p>
         </template>
       </template>
     </DepthTwoLeftWrapperComponent>

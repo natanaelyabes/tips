@@ -17,7 +17,6 @@
             </select>
           </div>
         </div>
-
         <div class="two fields">
           <div class="field" v-show="config.resMinAlg == 'dst'">
             <label>Distance Measure</label>
@@ -29,7 +28,6 @@
             </select>
           </div>
         </div>
-
         <div class="two fields">
           <div class="field" v-show="config.resMinAlg == 'dst'">
             <label>Threshold : {{threshold}}</label>

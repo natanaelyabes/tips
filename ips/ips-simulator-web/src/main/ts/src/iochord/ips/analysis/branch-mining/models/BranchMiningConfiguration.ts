@@ -1,3 +1,4 @@
+import { DecisionTreeSplitter } from './../enums/DecisionTreeSplitter';
 import { DecisionTreeStrategy } from '../enums/DecisionTreeStrategy';
 
 /**
@@ -50,7 +51,47 @@ export default class BranchMiningConfiguration {
    * @type {DecisionTreeStrategy}
    * @memberof BranchMiningConfiguration
    */
-  public strategy: string = DecisionTreeStrategy.ENTROPY;
+  public strategy: string = DecisionTreeStrategy.GINI;
+
+  /**
+   * Set decision tree splitter criterion.
+   *
+   * @type {string}
+   * @memberof BranchMiningConfiguration
+   */
+  public splitter: string = DecisionTreeSplitter.BEST;
+
+  /**
+   * Set max depth of decision tree.
+   *
+   * @type {(number | null)}
+   * @memberof BranchMiningConfiguration
+   */
+  public maxDepth: number | null = null;
+
+  /**
+   * Set random state of decision tree.
+   *
+   * @type {(number | null)}
+   * @memberof BranchMiningConfiguration
+   */
+  public randomState: number | null = null;
+
+  /**
+   * Set random state of train test set.
+   *
+   * @type {(number | null)}
+   * @memberof BranchMiningConfiguration
+   */
+  public trainTestRandomState: number | null = 1;
+
+  /**
+   * Set test size.
+   *
+   * @type {number}
+   * @memberof BranchMiningConfiguration
+   */
+  public testSize: number = 0.3;
 
   /**
    * Number of rows to be skipped.

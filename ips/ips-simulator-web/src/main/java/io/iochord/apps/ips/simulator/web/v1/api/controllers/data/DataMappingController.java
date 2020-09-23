@@ -22,7 +22,7 @@ import io.iochord.apps.ips.model.services.data.map.MappingRepositoryService;
 /**
  *
  * @package ips-simulator-web
- * @author N. Y. Wirawan <ny4tips@gmail.com>
+ * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
  * @since 2020
  * 
  */
