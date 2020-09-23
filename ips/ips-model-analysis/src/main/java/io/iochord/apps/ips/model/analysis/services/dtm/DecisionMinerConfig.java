@@ -6,7 +6,7 @@ import lombok.Setter;
 /**
  *
  * @package ips-model
- * @author N. Y. Wirawan <ny4tips@gmail.com>
+ * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
  * @since 2020
  * 
  */
@@ -14,11 +14,11 @@ public class DecisionMinerConfig {
 
 	@Getter
 	@Setter
-	private String schemaName;
+	private String schemaName = "public";
 	
 	@Getter
 	@Setter
-	private String datasetId;
+	private String datasetId = null;
 
 	@Getter
 	@Setter
@@ -30,7 +30,27 @@ public class DecisionMinerConfig {
 	
 	@Getter
 	@Setter
-	private DecisionTreeStrategy strategy;
+	private DecisionTreeStrategy strategy = DecisionTreeStrategy.GINI;
+	
+	@Getter
+	@Setter
+	private DecisionTreeSplitter splitter = DecisionTreeSplitter.BEST;
+	
+	@Getter
+	@Setter
+	private int maxDepth;
+	
+	@Getter
+	@Setter
+	private int randomState;
+	
+	@Getter
+	@Setter
+	private int trainTestRandomState;
+	
+	@Getter
+	@Setter
+	private float testSize = 0.3f;
 	
 	@Getter
 	@Setter

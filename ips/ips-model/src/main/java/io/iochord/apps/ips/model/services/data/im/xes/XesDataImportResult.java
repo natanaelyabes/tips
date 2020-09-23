@@ -8,7 +8,7 @@ import lombok.Setter;
  * XES import result object.
  *
  * @package ips-model
- * @author N. Y. Wirawan <ny4tips@gmail.com>
+ * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
  * @since 2020
  * 
  */

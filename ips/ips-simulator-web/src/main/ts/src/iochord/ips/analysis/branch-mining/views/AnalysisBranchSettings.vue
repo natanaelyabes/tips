@@ -115,16 +115,11 @@ export default class AnalysisBranchSettings extends DiffLayoutView {
   }
 
   public retreiveDataset(): void {
-    DataConnectionService.getInstance().getDataConnections((res: any) => {
-      this.datasets = res.data;
-    }, (tick: any) => {
-      // this.datasets = tick;
-    });
-
+    DataConnectionService.getInstance().getDataConnections(
+      (res: any) => this.datasets = res.data, null);
     if (this.datasetId) {
       this.selectedDatasetId = this.datasetId;
     }
-
     this.forceReRender();
   }
 

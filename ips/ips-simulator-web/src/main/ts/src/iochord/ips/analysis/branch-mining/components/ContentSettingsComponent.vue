@@ -6,10 +6,82 @@
 <template>
   <div class="content settings component">
     <div class="ui basic segment">
-      <div class="ui button primary" @click="doBranchMining">Calculate</div>
+      <div v-if="datasetId !== 'Select a dataset'" class="ui stackable two column grid">
+        <div class="column">
+          <div class="ui form">
+            <div class="ui top attached blue inverted segment">
+              <h4>Process Model Discovery</h4>
+            </div>
+            <div class="ui attached segment" id="discoverGraph">
+              <div class="field">
+                <label for="discoverGraph[pdPositiveObservationThreshold]">Positive Observation Threshold</label>
+                <input type="number" name="decisionTree[pdPositiveObservationThreshold]" id="decisionTree[pdPositiveObservationThreshold]" 
+                      v-model=config.pdPositiveObservationThreshold placeholder="0" />
+              </div>
+              <div class="field">
+                <label for="discoverGraph[pdDependencyThreshold]">Dependency Threshold</label>
+                <input type="number" name="decisionTree[pdDependencyThreshold]" id="decisionTree[pdDependencyThreshold]" 
+                      v-model=config.pdDependencyThreshold placeholder="0" />
+              </div>
+            </div>
+            <div class="field">
+              <label for="decisionTree[strategy]">Strategy</label>
+              <select class="ui search dropdown" name="decisionTree[strategy]" id="decisionTree[strategy]"
+                    v-model="config.strategy">
+                <option value="" disabled>Select Strategy</option>
+                <option value="ENTROPY">Entropy</option>
+                <option value="GINI" selected>Gini</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="decisionTree[splitter]">Splitter</label>
+              <select class="ui search dropdown" name="decisionTree[splitter]" id="decisionTree[splitter]" 
+                    v-model="config.splitter">
+                <option value="" disabled>Select Splitter</option>
+                <option value="BEST" selected>Best</option>
+                <option value="RANDOM">Random</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="decisionTree[maxDepth]">Max Depth</label>
+              <input type="number" name="decisionTree[maxDepth]" id="decisionTree[maxDepth]"
+                      v-model=config.maxDepth />
+            </div>
+            <div class="field">
+              <label for="decisionTree[randomState]">Random State</label>
+              <input type="number" name="decisionTree[randomState]" id="decisionTree[randomState]"
+                      v-model=config.randomState />
+            </div>
+            <div class="field">
+              <label for="decisionTree[trainTestRandomState]">Train/Test Random State</label>
+              <input type="number" name="decisionTree[trainTestRandomState]" id="decisionTree[trainTestRandomState]"
+                      v-model=config.trainTestRandomState />
+            </div>
+            <div class="field">
+              <label for="decisionTree[testSize]">Test Size (decimal)</label>
+              <input type="number" name="decisionTree[testSize]" id="decisionTree[testSize]"
+                      v-model=config.testSize />
+            </div>
+            <div class="ui button primary" @click="performBranchMining">Calculate</div>
+          </div>
+        </div>
+      </div>
+      <div v-else>
+        <p>Select a dataset id.</p>
+      </div>
     </div>
   </div>
 </template>
+
+<style scoped>
+.ui.form {
+  margin-bottom: 1em;
+}
+
+#discoverGraph {
+  margin-bottom: 1em;
+}
+</style>
 
 <script lang="ts">
 import { Vue, Component, Prop } from 'vue-property-decorator';
@@ -56,7 +128,7 @@ export default class ContentSettingsComponent extends SemanticComponent {
    */
   public config: BranchMiningConfiguration = new BranchMiningConfiguration();
 
-  public doBranchMining() {
+  public performBranchMining() {
     if (this.datasetId !== 'Select a dataset') {
       this.config.datasetId = this.datasetId;
       branchMiningModule.clearBranch();

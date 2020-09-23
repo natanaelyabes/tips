@@ -44,7 +44,8 @@ public class DecisionMinerAlgorithm implements DecisionMiner {
 	 * Tables were dropped to reset the environment. 
 	 * Extension to execute PL/Python script is enabled.
 	 * Then, it learns a decision tree model that best-fit the data (observation matrix).
-	 * Also, two UDF to predict decision and its target class probability given input is created based upon the learned model.
+	 * Also, two UDF to predict decision and its target class probability given input is created 
+	 * based upon the learned model.
 	 * 
 	 * @param context
 	 * @param config
@@ -286,12 +287,12 @@ public class DecisionMinerAlgorithm implements DecisionMiner {
 		q.append("    import pandas as pd\n");
 		q.append("    import numpy as np\n");
 		q.append("\n");
-		q.append("    criterion = 'gini'\n");
-		q.append("    splitter = 'best'\n");
-		q.append("    max_depth = None\n");
-		q.append("    dt_random_state = None\n");
-		q.append("    test_size = 0.3\n");
-		q.append("    train_test_random_state = 1\n");
+		q.append("    criterion = '" + config.getStrategy().toString().toLowerCase() + "'\n");
+		q.append("    splitter = '" + config.getSplitter().toString().toLowerCase() + "'\n");
+		q.append("    max_depth = " + config.getMaxDepth() != null ? config.getMaxDepth() : "None" + "\n");
+		q.append("    dt_random_state = " + config.getRandomState() != null ? config.getRandomState() : "None" + "\n");
+		q.append("    test_size = " + config.getTestSize() + "\n");
+		q.append("    train_test_random_state = " + config.getTrainTestRandomState() + "\n");
 		q.append("\n");
 		q.append("    def castcoltype(obs):\n");
 		q.append("        for colname in obs.columns:\n");

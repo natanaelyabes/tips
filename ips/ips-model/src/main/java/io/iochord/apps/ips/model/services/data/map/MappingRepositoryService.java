@@ -19,7 +19,7 @@ import io.iochord.apps.ips.core.services.ServiceContext;
 /**
  *
  * @package ips-model
- * @author N. Y. Wirawan <ny4tips@gmail.com>
+ * @author Natanael Yabes Wirawan <yabes.wirawan@gmail.com>
  * @since 2020
  * 
  */
