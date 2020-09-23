@@ -4,6 +4,7 @@ import scala.reflect.runtime.currentMirror
 import scala.tools.reflect.ToolBox
 import io.iochord.apps.ips.model.cpn.v1.impl.CPNGraph
 import java.util.LinkedHashMap
+import java.io.FileWriter
 
 /**
  *
@@ -56,8 +57,12 @@ class MemoryScalaCompilerPerModule(scalaSource: LinkedHashMap[String,String]) {
     val sim = compiledCode().asInstanceOf[Simulation]
     val cgraph = new CPNGraph()
     val it = scalaSource.keySet().iterator()
+    import java.io.PrintWriter
+    //val pw = new FileWriter("dumpingsimulmodel.txt",false)
     while(it.hasNext()) {
       val key = it.next()
+      //pw.append("\n------------------------------------------------------------------------------ "+key+"\n")
+      //pw.append(scalaSource.get(key))
       val strcomp = importStm+"\nval cgraph = new CPNGraph()\n"+scalaSource.get(key)
       val compcode = toolbox.compile(toolbox.parse(strcomp))
       val cgraphnew = compcode().asInstanceOf[CPNGraph]
@@ -65,6 +70,7 @@ class MemoryScalaCompilerPerModule(scalaSource: LinkedHashMap[String,String]) {
       cgraphnew.getTransitions().forEach(t => {cgraph.addTransitionMerge(t)})
       cgraphnew.getArcs().forEach(a => {cgraph.addArcMerge(a) })
     }
+    //pw.close()
     sim.cgraph = cgraph
     sim
   }

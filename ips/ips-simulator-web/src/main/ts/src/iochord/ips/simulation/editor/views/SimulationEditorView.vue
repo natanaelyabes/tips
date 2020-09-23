@@ -16,6 +16,12 @@
         <div class="section">Simulation Editor</div>
         <i class="right angle icon divider"></i>
         <div class="active section">{{this.title}}</div>
+        <i class="right angle icon divider"></i>
+        <select class="ui floating scrolling dropdown button" ref="datasetSelector" @change="mine">
+          <option value="Select a dataset">Select a dataset</option>
+          <option :selected="datasetId == i" v-for="(ds, i) in datasets" :key="i" class="item" :value="i">{{ds.name}} ({{i}})</option>
+        </select>
+        {{progressMessage}}
       </template>
 
       <!--  Left Sidebar Menu Item -->
@@ -131,6 +137,9 @@
         <div class="ui black deny button">
           Close
         </div>
+        <router-link tag="a" :to="'/iochord/ips/analytics/process/discovery/' + report.replayId + '/1'" target="_blank" class="ui primary button">
+          Replay
+        </router-link>
       </div>
     </div>
   </div>
@@ -185,7 +194,7 @@ i.big.icon {
 
 <script lang="ts">
 // Vue & Libraries
-import { Component, Vue, Watch } from 'vue-property-decorator';
+import { Component, Vue, Watch, Prop } from 'vue-property-decorator';
 import axios, { AxiosResponse, AxiosPromise } from 'axios';
 import { getModule } from 'vuex-module-decorators';
 
@@ -228,6 +237,8 @@ import GraphModule from '@/iochord/ips/common/graphs/ism/stores/GraphModule';
 import GraphSubject from '@/iochord/ips/common/graphs/ism/rxjs/GraphSubject';
 
 import { IsmSimulatorService } from '@/iochord/ips/simulation/editor/services/IsmSimulatorService';
+import DataConnectionService from '@/iochord/ips/data/connection/services/DataConnectionService';
+import IsmDiscoveryService, { IsmDiscoveryConfiguration } from '@/iochord/ips/analysis/process-discovery/services/IsmDiscoveryService';
 
 // Vuex module
 const graphModule = getModule(GraphModule);
@@ -269,6 +280,37 @@ declare const $: any;
 export default class SimulationEditorView extends AppLayoutView {
 
   /**
+   * Dataset Id field for selecting event log dataset.
+   *
+   * @type {*}
+   * @memberof AnalysisPMD
+   */
+  public datasetId: string = '';
+
+  /**
+   * Datasets field to receive JSON data from web service.
+   *
+   * @memberof AnalysisPMD
+   */
+  public datasets = {};
+
+  /**
+   * Field to collect basic statistics: number of graph and number of nodes.
+   *
+   * @type {string}
+   * @memberof AnalysisPMD
+   */
+  public graphJson: string = '';
+
+  /**
+   * Field for message loaders.
+   *
+   * @type {string}
+   * @memberof AnalysisPMD
+   */
+  public progressMessage: string = '';
+
+  /**
    * Indicates whether a simulation editor view is being disabled. False otherwise.
    *
    * @type {boolean}
@@ -292,6 +334,7 @@ export default class SimulationEditorView extends AppLayoutView {
    * @memberof SimulationEditorView
    */
   private report: any = {
+    replayId: '',
     groups: {},
   };
 
@@ -313,6 +356,52 @@ export default class SimulationEditorView extends AppLayoutView {
     const mDisplay = m > 0 ? m + 'm ' : '';
     const sDisplay = s > 0 ? s + 's ' : '';
     return dDisplay + hDisplay + mDisplay + sDisplay;
+  }
+
+  /**
+   * Perform analysis upon selected dataset by executing process mining algorithm.
+   *
+   * @memberof AnalysisPMD
+   */
+  public mine(): void {
+    const self = this;
+    const selectedDatasetId = (this.$refs['datasetSelector'] as any).value;
+    self.datasetId = selectedDatasetId;
+    self.runMine(selectedDatasetId);
+  }
+
+  /**
+   * Discover process graph from the web service.
+   *
+   * @param {string} selectedDatasetId
+   * @memberof AnalysisPMD
+   */
+  public runMine(selectedDatasetId: string): void {
+    const self = this;
+    if (selectedDatasetId !== 'Select a dataset') {
+      const config: IsmDiscoveryConfiguration = new IsmDiscoveryConfiguration();
+      config.datasetId = selectedDatasetId;
+      IsmDiscoveryService.getInstance().discoverIsmGraph(config, (res: any) => {
+        const graph = res.data;
+        let n = 0; for (const i of Object.keys(graph.data.pages['0'].nodes)) {
+          n++;
+        }
+        let c = 0; for (const i of Object.keys(graph.data.pages['0'].connectors)) {
+          c++;
+        }
+        const g: Graph = GraphImpl.deserialize(graph.data) as Graph;
+        graphModule.setGraph(g);
+        self.graphJson = 'This graph has ' + n + ' nodes and ' + c + ' connectors.';
+        self.progressMessage = '';
+        self.forceReRender();
+      }, (tick: any) => {
+        self.progressMessage = tick.progressData;
+        console.log(tick.progressData);
+      });
+    } else {
+      self.graphJson = '';
+      self.progressMessage = '';
+    }
   }
 
   /**
@@ -348,6 +437,9 @@ export default class SimulationEditorView extends AppLayoutView {
       // Fetch graph to Vuex state
       await this.modelCreate();
 
+      // Print to stdout
+      console.log(graphModule.graph);
+
       // Update rxjs subject
       GraphSubject.update(graphModule.graph);
 
@@ -357,10 +449,20 @@ export default class SimulationEditorView extends AppLayoutView {
         // Update its Vuex state
         graphModule.setGraph(graph);
 
+        // Print to stdout
+        console.log(graph);
       });
     } catch (e) {
       console.error(e);
     }
+
+    const self = this;
+    DataConnectionService.getInstance().getDataConnections((res: any) => {
+      self.datasets = res.data;
+      if (self.datasetId !== '') {
+        self.runMine(self.datasetId);
+      }
+    }, null);
 
     // Force re-render page component
     this.forceReRender();
@@ -384,7 +486,16 @@ export default class SimulationEditorView extends AppLayoutView {
       loaderVariation: 'slow blue medium elastic',
       loaderText: 'Simulation is running',
     }).dimmer('show');
-    const rep = await IsmSimulatorService.getInstance().postLoadNPlay(graphModule.graph);
+
+    let rep: any;
+
+    if (this.datasetId !== 'Select a dataset' && this.datasetId !== '') {
+      const config: IsmDiscoveryConfiguration = new IsmDiscoveryConfiguration();
+      rep = await IsmSimulatorService.getInstance().postLoadNPlayWithDataset(config, this.datasetId);
+    } else {
+      rep = await IsmSimulatorService.getInstance().postLoadNPlay(graphModule.graph);
+    }
+
     this.report = rep;
     $('.editor.canvas.ui.basic.segment').dimmer('hide');
     $(this.$refs['report']).modal('show');
@@ -408,6 +519,7 @@ export default class SimulationEditorView extends AppLayoutView {
    * @memberof SimulationEditorView
    */
   public async modelLoadExample() {
+    this.datasetId = '';
     await graphModule.loadExampleGraph();
     this.forceReRender();
   }

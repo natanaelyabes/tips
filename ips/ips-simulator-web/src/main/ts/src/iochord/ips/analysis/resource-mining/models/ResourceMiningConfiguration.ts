@@ -75,12 +75,20 @@ export default class ResourceMiningConfiguration {
   public colEventActivity: string = 'ea';
 
   /**
+   * The column position for event originator
+   *
+   * @type {string}
+   * @memberof OriginatorMiningConfiguration
+   */
+  public colEventOriginator: string = 'eo';
+
+  /**
    * The column position for event resource.
    *
    * @type {string}
    * @memberof ResourceMiningConfiguration
    */
-  public colEventResource: string = 'eo';
+  public colEventResource: string = 'er';
 
   /**
    * The column position for event timestamp start.

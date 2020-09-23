@@ -3,14 +3,10 @@ package io.iochord.apps.ips.model.analysis.services.ism;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
-import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.stream.Collectors;
 import java.util.Set;
 
 import io.iochord.apps.ips.common.util.LoggerUtil;
@@ -23,13 +19,12 @@ import io.iochord.apps.ips.model.ism.v1.Page;
 import io.iochord.apps.ips.model.ism.v1.impl.ConnectorImpl;
 import io.iochord.apps.ips.model.ism.v1.impl.IsmFactoryImpl;
 import io.iochord.apps.ips.model.ism.v1.impl.NodeImpl;
-import io.iochord.apps.ips.model.ism.v1.nodes.Activity;
 import io.iochord.apps.ips.model.ism.v1.nodes.enums.BranchGate;
 import io.iochord.apps.ips.model.ism.v1.nodes.enums.BranchType;
 import io.iochord.apps.ips.model.ism.v1.nodes.impl.ActivityImpl;
 import io.iochord.apps.ips.model.ism.v1.nodes.impl.BranchImpl;
-import io.iochord.apps.ips.model.ism.v1.nodes.impl.StartImpl;
-import io.iochord.apps.ips.model.ism.v1.nodes.impl.StopImpl;
+import lombok.Getter;
+import lombok.Setter;
 
 /**
 *
@@ -40,6 +35,10 @@ import io.iochord.apps.ips.model.ism.v1.nodes.impl.StopImpl;
 */
 public class IsmDiscoveryService extends AnIpsAsyncService<IsmDiscoveryConfiguration, IsmGraph> {
 
+	@Getter
+	@Setter
+	Map<String, Map<String, Double>> dpMatrixMemory;
+	
 	@Override
 	public IsmGraph run(ServiceContext context, IsmDiscoveryConfiguration config) {
 		IsmFactory factory = IsmFactoryImpl.getInstance();
@@ -49,7 +48,7 @@ public class IsmDiscoveryService extends AnIpsAsyncService<IsmDiscoveryConfigura
 		Map<String, Set<String>> snNodes = new LinkedHashMap<>();
 
 		calculateDfMatrix(context, dfMatrix, config.getDatasetId(), config.getColCaseId(), config.getColEventActivity(), config.getColEventTimestamp(), config.getSkipRows());
-		calculateDpMatrix(config, dpMatrix, dfMatrix);
+		double fpFitness = calculateDpMatrix(config, dpMatrix, dfMatrix);
 		calculateSNNodes(context, snNodes, config.getDatasetId(), config.getColCaseId(), config.getColEventActivity(), config.getColEventTimestamp(), config.getSkipRows());
 		Map<String, Node> nodes = new LinkedHashMap<>();
 		for (Entry<String, Map<String, Long>> fae : dfMatrix.entrySet()) {
@@ -58,7 +57,13 @@ public class IsmDiscoveryService extends AnIpsAsyncService<IsmDiscoveryConfigura
 				nodes.put(ta, null);
 			}
 		}
-		return createGraph(context, factory, nodes, snNodes, dfMatrix, dpMatrix);
+		IsmGraph graph = createGraph(context, factory, nodes, snNodes, dfMatrix, dpMatrix);
+		IsmReplayService replayer = new IsmReplayService();
+		double trFitness = replayer.run(context, config, graph);
+		System.out.println("TRFitness: " + trFitness);
+		graph.getAttributes().put("fpFitness", String.valueOf(fpFitness));
+		graph.getAttributes().put("trFitness", String.valueOf(trFitness));
+		return graph;
 	}
 	
 	private double calculateDpMatrix(IsmDiscoveryConfiguration config, Map<String, Map<String, Double>> dpMatrix, Map<String, Map<String, Long>> dfMatrix) {
@@ -87,6 +92,7 @@ public class IsmDiscoveryService extends AnIpsAsyncService<IsmDiscoveryConfigura
 				}
 			}
 		}
+		setDpMatrixMemory(dpMatrix);
 		double fitness = 0; 
 		if (totalArcs > 0) {
 			fitness = incArcs / totalArcs;
@@ -100,11 +106,13 @@ public class IsmDiscoveryService extends AnIpsAsyncService<IsmDiscoveryConfigura
 		Page p = result.getPages().values().iterator().next();
 		int ni = 0;
 		NodeImpl sn = (NodeImpl) factory.addStart(p);
+		sn.setLabel("START");
 		NodeImpl tn = (NodeImpl) factory.addStop(p);
+		tn.setLabel("STOP");
 		if (snNodes.containsKey("start") && snNodes.get("start").size() > 1) {
 			BranchImpl ob = (BranchImpl) factory.addBranch(p);
 			ob.setType(BranchType.SPLIT);
-			ob.setId("split-branch-start");
+			//ob.setId("split-branch-start");
 			ob.setLabel("sb-start");
 			ob.setGate(BranchGate.XOR);
 			factory.addConnector(p, sn, ob);
@@ -113,7 +121,7 @@ public class IsmDiscoveryService extends AnIpsAsyncService<IsmDiscoveryConfigura
 		if (snNodes.containsKey("stop") && snNodes.get("stop").size() > 1) {
 			BranchImpl ib = (BranchImpl) factory.addBranch(p);
 			ib.setType(BranchType.JOIN);
-			ib.setId("join-branch-stop");
+			//ib.setId("join-branch-stop");
 			ib.setLabel("jb-stop");
 			ib.setGate(BranchGate.XOR);
 			factory.addConnector(p, ib, tn);
@@ -137,7 +145,7 @@ public class IsmDiscoveryService extends AnIpsAsyncService<IsmDiscoveryConfigura
 
 		for (String et : snNodes.keySet()) {
 			for (String ea : snNodes.get(et)) {
-				Node an = nodes.get(ea);
+				// Node an = nodes.get(ea);
 				if (et.equals("start")) {
 					if (!inNodes.containsKey(ea)) {
 						inNodes.put(ea, new LinkedHashSet<>());
@@ -186,7 +194,7 @@ public class IsmDiscoveryService extends AnIpsAsyncService<IsmDiscoveryConfigura
 			if (rn.size() > 1) {
 				BranchImpl ib = (BranchImpl) factory.addBranch(p);
 				ib.setType(BranchType.JOIN);
-				ib.setId("JOIN-BRANCH-" + a.getId() + ea);
+				//ib.setId("JOIN-BRANCH-" + a.getId() + ea);
 				ib.setLabel("jb" + i++);
 				ib.setGate(BranchGate.XOR);
 				bcs.put(ib.getId(), ib);
@@ -203,7 +211,7 @@ public class IsmDiscoveryService extends AnIpsAsyncService<IsmDiscoveryConfigura
 			if (rn.size() > 1) {
 				BranchImpl ob = (BranchImpl) factory.addBranch(p);
 				ob.setType(BranchType.SPLIT);
-				ob.setId("SPLIT-BRANCH-" + a.getId() + ea);
+				//ob.setId("SPLIT-BRANCH-" + a.getId() + ea);
 				ob.setLabel("sb" + j++);
 				ob.setGate(BranchGate.XOR);
 				bcs.put(ob.getId(), ob);

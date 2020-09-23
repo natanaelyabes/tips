@@ -8,7 +8,7 @@
     <SettingsBarWrapperComponent>
 
       <!-- Header -->
-      <template slot="header-breadcrumb">
+      <template v-if="!replayId" slot="header-breadcrumb">
         <router-link to="/iochord/ips/home" tag="a" class="section">Home</router-link>
         <i class="right angle icon divider"></i>
         <div class="section">Data Analysis</div>
@@ -21,11 +21,23 @@
         </select>
         {{progressMessage}}
       </template>
+      <template v-else slot="header-breadcrumb">
+        {{ datasetId }} {{ replayId }}
+      </template>
 
       <!-- Setting Bar Ribbon -->
       <template slot="ribbon-bar-menu-item">
         <!-- Slots for parameters of each process model discovery algorithms -->
-        <PMDHeuristicsRibbonComponent></PMDHeuristicsRibbonComponent>
+        <PMDHeuristicsRibbonComponent ref="configurer" :replayOnly2="true" 
+          @onRun="mine" 
+          @startReplay="startReplay"
+          @pauseReplay="pauseReplay"
+          @stopReplay="stopReplay"
+          :replayId="replayId"
+          :replayState="replayState"
+          :fpBasedFitness="fpBasedFitness"
+          :trBasedFitness="trBasedFitness"></PMDHeuristicsRibbonComponent>
+        <div style="float: right;" v-html="message"></div>
       </template>
 
       <!-- Content -->
@@ -33,7 +45,7 @@
         <div v-if="graphJson" class="statistics">
           {{ graphJson }}
         </div>
-        <ModelViewer ref="viewer"></ModelViewer>
+        <ModelViewer ref="viewer" @graphLoaded="onGraphLoaded"></ModelViewer>
       </template>
 
     </SettingsBarWrapperComponent>
@@ -77,6 +89,9 @@ import GraphModule from '@/iochord/ips/common/graphs/ism/stores/GraphModule';
 import GraphSubject from '@/iochord/ips/common/graphs/ism/rxjs/GraphSubject';
 import { Graph } from '@/iochord/ips/common/graphs/ism/interfaces/Graph';
 import { GraphImpl } from '@/iochord/ips/common/graphs/ism/class/GraphImpl';
+import { TSMap } from 'typescript-map';
+import * as joint from 'jointjs';
+import { V } from 'jointjs';
 
 const graphModule = getModule(GraphModule);
 
@@ -119,6 +134,9 @@ export default class AnalysisPMD extends VisualizerLayoutView {
   @Prop({default: ''})
   public datasetId!: any;
 
+  @Prop()
+  public replayId?: any;
+
   /**
    * Datasets field to receive JSON data from web service.
    *
@@ -142,6 +160,24 @@ export default class AnalysisPMD extends VisualizerLayoutView {
    */
   public progressMessage: string = '';
 
+  public message = '';
+
+  public config: IsmDiscoveryConfiguration | null = null;
+
+  public renderer: any = null;
+
+  public animStr: any = null;
+
+  public replaySvg: any = null;
+
+  public replayState = -1;
+
+  public replayTime = 0;
+
+  public fpBasedFitness: any = -1;
+
+  public trBasedFitness: any = -1;
+
   /**
    * Perform analysis upon selected dataset by executing process mining algorithm.
    *
@@ -162,8 +198,12 @@ export default class AnalysisPMD extends VisualizerLayoutView {
   public runMine(selectedDatasetId: string): void {
     const self = this;
     if (selectedDatasetId !== 'Select a dataset') {
+      const configurer = this.$refs['configurer'] as any;
       const config: IsmDiscoveryConfiguration = new IsmDiscoveryConfiguration();
       config.datasetId = selectedDatasetId;
+      config.positiveObservationThreshold = configurer.freqTh;
+      config.dependencyThreshold = configurer.depTh;
+      this.config = config;
       IsmDiscoveryService.getInstance().discoverIsmGraph(config, (res: any) => {
         const graph = res.data;
         let n = 0; for (const i of Object.keys(graph.data.pages['0'].nodes)) {
@@ -171,6 +211,15 @@ export default class AnalysisPMD extends VisualizerLayoutView {
         }
         let c = 0; for (const i of Object.keys(graph.data.pages['0'].connectors)) {
           c++;
+        }
+        this.message = '';
+        if (graph.data.hasOwnProperty('attributes')) {
+          if (graph.data.attributes.hasOwnProperty('trFitness')) {
+            this.trBasedFitness = (parseFloat(graph.data.attributes.trFitness) * 100).toFixed(2);
+          }
+          if (graph.data.attributes.hasOwnProperty('fpFitness')) {
+            this.fpBasedFitness = (parseFloat(graph.data.attributes.fpFitness) * 100).toFixed(2);
+          }
         }
         const g: Graph = GraphImpl.deserialize(graph.data) as Graph;
         graphModule.setGraph(g);
@@ -220,6 +269,65 @@ export default class AnalysisPMD extends VisualizerLayoutView {
    */
   public setTitle(): void {
     this.title = `Process Model Discovery`;
+  }
+
+  public onGraphLoaded(renderer: any) {
+    this.renderer = renderer;
+    this.animStr = null;
+    this.replayState = -1;
+    if (this.config != null) {
+      this.renderer.jointPages.map((jointPage: any, jointPageId: any) => {
+        const cPaths: any = {};
+        jointPage.jointConnectors.map((arc: any, arcId: any) => {
+          const p = jointPage.getPaper().findViewByModel(arc.getConnector()).$('.connection')[0];
+          cPaths[arcId] = p.id;
+        });
+        this.config!.connectorPaths = cPaths;
+        IsmDiscoveryService.getInstance().discoverIsmGraphAnimation(this.config!, (res: any) => {
+          if (res.data.data !== '') {
+            this.animStr = res.data.data;
+            // it only works on 1 jointpage
+            this.replaySvg = jointPage.getPaper().svg;
+            jointPage.getPaper().viewport.innerHTML += this.animStr;
+            this.stopReplay();
+          }
+        }, (tick: any) => {
+          console.log(tick);
+        });
+      });
+    }
+  }
+
+  public startReplay() {
+    if (this.renderer == null || this.animStr == null || this.replaySvg == null || this.replayState === 2) return;
+    this.replayState = 1;
+    this.replayTime += 10 / 1000;
+    if (this.replayTime > this.config!.animatorLength) {
+      this.stopReplay();
+      return;
+    }
+    this.replaySvg.setCurrentTime(this.replayTime);
+    setTimeout(this.startReplay, 10);
+  }
+
+  public pauseReplay() {
+    if (this.renderer == null || this.animStr == null || this.replaySvg == null) return;
+    if (this.replayState === 1) {
+      this.replayState = 2;
+    } else {
+      this.replayState = 1;
+      this.startReplay();
+    }
+  }
+
+  public stopReplay() {
+    if (this.renderer == null || this.animStr == null) return;
+    if (this.replaySvg != null) {
+      this.replayState = 0;
+      this.replayTime = 0;
+      this.replaySvg.pauseAnimations();
+      this.replaySvg.setCurrentTime(0);
+    }
   }
 }
 </script>

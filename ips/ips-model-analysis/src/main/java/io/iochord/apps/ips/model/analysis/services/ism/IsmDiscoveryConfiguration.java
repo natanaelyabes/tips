@@ -1,5 +1,7 @@
 package io.iochord.apps.ips.model.analysis.services.ism;
 
+import java.util.Map;
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -30,6 +32,14 @@ public class IsmDiscoveryConfiguration {
 
 	@Getter
 	@Setter
+	private String colEventTimeStart = "es";
+
+	@Getter
+	@Setter
+	private String colEventTimeComplete = "ec";
+
+	@Getter
+	@Setter
 	private int skipRows = 1;
 
 	@Getter
@@ -38,6 +48,22 @@ public class IsmDiscoveryConfiguration {
 	
 	@Getter
 	@Setter
-	private float dependencyThreshold = 0.9f;
+	private float dependencyThreshold = -1f;
 	
+	@Getter
+	@Setter
+	private Map<String, String> connectorPaths;
+	
+	@Getter
+	@Setter
+	private double animatorLength = 60;
+	
+	@Getter
+	@Setter
+	private int tokenMinSize = 32;
+	
+	@Getter
+	@Setter
+	private int tokenMaxSize = 64;
+
 }

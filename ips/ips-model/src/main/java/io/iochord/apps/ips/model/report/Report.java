@@ -4,6 +4,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 import lombok.Getter;
+import lombok.Setter;
 
 /**
 *
@@ -14,6 +15,10 @@ import lombok.Getter;
 */
 public class Report {
 
+	@Getter
+	@Setter
+	private String replayId;
+	
 	@Getter
 	private final Map<String, GroupStatistics> groups = new LinkedHashMap<>();
 

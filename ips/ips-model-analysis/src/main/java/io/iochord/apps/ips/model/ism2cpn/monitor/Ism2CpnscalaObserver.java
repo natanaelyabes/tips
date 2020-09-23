@@ -19,6 +19,7 @@ import scala.Tuple2;
 import scala.Tuple3;
 import scala.Tuple5;
 import scala.collection.Iterator;
+import scala.collection.immutable.List;
 import scala.collection.mutable.HashMap;
 
 /**
@@ -44,8 +45,8 @@ public class Ism2CpnscalaObserver implements Observer {
 	public void update(Observable o, Object arg) {
 		observe(o, arg);
 		try {
-			System.out.println(JsonDataCodec.getSerializer().writeValueAsString(arg));
-		} catch (JsonProcessingException ex) {
+//			System.out.println(JsonDataCodec.getSerializer().writeValueAsString(arg));
+		} catch (Exception ex) {
 			LoggerUtil.logError(ex);
 		}
 	}
@@ -53,8 +54,8 @@ public class Ism2CpnscalaObserver implements Observer {
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public void observe(Observable o, Object arg) {
 		Tuple5 tuple5 = (Tuple5) arg;
-//		long time = (long) tuple5._1();
-//		int step = (int) tuple5._2();
+		long globalClock = (long) tuple5._1();
+		int globalStep = (int) tuple5._2();
 		Tuple2 transition = (Tuple2) tuple5._3();
 //		String transitionId = (String) transition._1();
 		HashMap transitionOrigin = (HashMap) transition._2();
@@ -83,6 +84,39 @@ public class Ism2CpnscalaObserver implements Observer {
 			}
 			if (e instanceof Activity) {
 				if (transitionEleRole.equalsIgnoreCase("_natstart")) {
+					String qpStr = "_qendp";
+					if (prevStateRole.get(qpStr) != null) {
+						HashMap qpBefore = (HashMap) prevStateRole.get(qpStr)._2();
+						HashMap qpAfter = (HashMap) currentStateRole.get(qpStr)._2();
+						Map<Integer, Integer> caseIds = new LinkedHashMap<>();
+						Iterator it = qpBefore.iterator();
+						while (it.hasNext()) {
+							Tuple2 a = (Tuple2) it.next();
+							Tuple2 el = (Tuple2) a._1();
+							Integer as = (Integer) el._2();
+							List c = (List) el._1();
+							Iterator it2 = c.iterator();
+							while (it2.hasNext()) {
+								Tuple2 a2 = (Tuple2) it2.next();
+								Integer caseId = (Integer) a2._1();
+								caseIds.put(caseId, as);
+							}
+						}
+						it = qpAfter.iterator();
+						while (it.hasNext()) {
+							Tuple2 a = (Tuple2) it.next();
+							Tuple2 el = (Tuple2) a._1();
+							List c = (List) el._1();
+							Iterator it2 = c.iterator();
+							while (it2.hasNext()) {
+								Tuple2 a2 = (Tuple2) it2.next();
+								Integer caseId = (Integer) a2._1();
+								caseIds.remove(caseId);
+							}
+						}
+						qpBefore.toString();
+					}
+
 					String respStr = "_resp";
 					if (prevStateRole.get(respStr) != null) {
 						HashMap dgp2Before2 = (HashMap) prevStateRole.get(respStr)._2();
@@ -96,7 +130,7 @@ public class Ism2CpnscalaObserver implements Observer {
 								, 0l, null, null, null, null));
 							es.getSubElements().put("2", new ElementStatistics("처리 시간 (Turnaround Time)"
 								, 0l, null, null, null, null));
-							es.getSubElements().put("3", new ElementStatistics("Productivity"
+							es. getSubElements().put("3", new ElementStatistics("Productivity"
 								, 0l, null, null, null, null));
 							es.getSubElements().put("4", new ElementStatistics("Cost"
 								, 0l, null, null, null, null));

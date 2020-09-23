@@ -13,4 +13,4 @@ package io.iochord.apps.ips.model.cpn.v1.impl.token
 /**
  * @param id, name, setupTime, jobList, maxToken is several attributes that could be used in the future for this resource type
  */
-class Resource[T](id:String, name:String, setupTime:Long, jobList:List[T] = null, maxToken:Int = 0) extends General(id:String, name:String)
+class Resource[T](var id:String, var name:String, var setupTime:Long, var jobList:List[T] = null, var maxToken:Int = 0) extends General(id:String, name:String)

@@ -26,4 +26,9 @@ public class StartImpl extends NodeImpl implements Start {
 	public String getElementType() {
 		return ElementType.NODE_START;
 	}
+	
+	public StartImpl() {
+		getRTokenInitial().put(SELF, 1);
+	}
+	
 }

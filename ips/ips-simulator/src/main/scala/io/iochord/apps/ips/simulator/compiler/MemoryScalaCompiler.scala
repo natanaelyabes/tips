@@ -2,7 +2,8 @@ package io.iochord.apps.ips.simulator.compiler
 
 import scala.reflect.runtime.currentMirror
 import scala.tools.reflect.ToolBox
-  
+import java.io.FileWriter
+
 /**
  *
  * @package ips-simulator
@@ -40,7 +41,7 @@ class MemoryScalaCompiler(scalaSource: String) {
       "import breeze.stats.distributions.Uniform; \n"+
       "import breeze.stats.distributions.Rayleigh \n"+
       "new Simulation {\n"+scalaSource+"\n}")
-      
+  
   val compiledCode = toolbox.compile(tree)
   
   /**

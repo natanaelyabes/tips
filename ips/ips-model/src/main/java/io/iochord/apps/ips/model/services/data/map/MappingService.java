@@ -1,20 +1,14 @@
 package io.iochord.apps.ips.model.services.data.map;
 
-import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.databind.JsonMappingException;
-
-import io.iochord.apps.ips.common.models.Dataset;
 import io.iochord.apps.ips.common.util.JsonDataCodec;
 import io.iochord.apps.ips.common.util.LoggerUtil;
 import io.iochord.apps.ips.common.util.SerializationUtil;
@@ -100,7 +94,7 @@ public class MappingService extends AnIpsService<MappingConfiguration, MappingRe
 					st.execute();
 				}
 				
-				Dataset repo = new Dataset();
+				MappingResult repo = result;
 				repo.setId(repoId);
 				repo.setParentId(config.getDatasetId());
 				repo.setName(imConfig.getName());
