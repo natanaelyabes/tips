@@ -78,7 +78,14 @@
         </template>
         <div class="item">
           <div class="field">
-            <label>&nbsp;</label>
+            <template v-if="replayState >= 0">
+            <button type="button" @click="$emit('downloadDataset')" class="ui primary button">
+              Download Dataset
+            </button>
+            <button type="button" @click="$emit('downloadModel')" class="ui primary button">
+              Download Model
+            </button>
+            </template>
             <button v-if="replayState < 0" type="button" class="ui disabled button" disabled="disabled">
               Loading ...
             </button>

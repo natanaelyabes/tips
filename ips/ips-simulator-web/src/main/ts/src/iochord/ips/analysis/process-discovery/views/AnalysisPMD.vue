@@ -22,7 +22,7 @@
         {{progressMessage}}
       </template>
       <template v-else slot="header-breadcrumb">
-        {{ datasetId }} {{ replayId }}
+        {{ datasetId }}
       </template>
 
       <!-- Setting Bar Ribbon -->
@@ -33,6 +33,8 @@
           @startReplay="startReplay"
           @pauseReplay="pauseReplay"
           @stopReplay="stopReplay"
+          @downloadModel="downloadModel"
+          @downloadDataset="downloadDataset"
           :replayId="replayId"
           :replayState="replayState"
           :fpBasedFitness="fpBasedFitness"
@@ -327,6 +329,35 @@ export default class AnalysisPMD extends VisualizerLayoutView {
       this.replayTime = 0;
       this.replaySvg.pauseAnimations();
       this.replaySvg.setCurrentTime(0);
+    }
+  }
+
+  public downloadDataset() {
+    const dlUrl = `${process.env.VUE_APP_BASE_URI}` + DataConnectionService.BASE_URI + '/export/csv/' + this.datasetId;
+    console.log(dlUrl);
+    window.open(dlUrl);
+  }
+
+  public downloadModel() {
+    if (this.replaySvg != null) {
+      let svg = '<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="' + this.datasetId + '" width="100%" height="100%" xmlns:ev="http://www.w3.org/2001/xml-events" style="overflow: hidden;"><style>.marker-vertices, .link-tools, .svg-pan-zoom-control, .connection-wrap, .log-replay { display: none;}</style>';
+      svg += this.replaySvg.innerHTML;
+      svg += '</svg>';
+      const file = new Blob([svg], {type: 'image/svg+xml'});
+      if (window.navigator.msSaveOrOpenBlob) {
+          window.navigator.msSaveOrOpenBlob(file, this.datasetId);
+      } else { // Others
+          const a = document.createElement('a');
+          const url = URL.createObjectURL(file);
+          a.href = url;
+          a.download = this.datasetId;
+          document.body.appendChild(a);
+          a.click();
+          setTimeout(() => {
+              document.body.removeChild(a);
+              window.URL.revokeObjectURL(url);
+          }, 0);
+      }
     }
   }
 }
