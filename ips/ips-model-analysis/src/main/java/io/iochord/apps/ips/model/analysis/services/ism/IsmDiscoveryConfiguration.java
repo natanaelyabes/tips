@@ -65,5 +65,13 @@ public class IsmDiscoveryConfiguration {
 	@Getter
 	@Setter
 	private int tokenMaxSize = 64;
+	
+	@Getter
+	@Setter
+	private boolean tokenReplay = false;
+	
+	@Getter
+	@Setter
+	private boolean tokenReplayDecorateLabel = false;
 
 }

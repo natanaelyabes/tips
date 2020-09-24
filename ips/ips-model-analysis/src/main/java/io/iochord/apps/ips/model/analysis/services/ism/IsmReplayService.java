@@ -42,10 +42,10 @@ public class IsmReplayService extends AnIpsAsyncService<IsmDiscoveryConfiguratio
 	}
 	
 	public Double run(ServiceContext context, IsmDiscoveryConfiguration config, IsmGraph graph) {
-		double tProduced = 0;
-		double tConsumed = 0;
-		double tMissing = 0;
-		double tRemaining = 0;
+		int tProduced = 0;
+		int tConsumed = 0;
+		int tMissing = 0;
+		int tRemaining = 0;
 		Page p = graph.getPages().values().iterator().next();
 		// Build node input and output sets
 		for (Entry<String, Connector> ce : p.getConnectors().entrySet()) {
@@ -83,6 +83,7 @@ public class IsmReplayService extends AnIpsAsyncService<IsmDiscoveryConfiguratio
 					"	GROUP BY ci\r\n" + 
 					") AS tv\r\n" + 
 					"GROUP BY t\r\n");
+			Map<NodeImpl, Integer[]> nTokens = new LinkedHashMap<>();
 			try (PreparedStatement st = conn.prepareStatement(sql.toString());
 				ResultSet rs = st.executeQuery();) {
 				while (rs.next()) {
@@ -109,10 +110,20 @@ public class IsmReplayService extends AnIpsAsyncService<IsmDiscoveryConfiguratio
 					boolean tError = false;
 					for (Entry<String, Node> ne : p.getNodes().entrySet()) {
 						NodeImpl n = (NodeImpl) ne.getValue();
-						tProduced += tMultiplier * n.getRProduced();
-						tConsumed += tMultiplier * n.getRConsumed();
-						tMissing += tMultiplier * n.getRMissing();
-						tRemaining += tMultiplier * n.getRRemaining();
+						Integer[] nToken = (nTokens.containsKey(n)) ? nTokens.get(n) : new Integer[] { 0, 0, 0, 0 };
+						int mProduced = tMultiplier * n.getRProduced();
+						int mConsumed = tMultiplier * n.getRConsumed();
+						int mMissing = tMultiplier * n.getRMissing();
+						int mRemaining = tMultiplier * n.getRRemaining();
+						nToken[0] += mProduced;
+						nToken[1] += mConsumed;
+						nToken[2] += mMissing;
+						nToken[3] += mRemaining;
+						nTokens.put(n, nToken);
+						tProduced += mProduced;
+						tConsumed += mConsumed;
+						tMissing += mMissing;
+						tRemaining += mRemaining;
 						if (n.getRMissing() > 0 || n.getRRemaining() > 0) {
 							tError = true;
 							if (n instanceof BranchImpl) {
@@ -128,6 +139,14 @@ public class IsmReplayService extends AnIpsAsyncService<IsmDiscoveryConfiguratio
 					}
 				}
 			}
+			for (Entry<NodeImpl, Integer[]> nte : nTokens.entrySet()) {
+				NodeImpl n = nte.getKey();
+				Integer[] t = nte.getValue();
+				graph.getAttributes().put("trToken-" + n.getLabel(), n.getLabel() + "|" + t[0] + "|" + t[1] + "|" + t[2] + "|" + t[3]);
+				if (config.isTokenReplayDecorateLabel()) {
+					n.setLabel(n.getLabel() + "\r\n(p=" + t[0] + ",c=" + t[1] + ",m=" + t[2] + ",r=" + t[3] + ")");
+				}
+			}
 		} catch (Exception ex) {
 			ex.printStackTrace();
 			LoggerUtil.logError(ex);
@@ -139,8 +158,9 @@ public class IsmReplayService extends AnIpsAsyncService<IsmDiscoveryConfiguratio
 			n.getRInputNodes().clear();
 			n.getROutputNodes().clear();
 		}
-		double fitness = (tConsumed == 0 ? 0 : (1 - tMissing / tConsumed) / 2) + (tProduced == 0 ? 0 : (1 - tRemaining / tProduced) / 2);
+		double fitness = (tConsumed == 0 ? 0 : (1 - ((double) tMissing) / ((double) tConsumed)) / 2) + (tProduced == 0 ? 0 : (1 - ((double) tRemaining) / ((double) tProduced)) / 2);
 		System.out.println(fitness + ": p=" + tProduced + ", c=" + tConsumed + ", m=" + tMissing + ", r=" + tRemaining);
+		graph.getAttributes().put("trTokenG", "GRAPH" + "|" + tProduced + "|" + tConsumed + "|" + tMissing + "|" + tRemaining);
 		return fitness;
 	}
 	

@@ -59,7 +59,7 @@ public class IsmDiscoveryService extends AnIpsAsyncService<IsmDiscoveryConfigura
 		}
 		IsmGraph graph = createGraph(context, factory, nodes, snNodes, dfMatrix, dpMatrix);
 		IsmReplayService replayer = new IsmReplayService();
-		double trFitness = replayer.run(context, config, graph);
+		double trFitness = config.isTokenReplay() ? replayer.run(context, config, graph) : -1d;
 		System.out.println("TRFitness: " + trFitness);
 		graph.getAttributes().put("fpFitness", String.valueOf(fpFitness));
 		graph.getAttributes().put("trFitness", String.valueOf(trFitness));

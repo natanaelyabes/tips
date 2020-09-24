@@ -78,14 +78,6 @@
         </template>
         <div class="item">
           <div class="field">
-            <template v-if="replayState >= 0">
-            <button type="button" @click="$emit('downloadDataset')" class="ui primary button">
-              Download Dataset
-            </button>
-            <button type="button" @click="$emit('downloadModel')" class="ui primary button">
-              Download Model
-            </button>
-            </template>
             <button v-if="replayState < 0" type="button" class="ui disabled button" disabled="disabled">
               Loading ...
             </button>
@@ -101,6 +93,17 @@
             <button v-if="replayState == 2" type="button" @click="$emit('stopReplay')" class="ui red button">
               Stop Replay
             </button>
+            <template v-if="replayState >= 0">
+            <button type="button" @click="$emit('downloadDataset')" class="ui primary button">
+              Download Dataset
+            </button>
+            <button type="button" @click="$emit('downloadModel')" class="ui primary button">
+              Download Model
+            </button>
+            <button type="button" @click="$emit('downloadReplay')" class="ui primary button">
+              Download TR Result
+            </button>
+            </template>
           </div>
         </div>
         </div>
