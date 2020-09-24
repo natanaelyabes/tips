@@ -56,4 +56,7 @@ export default class IsmDiscoveryConfiguration {
 
   public animatorLength: number = 30;
 
+  public tokenReplay: boolean = false;
+
+  public tokenReplayDecorateLabel: boolean = false;
 }

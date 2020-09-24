@@ -35,6 +35,7 @@
           @stopReplay="stopReplay"
           @downloadModel="downloadModel"
           @downloadDataset="downloadDataset"
+          @downloadReplay="downloadReplay"
           :replayId="replayId"
           :replayState="replayState"
           :fpBasedFitness="fpBasedFitness"
@@ -154,6 +155,8 @@ export default class AnalysisPMD extends VisualizerLayoutView {
    */
   public graphJson: string = '';
 
+  public graphTokens = '';
+
   /**
    * Field for message loaders.
    *
@@ -205,7 +208,10 @@ export default class AnalysisPMD extends VisualizerLayoutView {
       config.datasetId = selectedDatasetId;
       config.positiveObservationThreshold = configurer.freqTh;
       config.dependencyThreshold = configurer.depTh;
+      config.tokenReplay = true;
+      config.tokenReplayDecorateLabel = true;
       this.config = config;
+      this.graphTokens = '';
       IsmDiscoveryService.getInstance().discoverIsmGraph(config, (res: any) => {
         const graph = res.data;
         let n = 0; for (const i of Object.keys(graph.data.pages['0'].nodes)) {
@@ -221,6 +227,15 @@ export default class AnalysisPMD extends VisualizerLayoutView {
           }
           if (graph.data.attributes.hasOwnProperty('fpFitness')) {
             this.fpBasedFitness = (parseFloat(graph.data.attributes.fpFitness) * 100).toFixed(2);
+          }
+          if (graph.data.attributes.hasOwnProperty('trTokenG')) {
+            this.graphTokens += 'OBJECT|produced|consumed|missing|remaining\r\n';
+            this.graphTokens += graph.data.attributes.trTokenG + '\r\n';
+            for (const ak of Object.keys(graph.data.attributes)) {
+              if (ak.startsWith('trToken-')) {
+                this.graphTokens += graph.data.attributes[ak] + '\r\n';
+              }
+            }
           }
         }
         const g: Graph = GraphImpl.deserialize(graph.data) as Graph;
@@ -343,21 +358,31 @@ export default class AnalysisPMD extends VisualizerLayoutView {
       let svg = '<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="' + this.datasetId + '" width="100%" height="100%" xmlns:ev="http://www.w3.org/2001/xml-events" style="overflow: hidden;"><style>.marker-vertices, .link-tools, .svg-pan-zoom-control, .connection-wrap, .log-replay { display: none;}</style>';
       svg += this.replaySvg.innerHTML;
       svg += '</svg>';
-      const file = new Blob([svg], {type: 'image/svg+xml'});
-      if (window.navigator.msSaveOrOpenBlob) {
-          window.navigator.msSaveOrOpenBlob(file, this.datasetId);
-      } else { // Others
-          const a = document.createElement('a');
-          const url = URL.createObjectURL(file);
-          a.href = url;
-          a.download = this.datasetId;
-          document.body.appendChild(a);
-          a.click();
-          setTimeout(() => {
-              document.body.removeChild(a);
-              window.URL.revokeObjectURL(url);
-          }, 0);
-      }
+      this.downloadBlob(svg, 'image/svg+xml', this.datasetId + '.svg');
+    }
+  }
+
+  public downloadReplay() {
+    if (this.graphTokens !== '') {
+      this.downloadBlob(this.graphTokens, 'text/csv', this.datasetId + '-trresult.csv');
+    }
+  }
+
+  public downloadBlob(data: any, type: any, filename: any) {
+    const file = new Blob([data], {type: 'image/svg+xml'});
+    if (window.navigator.msSaveOrOpenBlob) {
+        window.navigator.msSaveOrOpenBlob(file, filename);
+    } else { // Others
+        const a = document.createElement('a');
+        const url = URL.createObjectURL(file);
+        a.href = url;
+        a.download = filename;
+        document.body.appendChild(a);
+        a.click();
+        setTimeout(() => {
+            document.body.removeChild(a);
+            window.URL.revokeObjectURL(url);
+        }, 0);
     }
   }
 }
