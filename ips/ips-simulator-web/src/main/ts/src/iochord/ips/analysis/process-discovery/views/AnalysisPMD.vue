@@ -300,6 +300,7 @@ export default class AnalysisPMD extends VisualizerLayoutView {
           cPaths[arcId] = p.id;
         });
         this.config!.connectorPaths = cPaths;
+        this.config!.tokenReplayDecorateLabel = false;
         IsmDiscoveryService.getInstance().discoverIsmGraphAnimation(this.config!, (res: any) => {
           if (res.data.data !== '') {
             this.animStr = res.data.data;
