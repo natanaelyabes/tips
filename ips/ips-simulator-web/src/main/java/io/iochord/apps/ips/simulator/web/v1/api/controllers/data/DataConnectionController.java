@@ -5,6 +5,8 @@ import java.io.InputStreamReader;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletResponse;
+
 import org.deckfour.xes.factory.XFactory;
 import org.deckfour.xes.factory.XFactoryRegistry;
 import org.deckfour.xes.model.XLog;
@@ -24,6 +26,8 @@ import io.iochord.apps.ips.common.util.LoggerUtil;
 import io.iochord.apps.ips.common.util.SerializationUtil;
 import io.iochord.apps.ips.core.services.ServiceContext;
 import io.iochord.apps.ips.model.services.data.DatasetRepositoryService;
+import io.iochord.apps.ips.model.services.data.ex.csv.CsvDataExportConfiguration;
+import io.iochord.apps.ips.model.services.data.ex.csv.CsvDataExportService;
 import io.iochord.apps.ips.model.services.data.im.csv.CsvDataImportConfiguration;
 import io.iochord.apps.ips.model.services.data.im.csv.CsvDataImportResult;
 import io.iochord.apps.ips.model.services.data.im.csv.CsvDataImportService;
@@ -115,4 +119,15 @@ public class DataConnectionController extends ADataController {
 		}
 		return run(new XesDataImportService(), config, XesDataImportResult.class, headers);
 	}
+	
+	@GetMapping(value = BASE_URI + "/export/csv/{datasetId}")
+	public String getExportCsv(@PathVariable String datasetId, HttpServletResponse response) throws IOException {
+		CsvDataExportConfiguration config = new CsvDataExportConfiguration();
+		config.setDatasetId(datasetId);
+		String result = new CsvDataExportService().run(getServiceContext(), config);
+		response.setHeader("Content-Disposition", "attachment; filename=\"" + datasetId + ".csv\""); 
+		response.setContentType("text/csv");      
+		return result;
+	}
+
 }

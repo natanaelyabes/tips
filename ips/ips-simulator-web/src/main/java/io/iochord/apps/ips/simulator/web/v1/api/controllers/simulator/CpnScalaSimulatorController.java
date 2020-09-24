@@ -158,7 +158,8 @@ public class CpnScalaSimulatorController extends ASimulatorController {
 		gs = new GroupStatistics("RESOURCES");
 		gsr = gs;
 		report.getGroups().put(String.valueOf(report.getGroups().size() + 1), gs);
-		setupObservers(conversionResult, gsg, gsa, gsr);
+		String modelId = "ips_simulation_" + System.currentTimeMillis() + "";
+		setupObservers(modelId, conversionResult, gsg, gsa, gsr);
 		 
 		return report;
 	}
@@ -189,20 +190,22 @@ public class CpnScalaSimulatorController extends ASimulatorController {
 		gs = new GroupStatistics("RESOURCES");
 		gsr = gs;
 		report.getGroups().put(String.valueOf(report.getGroups().size() + 1), gs);
-		String filePath = setupObservers(conversionResult, gsg, gsa, gsr);
+		String modelId = "ips_simulation_" + System.currentTimeMillis() + "";
+		String filePath = setupObservers(modelId, conversionResult, gsg, gsa, gsr);
 		System.out.println("SIM: Generate Replay");
-		String replayId = parseReport(filePath);
+		String replayId = parseReport(modelId, filePath);
 		report.setReplayId(replayId);
 		System.out.println(replayId);
 		
 		return report;
 	}
 	
-	public String parseReport(String filePath) {
+	public String parseReport(String modelId, String filePath) {
 		try {
 			ServiceContext context = getServiceContext();
 			CsvDataImportConfiguration imConf = new CsvDataImportConfiguration();
 			File file = new File(filePath);
+			imConf.setName(modelId);
 			imConf.setFilename(file.getName());
 			imConf.setReader(new FileReader(filePath));
 			imConf.setDelimeter('|');
@@ -227,12 +230,12 @@ public class CpnScalaSimulatorController extends ASimulatorController {
 		return null;
 	}
 
-	private String setupObservers(/*Ism2CpnscalaModel*/Ism2CpnscalaModelPerModule conversionResult, GroupStatistics gsg, GroupStatistics gsa, GroupStatistics gsr) {
+	private String setupObservers(String modelId, Ism2CpnscalaModelPerModule conversionResult, GroupStatistics gsg, GroupStatistics gsa, GroupStatistics gsr) {
 		File f = new File("replay");
 		if (!f.exists()) {
 			f.mkdirs();
 		}
-		String filePath = String.valueOf("replay/sim_"+System.currentTimeMillis()+".csv");
+		String filePath = String.valueOf("replay/"+modelId+".csv");
 		
 		try {
 			System.out.println("SIM: Compiling Simulation Module");

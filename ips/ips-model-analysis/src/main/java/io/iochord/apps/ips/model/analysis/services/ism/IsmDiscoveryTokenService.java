@@ -166,6 +166,7 @@ public class IsmDiscoveryTokenService extends AnIpsAsyncService<IsmDiscoveryConf
 				}
 			}
 			// generate svg
+			animStr.append("<g class=\"log-replay\">");
 			double tsRange = tsMax - tsMin;
 			double fRange = fMax - fMin;
 			int tzRange = config.getTokenMaxSize() - config.getTokenMinSize();
@@ -204,6 +205,7 @@ public class IsmDiscoveryTokenService extends AnIpsAsyncService<IsmDiscoveryConf
 					}
 				}
 			}
+			animStr.append("</g>");
 		} catch (Exception ex) {
 			ex.printStackTrace();
 			LoggerUtil.logError(ex);
