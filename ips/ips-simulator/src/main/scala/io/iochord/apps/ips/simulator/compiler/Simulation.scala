@@ -116,6 +116,16 @@ abstract class Simulation(val simulator:Simulator = new Simulator(true)) {
   }
   
   /**
+   * run simulation until global time simulation reach at some point based on param.
+   */
+  def runUntilGlobalTime(stopTime:Long): Unit = {
+    this.stopCrit = (stop:Any) => stop match { case stop:Long => {globtime.getTime() > stop} }
+    this.inpStopCrit = stopTime
+    
+    simulator.run(cgraph, stopCrit, inpStopCrit, -1, globtime, subject, fileReportPath)
+  }
+  
+  /**
    * @param stopCritLoc : assign function for stopping criteria and give default anonymous function to stop directly if this stopCirtLoc function is not defined)
    * @param inpStopCritLoc : input for function stopCritLoc above
    * 

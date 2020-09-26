@@ -158,6 +158,7 @@ case class Simulator(calcAvgTimeEnTr:Boolean = false) {
     val report = new PrintWriter(new File(fileReportPath))
     report.write("ci|eo|ea|er|es|ec\n")
     
+    var nama = ""
     breakable {
       while ((stepsRef < 0 || steps > c) && !stopCrit(inpStopCrit)) {
         
@@ -180,7 +181,7 @@ case class Simulator(calcAvgTimeEnTr:Boolean = false) {
         
         val r = new java.util.Random();
         val transition = transitions(r.nextInt(transitions.length))
-        
+        nama = transition.getOrigin().get("compName").get
         val markbefore = Map[(String,Map[String,String]),Any]()
         val markafter = Map[(String,Map[String,String]),Any]()
         
@@ -194,6 +195,7 @@ case class Simulator(calcAvgTimeEnTr:Boolean = false) {
         
         if(transition.getOrigin().get("origin").get.startsWith("0-activity-") && transition.getOrigin().get("role").get.equals("_natstart"))
         {
+          val compName = transition.getOrigin().get("compName").get
           val origin = transition.getOrigin().get("origin").get
           try {
             val _ptmpwait = markbefore.filter(_._1._2.get("role").get.equals("_ptmpwait")).head._2.asInstanceOf[Map[(Any,Long),Int]].foreach(
@@ -214,9 +216,10 @@ case class Simulator(calcAvgTimeEnTr:Boolean = false) {
                   if(tm != None){ 
                     mapActTokMon.remove((token,origin))
                     val tokenTP = token.asInstanceOf[(_,_)]
-                    val stDate = stDateSim.getTime + tm.get * unitMilis
+                    //val stDate = stDateSim.getTime + tm.get * unitMilis
+                    val stDate = stDateSim.getTime + globtime.time * unitMilis
                     val edDate = stDateSim.getTime + timeEnd * unitMilis
-                    report.write(tokenTP._1+"|"+ tokenTP._2+"|"+ origin+"|"+ resource.id+"|"+ formatter.format(stDate)+"|"+ formatter.format(edDate)+"\n")
+                    report.write(tokenTP._1+"|"+ tokenTP._2+"|"+ compName+"|"+ resource.id+"|"+ formatter.format(stDate)+"|"+ formatter.format(edDate)+"\n")
                     // println(token+" : "+origin+" - "+tm.get+" - "+timeEnd+" - "+resource.name)
                   }
                 }
@@ -226,9 +229,10 @@ case class Simulator(calcAvgTimeEnTr:Boolean = false) {
                   if(tm != None){ 
                     mapActTokMon.remove((token,origin))
                     val tokenTP = token.asInstanceOf[(_,_)]
-                    val stDate = stDateSim.getTime + tm.get * unitMilis
+                    //val stDate = stDateSim.getTime + tm.get * unitMilis
+                    val stDate = stDateSim.getTime + globtime.time * unitMilis
                     val edDate = stDateSim.getTime + timeEnd * unitMilis
-                    report.write(tokenTP._1+"|"+ tokenTP._2+"|"+ origin+"|No Resource|"+ formatter.format(stDate)+"|"+ formatter.format(edDate)+"\n")
+                    report.write(tokenTP._1+"|"+ tokenTP._2+"|"+ compName+"|No Resource|"+ formatter.format(stDate)+"|"+ formatter.format(edDate)+"\n")
                     // println(token+" : "+origin+" - "+tm.get+" - "+timeEnd+" - no Resource")
                   }
                 } 
@@ -246,9 +250,9 @@ case class Simulator(calcAvgTimeEnTr:Boolean = false) {
     }
     
     if (stopCrit(inpStopCrit))
-      println("stop criteria meet in step : "+c)
+      println("stop criteria meet at (step,globalclock) : ("+c+","+globtime.time+")")
     else
-      println("stop - at step "+c)
+      println("stop - at (step,globalclock) : ("+c+","+globtime.time+")")
     report.close()
   }
   

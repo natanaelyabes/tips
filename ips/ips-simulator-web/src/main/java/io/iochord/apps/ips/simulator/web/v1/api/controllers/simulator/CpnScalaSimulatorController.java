@@ -2,7 +2,9 @@ package io.iochord.apps.ips.simulator.web.v1.api.controllers.simulator;
 
 import java.io.File;
 import java.io.FileReader;
+import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -19,6 +21,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import io.iochord.apps.ips.common.models.Referenceable;
 import io.iochord.apps.ips.common.util.LoggerUtil;
 import io.iochord.apps.ips.core.services.ServiceContext;
@@ -33,11 +37,14 @@ import io.iochord.apps.ips.model.ism.v1.data.Generator;
 import io.iochord.apps.ips.model.ism.v1.data.Resource;
 import io.iochord.apps.ips.model.ism.v1.data.impl.GeneratorImpl;
 import io.iochord.apps.ips.model.ism.v1.data.impl.ObjectTypeImpl;
+import io.iochord.apps.ips.model.ism.v1.data.impl.ResourceImpl;
 import io.iochord.apps.ips.model.ism.v1.impl.IsmFactoryImpl;
 import io.iochord.apps.ips.model.ism.v1.impl.IsmGraphImpl;
 import io.iochord.apps.ips.model.ism.v1.nodes.Activity;
 import io.iochord.apps.ips.model.ism.v1.nodes.Start;
 import io.iochord.apps.ips.model.ism.v1.nodes.Stop;
+import io.iochord.apps.ips.model.ism.v1.nodes.enums.DistributionType;
+import io.iochord.apps.ips.model.ism.v1.nodes.impl.ActivityImpl;
 import io.iochord.apps.ips.model.ism.v1.nodes.impl.StartImpl;
 import io.iochord.apps.ips.model.ism2cpn.converter.Ism2CpnscalaModelPerModule;
 import io.iochord.apps.ips.model.ism2cpn.converter.Ism2CpnscalaPerModuleBiConverter;
@@ -102,12 +109,37 @@ public class CpnScalaSimulatorController extends ASimulatorController {
 		
 		IsmFactory factory = IsmFactoryImpl.getInstance();
 		
+		Map<String, ?> mapact = null;
+		Map<String, List<String>> mapOrgRes = null;
+		Map<String, List<String>> mapActOrg = null;
+		Map<String, ResourceImpl> mapResImpl = new HashMap<String, ResourceImpl>();
+		
+		try {
+			ObjectMapper mapper = new ObjectMapper();
+
+			Map<?, ?> map1 = mapper.readValue(Paths.get("process_distribution.json").toFile(), Map.class);
+			Map<?, ?> map2 = mapper.readValue(Paths.get("ResourceMiner.json").toFile(), Map.class);
+
+		    mapact = (Map<String, ?>) map1.get("MODEL_4");
+		    mapOrgRes = (Map<String, List<String>>) map2.get("mgroupres");
+		    mapActOrg = (Map<String, List<String>>) map2.get("mactgroup");
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 		for (Page p : graph.getPages().values()) {
+			for(String org : mapOrgRes.keySet()) {
+				ResourceImpl resImpl = (ResourceImpl) factory.addResource(p);
+				resImpl.setLabel(org);
+				resImpl.setNumberOfResource(mapOrgRes.get(org).size());
+				mapResImpl.put(org, resImpl);
+			}
 			for (Node rd : p.getNodes().values()) {
 				if (rd instanceof Start) {
 					StartImpl d = (StartImpl) rd;
 					
-					String MATH_ROUND_GEN = "Math.round(Gaussian(18.45924453280318,38.20021323603019).draw())";
+					String MATH_ROUND_GEN = "Math.round(Gaussian(18.444333996023857,37.605588692352455).draw())";
 					
 					ObjectTypeImpl obj = (ObjectTypeImpl) factory.addObjectType(p);
 					obj.setLabel("Unit");
@@ -116,24 +148,23 @@ public class CpnScalaSimulatorController extends ASimulatorController {
 					gen.setLabel("Generator");
 					gen.setObjectType(new Referenceable<>(obj));
 					gen.setExpression(MATH_ROUND_GEN);
-					gen.setUnit(TimeUnit.MINUTES);
-					gen.setMaxArrival(50);
+					gen.setUnit(TimeUnit.SECONDS);
 					
 					d.setGenerator(new Referenceable<>(gen));
 				}
-			}
-			/*
-			for (Connector rd : p.getConnectors().values()) {
-				if (rd instanceof Connector) {
-					Connector d = rd;
-					if(d.getSource().getValue() instanceof Branch && ((Branch) d.getSource().getValue()).getGate() == BranchGate.XOR && ((Branch) d.getSource().getValue()).getType() == BranchType.SPLIT) {
-						System.out.println("Ini cabang "+d.getSource().getValue().getId()+" - "+d.getSource().getValue().getLabel());
-						System.out.println("Ini arc "+d.getSourceIndex()+", "+d.getTargetIndex());
-						System.out.println("Ini Destination "+d.getTarget().getValue().getId()+" - "+d.getTarget().getValue().getLabel());
-					}
+				
+				if (rd instanceof Activity) {
+					ActivityImpl act = (ActivityImpl) rd;
+					act.setProcessingTimeDistribution(DistributionType.GAUSSIAN);
+					Map<?, List> mapdist = (Map<?,List>)mapact.get(rd.getLabel());
+					double param1 = (double) mapdist.get("Normal").get(0);
+					double param2 = (double) mapdist.get("Normal").get(1);
+					act.setProcessingTimeExpression(" Math.round(Gaussian("+param1+","+param2+").draw()) ");
+					ResourceImpl resImpl = mapResImpl.get(mapActOrg.get(rd.getLabel()).get(0));
+					act.setResource(new Referenceable<>(resImpl));
+					//System.out.println(rd.getLabel()+" : "+mapact.get(rd.getLabel()));
 				}
 			}
-			*/
 		}
 		
 		return postLoadNPlayDirect(graph);
@@ -247,7 +278,8 @@ public class CpnScalaSimulatorController extends ASimulatorController {
 			simulationInstances.add(simulationInstance);
 			simulationObservers.add(conversionResult.getKpiObserver());
 			System.out.println("SIM: Start Simulation");
-			simulationInstance.runUntilMaxArrival();
+			//simulationInstance.runUntilMaxArrival();
+			simulationInstance.runUntilGlobalTime(74730);
 			Map<Element, ElementStatistics> stats = conversionResult.getKpiObserver().getData();
 			for (Entry<Element, ElementStatistics> es : stats.entrySet()) {
 				Element e = es.getKey();

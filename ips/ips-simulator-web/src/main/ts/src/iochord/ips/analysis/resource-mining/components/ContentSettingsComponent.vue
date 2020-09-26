@@ -14,6 +14,7 @@
               <option value="" disabled>Select Algorithm</option>
               <option value="def" selected>Default Mining</option>
               <option value="dst">Doing Similar Task</option>
+              <option value="dis">Disjoint Org-Activity</option>
             </select>
           </div>
         </div>
