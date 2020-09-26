@@ -1,0 +1,1146 @@
+{
+  "activities": [
+    "2C",
+    "1Y",
+    "GC105",
+    "1P",
+    "3A",
+    "3G",
+    "1A",
+    "3P",
+    "GC102",
+    "2B",
+    "2P",
+    "1Q",
+    "GC101",
+    "GC103",
+    "1X",
+    "GC107",
+    "1Z",
+    "2D",
+    "2R",
+    "1E",
+    "3Y",
+    "1G",
+    "2Y",
+    "3D",
+    "3X",
+    "3Z",
+    "2A",
+    "1R",
+    "GC106",
+    "3F",
+    "2M",
+    "2F",
+    "2E",
+    "1C",
+    "3C",
+    "2Z",
+    "1B",
+    "3B",
+    "1F",
+    "MOVE",
+    "2G",
+    "3E",
+    "1D",
+    "GC104"
+  ],
+  "resources": [
+    "TC236",
+    "TC243",
+    "YT535",
+    "YT545",
+    "YT511",
+    "YT570",
+    "TC211",
+    "TC242",
+    "YT543",
+    "YT555",
+    "TC254",
+    "TC273",
+    "YT510",
+    "TC255",
+    "YT561",
+    "GC103",
+    "TC226",
+    "YT574",
+    "TC244",
+    "TC212",
+    "TC272",
+    "YT508",
+    "YT576",
+    "YT530",
+    "RS304",
+    "YT529",
+    "YT585",
+    "GC106",
+    "YT594",
+    "YT501",
+    "YT527",
+    "YT506",
+    "YT595",
+    "TC245",
+    "YT550",
+    "GC104",
+    "YT559",
+    "YT549",
+    "YT566",
+    "YT517",
+    "YT500",
+    "TC235",
+    "TC271",
+    "TC231",
+    "YT520",
+    "YT581",
+    "TC241",
+    "YT584",
+    "TC223",
+    "YT579",
+    "TC262",
+    "YT582",
+    "TC233",
+    "YT578",
+    "GC101",
+    "TC246",
+    "GC107",
+    "YT524",
+    "YT572",
+    "YT537",
+    "YT558",
+    "TC213",
+    "YT504",
+    "YT567",
+    "TC234",
+    "RS309",
+    "YT577",
+    "YT562",
+    "YT589",
+    "YT571",
+    "YT514",
+    "YT532",
+    "TC221",
+    "YT540",
+    "TC232",
+    "TH311",
+    "YT596",
+    "YT515",
+    "YT534",
+    "YT542",
+    "YT560",
+    "TC251",
+    "TC256",
+    "YT519",
+    "YT523",
+    "TH313",
+    "GC102",
+    "YT552",
+    "YT538",
+    "YT580",
+    "YT556",
+    "YT503",
+    "YT588",
+    "TC215",
+    "YT557",
+    "YT518",
+    "YT516",
+    "TC224",
+    "YT547",
+    "YT536",
+    "YT573",
+    "YT513",
+    "RS303",
+    "TH312",
+    "YT546",
+    "YT528",
+    "YT539",
+    "TC214",
+    "YT575",
+    "TC266",
+    "TC276",
+    "TC263",
+    "YT548",
+    "YT593",
+    "TC253",
+    "YT502",
+    "TC225",
+    "YT586",
+    "GC105",
+    "YT525",
+    "YT531",
+    "YT583",
+    "YT590",
+    "YT592",
+    "YT554",
+    "YT551",
+    "YT565",
+    "TC264",
+    "YT587",
+    "YT563",
+    "TC261",
+    "YT533",
+    "YT541",
+    "YT521",
+    "YT507",
+    "TC216",
+    "YT564",
+    "YT522",
+    "YT505",
+    "TC275",
+    "TC252",
+    "TC274",
+    "YT569",
+    "YT526",
+    "YT512",
+    "TC222",
+    "TC265",
+    "YT544",
+    "YT553",
+    "RS301",
+    "RS302"
+  ],
+  "groups": [
+    "orgUnit-1",
+    "orgUnit-2",
+    "orgUnit-3",
+    "orgUnit-4",
+    "orgUnit-5",
+    "orgUnit-6",
+    "orgUnit-7",
+    "orgUnit-8",
+    "orgUnit-9",
+    "orgUnit-10",
+    "orgUnit-11",
+    "orgUnit-12",
+    "orgUnit-13",
+    "orgUnit-14",
+    "orgUnit-15",
+    "orgUnit-16",
+    "orgUnit-17",
+    "orgUnit-18",
+    "orgUnit-19",
+    "orgUnit-20",
+    "orgUnit-21",
+    "orgUnit-22",
+    "orgUnit-23",
+    "orgUnit-24",
+    "orgUnit-25",
+    "orgUnit-26",
+    "orgUnit-27",
+    "orgUnit-28",
+    "orgUnit-29",
+    "orgUnit-30",
+    "orgUnit-31"
+  ],
+  "mactgroup": {
+    "1Q": [
+      "orgUnit-23"
+    ],
+    "1R": [
+      "orgUnit-12"
+    ],
+    "3X": [
+      "orgUnit-23"
+    ],
+    "3Y": [
+      "orgUnit-23"
+    ],
+    "3Z": [
+      "orgUnit-23"
+    ],
+    "1X": [
+      "orgUnit-23"
+    ],
+    "1Y": [
+      "orgUnit-23"
+    ],
+    "1Z": [
+      "orgUnit-23"
+    ],
+    "2A": [
+      "orgUnit-22"
+    ],
+    "2B": [
+      "orgUnit-17"
+    ],
+    "GC102": [
+      "orgUnit-26"
+    ],
+    "2C": [
+      "orgUnit-19"
+    ],
+    "GC101": [
+      "orgUnit-20"
+    ],
+    "2D": [
+      "orgUnit-2"
+    ],
+    "2E": [
+      "orgUnit-6"
+    ],
+    "2F": [
+      "orgUnit-30"
+    ],
+    "2G": [
+      "orgUnit-7"
+    ],
+    "GC107": [
+      "orgUnit-21"
+    ],
+    "2M": [
+      "orgUnit-23"
+    ],
+    "GC106": [
+      "orgUnit-13"
+    ],
+    "GC105": [
+      "orgUnit-31"
+    ],
+    "GC104": [
+      "orgUnit-15"
+    ],
+    "2P": [
+      "orgUnit-23"
+    ],
+    "GC103": [
+      "orgUnit-9"
+    ],
+    "2R": [
+      "orgUnit-12"
+    ],
+    "2Y": [
+      "orgUnit-23"
+    ],
+    "2Z": [
+      "orgUnit-23"
+    ],
+    "3A": [
+      "orgUnit-27"
+    ],
+    "3B": [
+      "orgUnit-10"
+    ],
+    "3C": [
+      "orgUnit-1"
+    ],
+    "1A": [
+      "orgUnit-4"
+    ],
+    "3D": [
+      "orgUnit-14"
+    ],
+    "1B": [
+      "orgUnit-24"
+    ],
+    "3E": [
+      "orgUnit-8"
+    ],
+    "1C": [
+      "orgUnit-16"
+    ],
+    "1D": [
+      "orgUnit-5"
+    ],
+    "3F": [
+      "orgUnit-28"
+    ],
+    "1E": [
+      "orgUnit-25"
+    ],
+    "3G": [
+      "orgUnit-29"
+    ],
+    "MOVE": [
+      "orgUnit-3"
+    ],
+    "1F": [
+      "orgUnit-18"
+    ],
+    "1G": [
+      "orgUnit-11"
+    ],
+    "3P": [
+      "orgUnit-23"
+    ],
+    "1P": [
+      "orgUnit-23"
+    ]
+  },
+  "mgroupres": {
+    "orgUnit-18": [
+      "TC261",
+      "TC262"
+    ],
+    "orgUnit-19": [
+      "TC234",
+      "TC233"
+    ],
+    "orgUnit-16": [
+      "TC232",
+      "TC231"
+    ],
+    "orgUnit-17": [
+      "TC223",
+      "TC224"
+    ],
+    "orgUnit-14": [
+      "TC245",
+      "TC246"
+    ],
+    "orgUnit-15": [
+      "GC104"
+    ],
+    "orgUnit-12": [
+      "RS304",
+      "RS303"
+    ],
+    "orgUnit-13": [
+      "GC106"
+    ],
+    "orgUnit-10": [
+      "TC225",
+      "TC226"
+    ],
+    "orgUnit-11": [
+      "TC272",
+      "TC271"
+    ],
+    "orgUnit-30": [
+      "TC263",
+      "TC264"
+    ],
+    "orgUnit-31": [
+      "GC105"
+    ],
+    "orgUnit-29": [
+      "TC276",
+      "TC275"
+    ],
+    "orgUnit-27": [
+      "TC216",
+      "TC215"
+    ],
+    "orgUnit-28": [
+      "TC265",
+      "TC266"
+    ],
+    "orgUnit-25": [
+      "TC251",
+      "TC252"
+    ],
+    "orgUnit-26": [
+      "GC102"
+    ],
+    "orgUnit-23": [
+      "TH313",
+      "TH312",
+      "RS309",
+      "RS301",
+      "RS302",
+      "TH311"
+    ],
+    "orgUnit-24": [
+      "TC221",
+      "TC222"
+    ],
+    "orgUnit-21": [
+      "GC107"
+    ],
+    "orgUnit-9": [
+      "GC103"
+    ],
+    "orgUnit-22": [
+      "TC214",
+      "TC213"
+    ],
+    "orgUnit-8": [
+      "TC256",
+      "TC255"
+    ],
+    "orgUnit-7": [
+      "TC273",
+      "TC274"
+    ],
+    "orgUnit-20": [
+      "GC101"
+    ],
+    "orgUnit-6": [
+      "TC254",
+      "TC253"
+    ],
+    "orgUnit-5": [
+      "TC241",
+      "TC242"
+    ],
+    "orgUnit-4": [
+      "TC212",
+      "TC211"
+    ],
+    "orgUnit-3": [
+      "YT507",
+      "YT506",
+      "YT508",
+      "YT514",
+      "YT558",
+      "YT513",
+      "YT557",
+      "YT516",
+      "YT515",
+      "YT559",
+      "YT554",
+      "YT510",
+      "YT553",
+      "YT512",
+      "YT556",
+      "YT555",
+      "YT511",
+      "YT550",
+      "YT594",
+      "YT593",
+      "YT552",
+      "YT596",
+      "YT551",
+      "YT595",
+      "YT590",
+      "YT592",
+      "YT518",
+      "YT517",
+      "YT519",
+      "YT569",
+      "YT525",
+      "YT524",
+      "YT527",
+      "YT526",
+      "YT521",
+      "YT565",
+      "YT564",
+      "YT520",
+      "YT523",
+      "YT567",
+      "YT522",
+      "YT566",
+      "YT561",
+      "YT560",
+      "YT563",
+      "YT562",
+      "YT529",
+      "YT528",
+      "YT536",
+      "YT535",
+      "YT579",
+      "YT538",
+      "YT537",
+      "YT532",
+      "YT576",
+      "YT531",
+      "YT575",
+      "YT534",
+      "YT578",
+      "YT533",
+      "YT577",
+      "YT572",
+      "YT571",
+      "YT530",
+      "YT574",
+      "YT573",
+      "YT570",
+      "YT539",
+      "YT547",
+      "YT503",
+      "YT502",
+      "YT546",
+      "YT505",
+      "YT549",
+      "YT548",
+      "YT504",
+      "YT587",
+      "YT543",
+      "YT586",
+      "YT542",
+      "YT589",
+      "YT501",
+      "YT545",
+      "YT544",
+      "YT588",
+      "YT500",
+      "YT583",
+      "YT582",
+      "YT541",
+      "YT585",
+      "YT540",
+      "YT584",
+      "YT581",
+      "YT580"
+    ],
+    "orgUnit-2": [
+      "TC243",
+      "TC244"
+    ],
+    "orgUnit-1": [
+      "TC236",
+      "TC235"
+    ]
+  },
+  "mgroupact": {
+    "orgUnit-18": [
+      "1F"
+    ],
+    "orgUnit-19": [
+      "2C"
+    ],
+    "orgUnit-16": [
+      "1C"
+    ],
+    "orgUnit-17": [
+      "2B"
+    ],
+    "orgUnit-14": [
+      "3D"
+    ],
+    "orgUnit-15": [
+      "GC104"
+    ],
+    "orgUnit-12": [
+      "1R",
+      "2R"
+    ],
+    "orgUnit-13": [
+      "GC106"
+    ],
+    "orgUnit-10": [
+      "3B"
+    ],
+    "orgUnit-11": [
+      "1G"
+    ],
+    "orgUnit-30": [
+      "2F"
+    ],
+    "orgUnit-31": [
+      "GC105"
+    ],
+    "orgUnit-29": [
+      "3G"
+    ],
+    "orgUnit-27": [
+      "3A"
+    ],
+    "orgUnit-28": [
+      "3F"
+    ],
+    "orgUnit-25": [
+      "1E"
+    ],
+    "orgUnit-26": [
+      "GC102"
+    ],
+    "orgUnit-23": [
+      "1Q",
+      "3X",
+      "3Y",
+      "3Z",
+      "1X",
+      "1Y",
+      "1Z",
+      "2M",
+      "2P",
+      "2Y",
+      "2Z",
+      "3P",
+      "1P"
+    ],
+    "orgUnit-24": [
+      "1B"
+    ],
+    "orgUnit-21": [
+      "GC107"
+    ],
+    "orgUnit-9": [
+      "GC103"
+    ],
+    "orgUnit-22": [
+      "2A"
+    ],
+    "orgUnit-8": [
+      "3E"
+    ],
+    "orgUnit-7": [
+      "2G"
+    ],
+    "orgUnit-20": [
+      "GC101"
+    ],
+    "orgUnit-6": [
+      "2E"
+    ],
+    "orgUnit-5": [
+      "1D"
+    ],
+    "orgUnit-4": [
+      "1A"
+    ],
+    "orgUnit-3": [
+      "MOVE"
+    ],
+    "orgUnit-2": [
+      "2D"
+    ],
+    "orgUnit-1": [
+      "3C"
+    ]
+  },
+  "mresgroup": {
+    "TC272": [
+      "orgUnit-11"
+    ],
+    "TC273": [
+      "orgUnit-7"
+    ],
+    "TC271": [
+      "orgUnit-11"
+    ],
+    "YT507": [
+      "orgUnit-3"
+    ],
+    "YT506": [
+      "orgUnit-3"
+    ],
+    "YT508": [
+      "orgUnit-3"
+    ],
+    "YT514": [
+      "orgUnit-3"
+    ],
+    "YT513": [
+      "orgUnit-3"
+    ],
+    "YT516": [
+      "orgUnit-3"
+    ],
+    "YT515": [
+      "orgUnit-3"
+    ],
+    "YT510": [
+      "orgUnit-3"
+    ],
+    "YT512": [
+      "orgUnit-3"
+    ],
+    "YT511": [
+      "orgUnit-3"
+    ],
+    "YT594": [
+      "orgUnit-3"
+    ],
+    "YT593": [
+      "orgUnit-3"
+    ],
+    "YT596": [
+      "orgUnit-3"
+    ],
+    "YT595": [
+      "orgUnit-3"
+    ],
+    "YT590": [
+      "orgUnit-3"
+    ],
+    "TC265": [
+      "orgUnit-28"
+    ],
+    "TC266": [
+      "orgUnit-28"
+    ],
+    "TC263": [
+      "orgUnit-30"
+    ],
+    "YT592": [
+      "orgUnit-3"
+    ],
+    "TC264": [
+      "orgUnit-30"
+    ],
+    "TC261": [
+      "orgUnit-18"
+    ],
+    "TC262": [
+      "orgUnit-18"
+    ],
+    "YT518": [
+      "orgUnit-3"
+    ],
+    "YT517": [
+      "orgUnit-3"
+    ],
+    "YT519": [
+      "orgUnit-3"
+    ],
+    "YT525": [
+      "orgUnit-3"
+    ],
+    "YT524": [
+      "orgUnit-3"
+    ],
+    "RS309": [
+      "orgUnit-23"
+    ],
+    "YT527": [
+      "orgUnit-3"
+    ],
+    "YT526": [
+      "orgUnit-3"
+    ],
+    "YT521": [
+      "orgUnit-3"
+    ],
+    "YT520": [
+      "orgUnit-3"
+    ],
+    "YT523": [
+      "orgUnit-3"
+    ],
+    "YT522": [
+      "orgUnit-3"
+    ],
+    "RS301": [
+      "orgUnit-23"
+    ],
+    "TC256": [
+      "orgUnit-8"
+    ],
+    "TC254": [
+      "orgUnit-6"
+    ],
+    "RS304": [
+      "orgUnit-12"
+    ],
+    "TC255": [
+      "orgUnit-8"
+    ],
+    "TC252": [
+      "orgUnit-25"
+    ],
+    "RS302": [
+      "orgUnit-23"
+    ],
+    "RS303": [
+      "orgUnit-12"
+    ],
+    "TC253": [
+      "orgUnit-6"
+    ],
+    "YT529": [
+      "orgUnit-3"
+    ],
+    "YT528": [
+      "orgUnit-3"
+    ],
+    "YT536": [
+      "orgUnit-3"
+    ],
+    "YT535": [
+      "orgUnit-3"
+    ],
+    "YT538": [
+      "orgUnit-3"
+    ],
+    "YT537": [
+      "orgUnit-3"
+    ],
+    "YT532": [
+      "orgUnit-3"
+    ],
+    "YT531": [
+      "orgUnit-3"
+    ],
+    "YT534": [
+      "orgUnit-3"
+    ],
+    "YT533": [
+      "orgUnit-3"
+    ],
+    "YT530": [
+      "orgUnit-3"
+    ],
+    "TH311": [
+      "orgUnit-23"
+    ],
+    "TH313": [
+      "orgUnit-23"
+    ],
+    "TH312": [
+      "orgUnit-23"
+    ],
+    "YT539": [
+      "orgUnit-3"
+    ],
+    "YT547": [
+      "orgUnit-3"
+    ],
+    "YT546": [
+      "orgUnit-3"
+    ],
+    "YT549": [
+      "orgUnit-3"
+    ],
+    "YT548": [
+      "orgUnit-3"
+    ],
+    "YT543": [
+      "orgUnit-3"
+    ],
+    "YT542": [
+      "orgUnit-3"
+    ],
+    "YT545": [
+      "orgUnit-3"
+    ],
+    "YT544": [
+      "orgUnit-3"
+    ],
+    "YT541": [
+      "orgUnit-3"
+    ],
+    "YT540": [
+      "orgUnit-3"
+    ],
+    "TC276": [
+      "orgUnit-29"
+    ],
+    "TC274": [
+      "orgUnit-7"
+    ],
+    "TC275": [
+      "orgUnit-29"
+    ],
+    "YT558": [
+      "orgUnit-3"
+    ],
+    "GC102": [
+      "orgUnit-26"
+    ],
+    "GC101": [
+      "orgUnit-20"
+    ],
+    "YT557": [
+      "orgUnit-3"
+    ],
+    "YT559": [
+      "orgUnit-3"
+    ],
+    "YT554": [
+      "orgUnit-3"
+    ],
+    "YT553": [
+      "orgUnit-3"
+    ],
+    "YT556": [
+      "orgUnit-3"
+    ],
+    "YT555": [
+      "orgUnit-3"
+    ],
+    "YT550": [
+      "orgUnit-3"
+    ],
+    "TC225": [
+      "orgUnit-10"
+    ],
+    "TC226": [
+      "orgUnit-10"
+    ],
+    "TC223": [
+      "orgUnit-17"
+    ],
+    "YT552": [
+      "orgUnit-3"
+    ],
+    "GC107": [
+      "orgUnit-21"
+    ],
+    "TC224": [
+      "orgUnit-17"
+    ],
+    "YT551": [
+      "orgUnit-3"
+    ],
+    "GC106": [
+      "orgUnit-13"
+    ],
+    "TC221": [
+      "orgUnit-24"
+    ],
+    "GC105": [
+      "orgUnit-31"
+    ],
+    "TC222": [
+      "orgUnit-24"
+    ],
+    "GC104": [
+      "orgUnit-15"
+    ],
+    "GC103": [
+      "orgUnit-9"
+    ],
+    "YT569": [
+      "orgUnit-3"
+    ],
+    "YT565": [
+      "orgUnit-3"
+    ],
+    "YT564": [
+      "orgUnit-3"
+    ],
+    "YT567": [
+      "orgUnit-3"
+    ],
+    "TC216": [
+      "orgUnit-27"
+    ],
+    "YT566": [
+      "orgUnit-3"
+    ],
+    "YT561": [
+      "orgUnit-3"
+    ],
+    "TC214": [
+      "orgUnit-22"
+    ],
+    "YT560": [
+      "orgUnit-3"
+    ],
+    "TC215": [
+      "orgUnit-27"
+    ],
+    "TC212": [
+      "orgUnit-4"
+    ],
+    "YT563": [
+      "orgUnit-3"
+    ],
+    "TC213": [
+      "orgUnit-22"
+    ],
+    "YT562": [
+      "orgUnit-3"
+    ],
+    "TC211": [
+      "orgUnit-4"
+    ],
+    "TC251": [
+      "orgUnit-25"
+    ],
+    "YT579": [
+      "orgUnit-3"
+    ],
+    "YT576": [
+      "orgUnit-3"
+    ],
+    "YT575": [
+      "orgUnit-3"
+    ],
+    "YT578": [
+      "orgUnit-3"
+    ],
+    "YT577": [
+      "orgUnit-3"
+    ],
+    "YT572": [
+      "orgUnit-3"
+    ],
+    "YT571": [
+      "orgUnit-3"
+    ],
+    "YT574": [
+      "orgUnit-3"
+    ],
+    "TC245": [
+      "orgUnit-14"
+    ],
+    "TC246": [
+      "orgUnit-14"
+    ],
+    "YT573": [
+      "orgUnit-3"
+    ],
+    "TC243": [
+      "orgUnit-2"
+    ],
+    "TC244": [
+      "orgUnit-2"
+    ],
+    "YT570": [
+      "orgUnit-3"
+    ],
+    "TC241": [
+      "orgUnit-5"
+    ],
+    "TC242": [
+      "orgUnit-5"
+    ],
+    "YT503": [
+      "orgUnit-3"
+    ],
+    "YT502": [
+      "orgUnit-3"
+    ],
+    "YT505": [
+      "orgUnit-3"
+    ],
+    "YT504": [
+      "orgUnit-3"
+    ],
+    "YT587": [
+      "orgUnit-3"
+    ],
+    "YT586": [
+      "orgUnit-3"
+    ],
+    "YT501": [
+      "orgUnit-3"
+    ],
+    "YT589": [
+      "orgUnit-3"
+    ],
+    "YT500": [
+      "orgUnit-3"
+    ],
+    "YT588": [
+      "orgUnit-3"
+    ],
+    "TC236": [
+      "orgUnit-1"
+    ],
+    "YT583": [
+      "orgUnit-3"
+    ],
+    "YT582": [
+      "orgUnit-3"
+    ],
+    "YT585": [
+      "orgUnit-3"
+    ],
+    "TC234": [
+      "orgUnit-19"
+    ],
+    "TC235": [
+      "orgUnit-1"
+    ],
+    "YT584": [
+      "orgUnit-3"
+    ],
+    "TC232": [
+      "orgUnit-16"
+    ],
+    "TC233": [
+      "orgUnit-19"
+    ],
+    "YT581": [
+      "orgUnit-3"
+    ],
+    "TC231": [
+      "orgUnit-16"
+    ],
+    "YT580": [
+      "orgUnit-3"
+    ]
+  }
+}

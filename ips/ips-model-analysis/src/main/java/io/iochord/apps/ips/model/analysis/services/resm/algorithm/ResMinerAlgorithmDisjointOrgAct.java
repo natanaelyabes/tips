@@ -15,26 +15,24 @@ import io.iochord.apps.ips.model.analysis.services.resm.model.ResourceMinerConfi
 import io.iochord.apps.ips.model.analysis.services.resm.model.ResourceToActivity;
 import io.iochord.apps.ips.model.analysis.services.resm.model.ResourceToResource;
 
-public class ResMinerAlgorithmDoingSimilarTask extends ResMinerAlgorithm {
+public class ResMinerAlgorithmDisjointOrgAct extends ResMinerAlgorithm {
 	
 	public static final String ORG_UNIT = "orgUnit-";
 	float updateProg = 0f;
 	
-	public ResMinerAlgorithmDoingSimilarTask(ServiceContext context, ResourceMinerConfig config) {
+	public ResMinerAlgorithmDisjointOrgAct(ServiceContext context, ResourceMinerConfig config) {
 		super(context, config);
 	}
 
 	@Override
 	public void compute() {
-		DistanceAlgorithm distAlg = new DistanceAlgorithm();
-		
 		ModelQuery mq = new ModelQuery(updateProg);
 		
 		List<String> activities = mq.getActivities(context, config);
 		List<String> resources = mq.getResources(context, config);
 	
 		Map<ResourceToActivity, Integer> oacmtrx = mq.getOrgActMatrix(context, config);
-		Map<ResourceToResource, Double> distorig = new HashMap<>();
+		Map<ResourceToResource, Boolean> isConOrig = new HashMap<>();
 		
 		Map<Integer,Set<String>> mgunitres = new HashMap<>();
 		Map<String,Set<Integer>> mactgunit = new HashMap<>();
@@ -53,12 +51,12 @@ public class ResMinerAlgorithmDoingSimilarTask extends ResMinerAlgorithm {
 				ResourceToResource key = new ResourceToResource(originatory,originatorx);
 				ResourceToResource revkey = new ResourceToResource(originatorx,originatory);
 				
-				double distVal = distorig.get(revkey) != null ? distorig.get(revkey) : distAlg.calcDist(config.getDistMesAlg(),originatory,originatorx,activities,oacmtrx);
-				distorig.put(key, distVal);
+				boolean isCon = isConOrig.get(revkey) != null ? isConOrig.get(revkey) : calcSimpleDist(originatory,originatorx,activities,oacmtrx);
+				isConOrig.put(key, isCon);
 				
 				boolean isPairedExist = false;
 				
-				if(distAlg.evalThreshold(distVal, config.getThreshold(), config.getDistMesAlg())) {
+				if(isCon) {
 					sres.add(originatorx);
 					for(Entry<Integer, Set<String>> entryset : mgunitres.entrySet())
 					{
@@ -71,6 +69,8 @@ public class ResMinerAlgorithmDoingSimilarTask extends ResMinerAlgorithm {
 							break;
 						}
 					}
+					//if((originatory.startsWith("TH") || originatory.startsWith("RS")) && (originatorx.startsWith("TH") || originatorx.startsWith("RS")))
+					//	System.out.println(originatory+" - "+originatorx+" : "+isCon+" - "+gunitc+" - "+isPairedExist+" ");
 				}
 			}
 			
@@ -86,6 +86,7 @@ public class ResMinerAlgorithmDoingSimilarTask extends ResMinerAlgorithm {
 					mactgunit.put(oac.getActivity(), sgunits);
 				}
 			}
+			//System.out.println(originatory+" - "+gunitc);	
 		}
 		
 		context.updateProgress(updateProg++);
@@ -106,6 +107,21 @@ public class ResMinerAlgorithmDoingSimilarTask extends ResMinerAlgorithm {
 		result.setMresgroup(mResGroup);
 	}
 	
+	private boolean calcSimpleDist(String resource1, String resource2, List<String> activities, Map<ResourceToActivity, Integer> oacmtrx) {
+		boolean isCon = false;
+		
+		for(String activity : activities) {
+			int freq1 = oacmtrx.getOrDefault(new ResourceToActivity(resource1,activity),0);
+			int freq2 = oacmtrx.getOrDefault(new ResourceToActivity(resource2,activity),0);
+			
+			isCon = freq1 > 0 && freq2 > 0;
+			if(isCon)
+				break;
+		}
+		
+		return isCon;
+	}
+
 	public Map<String, List<String>> mapActToGroup(Set<String> activities) {
 		Map<String, List<String>> mapActToGroup = new HashMap<>();
 		int i = 0;

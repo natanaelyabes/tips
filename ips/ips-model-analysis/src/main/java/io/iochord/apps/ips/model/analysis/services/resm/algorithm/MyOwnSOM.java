@@ -43,12 +43,14 @@ public class MyOwnSOM {
 		coord = new HashMap<Integer,double[]>();
 		int numbAttr = matrix[0].length; // number of attributes or column length
 		int numbNode = xD*yD; // number of neuron as nodes (not input vector)
+		int nId = 0;
 		for(int p=0; p<xD; p++) {
 			for(int q=0; q<yD; q++) {
 				double[] c_c = new double[2];
 				c_c[0] = p;
 				c_c[1] = q;
-				coord.put(p, c_c);
+				coord.put(nId, c_c);
+				nId++;
 			}
 		}
 		weights = new double[numbNode][numbAttr];
@@ -141,6 +143,15 @@ public class MyOwnSOM {
 				return -(a + thresTimeUnit - b);
 			}
 		}
+	}
+	
+	public double euclidDistanceTop(double[] el1, double[] el2) {
+		double sumSquare = 0;
+		for(int i=0; i<el1.length; i++) {
+			double unitDist = minDist(el1[i], el2[i]);
+			sumSquare += Math.pow(unitDist, 2);
+		}
+		return Math.sqrt(sumSquare);
 	}
 	
 	public double euclidDistance(double[] el1, double[] el2) {

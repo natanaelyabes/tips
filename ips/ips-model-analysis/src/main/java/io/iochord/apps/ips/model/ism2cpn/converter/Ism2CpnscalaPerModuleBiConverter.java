@@ -101,7 +101,7 @@ public class Ism2CpnscalaPerModuleBiConverter implements Converter<IsmGraph, Ism
 	 * @param transId
 	 * @return
 	 */
-	public String[] addTransition(String name, String guard, String action, String classbinding, String eval, String merge, String origin, String transId, String isPartOfLot, String isWaitOfLot) {
+	public String[] addTransition(String name, String guard, String action, String classbinding, String eval, String merge, String origin, String transId, String isPartOfLot, String isWaitOfLot, String compName) {
 		String[] idDef = new String[3];
 		
 		String counter = getCounter(KeyElement.TRANSITION);
@@ -122,7 +122,7 @@ public class Ism2CpnscalaPerModuleBiConverter implements Converter<IsmGraph, Ism
 		if(isWaitOfLot != null) {
 			transfactory.append( transidClean+".setIsWaitOfLot("+isWaitOfLot+")\n" );
 		}
-		transfactory.append( transidClean+KeyElement.SETORIGINCONC+origin+KeyElement.ROLECONC+name+KeyElement.ENDCOLCONC );
+		transfactory.append( transidClean+".setOrigin(Map[String,String]( (\"origin\",\""+origin+"\"),(\"role\",\""+name+"\"),(\"compName\",\""+compName+"\") ))\n");
 		transfactory.append( "cgraph.addTransition("+transidClean+")\n" );
 		transfactory.append("\n");
 		
@@ -433,7 +433,7 @@ public class Ism2CpnscalaPerModuleBiConverter implements Converter<IsmGraph, Ism
 			guardid = guard[0];
 		}
 		
-		String[] tstartqueue = addTransition(KeyElement.QSTTSTRCONC, guardid, null, cb, ev, mg, origin, queue.getId()+KeyElement.QSTTSTRCONC, null, null);
+		String[] tstartqueue = addTransition(KeyElement.QSTTSTRCONC, guardid, null, cb, ev, mg, origin, queue.getId()+KeyElement.QSTTSTRCONC, null, null, origin);
 		queuefactory.append(tstartqueue[1]);
 		
 		String[] tTb1 = addTtB(cb, ltypeid, "queue", "None, Some(queue)");
@@ -584,14 +584,15 @@ public class Ism2CpnscalaPerModuleBiConverter implements Converter<IsmGraph, Ism
 					strGenerator.append(eDgt1[1]);
 					strGenerator.append(mDgt1[1]);
 					
-					String[] guard = addGuard(bDgt1[0], "b.tid.get <= "+dg.getMaxArrival(), null);
+					String[] guard = dg.getMaxArrival() > 0 ? addGuard(bDgt1[0], "b.tid.get <= "+dg.getMaxArrival(), null) : new String[]{null, null};
 					String[] action = addAction(bDgt1[0],
 							"val r = new java.util.Random()\n"
 							+ "val rint = r.nextInt();val gid = \""+dg.getId()+"\"\n"
 							+ "val data = CaseData(\"atr\"+rint,rint)\n"
 							+ bDgt1[0]+"(b.tid,Some(gid),Some(data))");
 					
-					String[] tDgt1 = addTransition("_dgt1", guard[0], action[0], bDgt1[0], eDgt1[0], mDgt1[0], dg.getId(), null, null, null);
+					String[] tDgt1 = addTransition("_dgt1", guard[0], action[0], bDgt1[0], eDgt1[0], mDgt1[0], dg.getId(), null, null, null, dg.getLabel());
+					if(guard[1] != null)
 					strGenerator.append(guard[1]);
 					strGenerator.append(action[1]);
 					strGenerator.append(tDgt1[1]);
@@ -632,7 +633,7 @@ public class Ism2CpnscalaPerModuleBiConverter implements Converter<IsmGraph, Ism
 				}
 				if (d instanceof Resource) {
 					Resource r = (Resource) d;
-					//System.out.println(r.getId()+" : "+r.getCapacity());
+					
 					StringBuilder strRes = new StringBuilder();
 					strRes.append(createResourcePlace(r.getId(), entTypeId)[1]);
 					strRes.append(addResource(r.getId(), r.getLabel(), r.getNumberOfResource(), 1));
@@ -656,8 +657,8 @@ public class Ism2CpnscalaPerModuleBiConverter implements Converter<IsmGraph, Ism
 					String[] pstart = addPlace(na.getId()+KeyElement.START0STRCONC, "_nap1", entTypeId, "", na.getId(), null);
 					strStart.append(pstart[1]);
 					
-					if (na.getGenerator() != null) {	
-						String[] tSilent = addTransition("_start", null, null, bEntType[0], eEntType[0], mEntType[0], na.getId(), na.getGenerator().getValue().getId()+"_mergegen", null, null);
+					if (na.getGenerator() != null) {
+						String[] tSilent = addTransition("_start", null, null, bEntType[0], eEntType[0], mEntType[0], na.getId(), na.getGenerator().getValue().getId()+"_mergegen", null, null, na.getLabel());
 						strStart.append(tSilent[1]);
 						
 						String[] pGenStart = placeshub.get(na.getGenerator().getId()+KeyElement.START0STRCONC);
@@ -705,7 +706,7 @@ public class Ism2CpnscalaPerModuleBiConverter implements Converter<IsmGraph, Ism
 						String[] guardWait = addGuard(bEntResType[0], guarddefWait, null);
 						strAct.append(guardWait[1]);
 						
-						String[] tTmpWait = addTransition("tTmpWait", guardWait[0], null, bEntResType[0], eEntResType[0], mEntResType[0], "tmpWait", null, null, "true");
+						String[] tTmpWait = addTransition("tTmpWait", guardWait[0], null, bEntResType[0], eEntResType[0], mEntResType[0], "tmpWait", null, null, "true", na.getLabel());
 						strAct.append(tTmpWait[1]);
 						
 						String[] tTbTmpWait1 = addTtB(bEntResType[0], entTypeId, KeyElement.ENTCONC, KeyElement.SOMENONECONC);
@@ -744,7 +745,7 @@ public class Ism2CpnscalaPerModuleBiConverter implements Converter<IsmGraph, Ism
 						String guarddefFin = "b.resource.get.id == b.id.get";
 						String[] guard = addGuard(bResStrType[0], guarddef, guarddefFin);
 						strAct.append(guard[1]);
-						String[] tNatstart = addTransition(KeyElement.NATSTARTSTRCONC, guard[0], null, bResStrType[0], eResStrType[0], mResStrType[0], na.getId(), null, "true", null);
+						String[] tNatstart = addTransition(KeyElement.NATSTARTSTRCONC, guard[0], null, bResStrType[0], eResStrType[0], mResStrType[0], na.getId(), null, "true", null, na.getLabel());
 						strAct.append(tNatstart[1]);
 						
 						String[] tTb1 = addTtB(bResStrType[0], resTypeId, "resource", "Some(resource),None");
@@ -774,7 +775,7 @@ public class Ism2CpnscalaPerModuleBiConverter implements Converter<IsmGraph, Ism
 						String[] arc2 = addArc(pNap2[0], tNatstart[0], "TtP", resTypeId, bResStrType[0], null, btT2[0], time2[0], null, false, na.getId());
 						strAct.append(arc2[1]);
 						
-						String[] tNatend = addTransition("_natendfirst", null, null, bResType[0], eResType[0], mResType[0], "natendfirst", null, null, null);
+						String[] tNatend = addTransition("_natendfirst", null, null, bResType[0], eResType[0], mResType[0], "natendfirst", null, null, null, na.getLabel());
 						strAct.append(tNatend[1]);
 					   
 						String[] tTb3 = addTtB(bResType[0], resTypeId, "resource", "Some(resource)");
@@ -801,7 +802,7 @@ public class Ism2CpnscalaPerModuleBiConverter implements Converter<IsmGraph, Ism
 						String[] guard2 = addGuard(bQentType[0], guarddef2, null);
 						strAct.append(guard2[1]);
 						
-						String[] tNatendbr = addTransition(KeyElement.NATENDSTRCONC, guard2[0], null, bQentType[0], eQentType[0], mQentType[0], na.getId(), null, null, null);
+						String[] tNatendbr = addTransition(KeyElement.NATENDSTRCONC, guard2[0], null, bQentType[0], eQentType[0], mQentType[0], na.getId(), null, null, null, na.getLabel());
 						strAct.append(tNatendbr[1]);
 						
 						String[] tTb6 = addTtB(bQentType[0], qentTypeId, "resource", "None, Some(resource)");
@@ -825,7 +826,7 @@ public class Ism2CpnscalaPerModuleBiConverter implements Converter<IsmGraph, Ism
 						strAct.append(arc8[1]);
 					}
 					else if(na.getQueue() != null && na.getResource() != null) {
-						String[] tTmpWait = addTransition("tTmpWait", null, null, bEntType[0], eEntType[0], mEntType[0], "tmpWait", null, null, null);
+						String[] tTmpWait = addTransition("tTmpWait", null, null, bEntType[0], eEntType[0], mEntType[0], "tmpWait", null, null, null, na.getLabel());
 						strAct.append(tTmpWait[1]);
 						
 						String[] tTbTmpWait1 = addTtB(bEntType[0], entTypeId, KeyElement.ENTCONC, KeyElement.SOMECONC);
@@ -859,7 +860,7 @@ public class Ism2CpnscalaPerModuleBiConverter implements Converter<IsmGraph, Ism
 						String[] arc1 = addArc(pTmpWait[0], tQsttId, "PtT", entTypeId, bQentType[0], tTb1[0], bTt1[0], null, null, true, na.getId());
 						strAct.append(arc1[1]);
 						
-						String[] tNatstart = addTransition(KeyElement.NATSTARTSTRCONC, null, null, bQentResType[0], eQentResType[0], mQentResType[0], na.getId(), null, null, null);
+						String[] tNatstart = addTransition(KeyElement.NATSTARTSTRCONC, null, null, bQentResType[0], eQentResType[0], mQentResType[0], na.getId(), null, null, null, na.getLabel());
 						strAct.append(tNatstart[1]);
 						
 						String[] tTb2 = addTtB(bQentResType[0], qentTypeId, "entity::queue", "Some(entity), None, Some(queue)");
@@ -884,7 +885,7 @@ public class Ism2CpnscalaPerModuleBiConverter implements Converter<IsmGraph, Ism
 					    String[] arc4 = addArc(pNap2[0], tNatstart[0], "TtP", entResTypeId, bQentResType[0], null, btT4[0], time4[0], null, false, na.getId());
 					    strAct.append(arc4[1]);
 					    
-					    String[] tNatend = addTransition(KeyElement.NATENDSTRCONC, null, null, bEntResType[0], eEntResType[0], mEntResType[0], na.getId(), null, null, null);
+					    String[] tNatend = addTransition(KeyElement.NATENDSTRCONC, null, null, bEntResType[0], eEntResType[0], mEntResType[0], na.getId(), null, null, null, na.getLabel());
 					    strAct.append(tNatend[1]);
 					    
 					    String[] tTb5 = addTtB(bEntResType[0], entResTypeId, "(entity, resource)", "Some(entity), Some(resource)");
@@ -915,7 +916,7 @@ public class Ism2CpnscalaPerModuleBiConverter implements Converter<IsmGraph, Ism
 					    strAct.append(arc8[1]);
 					}
 					else if(na.getQueue() != null) {
-						String[] tTmpWait = addTransition("tTmpWait", null, null, bEntType[0], eEntType[0], mEntType[0], "tmpWait", null, null, null);
+						String[] tTmpWait = addTransition("tTmpWait", null, null, bEntType[0], eEntType[0], mEntType[0], "tmpWait", null, null, null, na.getLabel());
 						strAct.append(tTmpWait[1]);
 						
 						String[] tTbTmpWait1 = addTtB(bEntType[0], entTypeId, KeyElement.ENTCONC, KeyElement.SOMECONC);
@@ -948,7 +949,7 @@ public class Ism2CpnscalaPerModuleBiConverter implements Converter<IsmGraph, Ism
 						String[] arc1 = addArc(pTmpWait[0], tQsttId, "PtT", entTypeId, bQentType[0], tTb1[0], bTt1[0], null, null, true, na.getId());
 						strAct.append(arc1[1]);
 						
-						String[] tNatstart = addTransition(KeyElement.NATSTARTSTRCONC, null, null, bQentType[0], eQentType[0], mQentType[0], na.getId(), null, null, null);
+						String[] tNatstart = addTransition(KeyElement.NATSTARTSTRCONC, null, null, bQentType[0], eQentType[0], mQentType[0], na.getId(), null, null, null, na.getLabel());
 						
 						String[] tTb2 = addTtB(bQentType[0], qentTypeId, "entity::queue", "Some(entity), Some(queue)");
 						String[] btT2 = addBtT(bQentType[0], qentTypeId, KeyElement.BENTTQGETCONC);
@@ -971,7 +972,7 @@ public class Ism2CpnscalaPerModuleBiConverter implements Converter<IsmGraph, Ism
 						String[] arc4 = addArc(pNap2[0], tNatstart[0], "TtP", entTypeId, bQentType[0], null, btT4[0], time4[0], null, false, na.getId());
 						strAct.append(arc4[1]);
 						
-						String[] tNatend = addTransition(KeyElement.NATENDSTRCONC, null, null, bEntType[0], eEntType[0], mEntType[0], na.getId(), null, null, null);
+						String[] tNatend = addTransition(KeyElement.NATENDSTRCONC, null, null, bEntType[0], eEntType[0], mEntType[0], na.getId(), null, null, null, na.getLabel());
 						strAct.append(tNatend[1]);
 						
 						String[] tTb5 = addTtB(bEntType[0], entTypeId, KeyElement.ENTCONC, KeyElement.SOMECONC);
@@ -990,7 +991,7 @@ public class Ism2CpnscalaPerModuleBiConverter implements Converter<IsmGraph, Ism
 						strAct.append(arc6[1]);
 					}
 					else if(na.getResource() != null) {
-						String[] tTmpWait = addTransition("tTmpWait", null, null, bEntType[0], eEntType[0], mEntType[0], "tmpWait", null, null, null);
+						String[] tTmpWait = addTransition("tTmpWait", null, null, bEntType[0], eEntType[0], mEntType[0], "tmpWait", null, null, null, na.getLabel());
 						strAct.append(tTmpWait[1]);
 						
 						String[] tTbTmpWait1 = addTtB(bEntType[0], entTypeId, KeyElement.ENTCONC, KeyElement.SOMECONC);
@@ -1012,7 +1013,7 @@ public class Ism2CpnscalaPerModuleBiConverter implements Converter<IsmGraph, Ism
 						
 						strAct.append(resources.get(na.getResource().getValue().getId()));
 						
-						String[] tNatstart = addTransition(KeyElement.NATSTARTSTRCONC, null, null, bEntResType[0], eEntResType[0], mEntResType[0], na.getId(), null, null, null);
+						String[] tNatstart = addTransition(KeyElement.NATSTARTSTRCONC, null, null, bEntResType[0], eEntResType[0], mEntResType[0], na.getId(), null, null, null, na.getLabel());
 						strAct.append(tNatstart[1]);
 					   
 						String[] tTb1 = addTtB(bEntResType[0], entTypeId, KeyElement.ENTCONC, KeyElement.SOMENONECONC);
@@ -1032,7 +1033,7 @@ public class Ism2CpnscalaPerModuleBiConverter implements Converter<IsmGraph, Ism
 						String[] arc2 = addArc(pNap2[0], tNatstart[0], "TtP", entResTypeId, bEntResType[0], null, btT2[0], time2[0], null, false, na.getId());
 						strAct.append(arc2[1]);
 					   
-						String[] tNatend = addTransition(KeyElement.NATENDSTRCONC, null, null, bEntResType[0], eEntResType[0], mEntResType[0], na.getId(), null, null, null);
+						String[] tNatend = addTransition(KeyElement.NATENDSTRCONC, null, null, bEntResType[0], eEntResType[0], mEntResType[0], na.getId(), null, null, null, na.getLabel());
 						strAct.append(tNatend[1]);
 					   
 						String[] tTb3 = addTtB(bEntResType[0], entResTypeId, "(entity, resource)", "Some(entity), Some(resource)");
@@ -1063,7 +1064,7 @@ public class Ism2CpnscalaPerModuleBiConverter implements Converter<IsmGraph, Ism
 						strAct.append(arc6[1]);
 					}
 					else {
-						String[] tTmpWait = addTransition("tTmpWait", null, null, bEntType[0], eEntType[0], mEntType[0], "tmpWait", null, null, null);
+						String[] tTmpWait = addTransition("tTmpWait", null, null, bEntType[0], eEntType[0], mEntType[0], "tmpWait", null, null, null, na.getLabel());
 						strAct.append(tTmpWait[1]);
 						
 						String[] tTbTmpWait1 = addTtB(bEntType[0], entTypeId, KeyElement.ENTCONC, KeyElement.SOMECONC);
@@ -1083,7 +1084,7 @@ public class Ism2CpnscalaPerModuleBiConverter implements Converter<IsmGraph, Ism
 						String[] arcTmpWait2 = addArc(pTmpWait[0], tTmpWait[0], "TtP", entTypeId, bEntType[0], tTbTmpWait1[0], bTtTmpWait1[0], timeWait2[0], null, true, "tmpWait");
 						strAct.append(arcTmpWait2[1]);
 						
-						String[] tNatstart = addTransition(KeyElement.NATSTARTSTRCONC, null, null, bEntType[0], eEntType[0], mEntType[0], na.getId(), null, null, null);
+						String[] tNatstart = addTransition(KeyElement.NATSTARTSTRCONC, null, null, bEntType[0], eEntType[0], mEntType[0], na.getId(), null, null, null, na.getLabel());
 						strAct.append(tNatstart[1]);
 						
 						String[] tTb1 = addTtB(bEntType[0], entTypeId, KeyElement.ENTCONC, KeyElement.SOMECONC);
@@ -1103,7 +1104,7 @@ public class Ism2CpnscalaPerModuleBiConverter implements Converter<IsmGraph, Ism
 						String[] arc2 = addArc(pNap2[0], tNatstart[0], "TtP", entTypeId, bEntType[0], null, btT2[0], time2[0], null, false, na.getId());
 						strAct.append(arc2[1]);
 						
-						String[] tNatend = addTransition(KeyElement.NATENDSTRCONC, null, null, bEntType[0], eEntType[0], mEntType[0], na.getId(), null, null, null);
+						String[] tNatend = addTransition(KeyElement.NATENDSTRCONC, null, null, bEntType[0], eEntType[0], mEntType[0], na.getId(), null, null, null, na.getLabel());
 						strAct.append(tNatend[1]);
 						
 						String[] tTb3 = addTtB(bEntType[0], entTypeId, KeyElement.ENTCONC, KeyElement.SOMECONC);
@@ -1135,7 +1136,7 @@ public class Ism2CpnscalaPerModuleBiConverter implements Converter<IsmGraph, Ism
 					String bpid = null;
 					
 					if (b.getGate() == BranchGate.AND) { 
-						String[] bt = addTransition("_bt", null, null, bEntType[0], eEntType[0], mEntType[0], b.getId(), null, null, null);
+						String[] bt = addTransition("_bt", null, null, bEntType[0], eEntType[0], mEntType[0], b.getId(), null, null, null, b.getLabel());
 						strBr.append(bt[1]);
 						btid = bt[0];
 					}
@@ -1164,7 +1165,7 @@ public class Ism2CpnscalaPerModuleBiConverter implements Converter<IsmGraph, Ism
 								String[] action = addAction(bEntBrType[0], actiondef);
 								strBr.append(action[1]);
 								
-								String[] tCondGen = addTransition("_condGen", null, action[0], bEntBrType[0], eEntBrType[0], mEntBrType[0], b.getId(), null, null, null);
+								String[] tCondGen = addTransition("_condGen", null, action[0], bEntBrType[0], eEntBrType[0], mEntBrType[0], b.getId(), null, null, null, b.getLabel());
 								strBr.append(tCondGen[1]);
 								String[] pBpt = addPlace(null, "_bpt", entBrTypeId, "", b.getId(), null);
 								strBr.append(pBpt[1]);
@@ -1224,7 +1225,7 @@ public class Ism2CpnscalaPerModuleBiConverter implements Converter<IsmGraph, Ism
 								}
 								String[] pBpos = addPlace(b.getId()+KeyElement.STARTSTRCONC+c.getSourceIndex(), "_bpo" + i + "s", entTypeId, "", b.getId(), null);
 								strBr.append(pBpos[1]);
-								String[] tSilent = addTransition("_temps_"+i, guardid, null, bEntBrType[0], eEntBrType[0], mEntBrType[0], b.getId(), null, null, null);
+								String[] tSilent = addTransition("_temps_"+i, guardid, null, bEntBrType[0], eEntBrType[0], mEntBrType[0], b.getId(), null, null, null, b.getLabel());
 								strBr.append(tSilent[1]);
 								
 								String[] tTb1 = addTtB(bEntBrType[0], entBrTypeId, "(entity,cond)", "Some(entity),Some(cond)");
@@ -1243,7 +1244,7 @@ public class Ism2CpnscalaPerModuleBiConverter implements Converter<IsmGraph, Ism
 								if (c.getTarget().getValue() != b) continue;
 								String[] pBpis = addPlace(b.getId()+KeyElement.ENDSTRCONC+c.getTargetIndex(), "_bpi" + i + "s", entTypeId, "", b.getId(), null);
 								strBr.append(pBpis[1]);
-								String[] tSilent = addTransition("_temps_"+i, null, null, bEntType[0], eEntType[0], mEntType[0], b.getId(), null, null, null);
+								String[] tSilent = addTransition("_temps_"+i, null, null, bEntType[0], eEntType[0], mEntType[0], b.getId(), null, null, null, b.getLabel());
 								strBr.append(tSilent[1]);
 								
 								String[] tTb1 = addTtB(bEntType[0], entTypeId, KeyElement.ENTCONC, KeyElement.SOMECONC);
@@ -1278,17 +1279,12 @@ public class Ism2CpnscalaPerModuleBiConverter implements Converter<IsmGraph, Ism
 				
 				String[] source = placeshub.get(c.getSource().getId()+KeyElement.STARTSTRCONC+c.getSourceIndex());
 				String[] target = placeshub.get(c.getTarget().getId()+KeyElement.ENDSTRCONC+c.getTargetIndex());
-				//System.out.println(c.getId());
-				//System.out.println(c.getSource().getId()+KeyElement.STARTSTRCONC+c.getSourceIndex());
-				//System.out.println(c.getTarget().getId()+KeyElement.ENDSTRCONC+c.getTargetIndex());
-				//System.out.println(source[0] + " - " + target[0]);
 				
 				strCon.append(source[1]);
 				strCon.append(target[1]);
 				
-				//String[] oriRole = target[2].contains("-stop-") ? new String[]{target[2],"_stop"} : target[2].contains("-start-") ? new String[]{target[2],"_start"} : new String[]{c.getId(), "silent"};
 				String[] oriRole = target[2].contains("-stop-") ? new String[]{target[2],"_stop"} : new String[]{c.getId(), "silent"};
-				String[] tSilent = addTransition(oriRole[1], null, null, bEntType[0], eEntType[0], mEntType[0], oriRole[0], null, null, null);
+				String[] tSilent = addTransition(oriRole[1], null, null, bEntType[0], eEntType[0], mEntType[0], oriRole[0], null, null, null, oriRole[0]);
 				strCon.append(tSilent[1]);
 				
 				String[] tTb1 = addTtB(bEntType[0], entTypeId, KeyElement.ENTCONC, KeyElement.SOMECONC);

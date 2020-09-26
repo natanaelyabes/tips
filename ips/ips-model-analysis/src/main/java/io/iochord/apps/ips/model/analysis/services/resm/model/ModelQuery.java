@@ -25,8 +25,8 @@ public class ModelQuery {
 			StringBuilder sql = new StringBuilder();
 			sql.append("SELECT ")
 				.append("DISTINCT ").append(config.getColEventResource()).append(" as resource ")
-				.append("FROM ").append(config.getDatasetId()).append(" ")
-				.append("WHERE eid > ").append(config.getSkipRows());
+				.append("FROM ").append(config.getDatasetId()).append(" ");
+				//.append("WHERE eid > ").append(config.getSkipRows());
 			//System.out.println(sql.toString());
 			try (PreparedStatement st = conn.prepareStatement(sql.toString());
 				ResultSet rs = st.executeQuery();) {
@@ -48,8 +48,8 @@ public class ModelQuery {
 			StringBuilder sql = new StringBuilder();
 			sql.append("SELECT ")
 				.append("DISTINCT ").append(config.getColEventActivity()).append(" as activity ")
-				.append("FROM ").append(config.getDatasetId()).append(" ")
-				.append("WHERE eid > ").append(config.getSkipRows());
+				.append("FROM ").append(config.getDatasetId()).append(" ");
+				//.append("WHERE eid > ").append(config.getSkipRows());
 			//System.out.println(sql.toString());
 			try (PreparedStatement st = conn.prepareStatement(sql.toString());
 				ResultSet rs = st.executeQuery();) {
@@ -73,7 +73,7 @@ public class ModelQuery {
 				.append("DISTINCT ").append(config.getColEventResource()).append(" as resource, ")
 				.append(config.getColEventActivity()).append(" as activity ")
 				.append("FROM ").append(config.getDatasetId()).append(" ")
-				.append("WHERE eid > ").append(config.getSkipRows()).append(" ")
+				//.append("WHERE eid > ").append(config.getSkipRows()).append(" ")
 				.append("ORDER BY ")
 				.append(config.getColEventActivity());
 			//System.out.println(sql.toString());
@@ -103,7 +103,7 @@ public class ModelQuery {
 				.append(config.getColEventActivity()).append(" as activity, ")
 				.append("count(*)").append(" as frequency ")
 				.append("FROM ").append(config.getDatasetId()).append(" ")
-				.append("WHERE eid > ").append(config.getSkipRows()).append(" ")
+				//.append("WHERE eid > ").append(config.getSkipRows()).append(" ")
 				.append("GROUP BY ")
 				.append("(").append(config.getColEventResource())
 				.append(",")

@@ -3,6 +3,7 @@ package io.iochord.apps.ips.model.analysis.services.resm;
 import io.iochord.apps.ips.core.services.ServiceContext;
 import io.iochord.apps.ips.model.analysis.services.resm.algorithm.ResMinerAlgorithm;
 import io.iochord.apps.ips.model.analysis.services.resm.algorithm.ResMinerAlgorithmDefaultMining;
+import io.iochord.apps.ips.model.analysis.services.resm.algorithm.ResMinerAlgorithmDisjointOrgAct;
 import io.iochord.apps.ips.model.analysis.services.resm.algorithm.ResMinerAlgorithmDoingSimilarTask;
 import io.iochord.apps.ips.model.analysis.services.resm.algorithm.ResourceMinerAlgorithmFactory;
 import io.iochord.apps.ips.model.analysis.services.resm.model.ResourceMinerConfig;
@@ -12,6 +13,7 @@ public class ResourceMinerAlgorithmFactoryImpl implements ResourceMinerAlgorithm
 	
 	public static final String ALGORITHM_DEFAULT_MINING = "def";
 	public static final String ALGORITHM_DOING_SIMILAR_TASK = "dst";
+	public static final String ALGORITHM_DISJOINT_ORG_ACT = "dis";
 	
 	private ResMinerAlgorithm resMiner;
 	
@@ -21,6 +23,8 @@ public class ResourceMinerAlgorithmFactoryImpl implements ResourceMinerAlgorithm
 			resMiner = new ResMinerAlgorithmDefaultMining(context, config);
 		if(config.getResMinAlg().equals(ALGORITHM_DOING_SIMILAR_TASK))
 			resMiner = new ResMinerAlgorithmDoingSimilarTask(context, config);
+		if(config.getResMinAlg().equals(ALGORITHM_DISJOINT_ORG_ACT))
+			resMiner = new ResMinerAlgorithmDisjointOrgAct(context, config);
 		resMiner.compute();
 		if(config.isTimeAnalysis())
 			resMiner.timeAnalysis();
