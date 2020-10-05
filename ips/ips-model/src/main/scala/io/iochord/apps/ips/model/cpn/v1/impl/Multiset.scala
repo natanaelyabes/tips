@@ -18,9 +18,9 @@ import io.iochord.apps.ips.model.cpn.v1._
 
 class Multiset[T] (val multiset: Map[(T,Long), Int], val coltype: Class[_] = null) {
   
-  def getColtype(): Class[_] = { coltype }
-  
   type coltype = T
+  
+  def getColtype(): Class[_] = { coltype }
   
   /**
    * @param elem : token that will be checked if exist or not
@@ -32,7 +32,7 @@ class Multiset[T] (val multiset: Map[(T,Long), Int], val coltype: Class[_] = nul
    * @param elem : add specific number of token with time into this multiset
    * @return : return the new multiset after adding this element
    */
-  def +(elem: (T,Long), n: Int): Multiset[T] = {
+  def +(elem: (T,Long), n: Int) : Multiset[T] = {
     val ms = multiset
     
     var count = n
@@ -45,6 +45,7 @@ class Multiset[T] (val multiset: Map[(T,Long), Int], val coltype: Class[_] = nul
       ms -= (elem)
     else
       throw new IllegalArgumentException("Cannot remove less than exist token")
+    
     new Multiset(ms)
   }
   

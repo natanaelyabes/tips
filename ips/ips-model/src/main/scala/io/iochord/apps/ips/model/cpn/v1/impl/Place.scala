@@ -17,11 +17,14 @@ import scala.collection.mutable.Map
 class Place[T] (
   private var id: String,
   private var name: String,
-  private var initialMarking: Multiset[T]) extends Element with Node {
+  private val initialMarking: Multiset[T]) extends Element with Node {
   
   private var currentMarking = initialMarking
+  private val initialMap = initialMarking.getMap().clone()
   
   private var origin:Map[String,String] = null
+  
+  def setToInitialMarking() { currentMarking = new Multiset(initialMap.clone()) }
   
   /**
    * @param tokenWithTime : remove specific token with time from multiset of this place

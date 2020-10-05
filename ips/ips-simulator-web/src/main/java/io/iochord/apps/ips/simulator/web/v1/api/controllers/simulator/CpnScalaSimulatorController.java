@@ -279,6 +279,8 @@ public class CpnScalaSimulatorController extends ASimulatorController {
 			simulationObservers.add(conversionResult.getKpiObserver());
 			System.out.println("SIM: Start Simulation");
 			//simulationInstance.runUntilMaxArrival();
+			//simulationInstance.runUntilGlobalTime(200);
+			//simulationInstance.setToInitialState();
 			simulationInstance.runUntilGlobalTime(74730);
 			Map<Element, ElementStatistics> stats = conversionResult.getKpiObserver().getData();
 			for (Entry<Element, ElementStatistics> es : stats.entrySet()) {
