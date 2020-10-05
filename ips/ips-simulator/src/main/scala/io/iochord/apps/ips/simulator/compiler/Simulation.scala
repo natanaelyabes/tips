@@ -28,6 +28,15 @@ abstract class Simulation(val simulator:Simulator = new Simulator(true)) {
   var subject:MarkingObservable = new MarkingObservable()
   var fileReportPath:String = "ReportCSV.csv"
   
+  def setToInitialState() {
+    globtime.time = 0
+    simulator.c = 0
+    simulator.stTimeEnTr = 0L
+    simulator.avgTimeEnTr = 0L
+    simulator.mapActTokMon.clear()
+    cgraph.allPlaces.foreach(_.setToInitialMarking())
+  }
+  
   def setFileReportPath(fileReportPath:String) = { this.fileReportPath = fileReportPath }
   
   def getFileReportPath():String = this.fileReportPath
