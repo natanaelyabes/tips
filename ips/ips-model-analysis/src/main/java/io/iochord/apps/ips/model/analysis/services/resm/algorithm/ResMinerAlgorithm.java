@@ -221,7 +221,7 @@ public abstract class ResMinerAlgorithm {
 			    .append("        else null \n")
 			    .append("      end as comptimeprev , \n")
 			    .append("   ").append(config.getColEventResource()).append(" as resource \n") 
-				.append("      from ").append(config.getDatasetId()).append(" where ").append(config.getColEventResource()).append(" != '' and c2 >= '2018-12-15'\n")//append(" != '' \n")
+				.append("      from ").append(config.getDatasetId()).append(" where ").append(config.getColEventResource()).append(" != '' \n")//.append(" != '' and c2 >= '2018-12-15'\n")
 				.append("      ) as temp1tab \n")
 				.append("    ) as temp2tab \n")
 				.append("  ) fintab");
