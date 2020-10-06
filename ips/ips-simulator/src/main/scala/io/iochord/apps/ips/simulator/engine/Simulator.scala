@@ -205,6 +205,7 @@ case class Simulator(calcAvgTimeEnTr:Boolean = false) {
                 if(tm == None){ mapActTokMon.put((tokenWT._1,origin), tokenWT._2)
               } 
             })
+            
             val _nap2 = markafter.filter(_._1._2.get("role").get.equals("_nap2")).head._2.asInstanceOf[Map[(Any,Long),Int]].foreach(
               tokenResWTNum => { 
                 val timeEnd = tokenResWTNum._1._2

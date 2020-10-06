@@ -188,12 +188,13 @@ class Transition[B] (
         
         if(lbe.isEmpty)
           lbe = lbo
-        else
+        else {
           lbe = lbe.flatMap(b1 => { 
             lbo.collect{ 
               case b2 if(eval(b1,b2)) => merge(b1,b2)
-            } 
-        })
+            }
+          })
+        }
       }
       else {
         val lto = map.map(m => { 

@@ -28,6 +28,7 @@ import io.iochord.apps.ips.common.util.LoggerUtil;
 import io.iochord.apps.ips.core.services.ServiceContext;
 import io.iochord.apps.ips.model.analysis.services.ism.IsmDiscoveryConfiguration;
 import io.iochord.apps.ips.model.analysis.services.ism.IsmDiscoveryService;
+import io.iochord.apps.ips.model.ism.v1.Connector;
 import io.iochord.apps.ips.model.ism.v1.Element;
 import io.iochord.apps.ips.model.ism.v1.IsmFactory;
 import io.iochord.apps.ips.model.ism.v1.IsmGraph;
@@ -38,13 +39,19 @@ import io.iochord.apps.ips.model.ism.v1.data.Resource;
 import io.iochord.apps.ips.model.ism.v1.data.impl.GeneratorImpl;
 import io.iochord.apps.ips.model.ism.v1.data.impl.ObjectTypeImpl;
 import io.iochord.apps.ips.model.ism.v1.data.impl.ResourceImpl;
+import io.iochord.apps.ips.model.ism.v1.impl.ConnectorImpl;
 import io.iochord.apps.ips.model.ism.v1.impl.IsmFactoryImpl;
 import io.iochord.apps.ips.model.ism.v1.impl.IsmGraphImpl;
 import io.iochord.apps.ips.model.ism.v1.nodes.Activity;
+import io.iochord.apps.ips.model.ism.v1.nodes.Branch;
 import io.iochord.apps.ips.model.ism.v1.nodes.Start;
 import io.iochord.apps.ips.model.ism.v1.nodes.Stop;
+import io.iochord.apps.ips.model.ism.v1.nodes.enums.BranchGate;
+import io.iochord.apps.ips.model.ism.v1.nodes.enums.BranchRule;
+import io.iochord.apps.ips.model.ism.v1.nodes.enums.BranchType;
 import io.iochord.apps.ips.model.ism.v1.nodes.enums.DistributionType;
 import io.iochord.apps.ips.model.ism.v1.nodes.impl.ActivityImpl;
+import io.iochord.apps.ips.model.ism.v1.nodes.impl.BranchImpl;
 import io.iochord.apps.ips.model.ism.v1.nodes.impl.StartImpl;
 import io.iochord.apps.ips.model.ism2cpn.converter.Ism2CpnscalaModelPerModule;
 import io.iochord.apps.ips.model.ism2cpn.converter.Ism2CpnscalaPerModuleBiConverter;
@@ -60,6 +67,7 @@ import io.iochord.apps.ips.model.services.data.map.MappingResult;
 import io.iochord.apps.ips.model.services.data.map.MappingService;
 import io.iochord.apps.ips.simulator.compiler.MemoryScalaCompilerPerModule;
 import io.iochord.apps.ips.simulator.compiler.Simulation;
+import io.iochord.apps.ips.simulator.engine.observer.MarkingObserver;
 import lombok.Getter;
 
 /**
@@ -155,14 +163,44 @@ public class CpnScalaSimulatorController extends ASimulatorController {
 				
 				if (rd instanceof Activity) {
 					ActivityImpl act = (ActivityImpl) rd;
+					System.out.println(act.getId()+" - "+act.getLabel());
 					act.setProcessingTimeDistribution(DistributionType.GAUSSIAN);
 					Map<?, List> mapdist = (Map<?,List>)mapact.get(rd.getLabel());
-					double param1 = (double) mapdist.get("Normal").get(0);
-					double param2 = (double) mapdist.get("Normal").get(1);
-					act.setProcessingTimeExpression(" Math.round(Gaussian("+param1+","+param2+").draw()) ");
-					ResourceImpl resImpl = mapResImpl.get(mapActOrg.get(rd.getLabel()).get(0));
-					act.setResource(new Referenceable<>(resImpl));
+					if(mapdist != null) {
+						double param1 = (double) mapdist.get("Normal").get(0);
+						double param2 = (double) mapdist.get("Normal").get(1);
+						act.setProcessingTimeExpression(" Math.round(Gaussian("+param1+","+param2+").draw()) ");
+						ResourceImpl resImpl = mapResImpl.get(mapActOrg.get(rd.getLabel()).get(0));
+						act.setResource(new Referenceable<>(resImpl));
+					}
 					//System.out.println(rd.getLabel()+" : "+mapact.get(rd.getLabel()));
+				}
+				
+				if (rd instanceof Branch) {
+					BranchImpl branch = (BranchImpl) rd;
+					boolean xorFinBranch = false;
+					List<Connector> cons = branch.getOutputConnectors();
+					for(Connector con : cons) {
+						Element el = con.getTarget().getValue();
+						if(branch.getType() == BranchType.SPLIT && branch.getGate() == BranchGate.XOR && el instanceof Branch && el.getLabel().equals("jb-stop")) {
+							xorFinBranch = true;
+							break;
+						}
+					}
+					if(xorFinBranch) {
+						branch.setRule(BranchRule.DATA);
+						String dataStr = "data";
+						for(Connector con : cons) {
+							ConnectorImpl conImpl = (ConnectorImpl) con;
+							Element el = con.getTarget().getValue();
+							if(el instanceof Branch && el.getLabel().equals("jb-stop")) {
+								conImpl.getAttributes().put(dataStr, "b.data.get.inc >= 3");
+							}
+							else {
+								conImpl.getAttributes().put(dataStr, "b.data.get.inc < 3");
+							}
+						}
+					}
 				}
 			}
 		}
