@@ -5,9 +5,6 @@ import java.util.Map;
 import java.util.Observable;
 import java.util.Observer;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-
-import io.iochord.apps.ips.common.util.JsonDataCodec;
 import io.iochord.apps.ips.common.util.LoggerUtil;
 import io.iochord.apps.ips.model.ism.v1.Element;
 import io.iochord.apps.ips.model.ism.v1.data.Generator;
@@ -54,8 +51,8 @@ public class Ism2CpnscalaObserver implements Observer {
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public void observe(Observable o, Object arg) {
 		Tuple5 tuple5 = (Tuple5) arg;
-		long globalClock = (long) tuple5._1();
-		int globalStep = (int) tuple5._2();
+//		long globalClock = (long) tuple5._1();
+//		int globalStep = (int) tuple5._2();
 		Tuple2 transition = (Tuple2) tuple5._3();
 //		String transitionId = (String) transition._1();
 		HashMap transitionOrigin = (HashMap) transition._2();
@@ -67,7 +64,7 @@ public class Ism2CpnscalaObserver implements Observer {
 		Map<String, Tuple3> currentStateRole = getStateRole(currentState);
 			
 		Element e = getConversionMap().get(transitionEleId);
-		LoggerUtil.logInfo(transitionEleId + " " + transitionEleRole);
+		// LoggerUtil.logInfo(transitionEleId + " " + transitionEleRole);
 		if (e != null) {
 			if (e instanceof Generator) {
 				String dgp2Str = "_dgp2";
@@ -182,6 +179,10 @@ public class Ism2CpnscalaObserver implements Observer {
 			map.put(placeEleRole, new Tuple3(k, v, placeEleId));
 		}
 		return map;
+	}
+	
+	public void reset() {
+		getData().clear();
 	}
 	
 }

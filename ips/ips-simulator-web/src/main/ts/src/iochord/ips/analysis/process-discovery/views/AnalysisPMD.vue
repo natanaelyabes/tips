@@ -209,6 +209,7 @@ export default class AnalysisPMD extends VisualizerLayoutView {
       config.positiveObservationThreshold = configurer.freqTh;
       config.dependencyThreshold = configurer.depTh;
       config.tokenReplay = true;
+      config.animatorLength = 15;
       config.tokenReplayDecorateLabel = true;
       this.config = config;
       this.graphTokens = '';
