@@ -14,6 +14,7 @@ import java.util.Observer;
 import java.util.Optional;
 
 import org.springframework.http.HttpHeaders;
+import org.springframework.util.DigestUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -25,6 +26,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import io.iochord.apps.ips.common.models.Referenceable;
 import io.iochord.apps.ips.common.util.LoggerUtil;
+import io.iochord.apps.ips.common.util.SerializationUtil;
 import io.iochord.apps.ips.core.services.ServiceContext;
 import io.iochord.apps.ips.model.analysis.services.ism.IsmDiscoveryConfiguration;
 import io.iochord.apps.ips.model.analysis.services.ism.IsmDiscoveryService;
@@ -55,6 +57,7 @@ import io.iochord.apps.ips.model.ism.v1.nodes.impl.BranchImpl;
 import io.iochord.apps.ips.model.ism.v1.nodes.impl.StartImpl;
 import io.iochord.apps.ips.model.ism2cpn.converter.Ism2CpnscalaModelPerModule;
 import io.iochord.apps.ips.model.ism2cpn.converter.Ism2CpnscalaPerModuleBiConverter;
+import io.iochord.apps.ips.model.ism2cpn.monitor.Ism2CpnscalaObserver;
 import io.iochord.apps.ips.model.report.ElementStatistics;
 import io.iochord.apps.ips.model.report.GroupStatistics;
 import io.iochord.apps.ips.model.report.Report;
@@ -90,13 +93,13 @@ public class CpnScalaSimulatorController extends ASimulatorController {
 	 * Simulation instances
 	 */
 	@Getter
-	private List<Simulation> simulationInstances = new ArrayList<>();
+	private Map<String, Simulation> simulationInstances = new LinkedHashMap<>();
 
 	/**
 	 * Simulation observers
 	 */
 	@Getter
-	private List<Observer> simulationObservers = new ArrayList<>();
+	private Map<String, Ism2CpnscalaObserver> simulationObservers = new LinkedHashMap<>();
 	
 	/**
 	 * 
@@ -228,7 +231,11 @@ public class CpnScalaSimulatorController extends ASimulatorController {
 		gsr = gs;
 		report.getGroups().put(String.valueOf(report.getGroups().size() + 1), gs);
 		String modelId = "ips_simulation_" + System.currentTimeMillis() + "";
-		setupObservers(modelId, conversionResult, gsg, gsa, gsr);
+		String filePath = setupObservers(modelId, graph, conversionResult, gsg, gsa, gsr);
+		System.out.println("SIM: Generate Replay");
+		String replayId = parseReport(modelId, filePath);
+		report.setReplayId(replayId);
+		System.out.println(replayId);
 		 
 		return report;
 	}
@@ -239,12 +246,12 @@ public class CpnScalaSimulatorController extends ASimulatorController {
 	@PostMapping(value = BASE_URI + "/loadnplay")
 	public Report postLoadNPlay(@RequestBody IsmGraphImpl graph) {
 		graph.loadReferences();
-		System.out.println("SIM: Convert to CPNScala");
+		LoggerUtil.logInfo("SIM: Convert to CPNScala");
 		Ism2CpnscalaPerModuleBiConverter converter = new Ism2CpnscalaPerModuleBiConverter();
 		Ism2CpnscalaModelPerModule conversionResult = converter.convert(graph);
 		//Ism2CpnscalaBiConverter converter = new Ism2CpnscalaBiConverter();
 		//Ism2CpnscalaModel conversionResult = converter.convert(graph);
-		System.out.println("SIM: Subscribe Reporter");
+		LoggerUtil.logInfo("SIM: Subscribe Reporter");
 		Report report = new Report();
 		GroupStatistics gs;
 		GroupStatistics gsg;
@@ -260,11 +267,11 @@ public class CpnScalaSimulatorController extends ASimulatorController {
 		gsr = gs;
 		report.getGroups().put(String.valueOf(report.getGroups().size() + 1), gs);
 		String modelId = "ips_simulation_" + System.currentTimeMillis() + "";
-		String filePath = setupObservers(modelId, conversionResult, gsg, gsa, gsr);
-		System.out.println("SIM: Generate Replay");
+		String filePath = setupObservers(modelId, graph, conversionResult, gsg, gsa, gsr);
+		LoggerUtil.logInfo("SIM: Generate Replay");
 		String replayId = parseReport(modelId, filePath);
 		report.setReplayId(replayId);
-		System.out.println(replayId);
+		LoggerUtil.logInfo(replayId);
 		
 		return report;
 	}
@@ -299,7 +306,7 @@ public class CpnScalaSimulatorController extends ASimulatorController {
 		return null;
 	}
 
-	private String setupObservers(String modelId, Ism2CpnscalaModelPerModule conversionResult, GroupStatistics gsg, GroupStatistics gsa, GroupStatistics gsr) {
+	private String setupObservers(String modelId, IsmGraphImpl graph, Ism2CpnscalaModelPerModule conversionResult, GroupStatistics gsg, GroupStatistics gsa, GroupStatistics gsr) {
 		File f = new File("replay");
 		if (!f.exists()) {
 			f.mkdirs();
@@ -307,18 +314,24 @@ public class CpnScalaSimulatorController extends ASimulatorController {
 		String filePath = String.valueOf("replay/"+modelId+".csv");
 		
 		try {
-			System.out.println("SIM: Compiling Simulation Module");
-			MemoryScalaCompilerPerModule msfc = new MemoryScalaCompilerPerModule(conversionResult.getConvertedModel());
-			//MemoryScalaCompiler msfc = new MemoryScalaCompiler(conversionResult.getConvertedModel());
-			Simulation simulationInstance = msfc.getInstance();
+			String simHash = DigestUtils.md5DigestAsHex(SerializationUtil.encode(graph).getBytes());
+			if (!simulationInstances.containsKey(simHash)) {
+				LoggerUtil.logInfo("SIM: Instance Not Found, Compiling Simulation Module");
+				MemoryScalaCompilerPerModule msfc = new MemoryScalaCompilerPerModule(conversionResult.getConvertedModel());
+				//MemoryScalaCompiler msfc = new MemoryScalaCompiler(conversionResult.getConvertedModel());
+				Simulation simulationInstance = msfc.getInstance();
+				simulationInstance.addObserver(conversionResult.getKpiObserver());
+				simulationInstances.put(simHash, simulationInstance);
+				simulationObservers.put(simHash, conversionResult.getKpiObserver());
+			}
+			Simulation simulationInstance = simulationInstances.get(simHash);
+			Ism2CpnscalaObserver observerInstance = simulationObservers.get(simHash);
 			simulationInstance.setFileReportPath(filePath);
-			simulationInstance.addObserver(conversionResult.getKpiObserver());
-			simulationInstances.add(simulationInstance);
-			simulationObservers.add(conversionResult.getKpiObserver());
-			System.out.println("SIM: Start Simulation");
+			simulationInstance.setToInitialState();
+			observerInstance.reset();
+			LoggerUtil.logInfo("SIM: Start Simulation");
 			//simulationInstance.runUntilMaxArrival();
 			//simulationInstance.runUntilGlobalTime(200);
-			//simulationInstance.setToInitialState();
 			simulationInstance.runUntilGlobalTime(74730);
 			Map<Element, ElementStatistics> stats = conversionResult.getKpiObserver().getData();
 			for (Entry<Element, ElementStatistics> es : stats.entrySet()) {

@@ -184,7 +184,7 @@ public class IsmDiscoveryTokenService extends AnIpsAsyncService<IsmDiscoveryConf
 					double tds = Double.parseDouble(td);
 					// if (tds <= 0) continue;
 					if (tds <= 0) {
-						tds = 1;
+						tds = 0.1;
 					}
 					// System.out.println(arcId + " " + tis.size() + " " + tbs + " " + (tds * tis.size()));
 					int i = 0;
