@@ -17,10 +17,10 @@ import scala.collection.mutable.Map
 class Place[T] (
   private var id: String,
   private var name: String,
-  private val initialMarking: Multiset[T]) extends Element with Node {
+  private val initialMarking: Multiset[T],
+  private val initialMap:Map[(T,Long), Int] = Map[(T,Long), Int]()) extends Element with Node {
   
   private var currentMarking = initialMarking
-  private val initialMap = initialMarking.getMap().clone()
   
   private var origin:Map[String,String] = null
   
