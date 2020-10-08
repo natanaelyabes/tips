@@ -8,4 +8,5 @@ pip install scipy
 pip install numpy
 pip install django-environ
 pip install psycopg2-binary
+pip install scikit-learn
 python manage.py migrate

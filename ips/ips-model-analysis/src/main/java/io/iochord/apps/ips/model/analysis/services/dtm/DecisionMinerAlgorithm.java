@@ -354,11 +354,11 @@ public class DecisionMinerAlgorithm implements DecisionMiner {
 		try (Connection conn = context.getDataSource().getConnection()) {
 			String procedure = q.toString();
 			try (Statement st = conn.createStatement()) {
-				st.execute(procedure); // It works!
+				st.execute(procedure);
 			}
 			q.setLength(0);
 			q.append("-- Return the decision rules.\n");
-			q.append("SELECT * FROM r LIMIT 1;"); // ERROR: No results were returned by the query.
+			q.append("SELECT * FROM r LIMIT 1;");
 			String query = q.toString();
 			try (PreparedStatement st = conn.prepareStatement(query)) {
 				ResultSet rs = st.executeQuery();
