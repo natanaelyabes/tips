@@ -1,7 +1,9 @@
 package io.iochord.apps.ips.model.ism2cpn.converter;
 
+import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Set;
 
 import io.iochord.apps.ips.model.converter.Converter;
 import io.iochord.apps.ips.model.ism.v1.Connector;
@@ -35,6 +37,7 @@ import io.iochord.apps.ips.model.ism.v1.nodes.Stop;
 */
 public class Ism2CpnscalaPerModuleBiConverter implements Converter<IsmGraph, Ism2CpnscalaModelPerModule> {
 	
+	public static final int MAX_SCALA_COMPILE_SIZE = 48 * 1024;
 	private Map<String, String> resources = new LinkedHashMap<>();
 	private Map<String, String> queues = new LinkedHashMap<>();
 	private Map<String, String[]> placeshub = new LinkedHashMap<>();
@@ -647,14 +650,25 @@ public class Ism2CpnscalaPerModuleBiConverter implements Converter<IsmGraph, Ism
 			}
 			
 			// Convert Nodes
+			String cpnScalaBuffer = "";
+			String cpnScalaBufferName = "";
+			Set<String> addedData = new HashSet<>();
 			for (String ni : p.getNodes().keySet()) {
+				if (!cpnScalaBuffer.isEmpty() && strGen.length() + cpnScalaBuffer.length() + KeyElement.GRAPHENDCONC.length() > MAX_SCALA_COMPILE_SIZE) {
+					convm.put("NODE-" + convm.size() + ":" + cpnScalaBufferName, strGen.toString() + cpnScalaBuffer + KeyElement.GRAPHENDCONC);
+					cpnScalaBuffer = "";
+					cpnScalaBufferName = "";
+					addedData.clear();
+				}
+				String cpnScala = "";
+				String cpnScalaName = "";
 				io.iochord.apps.ips.model.ism.v1.Node n = p.getNodes().get(ni);
 				result.getConversionMap().put(n.getId(), n);
 				if (n instanceof Start) {
 					Start na = (Start) n;
 					
 					StringBuilder strStart = new StringBuilder();
-					strStart.append(strGen.toString());
+//					strStart.append(strGen.toString());
 					
 					String[] pstart = addPlace(na.getId()+KeyElement.START0STRCONC, "_nap1", entTypeId, "", na.getId(), null);
 					strStart.append(pstart[1]);
@@ -664,7 +678,10 @@ public class Ism2CpnscalaPerModuleBiConverter implements Converter<IsmGraph, Ism
 						strStart.append(tSilent[1]);
 						
 						String[] pGenStart = placeshub.get(na.getGenerator().getId()+KeyElement.START0STRCONC);
-						strStart.append(pGenStart[1]);
+						if (!addedData.contains(na.getGenerator().getId()+KeyElement.START0STRCONC)) {
+							addedData.add(na.getGenerator().getId()+KeyElement.START0STRCONC);
+							strStart.append(pGenStart[1]);
+						}
 						
 						String[] tTb1 = addTtB(bEntType[0], entTypeId, KeyElement.ENTCONC, KeyElement.SOMECONC);
 						strStart.append(tTb1[1]);
@@ -679,26 +696,30 @@ public class Ism2CpnscalaPerModuleBiConverter implements Converter<IsmGraph, Ism
 						strStart.append(arc2[1]);
 					}
 					
-					strStart.append(KeyElement.GRAPHENDCONC);
-					convm.put(na.getId(), strStart.toString());
+//					strStart.append(KeyElement.GRAPHENDCONC);
+//					convm.put(na.getId(), strStart.toString());
+					cpnScala = strStart.toString();
+					cpnScalaName = na.getId();
 				}
 				if (n instanceof Stop) {
 					Stop no = (Stop) n;
 					
 					StringBuilder strStop = new StringBuilder();
-					strStop.append(strGen.toString());
+//					strStop.append(strGen.toString());
 					
 					String[] pstop = addPlace(no.getId()+"_end_0", "_nop1", entTypeId, "", no.getId(), no.getId());
 					strStop.append(pstop[1]);
 					
-					strStop.append(KeyElement.GRAPHENDCONC);
-					convm.put(no.getId(), strStop.toString());
+//					strStop.append(KeyElement.GRAPHENDCONC);
+//					convm.put(no.getId(), strStop.toString());
+					cpnScala = strStop.toString();
+					cpnScalaName = no.getId();
 				}
 				if (n instanceof Activity) {
 					Activity na = (Activity) n;
 					
 					StringBuilder strAct = new StringBuilder();
-					strAct.append(strGen.toString());
+//					strAct.append(strGen.toString());
 					
 					String[] pNap1 = addPlace(na.getId()+"_end_0", "_nap1", entTypeId, "", na.getId(), null);
 					strAct.append(pNap1[1]);
@@ -718,7 +739,10 @@ public class Ism2CpnscalaPerModuleBiConverter implements Converter<IsmGraph, Ism
 						String[] arcTmpWait1 = addArc(pNap1[0], tTmpWait[0], "PtT", entTypeId, bEntResType[0], tTbTmpWait1[0], bTtTmpWait1[0], null, null, true, "tmpWait");
 						strAct.append(arcTmpWait1[1]);
 						
-						strAct.append(resources.get(na.getResource().getValue().getId()));
+						if (!addedData.contains(na.getResource().getValue().getId())) {
+							addedData.add(na.getResource().getValue().getId());
+							strAct.append(resources.get(na.getResource().getValue().getId()));
+						}
 						
 						String[] tTbTmpWait2 = addTtB(bEntResType[0], resTypeId, "resource", "None, Some(resource)");
 						String[] bTtTmpWait2 = addBtT(bEntResType[0], resTypeId, "b.resource.get");
@@ -848,8 +872,14 @@ public class Ism2CpnscalaPerModuleBiConverter implements Converter<IsmGraph, Ism
 						String[] arcTmpWait2 = addArc(pTmpWait[0], tTmpWait[0], "TtP", entTypeId, bEntType[0], tTbTmpWait1[0], bTtTmpWait1[0], timeWait2[0], null, true, "tmpWait");
 						strAct.append(arcTmpWait2[1]);
 						
-						strAct.append(queues.get(na.getQueue().getValue().getId()));
-						strAct.append(resources.get(na.getResource().getValue().getId()));
+						if (!addedData.contains(na.getQueue().getValue().getId())) {
+							addedData.add(na.getQueue().getValue().getId());
+							strAct.append(queues.get(na.getQueue().getValue().getId()));
+						}
+						if (!addedData.contains(na.getResource().getValue().getId())) {
+							addedData.add(na.getResource().getValue().getId());
+							strAct.append(resources.get(na.getResource().getValue().getId()));
+						}
 						
 						String qidClean = cleanId(null, na.getQueue().getValue().getId());
 						String tQsttId = "t_"+qidClean+KeyElement.QSTTSTRCONC;
@@ -938,7 +968,10 @@ public class Ism2CpnscalaPerModuleBiConverter implements Converter<IsmGraph, Ism
 						String[] arcTmpWait2 = addArc(pTmpWait[0], tTmpWait[0], "TtP", entTypeId, bEntType[0], tTbTmpWait1[0], bTtTmpWait1[0], timeWait2[0], null, true, "tmpWait");
 						strAct.append(arcTmpWait2[1]);
 						
-						strAct.append(queues.get(na.getQueue().getValue().getId()));
+						if (!addedData.contains(na.getQueue().getValue().getId())) {
+							addedData.add(na.getQueue().getValue().getId());
+							strAct.append(queues.get(na.getQueue().getValue().getId()));
+						}
 						
 						String qidClean = cleanId(null, na.getQueue().getValue().getId());
 						String tQsttId = "t_"+qidClean+KeyElement.QSTTSTRCONC;
@@ -1013,14 +1046,20 @@ public class Ism2CpnscalaPerModuleBiConverter implements Converter<IsmGraph, Ism
 						String[] arcTmpWait2 = addArc(pTmpWait[0], tTmpWait[0], "TtP", entTypeId, bEntType[0], tTbTmpWait1[0], bTtTmpWait1[0], timeWait2[0], null, true, "tmpWait");
 						strAct.append(arcTmpWait2[1]);
 						
-						strAct.append(resources.get(na.getResource().getValue().getId()));
+						if (!addedData.contains(na.getResource().getValue().getId())) {
+							addedData.add(na.getResource().getValue().getId());
+							strAct.append(resources.get(na.getResource().getValue().getId()));
+						}
 						
 						String[] tNatstart = addTransition(KeyElement.NATSTARTSTRCONC, null, null, bDataResType[0], eDataResType[0], mDataResType[0], na.getId(), null, null, null, na.getLabel());
 						strAct.append(tNatstart[1]);
 					   
 						// ---------- added to get case data from activity
 						String[] pDgpData = placeshub.get(pCaseData);
-						strAct.append(pDgpData[1]);
+						if (!addedData.contains(pCaseData)) {
+							addedData.add(pCaseData);
+							strAct.append(pDgpData[1]);
+						}
 						
 						String[] tTbCsdt1 = addTtB(bDataResType[0], dataTypeId, "(entity,data)", "Some(entity),Some(data),None");
 						String[] bTtCsdt1 = addBtT(bDataResType[0], dataTypeId, "(b.entity.get,b.data.get)");
@@ -1142,14 +1181,16 @@ public class Ism2CpnscalaPerModuleBiConverter implements Converter<IsmGraph, Ism
 						strAct.append(arc4[1]);
 					}
 					
-					strAct.append(KeyElement.GRAPHENDCONC);
-					convm.put(na.getId(), strAct.toString());
+//					strAct.append(KeyElement.GRAPHENDCONC);
+//					convm.put(na.getId(), strAct.toString());
+					cpnScala = strAct.toString();
+					cpnScalaName = na.getId();
 				}
 				if (n instanceof Branch) {
 					Branch b = (Branch) n;
 					
 					StringBuilder strBr = new StringBuilder();
-					strBr.append(strGen.toString());
+					// strBr.append(strGen.toString());
 					
 					String entBrTypeId = KeyElement.COLSETCONC+getCounter(KeyElement.TYPE);
 					String entBrType = KeyElement.TYPECONC+entBrTypeId+" = ((Int,String),Double,TypeData)\n";
@@ -1203,7 +1244,10 @@ public class Ism2CpnscalaPerModuleBiConverter implements Converter<IsmGraph, Ism
 								bpid = pBpt[0];
 								
 								String[] pDgpData = placeshub.get(pCaseData);
-								strBr.append(pDgpData[1]);
+								if (!addedData.contains(pCaseData)) {
+									addedData.add(pCaseData);
+									strBr.append(pDgpData[1]);
+								}
 								
 								String[] tTbCsdt1 = addTtB(bEntBrType[0], dataTypeId, "(entity,data)", "Some(entity),None,Some(data)");
 								String[] bTtCsdt1 = addBtT(bEntBrType[0], dataTypeId, "(b.entity.get,b.data.get)");
@@ -1311,19 +1355,37 @@ public class Ism2CpnscalaPerModuleBiConverter implements Converter<IsmGraph, Ism
 						i++;
 					}
 					
-					strBr.append(KeyElement.GRAPHENDCONC);
-					convm.put(b.getId(), strBr.toString());
+//					strBr.append(KeyElement.GRAPHENDCONC);
+//					convm.put(b.getId(), strBr.toString());
+					cpnScala = strBr.toString();
+					cpnScalaName = b.getId();
 				}
 				if (n instanceof Monitor) {
 					// TODO:
 				}
+				cpnScalaBuffer += cpnScala;
+				cpnScalaBufferName += cpnScalaName;
+			}
+			if (!cpnScalaBuffer.isEmpty()) {
+				convm.put("NODE-" + convm.size() + ":" + cpnScalaBufferName, strGen.toString() + cpnScalaBuffer + KeyElement.GRAPHENDCONC);
 			}
 			// Convert Arcs
+			cpnScalaBuffer = "";
+			cpnScalaBufferName = "";
+			addedData.clear();
 			for (String s : p.getConnectors().keySet()) {
+				if (!cpnScalaBuffer.isEmpty() && strGen.length() + cpnScalaBuffer.length() + KeyElement.GRAPHENDCONC.length() > MAX_SCALA_COMPILE_SIZE) {
+					convm.put("ARC-" + convm.size() + ":" + cpnScalaBufferName, strGen.toString() + cpnScalaBuffer + KeyElement.GRAPHENDCONC);
+					cpnScalaBuffer = "";
+					cpnScalaBufferName = "";
+					addedData.clear();
+				}
+				String cpnScala = "";
+				String cpnScalaName = "";
 				Connector c = p.getConnectors().get(s);
 				
 				StringBuilder strCon = new StringBuilder();
-				strCon.append(strGen.toString());
+				// strCon.append(strGen.toString());
 				
 				String[] source = placeshub.get(c.getSource().getId()+KeyElement.STARTSTRCONC+c.getSourceIndex());
 				String[] target = placeshub.get(c.getTarget().getId()+KeyElement.ENDSTRCONC+c.getTargetIndex());
@@ -1347,8 +1409,15 @@ public class Ism2CpnscalaPerModuleBiConverter implements Converter<IsmGraph, Ism
 				String[] arc2 = addArc(target[0], tSilent[0], "TtP", entTypeId, bEntType[0], null, btT2[0], null, null, false, c.getId());
 				strCon.append(arc2[1]);
 				
-				strCon.append(KeyElement.GRAPHENDCONC);
-				convm.put(c.getId(), strCon.toString());
+//				strCon.append(KeyElement.GRAPHENDCONC);
+//				convm.put(c.getId(), strCon.toString());
+				cpnScala = strCon.toString();
+				cpnScalaName = c.getId();
+				cpnScalaBuffer += cpnScala;
+				cpnScalaBufferName += cpnScalaName;
+			}
+			if (!cpnScalaBuffer.isEmpty()) {
+				convm.put("ARC-" + convm.size() + ":" + cpnScalaBufferName, strGen.toString() + cpnScalaBuffer + KeyElement.GRAPHENDCONC);
 			}
 		}
 		

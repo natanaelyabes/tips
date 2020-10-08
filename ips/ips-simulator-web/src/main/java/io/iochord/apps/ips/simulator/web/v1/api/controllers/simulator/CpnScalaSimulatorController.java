@@ -232,7 +232,7 @@ public class CpnScalaSimulatorController extends ASimulatorController {
 		report.getGroups().put(String.valueOf(report.getGroups().size() + 1), gs);
 		String modelId = "ips_simulation_" + System.currentTimeMillis() + "";
 		String filePath = setupObservers(modelId, graph, conversionResult, gsg, gsa, gsr);
-		System.out.println("SIM: Generate Replay");
+		LoggerUtil.logInfo("SIM: Generate Replay");
 		String replayId = parseReport(modelId, filePath);
 		report.setReplayId(replayId);
 		System.out.println(replayId);
@@ -332,7 +332,9 @@ public class CpnScalaSimulatorController extends ASimulatorController {
 			LoggerUtil.logInfo("SIM: Start Simulation");
 			//simulationInstance.runUntilMaxArrival();
 			//simulationInstance.runUntilGlobalTime(200);
-			simulationInstance.runUntilGlobalTime(74730);
+			long simulationHorizon = 86400;
+			observerInstance.setSimulationHorizon(simulationHorizon);
+			simulationInstance.runUntilGlobalTime(simulationHorizon);
 			Map<Element, ElementStatistics> stats = conversionResult.getKpiObserver().getData();
 			for (Entry<Element, ElementStatistics> es : stats.entrySet()) {
 				Element e = es.getKey();
