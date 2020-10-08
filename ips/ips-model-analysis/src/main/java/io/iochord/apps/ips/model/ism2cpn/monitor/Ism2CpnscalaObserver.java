@@ -10,6 +10,7 @@ import io.iochord.apps.ips.common.util.LoggerUtil;
 import io.iochord.apps.ips.model.ism.v1.Element;
 import io.iochord.apps.ips.model.ism.v1.data.Generator;
 import io.iochord.apps.ips.model.ism.v1.nodes.Activity;
+import io.iochord.apps.ips.model.ism.v1.nodes.Stop;
 import io.iochord.apps.ips.model.report.ElementStatistics;
 import lombok.Getter;
 import lombok.Setter;
@@ -67,8 +68,15 @@ public class Ism2CpnscalaObserver implements Observer {
 		if (getSimulationHorizon() != 0) {
 			int progress = (int) Math.floor(((double) globalClock) / ((double) getSimulationHorizon()) * 100);
 			if (progress != getLastProgress() && progress % 5 == 0) {
-				LoggerUtil.logInfo("Simulating: " + progress + " % - @" + globalClock + " (" + globalStep + " steps)");
-				progress = getLastProgress();
+				long stopContainer = 0;
+				for (Entry<Element, ElementStatistics> e : getData().entrySet()) {
+					if (e instanceof Stop) {
+						stopContainer = e.getValue().getCount();
+						break;
+					}
+				}
+				LoggerUtil.logInfo("Simulating: " + progress + " % - @" + globalClock + " (" + globalStep + " steps) = " + stopContainer);
+				setLastProgress(progress);
 			}
 		}
 
@@ -83,7 +91,7 @@ public class Ism2CpnscalaObserver implements Observer {
 		Map<String, Tuple3> currentStateRole = getStateRole(currentState);
 			
 		Element e = getConversionMap().get(transitionEleId);
-		// LoggerUtil.logInfo(transitionEleId + " " + transitionEleRole);
+//		LoggerUtil.logInfo((e != null ? e.getElementType() : "") + " " + transitionEleId + " " + transitionEleRole);
 		if (e != null) {
 			if (e instanceof Generator) {
 				String dgp2Str = "_dgp2";
@@ -97,6 +105,13 @@ public class Ism2CpnscalaObserver implements Observer {
 					}
 					getData().get(e).setCount(getData().get(e).getCount() + newToken);
 				}
+			}
+			if (e instanceof Stop) {
+				if (!getData().containsKey(e)) {
+					getData().put(e, new ElementStatistics(e.getLabel(), "Stop", 
+						"Instance Generated", 0l));
+				}
+				getData().get(e).setCount(getData().get(e).getCount() + 1);
 			}
 			if (e instanceof Activity) {
 				if (transitionEleRole.equalsIgnoreCase("_natstart")) {
