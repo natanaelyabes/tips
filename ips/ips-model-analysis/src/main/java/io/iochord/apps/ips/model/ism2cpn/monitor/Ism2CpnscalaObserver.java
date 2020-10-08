@@ -72,6 +72,7 @@ public class Ism2CpnscalaObserver implements Observer {
 				for (Entry<Element, ElementStatistics> e : getData().entrySet()) {
 					if (e instanceof Stop) {
 						stopContainer = e.getValue().getCount();
+						break;
 					}
 				}
 				LoggerUtil.logInfo("Simulating: " + progress + " % - @" + globalClock + " (" + globalStep + " steps) = " + stopContainer);
