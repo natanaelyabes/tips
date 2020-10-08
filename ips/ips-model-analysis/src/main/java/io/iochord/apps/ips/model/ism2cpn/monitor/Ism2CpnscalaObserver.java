@@ -2,6 +2,7 @@ package io.iochord.apps.ips.model.ism2cpn.monitor;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -11,6 +12,7 @@ import io.iochord.apps.ips.model.ism.v1.data.Generator;
 import io.iochord.apps.ips.model.ism.v1.nodes.Activity;
 import io.iochord.apps.ips.model.report.ElementStatistics;
 import lombok.Getter;
+import lombok.Setter;
 import scala.Some;
 import scala.Tuple2;
 import scala.Tuple3;
@@ -29,7 +31,11 @@ import scala.collection.mutable.HashMap;
 public class Ism2CpnscalaObserver implements Observer {
 	
 	@Getter
-	Map<String, Element> conversionMap;
+	@Setter
+	private long simulationHorizon;
+	
+	@Getter
+	private Map<String, Element> conversionMap;
 	
 	@Getter
 	private final Map<Element, ElementStatistics> data = new LinkedHashMap<>();
@@ -51,8 +57,16 @@ public class Ism2CpnscalaObserver implements Observer {
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public void observe(Observable o, Object arg) {
 		Tuple5 tuple5 = (Tuple5) arg;
-//		long globalClock = (long) tuple5._1();
-//		int globalStep = (int) tuple5._2();
+		long globalClock = (long) tuple5._1();
+		int globalStep = (int) tuple5._2();
+		
+		if (getSimulationHorizon() != 0) {
+			long progress = globalClock / getSimulationHorizon() * 100;
+			if (progress > 0 && progress % 5 == 0) {
+				LoggerUtil.logInfo("Simulating: " + progress + " % - @" + globalClock + " (" + globalStep + " steps)");
+			}
+		}
+
 		Tuple2 transition = (Tuple2) tuple5._3();
 //		String transitionId = (String) transition._1();
 		HashMap transitionOrigin = (HashMap) transition._2();
@@ -182,7 +196,9 @@ public class Ism2CpnscalaObserver implements Observer {
 	}
 	
 	public void reset() {
-		getData().clear();
+		for (Entry<Element, ElementStatistics> de : getData().entrySet()) {
+			de.getValue().reset();
+		}
 	}
 	
 }

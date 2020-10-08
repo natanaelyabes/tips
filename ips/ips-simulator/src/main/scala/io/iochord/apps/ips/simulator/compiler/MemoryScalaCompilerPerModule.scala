@@ -5,6 +5,7 @@ import scala.tools.reflect.ToolBox
 import io.iochord.apps.ips.model.cpn.v1.impl.CPNGraph
 import java.util.LinkedHashMap
 import java.io.FileWriter
+import io.iochord.apps.ips.common.util.LoggerUtil
 
 /**
  *
@@ -48,29 +49,38 @@ class MemoryScalaCompilerPerModule(scalaSource: LinkedHashMap[String,String]) {
       
   val compiledCode = toolbox.compile(tree)
   
+  
   /**
    * @return instance of simulation class after compiled
    * It compiled incrementally per module. 
    * You should able to differentiate between getInstance in here and  (MemoryScalaCompiler and MemoryScalaFileCompiler)
    */
   def getInstance = { 
+    import java.io.PrintWriter
     val sim = compiledCode().asInstanceOf[Simulation]
     val cgraph = new CPNGraph()
-    val it = scalaSource.keySet().iterator()
-    import java.io.PrintWriter
-    //val pw = new FileWriter("dumpingsimulmodel.txt",false)
-    while(it.hasNext()) {
-      val key = it.next()
-      //pw.append("\n------------------------------------------------------------------------------ "+key+"\n")
-      //pw.append(scalaSource.get(key))
-      val strcomp = importStm+"\nval cgraph = new CPNGraph()\n"+scalaSource.get(key)
-      val compcode = toolbox.compile(toolbox.parse(strcomp))
-      val cgraphnew = compcode().asInstanceOf[CPNGraph]
-      cgraphnew.getPlaces().forEach(p => {cgraph.addPlaceMerge(p)})
-      cgraphnew.getTransitions().forEach(t => {cgraph.addTransitionMerge(t)})
-      cgraphnew.getArcs().forEach(a => {cgraph.addArcMerge(a) })
-    }
-    //pw.close()
+    LoggerUtil.logInfo("Modules: " + scalaSource.values().size());
+    val it = scalaSource.entrySet().parallelStream()
+      .map[CPNGraph](new java.util.function.Function[java.util.Map.Entry[String, String], CPNGraph] {
+        override def apply(value: java.util.Map.Entry[String, String]): CPNGraph = {
+          LoggerUtil.logInfo("Compiling: " + value.getKey());
+          val strcomp = importStm+"\nval cgraph = new CPNGraph()\n"+value.getValue
+          try {
+            val compcode = toolbox.compile(toolbox.parse(strcomp))
+            val cgraphnew = compcode().asInstanceOf[CPNGraph]
+            cgraph.synchronized {
+              cgraphnew.getPlaces().forEach(p => {cgraph.addPlaceMerge(p)})
+              cgraphnew.getTransitions().forEach(t => {cgraph.addTransitionMerge(t)})
+              cgraphnew.getArcs().forEach(a => {cgraph.addArcMerge(a) })
+            }
+            return cgraphnew
+          } catch {
+            case e: Exception => { LoggerUtil.logInfo(value.getKey) }
+          }
+          return null
+        }
+      })
+      .count()
     sim.cgraph = cgraph
     sim
   }

@@ -2,6 +2,7 @@ package io.iochord.apps.ips.model.report;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -83,5 +84,18 @@ public class ElementStatistics {
 
 	@Getter
 	private final Map<String, ElementStatistics> subElements;
+
+	public void reset() {
+		setCount(0l);
+		setAverage(0d);
+		setTotal(0d);
+		setMin(0d);
+		setMax(0d);
+		if (getSubElements() != null) {
+			for (Entry<String, ElementStatistics> de : getSubElements().entrySet()) {
+				de.getValue().reset();
+			}
+		}
+	}
 
 }
