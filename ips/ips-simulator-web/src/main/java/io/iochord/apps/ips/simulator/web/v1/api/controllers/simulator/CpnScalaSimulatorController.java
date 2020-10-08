@@ -216,7 +216,7 @@ public class CpnScalaSimulatorController extends ASimulatorController {
 		Ism2CpnscalaModelPerModule conversionResult = converter.convert(graph);
 		//Ism2CpnscalaBiConverter converter = new Ism2CpnscalaBiConverter();
 		//Ism2CpnscalaModel conversionResult = converter.convert(graph);
-		Report report = new Report();
+		Report report= new Report();
 		GroupStatistics gs;
 		GroupStatistics gsg;
 		GroupStatistics gsa;
@@ -317,25 +317,31 @@ public class CpnScalaSimulatorController extends ASimulatorController {
 			String simHash = DigestUtils.md5DigestAsHex(SerializationUtil.encode(graph).getBytes());
 			if (!simulationInstances.containsKey(simHash)) {
 				LoggerUtil.logInfo("SIM: Instance Not Found, Compiling Simulation Module");
+//				StringBuilder s = new StringBuilder();
+//				for (String c : conversionResult.getConvertedModel().values()) {
+//					s.append(c).append("---------");
+//				}
+//				LoggerUtil.logInfo(s.toString());
 				MemoryScalaCompilerPerModule msfc = new MemoryScalaCompilerPerModule(conversionResult.getConvertedModel());
 				//MemoryScalaCompiler msfc = new MemoryScalaCompiler(conversionResult.getConvertedModel());
+				Ism2CpnscalaObserver observerInstance = conversionResult.getKpiObserver(); 
 				Simulation simulationInstance = msfc.getInstance();
-				simulationInstance.addObserver(conversionResult.getKpiObserver());
+				simulationInstance.addObserver(observerInstance);
 				simulationInstances.put(simHash, simulationInstance);
-				simulationObservers.put(simHash, conversionResult.getKpiObserver());
+				simulationObservers.put(simHash, observerInstance);
 			}
 			Simulation simulationInstance = simulationInstances.get(simHash);
 			Ism2CpnscalaObserver observerInstance = simulationObservers.get(simHash);
 			simulationInstance.setFileReportPath(filePath);
-			simulationInstance.setToInitialState();
+			// simulationInstance.setToInitialState();
 			observerInstance.reset();
 			LoggerUtil.logInfo("SIM: Start Simulation");
 			//simulationInstance.runUntilMaxArrival();
 			//simulationInstance.runUntilGlobalTime(200);
-			long simulationHorizon = 86400;
+			long simulationHorizon = 24 * 3600;
 			observerInstance.setSimulationHorizon(simulationHorizon);
 			simulationInstance.runUntilGlobalTime(simulationHorizon);
-			Map<Element, ElementStatistics> stats = conversionResult.getKpiObserver().getData();
+			Map<Element, ElementStatistics> stats = observerInstance.getData();
 			for (Entry<Element, ElementStatistics> es : stats.entrySet()) {
 				Element e = es.getKey();
 				ElementStatistics s = es.getValue();
