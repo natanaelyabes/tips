@@ -130,7 +130,6 @@ abstract class Simulation(val simulator:Simulator = new Simulator(true)) {
   def runUntilGlobalTime(stopTime:Long): Unit = {
     this.stopCrit = (stop:Any) => stop match { case stop:Long => {globtime.getTime() > stop} }
     this.inpStopCrit = stopTime
-    
     simulator.run(cgraph, stopCrit, inpStopCrit, -1, globtime, subject, fileReportPath)
   }
   

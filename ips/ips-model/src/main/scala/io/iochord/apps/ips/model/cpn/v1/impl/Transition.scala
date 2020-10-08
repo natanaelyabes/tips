@@ -169,7 +169,7 @@ class Transition[B] (
     val iterator = in.iterator
     
     breakable{while(iterator.hasNext){
-      val arc = iterator.next() match { case arc:Arc[_,B] => arc }
+     val arc = iterator.next() match { case arc:Arc[_,B] => arc }
       
       val map = arc.getPlace().getCurrentMarking().multiset.filter(_._1._2 <= globtime).groupBy(_._1._1).map({ 
         case (k,v) => k -> (v map (_._2) sum) 
@@ -211,6 +211,7 @@ class Transition[B] (
       if(lbe.isEmpty)
           break
     }}
+        
     (lbe.length > 0, lbe)
   }
   

@@ -193,6 +193,7 @@ case class Simulator(calcAvgTimeEnTr:Boolean = false) {
         transition.getIn().foreach(arc => { val multiset = arc.getPlace().getCurrentMarking().multiset; markafter.put((arc.getPlace().getId(),arc.getPlace().getOrigin()),multiset.clone()) } )
         transition.getOut().foreach(arc => { val multiset = arc.getPlace().getCurrentMarking().multiset; markafter.put((arc.getPlace().getId(),arc.getPlace().getOrigin()),multiset.clone()) } )
         
+        /*
         if(transition.getOrigin().get("origin").get.startsWith("0-activity-") && transition.getOrigin().get("role").get.equals("_natstart"))
         {
           val compName = transition.getOrigin().get("compName").get
@@ -242,6 +243,7 @@ case class Simulator(calcAvgTimeEnTr:Boolean = false) {
             case e: Exception => e.printStackTrace()
           }
         }
+        */
         
         if(subject != null) {
           subject.setMarking((globtime.getTime(), c+1, (transition.getId(), transition.getOrigin()),markbefore,markafter)) 
