@@ -35,6 +35,10 @@ public class Ism2CpnscalaObserver implements Observer {
 	private long simulationHorizon;
 	
 	@Getter
+	@Setter
+	private int lastProgress;
+	
+	@Getter
 	private Map<String, Element> conversionMap;
 	
 	@Getter
@@ -61,9 +65,10 @@ public class Ism2CpnscalaObserver implements Observer {
 		int globalStep = (int) tuple5._2();
 		
 		if (getSimulationHorizon() != 0) {
-			long progress = globalClock / getSimulationHorizon() * 100;
-			if (progress > 0 && progress % 5 == 0) {
+			int progress = (int) Math.floor(((double) globalClock) / ((double) getSimulationHorizon()) * 100);
+			if (progress != getLastProgress() && progress % 5 == 0) {
 				LoggerUtil.logInfo("Simulating: " + progress + " % - @" + globalClock + " (" + globalStep + " steps)");
+				progress = getLastProgress();
 			}
 		}
 
@@ -196,6 +201,7 @@ public class Ism2CpnscalaObserver implements Observer {
 	}
 	
 	public void reset() {
+		setLastProgress(0);
 		for (Entry<Element, ElementStatistics> de : getData().entrySet()) {
 			de.getValue().reset();
 		}
