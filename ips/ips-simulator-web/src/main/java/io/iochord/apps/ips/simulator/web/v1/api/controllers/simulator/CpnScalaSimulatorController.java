@@ -127,9 +127,12 @@ public class CpnScalaSimulatorController extends ASimulatorController {
 		
 		try {
 			ObjectMapper mapper = new ObjectMapper();
+			
+			File pdFile = new File(getClass().getClassLoader().getResource("process_distribution.json").toURI());
+			File rmFile = new File(getClass().getClassLoader().getResource("ResourceMiner.json").toURI());
 
-			Map<?, ?> map1 = mapper.readValue(Paths.get("process_distribution.json").toFile(), Map.class);
-			Map<?, ?> map2 = mapper.readValue(Paths.get("ResourceMiner.json").toFile(), Map.class);
+			Map<?, ?> map1 = mapper.readValue(pdFile, Map.class);
+			Map<?, ?> map2 = mapper.readValue(rmFile, Map.class);
 
 		    mapact = (Map<String, ?>) map1.get("MODEL_4");
 		    mapOrgRes = (Map<String, List<String>>) map2.get("mgroupres");
