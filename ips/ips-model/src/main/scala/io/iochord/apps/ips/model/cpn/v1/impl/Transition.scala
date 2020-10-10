@@ -21,7 +21,7 @@ class Transition[B] (
   
   private var in = List[Arc[_,B]]()
   private var out = List[Arc[_,B]]()
-  
+    
   private var eval:(B,B) => Boolean = null
   private var merge:(B,B) => B = null
   
@@ -145,7 +145,7 @@ class Transition[B] (
    * You change isArcEnabled to isArcEnabledLooksRecur to compare different method of arc enabled evaluation 
    */
   def isEnabled(globtime:Long):Boolean = {
-    val (isArcEn, lbe) = isArcEnabled(globtime)
+    val (isArcEn, lbe) = /*isArcEnabledLooksRecur(globtime)*/isArcEnabled(globtime)
     
     if(getGuard() != null) {
       val resEvalG = getGuard().evalGuard(lbe)
@@ -174,6 +174,11 @@ class Transition[B] (
       val map = arc.getPlace().getCurrentMarking().multiset.filter(_._1._2 <= globtime).groupBy(_._1._1).map({ 
         case (k,v) => k -> (v map (_._2) sum) 
       }).filter(_._2 >= arc.noTokArcExp)
+      
+      if(map.size == 0) {
+        lbe = List[B]()
+        break
+      }
       
       if(arc.getIsBase()) {
         val lbo = map.map(m => { 
@@ -224,75 +229,51 @@ class Transition[B] (
    */
   def isArcEnabledLooksRecur(globtime:Long):(Boolean,List[B]) = {
     var lbe = List[B]()
+    val kB = KeepB()
+    var lTk = List[List[_]]()
     
-    val b = recursive(in,0,0,None)
-    if(b != None)
-      lbe = b.get::lbe
+    in.foreach(arc => {
+      val ms = arc.getPlace().getCurrentMarking().multiset
+      if(ms.size == 0)
+        return (false, lbe)
+        
+      val msFilter = ms.filter(_._1._2 <= globtime).groupBy(_._1._1).map({
+          case (k,v) => k -> (v map (_._2) sum) 
+        }).filter(_._2 >= arc.noTokArcExp)
+      if(msFilter.size == 0)
+        return (false, lbe)
+        
+      lTk =  msFilter.keySet.toList :: lTk
+    })
     
-    (lbe.length > 0, lbe)   
+    permutation(kB, lTk)
+    
+    if(kB.prevB != None)
+      lbe = kB.prevB.get::lbe
+      
+    (lbe.length > 0, lbe)
   }
   
-  /**
-   * @param inp, seq, globtime, bpreve.
-   * inp is list of input arc for this transition
-   * seq is order of input arc being evaluated currently
-   * globtime is current global time of simulation
-   * bpreve is binding values from previous step evalutation
-   * @return only 1 complete binding if found. If not found it will return None
-   * This function is detail implementation of isArcEnabledLooksRecur above 
-   */
-  def recursive(inp:List[Arc[_,B]],seq:Int,globtime:Long,bprev:Option[B]):Option[B] = {
-    var bchoose:Option[B] = None
-    
-    val arc = inp(seq)
-    
-    val map = arc.getPlace().getCurrentMarking().multiset.filter(_._1._2 <= globtime).groupBy(_._1._1).map({ 
-      case (k,v) => k -> (v map (_._2) sum) 
-    }).filter(_._2 >= arc.noTokArcExp)
-    
-    if(arc.getIsBase()) {
-      val lbo = map.map(m => { 
-        val t = m._1
-        t match { 
-          case t:arc.coltype => { 
-            val b = arc.computeTokenToBind(t)
-            b 
-          } 
+  case class KeepB(var prevB:Option[B] = None)
+  object Done extends Exception { }
+  
+  def permutation[_](kB:KeepB, x: List[List[_]]): List[List[_]] = x match {
+    case Nil    => List(Nil)
+    case h :: t => for(j <- permutation(kB,t); i <- h) yield  { 
+      val lm = i :: j
+      val arc = in(lm.length-1)
+      i match { 
+        case i:arc.coltype => { 
+          val b = arc.computeTokenToBind(i)
+          
         } 
-      } ).filter(_ != None).map(_.get).toList
-      
-      for(b <- lbo) {
-        if(seq == 0) {
-          recursive(inp,seq+1,globtime,Some(b))
-        }
-        else {
-          if(eval(bprev.get,b)) {
-            val bnext = merge(bprev.get,b)
-            if(seq < inp.length-1)
-              recursive(inp,seq+1,globtime,Some(bnext))
-            else
-              bchoose = Some(bnext)
-          }
-        }
       }
-    }
-    else {
-      val lto = map.map(m => { 
-        val t = m._1
-        t
-      } ).toList
-      
-      for(t <- lto) {
-        if(arc.BtoTV(bprev.get) == t) {
-          if(seq < inp.length-1)
-            recursive(inp,seq+1,globtime,Some(bprev.get))
-          else
-            bchoose = Some(bprev.get)
-        }
+      if(lm.length == x.length - 1) {
+        
+        throw Done
       }
+      lm
     }
-    
-    bchoose
   }
   
   /**
@@ -303,12 +284,12 @@ class Transition[B] (
   def execute(globtime:Long):B = {
     val r = new java.util.Random()
     val bChosen = lbeBase(r.nextInt(lbeBase.length))
-    
+        
     in.foreach(arc => { 
       val tChosen = arc.BtoTV(bChosen)
       if(tChosen != None) {
         val place = arc.getPlace()
-        val lTchosenComp =place.getCurrentMarking().multiset.filter(_._1._2 <= globtime).groupBy(_._1._1).filter(_._1 == tChosen ).head._2
+        val lTchosenComp = place.getCurrentMarking().multiset.filter(_._1._2 <= globtime).groupBy(_._1._1).filter(_._1 == tChosen ).head._2
         val nConsume = 0
         breakable{
           for(tChosenComp <- lTchosenComp) {

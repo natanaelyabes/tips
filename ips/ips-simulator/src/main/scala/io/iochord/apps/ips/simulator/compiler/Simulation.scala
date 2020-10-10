@@ -66,16 +66,6 @@ abstract class Simulation(val simulator:Simulator = new Simulator(true)) {
   }
   
   /**
-   * @param n : assign and run the simulation by activate concurrent checking of enabled transition until number of specific step
-   */
-  def runStepWithCon(n:Int): Unit = {
-    this.stopCrit = (stop:Any) => stop match { case stop:Boolean => stop }
-    this.inpStopCrit = false
-    
-    simulator.runWithAsync(cgraph, stopCrit, inpStopCrit, n, globtime, subject)
-  }
-  
-  /**
    * @param timeUntil : assign and run the simulation until specific global time is reached
    * @param n : assign and run the simulation until number of specific step
    * 
