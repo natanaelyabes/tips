@@ -83,7 +83,6 @@ public class Ism2CpnscalaObserver implements Observer {
 				for (Entry<Element, ElementStatistics> e : getData().entrySet()) {
 					if (e.getKey() instanceof Generator) {
 						started += e.getValue().getCount();
-						break;
 					}
 					if (e.getKey() instanceof Stop) {
 						stopped += e.getValue().getCount();
