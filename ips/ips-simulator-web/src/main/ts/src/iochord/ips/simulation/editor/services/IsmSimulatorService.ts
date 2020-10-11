@@ -92,13 +92,13 @@ export class IsmSimulatorService extends SimulatorService {
     const response = await this.remotePost(IsmSimulatorService.BASE_URI + '/loadnplay/' + datasetId, config);
     return response.data;
   }
-  public postLoadNPlayWS(graph: Graph|GraphImpl, completeCallback: any, progressCallback: any): Promise<string> {
+  public postLoadNPlayWS(graph: Graph|GraphImpl, completeCallback: any, progressCallback: any) {
     const page = (graph as any).pages.get('0');
     (page as any).connectors = page.connectors;
     return this.webservicePost(IsmSimulatorService.BASE_URI + '/loadnplay', graph, completeCallback, progressCallback);
   }
 
-  public postLoadNPlayWithDatasetWS(config: IsmDiscoveryConfiguration, datasetId: string, completeCallback: any, progressCallback: any): Promise<string> {
+  public postLoadNPlayWithDatasetWS(config: IsmDiscoveryConfiguration, datasetId: string, completeCallback: any, progressCallback: any) {
     config.datasetId = datasetId;
     return this.webservicePost(IsmSimulatorService.BASE_URI + '/loadnplay/' + datasetId, config, completeCallback, progressCallback);
   }
