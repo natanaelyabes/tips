@@ -26,8 +26,10 @@ public interface Control extends Configuration {
 	
 	STOPPING_CRITERIA getStoppingCriteria();
 	
-	long getStoppingTime();
+	Long getSeed();
 	
-	long getStartTime();
+	Long getStoppingTime();
+	
+	Long getStartTime();
 	
 }

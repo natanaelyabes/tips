@@ -23,15 +23,19 @@ public class ControlImpl extends ConfigurationImpl implements Control {
 	
 	@Getter
 	@Setter
-	private STOPPING_CRITERIA stoppingCriteria;
+	private STOPPING_CRITERIA stoppingCriteria = STOPPING_CRITERIA.TIME;
 	
 	@Getter
 	@Setter
-	private long stoppingTime;
+	private Long stoppingTime;
 	
 	@Getter
 	@Setter
-	private long startTime;
+	private Long startTime;
+	
+	@Getter
+	@Setter
+	private Long seed;
 
 	public String getElementType() {
 		return ElementType.NODE_CONTROL;

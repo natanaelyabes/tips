@@ -3,13 +3,18 @@ package io.iochord.apps.ips.model.ism2cpn.monitor;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Map.Entry;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.util.Observable;
 import java.util.Observer;
 
 import io.iochord.apps.ips.common.util.LoggerUtil;
+import io.iochord.apps.ips.core.services.ServiceContext;
 import io.iochord.apps.ips.model.ism.v1.Element;
 import io.iochord.apps.ips.model.ism.v1.data.Generator;
 import io.iochord.apps.ips.model.ism.v1.nodes.Activity;
+import io.iochord.apps.ips.model.ism.v1.nodes.Start;
 import io.iochord.apps.ips.model.ism.v1.nodes.Stop;
 import io.iochord.apps.ips.model.report.ElementStatistics;
 import lombok.Getter;
@@ -30,6 +35,11 @@ import scala.collection.mutable.HashMap;
 *
 */
 public class Ism2CpnscalaObserver implements Observer {
+	
+	@Getter
+	@Setter
+	@JsonIgnore
+	private ServiceContext context;
 	
 	@Getter
 	@Setter
@@ -68,14 +78,22 @@ public class Ism2CpnscalaObserver implements Observer {
 		if (getSimulationHorizon() != 0) {
 			int progress = (int) Math.floor(((double) globalClock) / ((double) getSimulationHorizon()) * 100);
 			if (progress != getLastProgress() && progress % 5 == 0) {
-				long stopContainer = 0;
+				long started = 0;
+				long stopped = 0;
 				for (Entry<Element, ElementStatistics> e : getData().entrySet()) {
-					if (e instanceof Stop) {
-						stopContainer = e.getValue().getCount();
+					if (e.getKey() instanceof Generator) {
+						started += e.getValue().getCount();
+						break;
+					}
+					if (e.getKey() instanceof Stop) {
+						stopped += e.getValue().getCount();
 						break;
 					}
 				}
-				LoggerUtil.logInfo("Simulating: " + progress + " % - @" + globalClock + " (" + globalStep + " steps) = " + stopContainer);
+				if (getContext() != null) {
+					getContext().updateProgress(progress, "Running Simulation ... " + globalStep + " steps @ " + globalClock + " (" + started + " started / " + stopped + " ended) ... ");
+				}
+				LoggerUtil.logInfo("SIM: " + progress + " % ... " + globalStep + " steps @ " + globalClock + " (" + started + " started / " + stopped + " ended) ... ");
 				setLastProgress(progress);
 			}
 		}

@@ -17,6 +17,14 @@ public class Report {
 
 	@Getter
 	@Setter
+	private String modelId;
+
+	@Getter
+	@Setter
+	private String modelHash;
+
+	@Getter
+	@Setter
 	private String replayId;
 	
 	@Getter

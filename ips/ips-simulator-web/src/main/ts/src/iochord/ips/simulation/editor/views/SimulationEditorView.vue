@@ -285,7 +285,10 @@ export default class SimulationEditorView extends AppLayoutView {
    * @type {*}
    * @memberof AnalysisPMD
    */
-  public datasetId: string = '';
+  @Prop({default: ''})
+  public selectedDatasetId!: any;
+
+  public datasetId: any = '';
 
   /**
    * Datasets field to receive JSON data from web service.
@@ -356,6 +359,13 @@ export default class SimulationEditorView extends AppLayoutView {
     const mDisplay = m > 0 ? m + 'm ' : '';
     const sDisplay = s > 0 ? s + 's ' : '';
     return dDisplay + hDisplay + mDisplay + sDisplay;
+  }
+  
+  public created() {
+    if (this.selectedDatasetId && this.selectedDatasetId != '') {
+      this.datasetId = this.selectedDatasetId;
+      this.runMine(this.datasetId);
+    }
   }
 
   /**
@@ -479,6 +489,7 @@ export default class SimulationEditorView extends AppLayoutView {
    * @memberof SimulationEditorView
    */
   public async loadNPlay() {
+    const self = this;
     this.isRunning = true;
     $('.editor.canvas.ui.basic.segment').dimmer({
       displayLoader: true,
@@ -487,8 +498,42 @@ export default class SimulationEditorView extends AppLayoutView {
       loaderText: 'Simulation is running',
     }).dimmer('show');
 
-    let rep: any;
+    if (this.datasetId !== 'Select a dataset' && this.datasetId !== '') {
+      const config: IsmDiscoveryConfiguration = new IsmDiscoveryConfiguration();
+      IsmSimulatorService.getInstance().postLoadNPlayWithDatasetWS(config, this.datasetId, 
+        (res: any) => {
+          self.report = JSON.parse(res.body).data;
+          $('.editor.canvas.ui.basic.segment').dimmer('hide');
+          $(self.$refs['report']).modal('show');
+          self.isDisabled = false;
+          self.isRunning = false;
+        }, (tick: any) => {
+          if ($('.ui.loader.slow.blue.medium.elastic.text') && $('.ui.loader.slow.blue.medium.elastic.text').length > 0) {
+            $('.ui.loader.slow.blue.medium.elastic.text')[0].innerHTML = tick.progressData + ' (' + tick.progress + ' %)';
+          }
+        }
+      );
+    } else {
+      IsmSimulatorService.getInstance().postLoadNPlayWS(graphModule.graph, 
+        (res: any) => {
+          self.report = JSON.parse(res.body).data;
+          $('.editor.canvas.ui.basic.segment').dimmer('hide');
+          $(self.$refs['report']).modal('show');
+          self.isDisabled = false;
+          self.isRunning = false;
+        }, (tick: any) => {
+          if ($('.ui.loader.slow.blue.medium.elastic.text') && $('.ui.loader.slow.blue.medium.elastic.text').length > 0) {
+            $('.ui.loader.slow.blue.medium.elastic.text')[0].innerHTML = tick.progressData + ' (' + tick.progress + ' %)';
+          }
+        }
+      );
+    }
+      
+      /*
+          
+          
 
+    let rep: any;
     if (this.datasetId !== 'Select a dataset' && this.datasetId !== '') {
       const config: IsmDiscoveryConfiguration = new IsmDiscoveryConfiguration();
       rep = await IsmSimulatorService.getInstance().postLoadNPlayWithDataset(config, this.datasetId);
@@ -501,6 +546,7 @@ export default class SimulationEditorView extends AppLayoutView {
     $(this.$refs['report']).modal('show');
     this.isDisabled = false;
     this.isRunning = false;
+    */
   }
 
   /**

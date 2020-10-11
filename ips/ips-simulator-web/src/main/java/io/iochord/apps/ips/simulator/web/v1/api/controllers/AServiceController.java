@@ -115,7 +115,7 @@ public abstract class AServiceController extends AController {
 	public <C, R> ServiceContext run(AnIpsService<C, R> service, C config, Class<R> resultClass, HttpHeaders headers) {
 		ServiceContext context = getServiceContext();
 		if (context != null) {
-			boolean runAsync = headers.containsKey("X-IOCHORD-WSA") && service.isAsync();
+			boolean runAsync = headers != null && headers.containsKey("X-IOCHORD-WSA") && service.isAsync();
 			if (runAsync) {
 				getExecutor().runAsync(context, service, config, resultClass);
 			} else {

@@ -17,6 +17,11 @@ export default [
         path: ``,
         component: () => import(/* webpackChunkName: "ips-simulator-editor" */ './views/SimulationEditorView.vue'),
       },
+      {
+        path: `:selectedDatasetId`,
+        component: () => import(/* webpackChunkName: "ips-simulator-editor" */ './views/SimulationEditorView.vue'),
+        props: true,
+      },
     ],
   },
 ] as RouteConfig[];
