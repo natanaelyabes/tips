@@ -360,9 +360,9 @@ export default class SimulationEditorView extends AppLayoutView {
     const sDisplay = s > 0 ? s + 's ' : '';
     return dDisplay + hDisplay + mDisplay + sDisplay;
   }
-  
+
   public created() {
-    if (this.selectedDatasetId && this.selectedDatasetId != '') {
+    if (this.selectedDatasetId && this.selectedDatasetId !== '') {
       this.datasetId = this.selectedDatasetId;
       this.runMine(this.datasetId);
     }
@@ -478,9 +478,9 @@ export default class SimulationEditorView extends AppLayoutView {
     this.forceReRender();
 
     // Always reload component when resizing content
-    window.addEventListener('resize', () => {
-      this.forceReRender();
-    });
+    // window.addEventListener('resize', () => {
+    //   this.forceReRender();
+    // });
   }
 
   /**
@@ -501,7 +501,7 @@ export default class SimulationEditorView extends AppLayoutView {
 
     if (this.datasetId !== 'Select a dataset' && this.datasetId !== '') {
       const config: IsmDiscoveryConfiguration = new IsmDiscoveryConfiguration();
-      IsmSimulatorService.getInstance().postLoadNPlayWithDatasetWS(config, this.datasetId, 
+      IsmSimulatorService.getInstance().postLoadNPlayWithDatasetWS(config, this.datasetId,
         (res: any) => {
           self.report = JSON.parse(res.body).data;
           $('.editor.canvas.ui.basic.segment').dimmer('hide');
@@ -512,10 +512,9 @@ export default class SimulationEditorView extends AppLayoutView {
           if ($('.ui.loader.slow.blue.medium.elastic.text') && $('.ui.loader.slow.blue.medium.elastic.text').length > 0) {
             $('.ui.loader.slow.blue.medium.elastic.text')[0].innerHTML = tick.progressData + ' (' + tick.progress + ' %)';
           }
-        }
-      );
+      });
     } else {
-      IsmSimulatorService.getInstance().postLoadNPlayWS(graphModule.graph, 
+      IsmSimulatorService.getInstance().postLoadNPlayWS(graphModule.graph,
         (res: any) => {
           self.report = JSON.parse(res.body).data;
           $('.editor.canvas.ui.basic.segment').dimmer('hide');
@@ -526,28 +525,8 @@ export default class SimulationEditorView extends AppLayoutView {
           if ($('.ui.loader.slow.blue.medium.elastic.text') && $('.ui.loader.slow.blue.medium.elastic.text').length > 0) {
             $('.ui.loader.slow.blue.medium.elastic.text')[0].innerHTML = tick.progressData + ' (' + tick.progress + ' %)';
           }
-        }
-      );
+      });
     }
-      
-      /*
-          
-          
-
-    let rep: any;
-    if (this.datasetId !== 'Select a dataset' && this.datasetId !== '') {
-      const config: IsmDiscoveryConfiguration = new IsmDiscoveryConfiguration();
-      rep = await IsmSimulatorService.getInstance().postLoadNPlayWithDataset(config, this.datasetId);
-    } else {
-      rep = await IsmSimulatorService.getInstance().postLoadNPlay(graphModule.graph);
-    }
-
-    this.report = rep;
-    $('.editor.canvas.ui.basic.segment').dimmer('hide');
-    $(this.$refs['report']).modal('show');
-    this.isDisabled = false;
-    this.isRunning = false;
-    */
   }
 
   /**
