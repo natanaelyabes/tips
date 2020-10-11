@@ -496,6 +496,7 @@ export default class SimulationEditorView extends AppLayoutView {
       variation: 'inverted',
       loaderVariation: 'slow blue medium elastic',
       loaderText: 'Simulation is running',
+      closable: false,
     }).dimmer('show');
 
     if (this.datasetId !== 'Select a dataset' && this.datasetId !== '') {
