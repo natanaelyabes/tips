@@ -6,6 +6,7 @@ import io.iochord.apps.ips.model.cpn.v1.impl.CPNGraph
 import java.util.LinkedHashMap
 import java.io.FileWriter
 import io.iochord.apps.ips.common.util.LoggerUtil
+import io.iochord.apps.ips.core.services.ServiceContext
 
 /**
  *
@@ -57,10 +58,11 @@ class MemoryScalaCompilerPerModule(scalaSource: LinkedHashMap[String,String]) {
    * It compiled incrementally per module. 
    * You should able to differentiate between getInstance in here and  (MemoryScalaCompiler and MemoryScalaFileCompiler)
    */
-  def getInstance = { 
+  def getInstance(context: ServiceContext) = { 
     import java.io.PrintWriter
     val sim = compiledCode().asInstanceOf[Simulation]
     val cgraph = new CPNGraph()
+    context.updateProgress(15, "Compiling CPN Scala ... " + scalaSource.values().size() + " module found.");
     LoggerUtil.logInfo("Modules: " + scalaSource.values().size());
     val it = scalaSource.entrySet().parallelStream()
       .map[CPNGraph](new java.util.function.Function[java.util.Map.Entry[String, String], CPNGraph] {
