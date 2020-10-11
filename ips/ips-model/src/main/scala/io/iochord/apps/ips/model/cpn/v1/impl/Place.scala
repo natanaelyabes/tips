@@ -24,6 +24,8 @@ class Place[T] (
   
   private var origin:Map[String,String] = null
   
+  var transitions:Seq[String] = Seq[String]()
+  
   def setToInitialMarking() { currentMarking = new Multiset(initialMap.clone()) }
   
   /**

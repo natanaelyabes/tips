@@ -43,7 +43,9 @@ case class Simulator(calcAvgTimeEnTr:Boolean = false) {
    * @return list of transition that is enabled
    */
   private def enabledTransitions(transitions: List[Transition[_]],timeFromGlobTime:Long):Option[Transition[_]] = {
-    scala.util.Random.shuffle(transitions).collectFirst({case t if(t.isEnabled(timeFromGlobTime)) => t})
+    scala.util.Random.shuffle(transitions).collectFirst({
+      case t if(t.isEnabled(timeFromGlobTime)) => {t}
+    })
   }
   
   /**
@@ -60,7 +62,10 @@ case class Simulator(calcAvgTimeEnTr:Boolean = false) {
     times = times.distinct.sorted
     
     times.foreach(time => {
-      val tran = enabledTransitions(net.allTransitions,time)
+      val allCouldBeEnabledTrans = net.allTransitions.collect({ 
+        case t if(t.statusEnOrUn <= 1 || (t.statusEnOrUn == 2 && t.statusEvalTime <  time)) => {t}
+      })
+      val tran = enabledTransitions(allCouldBeEnabledTrans,time)
       
       if(tran != None) {
         globtime.time = time
@@ -95,8 +100,6 @@ case class Simulator(calcAvgTimeEnTr:Boolean = false) {
   def run(net: CPNGraph, stopCrit:Any => Boolean, inpStopCrit:Any, stepsRef:Int = 0, globtime:GlobalTime = new GlobalTime(0), subject:MarkingObservable = null, fileReportPath:String = "ReportCSV.csv") {
     val steps = c+stepsRef
     
-    val allTransitions = net.allTransitions
-    
     import java.io.PrintWriter
     import java.io.File
     import java.util.Date
@@ -115,7 +118,11 @@ case class Simulator(calcAvgTimeEnTr:Boolean = false) {
         if(calcAvgTimeEnTr)
           stTimeEnTr = System.nanoTime()
         
-        var transition_opt = enabledTransitions(allTransitions,globtime.time)
+        val allCouldBeEnabledTrans = net.allTransitions.collect({ 
+          case t if(t.statusEnOrUn <= 1 || (t.statusEnOrUn == 2 && t.statusEvalTime <  globtime.time)) => {t}
+        })
+        
+        var transition_opt = enabledTransitions(allCouldBeEnabledTrans,globtime.time)
           
         if(transition_opt == None) {
           val (reseval, transition_tmp) = evalGlobalTimeNew(net, globtime)
@@ -133,7 +140,7 @@ case class Simulator(calcAvgTimeEnTr:Boolean = false) {
         transition.getIn().foreach(arc => { val multiset = arc.getPlace().getCurrentMarking().multiset; markbefore.put((arc.getPlace().getId(),arc.getPlace().getOrigin()),multiset.clone()) } )
         transition.getOut().foreach(arc => { val multiset = arc.getPlace().getCurrentMarking().multiset; markbefore.put((arc.getPlace().getId(),arc.getPlace().getOrigin()),multiset.clone()) } )
         
-        val bindingChosen = transition.execute(globtime.time)
+        val bindingChosen = transition.execute(globtime.time, net)
         
         transition.getIn().foreach(arc => { val multiset = arc.getPlace().getCurrentMarking().multiset; markafter.put((arc.getPlace().getId(),arc.getPlace().getOrigin()),multiset.clone()) } )
         transition.getOut().foreach(arc => { val multiset = arc.getPlace().getCurrentMarking().multiset; markafter.put((arc.getPlace().getId(),arc.getPlace().getOrigin()),multiset.clone()) } )

@@ -34,6 +34,15 @@ abstract class Simulation(val simulator:Simulator = new Simulator(true)) {
     simulator.stTimeEnTr = 0L
     simulator.avgTimeEnTr = 0L
     simulator.mapActTokMon.clear()
+    
+    cgraph.allTransitions.foreach({ 
+      t => { 
+        t.statusEnOrUn = 0
+        t.statusEvalTIme = globtime.time
+        t.lbeTmp = null
+      }
+    })
+        
     cgraph.allPlaces.foreach(_.setToInitialMarking())
   }
   

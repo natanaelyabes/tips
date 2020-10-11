@@ -28,8 +28,9 @@ class Guard[B] {
    * @param inp : assign input for guard evaluation which is list of binding values after enabling arc evaluation
    * @return (Boolean,List) : return boolean value true or false of this guard evaluation and list of binding values after guard evaluation
    */
-  def evalGuard(inp:List[B]):(Boolean,List[B]) = {
+  def evalGuard(inp:List[B]):(Int,List[B]) = {
     val lbe = inp.filter(b => guardBind(b))
-    (lbe.length > 0, lbe)
+    val ret = if(lbe.length > 0) 1 else 2
+    (ret, lbe)
   }
 }

@@ -30,11 +30,17 @@ class Transition[B] (
   private var origin:Map[String,String] = null
   private var attributes:Map[String,Any] = null
   
+  var statusEnOrUn: Int = 0 // 0 mean could be enabled (not yet evaluated), 1 mean enabled (with rest of LBE kept / lbeTmp), 2 mean unenabled (some token in each input places exist but not yet evaluated because time > globtime), 3 mean unenable (no token in some input place) 
+  var statusEvalTime: Long = 0 // the global time when the last status evaluation is conducted / we need to keep this info because even though the transition status is enabled previously but when the global time is evolve, we need to recalculate binding (because some others token need to be considered)
+  var lbeTmp:List[B] = null
+  
   /**
    * @param arc : add new input arc to this transition
    * Base arc should be on first position of the list
    */
   def addIn[T](arc: Arc[T,B]) {
+    arc.getPlace().transitions =  arc.getPlace().transitions :+ getId()
+    
     if(arc.getIsBase())
       in = arc :: in
     else
@@ -145,17 +151,29 @@ class Transition[B] (
    * You change isArcEnabled to isArcEnabledLooksRecur to compare different method of arc enabled evaluation 
    */
   def isEnabled(globtime:Long):Boolean = {
-    val (isArcEn, lbe) = /*isArcEnabledLooksRecur(globtime)*/isArcEnabled(globtime)
+    if(statusEnOrUn == 1) {
+      lbeBase = lbeTmp
+      return true
+    }
+      
+    val (isArcEn, lbe) = isArcEnabled(globtime)
     
-    if(getGuard() != null) {
+    if(isArcEn == 1 && getGuard() != null) {
       val resEvalG = getGuard().evalGuard(lbe)
       setLbeBase(resEvalG._2)
-      resEvalG._1
+      changeStatus(resEvalG._1,globtime, resEvalG._2)
+      resEvalG._1 == 1
     }
     else {
       setLbeBase(lbe)
-      isArcEn
+      changeStatus(isArcEn,globtime,lbe)
+      isArcEn == 1
     }
+  }
+  
+  def changeStatus(enOrUn:Int, evalTime:Long, lbeBase:List[_]) {
+    statusEnOrUn = if(enOrUn == 1 && lbeBase.size == 1) 0 else enOrUn
+    statusEvalTime = evalTime
   }
   
   /**
@@ -163,7 +181,7 @@ class Transition[B] (
    * @return pair of Boolean value if this arc is enabled or not and List of binding after arc evaluation
    * This arc enabled function will evaluate all token in each place of input arc in this transition 
    */
-  def isArcEnabled(globtime:Long):(Boolean,List[B]) = { 
+  def isArcEnabled(globtime:Long):(Int,List[B]) = { 
     var lbe = List[B]()
     
     val iterator = in.iterator
@@ -171,17 +189,20 @@ class Transition[B] (
     breakable{while(iterator.hasNext){
      val arc = iterator.next() match { case arc:Arc[_,B] => arc }
       
-      val map = arc.getPlace().getCurrentMarking().multiset.filter(_._1._2 <= globtime).groupBy(_._1._1).map({ 
+      val map = arc.getPlace().getCurrentMarking().multiset
+      
+      if(map.size == 0)
+        return (3, List[B]())
+      
+      val mapF = map.filter(_._1._2 <= globtime).groupBy(_._1._1).map({ 
         case (k,v) => k -> (v map (_._2) sum) 
       }).filter(_._2 >= arc.noTokArcExp)
       
-      if(map.size == 0) {
-        lbe = List[B]()
-        break
-      }
+      if(mapF.size == 0)
+        return (2, List[B]())
       
       if(arc.getIsBase()) {
-        val lbo = map.map(m => { 
+        val lbo = mapF.map(m => { 
           val t = m._1
           t match { 
             case t:arc.coltype => { 
@@ -202,7 +223,7 @@ class Transition[B] (
         }
       }
       else {
-        val lto = map.map(m => { 
+        val lto = mapF.map(m => { 
           val t = m._1
           t
         } ).toList
@@ -216,64 +237,9 @@ class Transition[B] (
       if(lbe.isEmpty)
           break
     }}
-        
-    (lbe.length > 0, lbe)
-  }
-  
-  /**
-   * @param globtime: accept input current global time of the simulation to be used for evaluate arc enabled binding
-   * @return pair of Boolean value if this arc is enabled or not and List of binding after arc evaluation
-   * This arc enabled function will evaluate until 1 complete binding is found.
-   * It could be not all token in each place of input arc in this transition will be evaluated.
-   * This function used recursive representation (this function is behave looks like deep first search)  
-   */
-  def isArcEnabledLooksRecur(globtime:Long):(Boolean,List[B]) = {
-    var lbe = List[B]()
-    val kB = KeepB()
-    var lTk = List[List[_]]()
     
-    in.foreach(arc => {
-      val ms = arc.getPlace().getCurrentMarking().multiset
-      if(ms.size == 0)
-        return (false, lbe)
-        
-      val msFilter = ms.filter(_._1._2 <= globtime).groupBy(_._1._1).map({
-          case (k,v) => k -> (v map (_._2) sum) 
-        }).filter(_._2 >= arc.noTokArcExp)
-      if(msFilter.size == 0)
-        return (false, lbe)
-        
-      lTk =  msFilter.keySet.toList :: lTk
-    })
-    
-    permutation(kB, lTk)
-    
-    if(kB.prevB != None)
-      lbe = kB.prevB.get::lbe
-      
-    (lbe.length > 0, lbe)
-  }
-  
-  case class KeepB(var prevB:Option[B] = None)
-  object Done extends Exception { }
-  
-  def permutation[_](kB:KeepB, x: List[List[_]]): List[List[_]] = x match {
-    case Nil    => List(Nil)
-    case h :: t => for(j <- permutation(kB,t); i <- h) yield  { 
-      val lm = i :: j
-      val arc = in(lm.length-1)
-      i match { 
-        case i:arc.coltype => { 
-          val b = arc.computeTokenToBind(i)
-          
-        } 
-      }
-      if(lm.length == x.length - 1) {
-        
-        throw Done
-      }
-      lm
-    }
+    val ret = if(lbe.length > 0) 1 else 2
+    (ret, lbe)
   }
   
   /**
@@ -281,14 +247,23 @@ class Transition[B] (
    * @return new binding after transition is executed (actually this return value is not used in the simulation engine, only used just for reporting and debugging)
    * This function will consume or generate new token in input and output arc respectively.  
    */
-  def execute(globtime:Long):B = {
+  def execute(globtime:Long, cgraph:CPNGraph):B = {
     val r = new java.util.Random()
-    val bChosen = lbeBase(r.nextInt(lbeBase.length))
+    val idxBindTake = r.nextInt(lbeBase.length)
+    val bChosen = lbeBase(idxBindTake)
+    
+    lbeTmp = lbeBase.collect({
+      case (b:B,i) if(i != idxBindTake) => {b}
+    })
         
     in.foreach(arc => { 
       val tChosen = arc.BtoTV(bChosen)
       if(tChosen != None) {
         val place = arc.getPlace()
+        place.transitions.foreach(t => {
+          if(cgraph.transitions(t).statusEnOrUn == 1)
+            cgraph.transitions(t).statusEnOrUn = 0 
+        })
         val lTchosenComp = place.getCurrentMarking().multiset.filter(_._1._2 <= globtime).groupBy(_._1._1).filter(_._1 == tChosen ).head._2
         val nConsume = 0
         breakable{
@@ -317,6 +292,14 @@ class Transition[B] (
       val tGen = arc.BtoTV(bModify)
       if(tGen != None) {
         val timetoken = if(arc.addTime == null) globtime else globtime+arc.addTime(bChosen)
+        arc.getPlace().transitions.foreach(t => {
+          if(timetoken <= globtime)
+            cgraph.transitions(t).statusEnOrUn = 0
+          else {
+            if(cgraph.transitions(t).statusEnOrUn != 1)
+              cgraph.transitions(t).statusEnOrUn = 0  
+          }
+        })
         arc.getPlace().addTokenWithTime((tGen, timetoken),arc.noTokArcExp)
       }
     } )
