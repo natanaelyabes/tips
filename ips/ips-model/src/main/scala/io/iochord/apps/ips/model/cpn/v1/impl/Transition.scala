@@ -196,23 +196,30 @@ class Transition[B] (
       if(map.size == 0)
         return (3, List[B]())
       
-      val mapF = map.filter(_._1._2 <= globtime).groupBy(_._1._1).map({ 
-        case (k,v) => k -> (v map (_._2) sum) 
-      }).filter(_._2 >= arc.noTokArcExp)
+      val mapF = map.collect { 
+        case ((token,gtime),num) if gtime <= globtime => (token, num)
+      }.groupBy(_._1).map({ case (k,v) => { 
+        val sumVal = (v map (_._2) sum)
+        if(sumVal >= arc.noTokArcExp) 
+          k
+        else 
+          None 
+        } 
+      })
       
       if(mapF.size == 0)
         return (2, List[B]())
       
       if(arc.getIsBase()) {
-        val lbo = mapF.map(m => { 
-          val t = m._1
+        val lbo:List[B] = mapF.map(m => { 
+          val t = m
           t match { 
             case t:arc.coltype => { 
               val b = arc.computeTokenToBind(t)
-              b 
+              b.get
             } 
           } 
-        } ).filter(_ != None).map(_.get).toList
+        }).toList
         
         if(lbe.isEmpty)
           lbe = lbo
@@ -225,12 +232,8 @@ class Transition[B] (
         }
       }
       else {
-        val lto = mapF.map(m => { 
-          val t = m._1
-          t
-        } ).toList
         lbe = lbe.flatMap(b => { 
-          lto.collect{
+          mapF.collect{
             case t if(arc.BtoTV(b) == t) => b
           } 
         })
@@ -242,6 +245,95 @@ class Transition[B] (
     
     val ret = if(lbe.length > 0) 1 else 2
     (ret, lbe)
+  }
+  
+  def isArcEnabledRecursiveOne(globtime:Long):(Int,List[B]) = { 
+    var lbe = List[B]()
+    var lTok = List[List[_]]()
+    
+    in.foreach(arc => {
+      val map = arc.getPlace().getCurrentMarking().multiset
+      
+      if(map.size == 0)
+        return (3, List[B]())
+      
+      val mapF = map.collect { 
+        case ((token,gtime),num) if gtime <= globtime => (token, num)
+      }.groupBy(_._1).map({ case (k,v) => { 
+        val sumVal = (v map (_._2) sum)
+        if(sumVal >= arc.noTokArcExp) 
+          k
+        else 
+          None 
+        } 
+      })
+      
+      if(mapF.size == 0)
+        return (2, List[B]())
+      
+      lTok = lTok ::: List(mapF.toList)
+    })
+    
+    val retB = ReturnB()
+    
+    try {
+      recursiveOneBinding(lTok, retB, 0)
+    }
+    catch {
+      case Done => None
+      case e:Exception => e.printStackTrace()
+    }
+    
+    if(retB.retB != None)
+      lbe = retB.retB.get::lbe
+      
+    val ret = if(lbe.length > 0) 1 else 2
+    (ret, lbe)
+  }
+  
+  object Done extends Exception { }
+  case class ReturnB(var retB:Option[B] = None)
+  
+  def recursiveOneBinding(x: List[List[_]], retB:ReturnB, step:Int, prevB:Option[B] = None):Unit = {
+    x match {
+      case h :: _ => h.foreach( i => {
+        val arc = in(step)
+        if(arc.getIsBase()) {
+          i match { 
+            case i:arc.coltype => { 
+              val b = arc.computeTokenToBind(i)
+              if(step == 0 && step == in.size-1) {
+                retB.retB = b
+                throw Done
+              }
+              else if(step == 0 && step != in.size-1) {
+                recursiveOneBinding(x.tail, retB, step+1, b)  
+              }
+              else {
+                if(eval(prevB.get,b.get)) {
+                  val mergeB = Some(merge(prevB.get,b.get))
+                  if(step == in.size-1) {
+                    retB.retB = mergeB
+                    throw Done
+                  }
+                  recursiveOneBinding(x.tail, retB, step+1, mergeB)
+                }
+              }
+            } 
+          }
+        }
+        else {
+          if(arc.BtoTV(prevB.get) == i) {
+            if(step == in.size-1) {
+              retB.retB = prevB
+              throw Done
+            }
+            else
+              recursiveOneBinding(x.tail, retB, step+1, prevB)
+          }
+        } 
+      })
+    }
   }
   
   /**
