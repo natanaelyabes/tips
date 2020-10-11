@@ -23,16 +23,10 @@ class Multiset[T] (val multiset: Map[(T,Long), Int], val coltype: Class[_] = nul
   def getColtype(): Class[_] = { coltype }
   
   /**
-   * @param elem : token that will be checked if exist or not
-   * @return boolean : true or false, true if it is exist and false if not exist
-   */
-  def hasToken(elem: T): Boolean = multiset.filter(x => x._1._1 equals(elem)).size > 0
-  
-  /**
    * @param elem : add specific number of token with time into this multiset
    * @return : return the new multiset after adding this element
    */
-  def +(elem: (T,Long), n: Int) : Multiset[T] = {
+  def +(elem: (T,Long), n: Int) = {
     val ms = multiset
     
     var count = n
@@ -45,16 +39,8 @@ class Multiset[T] (val multiset: Map[(T,Long), Int], val coltype: Class[_] = nul
       ms -= (elem)
     else
       throw new IllegalArgumentException("Cannot remove less than exist token")
-    
-    new Multiset(ms)
   }
   
-  /**
-   * @param elem : add only 1 token with time into this multiset
-   * @return : return the new multiset after adding this element
-   */
-  def +(elem: (T,Long)): Multiset[T] = this + (elem, 1)
-
   /**
    * @param elem : delete only 1 token with time from this multiset
    * @return : return the new multiset after delete this element
