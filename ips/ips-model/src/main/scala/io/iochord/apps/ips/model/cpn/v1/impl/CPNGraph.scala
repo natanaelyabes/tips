@@ -4,6 +4,7 @@ import scala.collection.mutable.HashMap
 import collection.JavaConverters._
 
 import io.iochord.apps.ips.model.cpn.v1._
+import breeze.stats.distributions.RandBasis
 
 /**
  *
@@ -17,6 +18,7 @@ import io.iochord.apps.ips.model.cpn.v1._
 class CPNGraph {
   private var places = HashMap[String, Place[_]]()
   var transitions = HashMap[String, Transition[_]]()
+  var randBasis: RandBasis = null
 	private var arcs = List[Arc[_,_]]()
 	
 	/**

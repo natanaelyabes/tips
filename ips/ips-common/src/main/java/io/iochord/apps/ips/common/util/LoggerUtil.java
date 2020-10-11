@@ -10,6 +10,7 @@ public class LoggerUtil {
 
 	public static void logError(Exception ex) {
 		Logger.getGlobal().severe(ex.getMessage());
+		ex.printStackTrace();
 	}
 
 	public static void logInfo(String info) {

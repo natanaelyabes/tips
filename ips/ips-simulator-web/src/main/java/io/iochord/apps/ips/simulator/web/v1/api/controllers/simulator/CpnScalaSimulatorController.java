@@ -2,6 +2,7 @@ package io.iochord.apps.ips.simulator.web.v1.api.controllers.simulator;
 
 import java.io.File;
 import java.io.FileReader;
+import java.io.InputStream;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -23,6 +24,7 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.common.io.Resources;
 
 import io.iochord.apps.ips.common.models.Referenceable;
 import io.iochord.apps.ips.common.util.LoggerUtil;
@@ -128,8 +130,8 @@ public class CpnScalaSimulatorController extends ASimulatorController {
 		try {
 			ObjectMapper mapper = new ObjectMapper();
 			
-			File pdFile = new File(getClass().getClassLoader().getResource("process_distribution.json").toURI());
-			File rmFile = new File(getClass().getClassLoader().getResource("ResourceMiner.json").toURI());
+			InputStream pdFile = getClass().getClassLoader().getResourceAsStream("ProcessDist.json");
+			InputStream rmFile = getClass().getClassLoader().getResourceAsStream("ResourceDist.json");
 
 			Map<?, ?> map1 = mapper.readValue(pdFile, Map.class);
 			Map<?, ?> map2 = mapper.readValue(rmFile, Map.class);
@@ -153,7 +155,7 @@ public class CpnScalaSimulatorController extends ASimulatorController {
 				if (rd instanceof Start) {
 					StartImpl d = (StartImpl) rd;
 					
-					String MATH_ROUND_GEN = "Math.round(Gaussian(18.444333996023857,18.605588692352455).draw())";
+					String MATH_ROUND_GEN = "Math.round(Gaussian(18.444333996023857,18.605588692352455)(Simulation.randBasis).draw())";
 					
 					ObjectTypeImpl obj = (ObjectTypeImpl) factory.addObjectType(p);
 					obj.setLabel("Unit");
@@ -175,7 +177,7 @@ public class CpnScalaSimulatorController extends ASimulatorController {
 					if(mapdist != null) {
 						double param1 = (double) mapdist.get("Normal").get(0);
 						double param2 = (double) mapdist.get("Normal").get(1);
-						act.setProcessingTimeExpression(" Math.round(Gaussian("+param1+","+param2+").draw()) ");
+						act.setProcessingTimeExpression(" Math.round(Gaussian("+param1+","+param2+")(Simulation.randBasis).draw()) ");
 						ResourceImpl resImpl = mapResImpl.get(mapActOrg.get(rd.getLabel()).get(0));
 						act.setResource(new Referenceable<>(resImpl));
 					}
@@ -336,7 +338,8 @@ public class CpnScalaSimulatorController extends ASimulatorController {
 			Simulation simulationInstance = simulationInstances.get(simHash);
 			Ism2CpnscalaObserver observerInstance = simulationObservers.get(simHash);
 			simulationInstance.setFileReportPath(filePath);
-			// simulationInstance.setToInitialState();
+			long seed = System.currentTimeMillis();
+			simulationInstance.setToInitialState(seed);
 			observerInstance.reset();
 			LoggerUtil.logInfo("SIM: Start Simulation");
 			//simulationInstance.runUntilMaxArrival();

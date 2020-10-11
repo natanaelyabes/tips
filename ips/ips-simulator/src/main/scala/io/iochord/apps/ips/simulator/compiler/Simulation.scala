@@ -7,6 +7,10 @@ import io.iochord.apps.ips.model.cpn.v1.impl._
 import io.iochord.apps.ips.simulator.engine.subject.MarkingObservable
 import io.iochord.apps.ips.simulator.engine.Simulator
 import java.util.Observer
+import scala.util.Random
+import breeze.stats.distributions.RandBasis
+import breeze.stats.distributions.ThreadLocalRandomGenerator
+import org.apache.commons.math3.random.MersenneTwister
 
 /**
  *
@@ -19,6 +23,11 @@ import java.util.Observer
  *
  */
 
+object Simulation {
+  var seed: Long = 212;
+  var randBasis: RandBasis = new RandBasis(new ThreadLocalRandomGenerator(new MersenneTwister(seed)))
+}
+
 abstract class Simulation(val simulator:Simulator = new Simulator(true)) {
   var cgraph = new CPNGraph()
   
@@ -28,8 +37,11 @@ abstract class Simulation(val simulator:Simulator = new Simulator(true)) {
   var subject:MarkingObservable = new MarkingObservable()
   var fileReportPath:String = "ReportCSV.csv"
   
-  def setToInitialState() {
+  def setToInitialState(s: Long) {
     globtime.time = 0
+    Simulation.seed = s
+    Simulation.randBasis = new RandBasis(new ThreadLocalRandomGenerator(new MersenneTwister(Simulation.seed)))
+    Random.setSeed(Simulation.seed)
     simulator.c = 0
     simulator.stTimeEnTr = 0L
     simulator.avgTimeEnTr = 0L
@@ -38,14 +50,14 @@ abstract class Simulation(val simulator:Simulator = new Simulator(true)) {
     cgraph.allTransitions.foreach({ 
       t => { 
         t.statusEnOrUn = 0
-        t.statusEvalTIme = globtime.time
+        t.statusEvalTime = globtime.time
         t.lbeTmp = null
       }
     })
         
     cgraph.allPlaces.foreach(_.setToInitialMarking())
   }
-  
+
   def setFileReportPath(fileReportPath:String) = { this.fileReportPath = fileReportPath }
   
   def getFileReportPath():String = this.fileReportPath
