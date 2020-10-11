@@ -43,12 +43,14 @@ class MemoryScalaCompilerPerModule(scalaSource: LinkedHashMap[String,String]) {
       "import breeze.stats.distributions.NegativeBinomial; \n"+
       "import breeze.stats.distributions.StudentsT; \n"+
       "import breeze.stats.distributions.Uniform; \n"+
-      "import breeze.stats.distributions.Rayleigh \n"
+      "import breeze.stats.distributions.Rayleigh; \n" + 
+      "import breeze.stats.distributions.RandBasis; \n" + 
+      "import breeze.stats.distributions.ThreadLocalRandomGenerator; \n" + 
+      "import org.apache.commons.math3.random.MersenneTwister; \n"
       
   val tree = toolbox.parse(importStm+"new Simulation { }")
       
   val compiledCode = toolbox.compile(tree)
-  
   
   /**
    * @return instance of simulation class after compiled

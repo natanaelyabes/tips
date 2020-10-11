@@ -79,7 +79,10 @@ public class Ism2CpnscalaObserver implements Observer {
 				setLastProgress(progress);
 			}
 		}
-
+//	}
+//
+//	private void x(Observable o, Object arg) {
+//		Tuple5 tuple5 = (Tuple5) arg;
 		Tuple2 transition = (Tuple2) tuple5._3();
 //		String transitionId = (String) transition._1();
 		HashMap transitionOrigin = (HashMap) transition._2();

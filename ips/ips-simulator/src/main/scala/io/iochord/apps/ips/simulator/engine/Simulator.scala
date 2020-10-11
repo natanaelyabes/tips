@@ -17,6 +17,7 @@ import scala.util.Success
 import scala.util.Failure
 import scala.concurrent.Await
 import scala.concurrent.duration.Duration
+import scala.util.Random
 
 /**
  *
@@ -43,7 +44,7 @@ case class Simulator(calcAvgTimeEnTr:Boolean = false) {
    * @return list of transition that is enabled
    */
   private def enabledTransitions(transitions: List[Transition[_]],timeFromGlobTime:Long):Option[Transition[_]] = {
-    scala.util.Random.shuffle(transitions).collectFirst({
+    Random.shuffle(transitions).collectFirst({
       case t if(t.isEnabled(timeFromGlobTime)) => {t}
     })
   }

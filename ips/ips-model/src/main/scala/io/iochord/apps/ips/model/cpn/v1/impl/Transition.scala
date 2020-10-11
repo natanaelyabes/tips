@@ -3,6 +3,8 @@ package io.iochord.apps.ips.model.cpn.v1.impl
 import scala.util.control.Breaks._
 import scala.collection.mutable.Map
 import io.iochord.apps.ips.model.cpn.v1._
+import io.iochord.apps.ips.common.util.LoggerUtil
+import scala.util.Random
 
 /**
  *
@@ -248,8 +250,7 @@ class Transition[B] (
    * This function will consume or generate new token in input and output arc respectively.  
    */
   def execute(globtime:Long, cgraph:CPNGraph):B = {
-    val r = new java.util.Random()
-    val idxBindTake = r.nextInt(lbeBase.length)
+    val idxBindTake = Random.nextInt(lbeBase.length)
     val bChosen = lbeBase(idxBindTake)
     
     lbeTmp = lbeBase.collect({
