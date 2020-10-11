@@ -16,13 +16,15 @@ import io.iochord.apps.ips.model.cpn.v1._
 
 class CPNGraph {
   private var places = HashMap[String, Place[_]]()
-  private var transitions = HashMap[String, Transition[_]]()
+  var transitions = HashMap[String, Transition[_]]()
 	private var arcs = List[Arc[_,_]]()
 	
 	/**
    * @return list of all transitions in this graph.
    */
 	def allTransitions: List[Transition[_]] =  transitions.values.toList
+	
+	
 	
 	/**
    * @return list of all places in this graph.
@@ -104,6 +106,9 @@ class CPNGraph {
 	def addPlaceMerge(place: Place[_]) = {
 	  if(places.get(place.getId()) == None)
 	    addPlace(place)
+	  else {
+	    places.get(place.getId()).get.transitions = places.get(place.getId()).get.transitions ++ place.transitions
+	  }
 	}
 	
 	/**
