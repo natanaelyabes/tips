@@ -179,12 +179,12 @@ public class Ism2CpnscalaObserver implements Observer {
 							getData().put(re, es);
 							es.getSubElements().put("1", new ElementStatistics("Resource Used"
 								, 0l, null, null, null, null));
-							es.getSubElements().put("2", new ElementStatistics("처리 시간 (Turnaround Time)"
-								, 0l, null, null, null, null));
-							es. getSubElements().put("3", new ElementStatistics("Productivity"
-								, 0l, null, null, null, null));
-							es.getSubElements().put("4", new ElementStatistics("Cost"
-								, 0l, null, null, null, null));
+//							es.getSubElements().put("2", new ElementStatistics("처리 시간 (Turnaround Time)"
+//								, 0l, null, null, null, null));
+//							es. getSubElements().put("3", new ElementStatistics("Productivity"
+//								, 0l, null, null, null, null));
+//							es.getSubElements().put("4", new ElementStatistics("Cost"
+//								, 0l, null, null, null, null));
 						}
 						getData().get(re).getSubElements().get("1").setCount(
 							getData().get(re).getSubElements().get("1").getCount() + newToken2);
@@ -199,10 +199,10 @@ public class Ism2CpnscalaObserver implements Observer {
 						getData().put(e, es);
 						es.getSubElements().put("1", new ElementStatistics("Instance Processed"
 							, 0l, null, null, null, null));
-						es.getSubElements().put("2", new ElementStatistics("대기 시간 (Waiting Time)"
-								, 0l, null, null, null, null));
-						es.getSubElements().put("3", new ElementStatistics("처리 시간 (Processing Time)"
-								, 0l, null, null, null, null));
+//						es.getSubElements().put("2", new ElementStatistics("대기 시간 (Waiting Time)"
+//								, 0l, null, null, null, null));
+//						es.getSubElements().put("3", new ElementStatistics("처리 시간 (Processing Time)"
+//								, 0l, null, null, null, null));
 					}
 					getData().get(e).getSubElements().get("1").setCount(
 						getData().get(e).getSubElements().get("1").getCount() + newToken);
