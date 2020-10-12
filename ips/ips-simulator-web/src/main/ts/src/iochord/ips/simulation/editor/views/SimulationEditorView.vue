@@ -138,7 +138,7 @@
         <div class="ui black deny button">
           Close
         </div>
-        <router-link v-if="report.replayId && report.replayId != ''" tag="a" :to="'/iochord/ips/analytics/process/discovery/' + report.replayId + '/1'" target="_blank" class="ui primary button">
+        <router-link v-if="report.replayId && report.replayId != ''" tag="a" :to="'/iochord/ips/analytics/process/discovery/' + report.replayId" target="_blank" class="ui primary button">
           Replay
         </router-link>
       </div>
