@@ -500,7 +500,7 @@ export default class SimulationEditorView extends AppLayoutView {
       displayLoader: true,
       variation: 'inverted',
       loaderVariation: 'slow blue medium elastic',
-      loaderText: 'Simulation is running',
+      loaderText: 'Simulation is running ...',
       closable: false,
     }).dimmer('show');
 
@@ -513,10 +513,10 @@ export default class SimulationEditorView extends AppLayoutView {
           $(self.$refs['report']).modal('show');
           self.isDisabled = false;
           self.isRunning = false;
-          console.log(self.report);
         }, (tick: any) => {
-          if ($('.ui.loader.slow.blue.medium.elastic.text') && $('.ui.loader.slow.blue.medium.elastic.text').length > 0) {
-            $('.ui.loader.slow.blue.medium.elastic.text')[0].innerHTML = tick.progressData + ' (' + tick.progress + ' %)';
+          if ($('.ui.loader.slow.blue.medium.elastic.text') && $('.ui.loader.slow.blue.medium.elastic.text').length > 0 && tick.progressData != null) {
+            $('.ui.loader.slow.blue.medium.elastic.text')[0].innerHTML = '<div class="ui teal progress" data-percent="10" style="min-width: 400px;"><div class="bar" style="width: '
+              + tick.progress + '%;"></div><div class="label">' + tick.progressData + ' (' + tick.progress + ' %)</div></div>';
           }
       });
     } else {
@@ -527,10 +527,10 @@ export default class SimulationEditorView extends AppLayoutView {
           $(self.$refs['report']).modal('show');
           self.isDisabled = false;
           self.isRunning = false;
-          console.log(self.report);
         }, (tick: any) => {
-          if ($('.ui.loader.slow.blue.medium.elastic.text') && $('.ui.loader.slow.blue.medium.elastic.text').length > 0) {
-            $('.ui.loader.slow.blue.medium.elastic.text')[0].innerHTML = tick.progressData + ' (' + tick.progress + ' %)';
+          if ($('.ui.loader.slow.blue.medium.elastic.text') && $('.ui.loader.slow.blue.medium.elastic.text').length > 0 && tick.progressData != null) {
+            $('.ui.loader.slow.blue.medium.elastic.text')[0].innerHTML = '<div class="ui teal progress" data-percent="10" style="min-width: 400px;"><div class="bar" style="width: '
+              + tick.progress + '%;"></div><div class="label">' + tick.progressData + ' (' + tick.progress + ' %)</div></div>';
           }
       });
     }
