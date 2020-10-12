@@ -131,7 +131,7 @@ public class IsmDiscoveryController extends AnAnalysisController {
 				if (rd instanceof Start) {
 					StartImpl d = (StartImpl) rd;
 					
-					String MATH_ROUND_GEN = "Math.round(Gaussian(18.444333996023857,18.605588692352455)(Simulation.randBasis).draw())";
+					String MATH_ROUND_GEN = "Math.round(Gaussian(18.444333996023857,31.905588692352455)(Simulation.randBasis).draw())";
 					
 					ObjectTypeImpl obj = (ObjectTypeImpl) factory.addObjectType(p);
 					obj.setLabel("Unit");
@@ -147,7 +147,7 @@ public class IsmDiscoveryController extends AnAnalysisController {
 				
 				if (rd instanceof Activity) {
 					ActivityImpl act = (ActivityImpl) rd;
-					System.out.println(act.getId()+" - "+act.getLabel());
+					//System.out.println(act.getId()+" - "+act.getLabel());
 					act.setProcessingTimeDistribution(DistributionType.GAUSSIAN);
 					Map<?, List> mapdist = (Map<?,List>)mapact.get(rd.getLabel());
 					if(mapdist != null) {
