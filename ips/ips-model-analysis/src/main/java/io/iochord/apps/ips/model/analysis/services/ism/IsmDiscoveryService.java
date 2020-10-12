@@ -53,15 +53,15 @@ public class IsmDiscoveryService extends AnIpsAsyncService<IsmDiscoveryConfigura
 		
 		IsmGraph graph = getGraphAndReplay(context, config, factory, snNodes, dfMatrix, dpMatrix, fpFitness, -1);
 		Page p = graph.getPages().values().iterator().next();
-		System.out.println("ORI: " + p.getNodes().size() + " nodes, " + p.getConnectors().size() + " arcs.");
 		int limit = config.getNodeLimits();
 		if (p.getNodes().size() > limit) {
 			IsmGraph graphOri = graph;
 			graph = getGraphAndReplay(context, config, factory, snNodes, dfMatrix, dpMatrix, fpFitness, limit);
 			graph.getAttributes().clear();
 			graph.getAttributes().putAll(graphOri.getAttributes());
-			p = graph.getPages().values().iterator().next();
+			System.out.println("ORI: " + p.getNodes().size() + " nodes, " + p.getConnectors().size() + " arcs.");
 		}
+		p = graph.getPages().values().iterator().next();
 		System.out.println("G: " + p.getNodes().size() + " nodes, " + p.getConnectors().size() + " arcs.");
 		return graph;
 	}

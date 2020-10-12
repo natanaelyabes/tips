@@ -138,7 +138,7 @@ export default class PMDHeuristicsRibbonComponent extends SemanticComponent {
 
   public freqTh = 0;
 
-  public nodeLimits = 10;
+  public nodeLimits = -1;
 
   @Prop()
   public replayId?: any;

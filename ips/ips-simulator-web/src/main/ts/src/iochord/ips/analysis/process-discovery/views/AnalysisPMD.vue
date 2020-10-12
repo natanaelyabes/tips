@@ -213,6 +213,7 @@ export default class AnalysisPMD extends VisualizerLayoutView {
       config.dependencyThreshold = configurer.depTh;
       config.tokenReplay = true;
       config.nodeLimits = configurer.nodeLimits;
+      config.colEventTimestamp = 'es, eid';
       config.animatorLength = 15;
       config.tokenReplayDecorateLabel = true;
       this.config = config;
