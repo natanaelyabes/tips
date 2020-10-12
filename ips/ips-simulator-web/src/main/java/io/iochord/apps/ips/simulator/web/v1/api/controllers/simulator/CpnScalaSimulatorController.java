@@ -114,7 +114,7 @@ public class CpnScalaSimulatorController extends ASimulatorController {
 				if (rd instanceof Start) {
 					StartImpl d = (StartImpl) rd;
 					
-					String MATH_ROUND_GEN = "Math.round(Gaussian(18.444333996023857,18.605588692352455)(Simulation.randBasis).draw())";
+					String MATH_ROUND_GEN = "Math.round(Gaussian(18.444333996023857,24.505588692352455)(Simulation.randBasis).draw())";
 					
 					ObjectTypeImpl obj = (ObjectTypeImpl) factory.addObjectType(p);
 					obj.setLabel("Unit");
