@@ -85,7 +85,7 @@
         <div class="item">
           <div class="field">
             <button v-if="replayState < 0" type="button" :class="'ui button' + (replayState > -2 ? ' disabled' : '')" @click="$emit('loadReplay')" :disabled="replayState > -2">
-              Load Replay {{ replayState }}
+              Load Replay
             </button>
             <button v-if="replayState == 0" type="button" @click="$emit('startReplay')" class="ui primary button">
               Start Replay
