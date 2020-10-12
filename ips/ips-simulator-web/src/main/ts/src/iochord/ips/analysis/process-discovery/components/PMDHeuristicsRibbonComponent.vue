@@ -29,7 +29,7 @@
           </div>
           <div class="item">
             <div class="field">
-              <label>Max Activities (Viewer Only)</label>
+              <label>Max activities shown in UI</label>
               <input type="number" name="pmd[nodeLimits]" v-model="nodeLimits" min="0">
             </div>
           </div>
