@@ -515,7 +515,7 @@ export default class SimulationEditorView extends AppLayoutView {
           self.isRunning = false;
         }, (tick: any) => {
           if ($('.ui.loader.slow.blue.medium.elastic.text') && $('.ui.loader.slow.blue.medium.elastic.text').length > 0 && tick.progressData != null) {
-            $('.ui.loader.slow.blue.medium.elastic.text')[0].innerHTML = '<div class="ui teal progress" data-percent="10" style="min-width: 400px;"><div class="bar" style="width: ' 
+            $('.ui.loader.slow.blue.medium.elastic.text')[0].innerHTML = '<div class="ui teal progress" data-percent="10" style="min-width: 400px;"><div class="bar" style="width: '
               + tick.progress + '%;"></div><div class="label">' + tick.progressData + ' (' + tick.progress + ' %)</div></div>';
           }
       });
@@ -529,7 +529,7 @@ export default class SimulationEditorView extends AppLayoutView {
           self.isRunning = false;
         }, (tick: any) => {
           if ($('.ui.loader.slow.blue.medium.elastic.text') && $('.ui.loader.slow.blue.medium.elastic.text').length > 0 && tick.progressData != null) {
-            $('.ui.loader.slow.blue.medium.elastic.text')[0].innerHTML = '<div class="ui teal progress" data-percent="10" style="min-width: 400px;"><div class="bar" style="width: ' 
+            $('.ui.loader.slow.blue.medium.elastic.text')[0].innerHTML = '<div class="ui teal progress" data-percent="10" style="min-width: 400px;"><div class="bar" style="width: '
               + tick.progress + '%;"></div><div class="label">' + tick.progressData + ' (' + tick.progress + ' %)</div></div>';
           }
       });
