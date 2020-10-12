@@ -32,7 +32,7 @@ class Transition[B] (
   private var origin:Map[String,String] = null
   private var attributes:Map[String,Any] = null
   
-  var statusEnOrUn: Int = 0 // 0 mean could be enabled (not yet evaluated), 1 mean enabled (with rest of LBE kept / lbeTmp), 2 mean unenabled (some token in each input places exist but not yet evaluated because time > globtime), 3 mean unenable (no token in some input place) 
+  var statusEnOrUn: Int = 0 // 0 mean could be enabled (not yet evaluated), 1 mean enabled (with rest of LBE kept / lbeTmp), 2 mean unenabled (some token in each input places exist but not yet evaluated because time > globtime), 3 mean unenabled (no token in some input place) 
   var statusEvalTime: Long = 0 // the global time when the last status evaluation is conducted / we need to keep this info because even though the transition status is enabled previously but when the global time is evolve, we need to recalculate binding (because some others token need to be considered)
   var lbeTmp:List[B] = null
   
@@ -158,7 +158,7 @@ class Transition[B] (
       return true
     }
       
-    val (isArcEn, lbe) = isArcEnabled(globtime)
+    val (isArcEn, lbe) = isArcEnabled(globtime,false)
     
     if(isArcEn == 1 && getGuard() != null) {
       val resEvalG = getGuard().evalGuard(lbe)
@@ -183,8 +183,8 @@ class Transition[B] (
    * @return pair of Boolean value if this arc is enabled or not and List of binding after arc evaluation
    * This arc enabled function will evaluate all token in each place of input arc in this transition 
    */
-  def isArcEnabled(globtime:Long):(Int,List[B]) = { 
-    var lbe = List[B]()
+  def isArcEnabled(globtime:Long,evalNumTok:Boolean):(Int,List[B]) = {
+   var lbe = List[B]()
     
     val iterator = in.iterator
     
@@ -196,17 +196,24 @@ class Transition[B] (
       if(map.size == 0)
         return (3, List[B]())
       
-      val mapF = map.collect { 
-        case ((token,gtime),num) if gtime <= globtime => (token, num)
-      }.groupBy(_._1).map({ case (k,v) => { 
-        val sumVal = (v map (_._2) sum)
-        if(sumVal >= arc.noTokArcExp) 
-          k
-        else 
-          None 
-        } 
-      })
-      
+      val mapF = if(evalNumTok) {
+        map.collect { 
+          case ((token,gtime),num) if gtime <= globtime => (token, num)
+        }.groupBy(_._1).map({ case (k,v) => { 
+          val sumVal = (v map (_._2) sum)
+          if(sumVal >= arc.noTokArcExp) 
+            k
+          else 
+            None 
+          } 
+        })
+      }
+      else {
+        map.collect { 
+          case ((token,gtime),num) if gtime <= globtime => token
+        }  
+      }
+         
       if(mapF.size == 0)
         return (2, List[B]())
       
@@ -247,7 +254,7 @@ class Transition[B] (
     (ret, lbe)
   }
   
-  def isArcEnabledRecursiveOne(globtime:Long):(Int,List[B]) = { 
+  def isArcEnabledRecursiveOne(globtime:Long,evalNumTok:Boolean):(Int,List[B]) = { 
     var lbe = List[B]()
     var lTok = List[List[_]]()
     
@@ -257,16 +264,23 @@ class Transition[B] (
       if(map.size == 0)
         return (3, List[B]())
       
-      val mapF = map.collect { 
-        case ((token,gtime),num) if gtime <= globtime => (token, num)
-      }.groupBy(_._1).map({ case (k,v) => { 
-        val sumVal = (v map (_._2) sum)
-        if(sumVal >= arc.noTokArcExp) 
-          k
-        else 
-          None 
-        } 
-      })
+      val mapF = if(evalNumTok) {
+        map.collect { 
+          case ((token,gtime),num) if gtime <= globtime => (token, num)
+        }.groupBy(_._1).map({ case (k,v) => { 
+          val sumVal = (v map (_._2) sum)
+          if(sumVal >= arc.noTokArcExp) 
+            k
+          else 
+            None 
+          } 
+        })
+      }
+      else {
+        map.collect { 
+          case ((token,gtime),num) if gtime <= globtime => token
+        }  
+      }
       
       if(mapF.size == 0)
         return (2, List[B]())
