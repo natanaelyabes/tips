@@ -30,6 +30,7 @@
         <!-- Slots for parameters of each process model discovery algorithms -->
         <PMDHeuristicsRibbonComponent ref="configurer" :replayOnly2="true" 
           @onRun="mine" 
+          @loadReplay="loadReplay"
           @startReplay="startReplay"
           @pauseReplay="pauseReplay"
           @stopReplay="stopReplay"
@@ -202,6 +203,8 @@ export default class AnalysisPMD extends VisualizerLayoutView {
    */
   public runMine(selectedDatasetId: string): void {
     const self = this;
+    this.animStr = null;
+    this.replayState = -2;
     if (selectedDatasetId !== 'Select a dataset') {
       const configurer = this.$refs['configurer'] as any;
       const config: IsmDiscoveryConfiguration = new IsmDiscoveryConfiguration();
@@ -209,6 +212,7 @@ export default class AnalysisPMD extends VisualizerLayoutView {
       config.positiveObservationThreshold = configurer.freqTh;
       config.dependencyThreshold = configurer.depTh;
       config.tokenReplay = true;
+      config.nodeLimits = configurer.nodeLimits;
       config.animatorLength = 15;
       config.tokenReplayDecorateLabel = true;
       this.config = config;
@@ -240,6 +244,7 @@ export default class AnalysisPMD extends VisualizerLayoutView {
           }
         }
         const g: Graph = GraphImpl.deserialize(graph.data) as Graph;
+        console.log(g);
         graphModule.setGraph(g);
         self.graphJson = 'This graph has ' + n + ' nodes and ' + c + ' connectors.';
         self.progressMessage = '';
@@ -292,7 +297,10 @@ export default class AnalysisPMD extends VisualizerLayoutView {
   public onGraphLoaded(renderer: any) {
     this.renderer = renderer;
     this.animStr = null;
-    this.replayState = -1;
+    this.replayState = -2;
+  }
+
+  public loadReplay() {
     if (this.config != null) {
       this.renderer.jointPages.map((jointPage: any, jointPageId: any) => {
         const cPaths: any = {};

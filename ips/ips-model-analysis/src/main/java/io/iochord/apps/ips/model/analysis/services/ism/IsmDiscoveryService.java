@@ -50,10 +50,33 @@ public class IsmDiscoveryService extends AnIpsAsyncService<IsmDiscoveryConfigura
 		calculateDfMatrix(context, dfMatrix, config.getDatasetId(), config.getColCaseId(), config.getColEventActivity(), config.getColEventTimestamp(), config.getSkipRows());
 		double fpFitness = calculateDpMatrix(config, dpMatrix, dfMatrix);
 		calculateSNNodes(context, snNodes, config.getDatasetId(), config.getColCaseId(), config.getColEventActivity(), config.getColEventTimestamp(), config.getSkipRows());
+		
+		IsmGraph graph = getGraphAndReplay(context, config, factory, snNodes, dfMatrix, dpMatrix, fpFitness, -1);
+		Page p = graph.getPages().values().iterator().next();
+		System.out.println("ORI: " + p.getNodes().size() + " nodes, " + p.getConnectors().size() + " arcs.");
+		int limit = config.getNodeLimits();
+		if (p.getNodes().size() > limit) {
+			IsmGraph graphOri = graph;
+			graph = getGraphAndReplay(context, config, factory, snNodes, dfMatrix, dpMatrix, fpFitness, limit);
+			graph.getAttributes().clear();
+			graph.getAttributes().putAll(graphOri.getAttributes());
+			p = graph.getPages().values().iterator().next();
+		}
+		System.out.println("G: " + p.getNodes().size() + " nodes, " + p.getConnectors().size() + " arcs.");
+		return graph;
+	}
+	
+	private IsmGraph getGraphAndReplay(ServiceContext context, IsmDiscoveryConfiguration config, IsmFactory factory, Map<String, Set<String>> snNodes, Map<String, Map<String, Long>> dfMatrix, Map<String, Map<String, Double>> dpMatrix, double fpFitness, int limit) {
 		Map<String, Node> nodes = new LinkedHashMap<>();
 		for (Entry<String, Map<String, Long>> fae : dfMatrix.entrySet()) {
+			if (limit > 0 && nodes.size() > limit) {
+				break;
+			}
 			nodes.put(fae.getKey(), null);
 			for (String ta : fae.getValue().keySet()) {
+				if (limit > 0 && nodes.size() > limit) {
+					break;
+				}
 				nodes.put(ta, null);
 			}
 		}

@@ -27,6 +27,12 @@
               <input type="number" name="pmd[minfreq]" v-model="freqTh" min="0">
             </div>
           </div>
+          <div class="item">
+            <div class="field">
+              <label>Max activities shown in UI</label>
+              <input type="number" name="pmd[nodeLimits]" v-model="nodeLimits" min="0">
+            </div>
+          </div>
           <!--
           <div class="item">
             <div class="field">
@@ -78,8 +84,8 @@
         </template>
         <div class="item">
           <div class="field">
-            <button v-if="replayState < 0" type="button" class="ui disabled button" disabled="disabled">
-              Loading ...
+            <button v-if="replayState < 0" type="button" :class="'ui button' + (replayState > -2 ? ' disabled' : '')" @click="$emit('loadReplay')" :disabled="replayState > -2">
+              Load Replay {{ replayState }}
             </button>
             <button v-if="replayState == 0" type="button" @click="$emit('startReplay')" class="ui primary button">
               Start Replay
@@ -131,6 +137,8 @@ export default class PMDHeuristicsRibbonComponent extends SemanticComponent {
   public depTh = -1;
 
   public freqTh = 0;
+
+  public nodeLimits = 10;
 
   @Prop()
   public replayId?: any;

@@ -49,6 +49,10 @@ public class IsmDiscoveryConfiguration {
 	@Getter
 	@Setter
 	private float dependencyThreshold = -1f;
+
+	@Getter
+	@Setter
+	private int nodeLimits = -1;
 	
 	@Getter
 	@Setter

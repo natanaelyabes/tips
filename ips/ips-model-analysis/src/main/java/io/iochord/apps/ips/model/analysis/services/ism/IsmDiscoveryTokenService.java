@@ -142,7 +142,7 @@ public class IsmDiscoveryTokenService extends AnIpsAsyncService<IsmDiscoveryConf
 			.append("AND ne.c = ce.c ").append("\r\n")
 			.append("WHERE (ce.a || '-->' || ne.a) IN ('").append(String.join("','", arcsSet.keySet())).append("')")
 			.append("GROUP BY ce.a, ne.a, ce.ec, ne.es").append("\r\n")
-			.append("ORDER BY afs, atc");
+			.append("ORDER BY afs, atc").append("\r\n");
 			double tsMin = Double.MAX_VALUE;
 			double tsMax = Double.MIN_VALUE;
 			double fMin = Integer.MAX_VALUE;
