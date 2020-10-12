@@ -40,7 +40,7 @@ export default class IsmDiscoveryConfiguration {
    * @type {string}
    * @memberof IsmDiscoveryConfiguration
    */
-  public colEventTimestamp: string = 'ec';
+  public colEventTimestamp: string = 'es';
 
   public positiveObservationThreshold: number = 0;
 
@@ -59,4 +59,6 @@ export default class IsmDiscoveryConfiguration {
   public tokenReplay: boolean = false;
 
   public tokenReplayDecorateLabel: boolean = false;
+
+  public nodeLimits: number = -1;
 }

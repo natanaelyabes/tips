@@ -12,6 +12,7 @@ import io.iochord.apps.ips.common.util.LoggerUtil;
 import io.iochord.apps.ips.common.util.SerializationUtil;
 import io.iochord.apps.ips.core.services.AnIpsAsyncService;
 import io.iochord.apps.ips.core.services.ServiceContext;
+import io.iochord.apps.ips.core.services.ServiceContext.State;
 import io.iochord.apps.ips.model.ism.v1.Element;
 import io.iochord.apps.ips.model.ism.v1.IsmGraph;
 import io.iochord.apps.ips.model.ism.v1.data.Generator;
@@ -57,6 +58,7 @@ public class IsmSimulatorService extends AnIpsAsyncService<IsmGraph, Report> {
 
 	@Override
 	public Report run(ServiceContext context, IsmGraph graph) {
+		context.getInfo().setState(State.RUNNING);
 		Report report = new Report();
 		report.setModelId("ips_simulation_" + System.currentTimeMillis() + "");
 		report.setModelHash(DigestUtils.md5DigestAsHex(SerializationUtil.encode(graph).getBytes()));
@@ -124,7 +126,7 @@ public class IsmSimulatorService extends AnIpsAsyncService<IsmGraph, Report> {
 		LoggerUtil.logInfo("SIM: Generate Replay");
 		generateReplay(context, report, graph, filePath);
 
-		context.updateProgress(100, "Done ...");
+		context.getInfo().setState(State.COMPLETED);
 		return report;
 	}
 

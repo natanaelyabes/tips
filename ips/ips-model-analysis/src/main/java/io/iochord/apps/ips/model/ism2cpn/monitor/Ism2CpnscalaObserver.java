@@ -129,7 +129,7 @@ public class Ism2CpnscalaObserver implements Observer {
 			if (e instanceof Stop) {
 				if (!getData().containsKey(e)) {
 					getData().put(e, new ElementStatistics(e.getLabel(), "Stop", 
-						"Instance Generated", 0l));
+						"Simulation Length", 0l));
 				}
 				getData().get(e).setCount(getData().get(e).getCount() + 1);
 			}

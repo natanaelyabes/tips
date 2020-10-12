@@ -38,7 +38,8 @@
         <SimulationDataManagementComponent
           :isDisabled="isDisabled"
           @create="modelCreate"
-          @example="modelLoadExample" />
+          @example="modelLoadExample"
+          @report="showReport" />
 
         <!-- Right menu item -->
         <div id="ribbon-player-menu" class="right menu">
@@ -137,7 +138,7 @@
         <div class="ui black deny button">
           Close
         </div>
-        <router-link tag="a" :to="'/iochord/ips/analytics/process/discovery/' + report.replayId + '/1'" target="_blank" class="ui primary button">
+        <router-link v-if="report.replayId && report.replayId != ''" tag="a" :to="'/iochord/ips/analytics/process/discovery/' + report.replayId + '/1'" target="_blank" class="ui primary button">
           Replay
         </router-link>
       </div>
@@ -388,10 +389,14 @@ export default class SimulationEditorView extends AppLayoutView {
    */
   public runMine(selectedDatasetId: string): void {
     const self = this;
+    self.report = {
+      replayId: '',
+      groups: {},
+    };
     if (selectedDatasetId !== 'Select a dataset') {
       const config: IsmDiscoveryConfiguration = new IsmDiscoveryConfiguration();
       config.datasetId = selectedDatasetId;
-      IsmDiscoveryService.getInstance().discoverIsmGraph(config, (res: any) => {
+      IsmDiscoveryService.getInstance().discoverIsmHybridGraph(config, (res: any) => {
         const graph = res.data;
         let n = 0; for (const i of Object.keys(graph.data.pages['0'].nodes)) {
           n++;
@@ -508,6 +513,7 @@ export default class SimulationEditorView extends AppLayoutView {
           $(self.$refs['report']).modal('show');
           self.isDisabled = false;
           self.isRunning = false;
+          console.log(self.report);
         }, (tick: any) => {
           if ($('.ui.loader.slow.blue.medium.elastic.text') && $('.ui.loader.slow.blue.medium.elastic.text').length > 0) {
             $('.ui.loader.slow.blue.medium.elastic.text')[0].innerHTML = tick.progressData + ' (' + tick.progress + ' %)';
@@ -521,12 +527,17 @@ export default class SimulationEditorView extends AppLayoutView {
           $(self.$refs['report']).modal('show');
           self.isDisabled = false;
           self.isRunning = false;
+          console.log(self.report);
         }, (tick: any) => {
           if ($('.ui.loader.slow.blue.medium.elastic.text') && $('.ui.loader.slow.blue.medium.elastic.text').length > 0) {
             $('.ui.loader.slow.blue.medium.elastic.text')[0].innerHTML = tick.progressData + ' (' + tick.progress + ' %)';
           }
       });
     }
+  }
+
+  public showReport() {
+    $(this.$refs['report']).modal('show');
   }
 
   /**
@@ -536,6 +547,10 @@ export default class SimulationEditorView extends AppLayoutView {
    */
   public async modelCreate() {
     await graphModule.newGraph();
+    this.report = {
+      replayId: '',
+      groups: {},
+    };
     this.forceReRender();
   }
 
@@ -546,6 +561,10 @@ export default class SimulationEditorView extends AppLayoutView {
    */
   public async modelLoadExample() {
     this.datasetId = '';
+    this.report = {
+      replayId: '',
+      groups: {},
+    };
     await graphModule.loadExampleGraph();
     this.forceReRender();
   }

@@ -65,6 +65,14 @@ export default class IsmDiscoveryService extends AnalysisService {
 //    return this.webservicePost(IsmDiscoveryService.BASE_URI + '/discover/ism', config, completeCallback, progressCallback);
   }
 
+  public discoverIsmHybridGraph(config: IsmDiscoveryConfiguration, completeCallback: any, progressCallback: any) {
+    return this.remotePost(IsmDiscoveryService.BASE_URI + '/discover/hybrid', config)
+      .then((res) => {
+        completeCallback(res);
+      });
+//    return this.webservicePost(IsmDiscoveryService.BASE_URI + '/discover/ism', config, completeCallback, progressCallback);
+  }
+
   public discoverIsmGraphAnimation(config: IsmDiscoveryConfiguration, completeCallback: any, progressCallback: any) {
     return this.remotePost(IsmDiscoveryService.BASE_URI + '/discover/ism/animate/' + config.datasetId, config)
       .then((res) => {
