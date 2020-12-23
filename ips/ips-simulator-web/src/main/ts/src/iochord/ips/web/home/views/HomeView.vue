@@ -68,6 +68,9 @@
               </div>
             </div>
           </div>
+          <div>
+            <loading-button aria-label='Send message' />
+          </div>
         </div>
       </template>
     </WrapperComponent>
@@ -110,9 +113,12 @@ import { AppLayout } from '@/iochord/ips/common/ui/layout/interfaces/AppLayout';
 // Components
 import WrapperComponent from '@/iochord/ips/common/ui/layout/components/WrapperComponent.vue';
 
+import LoadingButton from '@/iochord/ips/common/ui/components/LoadingButton.vue';
+
 @Component({
   components: {
     WrapperComponent,
+    LoadingButton,
   },
 })
 /**

@@ -37,6 +37,7 @@
     "vue-async-computed": "^3.7.0",
     "vue-class-component": "^6.3.2",
     "vue-g2": "^1.2.2",
+    "vue-loading-button": "^0.2.0",
     "vue-property-decorator": "^7.3.0",
     "vue-router": "^3.0.6",
     "vue-rx": "^6.2.0",
